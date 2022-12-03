@@ -5,15 +5,15 @@
     <AssemblyName>System.ServiceModel.NetFramingBase</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
-    <IsBuilding>true</IsBuilding>
-    <IsHarvesting>false</IsHarvesting>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
 	<!-- TODO: Make this net462 and netstandard2.0 after it's multi-targetting .NET Framework -->
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>System.ServiceModel</RootNamespace>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(IsBuilding)' == 'true'">
+  <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
   </ItemGroup>
 

@@ -40,25 +40,6 @@ namespace System.ServiceModel.Channels
             return valueTask.AsTask().WaitForCompletion();
         }
 
-        public override int Read(Span<byte> buffer)
-        {
-            var array = Fx.AllocateByteArray(buffer.Length);
-            var valueTask = ReadAsyncInternal(array, 0, array.Length, CancellationToken.None);
-            int bytesRead = 0;
-            if (valueTask.IsCompletedSuccessfully)
-            {
-                bytesRead = valueTask.Result;
-            }
-            else
-            {
-                bytesRead = valueTask.AsTask().WaitForCompletion();
-            }
-
-            Memory<byte> memoryBuffer = new Memory<byte>(array, 0, bytesRead);
-            memoryBuffer.Span.CopyTo(buffer);
-            return bytesRead;
-        }
-
         public override int ReadByte()
         {
             int r = Read(_oneByteArray, 0, 1);
@@ -96,16 +77,6 @@ namespace System.ServiceModel.Channels
             // Using the ReadAsync overload which takes Memory<byte> as it returns a ValueTask which avoids
             // allocation when the read completes synchronously.
             return await ReadAsync(new Memory<byte>(buffer, offset, count), cancellationToken);
-        }
-
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-        {
-            return ReadAsync(buffer, offset, count).ToApm(callback, state);
-        }
-
-        public override int EndRead(IAsyncResult asyncResult)
-        {
-            return asyncResult.ToApmEnd<int>();
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -149,16 +120,6 @@ namespace System.ServiceModel.Channels
             // Using the ReadAsync overload which takes Memory<byte> as it returns a ValueTask which avoids
             // allocation when the read completes synchronously.
             await WriteAsync(new Memory<byte>(buffer, offset, count), cancellationToken);
-        }
-
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-        {
-            return WriteAsync(buffer, offset, count).ToApm(callback, state);
-        }
-
-        public override void EndWrite(IAsyncResult asyncResult)
-        {
-            asyncResult.ToApmEnd();
         }
 
         protected override void Dispose(bool disposing)

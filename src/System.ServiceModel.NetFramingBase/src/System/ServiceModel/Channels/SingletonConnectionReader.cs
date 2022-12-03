@@ -134,7 +134,7 @@ namespace System.ServiceModel.Channels
         public async Task<Message> ReceiveAsync(TimeoutHelper timeoutHelper)
         {
             Memory<byte> readBuffer = Fx.AllocateByteArray(Connection.ConnectionBufferSize);
-            Memory<byte> buffer = readBuffer;
+            Memory<byte> buffer = Memory<byte>.Empty;
             for (; ; )
             {
                 if (DecodeBytes(ref buffer, ref _isAtEof))
@@ -239,7 +239,7 @@ namespace System.ServiceModel.Channels
             private void DecodeData(Memory<byte> buffer)
             {
                 ReadOnlySequence<byte> data = new ReadOnlySequence<byte>(buffer);
-                while (!buffer.IsEmpty)
+                while (!data.IsEmpty)
                 {
                     int bytesRead = _decoder.Decode(data);
                     data = data.Slice(bytesRead);
@@ -365,6 +365,14 @@ namespace System.ServiceModel.Channels
                         // We're in the middle of a chunk. Try and include the next chunk size as well
 
                         int bytesToRead = bufferMemory.Length;
+                        // This code is intended to prevent overflowing int.MaxValue when trying to read the
+                        // next chunk size. E.g. if the current _chunkBytesRemaining was int.MaxValue, then
+                        // _chunkBytesRemaining + IntEncoder.MaxEncodedSize would overflow to a negative number. This
+                        // would result in Math.Min returning a large negative number.
+                        // If it was the case that _chunkBytesRemaining + IntEncoder.MaxEncodedSize were larger than int.MaxValue,
+                        // we wouldn't be able to request the next chunk size anyway as the count parameter can't be larger
+                        // than int.MaxValue limiting the passed array size to int.MaxValue elements. If this is the case,
+                        // we'll skip this small optimization and read the next chunk size on the next read call.
                         if (int.MaxValue - _chunkBytesRemaining >= IntEncoder.MaxEncodedSize)
                         {
                             bytesToRead = Math.Min(bufferMemory.Length, _chunkBytesRemaining + IntEncoder.MaxEncodedSize);
@@ -431,18 +439,22 @@ namespace System.ServiceModel.Channels
 
             public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
             {
+                return ReadAsync(new Memory<byte>(buffer, offset, count), cancellationToken).AsTask();
+            }
+
+            public override async ValueTask<int> ReadAsync(Memory<byte> bufferMemory, CancellationToken cancellationToken = default)
+            {
                 int result = 0;
-                var bufferMemory = new Memory<byte>(buffer, offset, count);
                 while (true)
                 {
                     if (bufferMemory.IsEmpty)
                     {
-                        return Task.FromResult(result);
+                        return result;
                     }
 
                     if (_atEof)
                     {
-                        return Task.FromResult(result);
+                        return result;
                     }
 
                     // first deal with any residual carryover
@@ -475,7 +487,7 @@ namespace System.ServiceModel.Channels
                             bytesToRead = Math.Min(bufferMemory.Length, _chunkBytesRemaining + IntEncoder.MaxEncodedSize);
                         }
 
-                        int bytesRead = ReadCore(bufferMemory.Slice(0, bytesToRead));
+                        int bytesRead = await ReadCoreAsync(bufferMemory.Slice(0, bytesToRead));
 
                         // keep decoder up to date
                         DecodeData(bufferMemory.Slice(0, Math.Min(bytesRead, _chunkBytesRemaining)));
@@ -495,7 +507,7 @@ namespace System.ServiceModel.Channels
                             _chunkBytesRemaining -= bytesRead;
                         }
 
-                        return Task.FromResult(result);
+                        return result;
                     }
                     else
                     {
@@ -504,24 +516,19 @@ namespace System.ServiceModel.Channels
                         {
                             // we don't have space for MaxEncodedSize, so it's worth the copy cost to read into a temp buffer
                             _chunkBuffer = _rawChunkBuffer;
-                            int bytesRead = ReadCore(_chunkBuffer);
+                            int bytesRead = await ReadCoreAsync(_chunkBuffer);
                             _chunkBuffer = _chunkBuffer.Slice(0, bytesRead);
                             DecodeSize(ref _chunkBuffer, false);
                         }
                         else
                         {
                             var tempBuffer = bufferMemory.Slice(0, IntEncoder.MaxEncodedSize);
-                            int bytesRead = ReadCore(tempBuffer);
+                            int bytesRead = await ReadCoreAsync(tempBuffer);
                             tempBuffer = tempBuffer.Slice(0, bytesRead);
                             DecodeSize(ref tempBuffer, true);
                         }
                     }
                 }
-            }
-
-            public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-            {
-                return base.WriteAsync(buffer, offset, count, cancellationToken);
             }
         }
     }
@@ -612,17 +619,6 @@ namespace System.ServiceModel.Channels
             {
                 await WriteChunkSizeAsync(buffer.Length);
                 await base.WriteAsync(buffer, cancellationToken);
-            }
-
-            public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-            {
-                // Do NOT call base.WriteAsync as the chunk size must be written first.
-                return WriteAsync(buffer, offset, count, default).ToApm(callback, state);
-            }
-
-            public override void EndWrite(IAsyncResult asyncResult)
-            {
-                asyncResult.ToApmEnd();
             }
 
             public override void WriteByte(byte value)

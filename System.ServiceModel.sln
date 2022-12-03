@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Primiti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Primitives.Ref", "src\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj", "{2A96BBBF-49B2-4C05-9A7D-55B8BFE99A10}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Private.ServiceModel", "src\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj", "{C6E14C57-71B7-4096-8E5F-3FBA46E278F3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Primitives.Tests", "src\System.ServiceModel.Primitives\tests\System.ServiceModel.Primitives.Tests.csproj", "{10C03A32-1B1F-4EF8-8041-92C34DAD221E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Duplex.Ref", "src\System.ServiceModel.Duplex\ref\System.ServiceModel.Duplex.Ref.csproj", "{038AA2B1-6F3A-4C2C-A5F9-96D308EE487A}"
@@ -107,8 +105,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.NetName
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.NamedPipe.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\NamedPipe\Binding.NamedPipe.IntegrationTests.csproj", "{4424DC51-A440-44DE-B935-799BBE0ED9D9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.NetNamedPipe.Ref", "src\System.ServiceModel.NetNamedPipe\ref\System.ServiceModel.NetNamedPipe.Ref.csproj", "{C3E6B44A-CADF-42FA-84F6-043764F23822}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,10 +119,6 @@ Global
 		{2A96BBBF-49B2-4C05-9A7D-55B8BFE99A10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A96BBBF-49B2-4C05-9A7D-55B8BFE99A10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A96BBBF-49B2-4C05-9A7D-55B8BFE99A10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6E14C57-71B7-4096-8E5F-3FBA46E278F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6E14C57-71B7-4096-8E5F-3FBA46E278F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6E14C57-71B7-4096-8E5F-3FBA46E278F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6E14C57-71B7-4096-8E5F-3FBA46E278F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10C03A32-1B1F-4EF8-8041-92C34DAD221E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10C03A32-1B1F-4EF8-8041-92C34DAD221E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10C03A32-1B1F-4EF8-8041-92C34DAD221E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -315,10 +307,6 @@ Global
 		{4424DC51-A440-44DE-B935-799BBE0ED9D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4424DC51-A440-44DE-B935-799BBE0ED9D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4424DC51-A440-44DE-B935-799BBE0ED9D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3E6B44A-CADF-42FA-84F6-043764F23822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3E6B44A-CADF-42FA-84F6-043764F23822}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3E6B44A-CADF-42FA-84F6-043764F23822}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3E6B44A-CADF-42FA-84F6-043764F23822}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

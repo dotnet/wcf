@@ -39,31 +39,10 @@ namespace System.ServiceModel.Channels
             return FinishRead(bytesRead);
         }
 
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-        {
-            count = PrepareRead(count);
-            return base.BeginRead(buffer, offset, count, callback, state);
-        }
-
-        public override int EndRead(IAsyncResult result)
-        {
-            return FinishRead(base.EndRead(result));
-        }
-
         public override int Read(byte[] buffer, int offset, int count)
         {
             count = PrepareRead(count);
             return FinishRead(base.Read(buffer, offset, count));
-        }
-
-        public override int Read(Span<byte> buffer)
-        {
-            int readCount = PrepareRead(buffer.Length);
-            if (readCount < buffer.Length)
-            {
-                buffer = buffer.Slice(0, readCount);
-            }
-            return FinishRead(base.Read(buffer));
         }
 
         public override int ReadByte()
@@ -90,22 +69,10 @@ namespace System.ServiceModel.Channels
             return base.WriteAsync(buffer, cancellationToken);
         }
 
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-        {
-            PrepareWrite(count);
-            return base.BeginWrite(buffer, offset, count, callback, state);
-        }
-
         public override void Write(byte[] buffer, int offset, int count)
         {
             PrepareWrite(count);
             base.Write(buffer, offset, count);
-        }
-
-        public override void Write(ReadOnlySpan<byte> buffer)
-        {
-            PrepareWrite(buffer.Length);
-            base.Write(buffer);
         }
 
         public override void WriteByte(byte value)

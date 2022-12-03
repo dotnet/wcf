@@ -4,6 +4,7 @@
 
 
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -25,6 +26,20 @@ namespace System.ServiceModel.Channels
                 return 0;
             }
             int returnValue = await base.ReadAsync(buffer, offset, count, cancellationToken);
+            if (returnValue == 0)
+            {
+                ReceivedEof();
+            }
+            return returnValue;
+        }
+
+        public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+        {
+            if (IsAtEof)
+            {
+                return 0;
+            }
+            int returnValue = await base.ReadAsync(buffer, cancellationToken);
             if (returnValue == 0)
             {
                 ReceivedEof();

@@ -4,6 +4,7 @@
 
 
 using System.IO;
+using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -77,19 +78,29 @@ namespace System.ServiceModel.Channels
         public override long Seek(long offset, SeekOrigin origin) => BaseStream.Seek(offset, origin);
         public override void SetLength(long value) => BaseStream.SetLength(value);
 
+        // Do NOT override Read(Span<byte buffer) unless also providing implementations for all types derived from DelegatingStream
+        // as the parent class won't have Read(byte[] buffer, int offset, int count) called. This is because BaseStream.Read(Span<byte>)
+        // will forward the call to BaseStream.Read(byte[],int,int) and won't go through the parent implementation.
+        // public override int Read(Span<byte> buffer) => BaseStream.Read(buffer);
+
+        // Do NOT override BeginRead/EndRead in types derived from DelegatingStream otherwise the parent BeginRead and ReadAsync will both get called
+        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state) => ReadAsync(buffer, offset, count).ToApm(callback, state);
+        public override int EndRead(IAsyncResult asyncResult) => asyncResult.ToApmEnd<int>();
         public override int Read(byte[] buffer, int offset, int count) => BaseStream.Read(buffer, offset, count);
-        public override int Read(Span<byte> buffer) => BaseStream.Read(buffer);
         public override int ReadByte() => BaseStream.ReadByte();
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state) => BaseStream.BeginRead(buffer, offset, count, callback, state);
-        public override int EndRead(IAsyncResult asyncResult) => BaseStream.EndRead(asyncResult);
         public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => BaseStream.ReadAsync(buffer, offset, count, cancellationToken);
         public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => BaseStream.ReadAsync(buffer, cancellationToken);
 
+        // Do NOT override Write(ReadOnlySpan<byte> buffer) unless also providing implementations for all types derived from DelegatingStream.
+        // This is for similar reasons as commented for Read(Span<byte>)
+        //public override void Write(ReadOnlySpan<byte> buffer) => BaseStream.Write(buffer);
+
+        // Do NOT override BeginWrite/EndWrite in types derived from DelegatingStream otherwise the parent BeginWrite and WriteAsync will both get called
+        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state) => WriteAsync(buffer, offset, count).ToApm(callback, state);
+        public override void EndWrite(IAsyncResult asyncResult) => asyncResult.ToApmEnd();
+
         public override void Write(byte[] buffer, int offset, int count) => BaseStream.Write(buffer, offset, count);
-        public override void Write(ReadOnlySpan<byte> buffer) => BaseStream.Write(buffer);
         public override void WriteByte(byte value) => BaseStream.WriteByte(value);
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state) => BaseStream.BeginWrite(buffer, offset, count, callback, state);
-        public override void EndWrite(IAsyncResult asyncResult) => BaseStream.EndWrite(asyncResult);
         public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => BaseStream.WriteAsync(buffer, offset, count, cancellationToken);
         public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) => BaseStream.WriteAsync(buffer, cancellationToken);
     }

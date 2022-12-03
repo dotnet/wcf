@@ -39,6 +39,8 @@ namespace System.ServiceModel.Channels
 
         protected override void OnOpen(TimeSpan timeout) { }
 
+        protected internal override Task OnOpenAsync(TimeSpan timeout) => Task.CompletedTask;
+
         protected override void OnOpened()
         {
             // setup our preamble which we'll use for all connections we establish
@@ -104,6 +106,8 @@ namespace System.ServiceModel.Channels
         }
 
         protected override void OnClose(TimeSpan timeout) => base.WaitForPendingRequests(timeout);
+
+        protected internal override Task OnCloseAsync(TimeSpan timeout) => Task.CompletedTask;
 
         protected override void OnClosed()
         {

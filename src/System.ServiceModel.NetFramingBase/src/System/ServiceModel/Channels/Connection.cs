@@ -222,7 +222,9 @@ namespace System.ServiceModel.Channels
 
         public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
         {
-            return ReadAsync(buffer, offset, count).ToApm(callback, state);  
+            return Connection.WriteAsync(new Memory<byte>(buffer, offset, count), Immediate, TimeoutHelper.FromMilliseconds(WriteTimeout))
+                .AsTask()
+                .ToApm(callback, state);
         }
 
         public override void EndWrite(IAsyncResult asyncResult) => asyncResult.ToApmEnd();
@@ -257,7 +259,7 @@ namespace System.ServiceModel.Channels
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return Read(buffer, offset, count, TimeoutHelper.FromMilliseconds(ReadTimeout));
+            return Connection.ReadAsync(new Memory<byte>(buffer, offset, count), TimeoutHelper.FromMilliseconds(ReadTimeout)).GetAwaiter().GetResult();
         }
 
         protected int Read(byte[] buffer, int offset, int count, TimeSpan timeout)
