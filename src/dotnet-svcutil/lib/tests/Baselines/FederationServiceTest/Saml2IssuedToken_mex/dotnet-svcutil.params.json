@@ -1,0 +1,15 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "http://wcfcoresrv53.westus3.cloudapp.azure.com/wcftestservice1/Saml2IssuedToken.svc/mex"
+    ],
+    "namespaceMappings": [
+      "*, Saml2IssuedToken_mex_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "N.N",
+    "typeReuseMode": "None"
+  }
+}

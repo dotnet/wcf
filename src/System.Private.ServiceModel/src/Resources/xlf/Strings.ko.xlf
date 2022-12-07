@@ -2034,7 +2034,7 @@
       </trans-unit>
       <trans-unit id="MtomXopIncludeInvalidXopElement">
         <source>XOP Include element has invalid child element '{0}' from XOP namespace '{1}'.</source>
-        <target state="translated">XOP 포함 요소에 XOP 네임스페이스 '{1}'의 잘못된 '{0}' 자식 요소가 있습니다.</target>
+        <target state="translated">XOP 포함 요소에 XOP 네임스페이스 '{0}'의 잘못된 '{1}' 자식 요소가 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleIdentities">

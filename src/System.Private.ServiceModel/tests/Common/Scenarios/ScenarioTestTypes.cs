@@ -674,6 +674,14 @@ public class XmlCompositeTypeDuplexCallbackOnly
     }
 }
 
+public class WcfDuplexService_CallbackDebugBehavior_Callback : IWcfDuplexService_CallbackDebugBehavior_Callback
+{
+    public void ReplyThrow(string input)
+    {
+        throw new Exception(input);
+    }
+}
+
 public class DuplexTaskReturnServiceCallback : IWcfDuplexTaskReturnCallback
 {
     private bool _wrapExceptionInTask;

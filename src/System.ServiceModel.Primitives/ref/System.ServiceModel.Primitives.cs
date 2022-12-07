@@ -1556,6 +1556,15 @@ namespace System.ServiceModel.Channels
 }
 namespace System.ServiceModel.Description
 {
+    public partial class CallbackDebugBehavior : System.ServiceModel.Description.IEndpointBehavior
+    {
+        public CallbackDebugBehavior(bool includeExceptionDetailInFaults) { }
+        public bool IncludeExceptionDetailInFaults { get { return default; } set { } }
+        void System.ServiceModel.Description.IEndpointBehavior.ApplyClientBehavior(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Dispatcher.ClientRuntime behavior) { }
+        void System.ServiceModel.Description.IEndpointBehavior.AddBindingParameters(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Channels.BindingParameterCollection bindingParameters) { }
+        void System.ServiceModel.Description.IEndpointBehavior.ApplyDispatchBehavior(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Dispatcher.EndpointDispatcher endpointDispatcher) { }
+        void System.ServiceModel.Description.IEndpointBehavior.Validate(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint) { }
+    }
     public partial class ClientCredentials : System.ServiceModel.Security.SecurityCredentialsManager, System.ServiceModel.Description.IEndpointBehavior
     {
         public ClientCredentials() { }
@@ -1819,6 +1828,12 @@ namespace System.ServiceModel.Dispatcher
     {
         internal DispatchRuntime() { }
         public System.Collections.Generic.SynchronizedCollection<IDispatchMessageInspector> MessageInspectors { get { return default; } }
+        public System.ServiceModel.Dispatcher.ChannelDispatcher ChannelDispatcher { get { return default; } }
+    }
+    public partial class ChannelDispatcher
+    {
+        internal ChannelDispatcher() { }
+        public bool IncludeExceptionDetailInFaults { get { return default; } set { } }
     }
     public partial class EndpointDispatcher
     {

@@ -101,4 +101,52 @@ namespace WcfService
             }
         }
     }
+
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    public class WcfDuplexService_CallbackDebugBehavior : IWcfDuplexService_CallbackDebugBehavior
+    {
+        public string Hello(string greeting, bool includeExceptionDetailInFaults)
+        {
+            try
+            {
+                Callback.ReplyThrow(greeting);
+            }
+            catch (Exception ex)
+            {
+                if(ex.Message.Equals(greeting))
+                {
+                    Environment.SetEnvironmentVariable("callbackexception" + includeExceptionDetailInFaults.ToString().ToLower(), "included", EnvironmentVariableTarget.Machine);
+                }
+                else
+                {
+                    Environment.SetEnvironmentVariable("callbackexception" + includeExceptionDetailInFaults.ToString().ToLower(), "unincluded", EnvironmentVariableTarget.Machine);
+                }
+            }
+
+            return greeting;
+        }
+
+        public bool GetResult(bool includeExceptionDetailInFaults)
+        {
+            string envVar = "callbackexception" + includeExceptionDetailInFaults.ToString().ToLower();
+            string result = Environment.GetEnvironmentVariable(envVar, EnvironmentVariableTarget.Machine);
+            Environment.SetEnvironmentVariable(envVar, null, EnvironmentVariableTarget.Machine);
+            if (includeExceptionDetailInFaults)
+            {
+                return result.Equals("included");
+            }
+            else
+            {
+                return result.Equals("unincluded");
+            }
+        }
+
+        public IWcfDuplexService_CallbackDebugBehavior_Callback Callback
+        {
+            get
+            {
+                return OperationContext.Current.GetCallbackChannel<IWcfDuplexService_CallbackDebugBehavior_Callback>();
+            }
+        }
+    }
 }

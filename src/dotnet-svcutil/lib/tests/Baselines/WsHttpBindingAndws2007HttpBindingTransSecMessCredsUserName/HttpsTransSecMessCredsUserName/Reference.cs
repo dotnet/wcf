@@ -616,8 +616,8 @@ namespace HttpsTransSecMessCredsUserName_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(HttpsTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(HttpsTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(HttpsTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.TestFaultsResponse> TestFaultsAsync(HttpsTransSecMessCredsUserName_NS.TestFaultsRequest request);
         
@@ -2683,13 +2683,13 @@ namespace HttpsTransSecMessCredsUserName_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.https_message_credentials_username_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/HttpsTransSecMessCredsUserName.svc/https-mess" +
-                        "age-credentials-username");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/HttpsTransSecMessCredsUserName.svc/https-mes" +
+                        "sage-credentials-username");
             }
             if ((endpointConfiguration == EndpointConfiguration.https2007_message_credentials_username_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/HttpsTransSecMessCredsUserName.svc/https2007-" +
-                        "message-credentials-username");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/HttpsTransSecMessCredsUserName.svc/https2007" +
+                        "-message-credentials-username");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

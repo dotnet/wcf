@@ -4,7 +4,20 @@
 // Changes to this file must follow the http://aka.ms/api-review process.
 // ------------------------------------------------------------------------------
 
+using System.Threading.Tasks;
 
+namespace System.ServiceModel
+{
+    public abstract partial class ChannelFactory : System.IAsyncDisposable
+    {
+        ValueTask IAsyncDisposable.DisposeAsync() { return default; }
+    }
+    public abstract partial class ClientBase<TChannel> : System.IAsyncDisposable
+    {
+        public Task CloseAsync() { return default; }
+        ValueTask IAsyncDisposable.DisposeAsync() { return default; }
+    }
+}
 namespace System.ServiceModel.Description
 {
     public partial class DataContractSerializerOperationBehavior : System.ServiceModel.Description.IOperationBehavior

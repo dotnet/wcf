@@ -613,4 +613,10 @@ Your credentials will be sent to the server in clear text.</value>
   <data name="HelpExamples11" xml:space="preserve">
     <value>- Update existing web service reference named ServiceReference. The command need to be executed under directory which contains the project file.</value>
   </data>
+  <data name="BindingMtomMessageEncodingVersionNotSupportedFormat" xml:space="preserve">
+    <value>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</value>
+  </data>
+  <data name="HelpAcceptCertificateFormat" xml:space="preserve">
+    <value>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</value>
+  </data>
 </root>

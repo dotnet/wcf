@@ -85,21 +85,21 @@ namespace SvcutilTest
             UnitTestSvcutil(AppendCommonOptions(options));
         }
 
-        [Trait("Category", "UnitTest")]
-        [Theory]
-        [InlineData("metadataEpr")]
-        public void MetadataEpr(string testCaseName)
-        {
-            this_TestCaseName = "MetadataEpr";
-            TestFixture();
+        //[Trait("Category", "UnitTest")]
+        //[Theory]
+        //[InlineData("metadataEpr")]
+        //public void MetadataEpr(string testCaseName)
+        //{
+        //    this_TestCaseName = "MetadataEpr";
+        //    TestFixture();
 
-            InitializeUnitTest(testCaseName);
+        //    InitializeUnitTest(testCaseName);
 
-            var uri = Path.Combine(g_TestCasesDir, "metadataEpr", "epr", "http___WcfProjectNServer_WcfProjectNService_WcfProjectNService.svc.xml");
-            var options = $"{uri} -nl";
-            this_TestCaseName = testCaseName;
-            UnitTestSvcutil(AppendCommonOptions(options));
-        }
+        //    var uri = Path.Combine(g_TestCasesDir, "metadataEpr", "epr", "http___WcfProjectNServer_WcfProjectNService_WcfProjectNService.svc.xml");
+        //    var options = $"{uri} -nl";
+        //    this_TestCaseName = testCaseName;
+        //    UnitTestSvcutil(AppendCommonOptions(options));
+        //}
 
         [Trait("Category", "UnitTest")]
         [Theory]

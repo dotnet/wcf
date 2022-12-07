@@ -11,10 +11,11 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Dispatcher;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel
 {
-    public abstract class ClientBase<TChannel> : ICommunicationObject, IDisposable
+    public abstract class ClientBase<TChannel> : ICommunicationObject, IDisposable, IAsyncDisposable
         where TChannel : class
     {
         private TChannel _channel;
@@ -299,6 +300,23 @@ namespace System.ServiceModel
             ((ICommunicationObject)this).Open(GetChannelFactory().InternalOpenTimeout);
         }
 
+        public Task OpenAsync()
+        {
+            return OpenAsync(GetChannelFactory().InternalOpenTimeout);
+        }
+
+        private async Task OpenAsync(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await TaskHelpers.EnsureDefaultTaskScheduler();
+            if (!_useCachedFactory)
+            {
+                await GetChannelFactory().OpenHelperAsync(timeoutHelper.RemainingTime());
+            }
+
+            await InnerChannel.OpenHelperAsync(timeoutHelper.RemainingTime());
+        }
+
         public void Abort()
         {
             IChannel channel = (IChannel)_channel;
@@ -333,6 +351,59 @@ namespace System.ServiceModel
         public void Close()
         {
             ((ICommunicationObject)this).Close(GetChannelFactory().InternalCloseTimeout);
+        }
+
+        public Task CloseAsync()
+        {
+            var timeout = GetChannelFactory().InternalCloseTimeout;
+            return CloseAsync(timeout);
+        }
+
+        private async Task CloseAsync(TimeSpan timeout)
+        {
+            using (ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ? ServiceModelActivity.CreateBoundedActivity() : null)
+            {
+                if (DiagnosticUtility.ShouldUseActivity)
+                {
+                    ServiceModelActivity.Start(activity, SR.Format(SR.ActivityCloseClientBase, typeof(TChannel).FullName), ActivityType.Close);
+                }
+
+                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+                await TaskHelpers.EnsureDefaultTaskScheduler();
+                if (_channel != null)
+                {
+                    await InnerChannel.CloseHelperAsync(timeoutHelper.RemainingTime());
+                }
+
+                if (!_channelFactoryRefReleased)
+                {
+                    lock (s_staticLock)
+                    {
+                        if (!_channelFactoryRefReleased)
+                        {
+                            if (_channelFactoryRef.Release())
+                            {
+                                _releasedLastRef = true;
+                            }
+
+                            _channelFactoryRefReleased = true;
+                        }
+                    }
+
+                    // Close the factory outside of the lock so that we can abort from a different thread.
+                    if (_releasedLastRef)
+                    {
+                        if (_useCachedFactory)
+                        {
+                            _channelFactoryRef.Abort();
+                        }
+                        else
+                        {
+                            await GetChannelFactory().CloseHelperAsync(timeoutHelper.RemainingTime());
+                        }
+                    }
+                }
+            }
         }
 
         // This ensures that the cachesetting (on, off or default) cannot be modified by 
@@ -391,6 +462,31 @@ namespace System.ServiceModel
         void IDisposable.Dispose()
         {
             Close();
+        }
+
+        async ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            try
+            {
+                // Only want to call Close if it is in the Opened state
+                if (State == CommunicationState.Opened)
+                {
+                    await CloseAsync();
+                }
+                // Anything not closed by this point should be aborted
+                if (State != CommunicationState.Closed)
+                {
+                    Abort();
+                }
+            }
+            catch (CommunicationException)
+            {
+                Abort();
+            }
+            catch (TimeoutException)
+            {
+                Abort();
+            }
         }
 
         void ICommunicationObject.Open(TimeSpan timeout)
@@ -517,12 +613,12 @@ namespace System.ServiceModel
 
         IAsyncResult ICommunicationObject.BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedAsyncResult(timeout, callback, state, BeginChannelClose, EndChannelClose, BeginFactoryClose, EndFactoryClose);
+            return CloseAsync(timeout).ToApm(callback, state);
         }
 
         void ICommunicationObject.EndClose(IAsyncResult result)
         {
-            ChainedAsyncResult.End(result);
+            result.ToApmEnd();
         }
 
         IAsyncResult ICommunicationObject.BeginOpen(AsyncCallback callback, object state)
@@ -532,96 +628,12 @@ namespace System.ServiceModel
 
         IAsyncResult ICommunicationObject.BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedAsyncResult(timeout, callback, state, BeginFactoryOpen, EndFactoryOpen, BeginChannelOpen, EndChannelOpen);
+            return OpenAsync(timeout).ToApm(callback, state);
         }
 
         void ICommunicationObject.EndOpen(IAsyncResult result)
         {
-            ChainedAsyncResult.End(result);
-        }
-
-        //ChainedAsyncResult methods for opening and closing ChannelFactory<T>
-
-        internal IAsyncResult BeginFactoryOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            if (_useCachedFactory)
-            {
-                return new CompletedAsyncResult(callback, state);
-            }
-            else
-            {
-                return GetChannelFactory().BeginOpen(timeout, callback, state);
-            }
-        }
-
-        internal void EndFactoryOpen(IAsyncResult result)
-        {
-            if (_useCachedFactory)
-            {
-                CompletedAsyncResult.End(result);
-            }
-            else
-            {
-                GetChannelFactory().EndOpen(result);
-            }
-        }
-
-        internal IAsyncResult BeginChannelOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            return InnerChannel.BeginOpen(timeout, callback, state);
-        }
-
-        internal void EndChannelOpen(IAsyncResult result)
-        {
-            InnerChannel.EndOpen(result);
-        }
-
-        internal IAsyncResult BeginFactoryClose(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            if (_useCachedFactory)
-            {
-                return new CompletedAsyncResult(callback, state);
-            }
-            else
-            {
-                return GetChannelFactory().BeginClose(timeout, callback, state);
-            }
-        }
-
-        internal void EndFactoryClose(IAsyncResult result)
-        {
-            if (typeof(CompletedAsyncResult).IsAssignableFrom(result.GetType()))
-            {
-                CompletedAsyncResult.End(result);
-            }
-            else
-            {
-                GetChannelFactory().EndClose(result);
-            }
-        }
-
-        internal IAsyncResult BeginChannelClose(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            if (_channel != null)
-            {
-                return InnerChannel.BeginClose(timeout, callback, state);
-            }
-            else
-            {
-                return new CompletedAsyncResult(callback, state);
-            }
-        }
-
-        internal void EndChannelClose(IAsyncResult result)
-        {
-            if (typeof(CompletedAsyncResult).IsAssignableFrom(result.GetType()))
-            {
-                CompletedAsyncResult.End(result);
-            }
-            else
-            {
-                InnerChannel.EndClose(result);
-            }
+            result.ToApmEnd();
         }
 
         ChannelFactory<TChannel> GetChannelFactory()

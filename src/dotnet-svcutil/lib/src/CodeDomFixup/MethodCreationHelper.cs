@@ -175,6 +175,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 return;
             }
 
+            WS2007FederationHttpBinding ws2007FederationHttpBinding = binding as WS2007FederationHttpBinding;
+            if (ws2007FederationHttpBinding != null)
+            {
+                AddWS2007FederationBindingConfiguration(statements, ws2007FederationHttpBinding);
+                return;
+            }
+
+            WSFederationHttpBinding wsFederationHttpBinding = binding as WSFederationHttpBinding;
+            if (wsFederationHttpBinding != null)
+            {
+                AddWSFederationBindingConfiguration(statements, wsFederationHttpBinding);
+                return;
+            }
+
             if (binding is WS2007HttpBinding ws2007HttpBinding)
             {
                 AddWS2007HttpBindingConfiguration(statements, ws2007HttpBinding);
@@ -190,17 +204,74 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingTypeNotSupportedFormat, binding.GetType().FullName));
         }
 
-        private static void AddWSHttpBindingConfiguration(CodeStatementCollection statements, WSHttpBinding wsHttp)
+        private static void AddIssuerBindingConfiguration(CodeStatementCollection statements, Binding binding)
+        {
+            BasicHttpBinding basicHttp = binding as BasicHttpBinding;
+            if (basicHttp != null)
+            {
+                AddBasicHttpBindingConfiguration(statements, basicHttp, true);
+                return;
+            }
+
+            NetHttpBinding netHttp = binding as NetHttpBinding;
+            if (netHttp != null)
+            {
+                AddNetHttpBindingConfiguration(statements, netHttp, true);
+                return;
+            }
+
+            NetTcpBinding netTcp = binding as NetTcpBinding;
+            if (netTcp != null)
+            {
+                AddNetTcpBindingConfiguration(statements, netTcp, true);
+                return;
+            }
+
+            CustomBinding custom = binding as CustomBinding;
+            if (custom != null)
+            {
+                AddCustomBindingConfiguration(statements, custom, true);
+                return;
+            }
+
+            if (binding is WS2007HttpBinding ws2007HttpBinding)
+            {
+                AddWS2007HttpBindingConfiguration(statements, ws2007HttpBinding, true);
+                return;
+            }
+
+            if (binding is WSHttpBinding wsHttpBinding)
+            {
+                AddWSHttpBindingConfiguration(statements, wsHttpBinding, true);
+                return;
+            }
+        }
+
+        private static void AddWSHttpBindingConfiguration(CodeStatementCollection statements, WSHttpBinding wsHttp, bool isIssuerBinding = false)
         {
             const string ResultVarName = "result";
+            const string IssuerBingdingVarName = "issuerBinding";
+            CodeVariableReferenceExpression resultVar;
             WSHttpBinding defaultBinding = new WSHttpBinding();
 
-            statements.Add(
+            if(isIssuerBinding)
+            {
+                statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(WSHttpBinding),
+                    IssuerBingdingVarName,
+                    new CodeObjectCreateExpression(typeof(WSHttpBinding))));
+                resultVar = new CodeVariableReferenceExpression(IssuerBingdingVarName);
+            }
+            else
+            {
+                statements.Add(
                 new CodeVariableDeclarationStatement(
                     typeof(WSHttpBinding),
                     ResultVarName,
                     new CodeObjectCreateExpression(typeof(WSHttpBinding))));
-            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+                resultVar = new CodeVariableReferenceExpression(ResultVarName);
+            }
 
             WSHttpMaxOutProperties(statements, resultVar);
 
@@ -311,20 +382,37 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new CodePrimitiveExpression(wsHttp.Security.Message.EstablishSecurityContext)));
             }
 
-            statements.Add(new CodeMethodReturnStatement(resultVar));
+            if (!isIssuerBinding)
+            {
+                statements.Add(new CodeMethodReturnStatement(resultVar));
+            }
         }
 
-        private static void AddWS2007HttpBindingConfiguration(CodeStatementCollection statements, WS2007HttpBinding ws2007Http)
+        private static void AddWS2007HttpBindingConfiguration(CodeStatementCollection statements, WS2007HttpBinding ws2007Http, bool isIssuerBinding = false)
         {
             const string ResultVarName = "result";
+            const string IssuerBingdingVarName = "issuerBinding";
+            CodeVariableReferenceExpression resultVar;
             WS2007HttpBinding defaultBinding = new WS2007HttpBinding();
 
-            statements.Add(
+            if(isIssuerBinding)
+            {
+                statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(WS2007HttpBinding),
+                    IssuerBingdingVarName,
+                    new CodeObjectCreateExpression(typeof(WS2007HttpBinding))));
+                resultVar = new CodeVariableReferenceExpression(IssuerBingdingVarName);
+            }
+            else
+            {
+                statements.Add(
                 new CodeVariableDeclarationStatement(
                     typeof(WS2007HttpBinding),
                     ResultVarName,
                     new CodeObjectCreateExpression(typeof(WS2007HttpBinding))));
-            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+                resultVar = new CodeVariableReferenceExpression(ResultVarName);
+            }            
 
             WSHttpMaxOutProperties(statements, resultVar);
 
@@ -435,18 +523,445 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new CodePrimitiveExpression(ws2007Http.Security.Message.EstablishSecurityContext)));
             }
 
-            statements.Add(new CodeMethodReturnStatement(resultVar));
+            if (!isIssuerBinding)
+            {
+                statements.Add(new CodeMethodReturnStatement(resultVar));
+            }
         }
 
-        private static void AddCustomBindingConfiguration(CodeStatementCollection statements, CustomBinding custom)
+        private static void AddWSFederationBindingConfiguration(CodeStatementCollection statements, WSFederationHttpBinding wsFedHttp, bool isIssuerBinding = false)
+        {
+            string ResultVarName = "result";
+            string ResultRef = "result";
+            string WSTrustTokenVarName = "wsTrustTokenParams";
+            string IssuerBindingName = "issuerBinding";
+            string IssuerAddressName = "issuerAddress";
+
+            if (wsFedHttp.Security.Message.IssuerBinding is WSFederationHttpBinding)
+            {
+                ResultVarName = "federationIssuerBinding";
+                WSTrustTokenVarName = "federationWsTrustTokenParams";
+                IssuerBindingName = "federationIssuerBinding";
+                IssuerAddressName = "federationissuerAddress";
+            }
+
+            WSFederationHttpBinding defaultBinding = new WSFederationHttpBinding();
+
+            CodeVariableReferenceExpression wsTrustTokenVar = new CodeVariableReferenceExpression(WSTrustTokenVarName);
+            CodeVariableReferenceExpression issuerBindingVar = new CodeVariableReferenceExpression(IssuerBindingName);
+            CodeVariableReferenceExpression issuerBindingVar2 = new CodeVariableReferenceExpression(ResultRef);
+            CodeVariableReferenceExpression issuerAddressVar = new CodeVariableReferenceExpression(IssuerAddressName);
+
+            if (wsFedHttp.Security.Message.IssuerBinding != null)
+            {
+                if (wsFedHttp.Security.Message.IssuerBinding is WS2007FederationHttpBinding ws2007FedHttpIssuer)
+                {
+                    AddWS2007FederationBindingConfiguration(statements, ws2007FedHttpIssuer, true);
+                }
+                else if (wsFedHttp.Security.Message.IssuerBinding is WSFederationHttpBinding wsFedHttpIssuer)
+                {
+                    AddWSFederationBindingConfiguration(statements, wsFedHttpIssuer, true);
+                }
+                else
+                {
+                    AddIssuerBindingConfiguration(statements, wsFedHttp.Security.Message.IssuerBinding);
+                }
+            }
+            else
+            {
+                statements.Add(
+                    new CodeVariableDeclarationStatement(
+                        typeof(WSHttpBinding),
+                        IssuerBindingName,
+                        new CodeObjectCreateExpression(typeof(WSHttpBinding),
+                            new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(SecurityMode)), "Transport"))));
+
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(issuerBindingVar, "Security"),
+                            "Transport"), "ClientCredentialType"),
+                        new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.HttpClientCredentialType)), "Basic")));
+            }
+
+            statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(EndpointAddress),
+                    IssuerAddressName,
+                    new CodeObjectCreateExpression(typeof(EndpointAddress),
+                        new CodeObjectCreateExpression(typeof(Uri),
+                        new CodePrimitiveExpression(wsFedHttp.Security.Message.IssuerAddress.ToString())))));
+
+            //if the WSFederationHttpBinding instance's issuer binding is still WSFederationHttpBinding,
+            //then init the parent WSFederationHttpBinding's WSTrustTokenParameters with the already generated WSFederationHttpBinding result var
+            if (!isIssuerBinding && wsFedHttp.Security.Message.IssuerBinding is WSFederationHttpBinding)
+            {
+                statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(System.ServiceModel.Federation.WSTrustTokenParameters),
+                    WSTrustTokenVarName,
+                    new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.Federation.WSTrustTokenParameters)), "CreateWSFederationTokenParameters",
+                        issuerBindingVar2, issuerAddressVar)));
+            }
+            else
+            {
+                statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(System.ServiceModel.Federation.WSTrustTokenParameters),
+                    WSTrustTokenVarName,
+                    new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.Federation.WSTrustTokenParameters)), "CreateWSFederationTokenParameters",
+                        issuerBindingVar, issuerAddressVar)));
+            }
+
+            statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(System.ServiceModel.Federation.WSFederationHttpBinding),
+                    ResultVarName,
+                    new CodeObjectCreateExpression(typeof(System.ServiceModel.Federation.WSFederationHttpBinding), wsTrustTokenVar)));
+
+            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+
+            // Set AllowCookies's default value to true.
+            statements.Add(
+                   new CodeAssignStatement(
+                       new CodePropertyReferenceExpression(
+                           resultVar,
+                           "AllowCookies"),
+                       new CodePrimitiveExpression(true)));
+
+            if (defaultBinding.MessageEncoding != wsFedHttp.MessageEncoding)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "MessageEncoding"),
+                        new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(WSMessageEncoding)),
+                            wsFedHttp.MessageEncoding.ToString())));
+            }
+
+            if (defaultBinding.TransactionFlow != wsFedHttp.TransactionFlow)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "TransactionFlow"),
+                        new CodePrimitiveExpression(wsFedHttp.TransactionFlow)));
+            }
+
+            if (defaultBinding.ReliableSession.Enabled != wsFedHttp.ReliableSession.Enabled)
+            {
+                if (wsFedHttp.ReliableSession.Enabled)
+                {
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "Enabled"),
+                            new CodePrimitiveExpression(wsFedHttp.ReliableSession.Enabled)));
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "Ordered"),
+                            new CodePrimitiveExpression(wsFedHttp.ReliableSession.Ordered)));
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "InactivityTimeout"),
+                            new CodePrimitiveExpression(wsFedHttp.ReliableSession.InactivityTimeout)));
+                }
+            }
+
+            if (defaultBinding.Security.Mode != wsFedHttp.Security.Mode)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(resultVar, "Security"),
+                            "Mode"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(SecurityMode)),
+                            wsFedHttp.Security.Mode.ToString())));
+            }
+
+            if (defaultBinding.Security.Message.EstablishSecurityContext != wsFedHttp.Security.Message.EstablishSecurityContext)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "EstablishSecurityContext"),
+                        new CodePrimitiveExpression(wsFedHttp.Security.Message.EstablishSecurityContext)));
+            }
+
+            if (defaultBinding.Security.Message.NegotiateServiceCredential != wsFedHttp.Security.Message.NegotiateServiceCredential)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "NegotiateServiceCredential"),
+                        new CodePrimitiveExpression(wsFedHttp.Security.Message.EstablishSecurityContext)));
+            }
+
+            if (defaultBinding.Security.Message.AlgorithmSuite != wsFedHttp.Security.Message.AlgorithmSuite)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "AlgorithmSuite"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(System.ServiceModel.Security.SecurityAlgorithmSuite)),
+                            wsFedHttp.Security.Message.AlgorithmSuite.ToString())));
+            }
+
+            if (!isIssuerBinding)
+            {
+                statements.Add(new CodeMethodReturnStatement(resultVar));
+            }
+        }
+
+        private static void AddWS2007FederationBindingConfiguration(CodeStatementCollection statements, WS2007FederationHttpBinding ws2007FedHttp, bool isIssuerBinding = false)
+        {
+            string ResultVarName = "result";
+            string ResultRef = "result";
+            string WSTrustTokenVarName = "wsTrustTokenParams";
+            string IssuerBindingName = "issuerBinding";
+            string IssuerAddressName = "issuerAddress";
+
+            if (ws2007FedHttp.Security.Message.IssuerBinding is WSFederationHttpBinding)
+            {
+                ResultVarName = "federationIssuerBinding";
+                WSTrustTokenVarName = "federationWsTrustTokenParams";
+                IssuerBindingName = "federationIssuerBinding";
+                IssuerAddressName = "federationissuerAddress";
+            }
+
+            WS2007FederationHttpBinding defaultBinding = new WS2007FederationHttpBinding();
+
+            CodeVariableReferenceExpression wsTrustTokenVar = new CodeVariableReferenceExpression(WSTrustTokenVarName);
+            CodeVariableReferenceExpression issuerBindingVar = new CodeVariableReferenceExpression(IssuerBindingName);
+            CodeVariableReferenceExpression issuerBindingVar2 = new CodeVariableReferenceExpression(ResultRef);
+            CodeVariableReferenceExpression issuerAddressVar = new CodeVariableReferenceExpression(IssuerAddressName);
+
+            if (ws2007FedHttp.Security.Message.IssuerBinding != null)
+            {
+                if (ws2007FedHttp.Security.Message.IssuerBinding is WS2007FederationHttpBinding ws2007FedHttpIssuer)
+                {
+                    AddWS2007FederationBindingConfiguration(statements, ws2007FedHttpIssuer, true);
+                }
+                else if (ws2007FedHttp.Security.Message.IssuerBinding is WSFederationHttpBinding wsFedHttpIssuer)
+                {
+                    AddWSFederationBindingConfiguration(statements, wsFedHttpIssuer, true);
+                }
+                else
+                {
+                    AddIssuerBindingConfiguration(statements, ws2007FedHttp.Security.Message.IssuerBinding);
+                }
+            }
+            else
+            {
+                statements.Add(
+                    new CodeVariableDeclarationStatement(
+                        typeof(WSHttpBinding),
+                        IssuerBindingName,
+                        new CodeObjectCreateExpression(typeof(WSHttpBinding),
+                            new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(SecurityMode)), "Transport"))));
+
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(issuerBindingVar, "Security"),
+                            "Transport"), "ClientCredentialType"),
+                        new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.HttpClientCredentialType)), "Basic")));
+            }
+
+            statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(EndpointAddress),
+                    IssuerAddressName,
+                    new CodeObjectCreateExpression(typeof(EndpointAddress),
+                        new CodeObjectCreateExpression(typeof(Uri),
+                        new CodePrimitiveExpression(ws2007FedHttp.Security.Message.IssuerAddress.ToString())))));
+
+            //if the WS2007FederationHttpBinding instance's issuer binding is still WSFederationHttpBinding,
+            //then init the parent WS2007FederationHttpBinding's WSTrustTokenParameters with the already generated WSFederationHttpBinding result var
+            if (!isIssuerBinding && ws2007FedHttp.Security.Message.IssuerBinding is WSFederationHttpBinding)
+            {
+                statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(System.ServiceModel.Federation.WSTrustTokenParameters),
+                    WSTrustTokenVarName,
+                    new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.Federation.WSTrustTokenParameters)), "CreateWS2007FederationTokenParameters",
+                        issuerBindingVar2, issuerAddressVar)));
+            }
+            else
+            {
+                statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(System.ServiceModel.Federation.WSTrustTokenParameters),
+                    WSTrustTokenVarName,
+                    new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.Federation.WSTrustTokenParameters)), "CreateWS2007FederationTokenParameters",
+                        issuerBindingVar, issuerAddressVar)));
+            }
+
+            statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(System.ServiceModel.Federation.WSFederationHttpBinding),
+                    ResultVarName,
+                    new CodeObjectCreateExpression(typeof(System.ServiceModel.Federation.WSFederationHttpBinding), wsTrustTokenVar)));
+
+            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+
+            // Set AllowCookies's default value to true.
+            statements.Add(
+                   new CodeAssignStatement(
+                       new CodePropertyReferenceExpression(
+                           resultVar,
+                           "AllowCookies"),
+                       new CodePrimitiveExpression(true)));
+
+            if (defaultBinding.MessageEncoding != ws2007FedHttp.MessageEncoding)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "MessageEncoding"),
+                        new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(WSMessageEncoding)),
+                            ws2007FedHttp.MessageEncoding.ToString())));
+            }
+
+            if (defaultBinding.TransactionFlow != ws2007FedHttp.TransactionFlow)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "TransactionFlow"),
+                        new CodePrimitiveExpression(ws2007FedHttp.TransactionFlow)));
+            }
+
+            if (defaultBinding.ReliableSession.Enabled != ws2007FedHttp.ReliableSession.Enabled)
+            {
+                if (ws2007FedHttp.ReliableSession.Enabled)
+                {
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "Enabled"),
+                            new CodePrimitiveExpression(ws2007FedHttp.ReliableSession.Enabled)));
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "Ordered"),
+                            new CodePrimitiveExpression(ws2007FedHttp.ReliableSession.Ordered)));
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "InactivityTimeout"),
+                            new CodePrimitiveExpression(ws2007FedHttp.ReliableSession.InactivityTimeout)));
+                }
+            }
+
+            if (defaultBinding.Security.Mode != ws2007FedHttp.Security.Mode)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(resultVar, "Security"),
+                            "Mode"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(SecurityMode)),
+                            ws2007FedHttp.Security.Mode.ToString())));
+            }
+
+            if (defaultBinding.Security.Message.EstablishSecurityContext != ws2007FedHttp.Security.Message.EstablishSecurityContext)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "EstablishSecurityContext"),
+                        new CodePrimitiveExpression(ws2007FedHttp.Security.Message.EstablishSecurityContext)));
+            }
+
+            if (defaultBinding.Security.Message.NegotiateServiceCredential != ws2007FedHttp.Security.Message.NegotiateServiceCredential)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "NegotiateServiceCredential"),
+                        new CodePrimitiveExpression(ws2007FedHttp.Security.Message.EstablishSecurityContext)));
+            }
+
+            if (defaultBinding.Security.Message.AlgorithmSuite != ws2007FedHttp.Security.Message.AlgorithmSuite)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "AlgorithmSuite"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(System.ServiceModel.Security.SecurityAlgorithmSuite)),
+                            ws2007FedHttp.Security.Message.AlgorithmSuite.ToString())));
+            }
+
+            if (!isIssuerBinding)
+            {
+                statements.Add(new CodeMethodReturnStatement(resultVar));
+            }
+        }
+
+        private static void AddCustomBindingConfiguration(CodeStatementCollection statements, CustomBinding custom, bool isIssuerBinding = false)
         {
             const string ResultVarName = "result";
-            statements.Add(
+            const string IssuerBingdingVarName = "issuerBinding";
+            CodeVariableReferenceExpression resultVar;
+
+            if(isIssuerBinding)
+            {
+                statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(CustomBinding),
+                    IssuerBingdingVarName,
+                    new CodeObjectCreateExpression(typeof(CustomBinding))));
+                resultVar = new CodeVariableReferenceExpression(IssuerBingdingVarName);
+            }
+            else
+            {
+                statements.Add(
                 new CodeVariableDeclarationStatement(
                     typeof(CustomBinding),
                     ResultVarName,
                     new CodeObjectCreateExpression(typeof(CustomBinding))));
-            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+                resultVar = new CodeVariableReferenceExpression(ResultVarName);
+            }            
+
             foreach (BindingElement bindingElement in custom.Elements)
             {
                 bool handled = false;
@@ -463,6 +978,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     if (binaryBE != null)
                     {
                         AddBinaryBindingElement(statements, resultVar);
+                        handled = true;
+                    }
+                }
+
+                if (!handled)
+                {
+                    MtomMessageEncodingBindingElement mtomBE = bindingElement as MtomMessageEncodingBindingElement;
+                    if (mtomBE != null)
+                    {
+                        AddMtomBindingElement(statements, resultVar, mtomBE);
                         handled = true;
                     }
                 }
@@ -533,7 +1058,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
             }
 
-            statements.Add(new CodeMethodReturnStatement(resultVar));
+            if (!isIssuerBinding)
+            {
+                statements.Add(new CodeMethodReturnStatement(resultVar));
+            }
         }
 
         private static void AddSslStreamSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding)
@@ -809,6 +1337,48 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     new CodeObjectCreateExpression(typeof(BinaryMessageEncodingBindingElement))));
         }
 
+        private static void AddMtomBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, MtomMessageEncodingBindingElement bindingElement)
+        {
+            MtomMessageEncodingBindingElement defaultBindingElement = new MtomMessageEncodingBindingElement();
+            CodeVariableDeclarationStatement mtomBindingElement = new CodeVariableDeclarationStatement(
+                typeof(MtomMessageEncodingBindingElement),
+                "mtomBindingElement",
+                new CodeObjectCreateExpression(typeof(MtomMessageEncodingBindingElement)));
+            statements.Add(mtomBindingElement);
+            CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(mtomBindingElement.Name);
+            if (defaultBindingElement.MessageVersion != bindingElement.MessageVersion)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "MessageVersion"),
+                        new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(MessageVersion)),
+                            GetMessageVersionName(bindingElement.MessageVersion))));
+            }
+
+            if (defaultBindingElement.WriteEncoding.WebName != bindingElement.WriteEncoding.WebName)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "WriteEncoding"),
+                        new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(Encoding)),
+                            GetEncoding(bindingElement.WriteEncoding))));
+            }
+
+            statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodePropertyReferenceExpression(
+                        customBinding,
+                        "Elements"),
+                    "Add",
+                    bindingElementRef));
+        }
+
         private static void AddTextBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TextMessageEncodingBindingElement bindingElement)
         {
             TextMessageEncodingBindingElement defaultBindingElement = new TextMessageEncodingBindingElement();
@@ -1013,16 +1583,31 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrMessageVersionNotSupportedFormat, messagingVersion));
         }
 
-        private static void AddNetTcpBindingConfiguration(CodeStatementCollection statements, NetTcpBinding netTcp)
+        private static void AddNetTcpBindingConfiguration(CodeStatementCollection statements, NetTcpBinding netTcp, bool isIssuerBinding = false)
         {
             const string ResultVarName = "result";
+            const string IssuerBingdingVarName = "issuerBinding";
+            CodeVariableReferenceExpression resultVar;
             NetTcpBinding defaultBinding = new NetTcpBinding();
-            statements.Add(
-                new CodeVariableDeclarationStatement(
-                    typeof(NetTcpBinding),
-                    ResultVarName,
-                    new CodeObjectCreateExpression(typeof(NetTcpBinding))));
-            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+
+            if(isIssuerBinding)
+            {
+                statements.Add(
+                                new CodeVariableDeclarationStatement(
+                                    typeof(NetTcpBinding),
+                                    IssuerBingdingVarName,
+                                    new CodeObjectCreateExpression(typeof(NetTcpBinding))));
+                resultVar = new CodeVariableReferenceExpression(IssuerBingdingVarName);
+            }
+            else
+            {
+                statements.Add(
+                                                new CodeVariableDeclarationStatement(
+                                                    typeof(NetTcpBinding),
+                                                    ResultVarName,
+                                                    new CodeObjectCreateExpression(typeof(NetTcpBinding))));
+                resultVar = new CodeVariableReferenceExpression(ResultVarName);
+            }
 
             MaxOutProperties(statements, resultVar);
 
@@ -1102,21 +1687,37 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             netTcp.Security.Message.ClientCredentialType.ToString())));
             }
 
-            statements.Add(new CodeMethodReturnStatement(resultVar));
+            if (!isIssuerBinding)
+            {
+                statements.Add(new CodeMethodReturnStatement(resultVar));
+            }
         }
 
-        private static void AddBasicHttpBindingConfiguration(CodeStatementCollection statements, BasicHttpBinding basicHttp)
+        private static void AddBasicHttpBindingConfiguration(CodeStatementCollection statements, BasicHttpBinding basicHttp, bool isIssuerBinding = false)
         {
             const string ResultVarName = "result";
-
+            const string IssuerBingdingVarName = "issuerBinding";
+            CodeVariableReferenceExpression resultVar;
             BasicHttpBinding defaultBinding = new BasicHttpBinding();
 
-            statements.Add(
+            if(isIssuerBinding)
+            {
+                statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(BasicHttpBinding),
+                    IssuerBingdingVarName,
+                    new CodeObjectCreateExpression(typeof(BasicHttpBinding))));
+                resultVar = new CodeVariableReferenceExpression(IssuerBingdingVarName);
+            }
+            else
+            {
+                statements.Add(
                 new CodeVariableDeclarationStatement(
                     typeof(BasicHttpBinding),
                     ResultVarName,
                     new CodeObjectCreateExpression(typeof(BasicHttpBinding))));
-            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+                resultVar = new CodeVariableReferenceExpression(ResultVarName);
+            }
 
             MaxOutProperties(statements, resultVar);
 
@@ -1180,21 +1781,38 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             basicHttp.Security.Message.ClientCredentialType.ToString())));
             }
 
-            statements.Add(new CodeMethodReturnStatement(resultVar));
+            if (!isIssuerBinding)
+            {
+                statements.Add(new CodeMethodReturnStatement(resultVar));
+            }
         }
 
-        private static void AddNetHttpBindingConfiguration(CodeStatementCollection statements, NetHttpBinding netHttp)
+        private static void AddNetHttpBindingConfiguration(CodeStatementCollection statements, NetHttpBinding netHttp, bool isIssuerBinding = false)
         {
             const string ResultVarName = "result";
+            const string IssuerBingdingVarName = "issuerBinding";
+            CodeVariableReferenceExpression resultVar;
 
             NetHttpBinding defaultBinding = new NetHttpBinding();
 
-            statements.Add(
+            if(isIssuerBinding)
+            {
+                statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(NetHttpBinding),
+                    IssuerBingdingVarName,
+                    new CodeObjectCreateExpression(typeof(NetHttpBinding))));
+                resultVar = new CodeVariableReferenceExpression(IssuerBingdingVarName);
+            }
+            else
+            {
+                statements.Add(
                 new CodeVariableDeclarationStatement(
                     typeof(NetHttpBinding),
                     ResultVarName,
                     new CodeObjectCreateExpression(typeof(NetHttpBinding))));
-            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+                resultVar = new CodeVariableReferenceExpression(ResultVarName);
+            }
 
             MaxOutProperties(statements, resultVar);
 
@@ -1280,7 +1898,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             netHttp.Security.Message.ClientCredentialType.ToString())));
             }
 
-            statements.Add(new CodeMethodReturnStatement(resultVar));
+            if (!isIssuerBinding)
+            {
+                statements.Add(new CodeMethodReturnStatement(resultVar));
+            }
         }
 
         private static void MaxOutProperties(CodeStatementCollection statements, CodeVariableReferenceExpression resultVar)

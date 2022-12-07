@@ -3,6 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>N.N</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
@@ -35,6 +37,7 @@
     <PackageReference Include="System.Collections.Concurrent" Version="99.99.99" />
     <PackageReference Include="System.Console" Version="99.99.99" />
     <PackageReference Include="System.Diagnostics.Debug" Version="99.99.99" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="99.99.99" />
     <PackageReference Include="System.Diagnostics.Tools" Version="99.99.99" />
     <PackageReference Include="System.Diagnostics.Tracing" Version="99.99.99" />
     <PackageReference Include="System.Dynamic.Runtime" Version="99.99.99" />

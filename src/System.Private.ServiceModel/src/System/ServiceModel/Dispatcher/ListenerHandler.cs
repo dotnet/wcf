@@ -13,7 +13,6 @@ namespace System.ServiceModel.Dispatcher
     internal class ListenerHandler : CommunicationObject
     {
         private static Action<object> s_initiateChannelPump = new Action<object>(ListenerHandler.InitiateChannelPump);
-        private static AsyncCallback s_waitCallback = Fx.ThunkCallback(new AsyncCallback(ListenerHandler.WaitCallback));
         private SessionIdleManager _idleManager;
         private bool _acceptedNull;
         private bool _doneAccepting;
@@ -23,21 +22,20 @@ namespace System.ServiceModel.Dispatcher
         internal ListenerHandler(IListenerBinder listenerBinder, ChannelDispatcher channelDispatcher, IDefaultCommunicationTimeouts timeouts)
         {
             _listenerBinder = listenerBinder;
-            if (!((_listenerBinder != null)))
+            if (!(_listenerBinder != null))
             {
                 Fx.Assert("ListenerHandler.ctor: (this.listenerBinder != null)");
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(listenerBinder));
             }
 
             ChannelDispatcher = channelDispatcher;
-            if (!((ChannelDispatcher != null)))
+            if (!(ChannelDispatcher != null))
             {
                 Fx.Assert("ListenerHandler.ctor: (this.channelDispatcher != null)");
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelDispatcher));
             }
 
             _timeouts = timeouts;
-
             Endpoints = channelDispatcher.EndpointDispatcherTable;
         }
 
@@ -62,10 +60,18 @@ namespace System.ServiceModel.Dispatcher
             get { return base.ThisLock; }
         }
 
-        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
-            OnClose(timeout);
-            return TaskHelpers.CompletedTask();
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+
+            // if there's an idle manager that has not been cancelled, cancel it
+            CancelPendingIdleManager();
+
+            // Start aborting incoming channels
+            ChannelDispatcher.Channels.CloseInput();
+
+            // Start closing existing channels
+            await CloseChannelsAsync(timeoutHelper.RemainingTime());
         }
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)
@@ -122,18 +128,6 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        private static void WaitCallback(IAsyncResult result)
-        {
-            if (result.CompletedSynchronously)
-            {
-                return;
-            };
-
-            ListenerHandler listenerHandler = (ListenerHandler)result.AsyncState;
-            IChannelListener listener = listenerHandler._listenerBinder.Listener;
-            listenerHandler.Dispatch();
-        }
-
         private void AbortChannels()
         {
             IChannel[] channels = ChannelDispatcher.Channels.ToArray();
@@ -143,7 +137,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        private void CloseChannel(IChannel channel, TimeSpan timeout)
+        private async Task CloseChannelAsync(IChannel channel, TimeSpan timeout)
         {
             try
             {
@@ -153,19 +147,11 @@ namespace System.ServiceModel.Dispatcher
                     if (channel is ISessionChannel<IDuplexSession>)
                     {
                         IDuplexSession duplexSession = ((ISessionChannel<IDuplexSession>)channel).Session;
-                        IAsyncResult result = duplexSession.BeginCloseOutputSession(timeout, Fx.ThunkCallback(new AsyncCallback(CloseOutputSessionCallback)), state);
-                        if (result.CompletedSynchronously)
-                        {
-                            duplexSession.EndCloseOutputSession(result);
-                        }
+                        await Task.Factory.FromAsync(duplexSession.BeginCloseOutputSession, duplexSession.EndCloseOutputSession, timeout, null);
                     }
                     else
                     {
-                        IAsyncResult result = channel.BeginClose(timeout, Fx.ThunkCallback(new AsyncCallback(CloseChannelCallback)), state);
-                        if (result.CompletedSynchronously)
-                        {
-                            channel.EndClose(result);
-                        }
+                        await channel.CloseHelperAsync(timeout);
                     }
                 }
             }
@@ -181,28 +167,6 @@ namespace System.ServiceModel.Dispatcher
                 {
                     channel.Abort();
                 }
-            }
-        }
-
-        private static void CloseChannelCallback(IAsyncResult result)
-        {
-            if (result.CompletedSynchronously)
-            {
-                return;
-            }
-
-            CloseChannelState state = (CloseChannelState)result.AsyncState;
-            try
-            {
-                state.Channel.EndClose(result);
-            }
-            catch (Exception e)
-            {
-                if (Fx.IsFatal(e))
-                {
-                    throw;
-                }
-                state.ListenerHandler.HandleError(e);
             }
         }
 
@@ -232,37 +196,22 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        private static void CloseOutputSessionCallback(IAsyncResult result)
+        private async Task CloseChannelsAsync(TimeSpan timeout)
         {
-            if (result.CompletedSynchronously)
-            {
-                return;
-            }
-
-            CloseChannelState state = (CloseChannelState)result.AsyncState;
-            try
-            {
-                ((ISessionChannel<IDuplexSession>)state.Channel).Session.EndCloseOutputSession(result);
-            }
-            catch (Exception e)
-            {
-                if (Fx.IsFatal(e))
-                {
-                    throw;
-                }
-                state.ListenerHandler.HandleError(e);
-                state.Channel.Abort();
-            }
-        }
-
-        private void CloseChannels(TimeSpan timeout)
-        {
+            // Call CloseChannel on each channel without waiting for the result so that
+            // all the channels are closed concurrently. Then wait for all the close Tasks
+            // to complete. This replaces the NetFx implementation which called close
+            // asynchronously using BeginClose and the callback reduced the busy count on
+            // LifetimeManager and we waited for a waiter to signal when all the channels
+            // had closed.
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             IChannel[] channels = ChannelDispatcher.Channels.ToArray();
+            Task[] closeTasks = new Task[channels.Length];
             for (int index = 0; index < channels.Length; index++)
             {
-                CloseChannel(channels[index], timeoutHelper.RemainingTime());
+                closeTasks[index] = CloseChannelAsync(channels[index], timeoutHelper.RemainingTime());
             }
+            await Task.WhenAll(closeTasks);
         }
 
         private void Dispatch()
@@ -375,19 +324,7 @@ namespace System.ServiceModel.Dispatcher
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-
-            // if there's an idle manager that has not been cancelled, cancel it
-            CancelPendingIdleManager();
-
-            // Start aborting incoming channels
-            ChannelDispatcher.Channels.CloseInput();
-
-            // Start closing existing channels
-            CloseChannels(timeoutHelper.RemainingTime());
-
-            // Wait for channels to finish closing
-            return ChannelDispatcher.Channels.BeginClose(timeoutHelper.RemainingTime(), callback, state);
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -401,15 +338,15 @@ namespace System.ServiceModel.Dispatcher
             ChannelDispatcher.Channels.CloseInput();
 
             // Start closing existing channels
-            CloseChannels(timeoutHelper.RemainingTime());
-
-            // Wait for channels to finish closing
-            ChannelDispatcher.Channels.Close(timeoutHelper.RemainingTime());
+            // The original implementation would close the channels asynchronously then wait
+            // on a busy waiter for them all to close, which meant blocking the thread. This
+            // still blocks the thread but does it with less complicated overhead
+            CloseChannelsAsync(timeoutHelper.RemainingTime()).WaitForCompletion();
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            ChannelDispatcher.Channels.EndClose(result);
+            result.ToApmEnd();
         }
 
         private bool HandleError(Exception e)

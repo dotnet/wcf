@@ -6,11 +6,40 @@ using System;
 using Microsoft.CodeDom;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class AddAsyncOpenClose : ClientClassVisitor
     {
+        private bool _generateCloseAsync = false;
+
+        public AddAsyncOpenClose(CommandProcessorOptions options)
+        {
+            if (options.TargetFramework.IsDnx)
+            {
+                if (TargetFrameworkHelper.NetCoreVersionReferenceTable.TryGetValue(options.TargetFramework.Version, out var referenceTable))
+                {
+                    string version = referenceTable.FirstOrDefault().Version;
+                    string[] vers = version.Split('.');
+                    if (vers.Length > 1)
+                    {
+                        Version v = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
+                        // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
+                        if (v.CompareTo(new Version(4, 10)) < 0)
+                        {
+                            _generateCloseAsync = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
+                _generateCloseAsync = true;
+            }
+        }
+
         protected override void VisitClientClass(CodeTypeDeclaration type)
         {
             base.VisitClientClass(type);
@@ -18,7 +47,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             using (NameScope nameScope = new CodeTypeNameScope(type))
             {
                 type.Members.Add(GenerateTaskBasedAsyncMethod("Open", nameScope));
-                type.Members.Add(GenerateTaskBasedAsyncMethod("Close", nameScope));
+                if(_generateCloseAsync)
+                {
+                    type.Members.Add(GenerateTaskBasedAsyncMethod("Close", nameScope));
+                }
             }
         }
 

@@ -27,6 +27,11 @@
         <target state="translated">Nieobsługiwana wartość kodowania komunikatu: „{0}”. Wymagana wartość to „{1}”.</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">Nieobsługiwana wersja kodowania wiadomości metodą MTOM: „{0}”. Wymagana wersja to „{1}”, „{2}”, „{3}”, lub „{4}”.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">Niezawodna sesja nie jest obsługiwana.</target>
@@ -415,6 +420,11 @@ Identyfikator dokumentu: „{0}”.</target>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
         <target state="translated">Trwa generowanie plików...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">Zaakceptuj certyfikat zdalny jako zaufany podczas pobierania metadanych usługi. (Krótka forma: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">

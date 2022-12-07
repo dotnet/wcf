@@ -33,8 +33,8 @@ public static class SessionTests
             var dataB = channel.MethodBNonInitiating(B);
             var dataC = channel.MethodCTerminating();
             // *** VALIDATE *** \\
-            Assert.Equal(dataC.MethodAValue, A);
-            Assert.Equal(dataC.MethodBValue, B);
+            Assert.Equal(A, dataC.MethodAValue);
+            Assert.Equal(B, dataC.MethodBValue);
 
             // *** CLEANUP *** \\
             factory.Close();
@@ -72,10 +72,10 @@ public static class SessionTests
             var dataC2 = channel2.MethodCTerminating();
 
             // *** VALIDATE *** \\
-            Assert.Equal(dataC1.MethodAValue, A1);
-            Assert.Equal(dataC1.MethodBValue, B1);
-            Assert.Equal(dataC2.MethodAValue, A2);
-            Assert.Equal(dataC2.MethodBValue, B2);
+            Assert.Equal(A1, dataC1.MethodAValue);
+            Assert.Equal(B1, dataC1.MethodBValue);
+            Assert.Equal(A2, dataC2.MethodAValue);
+            Assert.Equal(B2, dataC2.MethodBValue);
 
             // Methods A & B update the private A & B fields in the service  
             // and return the original values of the service field instance

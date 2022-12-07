@@ -785,19 +785,20 @@ namespace System.ServiceModel.Security
                 _serviceChannelFactory.EndOpen(result);
             }
 
-            protected internal override Task OnCloseAsync(TimeSpan timeout)
+            protected internal override async Task OnCloseAsync(TimeSpan timeout)
             {
-                return _serviceChannelFactory.CloseHelperAsync(timeout);
+                await base.OnCloseAsync(timeout);
+                await _serviceChannelFactory.CloseHelperAsync(timeout);
             }
 
             protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _serviceChannelFactory);
+                return OnCloseAsync(timeout).ToApm(callback, state);
             }
 
             protected override void OnEndClose(IAsyncResult result)
             {
-                ChainedCloseAsyncResult.End(result);
+                result.ToApmEnd();
             }
 
             protected override void OnClose(TimeSpan timeout)

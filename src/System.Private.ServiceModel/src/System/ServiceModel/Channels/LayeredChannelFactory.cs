@@ -46,12 +46,12 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, InnerChannelFactory);
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            ChainedCloseAsyncResult.End(result);
+            result.ToApmEnd();
         }
 
         protected internal override async Task OnCloseAsync(TimeSpan timeout)

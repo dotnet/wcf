@@ -32,6 +32,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             // Microsoft.CodeDom
             var mscodedomTypes = TypeLoader.LoadTypes(typeof(Microsoft.CodeDom.CodeObject).GetTypeInfo().Assembly, Verbosity.Silent);
+            
             foreach (var type in mscodedomTypes)
             {
                 if (type.FullName.Contains(s_microsoftCodeDom))

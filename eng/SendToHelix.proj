@@ -25,14 +25,14 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
-    <HelixTargetQueue Include="windows.11.amd64" />
-    <HelixTargetQueue Include="(Debian.11.Amd64)ubuntu.2004.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64-20220511124750-0ece9b3" />
+    <HelixTargetQueue Include="windows.11.amd64.client" />
+    <HelixTargetQueue Include="(Debian.11.Amd64)ubuntu.2004.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
     <HelixTargetQueue Include="RedHat.7.Amd64" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'Linux'" >
     <HelixTargetQueue Include="Centos.7.Amd64.Open" />
-    <HelixTargetQueue Include="(Debian.11.Amd64.Open)ubuntu.2004.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64-20220511124750-0ece9b3" />
+    <HelixTargetQueue Include="(Debian.11.Amd64.Open)ubuntu.2004.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
     <HelixTargetQueue Include="RedHat.7.Amd64.Open" />
     <HelixTargetQueue Include="SLES.15.Amd64.Open" />
     <HelixTargetQueue Include="Ubuntu.2004.Amd64.Open" />
