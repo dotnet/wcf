@@ -76,8 +76,7 @@ namespace System.IdentityModel
             {
                 case SecurityAlgorithms.HmacSha1Signature:
 #pragma warning disable CA5350 // Do not use insecure cryptographic algorithm SHA1.
-                    // CodeQL [SM02200] We need to use HMACSHA1 as a requirement of SOAP protocols
-                    return new HMACSHA1(key);
+                    return new HMACSHA1(key);// CodeQL [SM02200] We need to use HMACSHA1 as a requirement of SOAP protocols
 #pragma warning restore CA5350 // Do not use insecure cryptographic algorithm SHA1.
                 case SecurityAlgorithms.HmacSha256Signature:
                     return new HMACSHA256(key);
@@ -197,8 +196,7 @@ namespace System.IdentityModel
                 case SystemSecurityCryptographySha1String:
                 case SecurityAlgorithms.Sha1Digest:
 #pragma warning disable CA5350 // Do not use insecure cryptographic algorithm SHA1.
-                    // CodeQL [SM02196] We need to use SHA1 as a requirement of SOAP protocols
-                    return SHA1.Create();
+                    return SHA1.Create();// CodeQL [SM02196] We need to use SHA1 as a requirement of SOAP protocols
 #pragma warning restore CA5350 // Do not use insecure cryptographic algorithm SHA1.
                 case SHA256String:
                 case SecurityAlgorithms.Sha256Digest:
@@ -225,8 +223,7 @@ namespace System.IdentityModel
                 // will be inside the delegate dictionary.
                 case SecurityAlgorithms.Sha1Digest:
 #pragma warning disable CA5350 // Do not use insecure cryptographic algorithm SHA1.
-                    // CodeQL [SM02196] We need to use SHA1 as a requirement of SOAP protocols
-                    return SHA1.Create();
+                    return SHA1.Create();// CodeQL [SM02196] We need to use SHA1 as a requirement of SOAP protocols
 #pragma warning restore CA5350 // Do not use insecure cryptographic algorithm SHA1.
                 case SecurityAlgorithms.ExclusiveC14n:
                     throw ExceptionHelper.PlatformNotSupported();
@@ -245,13 +242,11 @@ namespace System.IdentityModel
                 case SecurityAlgorithms.TripleDesEncryption:
                 case SecurityAlgorithms.TripleDesKeyWrap:
 #pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
-                    // CodeQL [SM02192] We need to use triple DES as a requirement of SOAP protocols
-                    return TripleDES.Create();
+                    return TripleDES.Create();// CodeQL [SM02192] We need to use triple DES as a requirement of SOAP protocols
 #pragma warning restore CA5350 // Do Not Use Weak Cryptographic Algorithms
                 case SecurityAlgorithms.HmacSha1Signature:
 #pragma warning disable CA5350 // Do not use insecure cryptographic algorithm SHA1.
-                    // CodeQL [SM02200] We need to use HMACSHA1 as a requirement of SOAP protocols
-                    return new HMACSHA1();
+                    return new HMACSHA1();// CodeQL [SM02200] We need to use HMACSHA1 as a requirement of SOAP protocols
 #pragma warning restore CA5350 // Do not use insecure cryptographic algorithm SHA1.
                 case SecurityAlgorithms.HmacSha256Signature:
                     return new HMACSHA256();
@@ -261,8 +256,7 @@ namespace System.IdentityModel
                     return null;
                 case SecurityAlgorithms.DesEncryption:
 #pragma warning disable CA5351 // Do Not Use Broken Cryptographic Algorithms
-                    // CodeQL [SM02192] We need to use DES as a requirement of SOAP protocols
-                    return DES.Create();
+                    return DES.Create();// CodeQL [SM02192] We need to use DES as a requirement of SOAP protocols
 #pragma warning restore CA5351 // Do Not Use Broken Cryptographic Algorithms
                 default:
                     return null;
@@ -346,13 +340,11 @@ namespace System.IdentityModel
                     return SHA256.Create();
                 case SecurityAlgorithms.Sha1Digest:
 #pragma warning disable CA5350 // Do not use insecure cryptographic algorithm SHA1.
-                    // CodeQL [SM02196] We need to use SHA1 as a requirement of SOAP protocols
-                    return SHA1.Create();
+                    return SHA1.Create();// CodeQL [SM02196] We need to use SHA1 as a requirement of SOAP protocols
 #pragma warning restore CA5350 // Do not use insecure cryptographic algorithm SHA1.
                 case SecurityAlgorithms.HmacSha1Signature:
 #pragma warning disable CA5350 // Do not use insecure cryptographic algorithm SHA1.
-                    // CodeQL [SM02200] We need to use HMACSHA1 as a requirement of SOAP protocols
-                    return new HMACSHA1();
+                    return new HMACSHA1();// CodeQL [SM02200] We need to use HMACSHA1 as a requirement of SOAP protocols
 #pragma warning restore CA5350 // Do not use insecure cryptographic algorithm SHA1.
                 default:
                     break;
