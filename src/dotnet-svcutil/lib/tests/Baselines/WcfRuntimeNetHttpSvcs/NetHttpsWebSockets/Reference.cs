@@ -616,8 +616,8 @@ namespace NetHttpsWebSockets_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttpsWebSockets_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(NetHttpsWebSockets_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(NetHttpsWebSockets_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<NetHttpsWebSockets_NS.TestFaultsResponse> TestFaultsAsync(NetHttpsWebSockets_NS.TestFaultsRequest request);
         
@@ -2678,7 +2678,7 @@ namespace NetHttpsWebSockets_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.NetHttpsWebSockets_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("wss://wcfcoresrv5/WcfTestService1/NetHttpsWebSockets.svc/NetHttpsWebSockets");
+                return new System.ServiceModel.EndpointAddress("wss://wcfcoresrv53/WcfTestService1/NetHttpsWebSockets.svc/NetHttpsWebSockets");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

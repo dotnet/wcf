@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
@@ -47,13 +48,14 @@ namespace Infrastructure.Common
                     string skippedReason = string.Format("Active issue(s): {0}", string.Join(", ", issueSkipList));
                     return testCases.Select(tc => new WcfTestCase((XunitTestCase)tc,
                                                                   discoveryOptions.MethodDisplayOrDefault(),
+                                                                  Timeout.InfiniteTimeSpan,
                                                                   skippedReason,
                                                                   isTheory,
                                                                   diagnosticMessageSink));
                 }
             }
 
-            // Finally evaluate all the [Condition] attributes.  These will execute code
+            // Evaluate all the [Condition] attributes.  These will execute code
             // that determines whether this test should be run or skipped.
             ConditionAttribute[] conditions = testMethodInfo.GetCustomAttributes<ConditionAttribute>().ToArray();
             if (conditions.Length > 0)
@@ -75,10 +77,31 @@ namespace Infrastructure.Common
                     string skippedReason = string.Format("Condition(s) not met: {0}", string.Join(", ", skipReasons));
                     return testCases.Select(tc => new WcfTestCase((XunitTestCase)tc,
                                                                   discoveryOptions.MethodDisplayOrDefault(),
+                                                                  Timeout.InfiniteTimeSpan,
                                                                   skippedReason,
                                                                   isTheory,
                                                                   diagnosticMessageSink));
                 }
+            }
+
+            // Look for FailFastAfterAttribute applied to the test method
+            FailFastAfterAttribute failFastAttribute = testMethodInfo.GetCustomAttribute<FailFastAfterAttribute>();
+            if (failFastAttribute == null)
+            {
+                // If it's not found on the method, check the class
+                failFastAttribute = testMethodInfo.DeclaringType.GetCustomAttribute<FailFastAfterAttribute>();
+            }
+
+            if (failFastAttribute == null)
+            {
+                // If it's not found on the method or class, check the assembly
+                failFastAttribute = testMethodInfo.DeclaringType.Assembly.GetCustomAttribute<FailFastAfterAttribute>();
+            }
+
+            TimeSpan failFastDuration = Timeout.InfiniteTimeSpan;
+            if (failFastAttribute != null)
+            {
+                failFastDuration = failFastAttribute.FailTime;
             }
 
             // If we get this far, we have decided to run the test.
@@ -86,6 +109,7 @@ namespace Infrastructure.Common
             // so that other WcfTestCase customizations are used.
             return testCases.Select(tc => new WcfTestCase(testCase: (XunitTestCase)tc,
                                                           defaultMethodDisplay: discoveryOptions.MethodDisplayOrDefault(),
+                                                          failFastDuration: failFastDuration,
                                                           skippedReason: null,
                                                           isTheory: isTheory,
                                                           diagnosticMessageSink: diagnosticMessageSink));

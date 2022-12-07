@@ -2678,8 +2678,8 @@ namespace BasicHttpsTransSecMessCredsUserName_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.https_message_credentials_username_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/BasicHttpsTransSecMessCredsUserName.svc/https" +
-                        "-message-credentials-username");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/BasicHttpsTransSecMessCredsUserName.svc/http" +
+                        "s-message-credentials-username");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

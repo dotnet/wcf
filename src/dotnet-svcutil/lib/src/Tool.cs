@@ -198,11 +198,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         internal static async Task<ToolExitCode> RunAsync(CommandProcessorOptions options, CancellationToken cancellationToken)
         {
             ImportModule importModule = null;
-            var credsProvicer = new CmdCredentialsProvider();
+            var credsProvider = new CmdCredentialsProvider();
+            credsProvider.AcceptCert = options.AcceptCert.Value;
 
             ServiceDescriptor serviceDescriptor = options.Inputs.Count == 1 ?
-                new ServiceDescriptor(options.Inputs[0].ToString(), credsProvicer, credsProvicer, credsProvicer) :
-                new ServiceDescriptor(options.Inputs.Select(i => i.ToString()).ToList(), credsProvicer, credsProvicer, credsProvicer);
+                new ServiceDescriptor(options.Inputs[0].ToString(), credsProvider, credsProvider, credsProvider) :
+                new ServiceDescriptor(options.Inputs.Select(i => i.ToString()).ToList(), credsProvider, credsProvider, credsProvider);
 
             // When in Infrastructure mode (WCF CS) it is assumed the metadata docs have been downloaded and passed in as wsdl files.
             if (options.ToolContext != OperationalContext.Infrastructure)

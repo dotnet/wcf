@@ -5,6 +5,7 @@
 using System.IO;
 using System.Runtime;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 using System.Xml;
 
 using IPrefixGenerator = System.IdentityModel.IPrefixGenerator;
@@ -138,6 +139,33 @@ namespace System.ServiceModel.Security
             }
         }
 
+        protected override async Task OnWriteBodyContentsAsync(XmlDictionaryWriter writer)
+        {
+            switch (_state)
+            {
+                case BodyState.Created:
+                    await InnerMessage.WriteBodyContentsAsync(writer);
+                    return;
+                case BodyState.Signed:
+                case BodyState.EncryptedThenSigned:
+                    XmlDictionaryReader reader = _fullBodyBuffer.GetReader(0);
+                    reader.ReadStartElement();
+                    while (reader.NodeType != XmlNodeType.EndElement)
+                    {
+                        await writer.WriteNodeAsync(reader, false);
+                    }
+
+                    reader.ReadEndElement();
+                    reader.Close();
+                    return;
+                case BodyState.Encrypted:
+                case BodyState.SignedThenEncrypted:
+                    throw ExceptionHelper.PlatformNotSupported();
+                default:
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBadStateException(nameof(OnWriteBodyContentsAsync)));
+            }
+        }
+
         protected override void OnWriteMessage(XmlDictionaryWriter writer)
         {
             // For Kerb one shot, the channel binding will be need to be fished out of the message, cached and added to the
@@ -195,6 +223,65 @@ namespace System.ServiceModel.Security
             }
 
             writer.WriteEndElement();
+        }
+
+        public override async Task OnWriteMessageAsync(XmlDictionaryWriter writer)
+        {
+            // For Kerb one shot, the channel binding will be need to be fished out of the message, cached and added to the
+            // token before calling ISC.
+
+            AttachChannelBindingTokenIfFound();
+
+            EnsureUniqueSecurityApplication();
+
+            MessagePrefixGenerator prefixGenerator = new MessagePrefixGenerator(writer);
+            _securityHeader.StartSecurityApplication();
+
+            Headers.Add(_securityHeader);
+
+            InnerMessage.WriteStartEnvelope(writer);
+
+            Headers.RemoveAt(Headers.Count - 1);
+
+            _securityHeader.ApplyBodySecurity(writer, prefixGenerator);
+
+            InnerMessage.WriteStartHeaders(writer);
+            _securityHeader.ApplySecurityAndWriteHeaders(Headers, writer, prefixGenerator);
+
+            _securityHeader.RemoveSignatureEncryptionIfAppropriate();
+
+            _securityHeader.CompleteSecurityApplication();
+            _securityHeader.WriteHeader(writer, Version);
+            await writer.WriteEndElementAsync();
+
+            if (_fullBodyFragment != null)
+            {
+                ((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(_fullBodyFragment, 0, _fullBodyFragmentLength);
+            }
+            else
+            {
+                if (_startBodyFragment != null)
+                {
+                    ((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(_startBodyFragment.GetBuffer(), 0, (int)_startBodyFragment.Length);
+                }
+                else
+                {
+                    OnWriteStartBody(writer);
+                }
+
+                await OnWriteBodyContentsAsync(writer);
+
+                if (_endBodyFragment != null)
+                {
+                    ((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(_endBodyFragment.GetBuffer(), 0, (int)_endBodyFragment.Length);
+                }
+                else
+                {
+                    writer.WriteEndElement();
+                }
+            }
+
+            await writer.WriteEndElementAsync();
         }
 
         private void AttachChannelBindingTokenIfFound()

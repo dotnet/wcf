@@ -5,6 +5,7 @@
 
 using System.Runtime;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -62,7 +63,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
+        public async Task CloseAsync(TimeSpan timeout)
         {
             lock (ThisLock)
             {
@@ -70,7 +71,8 @@ namespace System.ServiceModel.Channels
                 _state = LifetimeState.Closing;
             }
 
-            return OnBeginClose(timeout, callback, state);
+            await OnCloseAsync(timeout);
+            _state = LifetimeState.Closed;
         }
 
         public void Close(TimeSpan timeout)
@@ -83,6 +85,46 @@ namespace System.ServiceModel.Channels
 
             OnClose(timeout);
             _state = LifetimeState.Closed;
+        }
+
+        private async Task<CommunicationWaitResult> CloseCoreAsync(TimeSpan timeout, bool aborting)
+        {
+            ICommunicationWaiter busyWaiter = null;
+            CommunicationWaitResult result = CommunicationWaitResult.Succeeded;
+
+            lock (ThisLock)
+            {
+                if (BusyCount > 0)
+                {
+                    if (_busyWaiter != null)
+                    {
+                        if (!aborting && _aborted)
+                        {
+                            return CommunicationWaitResult.Aborted;
+                        }
+
+                        busyWaiter = _busyWaiter;
+                    }
+                    else
+                    {
+                        busyWaiter = new AsyncCommunicationWaiter(ThisLock);
+                        _busyWaiter = busyWaiter;
+                    }
+                    Interlocked.Increment(ref _busyWaiterCount);
+                }
+            }
+
+            if (busyWaiter != null)
+            {
+                result = await busyWaiter.WaitAsync(timeout, aborting);
+                if (Interlocked.Decrement(ref _busyWaiterCount) == 0)
+                {
+                    busyWaiter.Dispose();
+                    _busyWaiter = null;
+                }
+            }
+
+            return result;
         }
 
         private CommunicationWaitResult CloseCore(TimeSpan timeout, bool aborting)
@@ -105,7 +147,7 @@ namespace System.ServiceModel.Channels
                     }
                     else
                     {
-                        busyWaiter = new SyncCommunicationWaiter(ThisLock);
+                        busyWaiter = new AsyncCommunicationWaiter(ThisLock);
                         _busyWaiter = busyWaiter;
                     }
                     Interlocked.Increment(ref _busyWaiterCount);
@@ -163,12 +205,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public void EndClose(IAsyncResult result)
-        {
-            OnEndClose(result);
-            _state = LifetimeState.Closed;
-        }
-
         protected virtual void IncrementBusyCount()
         {
             lock (ThisLock)
@@ -192,40 +228,23 @@ namespace System.ServiceModel.Channels
 
         protected virtual IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            CloseCommunicationAsyncResult closeResult = null;
-
-            lock (ThisLock)
-            {
-                if (BusyCount > 0)
-                {
-                    if (_busyWaiter != null)
-                    {
-                        Fx.Assert(_aborted, "LifetimeManager.OnBeginClose: (this.aborted == true)");
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().ToString()));
-                    }
-                    else
-                    {
-                        closeResult = new CloseCommunicationAsyncResult(timeout, callback, state, ThisLock);
-                        Fx.Assert(_busyWaiter == null, "LifetimeManager.OnBeginClose: (this.busyWaiter == null)");
-                        _busyWaiter = closeResult;
-                        Interlocked.Increment(ref _busyWaiterCount);
-                    }
-                }
-            }
-
-            if (closeResult != null)
-            {
-                return closeResult;
-            }
-            else
-            {
-                return new CompletedAsyncResult(callback, state);
-            }
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected virtual void OnClose(TimeSpan timeout)
         {
             switch (CloseCore(timeout, false))
+            {
+                case CommunicationWaitResult.Expired:
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(SR.SFxCloseTimedOut1, timeout)));
+                case CommunicationWaitResult.Aborted:
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().ToString()));
+            }
+        }
+
+        protected virtual async Task OnCloseAsync(TimeSpan timeout)
+        {
+            switch (await CloseCoreAsync(timeout, false))
             {
                 case CommunicationWaitResult.Expired:
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(SR.SFxCloseTimedOut1, timeout)));
@@ -240,19 +259,7 @@ namespace System.ServiceModel.Channels
 
         protected virtual void OnEndClose(IAsyncResult result)
         {
-            if (result is CloseCommunicationAsyncResult)
-            {
-                CloseCommunicationAsyncResult.End(result);
-                if (Interlocked.Decrement(ref _busyWaiterCount) == 0)
-                {
-                    _busyWaiter.Dispose();
-                    _busyWaiter = null;
-                }
-            }
-            else
-            {
-                CompletedAsyncResult.End(result);
-            }
+            result.ToApmEnd();
         }
     }
 
@@ -267,114 +274,21 @@ namespace System.ServiceModel.Channels
     internal interface ICommunicationWaiter : IDisposable
     {
         void Signal();
+        Task<CommunicationWaitResult> WaitAsync(TimeSpan timeout, bool aborting);
         CommunicationWaitResult Wait(TimeSpan timeout, bool aborting);
     }
 
-    internal class CloseCommunicationAsyncResult : AsyncResult, ICommunicationWaiter
-    {
-        private CommunicationWaitResult _result;
-        private Timer _timer;
-        private TimeoutHelper _timeoutHelper;
-        private TimeSpan _timeout;
-
-        public CloseCommunicationAsyncResult(TimeSpan timeout, AsyncCallback callback, object state, object mutex)
-            : base(callback, state)
-        {
-            _timeout = timeout;
-            _timeoutHelper = new TimeoutHelper(timeout);
-            ThisLock = mutex;
-
-            if (timeout < TimeSpan.Zero)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(SR.SFxCloseTimedOut1, timeout)));
-            }
-
-            _timer = new Timer(new TimerCallback(new Action<object>(TimeoutCallback)), this, timeout, TimeSpan.FromMilliseconds(-1));
-        }
-
-        private object ThisLock { get; }
-
-        public void Dispose()
-        {
-        }
-
-        public static void End(IAsyncResult result)
-        {
-            AsyncResult.End<CloseCommunicationAsyncResult>(result);
-        }
-
-        public void Signal()
-        {
-            lock (ThisLock)
-            {
-                if (_result != CommunicationWaitResult.Waiting)
-                {
-                    return;
-                }
-
-                _result = CommunicationWaitResult.Succeeded;
-            }
-            _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
-            Complete(false);
-        }
-
-        private void Timeout()
-        {
-            lock (ThisLock)
-            {
-                if (_result != CommunicationWaitResult.Waiting)
-                {
-                    return;
-                }
-
-                _result = CommunicationWaitResult.Expired;
-            }
-            Complete(false, new TimeoutException(SR.Format(SR.SFxCloseTimedOut1, _timeout)));
-        }
-
-        private static void TimeoutCallback(object state)
-        {
-            CloseCommunicationAsyncResult closeResult = (CloseCommunicationAsyncResult)state;
-            closeResult.Timeout();
-        }
-
-        public CommunicationWaitResult Wait(TimeSpan timeout, bool aborting)
-        {
-            if (timeout < TimeSpan.Zero)
-            {
-                return CommunicationWaitResult.Expired;
-            }
-
-            // Synchronous Wait on AsyncResult should only be called in Abort code-path
-            Fx.Assert(aborting, "CloseCommunicationAsyncResult.Wait: (aborting == true)");
-
-            lock (ThisLock)
-            {
-                if (_result != CommunicationWaitResult.Waiting)
-                {
-                    return _result;
-                }
-                _result = CommunicationWaitResult.Aborted;
-            }
-            _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
-
-            TimeoutHelper.WaitOne(AsyncWaitHandle, timeout);
-
-            Complete(false, new ObjectDisposedException(GetType().ToString()));
-            return _result;
-        }
-    }
-
-    internal class SyncCommunicationWaiter : ICommunicationWaiter
+    internal class AsyncCommunicationWaiter : ICommunicationWaiter
     {
         private bool _closed;
         private CommunicationWaitResult _result;
-        private ManualResetEvent _waitHandle;
 
-        public SyncCommunicationWaiter(object mutex)
+        private TaskCompletionSource<bool> _tcs;
+
+        internal AsyncCommunicationWaiter(object mutex)
         {
             ThisLock = mutex;
-            _waitHandle = new ManualResetEvent(false);
+            _tcs = new TaskCompletionSource<bool>();
         }
 
         private object ThisLock { get; }
@@ -389,7 +303,7 @@ namespace System.ServiceModel.Channels
                 }
 
                 _closed = true;
-                _waitHandle.Dispose();
+                _tcs?.TrySetResult(false);
             }
         }
 
@@ -402,8 +316,45 @@ namespace System.ServiceModel.Channels
                     return;
                 }
 
-                _waitHandle.Set();
+                _tcs.TrySetResult(true);
             }
+        }
+
+        public async Task<CommunicationWaitResult> WaitAsync(TimeSpan timeout, bool aborting)
+        {
+            if (_closed)
+            {
+                return CommunicationWaitResult.Aborted;
+            }
+            if (timeout < TimeSpan.Zero)
+            {
+                return CommunicationWaitResult.Expired;
+            }
+
+            if (aborting)
+            {
+                _result = CommunicationWaitResult.Aborted;
+            }
+
+            bool expired = !await _tcs.Task.AwaitWithTimeout(timeout);
+
+            lock (ThisLock)
+            {
+                if (_result == CommunicationWaitResult.Waiting)
+                {
+                    _result = (expired ? CommunicationWaitResult.Expired : CommunicationWaitResult.Succeeded);
+                }
+            }
+
+            lock (ThisLock)
+            {
+                if (!_closed)
+                {
+                    _tcs.TrySetResult(!expired);  // unblock other waiters if there are any
+                }
+            }
+
+            return _result;
         }
 
         public CommunicationWaitResult Wait(TimeSpan timeout, bool aborting)
@@ -422,7 +373,7 @@ namespace System.ServiceModel.Channels
                 _result = CommunicationWaitResult.Aborted;
             }
 
-            bool expired = !TimeoutHelper.WaitOne(_waitHandle, timeout);
+            bool expired = !_tcs.Task.WaitForCompletionNoSpin(timeout);
 
             lock (ThisLock)
             {
@@ -436,7 +387,7 @@ namespace System.ServiceModel.Channels
             {
                 if (!_closed)
                 {
-                    _waitHandle.Set();  // unblock other waiters if there are any
+                    _tcs.TrySetResult(false);  // unblock other waiters if there are any
                 }
             }
 

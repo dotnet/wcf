@@ -753,6 +753,11 @@ public static partial class Endpoints
     {
         get { return GetEndpointAddress("DuplexCallbackConcurrencyMode.svc/tcp", protocol: "net.tcp"); }
     }
+
+    public static string DuplexCallbackDebugBehavior_Address
+    {
+        get { return GetEndpointAddress("DuplexCallbackDebugBehavior.svc/tcp", protocol: "net.tcp"); }
+    }
     #endregion net.tcp Addresses
 }
 

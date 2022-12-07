@@ -18,7 +18,9 @@ using System.Threading.Tasks;
 namespace System.ServiceModel.Channels
 {
     // This class is sealed because the constructor could call Abort, which is virtual
-    internal sealed class ServiceChannel : CommunicationObject, IChannel, IClientChannel, IDuplexContextChannel, IOutputChannel, IRequestChannel, IServiceChannel
+    // IAsyncDisposable is declared on ServiceChannel as placing it on IClientChannel along with IDisposable would be a breaking change. Any existing external implementations of
+    // IClientChannel would be invalid as they don't implement IAsyncDisposable.
+    internal sealed class ServiceChannel : CommunicationObject, IChannel, IClientChannel, IDuplexContextChannel, IOutputChannel, IRequestChannel, IServiceChannel, IAsyncDisposable
     {
         private int _activityCount = 0;
         private bool _allowInitializationUI = true;
@@ -1601,6 +1603,31 @@ namespace System.ServiceModel.Channels
         void IDisposable.Dispose()
         {
             Close();
+        }
+
+        async ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            try
+            {
+                // Only want to call Close if it is in the Opened state
+                if (State == CommunicationState.Opened)
+                {
+                    await ((IAsyncCommunicationObject)this).CloseAsync(DefaultCloseTimeout);
+                }
+                // Anything not closed by this point should be aborted
+                if (State != CommunicationState.Closed)
+                {
+                    Abort();
+                }
+            }
+            catch (CommunicationException)
+            {
+                Abort();
+            }
+            catch (TimeoutException)
+            {
+                Abort();
+            }
         }
 
         #endregion

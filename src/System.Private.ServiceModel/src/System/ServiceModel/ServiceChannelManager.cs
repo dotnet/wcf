@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel
 {
@@ -16,23 +17,11 @@ namespace System.ServiceModel
     {
         private ICommunicationWaiter _activityWaiter;
         private int _activityWaiterCount;
-        private InstanceContextEmptyCallback _emptyCallback;
         private IChannel _firstIncomingChannel;
         private ChannelCollection _incomingChannels;
         private ChannelCollection _outgoingChannels;
-        private InstanceContext _instanceContext;
 
-        public ServiceChannelManager(InstanceContext instanceContext)
-            : this(instanceContext, null)
-        {
-        }
-
-        public ServiceChannelManager(InstanceContext instanceContext, InstanceContextEmptyCallback emptyCallback)
-            : base(instanceContext.ThisLock)
-        {
-            _instanceContext = instanceContext;
-            _emptyCallback = emptyCallback;
-        }
+        public ServiceChannelManager(InstanceContext instanceContext) : base(instanceContext.ThisLock) { }
 
         public int ActivityCount { get; private set; }
 
@@ -41,7 +30,7 @@ namespace System.ServiceModel
             get
             {
                 EnsureIncomingChannelCollection();
-                return (ICollection<IChannel>)_incomingChannels;
+                return _incomingChannels;
             }
         }
 
@@ -59,106 +48,8 @@ namespace System.ServiceModel
                         }
                     }
                 }
+
                 return _outgoingChannels;
-            }
-        }
-
-        public bool IsBusy
-        {
-            get
-            {
-                if (ActivityCount > 0)
-                {
-                    return true;
-                }
-
-                if (base.BusyCount > 0)
-                {
-                    return true;
-                }
-
-                ICollection<IChannel> outgoing = _outgoingChannels;
-                if ((outgoing != null) && (outgoing.Count > 0))
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public void AddIncomingChannel(IChannel channel)
-        {
-            bool added = false;
-
-            lock (ThisLock)
-            {
-                if (State == LifetimeState.Opened)
-                {
-                    if (_firstIncomingChannel == null)
-                    {
-                        if (_incomingChannels == null)
-                        {
-                            _firstIncomingChannel = channel;
-                            ChannelAdded(channel);
-                        }
-                        else
-                        {
-                            if (_incomingChannels.Contains(channel))
-                            {
-                                return;
-                            }
-
-                            _incomingChannels.Add(channel);
-                        }
-                    }
-                    else
-                    {
-                        EnsureIncomingChannelCollection();
-                        if (_incomingChannels.Contains(channel))
-                        {
-                            return;
-                        }
-
-                        _incomingChannels.Add(channel);
-                    }
-                    added = true;
-                }
-            }
-
-            if (!added)
-            {
-                channel.Abort();
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().ToString()));
-            }
-        }
-
-        public IAsyncResult BeginCloseInput(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            CloseCommunicationAsyncResult closeResult = null;
-
-            lock (ThisLock)
-            {
-                if (ActivityCount > 0)
-                {
-                    closeResult = new CloseCommunicationAsyncResult(timeout, callback, state, ThisLock);
-
-                    if (!(_activityWaiter == null))
-                    {
-                        Fx.Assert("ServiceChannelManager.BeginCloseInput: (this.activityWaiter == null)");
-                    }
-                    _activityWaiter = closeResult;
-                    Interlocked.Increment(ref _activityWaiterCount);
-                }
-            }
-
-            if (closeResult != null)
-            {
-                return closeResult;
-            }
-            else
-            {
-                return new CompletedAsyncResult(callback, state);
             }
         }
 
@@ -171,23 +62,19 @@ namespace System.ServiceModel
         private void ChannelRemoved(IChannel channel)
         {
             channel.Closed -= OnChannelClosed;
-            base.DecrementBusyCount();
+            DecrementBusyCount();
         }
-
 
         public void CloseInput(TimeSpan timeout)
         {
-            SyncCommunicationWaiter activityWaiter = null;
+            AsyncCommunicationWaiter activityWaiter = null;
 
             lock (ThisLock)
             {
                 if (ActivityCount > 0)
                 {
-                    activityWaiter = new SyncCommunicationWaiter(ThisLock);
-                    if (!(_activityWaiter == null))
-                    {
-                        Fx.Assert("ServiceChannelManager.CloseInput: (this.activityWaiter == null)");
-                    }
+                    activityWaiter = new AsyncCommunicationWaiter(ThisLock);
+                    Fx.Assert(_activityWaiter == null, "ServiceChannelManager.CloseInput: (_activityWaiter == null)");
                     _activityWaiter = activityWaiter;
                     Interlocked.Increment(ref _activityWaiterCount);
                 }
@@ -212,6 +99,40 @@ namespace System.ServiceModel
             }
         }
 
+        public async Task CloseInputAsync(TimeSpan timeout)
+        {
+            AsyncCommunicationWaiter activityWaiter = null;
+
+            lock (ThisLock)
+            {
+                if (ActivityCount > 0)
+                {
+                    activityWaiter = new AsyncCommunicationWaiter(ThisLock);
+                    Fx.Assert(_activityWaiter == null, "ServiceChannelManager.CloseInput: (this.activityWaiter == null)");
+                    _activityWaiter = activityWaiter;
+                    Interlocked.Increment(ref _activityWaiterCount);
+                }
+            }
+
+            if (activityWaiter != null)
+            {
+                CommunicationWaitResult result = await activityWaiter.WaitAsync(timeout, false);
+                if (Interlocked.Decrement(ref _activityWaiterCount) == 0)
+                {
+                    activityWaiter.Dispose();
+                    _activityWaiter = null;
+                }
+
+                switch (result)
+                {
+                    case CommunicationWaitResult.Expired:
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.SfxCloseTimedOutWaitingForDispatchToComplete));
+                    case CommunicationWaitResult.Aborted:
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().ToString()));
+                }
+            }
+        }
+
         public void DecrementActivityCount()
         {
             ICommunicationWaiter activityWaiter = null;
@@ -219,10 +140,7 @@ namespace System.ServiceModel
 
             lock (ThisLock)
             {
-                if (!(ActivityCount > 0))
-                {
-                    Fx.Assert("ServiceChannelManager.DecrementActivityCount: (this.activityCount > 0)");
-                }
+                Fx.Assert(ActivityCount > 0, "ServiceChannelManager.DecrementActivityCount: (this.activityCount > 0)");
                 if (--ActivityCount == 0)
                 {
                     if (_activityWaiter != null)
@@ -250,23 +168,6 @@ namespace System.ServiceModel
             if (empty && State == LifetimeState.Opened)
             {
                 OnEmpty();
-            }
-        }
-
-        public void EndCloseInput(IAsyncResult result)
-        {
-            if (result is CloseCommunicationAsyncResult)
-            {
-                CloseCommunicationAsyncResult.End(result);
-                if (Interlocked.Decrement(ref _activityWaiterCount) == 0)
-                {
-                    _activityWaiter.Dispose();
-                    _activityWaiter = null;
-                }
-            }
-            else
-            {
-                CompletedAsyncResult.End(result);
             }
         }
 
@@ -339,13 +240,7 @@ namespace System.ServiceModel
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedAsyncResult(timeout, callback, state, BeginCloseInput, EndCloseInput, OnBeginCloseContinue, OnEndCloseContinue);
-        }
-
-        private IAsyncResult OnBeginCloseContinue(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            return base.OnBeginClose(timeoutHelper.RemainingTime(), callback, state);
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -357,22 +252,16 @@ namespace System.ServiceModel
             base.OnClose(timeoutHelper.RemainingTime());
         }
 
+        protected override async Task OnCloseAsync(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await CloseInputAsync(timeoutHelper.RemainingTime());
+            await base.OnCloseAsync(timeoutHelper.RemainingTime());
+        }
+
         protected override void OnEndClose(IAsyncResult result)
         {
-            ChainedAsyncResult.End(result);
-        }
-
-        private void OnEndCloseContinue(IAsyncResult result)
-        {
-            base.OnEndClose(result);
-        }
-
-        protected override void OnEmpty()
-        {
-            if (_emptyCallback != null)
-            {
-                _emptyCallback(_instanceContext);
-            }
+            result.ToApmEnd();
         }
 
         private void OnChannelClosed(object sender, EventArgs args)

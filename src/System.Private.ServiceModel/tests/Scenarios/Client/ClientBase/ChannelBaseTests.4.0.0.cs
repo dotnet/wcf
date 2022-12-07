@@ -8,6 +8,8 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
+[assembly: FailFastAfter("00:01:00")]
+
 public static partial class ChannelBaseTests_4_0_0
 {
     [WcfFact]

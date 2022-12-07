@@ -94,15 +94,14 @@ namespace SvcutilTest
 
             this_TestCaseName = "FullFramework";
             TestFixture();
-            InitializeGlobal(testCaseName, targetFramework: "net46");
+            InitializeGlobal(testCaseName, sdkVersion: g_SdkVersion);
+            File.Copy(Path.Combine(g_TestCasesDir, "FullFramework", "FullFramework.cs"), Path.Combine(this_TestCaseOutputDir, "FullFramework.cs"), true);
+            File.Copy(Path.Combine(g_TestCasesDir, "FullFramework", "FullFramework.csproj"), Path.Combine(this_TestCaseOutputDir, "FullFramework.csproj"), true);
 
             var uri = Path.Combine(g_TestCasesDir, "wsdl", "WcfProjectNService", "tempuri.org.wsdl");
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
             var options = $"{uri} -nl -d {outDir} -tf netcoreapp1.0";
-
-            this_TestCaseProject.AddDependency(Microsoft.Tools.ServiceModel.Svcutil.ProjectDependency.FromAssembly("System.ServiceModel"));
-            this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None).Wait();
-
+            
             TestGlobalSvcutil(options, expectSuccess: true);
         }
 
@@ -115,7 +114,9 @@ namespace SvcutilTest
             this_TestCaseName = "ParamsFiles_SDK_TFM";
             TestFixture();
             var testCaseName = $"TF{targetFramework}".Replace(".", "_");
-            InitializeGlobal(testCaseName, targetFramework, g_SdkVersion);
+            InitializeGlobal(testCaseName, targetFramework: "net6.0", g_SdkVersion);
+            this_TestCaseProject.TargetFramework = targetFramework;
+            this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None).Wait();
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
             var ns = testCaseName.Replace(".", "_") + "_NS";

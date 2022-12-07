@@ -122,7 +122,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return project;
         }
 
-        public static async Task<MSBuildProj> ParseAsync(string projectText, string projectFullPath, ILogger logger, CancellationToken cancellationToken)
+        internal static async Task<MSBuildProj> FromPathAsync(string filePath, ILogger logger, string tfMonitor, CancellationToken cancellationToken)
+        {
+            var project = await ParseAsync(File.ReadAllText(filePath), filePath, logger, cancellationToken, tfMonitor).ConfigureAwait(false);
+            project._isSaved = true;
+            return project;
+        }
+
+        public static async Task<MSBuildProj> ParseAsync(string projectText, string projectFullPath, ILogger logger, CancellationToken cancellationToken, string tfMonitor = "")
         {
             using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, $"Parsing project {Path.GetFileName(projectFullPath)}").ConfigureAwait(false))
             {
@@ -159,12 +166,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     var targetFramework = targetFrameworkElements.Last().Value.Trim().ToLowerInvariant();
                     if (!string.IsNullOrWhiteSpace(targetFramework))
                     {
-                        var tfx = targetFramework.Split('-');
-                        if (tfx.Length > 1 && (tfx[0] == "net5.0" || tfx[0] == "net6.0"))
-                        {
-                            targetFramework = tfx[0];
-                        }
-
                         msbuildProj._targetFrameworks.Add(targetFramework);
                     }
                 }
@@ -187,6 +188,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
 
                 msbuildProj._targetFramework = TargetFrameworkHelper.GetBestFitTargetFramework(msbuildProj._targetFrameworks);
+
+                if(string.IsNullOrEmpty(msbuildProj._targetFramework))
+                {
+                    if(!string.IsNullOrEmpty(tfMonitor))
+                    {
+                        msbuildProj._targetFramework = tfMonitor;
+                    }
+                    else
+                    {
+                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.NetCoreVersionReferenceTable.LastOrDefault().Key.ToString());
+                    }
+                    
+                    msbuildProj._targetFrameworks.Add(msbuildProj._targetFramework);
+                }
 
                 // Ensure target framework is valid.
                 FrameworkInfo frameworkInfo = TargetFrameworkHelper.GetValidFrameworkInfo(msbuildProj.TargetFramework);
@@ -314,7 +329,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        public static async Task<MSBuildProj> DotNetNewAsync(string fullPath, ILogger logger, CancellationToken cancellationToken)
+        public static async Task<MSBuildProj> DotNetNewAsync(string fullPath, ILogger logger, CancellationToken cancellationToken, string optional = "")
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -349,7 +364,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             var sdkVersion = await ProjectPropertyResolver.GetSdkVersionAsync(projectDir, logger, cancellationToken).ConfigureAwait(false);
-            var dotnetNewParams = $"new console {GetNoRestoreParam(sdkVersion)} --force --type project --language C# --output . --name {projectName}";
+            var dotnetNewParams = $"new console {GetNoRestoreParam(sdkVersion)} --force --type project --language C# --output . --name {projectName} {optional}";
             await ProcessRunner.RunAsync("dotnet", dotnetNewParams, projectDir, logger, cancellationToken).ConfigureAwait(false);
 
             project = await ParseAsync(File.ReadAllText(fullPath), fullPath, logger, cancellationToken).ConfigureAwait(false);

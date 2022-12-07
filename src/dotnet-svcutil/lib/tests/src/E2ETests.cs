@@ -54,7 +54,7 @@ namespace SvcutilTest
 
             ValidateTest(options, this_TestCaseProject.DirectoryPath, processResult.ExitCode, processResult.OutputText, expectSuccess);
         }
-
+        
         [Theory]
         [Trait("Category", "BVT")]
         [InlineData("silent")]
@@ -422,6 +422,17 @@ namespace SvcutilTest
 
         [Trait("Category", "Test")]
         [Theory]
+        [InlineData("Saml2IssuedToken.svc/mex", true)]
+        public void FederationServiceTest(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "FederationServiceTest";
+            TestFixture();
+
+            WcfRuntimeSvcs(serviceName, expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
         [InlineData("Duplex.svc", true)]
         public void WcfRuntimeDuplexCallback(string serviceName, bool expectSuccess)
         {
@@ -458,7 +469,7 @@ namespace SvcutilTest
 
         private void WcfRuntimeSvcs(string serviceName, bool expectSuccess)
         {
-            var testCaseName = serviceName.Replace(".svc", "");
+            var testCaseName = serviceName.Replace(".svc", "").Replace("/", "_");
             InitializeE2E(testCaseName);
 
             var uri = $"{g_ServiceUrl}/{serviceName}";

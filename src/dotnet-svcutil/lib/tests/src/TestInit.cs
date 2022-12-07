@@ -360,14 +360,22 @@ namespace SvcutilTest
 
             // get test case baselines.
             var baselineFiles = Directory.GetFiles(this_TestCaseBaselinesDir, "*", SearchOption.AllDirectories)
-                                    .Where(f => !PathHelper.PathHasFolder(f, excludeDirs, this_TestCaseBaselinesDir)).ToList();
+                                    .Where(f => !PathHelper.PathHasFolder(f, excludeDirs, this_TestCaseBaselinesDir)).Where(f => !f.ToLower().EndsWith("nuget.config")).ToList();
 
+            var nonRefbaselineFiles = baselineFiles.Where(f => f.EndsWith(".cs") && !f.EndsWith(Path.DirectorySeparatorChar + "reference.cs", StringComparison.OrdinalIgnoreCase)).ToList();
+
+            baselineFiles = baselineFiles.Except(nonRefbaselineFiles).ToList();
+            
             // we don't check the bootstrapping directory, for those tests where it is relevant the test should 
             // place the bootstrapping dir under the test case's output dir.
             var generatedFiles = Directory.GetFiles(this_TestCaseOutputDir, "*.*", SearchOption.AllDirectories)
                                     .Where(f => !PathHelper.PathHasFolder(f, excludeDirs, this_TestCaseOutputDir))
+                                    .Where(f => !f.ToLower().EndsWith("nuget.config"))
                                     .Where(f => g_GeneratedExtensions
                                     .Any(e => e.Equals(Path.GetExtension(f), RuntimeEnvironmentHelper.FileStringComparison))).ToList();
+            
+            var nonRefGeneratedFiles = generatedFiles.Where(f => f.EndsWith(".cs") && !f.EndsWith(Path.DirectorySeparatorChar + "reference.cs", StringComparison.OrdinalIgnoreCase)).ToList();
+            generatedFiles = generatedFiles.Except(nonRefGeneratedFiles).ToList();
 
             generatedFiles = generatedFiles.Distinct().Select(g => this_FixupUtil.FixupFile(g)).ToList();
 
@@ -459,10 +467,12 @@ namespace SvcutilTest
 
             var fileLines1 = new List<string>();
             var fileLines2 = new List<string>();
-
+            var exceptLines = new List<string>() { "    <ImplicitUsings>enable</ImplicitUsings>", "    <Nullable>enable</Nullable>" };
 
             fileLines1.AddRange(File.ReadAllLines(baselineFile));
             fileLines2.AddRange(File.ReadAllLines(generatedFile));
+            fileLines1.RemoveAll(l => exceptLines.Contains(l));
+            fileLines2.RemoveAll(l => exceptLines.Contains(l));
 
             // to reduce noise, let's ignore empty lines in log files (only).
             var isLogFile = Path.GetExtension(baselineFile).Equals(".log", StringComparison.OrdinalIgnoreCase);
@@ -602,7 +612,7 @@ namespace SvcutilTest
 "  <packageSources>" + Environment.NewLine +
 "    <clear />" + Environment.NewLine +
 "    <add key = \"svcutilTestFeed\" value=\"$svcutilTestFeed$\" />" + Environment.NewLine +
-"    <add key = \"nuget.org\" value=\"https://api.nuget.org/v3/index.json\" />" + Environment.NewLine +
+"    <add key = \"dotnet-public\" value=\"https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json\" />" + Environment.NewLine +
 "  </packageSources>" + Environment.NewLine +
 "</configuration>" + Environment.NewLine;
 

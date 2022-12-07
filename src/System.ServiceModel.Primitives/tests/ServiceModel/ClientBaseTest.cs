@@ -8,8 +8,9 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
+using System.Threading.Tasks;
 
-public static class ClientBaseTest
+public static partial class ClientBaseTest
 {
     [WcfFact]
     public static void ClientBaseCloseMethodClosesCorrectly()
@@ -170,6 +171,39 @@ public static class ClientBaseTest
         MyClientBase3.CacheSetting = CacheSetting.AlwaysOff;
         // Validate instantiated caching throws when changing setting
         Assert.Throws<InvalidOperationException>(() => MyClientBase.CacheSetting = CacheSetting.AlwaysOn);
+    }
+
+    [WcfFact]
+    public static async Task ClientBaseDisposeAsyncMethodClosesCorrectly()
+    {
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        MyClientBase client = new MyClientBase(binding, new EndpointAddress("http://myendpoint"));
+
+        // *** VALIDATE *** \\
+        Assert.Equal(CommunicationState.Created, client.State);
+        client.Open();
+        Assert.Equal(CommunicationState.Opened, client.State);
+        await((IAsyncDisposable)client).DisposeAsync();
+        Assert.Equal(CommunicationState.Closed, client.State);
+    }
+
+    [WcfTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public static async Task ClientBaseDisposeAsyncNoThrow(bool channelThrows)
+    {
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        var customBinding = new CustomBinding(binding);
+        customBinding.Elements.Insert(0, new ThrowingOnCloseBindingElement(new CommunicationException(nameof(ClientBaseDisposeAsyncNoThrow)), channelThrows));
+        MyClientBase client = new MyClientBase(customBinding, new EndpointAddress("http://myendpoint"));
+        // *** VALIDATE *** \\
+        Assert.Equal(CommunicationState.Created, client.State);
+        client.Open();
+        Assert.Equal(CommunicationState.Opened, client.State);
+        await ((IAsyncDisposable)client).DisposeAsync();
+        Assert.Equal(CommunicationState.Closed, client.State);
     }
 
     public class MyClientBase : ClientBase<ITestService>

@@ -20,6 +20,7 @@ namespace Infrastructure.Common
     {
         private string _skippedReason;
         private bool _isTheory;
+        private readonly TimeSpan _failFastDuration;
         private readonly IMessageSink _diagnosticMessageSink;
 
         static TestEventListener s_testListener = new TestEventListener(new List<string>() { "Microsoft-Windows-Application Server-Applications" }, EventLevel.Verbose);
@@ -31,6 +32,7 @@ namespace Infrastructure.Common
 
         internal WcfTestCase(XunitTestCase testCase,
                              TestMethodDisplay defaultMethodDisplay,
+                             TimeSpan failFastDuration,
                              string skippedReason = null,
                              bool isTheory = false,
                              IMessageSink diagnosticMessageSink = null)
@@ -38,6 +40,7 @@ namespace Infrastructure.Common
         {
             _skippedReason = skippedReason;
             _isTheory = isTheory;
+            _failFastDuration = failFastDuration;
             _diagnosticMessageSink = diagnosticMessageSink;
         }
 
@@ -47,9 +50,21 @@ namespace Infrastructure.Common
         {
             ConcurrentQueue<EventWrittenEventArgs> events = new ConcurrentQueue<EventWrittenEventArgs>();
 	        s_testListener.EventWritten = events.Enqueue;
+            Timer timer = null;
+            if (_failFastDuration != System.Threading.Timeout.InfiniteTimeSpan && !System.Diagnostics.Debugger.IsAttached)
+            {
+                timer = new Timer((s) => Environment.FailFast("Test timed out"),
+                                  null,
+                                  (int)_failFastDuration.TotalMilliseconds,
+                                  System.Threading.Timeout.Infinite);
+            }
 
-            RunSummary runsummary = await (_isTheory ? new XunitTheoryTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, _diagnosticMessageSink, messageBus, aggregator, cancellationTokenSource).RunAsync()
-                                                     : new XunitTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, TestMethodArguments, messageBus, aggregator, cancellationTokenSource).RunAsync());
+            RunSummary runsummary;
+            using (timer)
+            {
+                runsummary = await (_isTheory ? new XunitTheoryTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, _diagnosticMessageSink, messageBus, aggregator, cancellationTokenSource).RunAsync()
+                                              : new XunitTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, TestMethodArguments, messageBus, aggregator, cancellationTokenSource).RunAsync());
+            }
 
             s_testListener.EventWritten = null;
             if (runsummary.Failed > 0 && events.Count > 0)

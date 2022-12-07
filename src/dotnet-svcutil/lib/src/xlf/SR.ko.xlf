@@ -27,6 +27,11 @@
         <target state="translated">지원되지 않는 메시지 인코딩 값 '{0}'입니다. '{1}'이어야 합니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">지원되지 않는 MTOM 메시지 인코딩 버전: '{0}'. '{1}' 또는 '{2}' 또는 '{3}' 또는 '{4}'이어야 합니다.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">신뢰할 수 있는 세션이 지원되지 않습니다.</target>
@@ -415,6 +420,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
         <target state="translated">파일 생성 중...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">서비스 메타데이터를 다운로드할 때 원격 인증서를 신뢰할 수 있는 것으로 수락합니다. (약식: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">

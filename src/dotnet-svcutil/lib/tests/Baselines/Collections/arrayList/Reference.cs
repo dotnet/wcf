@@ -373,7 +373,7 @@ namespace arrayList_NS
         
         private string ErrorMessageField;
         
-        private arrayList_NS.HttpStatusCode HttpStatusCodeField;
+        private System.Net.HttpStatusCode HttpStatusCodeField;
         
         private string ResultField;
         
@@ -404,7 +404,7 @@ namespace arrayList_NS
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public arrayList_NS.HttpStatusCode HttpStatusCode
+        public System.Net.HttpStatusCode HttpStatusCode
         {
             get
             {
@@ -430,153 +430,6 @@ namespace arrayList_NS
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="HttpStatusCode", Namespace="http://schemas.datacontract.org/2004/07/System.Net")]
-    public enum HttpStatusCode : int
-    {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Continue = 100,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        SwitchingProtocols = 101,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        OK = 200,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Created = 201,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Accepted = 202,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NonAuthoritativeInformation = 203,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NoContent = 204,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ResetContent = 205,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        PartialContent = 206,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MultipleChoices = 300,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Ambiguous = 300,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MovedPermanently = 301,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Moved = 301,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Found = 302,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Redirect = 302,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        SeeOther = 303,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        RedirectMethod = 303,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotModified = 304,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        UseProxy = 305,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Unused = 306,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        TemporaryRedirect = 307,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        RedirectKeepVerb = 307,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        BadRequest = 400,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Unauthorized = 401,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        PaymentRequired = 402,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Forbidden = 403,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotFound = 404,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MethodNotAllowed = 405,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotAcceptable = 406,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ProxyAuthenticationRequired = 407,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        RequestTimeout = 408,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Conflict = 409,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Gone = 410,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        LengthRequired = 411,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        PreconditionFailed = 412,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        RequestEntityTooLarge = 413,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        RequestUriTooLong = 414,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        UnsupportedMediaType = 415,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        RequestedRangeNotSatisfiable = 416,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ExpectationFailed = 417,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        UpgradeRequired = 426,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        InternalServerError = 500,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotImplemented = 501,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        BadGateway = 502,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ServiceUnavailable = 503,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        GatewayTimeout = 504,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        HttpVersionNotSupported = 505,
-    }
-    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultOfArrayOfUserGamePlay", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
@@ -587,7 +440,7 @@ namespace arrayList_NS
         
         private string ErrorMessageField;
         
-        private arrayList_NS.HttpStatusCode HttpStatusCodeField;
+        private System.Net.HttpStatusCode HttpStatusCodeField;
         
         private arrayList_NS.UserGamePlay[] ResultField;
         
@@ -618,7 +471,7 @@ namespace arrayList_NS
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public arrayList_NS.HttpStatusCode HttpStatusCode
+        public System.Net.HttpStatusCode HttpStatusCode
         {
             get
             {

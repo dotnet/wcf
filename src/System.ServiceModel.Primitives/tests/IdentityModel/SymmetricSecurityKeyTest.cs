@@ -70,7 +70,14 @@ public class MockGetSymmetricAlgorithm : SymmetricSecurityKey
 
     public override SymmetricAlgorithm GetSymmetricAlgorithm(string algorithm)
     {
-        return DES.Create(algorithm);
+        if (algorithm == "DES")
+        {
+            return DES.Create();
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public override byte[] GetSymmetricKey()

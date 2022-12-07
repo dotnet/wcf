@@ -10,9 +10,9 @@
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
       "$resultPath$//TestResults//TypeReuse//TypeReuse60//bin//Debug//net6.0//BinLib.dll",
       "$resultPath$//TestResults//TypeReuse//TypeReuse60//bin//Debug//net6.0//TypesLib.dll",
+      "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
       "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
       "Microsoft.DotNet.InternalAbstractions, {Microsoft.DotNet.InternalAbstractions, 99.99.99}",
       "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",
@@ -32,6 +32,7 @@
       "System.Collections.Concurrent, {System.Collections.Concurrent, 99.99.99}",
       "System.Console, {System.Console, 99.99.99}",
       "System.Diagnostics.Debug, {System.Diagnostics.Debug, 99.99.99}",
+      "System.Diagnostics.DiagnosticSource, {System.Diagnostics.DiagnosticSource, 99.99.99}",
       "System.Diagnostics.Tools, {System.Diagnostics.Tools, 99.99.99}",
       "System.Diagnostics.Tracing, {System.Diagnostics.Tracing, 99.99.99}",
       "System.Dynamic.Runtime, {System.Dynamic.Runtime, 99.99.99}",
