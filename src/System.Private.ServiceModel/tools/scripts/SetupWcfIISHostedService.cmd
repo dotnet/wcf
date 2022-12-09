@@ -108,7 +108,7 @@ popd
 
 :: Create a new application pool and an application for the WCF test service
 echo Create IIS application pool: %_wcfServiceName%
-call :Run %_appcmd% add apppool /name:%_wcfServiceName% /processModel.IdentityType:LocalSystem /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
+call :Run %_appcmd% add apppool /name:%_wcfServiceName% /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
 if ERRORLEVEL 1 goto :Failure
 echo Create IIS application: %_wcfServiceName%
 call :Run %_appcmd% add app /site.name:"Default Web Site" /path:/%_wcfServiceName% /physicalPath:%_currentRepo%\%_pathIISHostedWcfService% /applicationPool:%_wcfServiceName% /enabledProtocols:"http,net.tcp"
@@ -117,6 +117,10 @@ if ERRORLEVEL 1 goto :Failure
 :: Grant app pool %_wcfServiceName% "Read and Execute" access to the IISHostedWcfService and its subdirectories
 echo Grant app pool %_wcfServiceName% "Read and Execute" access to %_currentRepo%\%_pathIISHostedWcfService%
 call :Run icacls %_currentRepo%\%_pathIISHostedWcfService% /grant:r "IIS APPPOOL\%_wcfServiceName%":(OI)(CI)RX /Q
+if ERRORLEVEL 1 goto :Failure
+
+echo Grant app pool %_wcfServiceName% permission to reserve HTTP URL: "http://+:80/WindowsCommunicationFoundation/"
+call :Run netsh http add urlacl url=http://+:80/WindowsCommunicationFoundation/ user="IIS APPPOOL\%_wcfServiceName%"
 if ERRORLEVEL 1 goto :Failure
 
 :: Setup PR service only if this is a master service
@@ -204,6 +208,10 @@ call :Run icacls %_wcfTestDir% /grant:r "IIS APPPOOL\%_certService%":(OI)(CI)R /
 if ERRORLEVEL 1 goto :Failure
 
 :SkipCertInstall
+
+echo Configue SSL certificate private key permissions
+call :Run powershell -NoProfile -ExecutionPolicy unrestricted %_currentRepo%\src\System.Private.ServiceModel\tools\scripts\CertificatePrivateKeyPermissions.ps1 'IIS APPPOOL\%_wcfServiceName%'
+if ERRORLEVEL 1 goto :Failure
 
 :: Unlock the configuration of sslFlags and Authentication
 echo Unlock the IIS config section to allow sslFlags and Authentication methods to be overriden
