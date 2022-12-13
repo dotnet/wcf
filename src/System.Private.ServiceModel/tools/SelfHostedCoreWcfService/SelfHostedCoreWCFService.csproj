@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>true</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.Runtime.Serialization" />
+    <Using Include="Microsoft.Extensions.DependencyInjection.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CoreWCF.Http" Version="1.*" />
+    <PackageReference Include="CoreWCF.NetTcp" Version="1.*" />
+    <PackageReference Include="CoreWCF.WebHttp" Version="1.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\IISHostedWcfService\**\*.cs">
+      <Visible>true</Visible>
+      <Link>IIS/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\IISHostedWcfService\Web.config">
+      <Link>Web.config</Link>
+    </None>
+  </ItemGroup>
+</Project>
