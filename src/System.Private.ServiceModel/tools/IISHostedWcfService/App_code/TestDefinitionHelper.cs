@@ -2,10 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.Configuration;
+using CoreWCF.Description;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+#else
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+#endif
 
 namespace WcfService
 {
@@ -47,8 +56,109 @@ namespace WcfService
                 return s_baseAddresses;
             }
         }
-
+#if NET
         internal static void StartHosts()
+        {
+            bool success = true;
+            var webHost = WebHost.CreateDefaultBuilder()
+                .ConfigureServices(services =>
+                {
+                    services.AddServiceModelServices()
+                    .AddServiceModelMetadata();
+                })
+                .Configure(app =>
+                {
+                    app.UseServiceModel(serviceBuilder =>
+                    {
+                        foreach (var serviceTestHost in GetAttributedServiceHostTypes())
+                        {
+                            var serviceBaseAddresses = new List<Uri>();
+                            foreach (TestServiceDefinitionAttribute attr in serviceTestHost.GetCustomAttributes(typeof(TestServiceDefinitionAttribute), false))
+                            {
+                                Uri serviceBaseAddress = null;
+                                try
+                                {
+                                    foreach (Enum schema in Enum.GetValues(typeof(ServiceSchema)))
+                                    {
+                                        if (attr.Schema.HasFlag(schema))
+                                        {
+                                            serviceBaseAddress = new Uri(string.Format("{0}/{1}", BaseAddresses[(ServiceSchema)schema], attr.BasePath));
+                                            serviceBaseAddresses.Add(serviceBaseAddress);
+                                        }
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    ConsoleColor bg = Console.BackgroundColor;
+                                    ConsoleColor fg = Console.ForegroundColor;
+                                    Console.BackgroundColor = ConsoleColor.Black;
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("Problem creating base address for servicehost type " + serviceTestHost.Name + " with schema " + attr.Schema + " and address " + serviceBaseAddress == null ? string.Empty : serviceBaseAddress.ToString());
+                                    Console.WriteLine(e);
+                                    Console.BackgroundColor = bg;
+                                    Console.ForegroundColor = fg;
+                                    success = false;
+                                    break;
+                                }
+                            }
+
+                            try
+                            {
+                                if (success)
+                                {
+                                    var serviceHost = (ServiceHost)Activator.CreateInstance(serviceTestHost, serviceBaseAddresses.ToArray());
+                                    serviceBuilder.AddService(serviceHost.ServiceType, options =>
+                                    {
+                                        options.BaseAddresses.Clear();
+                                        foreach (var baseAddress in serviceBaseAddresses)
+                                        {
+                                            options.BaseAddresses.Add(baseAddress);
+                                        }
+                                    });
+                                    foreach (var endpoint in serviceHost.Endpoints)
+                                    {
+                                        serviceBuilder.AddServiceEndpoint(serviceHost.ServiceType, endpoint.ContractType, endpoint.Binding, new Uri(endpoint.Address, UriKind.RelativeOrAbsolute), null);
+                                    }
+                                    serviceBuilder.ConfigureServiceHostBase(serviceHost.ServiceType, serviceHostBase =>
+                                    {
+                                        var smb = serviceHostBase.Description.Behaviors.Find<ServiceMetadataBehavior>();
+                                        if (serviceBaseAddresses.Where(uri => uri.Scheme == Uri.UriSchemeHttps).Any())
+                                        {
+                                            smb.HttpsGetEnabled = true;
+                                        }
+
+                                        smb.HttpGetEnabled = true;
+                                        serviceHost.ApplyConfiguration(serviceHostBase);
+                                    });
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                ConsoleColor bg = Console.BackgroundColor;
+                                ConsoleColor fg = Console.ForegroundColor;
+                                Console.BackgroundColor = ConsoleColor.Black;
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Problem starting servicehost type " + serviceTestHost.Name);
+                                Console.WriteLine(e);
+                                Console.BackgroundColor = bg;
+                                Console.ForegroundColor = fg;
+                            }
+                        }
+
+                    });
+                }).Build();
+
+            webHost.Run();
+        }
+
+        internal static IEnumerable<Type> GetAttributedServiceHostTypes()
+        {
+            var allTypes = typeof(TestDefinitionHelper).Assembly.GetTypes();
+            var serviceHostTypes = from t in allTypes where (typeof(ServiceHost).IsAssignableFrom(t)) select t;
+            return from sht in serviceHostTypes where (sht.GetCustomAttributes(typeof(TestServiceDefinitionAttribute), false).Length > 0) select sht;
+        }
+#else
+internal static void StartHosts()
         {
             foreach (var sht in GetAttributedServiceHostTypes())
             {
@@ -125,5 +235,7 @@ namespace WcfService
             var serviceHostTypes = from t in allTypes where (typeof(ServiceHostBase).IsAssignableFrom(t)) select t;
             return from sht in serviceHostTypes where (sht.GetCustomAttributes(typeof(TestServiceDefinitionAttribute), false).Length > 0) select sht;
         }
+#endif
+
     }
 }
