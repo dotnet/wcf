@@ -24,7 +24,7 @@ namespace System.ServiceModel.Channels
         private readonly object _readLock = new object();
         private bool _inReadingState;     // This keeps track of the state machine (IConnection interface).
         private readonly int _connectionBufferSize;
-        private readonly ManualResetEventSlim _atEOFEvent;
+        private readonly TaskCompletionSource _atEOFTask;
         private bool _isAtEOF;
 
         // write state
@@ -48,7 +48,7 @@ namespace System.ServiceModel.Channels
             _closeState = CloseState.Open;
             _exceptionEventType = TraceEventType.Error;
             _connectionBufferSize = connectionBufferSize;
-            _atEOFEvent = new ManualResetEventSlim(false);
+            _atEOFTask = new TaskCompletionSource();
         }
 
         public int ConnectionBufferSize
@@ -80,7 +80,7 @@ namespace System.ServiceModel.Channels
 
         private void Abort(string timeoutErrorString, TransferOperation transferOperation)
         {
-            CloseHandle(true, timeoutErrorString, transferOperation);
+            ClosePipe(true, timeoutErrorString, transferOperation);
         }
 
         private Exception ConvertPipeException(PipeException pipeException, TransferOperation transferOperation)
@@ -134,10 +134,10 @@ namespace System.ServiceModel.Channels
                 if (bytesRead == 0)
                 {
                     _isAtEOF = true;
-                    _atEOFEvent.Set();
+                    _atEOFTask.TrySetResult();
                 }
 
-                if (_closeState == CloseState.HandleClosed)
+                if (_closeState == CloseState.PipeClosed)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreatePipeClosedException(TransferOperation.Read));
                 }
@@ -174,7 +174,7 @@ namespace System.ServiceModel.Channels
             {
                 await _pipe.WriteAsync(buffer, cancellationToken);
 
-                if (_closeState == CloseState.HandleClosed)
+                if (_closeState == CloseState.PipeClosed)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreatePipeClosedException(TransferOperation.Write));
                 }
@@ -199,7 +199,7 @@ namespace System.ServiceModel.Channels
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
 
-            bool shouldCloseHandle = false;
+            bool shouldClosePipe = false;
             try
             {
                 bool shouldReadEOF = false;
@@ -215,7 +215,7 @@ namespace System.ServiceModel.Channels
                                 new PipeException(SR.PipeCantCloseWithPendingWrite), ExceptionEventType);
                         }
 
-                        if (_closeState == CloseState.Closing || _closeState == CloseState.HandleClosed)
+                        if (_closeState == CloseState.Closing || _closeState == CloseState.PipeClosed)
                         {
                             // already closing or closed, so just return
                             return;
@@ -223,7 +223,7 @@ namespace System.ServiceModel.Channels
 
                         _closeState = CloseState.Closing;
 
-                        shouldCloseHandle = true;
+                        shouldClosePipe = true;
 
                         if (!_isAtEOF)
                         {
@@ -286,7 +286,7 @@ namespace System.ServiceModel.Channels
                 }
                 else if (existingReadIsPending)
                 {
-                    if (!TimeoutHelper.Wait(_atEOFEvent, timeoutHelper.RemainingTime()))
+                    if (!await _atEOFTask.Task.AwaitWithTimeout(timeoutHelper.RemainingTime()))
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
                             new TimeoutException(SR.PipeShutdownReadError), ExceptionEventType);
@@ -294,7 +294,7 @@ namespace System.ServiceModel.Channels
                 }
                 // else we had already seen EOF.
 
-                // at this point, we may get exceptions if the other side closes the handle first
+                // at this point, we may get exceptions if the other side closes the pipe first
                 try
                 {
                     // write an ack for eof
@@ -339,20 +339,20 @@ namespace System.ServiceModel.Channels
             }
             finally
             {
-                if (shouldCloseHandle)
+                if (shouldClosePipe)
                 {
-                    CloseHandle(false, null, TransferOperation.Undefined);
+                    ClosePipe(false, null, TransferOperation.Undefined);
                 }
             }
         }
 
-        private void CloseHandle(bool abort, string timeoutErrorString, TransferOperation transferOperation)
+        private void ClosePipe(bool abort, string timeoutErrorString, TransferOperation transferOperation)
         {
             lock (_readLock)
             {
                 lock (_writeLock)
                 {
-                    if (_closeState == CloseState.HandleClosed)
+                    if (_closeState == CloseState.PipeClosed)
                     {
                         return;
                     }
@@ -360,13 +360,9 @@ namespace System.ServiceModel.Channels
                     _timeoutErrorString = timeoutErrorString;
                     _timeoutErrorTransferOperation = transferOperation;
                     _aborted = abort;
-                    _closeState = CloseState.HandleClosed;
+                    _closeState = CloseState.PipeClosed;
                     _pipe.Close();
-
-                    if (_atEOFEvent != null)
-                    {
-                        _atEOFEvent.Dispose();
-                    }
+                    _atEOFTask.TrySetResult();
                 }
             }
 
@@ -389,21 +385,25 @@ namespace System.ServiceModel.Channels
 
         private void EnterReadingState()
         {
+            Fx.Assert(Monitor.IsEntered(_readLock), "_readLock must be entered");
             _inReadingState = true;
         }
 
         private void EnterWritingState()
         {
+            Fx.Assert(Monitor.IsEntered(_writeLock), "_writeLock must be entered");
             _inWritingState = true;
         }
 
         private void ExitReadingState()
         {
+            Fx.Assert(Monitor.IsEntered(_readLock), "_readLock must be entered");
             _inReadingState = false;
         }
 
         private void ExitWritingState()
         {
+            Fx.Assert(Monitor.IsEntered(_writeLock), "_writeLock must be entered");
             _inWritingState = false;
         }
 
@@ -506,6 +506,7 @@ namespace System.ServiceModel.Channels
 
         private void ValidateEnterReadingState(bool checkEOF)
         {
+            Fx.Assert(Monitor.IsEntered(_readLock), "_readLock must be entered");
             if (checkEOF)
             {
                 if (_closeState == CloseState.Closing)
@@ -519,7 +520,7 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SR.PipeReadPending), ExceptionEventType);
             }
 
-            if (_closeState == CloseState.HandleClosed)
+            if (_closeState == CloseState.PipeClosed)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SR.PipeClosed), ExceptionEventType);
             }
@@ -527,6 +528,7 @@ namespace System.ServiceModel.Channels
 
         private void ValidateEnterWritingState(bool checkShutdown)
         {
+            Fx.Assert(Monitor.IsEntered(_writeLock), "_writeLock must be entered");
             if (checkShutdown)
             {
                 if (_isShutdownWritten)
@@ -545,7 +547,7 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SR.PipeWritePending), ExceptionEventType);
             }
 
-            if (_closeState == CloseState.HandleClosed)
+            if (_closeState == CloseState.PipeClosed)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SR.PipeClosed), ExceptionEventType);
             }
@@ -563,7 +565,7 @@ namespace System.ServiceModel.Channels
         {
             Open,
             Closing,
-            HandleClosed,
+            PipeClosed,
         }
 
         private enum TransferOperation

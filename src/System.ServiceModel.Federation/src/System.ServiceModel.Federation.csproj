@@ -5,7 +5,6 @@
     <AssemblyName>System.ServiceModel.Federation</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
-    <IsHarvesting>false</IsHarvesting>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
@@ -16,11 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
-  </ItemGroup>
-  <!-- the following represent dependencies copied from the old package -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <Reference Include="System.IdentityModel" />
-    <Reference Include="System.ServiceModel" />
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->

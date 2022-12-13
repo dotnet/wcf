@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
@@ -8,29 +8,21 @@
     <IsPackable>true</IsPackable>
     <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
     <NoWarn>$(NoWarn);NU5131</NoWarn>
-    <TargetFrameworks>net6.0;net461</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
   </PropertyGroup>
 
   <!-- DesignTimeBuild requires all the TargetFramework Derived Properties to not be present in the first property group. -->
-  <PropertyGroup>
-    <!--<IsPartialFacadeAssembly Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">true</IsPartialFacadeAssembly>-->
-    <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
-  </PropertyGroup>
 
-  <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-  </PropertyGroup>
-
-  <!--<ItemGroup Condition="'$(TargetFramework)' != 'net461'">
-     --><!--bring in the System.ServiceModel shim for desktop compat--><!-- 
+  <!--<ItemGroup>
+    --><!-- bring in the System.ServiceModel shim for desktop compat --><!--
     <ProjectReference Include="..\..\System.ServiceModel.Shim\System.ServiceModel.Shim.csproj"
                       ReferenceOutputAssembly="false"
                       OutputItemType="TfmSpecificPackageFile"
                       PackagePath="ref/$(TargetFramework);lib/$(TargetFramework)" />
   </ItemGroup>-->
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
+  <ItemGroup>
     <!-- , PublicKey=b03f5f7f11d50a3a -->
     <InternalsVisibleTo Include="System.ServiceModel.Http" />
     <InternalsVisibleTo Include="System.ServiceModel.Federation" />
@@ -39,7 +31,7 @@
     <InternalsVisibleTo Include="System.ServiceModel.NetNamedPipe" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
+  <ItemGroup>
     <PackageReference Include="System.Reflection.DispatchProxy" Version="$(SystemReflectionDispatchProxyPackageVersion)" />
     <PackageReference Include="System.Security.Principal.Windows" Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
     <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
@@ -48,19 +40,7 @@
     <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="5.0.10" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <Reference Include="System" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.IdentityModel" />
-  </ItemGroup>
-  
-  <!-- TODO: Put the shim back -->
-  <!--<ItemGroup Condition="'$(TargetFramework)' != 'net461'">
-    --><!-- bring in the System.ServiceModel shim for desktop compat --><!--
-    <ProjectReference Include="..\..\System.ServiceModel.Shim\System.ServiceModel.Shim.csproj" ReferenceOutputAssembly="false" OutputItemType="TfmSpecificPackageFile" PackagePath="ref/$(TargetFramework);lib/$(TargetFramework)" />
-  </ItemGroup>-->
-
-  <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
+  <ItemGroup>
     <Compile Include="..\..\Common\src\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
     </Compile>
@@ -85,7 +65,7 @@
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
-  <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
+  <ItemGroup>
     <EmbeddedResource Update="Resources\Strings.resx">
       <GenerateSource>true</GenerateSource>
       <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>

@@ -9,25 +9,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Primiti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Primitives.Tests", "src\System.ServiceModel.Primitives\tests\System.ServiceModel.Primitives.Tests.csproj", "{10C03A32-1B1F-4EF8-8041-92C34DAD221E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Duplex.Ref", "src\System.ServiceModel.Duplex\ref\System.ServiceModel.Duplex.Ref.csproj", "{038AA2B1-6F3A-4C2C-A5F9-96D308EE487A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Duplex", "src\System.ServiceModel.Duplex\src\System.ServiceModel.Duplex.csproj", "{6930471C-F053-4D7D-92E4-8DCBA3B79A64}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Duplex.Tests", "src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj", "{5BD9E9CD-B423-48EB-A9EE-B9CB26D77B0D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Http.Ref", "src\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj", "{0B18243A-F3D9-4BD8-81E7-FDBA9F19E24D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Http", "src\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj", "{F99F7E78-3C29-404F-9034-2359C448CEFE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Http.Tests", "src\System.ServiceModel.Http\tests\System.ServiceModel.Http.Tests.csproj", "{7805E0FD-3320-432B-91E1-D7BB7ABB781E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.NetTcp.Ref", "src\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.Ref.csproj", "{D41136B2-5347-41E4-84D7-D9871BB8ABC1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.NetTcp", "src\System.ServiceModel.NetTcp\src\System.ServiceModel.NetTcp.csproj", "{C1C23418-CE34-40C3-9A2A-9F0861B0FF24}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.NetTcp.Tests", "src\System.ServiceModel.NetTcp\tests\System.ServiceModel.NetTcp.Tests.csproj", "{95C6CD71-6965-44E1-8F05-01F2F150B1E0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Security.Ref", "src\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj", "{2DCF7501-4B89-4768-88ED-9419F98F3072}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Security", "src\System.ServiceModel.Security\src\System.ServiceModel.Security.csproj", "{5FA327D5-02AB-44E3-9699-B53D9D1E99AD}"
 EndProject
@@ -123,10 +115,6 @@ Global
 		{10C03A32-1B1F-4EF8-8041-92C34DAD221E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10C03A32-1B1F-4EF8-8041-92C34DAD221E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10C03A32-1B1F-4EF8-8041-92C34DAD221E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{038AA2B1-6F3A-4C2C-A5F9-96D308EE487A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{038AA2B1-6F3A-4C2C-A5F9-96D308EE487A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{038AA2B1-6F3A-4C2C-A5F9-96D308EE487A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{038AA2B1-6F3A-4C2C-A5F9-96D308EE487A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6930471C-F053-4D7D-92E4-8DCBA3B79A64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6930471C-F053-4D7D-92E4-8DCBA3B79A64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6930471C-F053-4D7D-92E4-8DCBA3B79A64}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -135,10 +123,6 @@ Global
 		{5BD9E9CD-B423-48EB-A9EE-B9CB26D77B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BD9E9CD-B423-48EB-A9EE-B9CB26D77B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BD9E9CD-B423-48EB-A9EE-B9CB26D77B0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B18243A-F3D9-4BD8-81E7-FDBA9F19E24D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B18243A-F3D9-4BD8-81E7-FDBA9F19E24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B18243A-F3D9-4BD8-81E7-FDBA9F19E24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B18243A-F3D9-4BD8-81E7-FDBA9F19E24D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F99F7E78-3C29-404F-9034-2359C448CEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F99F7E78-3C29-404F-9034-2359C448CEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F99F7E78-3C29-404F-9034-2359C448CEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -147,10 +131,6 @@ Global
 		{7805E0FD-3320-432B-91E1-D7BB7ABB781E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7805E0FD-3320-432B-91E1-D7BB7ABB781E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7805E0FD-3320-432B-91E1-D7BB7ABB781E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D41136B2-5347-41E4-84D7-D9871BB8ABC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D41136B2-5347-41E4-84D7-D9871BB8ABC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D41136B2-5347-41E4-84D7-D9871BB8ABC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D41136B2-5347-41E4-84D7-D9871BB8ABC1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C1C23418-CE34-40C3-9A2A-9F0861B0FF24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1C23418-CE34-40C3-9A2A-9F0861B0FF24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1C23418-CE34-40C3-9A2A-9F0861B0FF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -159,10 +139,6 @@ Global
 		{95C6CD71-6965-44E1-8F05-01F2F150B1E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95C6CD71-6965-44E1-8F05-01F2F150B1E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95C6CD71-6965-44E1-8F05-01F2F150B1E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DCF7501-4B89-4768-88ED-9419F98F3072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DCF7501-4B89-4768-88ED-9419F98F3072}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DCF7501-4B89-4768-88ED-9419F98F3072}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DCF7501-4B89-4768-88ED-9419F98F3072}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5FA327D5-02AB-44E3-9699-B53D9D1E99AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5FA327D5-02AB-44E3-9699-B53D9D1E99AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FA327D5-02AB-44E3-9699-B53D9D1E99AD}.Release|Any CPU.ActiveCfg = Release|Any CPU

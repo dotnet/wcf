@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
     <TargetFramework>net6.0</TargetFramework>
@@ -24,9 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" />
-    <ProjectReference Include="..\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.Ref.csproj" />
     <ProjectReference Include="..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+    <ProjectReference Include="..\System.ServiceModel.NetTcp\src\System.ServiceModel.NetTcp.csproj" />
+    <ProjectReference Include="..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
+    <!--<ProjectReference Include="..\System.ServiceModel.NetNamedPipe\src\System.ServiceModel.NetNamedPipe.csproj" />-->
     <PackageReference Include="System.ServiceModel.Syndication" Version="4.5.0" />
   </ItemGroup>
 </Project>

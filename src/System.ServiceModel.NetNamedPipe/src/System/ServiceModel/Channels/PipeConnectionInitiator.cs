@@ -42,7 +42,7 @@ namespace System.ServiceModel.Channels
             IConnection connection = null;
             while (connection == null)
             {
-                connection =  await TryConnectAsync(remoteUri, resolvedAddress, backoffHelper);
+                connection =  TryConnect(remoteUri, resolvedAddress, backoffHelper);
                 if (connection == null)
                 {
                     await backoffHelper.WaitAndBackoffAsync();
@@ -163,7 +163,7 @@ namespace System.ServiceModel.Channels
             backoffHelper = new BackoffTimeoutHelper(backoffTimeout, TimeSpan.FromMinutes(5));
         }
 
-        private async ValueTask<IConnection> TryConnectAsync(Uri remoteUri, string resolvedAddress, BackoffTimeoutHelper backoffHelper)
+        private IConnection TryConnect(Uri remoteUri, string resolvedAddress, BackoffTimeoutHelper backoffHelper)
         {
             bool lastAttempt = backoffHelper.IsExpired();
             // NamedPipeClientStream opens a pipe with the name "\\{serverName}\pipe\{pipeName}". As we only connect
@@ -176,7 +176,14 @@ namespace System.ServiceModel.Channels
             try
             {
                 namedPipeClient = new NamedPipeClientStream(".", resolvedAddress, PipeDirection.InOut, PipeOptions.Asynchronous, TokenImpersonationLevel.Anonymous, HandleInheritability.None);
-                await namedPipeClient.ConnectAsync((int)backoffHelper.OriginalTimeout.TotalMilliseconds);
+                // Don't use ConnectAsync as it uses Task.Factory.StartNew to call the synchronous Connect code on a background thread.
+                // We pass a timeout of 1 as NamedPipeClient might call WaitNamedPipe which synchronously blocks waiting for the service
+                // to call ConnectNamedPipe on the named pipe. NamedPipeClientStream calls CreateFile to connect, and if it can't,
+                // will call WaitNamedPipe passing in the timeout. It waits this much time for the service to call ConnectNamedPipe. If
+                // we pass a value of 0, it will use the default timeout configured on the named pipe. WCF services specify zero which
+                // means use the API default which is 50ms. As we can't prevent NamedPipeClientStream from calling WaitNamedPipe, the
+                // best we can do is pass 1ms.
+                namedPipeClient.Connect(1);
             }
             catch (Exception ex)
             {
