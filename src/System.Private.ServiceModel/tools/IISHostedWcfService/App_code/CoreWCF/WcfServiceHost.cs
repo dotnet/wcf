@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 #if NET
+
 using CoreWCF;
 using CoreWCF.Channels;
 using CoreWCF.Description;
@@ -40,6 +41,8 @@ namespace WcfService
         }
 
         public List<Endpoint> Endpoints => _endpoints;
+
+        public Type ServiceType => _serviceType;
 
         public class Endpoint
         {
