@@ -119,8 +119,9 @@ echo Grant app pool %_wcfServiceName% "Read and Execute" access to %_currentRepo
 call :Run icacls %_currentRepo%\%_pathIISHostedWcfService% /grant:r "IIS APPPOOL\%_wcfServiceName%":(OI)(CI)RX /Q
 if ERRORLEVEL 1 goto :Failure
 
-echo Grant app pool %_wcfServiceName% permission to reserve HTTP URL: "http://+:80/WindowsCommunicationFoundation/"
-call :Run netsh http add urlacl url=http://+:80/WindowsCommunicationFoundation/ user="IIS APPPOOL\%_wcfServiceName%"
+echo Grant app pool %_wcfServiceName% permission to reserve HTTP URL: "http://+:80/WindowsCommunicationFoundationTest/%_wcfServiceName%"
+call :Run netsh http delete urlacl url=http://+:80/WindowsCommunicationFoundationTest/%_wcfServiceName%/
+call :Run netsh http add urlacl url=http://+:80/WindowsCommunicationFoundationTest/%_wcfServiceName%/ user="IIS APPPOOL\%_wcfServiceName%"
 if ERRORLEVEL 1 goto :Failure
 
 :: Setup PR service only if this is a master service

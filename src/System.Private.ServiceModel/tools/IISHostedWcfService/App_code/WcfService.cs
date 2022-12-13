@@ -5,7 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
@@ -242,8 +244,8 @@ namespace WcfService
 
             Guid guid = Guid.NewGuid();
             string localHost = "http://localhost";
-            string path = "/WindowsCommunicationFoundation/" + guid.ToString();
-
+            string path = "/WindowsCommunicationFoundationTest/" + WindowsIdentity.GetCurrent().Name.Split('\\').Last() + "/" + guid.ToString();
+            
             ServiceHost host = new ServiceHost(typeof(WcfRestartService));
             host.AddServiceEndpoint(typeof(IWcfRestartService), binding, localHost + path);
             host.Open();
