@@ -19,7 +19,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
 
     <PackAsTool>true</PackAsTool>
