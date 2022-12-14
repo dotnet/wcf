@@ -5,8 +5,8 @@
 #if NET
 using CoreWCF;
 using CoreWCF.Channels;
+using CoreWCF.IdentityModel.Tokens;
 using CoreWCF.Security;
-using Microsoft.IdentityModel.Tokens;
 #else
 using System;
 using System.ServiceModel;
