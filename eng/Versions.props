@@ -2,10 +2,10 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Versioning specifications:  https://github.com/dotnet/arcade/blob/master/Documentation/CorePackages/Versioning.md -->
   <PropertyGroup>
-    <ProductVersion>3.5.0</ProductVersion>
-    <MajorVersion>4</MajorVersion>
-    <MinorVersion>11</MinorVersion>
-    <WcfAssemblyVersion>4.11.0.0</WcfAssemblyVersion>
+    <ProductVersion>6.0.0</ProductVersion>
+    <MajorVersion>6</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <WcfAssemblyVersion>6.0.0.0</WcfAssemblyVersion>
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
