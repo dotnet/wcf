@@ -128,7 +128,7 @@ namespace WcfService
                                         }
 
                                         smb.HttpGetEnabled = true;
-                                        serviceHost.ApplyConfiguration(serviceHostBase);
+                                        serviceHost.ApplyConfig(serviceHostBase);
                                     });
                                 }
                             }
