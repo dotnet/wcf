@@ -8,7 +8,6 @@ using CoreWCF.Channels;
 using CoreWCF.IdentityModel.Tokens;
 using CoreWCF.Security;
 using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.IdentityModel.Tokens;
 #else
 using System;
 using System.Collections.Generic;
