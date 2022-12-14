@@ -100,7 +100,6 @@ namespace WcfService
 #endif
     }
 
-#if !NET
     public abstract class TestServiceHostBase<ContractType1, ContractType2> : TestServiceHostBase<ContractType1>
     {
         public TestServiceHostBase(Type serviceType, params Uri[] baseAddresses)
@@ -109,5 +108,4 @@ namespace WcfService
             AddServiceEndpoint(typeof(ContractType2), GetBinding(), Address);
         }
     }
-#endif
 }
