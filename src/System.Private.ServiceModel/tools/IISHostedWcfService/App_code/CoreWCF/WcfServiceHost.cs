@@ -29,10 +29,9 @@ namespace WcfService
             });
         }
 
-        public virtual void ApplyConfiguration(ServiceHostBase host)
-        {
+        protected virtual void ApplyConfiguration() { }
 
-        }
+        public void ApplyConfig(ServiceHostBase serviceHostBase) { ApplyConfiguration(); }
 
         public List<Endpoint> Endpoints => _endpoints;
 
