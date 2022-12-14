@@ -2,6 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using CoreWCF;
+using CoreWCF.Description;
 using WcfService;
 
 namespace SelfHostedWCFService
@@ -38,12 +40,12 @@ namespace SelfHostedWCFService
 
             //Start the crlUrl service last as the client use it to ensure all services have been started
             Uri testHostUrl = new Uri(string.Format("http://localhost/TestHost.svc", s_httpPort));
-            //WebServiceHost host = new WebServiceHost(typeof(TestHost), testHostUrl);
-            //WebHttpBinding binding = new WebHttpBinding();
-            //host.AddServiceEndpoint(typeof(ITestHost), binding, "");
-            //ServiceDebugBehavior serviceDebugBehavior = host.Description.Behaviors.Find<ServiceDebugBehavior>();
-            //serviceDebugBehavior.HttpHelpPageEnabled = false;
-            //host.Open();
+            WebServiceHost host = new WebServiceHost(typeof(TestHost), testHostUrl);
+            WebHttpBinding binding = new WebHttpBinding();
+            host.AddServiceEndpoint(typeof(ITestHost), binding, "");
+            ServiceDebugBehavior serviceDebugBehavior = host.Description.Behaviors.Find<ServiceDebugBehavior>();
+            serviceDebugBehavior.HttpHelpPageEnabled = false;
+            host.Open();
 
             Console.WriteLine("All service hosts have started.");
             do
