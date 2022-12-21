@@ -4,6 +4,7 @@
     <CLSCompliant>true</CLSCompliant>
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
+    <XUnitPublishTargetFramework>net6.0-windows</XUnitPublishTargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
