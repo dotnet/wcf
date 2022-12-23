@@ -93,8 +93,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.NetFram
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.NetNamedPipe", "src\System.ServiceModel.NetNamedPipe\src\System.ServiceModel.NetNamedPipe.csproj", "{5ECB8887-D7EE-449F-9439-35D0BBBB1E07}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.NetNamedPipe.Tests", "src\System.ServiceModel.NetNamedPipe\tests\System.ServiceModel.NetNamedPipe.Tests.csproj", "{B16A366D-521B-4B28-A99F-C02D786A54E6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -273,10 +271,6 @@ Global
 		{5ECB8887-D7EE-449F-9439-35D0BBBB1E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ECB8887-D7EE-449F-9439-35D0BBBB1E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ECB8887-D7EE-449F-9439-35D0BBBB1E07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B16A366D-521B-4B28-A99F-C02D786A54E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B16A366D-521B-4B28-A99F-C02D786A54E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B16A366D-521B-4B28-A99F-C02D786A54E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B16A366D-521B-4B28-A99F-C02D786A54E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -314,7 +308,6 @@ Global
 		{A3F8C509-AAE7-4391-9272-2221055CC17E} = {DFDC71CF-6E65-481D-99D7-C35ED7EF6D4E}
 		{E8E40B62-E737-4768-82C2-039E90ED9A39} = {D6302510-AB10-4775-BCE9-98FA96FDEB76}
 		{88918456-A2B2-431F-BB95-BAAD2818BFC7} = {DFDC71CF-6E65-481D-99D7-C35ED7EF6D4E}
-		{B16A366D-521B-4B28-A99F-C02D786A54E6} = {DFDC71CF-6E65-481D-99D7-C35ED7EF6D4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E0638FAC-BA6B-4E18-BAE6-468C3191BE58}
