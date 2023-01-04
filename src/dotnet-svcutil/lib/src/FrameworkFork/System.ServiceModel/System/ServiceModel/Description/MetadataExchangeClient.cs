@@ -420,6 +420,7 @@ namespace System.ServiceModel.Description
 
         protected internal virtual HttpWebRequest GetWebRequest(Uri location, string dialect, string identifier)
         {
+            ServicePointManager.CheckCertificateRevocationList = true;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(location);
             request.Method = "GET";
             request.Credentials = this.HttpCredentials;

@@ -44,6 +44,6 @@
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">
     <!-- Microsoft.NET.Test.Sdk package defaults to restore the minimum supported version for its dependency Newtonsoft.Json, here force test project to reference higher version for security reason. -->
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 </Project>
