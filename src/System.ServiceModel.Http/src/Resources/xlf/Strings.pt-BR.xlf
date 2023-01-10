@@ -4,387 +4,387 @@
     <body>
       <trans-unit id="BasicHttpMessageSecurityRequiresCertificate">
         <source>BasicHttp binding requires that BasicHttpBinding.Security.Message.ClientCredentialType be equivalent to the BasicHttpMessageCredentialType.Certificate credential type for secure messages. Select Transport or TransportWithMessageCredential security for UserName credentials.</source>
-        <target state="new">BasicHttp binding requires that BasicHttpBinding.Security.Message.ClientCredentialType be equivalent to the BasicHttpMessageCredentialType.Certificate credential type for secure messages. Select Transport or TransportWithMessageCredential security for UserName credentials.</target>
+        <target state="translated">A associação BasicHttp requer que BasicHttpBinding.Security.Message.ClientCredentialType seja equivalente ao tipo de credencial BasicHttpMessageCredentialType.Certificate para mensagens seguras. Selecione a segurança de Transport ou de TransportWithMessageCredential para credenciais UserName.</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateUnsupportedForHttpTransportCredentialOnly">
         <source>Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</source>
-        <target state="new">Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</target>
+        <target state="translated">Não há suporte para autenticação de cliente com base em certificado no modo de segurança TransportCredentialOnly. Selecione o modo de segurança do Transporte.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
-        <target state="new">The specified channel type {0} is not supported by this channel manager.</target>
+        <target state="translated">O tipo de canal especificado {0} não tem suporte deste gerenciador de canais.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
         <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
-        <target state="new">ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</target>
+        <target state="translated">ClientCredentialType.None inválido para o modo de segurança TransportWithMessageCredential. Especifique um tipo de credencial de mensagem ou use um modo de segurança diferente.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientWebSocketFactory_CreateWebSocketFailed">
         <source>An error occurred when creating the WebSocket with the factory of type '{0}'. See the inner exception for details.</source>
-        <target state="new">An error occurred when creating the WebSocket with the factory of type '{0}'. See the inner exception for details.</target>
+        <target state="translated">Erro ao criar o WebSocket com a fábrica do tipo '{0}'. Consulte a exceção interna para obter detalhes.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientWebSocketFactory_InvalidSubProtocol">
         <source>The WebSocket returned by the factory of type '{0}' has the SubProtocol '{1}' that doesn't match the requested SubProtocol value '{2}'.</source>
-        <target state="new">The WebSocket returned by the factory of type '{0}' has the SubProtocol '{1}' that doesn't match the requested SubProtocol value '{2}'.</target>
+        <target state="translated">O WebSocket retornado pela fábrica do tipo '{0}' tem o SubProtocolo '{1}', que não corresponde ao valor '{2}' do SubProtocolo solicitado.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientWebSocketFactory_InvalidWebSocket">
         <source>WebSocket creation failed. The '{0}' returned a WebSocket that is either null or not opened.</source>
-        <target state="new">WebSocket creation failed. The '{0}' returned a WebSocket that is either null or not opened.</target>
+        <target state="translated">Falha na criação do WebSocket. O '{0}' retornou um WebSocket que é nulo ou não está aberto.</target>
         <note />
       </trans-unit>
       <trans-unit id="CloseTimedOut">
         <source>Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Tempo limite de fechamento atingido após {0}. Aumente o valor de tempo limite passado à chamada para Fechar ou aumente o valor de CloseTimeout na Associação. O tempo alocado para essa operação pode ter sido uma parte de um tempo limite maior.</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyHttpHeaderFailed">
         <source>Failed to copy the HTTP header '{0}' with value '{1}' to '{2}'.</source>
-        <target state="new">Failed to copy the HTTP header '{0}' with value '{1}' to '{2}'.</target>
+        <target state="translated">Falha ao copiar o cabeçalho HTTP '{0}' com valor '{1}' para '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CouldnTCreateChannelForChannelType2">
         <source>Channel type '{1}' was requested, but Binding '{0}' doesn't support it or isn't configured properly to support it.</source>
-        <target state="new">Channel type '{1}' was requested, but Binding '{0}' doesn't support it or isn't configured properly to support it.</target>
+        <target state="translated">O tipo de canal '{1}' foi solicitado, mas a Associação '{0}' não dá suporte a isso ou não está configurada adequadamente para dar suporte a isso.</target>
         <note />
       </trans-unit>
       <trans-unit id="CredentialDisallowsNtlm">
         <source>The NTLM authentication scheme was specified, but the target credential does not allow NTLM.</source>
-        <target state="new">The NTLM authentication scheme was specified, but the target credential does not allow NTLM.</target>
+        <target state="translated">O esquema de autenticação NTLM foi especificado, mas a credencial de destino não permite o NTLM.</target>
         <note />
       </trans-unit>
       <trans-unit id="DelegatingHandlerArrayFromFuncContainsNullItem">
         <source>The '{0}' list created by the Func '{1}' is invalid because it contains one or more null items.</source>
-        <target state="new">The '{0}' list created by the Func '{1}' is invalid because it contains one or more null items.</target>
+        <target state="translated">A lista '{0}' criada pela Func '{1}' é inválida porque contém um ou mais itens nulos.</target>
         <note />
       </trans-unit>
       <trans-unit id="DelegatingHandlerArrayHasNonNullInnerHandler">
         <source>The '{0}' list is invalid because the property '{1}' of '{2}' is not null.</source>
-        <target state="new">The '{0}' list is invalid because the property '{1}' of '{2}' is not null.</target>
+        <target state="translated">A lista '{0}' é inválida porque a propriedade '{1}' de '{2}' não é nula.</target>
         <note />
       </trans-unit>
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
-        <target state="new">There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</target>
+        <target state="translated">Não havia nenhum ponto de extremidade em escuta em {0} capaz de aceitar a mensagem. Em geral, isso é causado por endereço ou ação de SOAP incorretos. Consulte InnerException, se presente, para obter mais detalhes.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvelopeVersionUnknown">
         <source>Unrecognized envelope version: {0}.</source>
-        <target state="new">Unrecognized envelope version: {0}.</target>
+        <target state="translated">Versão de envelope não reconhecida: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="new">Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</target>
+        <target state="translated">A proteção estendida não é suportada nesta plataforma.  Instale o patch apropriado ou altere a ExtendedProtectionPolicy em Binding ou BindingElement para um valor com PolicyEnforcement definido como "Never" ou "WhenSupported".</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeMismatch">
         <source>Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</source>
-        <target state="new">Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</target>
+        <target state="translated">O Tipo de Conteúdo {0} não tinha suporte do serviço {1}. As associações de cliente e serviço talvez não sejam compatíveis.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAddressingNoneHeaderOnWire">
         <source>The incoming message contains a SOAP header representing the WS-Addressing '{0}', yet the HTTP transport is configured with AddressingVersion.None.  As a result, the message is being dropped.  If this is not desired, then update your HTTP binding to support a different AddressingVersion.</source>
-        <target state="new">The incoming message contains a SOAP header representing the WS-Addressing '{0}', yet the HTTP transport is configured with AddressingVersion.None.  As a result, the message is being dropped.  If this is not desired, then update your HTTP binding to support a different AddressingVersion.</target>
+        <target state="translated">A mensagem de entrada contém um cabeçalho SOAP que representa WS-Addressing '{0}', mas o transporte HTTP está configurado com AddressingVersion.None. Como resultado, a mensagem está sendo removida. Se essa não for a ação desejada, atualize a associação HTTP para dar suporte a um tipo diferente de AddressingVersion.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthDoesNotSupportRequestStreaming">
         <source>HTTP request streaming cannot be used in conjunction with HTTP authentication.  Either disable request streaming or specify anonymous HTTP authentication.</source>
-        <target state="new">HTTP request streaming cannot be used in conjunction with HTTP authentication.  Either disable request streaming or specify anonymous HTTP authentication.</target>
+        <target state="translated">Não é possível usar streaming de solicitação HTTP junto com a autenticação HTTP. Desabilite o streaming de solicitação ou especifique a autenticação HTTP anônima.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthSchemeCannotBeNone">
         <source>The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">O valor especificado para a propriedade AuthenticationScheme no HttpTransportBindingElement ('{0}') não é permitido ao construir um ChannelFactory. Se você usou uma associação padrão, certifique-se de que o ClientCredentialType não esteja definido como HttpClientCredentialType.InheritedFromHost, um valor que é inválido em um cliente. Se você definir o valor como '{0}' diretamente no HttpTransportBindingElement, defina-o como Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication ou Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthorizationFailed">
         <source>The HTTP request is unauthorized with client authentication scheme '{0}'. The authentication header received from the server was '{1}'.</source>
-        <target state="new">The HTTP request is unauthorized with client authentication scheme '{0}'. The authentication header received from the server was '{1}'.</target>
+        <target state="translated">A solicitação HTTP não está autorizada no esquema de autenticação de cliente '{0}'. O cabeçalho de autenticação recebido do servidor foi '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthorizationForbidden">
         <source>The HTTP request was forbidden with client authentication scheme '{0}'.</source>
-        <target state="new">The HTTP request was forbidden with client authentication scheme '{0}'.</target>
+        <target state="translated">A solicitação HTTP está proibida com o esquema de autenticação de cliente '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpClientCredentialTypeInvalid">
         <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</source>
-        <target state="new">ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</target>
+        <target state="translated">ClientCredentialType '{0}' somente pode ser usado no lado do servidor, não no lado do cliente. Use um dos seguintes valores: 'None, Basic, Client, Digest, Ntlm, Windows'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentLengthIncorrect">
         <source>The number of bytes available is inconsistent with the HTTP Content-Length header.  There may have been a network error or the client may be sending invalid requests.</source>
-        <target state="new">The number of bytes available is inconsistent with the HTTP Content-Length header.  There may have been a network error or the client may be sending invalid requests.</target>
+        <target state="translated">O número de bytes disponíveis é inconsistente com o cabeçalho Content-Length de HTTP. Talvez haja um erro de rede ou o cliente pode estar enviando solicitações inválidas.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentTypeFormatException">
         <source>An error ({0}) occurred while parsing the content type of the HTTP request. The content type was: {1}.</source>
-        <target state="new">An error ({0}) occurred while parsing the content type of the HTTP request. The content type was: {1}.</target>
+        <target state="translated">Erro ({0}) ao analisar o tipo de conteúdo da solicitação HTTP. O tipo de conteúdo era: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentTypeHeaderRequired">
         <source>An HTTP Content-Type header is required for SOAP messaging and none was found.</source>
-        <target state="new">An HTTP Content-Type header is required for SOAP messaging and none was found.</target>
+        <target state="translated">Um cabeçalho Content-Type HTTP é necessário para mensagens SOAP, mas nenhum foi encontrado.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpIfModifiedSinceParseError">
         <source>The value specified, '{0}', for the If-Modified-Since header does not parse into a valid date. Check the property value and ensure that it is of the proper format.</source>
-        <target state="new">The value specified, '{0}', for the If-Modified-Since header does not parse into a valid date. Check the property value and ensure that it is of the proper format.</target>
+        <target state="translated">O valor especificado, '{0}', para o cabeçalho If-Modified-Since não é analisado como uma data válida. Verifique o valor da propriedade e se ele está no formato adequado.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpMaxPendingAcceptsTooLargeError">
         <source>The value of MaxPendingAccepts should not be larger than {0}.</source>
-        <target state="new">The value of MaxPendingAccepts should not be larger than {0}.</target>
+        <target state="translated">O valor de MaxPendingAccepts não deve ser maior que {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpMessageHandlerTypeNotSupported">
         <source>Invalid type: '{0}'. It must inherit from base type '{1}', cannot be abstract, and must expose a public default constructor.</source>
-        <target state="new">Invalid type: '{0}'. It must inherit from base type '{1}', cannot be abstract, and must expose a public default constructor.</target>
+        <target state="translated">Tipo inválido: '{0}'. Ele deve herdar do tipo base '{1}', não pode ser abstrato e deve expor um construtor padrão público.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpPipelineNotSupportedOnClientSide">
         <source>The property '{0}' is not supported when building a ChannelFactory. The property value must be null when calling BuildChannelFactory.</source>
-        <target state="new">The property '{0}' is not supported when building a ChannelFactory. The property value must be null when calling BuildChannelFactory.</target>
+        <target state="translated">Não há suporte para a propriedade '{0}' durante a criação de uma ChannelFactory. O valor da propriedade deve ser nulo na chamada a BuildChannelFactory.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpProxyRequiresSingleAuthScheme">
         <source>The '{0}' authentication scheme has been specified for the proxy on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, or Anonymous.</source>
-        <target state="new">The '{0}' authentication scheme has been specified for the proxy on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, or Anonymous.</target>
+        <target state="translated">O esquema de autenticação '{0}' foi especificado para o proxy na fábrica HTTP. Entretanto, a fábrica apenas oferece suporte para a especificação de exatamente um esquema de autenticação. Os esquemas válidos de autenticação são Resumo, Negociação, NTLM, Básico ou Anônimo.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpReceiveFailure">
         <source>An error occurred while receiving the HTTP response to {0}. This could be due to the service endpoint binding not using the HTTP protocol. This could also be due to an HTTP request context being aborted by the server (possibly due to the service shutting down). See server logs for more details.</source>
-        <target state="new">An error occurred while receiving the HTTP response to {0}. This could be due to the service endpoint binding not using the HTTP protocol. This could also be due to an HTTP request context being aborted by the server (possibly due to the service shutting down). See server logs for more details.</target>
+        <target state="translated">Erro ao receber a resposta HTTP para {0}. Isso pode estar relacionado ao fato de que a associação de ponto de extremidade de serviço não usa o protocolo HTTP. Também pode estar relacionado à anulação de um contexto de solicitação HTTP pelo servidor (possivelmente devido ao desligamento do serviço). Consulte os logs do servidor para obter mais detalhes.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpRequestTimedOut">
         <source>The HTTP request to '{0}' has exceeded the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The HTTP request to '{0}' has exceeded the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">A solicitação HTTP para '{0}' excedeu o tempo limite determinado de {1}. O tempo alocado para essa operação pode ter sido uma parte de um tempo limite maior.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpRequiresSingleAuthScheme">
         <source>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">O esquema de autenticação '{0}' foi especificado na fábrica HTTP. No entanto, a fábrica suporta apenas a especificação de, exatamente, um esquema de autenticação. Os esquemas de autenticação válidos são Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication ou Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpResponseTimedOut">
         <source>The HTTP request to '{0}' has exceeded the allotted timeout of {1} while reading the response. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The HTTP request to '{0}' has exceeded the allotted timeout of {1} while reading the response. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">A solicitação HTTP para '{0}' excedeu o tempo limite determinado de {1} ao ler a resposta. O tempo alocado para essa operação pode ter sido uma parte de um tempo limite maior.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpServerTooBusy">
         <source>The HTTP service located at {0} is unavailable.  This could be because the service is too busy or because no endpoint was found listening at the specified address. Please ensure that the address is correct and try accessing the service again later.</source>
-        <target state="new">The HTTP service located at {0} is unavailable.  This could be because the service is too busy or because no endpoint was found listening at the specified address. Please ensure that the address is correct and try accessing the service again later.</target>
+        <target state="translated">O serviço HTTP localizado em {0} não está disponível. Talvez isso ocorreu porque o serviço está muito ocupado ou porque nenhum ponto de extremidade foi encontrado escutando no endereço especificado. Verifique se o endereço está correto e tente acessar o serviço novamente mais tarde.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpSoapActionMismatch">
         <source>The SOAP action specified on the message, '{0}', does not match the action specified on the HttpRequestMessageProperty, '{1}'.</source>
-        <target state="new">The SOAP action specified on the message, '{0}', does not match the action specified on the HttpRequestMessageProperty, '{1}'.</target>
+        <target state="translated">A ação de SOAP especificada na mensagem, '{0}', não corresponde à ação especificada em HttpRequestMessageProperty, '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpSoapActionMismatchContentType">
         <source>The SOAP action specified on the message, '{0}', does not match the action specified in the content-type of the HttpRequestMessageProperty, '{1}'.</source>
-        <target state="new">The SOAP action specified on the message, '{0}', does not match the action specified in the content-type of the HttpRequestMessageProperty, '{1}'.</target>
+        <target state="translated">A ação de SOAP especificada na mensagem, '{0}', não corresponde à ação especificada no tipo de conteúdo de HttpRequestMessageProperty, '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpToMustEqualVia">
         <source>The binding specified requires that the to and via URIs must match because the Addressing Version is set to None. The to URI specified was '{0}'. The via URI specified was '{1}'.</source>
-        <target state="new">The binding specified requires that the to and via URIs must match because the Addressing Version is set to None. The to URI specified was '{0}'. The via URI specified was '{1}'.</target>
+        <target state="translated">A associação especificada requer que os URIs de destino e de rota sejam correspondentes, pois a Versão de Endereçamento está definida como None. O URI de destino especificado era '{0}'. O URI de rota especificado era '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpsExplicitIdentity">
         <source>The HTTPS channel factory does not support explicit specification of an identity in the EndpointAddress unless the authentication scheme is NTLM or Negotiate.</source>
-        <target state="new">The HTTPS channel factory does not support explicit specification of an identity in the EndpointAddress unless the authentication scheme is NTLM or Negotiate.</target>
+        <target state="translated">A fábrica de canais HTTPS não oferece suporte à especificação explícita de uma identidade em EndpointAddress, a não ser que o esquema de autenticação seja NTLM ou Negociação.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpsIdentityMultipleCerts">
         <source>The endpoint identity specified when creating the HTTPS channel to '{0}' contains multiple server certificates.  However, the HTTPS transport only supports the specification of a single server certificate.  In order to create an HTTPS channel, please specify no more than one server certificate in the endpoint identity.</source>
-        <target state="new">The endpoint identity specified when creating the HTTPS channel to '{0}' contains multiple server certificates.  However, the HTTPS transport only supports the specification of a single server certificate.  In order to create an HTTPS channel, please specify no more than one server certificate in the endpoint identity.</target>
+        <target state="translated">A identidade de ponto de extremidade especificada ao criar o canal HTTPS para '{0}' contém vários certificados de servidor. Entretanto, o transporte HTTPS apenas oferece suporte à especificação de um único certificado de servidor. Para criar um canal HTTPS, especifique no máximo um certificado de servidor na identidade do ponto de extremidade.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpsServerCertThumbprintMismatch">
         <source>The server certificate with name '{0}' failed identity verification because its thumbprint ('{1}') does not match the one specified in the endpoint identity ('{2}').  As a result, the current HTTPS request has failed.  Please update the endpoint identity used on the client or the certificate used by the server.</source>
-        <target state="new">The server certificate with name '{0}' failed identity verification because its thumbprint ('{1}') does not match the one specified in the endpoint identity ('{2}').  As a result, the current HTTPS request has failed.  Please update the endpoint identity used on the client or the certificate used by the server.</target>
+        <target state="translated">Falha na verificação de identidade do certificado do servidor com o nome '{0}' porque sua impressão digital ('{1}') não corresponde à especificada na identidade do ponto de extremidade ('{2}'). Consequentemente, a solicitação HTTPS atual apresentou uma falha. Atualize a identidade do ponto de extremidade usada no cliente ou o certificado usado pelo servidor.</target>
         <note />
       </trans-unit>
       <trans-unit id="InputTypeListEmptyError">
         <source>The input handler list cannot be empty.</source>
-        <target state="new">The input handler list cannot be empty.</target>
+        <target state="translated">A lista do manipulador de entrada não pode estar vazia.</target>
         <note />
       </trans-unit>
       <trans-unit id="ManualAddressingRequiresAddressedMessages">
         <source>Manual addressing is enabled on this factory, so all messages sent must be pre-addressed.</source>
-        <target state="new">Manual addressing is enabled on this factory, so all messages sent must be pre-addressed.</target>
+        <target state="translated">O endereçamento manual está habilitado nesta fábrica e, portanto, todas as mensagens enviadas devem ser pré-endereçadas.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxBufferSizeMustMatchMaxReceivedMessageSize">
         <source>For TransferMode.Buffered, MaxReceivedMessageSize and MaxBufferSize must be the same value.</source>
-        <target state="new">For TransferMode.Buffered, MaxReceivedMessageSize and MaxBufferSize must be the same value.</target>
+        <target state="translated">Para TransferMode.Buffered, MaxReceivedMessageSize e MaxBufferSize devem ter o mesmo valor.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxBufferSizeMustNotExceedMaxReceivedMessageSize">
         <source>MaxBufferSize must not exceed MaxReceivedMessageSize.</source>
-        <target state="new">MaxBufferSize must not exceed MaxReceivedMessageSize.</target>
+        <target state="translated">MaxBufferSize não deve exceder MaxReceivedMessageSize.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeExceeded">
         <source>The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</source>
-        <target state="new">The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</target>
+        <target state="translated">A cota máxima de tamanho de mensagens de entrada ({0}) foi excedida. Para aumentar a cota, use a propriedade MaxReceivedMessageSize no elemento de associação apropriado.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeMustBeInIntegerRange">
         <source>This factory buffers messages, so the message sizes must be in the range of an integer value.</source>
-        <target state="new">This factory buffers messages, so the message sizes must be in the range of an integer value.</target>
+        <target state="translated">Esta fábrica armazena mensagens em buffer e, portanto, os tamanhos das mensagens devem estar no intervalo de um valor inteiro.</target>
         <note />
       </trans-unit>
       <trans-unit id="MessageXmlProtocolError">
         <source>There is a problem with the XML that was received from the network. See inner exception for more details.</source>
-        <target state="new">There is a problem with the XML that was received from the network. See inner exception for more details.</target>
+        <target state="translated">Há um problema com o XML recebido da rede. Consulte a exceção interna para obter mais detalhes.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingContentType">
         <source>The receiver returned an error indicating that the content type was missing on the request to {0}.  See the inner exception for more information.</source>
-        <target state="new">The receiver returned an error indicating that the content type was missing on the request to {0}.  See the inner exception for more information.</target>
+        <target state="translated">O destinatário retornou um erro indicando que o tipo de conteúdo estava ausente na solicitação para {0}. Consulte a exceção interna para obter mais informações.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyDefaultSpnServiceSupported">
         <source>Only HOST and HTTP service principal names are supported .</source>
-        <target state="new">Only HOST and HTTP service principal names are supported .</target>
+        <target state="translated">Somente os nomes da entidade de serviço de HOST e HTTP são suportados.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProxyAuthenticationLevelMismatch">
         <source>The HTTP proxy authentication credential specified an mutual authentication requirement ({0}) that is stricter than the requirement for target server authentication ({1}).</source>
-        <target state="new">The HTTP proxy authentication credential specified an mutual authentication requirement ({0}) that is stricter than the requirement for target server authentication ({1}).</target>
+        <target state="translated">A credencial de autenticação de proxy HTTP especificou um requisito de autenticação mútua ({0}) mais rígido que o requisito para autenticação de servidores de destino ({1}).</target>
         <note />
       </trans-unit>
       <trans-unit id="ProxyImpersonationLevelMismatch">
         <source>The HTTP proxy authentication credential specified an impersonation level restriction ({0}) that is stricter than the restriction for target server authentication ({1}).</source>
-        <target state="new">The HTTP proxy authentication credential specified an impersonation level restriction ({0}) that is stricter than the restriction for target server authentication ({1}).</target>
+        <target state="translated">A credencial de autenticação de proxy HTTP especificou uma restrição de nível de representação ({0}) mais rígida que a restrição para autenticação de servidores de destino ({1}).</target>
         <note />
       </trans-unit>
       <trans-unit id="ResponseContentTypeMismatch">
         <source>The content type {0} of the response message does not match the content type of the binding ({1}). If using a custom encoder, be sure that the IsContentTypeSupported method is implemented properly. The first {2} bytes of the response were: '{3}'.</source>
-        <target state="new">The content type {0} of the response message does not match the content type of the binding ({1}). If using a custom encoder, be sure that the IsContentTypeSupported method is implemented properly. The first {2} bytes of the response were: '{3}'.</target>
+        <target state="translated">O tipo de conteúdo {0} da mensagem de resposta não corresponde ao tipo de conteúdo da associação ({1}). Se estiver usando um codificador personalizado, verifique se o método IsContentTypeSupported está implementado corretamente. Os primeiros {2} bytes da resposta foram: '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
+        <target state="translated">O tempo limite deve ser maior ou igual a TimeSpan.Zero. Para desabilitar o tempo limite, especifique TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="new">Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</target>
+        <target state="translated">Os tempos limites maiores que Int32.MaxValue TotalMilliseconds (aproximadamente 24 dias) não podem ser honrados. Para desabilitar o tempo limite, especifique TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecureConversationRequiredByReliableSession">
         <source>Cannot establish a reliable session without secure conversation. Enable secure conversation.</source>
-        <target state="new">Cannot establish a reliable session without secure conversation. Enable secure conversation.</target>
+        <target state="translated">Não é possível estabelecer uma sessão confiável sem uma conversa segura. Habilite a conversa segura.</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustFailure">
         <source>Could not establish trust relationship for the SSL/TLS secure channel with authority '{0}'.</source>
-        <target state="new">Could not establish trust relationship for the SSL/TLS secure channel with authority '{0}'.</target>
+        <target state="translated">Não foi possível estabelecer uma relação de confiança para o canal protegido SSL/TLS com a autoridade '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnexpectedHttpResponseCode">
         <source>The remote server returned an unexpected response: ({0}) {1}.</source>
-        <target state="new">The remote server returned an unexpected response: ({0}) {1}.</target>
+        <target state="translated">O servidor remoto retornou uma resposta inesperada: ({0}) {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSecuritySetting">
         <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
-        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <target state="translated">Não há suporte para o valor '{1}' neste contexto da propriedade de segurança de associação '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UseDefaultWebProxyCantBeUsedWithExplicitProxyAddress">
         <source>You cannot specify an explicit Proxy Address as well as UseDefaultWebProxy=true in your HTTP Transport Binding Element.</source>
-        <target state="new">You cannot specify an explicit Proxy Address as well as UseDefaultWebProxy=true in your HTTP Transport Binding Element.</target>
+        <target state="translated">Não é possível especificar um Endereço Proxy explícito nem um UseDefaultWebProxy=true em seu Elemento de Associação de Transporte HTTP.</target>
         <note />
       </trans-unit>
       <trans-unit id="UserNameCannotBeEmpty">
         <source>The username cannot be empty.</source>
-        <target state="new">The username cannot be empty.</target>
+        <target state="translated">O nome de usuário não pode estar vazio.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">O valor deste argumento deve estar no intervalo de {0} a {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="new">The value of this argument must be non-negative.</target>
+        <target state="translated">O valor deste argumento não deve ser negativo.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBePositive">
         <source>The value of this argument must be positive.</source>
-        <target state="new">The value of this argument must be positive.</target>
+        <target state="translated">O valor deste argumento deve ser positivo.</target>
         <note />
       </trans-unit>
       <trans-unit id="WaitForMessageTimedOut">
         <source>WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">WaitForMessage atingiu o tempo limite após {0}. O tempo alocado para essa operação pode ter sido uma parte de um tempo limite maior.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketCannotCreateRequestClientChannelWithCertainWebSocketTransportUsage">
         <source>HttpChannelFactory cannot create the channel with shape '{0}' when the {1} of {2} was set as '{3}'.</source>
-        <target state="new">HttpChannelFactory cannot create the channel with shape '{0}' when the {1} of {2} was set as '{3}'.</target>
+        <target state="translated">HttpChannelFactory não pode criar o canal com a forma '{0}' quando o {1} de {2} foi definido como '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolContainsMultipleSubProtocolString">
         <source>The value specified ('{0}') contains more than one subprotocol which is not supported.</source>
-        <target state="new">The value specified ('{0}') contains more than one subprotocol which is not supported.</target>
+        <target state="translated">O valor especificado ('{0}') contém mais de um subprotocolo sem suporte.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="new">Empty string is not a valid subprotocol value. Please use "null" to specify no value.</target>
+        <target state="translated">Uma cadeia de caracteres vazia não é um valor válido de subprotocolo. Use "nulo" para não especificar nenhum valor.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">
         <source>The subprotocol '{0}' is invalid because it contains the invalid character '{1}'.</source>
-        <target state="new">The subprotocol '{0}' is invalid because it contains the invalid character '{1}'.</target>
+        <target state="translated">O subprotocolo '{0}' é inválido porque contém o caractere inválido '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketOperationTimedOut">
         <source>The '{0}' operation timed out after '{1}'. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The '{0}' operation timed out after '{1}'. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">A operação '{0}' atingiu o tempo limite após '{1}'. O tempo alocado para essa operação pode ter sido uma parte de um tempo limite maior.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketReceiveTimedOut">
         <source>The Receive operation timed out after '{0}'. For duplex sessionful channels, the receive timeout is also the idle timeout for the channel, so consider setting a suitably large value for the ReceiveTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The Receive operation timed out after '{0}'. For duplex sessionful channels, the receive timeout is also the idle timeout for the channel, so consider setting a suitably large value for the ReceiveTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">A operação de Recebimento atingiu o tempo limite após '{0}'. Para canais dúplex de sessão, o tempo limite de recebimento também é o tempo limite ocioso do canal. Por isso, considere configurar um valor adequado maior para o valor ReceiveTimeout na Associação. O tempo alocado para essa operação pode ter sido uma parte de um tempo limite maior.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketSendTimedOut">
         <source>The Send operation timed out after '{0}'. Increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The Send operation timed out after '{0}'. Increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">A operação de Envio atingiu o limite após '{0}'. Aumente o valor de SendTimeout na Associação. O tempo alocado para essa operação pode ter sido uma parte de um tempo limite maior.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketStreamWriteCalledAfterEOMSent">
         <source>Cannot write to the stream because the end of the stream marker was already written.</source>
-        <target state="new">Cannot write to the stream because the end of the stream marker was already written.</target>
+        <target state="translated">Não é possível gravar no fluxo porque a extremidade do marcador do fluxo já foi gravada.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketSubProtocolMismatchFromServer">
         <source>The server didn't accept the connection request. It is possible that the WebSocket subprotocol sent by your client is not supported by the server. Protocol(s) supported by the server are '{0}'.</source>
-        <target state="new">The server didn't accept the connection request. It is possible that the WebSocket subprotocol sent by your client is not supported by the server. Protocol(s) supported by the server are '{0}'.</target>
+        <target state="translated">O servidor não aceitou a solicitação de conexão. É possível que o subprotocolo WebSocket enviado pelo cliente não tenha suporte do servidor. Os protocolos com suporte do servidor são '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketUnexpectedCloseMessageError">
         <source>Unexpected WebSocket close message received when receiving a message.</source>
-        <target state="new">Unexpected WebSocket close message received when receiving a message.</target>
+        <target state="translated">Mensagem de fechamento do WebSocket inesperada recebida durante o recebimento de uma mensagem.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketVersionMismatchFromServer">
         <source>The server didn't accept the connection request. It is possible that the WebSocket protocol version on your client doesn't match the one on the server('{0}').</source>
-        <target state="new">The server didn't accept the connection request. It is possible that the WebSocket protocol version on your client doesn't match the one on the server('{0}').</target>
+        <target state="translated">O servidor não aceitou a solicitação de conexão. É possível que a versão do protocolo WebSocket no cliente não corresponda à versão no servidor ('{0}').</target>
         <note />
       </trans-unit>
     </body>

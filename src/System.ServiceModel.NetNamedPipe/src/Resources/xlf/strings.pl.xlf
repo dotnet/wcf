@@ -4,212 +4,212 @@
     <body>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="new">Activity boundary</target>
+        <target state="translated">Granica działania</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityProcessAction">
         <source>Process action '{0}'.</source>
-        <target state="new">Process action '{0}'.</target>
+        <target state="translated">Przetwarzaj akcję „{0}”.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="new">Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</target>
+        <target state="translated">Klient nie może określić jednostki usługi na podstawie tożsamości z adresu docelowego „{0}” na potrzeby SspiNegotiation/Kerberos. Tożsamość adresu docelowego musi być tożsamością UPN (jak acmedomain\alice) lub tożsamością SPN (jak host/bobs-machine).</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
-        <target state="new">The specified channel type {0} is not supported by this channel manager.</target>
+        <target state="translated">Określony typ kanału {0} jest nieobsługiwany przez tego menedżera kanałów.</target>
         <note />
       </trans-unit>
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
-        <target state="new">There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</target>
+        <target state="translated">W elemencie {0} brak nasłuchującego punktu końcowego, który mógłby odebrać komunikat. Jest to często spowodowane niepoprawnym adresem lub akcją SOAP. Sprawdź właściwość InnerException (jeśli jest obecna), aby uzyskać więcej szczegółowych informacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
         <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="new">Insufficient memory avaliable to complete the operation.</target>
+        <target state="translated">Brak wystarczającej ilości pamięci, aby ukończyć operację.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockTimeoutExceptionMessage">
         <source>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Nie można zażądać blokady w wyznaczonym limicie czasu {0}. Być może czas przydzielony dla tej operacji stanowi część większego limitu czasu.</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageFullNameInvalid">
         <source>The package full name '{0}' is invalid.</source>
-        <target state="new">The package full name '{0}' is invalid.</target>
+        <target state="translated">Pełna nazwa pakietu („{0}”) jest nieprawidłowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
         <source>The pipe cannot be written to or read from because it is already in the process of being closed.</source>
-        <target state="new">The pipe cannot be written to or read from because it is already in the process of being closed.</target>
+        <target state="translated">Nie można odczytać z potoku ani zapisać do niego, ponieważ trwa zamykanie potoku.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyShuttingDown">
         <source>The pipe cannot be written to because it is already in the process of shutting down.</source>
-        <target state="new">The pipe cannot be written to because it is already in the process of shutting down.</target>
+        <target state="translated">Nie można zapisać potoku, ponieważ trwa jego zamykanie.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeCantCloseWithPendingWrite">
         <source>The pipe cannot be closed while a write to the pipe is pending.</source>
-        <target state="new">The pipe cannot be closed while a write to the pipe is pending.</target>
+        <target state="translated">Nie można zamknąć potoku podczas oczekiwania na zapis do niego.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeCloseFailed">
         <source>The pipe could not close gracefully.  This may be caused by the application on the other end of the pipe exiting.</source>
-        <target state="new">The pipe could not close gracefully.  This may be caused by the application on the other end of the pipe exiting.</target>
+        <target state="translated">Nie można bezpiecznie zamknąć potoku. Ta sytuacja może być spowodowana zakończeniem pracy aplikacji po drugiej stronie potoku.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeClosed">
         <source>The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</source>
-        <target state="new">The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</target>
+        <target state="translated">Nie można zakończyć operacji, ponieważ potok został zamknięty. Ta sytuacja może być spowodowana zakończeniem pracy aplikacji po drugiej stronie potoku.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectAddressFailed">
         <source>A pipe endpoint exists for '{0}', but the connect failed: {1}</source>
-        <target state="new">A pipe endpoint exists for '{0}', but the connect failed: {1}</target>
+        <target state="translated">Punkt końcowy potoku istnieje dla elementu „{0}”, ale nie można nawiązać połączenia: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectFailed">
         <source>Cannot connect to endpoint '{0}'.</source>
-        <target state="new">Cannot connect to endpoint '{0}'.</target>
+        <target state="translated">Nie można nawiązać połączenia z punktem końcowym „{0}”.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectTimedOut">
         <source>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Nie udało się nawiązać połączenia z punktem końcowym „{0}” w przydzielonym limicie czasu {1}. Czas przydzielony tej operacji mógł być częścią dłuższego limitu czasu.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectTimedOutServerTooBusy">
         <source>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The server has likely reached the MaxConnections quota and is too busy to accept new connections. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The server has likely reached the MaxConnections quota and is too busy to accept new connections. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Nie udało się nawiązać połączenia z punktem końcowym „{0}” w przydzielonym limicie czasu {1}. Prawdopodobnie serwer osiągnął limit przydziału dla elementu MaxConnections i jest zbyt zajęty, aby akceptować nowe połączenia. Czas przydzielony tej operacji mógł być częścią dłuższego limitu czasu.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectionAbortedReadTimedOut">
         <source>The pipe connection was aborted because an asynchronous read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The pipe connection was aborted because an asynchronous read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Połączenie z potokiem zostało przerwane, ponieważ asynchroniczny odczyt z potoku nie zakończył się w przydzielonym limicie czasu {0}. Czas przydzielony tej operacji mógł być częścią dłuższego limitu czasu.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectionAbortedWriteTimedOut">
         <source>The pipe connection was aborted because an asynchronous write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The pipe connection was aborted because an asynchronous write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Połączenie z potokiem zostało przerwane, ponieważ asynchroniczny zapis do potoku nie zakończył się w przydzielonym limicie czasu {0}. Czas przydzielony tej operacji mógł być częścią dłuższego limitu czasu.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeEndpointNotFound">
         <source>The pipe endpoint '{0}' could not be found on your local machine.</source>
-        <target state="new">The pipe endpoint '{0}' could not be found on your local machine.</target>
+        <target state="translated">Nie można odnaleźć punktu końcowego potoku „{0}” na maszynie lokalnej.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeKnownWin32Error">
         <source>{0} ({1}, 0x{2})</source>
-        <target state="new">{0} ({1}, 0x{2})</target>
+        <target state="translated">{0} ({1}, 0x{2})</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeModeChangeFailed">
         <source>The pipe was not able to be set to message mode: {0}</source>
-        <target state="new">The pipe was not able to be set to message mode: {0}</target>
+        <target state="translated">Nie można ustawić trybu komunikatu dla potoku: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeNameCanNotBeAccessed">
         <source>The pipe name could not be obtained for the pipe URI: {0}</source>
-        <target state="new">The pipe name could not be obtained for the pipe URI: {0}</target>
+        <target state="translated">Nie można uzyskać nazwy potoku dla identyfikatora URI potoku: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeNameCanNotBeAccessed2">
         <source>The pipe name could not be obtained for {0}.</source>
-        <target state="new">The pipe name could not be obtained for {0}.</target>
+        <target state="translated">Nie można uzyskać nazwy potoku dla elementu {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeReadPending">
         <source>There is already a read in progress for the pipe.  Wait for the first operation to complete before attempting to read again.</source>
-        <target state="new">There is already a read in progress for the pipe.  Wait for the first operation to complete before attempting to read again.</target>
+        <target state="translated">Trwa operacja odczytu z potoku. Przed ponowieniem próby odczytu poczekaj na zakończenie pierwszej operacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeShutdownReadError">
         <source>The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</source>
-        <target state="new">The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</target>
+        <target state="translated">Nie otrzymano sygnału zamknięcia z potoku. Być może aplikacja po drugiej stronie potoku nie wysłała go. Potok pozostanie zamknięty.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeShutdownWriteError">
         <source>The shutdown indicator could not be written to the pipe.  The application on the other end of the pipe may not be listening for it.  The pipe will still be closed.</source>
-        <target state="new">The shutdown indicator could not be written to the pipe.  The application on the other end of the pipe may not be listening for it.  The pipe will still be closed.</target>
+        <target state="translated">Nie można zapisać do potoku sygnału zamknięcia. Być może aplikacja po drugiej stronie potoku nie nasłuchuje tego sygnału. Potok pozostanie zamknięty.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeSignalExpected">
         <source>The read from the pipe expected just a signal, but received actual data.</source>
-        <target state="new">The read from the pipe expected just a signal, but received actual data.</target>
+        <target state="translated">Podczas odczytu potoku oczekiwano tylko sygnału, a otrzymano rzeczywiste dane.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeUriSchemeWrong">
         <source>URIs used with pipes must use the scheme: 'net.pipe'.</source>
-        <target state="new">URIs used with pipes must use the scheme: 'net.pipe'.</target>
+        <target state="translated">W identyfikatorach URI używanych w potokach musi być stosowany schemat: „net.pipe”.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeWritePending">
         <source>There is already a write in progress for the pipe.  Wait for the first operation to complete before attempting to write again.</source>
-        <target state="new">There is already a write in progress for the pipe.  Wait for the first operation to complete before attempting to write again.</target>
+        <target state="translated">Trwa operacja zapisu dla tego potoku. Przed ponowieniem próby zapisu poczekaj na zakończenie pierwszej operacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeWriteTimedOut">
         <source>The write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Operacja zapisu do potoku nie została zakończona w przydzielonym limicie czasu {0}. Czas przydzielony tej operacji mógł być częścią dłuższego limitu czasu.</target>
         <note />
       </trans-unit>
       <trans-unit id="PlatformNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on this platform.</source>
-        <target state="new">NetNamedPipe is not supported on this platform.</target>
+        <target state="translated">Program NetNamedPipe nie jest obsługiwany na tej platformie.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
+        <target state="translated">Limit czasu musi być większy lub równy wartości TimeSpan.Zero. Aby wyłączyć limit czasu, określ wartość TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="new">Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</target>
+        <target state="translated">Limity czasu większe niż Int32.MaxValue TotalMilliseconds (około 24 dni) nie mogą być uwzględniane. Aby wyłączyć limit czasu, określ wartość TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
+        <target state="translated">Serwer „{0}” zwrócił błąd wskazujący, że właśnie trwa jego zamykanie. Szczegółowe informacje o błędzie można znaleźć w wewnętrznym wyjątku.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
+        <target state="translated">Serwer „{0}” zwrócił błąd wskazujący, że jest zbyt obciążony, aby obsłużyć żądanie. Spróbuj ponownie później. Szczegółowe informacje o błędzie można znaleźć w wewnętrznym wyjątku.</target>
         <note />
       </trans-unit>
       <trans-unit id="SessionValueInvalid">
         <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
-        <target state="new">The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</target>
+        <target state="translated">Wartość właściwości Session „{0}” jest nieprawidłowa. Określ wartość CurrentSession lub ServiceSession albo nieujemny identyfikator sesji systemu Windows.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
         <source>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</source>
-        <target state="new">An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</target>
+        <target state="translated">Próba połączenia się z punktem końcowym nazwanego potoku na „{1}” nie powiodła się. Zostanie podjęta kolejna próba z {0} pozostałych w ogólnym limicie czasu.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeInitiatingNamedPipeConnection">
         <source>Initiating Named Pipe connection.</source>
-        <target state="new">Initiating Named Pipe connection.</target>
+        <target state="translated">Inicjowanie połączenia nazwanego potoku.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodePipeConnectionAbort">
         <source>PipeConnection aborted</source>
-        <target state="new">PipeConnection aborted</target>
+        <target state="translated">Przerwano połączenie potokowe</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="new">The value of this argument must be non-negative.</target>
+        <target state="translated">Wartość tego argumentu nie może być ujemna.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBePositive">
         <source>The value of this argument must be positive.</source>
-        <target state="new">The value of this argument must be positive.</target>
+        <target state="translated">Wartość tego argumentu musi być dodatnia.</target>
         <note />
       </trans-unit>
     </body>
