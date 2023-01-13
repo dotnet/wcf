@@ -52,8 +52,11 @@ namespace System.ServiceModel.Federation
                 AdditionalRequestParameters.Add(parameter);
 
             CacheIssuedTokens = other.CacheIssuedTokens;
-            foreach (var claimType in ClaimTypes)
-                ClaimTypes.Add(claimType);
+            Claims = other.Claims;
+            foreach(var element in other.AdditionalRequestParameters)
+            {
+                AdditionalRequestParameters.Add(element);
+            }
 
             _issuedTokenRenewalThresholdPercentage = other.IssuedTokenRenewalThresholdPercentage;
             KeySize = other.KeySize;
@@ -84,7 +87,7 @@ namespace System.ServiceModel.Federation
         /// Allows the addition of <see cref="Claims"/> to the WSTrust request
         /// <para>see: http://docs.oasis-open.org/ws-sx/ws-trust/200512/ws-trust-1.3-os.html </para>
         /// </summary>
-        public ICollection<Claims> ClaimTypes { get; } = new Collection<Claims>();
+        public Claims Claims { get; set; }
 
         /// <summary>
         /// Gets or sets the percentage of the issued token's lifetime at which it should be renewed instead of cached.

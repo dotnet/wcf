@@ -107,7 +107,7 @@ namespace System.ServiceModel.Federation
         /// <returns></returns>
         internal virtual ChannelFactory<IRequestChannel> ChannelFactory { get; set; }
 
-        internal ClientCredentials ClientCredentials { get; set; }
+        internal protected ClientCredentials ClientCredentials { get; set; }
 
         /// <summary>
         /// Creates a <see cref="WsTrustRequest"/> from the <see cref="WSTrustTokenParameters"/>
@@ -165,6 +165,16 @@ namespace System.ServiceModel.Federation
             {
                 trustRequest.Entropy = entropy;
                 trustRequest.ComputedKeyAlgorithm = _requestSerializationContext.TrustKeyTypes.PSHA1;
+            }
+
+            if (WSTrustTokenParameters.Claims != null)
+            {
+                trustRequest.Claims = WSTrustTokenParameters.Claims;
+            }
+            
+            foreach (var element in WSTrustTokenParameters.AdditionalRequestParameters)
+            {
+                trustRequest.AdditionalXmlElements.Add(element);
             }
 
             return trustRequest;
