@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Tracing;
-using System.IdentityModel.Security;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.IO;
@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.WsAddressing;
+using Microsoft.IdentityModel.Protocols.WsFed;
 using Microsoft.IdentityModel.Protocols.WsPolicy;
 using Microsoft.IdentityModel.Protocols.WsTrust;
 using SecurityToken = System.IdentityModel.Tokens.SecurityToken;
@@ -169,12 +170,23 @@ namespace System.ServiceModel.Federation
 
             if (WSTrustTokenParameters.Claims != null)
             {
-                trustRequest.Claims = WSTrustTokenParameters.Claims;
+                List<ClaimType> claimTypes = new List<ClaimType>();
+                foreach (ClaimType claimType in WSTrustTokenParameters.Claims.ClaimTypes)
+                {
+                    claimTypes.Add(new ClaimType()
+                    {
+                        IsOptional = claimType.IsOptional,
+                        Uri = claimType.Uri,
+                        Value = claimType.Value
+                    });
+                }
+
+                trustRequest.Claims = new Claims(WSTrustTokenParameters.Claims.Dialect, claimTypes);
             }
             
-            foreach (var element in WSTrustTokenParameters.AdditionalRequestParameters)
+            foreach (XmlElement parameter in WSTrustTokenParameters.AdditionalRequestParameters)
             {
-                trustRequest.AdditionalXmlElements.Add(element);
+                trustRequest.AdditionalXmlElements.Add((XmlElement)parameter.CloneNode(true));
             }
 
             return trustRequest;

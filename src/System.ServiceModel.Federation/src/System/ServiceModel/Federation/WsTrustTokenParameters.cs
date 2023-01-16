@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
+using Microsoft.IdentityModel.Protocols.WsFed;
 using Microsoft.IdentityModel.Protocols.WsTrust;
 using Microsoft.IdentityModel.Tokens.Saml2;
 
@@ -49,13 +50,24 @@ namespace System.ServiceModel.Federation
             : base(other)
         {
             foreach (var parameter in other.AdditionalRequestParameters)
-                AdditionalRequestParameters.Add(parameter);
+                AdditionalRequestParameters.Add((XmlElement)parameter.CloneNode(true));
 
             CacheIssuedTokens = other.CacheIssuedTokens;
-            Claims = other.Claims;
-            foreach(var element in other.AdditionalRequestParameters)
+
+            if (other.Claims != null)
             {
-                AdditionalRequestParameters.Add(element);
+                List<ClaimType> claimTypes = new List<ClaimType>();
+                foreach (var claimType in other.Claims.ClaimTypes)
+                {
+                    claimTypes.Add(new ClaimType()
+                    {
+                        IsOptional = claimType.IsOptional,
+                        Uri = claimType.Uri,
+                        Value = claimType.Value
+                    });
+                }
+
+                Claims = new Claims(other.Claims.Dialect, claimTypes);
             }
 
             _issuedTokenRenewalThresholdPercentage = other.IssuedTokenRenewalThresholdPercentage;
