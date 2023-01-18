@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 6.0.0-preview1
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetTcp/6.0.0-preview1.23060.3)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v6.0.0-preview1)
+
 ### 4.10.0
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetTcp/4.10.0)
