@@ -1,4 +1,4 @@
-# System.ServiceModel.NetTcp
+# System.ServiceModel.NetNamedPipe
 
 ## Information
 
