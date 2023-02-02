@@ -115,11 +115,11 @@ namespace WcfService
             {
                 if(ex.Message.Equals(greeting))
                 {
-                    Environment.SetEnvironmentVariable("callbackexception" + includeExceptionDetailInFaults.ToString().ToLower(), "included", EnvironmentVariableTarget.Machine);
+                    Environment.SetEnvironmentVariable("callbackexception" + includeExceptionDetailInFaults.ToString().ToLower(), "included", EnvironmentVariableTarget.Process);
                 }
                 else
                 {
-                    Environment.SetEnvironmentVariable("callbackexception" + includeExceptionDetailInFaults.ToString().ToLower(), "unincluded", EnvironmentVariableTarget.Machine);
+                    Environment.SetEnvironmentVariable("callbackexception" + includeExceptionDetailInFaults.ToString().ToLower(), "unincluded", EnvironmentVariableTarget.Process);
                 }
             }
 
@@ -129,8 +129,8 @@ namespace WcfService
         public bool GetResult(bool includeExceptionDetailInFaults)
         {
             string envVar = "callbackexception" + includeExceptionDetailInFaults.ToString().ToLower();
-            string result = Environment.GetEnvironmentVariable(envVar, EnvironmentVariableTarget.Machine);
-            Environment.SetEnvironmentVariable(envVar, null, EnvironmentVariableTarget.Machine);
+            string result = Environment.GetEnvironmentVariable(envVar, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable(envVar, null, EnvironmentVariableTarget.Process);
             if (includeExceptionDetailInFaults)
             {
                 return result.Equals("included");
