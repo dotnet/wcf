@@ -7,6 +7,11 @@ Getting Started instructions can be found in the [usage guide](https://go.micros
 
 ## Version History
 
+### > 2.0.1
+
+* Please [review the release page](https://github.com/dotnet/wcf/releases) for changes.  
+* e.g. [dotnet-svcutil 2.1.0 Release](https://github.com/dotnet/wcf/releases/tag/v2.1.0-dotnet-svcutil)
+
 ### 2.0.1 (7/29/2019)
 * Added --sync option to generate synchronous operations in addition to async operations ([#654](https://github.com/dotnet/wcf/issues/654)).
 * Bug fixes ([#3494](https://github.com/dotnet/wcf/issues/3494), [#3542](https://github.com/dotnet/wcf/issues/3542), [#3681](https://github.com/dotnet/wcf/issues/3681), [#3226](https://github.com/dotnet/wcf/issues/3226), [#2332](https://github.com/dotnet/wcf/issues/2332), [#3682](https://github.com/dotnet/wcf/issues/3682)).
