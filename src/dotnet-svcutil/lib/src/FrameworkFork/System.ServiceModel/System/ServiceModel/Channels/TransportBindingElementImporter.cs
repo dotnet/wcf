@@ -151,9 +151,8 @@ namespace System.ServiceModel.Channels
                     transportBindingElement = new TcpTransportBindingElement();
                     break;
                 case TransportPolicyConstants.NamedPipeTransportUri:
-                // Not supported on .NET Core yet.
-                //                     transportBindingElement = new NamedPipeTransportBindingElement();
-                //                     break;
+                    transportBindingElement = new NamedPipeTransportBindingElement();
+                    break;
                 case TransportPolicyConstants.PeerTransportUri:
                     throw new NotImplementedException();
                 case TransportPolicyConstants.WebSocketTransportUri:

@@ -40,7 +40,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             s_bindingValidationErrors.Clear();
 
-            if (!(binding is BasicHttpBinding || binding is NetHttpBinding || binding is WSHttpBinding || binding is NetTcpBinding || binding is WSFederationHttpBinding || binding is CustomBinding))
+            if (!(binding is BasicHttpBinding || binding is NetHttpBinding || binding is WSHttpBinding || binding is NetTcpBinding || binding is WSFederationHttpBinding || binding is NetNamedPipeBinding || binding is CustomBinding))
             {
                 s_bindingValidationErrors.Add(string.Format(SR.BindingTypeNotSupportedFormat, binding.GetType().FullName,
                     typeof(BasicHttpBinding).FullName, typeof(NetHttpBinding).FullName, typeof(WSHttpBinding).FullName, typeof(NetTcpBinding).FullName, typeof(CustomBinding).FullName));
@@ -124,7 +124,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (bindingElement is TransportBindingElement)
                 {
-                    if (!(bindingElement is HttpTransportBindingElement || bindingElement is HttpsTransportBindingElement || bindingElement is TcpTransportBindingElement))
+                    if (!(bindingElement is HttpTransportBindingElement || bindingElement is HttpsTransportBindingElement || bindingElement is TcpTransportBindingElement || bindingElement is NamedPipeTransportBindingElement))
                     {
                         s_bindingValidationErrors.Add(string.Format(SR.BindingTransportTypeNotSupportedFormat, bindingElement.GetType().FullName,
                             typeof(HttpTransportBindingElement).FullName, typeof(HttpsTransportBindingElement).FullName, typeof(TcpTransportBindingElement).FullName));
