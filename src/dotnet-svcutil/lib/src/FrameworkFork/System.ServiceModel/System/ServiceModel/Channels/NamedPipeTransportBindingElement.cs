@@ -10,6 +10,7 @@ namespace System.ServiceModel.Channels
     public class NamedPipeTransportBindingElement : ConnectionOrientedTransportBindingElement
     {
         private NamedPipeSettings _settings = new NamedPipeSettings();
+        NamedPipeConnectionPoolSettings _connectionPoolSettings = new NamedPipeConnectionPoolSettings();
 
         public NamedPipeTransportBindingElement()
             : base()
@@ -20,6 +21,11 @@ namespace System.ServiceModel.Channels
             : base(elementToBeCloned)
         {
             _settings = elementToBeCloned._settings.Clone();
+        }
+
+        public NamedPipeConnectionPoolSettings ConnectionPoolSettings
+        {
+            get { return _connectionPoolSettings; }
         }
 
         public NamedPipeSettings PipeSettings
@@ -64,7 +70,28 @@ namespace System.ServiceModel.Channels
 
         internal override bool IsMatch(BindingElement b)
         {
-            throw new NotImplementedException();
+            if (!base.IsMatch(b))
+            {
+                return false;
+            }
+
+            NamedPipeTransportBindingElement namedPipe = b as NamedPipeTransportBindingElement;
+            if (namedPipe == null)
+            {
+                return false;
+            }
+
+            if (!this.ConnectionPoolSettings.IsMatch(namedPipe.ConnectionPoolSettings))
+            {
+                return false;
+            }
+
+            if (!this.PipeSettings.IsMatch(namedPipe.PipeSettings))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private class BindingDeliveryCapabilitiesHelper : IBindingDeliveryCapabilities

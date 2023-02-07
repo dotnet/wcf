@@ -168,6 +168,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 return;
             }
 
+            NetNamedPipeBinding namedPipe = binding as NetNamedPipeBinding;
+            if (namedPipe != null)
+            {
+                AddNamedPipeBindingConfiguration(statements, namedPipe);
+                return;
+            }
+
             CustomBinding custom = binding as CustomBinding;
             if (custom != null)
             {
@@ -1014,6 +1021,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if (!handled)
                 {
+                    NamedPipeTransportBindingElement namedPipeTE = bindingElement as NamedPipeTransportBindingElement;
+                    if (namedPipeTE != null)
+                    {
+                        AddNamedPipeBindingElement(statements, resultVar, namedPipeTE);
+                        handled = true;
+                    }
+                }
+
+                if (!handled)
+                {
                     TransportSecurityBindingElement transportSE = bindingElement as TransportSecurityBindingElement;
                     if (transportSE != null)
                     {
@@ -1054,6 +1071,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if (!handled)
                 {
+                    WindowsStreamSecurityBindingElement winSecurityStreamBE = bindingElement as WindowsStreamSecurityBindingElement;
+                    if (winSecurityStreamBE != null)
+                    {
+                        AddWinStreamSecurityBindingElement(statements, resultVar);
+                        handled = true;
+                    }
+                 }
+
+                if (!handled)
+                {
                     throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingElementNotSupportedFormat, bindingElement.GetType().FullName));
                 }
             }
@@ -1075,6 +1102,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     new CodeObjectCreateExpression(typeof(SslStreamSecurityBindingElement))));
         }
 
+        private static void AddWinStreamSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding)
+        {
+            statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodePropertyReferenceExpression(
+                        customBinding,
+                        "Elements"),
+                    "Add",
+                    new CodeObjectCreateExpression(typeof(WindowsStreamSecurityBindingElement))));
+        }
+        
         private static void AddTransportSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TransportSecurityBindingElement bindingElement)
         {
             // Security binding validation is done in EndpointSelector.cs - Add UserNameOverTransportBindingElement
@@ -1243,6 +1281,61 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             new CodePropertyReferenceExpression(bindingElementRef, "ConnectionPoolSettings"),
                             "LeaseTimeout"),
                             CreateTimeSpanExpression(bindingElement.ConnectionPoolSettings.LeaseTimeout)));
+            }
+
+            statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodePropertyReferenceExpression(
+                        customBinding,
+                        "Elements"),
+                    "Add",
+                    bindingElementRef));
+        }
+
+        private static void AddNamedPipeBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, NamedPipeTransportBindingElement bindingElement)
+        {
+            NamedPipeTransportBindingElement defaultBindingElement = new NamedPipeTransportBindingElement();
+            CodeVariableDeclarationStatement namedPipeBindingElement = new CodeVariableDeclarationStatement(
+                typeof(TcpTransportBindingElement),
+                "namedPipeBindingElement",
+                new CodeObjectCreateExpression(typeof(NamedPipeTransportBindingElement)));
+            statements.Add(namedPipeBindingElement);
+            CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(namedPipeBindingElement.Name);
+
+            statements.Add(
+                new CodeAssignStatement(
+                    new CodePropertyReferenceExpression(
+                        bindingElementRef,
+                        "MaxBufferSize"),
+                    new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(int)), "MaxValue")));
+
+            if (defaultBindingElement.TransferMode != bindingElement.TransferMode)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "TransferMode"),
+                        new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(TransferMode)),
+                            bindingElement.TransferMode.ToString())));
+            }
+
+            statements.Add(
+                new CodeAssignStatement(
+                    new CodePropertyReferenceExpression(
+                        bindingElementRef,
+                        "MaxReceivedMessageSize"),
+                    new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(int)), "MaxValue")));
+
+            if (defaultBindingElement.ConnectionBufferSize != bindingElement.ConnectionBufferSize)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "ConnectionBufferSize"),
+                        new CodePrimitiveExpression(bindingElement.ConnectionBufferSize)));
             }
 
             statements.Add(
@@ -1691,6 +1784,88 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 statements.Add(new CodeMethodReturnStatement(resultVar));
             }
+        }
+
+        private static void AddNamedPipeBindingConfiguration(CodeStatementCollection statements, NetNamedPipeBinding namedPipe)
+        {
+            const string ResultVarName = "result";
+            CodeVariableReferenceExpression resultVar;
+            NetNamedPipeBinding defaultBinding = new NetNamedPipeBinding();
+
+            statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(NetNamedPipeBinding),
+                    ResultVarName,
+                    new CodeObjectCreateExpression(typeof(NetNamedPipeBinding))));
+
+            resultVar = new CodeVariableReferenceExpression(ResultVarName);
+
+            //if (defaultBinding.HostNameComparisonMode != namedPipe.HostNameComparisonMode)
+            //{
+            //    statements.Add(
+            //        new CodeAssignStatement(
+            //            new CodePropertyReferenceExpression(
+            //                resultVar,
+            //                "HostNameComparisonMode"),
+            //        new CodeFieldReferenceExpression(
+            //                new CodeTypeReferenceExpression(typeof(HostNameComparisonMode)),
+            //                namedPipe.HostNameComparisonMode.ToString())));
+            //}
+
+            MaxOutProperties(statements, resultVar);
+
+            //if (defaultBinding.TransactionFlow != namedPipe.TransactionFlow)
+            //{
+            //    statements.Add(
+            //        new CodeAssignStatement(
+            //            new CodePropertyReferenceExpression(
+            //                resultVar,
+            //                "TransactionFlow"),
+            //        new CodePrimitiveExpression(namedPipe.TransactionFlow)));
+            //}
+
+            if (defaultBinding.TransferMode != namedPipe.TransferMode)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "TransferMode"),
+                    new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(TransferMode)),
+                            namedPipe.TransferMode.ToString())));
+            }
+
+            if (defaultBinding.Security.Mode != namedPipe.Security.Mode)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(resultVar, "Security"),
+                            "Mode"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(NetNamedPipeSecurityMode)),
+                            namedPipe.Security.Mode.ToString())));
+            }
+
+            if(namedPipe.Security.Mode == NetNamedPipeSecurityMode.Transport)
+            {
+                if (defaultBinding.Security.Transport.ProtectionLevel != namedPipe.Security.Transport.ProtectionLevel)
+                {
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(
+                                    new CodePropertyReferenceExpression(resultVar, "Security"),
+                                    "Transport"),
+                                "ProtectionLevel"),
+                            new CodeFieldReferenceExpression(
+                                new CodeTypeReferenceExpression(typeof(ProtectionLevel)),
+                                namedPipe.Security.Transport.ProtectionLevel.ToString())));
+                }
+            }
+
+            statements.Add(new CodeMethodReturnStatement(resultVar)); 
         }
 
         private static void AddBasicHttpBindingConfiguration(CodeStatementCollection statements, BasicHttpBinding basicHttp, bool isIssuerBinding = false)
