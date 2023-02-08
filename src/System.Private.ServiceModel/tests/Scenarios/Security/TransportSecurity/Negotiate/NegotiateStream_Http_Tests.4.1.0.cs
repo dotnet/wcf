@@ -256,6 +256,8 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(2805)]
+    [Issue(25320, Repository = "dotnet/runtime")]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Root_Certificate_Installed),
                nameof(UPN_Available))]
@@ -354,6 +356,8 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(2805)]
+    [Issue(25320, Repository = "dotnet/runtime")]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Root_Certificate_Installed),
                nameof(Explicit_Credentials_Available),
