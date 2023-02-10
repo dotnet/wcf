@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="needs-review-translation">ActivityBoundary</target>
+        <target state="translated">작업 경계</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityCallback">
@@ -1109,7 +1109,7 @@
       </trans-unit>
       <trans-unit id="GenericCallbackException">
         <source>A user callback threw an exception.  Check the exception stack and inner exception to determine the callback that failed.</source>
-        <target state="needs-review-translation">GenericCallbackException</target>
+        <target state="translated">사용자 콜백에서 예외가 발생했습니다. 예외 스택 및 내부 예외를 점검하여 오류가 있는 콜백을 확인하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderAlreadyNotUnderstood">
@@ -1134,7 +1134,7 @@
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
+        <target state="translated">요청된 서비스 '{0}'을(를) 활성화할 수 없습니다. 자세한 내용은 서버의 진단 추적 로그를 참조하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAddressingNoneHeaderOnWire">
@@ -3759,12 +3759,12 @@
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
+        <target state="translated">'{0}' 주소의 서비스로 메시지를 발송할 수 없습니다. 자세한 내용은 서버 이벤트 로그를 참조하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
+        <target state="translated">끝점 주소 '{0}'의 서비스는 해당 주소의 프로토콜에 사용할 수 없으므로 메시지를 발송할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureConfirmationNotSupported">
@@ -3854,7 +3854,7 @@
       </trans-unit>
       <trans-unit id="StringNullOrEmpty">
         <source>The input string parameter is either null or empty.</source>
-        <target state="needs-review-translation">StringNullOrEmpty</target>
+        <target state="translated">입력 문자열 매개 변수가 Null이거나 비어 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="SuiteDoesNotAcceptAlgorithm">
@@ -4479,7 +4479,7 @@
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">이 인수의 값은 {0} - {1} 범위에 속해야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
@@ -4509,7 +4509,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">빈 문자열은 유효한 하위 프로토콜 값이 아닙니다. 값을 지정하지 않으려면 "Null"을 사용하십시오.</target>
+        <target state="translated">빈 문자열은 유효한 하위 프로토콜 값이 아닙니다. 값을 지정하지 않으려면 "Null"을 사용하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">

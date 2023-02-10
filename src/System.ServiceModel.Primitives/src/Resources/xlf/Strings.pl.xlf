@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="needs-review-translation">ActivityBoundary</target>
+        <target state="translated">Granica działania</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityCallback">
@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Klient nie może określić głównej nazwy usługi na podstawie tożsamości z adresu docelowego „{0}” na potrzeby SspiNegotiation/Kerberos. Tożsamość adresu docelowego musi być tożsamością UPN (jak domena_abc\alicja) lub tożsamością SPN (jak host/komputer1).</target>
+        <target state="translated">Klient nie może określić jednostki usługi na podstawie tożsamości z adresu docelowego „{0}” na potrzeby SspiNegotiation/Kerberos. Tożsamość adresu docelowego musi być tożsamością UPN (jak acmedomain\alice) lub tożsamością SPN (jak host/bobs-machine).</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -949,7 +949,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">Ochrona rozszerzona jest nieobsługiwana na tej platformie. Zainstaluj odpowiednią poprawkę lub zmień wartość właściwości ExtendedProtectionPolicy obiektu Binding lub BindingElement na właściwość PolicyEnforcement o wartości Never lub WhenSupported.</target>
+        <target state="translated">Ochrona rozszerzona jest nieobsługiwana na tej platformie. Zainstaluj odpowiednią poprawkę lub zmień wartość właściwości ExtendedProtectionPolicy obiektu Binding lub BindingElement na właściwość PolicyEnforcement o wartości „Never” lub „WhenSupported”.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
@@ -1109,7 +1109,7 @@
       </trans-unit>
       <trans-unit id="GenericCallbackException">
         <source>A user callback threw an exception.  Check the exception stack and inner exception to determine the callback that failed.</source>
-        <target state="needs-review-translation">GenericCallbackException</target>
+        <target state="translated">Wywołanie zwrotne użytkownika zgłosiło wyjątek. Sprawdź stos wyjątków i wewnętrzny wyjątek w celu określenia wywołania zwrotnego, które zakończyło się niepowodzeniem.</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderAlreadyNotUnderstood">
@@ -1134,7 +1134,7 @@
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
+        <target state="translated">Nie można aktywować żądanej usługi „{0}”. Więcej informacji można znaleźć w dziennikach śledzenia serwera.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAddressingNoneHeaderOnWire">
@@ -3759,12 +3759,12 @@
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
+        <target state="translated">Komunikat nie mógł zostać wysłany do usługi pod adres „{0}”. Aby uzyskać więcej szczegółów, zobacz dziennik zdarzeń serwera</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
+        <target state="translated">Nie można wysłać komunikatu, ponieważ usługa pod adresem punktu końcowego „{0}” jest niedostępna dla protokołu adresu.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureConfirmationNotSupported">
@@ -3854,7 +3854,7 @@
       </trans-unit>
       <trans-unit id="StringNullOrEmpty">
         <source>The input string parameter is either null or empty.</source>
-        <target state="needs-review-translation">StringNullOrEmpty</target>
+        <target state="translated">Wejściowy parametr ciągu ma wartość null lub jest pusty.</target>
         <note />
       </trans-unit>
       <trans-unit id="SuiteDoesNotAcceptAlgorithm">
@@ -4479,7 +4479,7 @@
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">Wartość tego argumentu musi należeć do zakresu od {0} do {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">

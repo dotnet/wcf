@@ -4,437 +4,437 @@
     <body>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="new">Activity boundary</target>
+        <target state="translated">活动边界</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityProcessAction">
         <source>Process action '{0}'.</source>
-        <target state="new">Process action '{0}'.</target>
+        <target state="translated">处理操作“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityProcessingMessage">
         <source>Processing message {0}.</source>
-        <target state="new">Processing message {0}.</target>
+        <target state="translated">正在处理消息 {0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="new">Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</target>
+        <target state="translated">客户端无法以 SspiNegotiation/Kerberos 为目的根据目标地址“{0}”中的标识确定服务主体名称。目标地址标识必须是 UPN 标识(例如 acmedomain\alice)或 SPN 标识(例如 host/bobs-machine)。</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientCredentialsUnableToCreateLocalTokenProvider">
         <source>ClientCredentials cannot create a local token provider for token requirement {0}.</source>
-        <target state="new">ClientCredentials cannot create a local token provider for token requirement {0}.</target>
+        <target state="translated">ClientCredential 无法为令牌要求 {0} 创建本地令牌提供程序。</target>
         <note />
       </trans-unit>
       <trans-unit id="CloseTimedOut">
         <source>Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">关闭操作在 {0} 之后超时。请增大传递给 Close 调用的超时值，或增大绑定上的 CloseTimeout 值。分配给此操作的时间可能比超时长。</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
+        <target state="translated">通信对象 {0} 处于 {1} 状态。除非通信对象处于“已打开”状态，否则无法将其用于通信。</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
+        <target state="translated">通信对象 {0} 无法用于通信，因为其处于“出错”状态。</target>
         <note />
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessage">
         <source>Identity check failed for outgoing message. The expected DNS identity of the remote endpoint was '{0}' but the remote endpoint provided DNS claim '{1}'. If this is a legitimate remote endpoint, you can fix the problem by explicitly specifying DNS identity '{1}' as the Identity property of EndpointAddress when creating channel proxy. </source>
-        <target state="new">Identity check failed for outgoing message. The expected DNS identity of the remote endpoint was '{0}' but the remote endpoint provided DNS claim '{1}'. If this is a legitimate remote endpoint, you can fix the problem by explicitly specifying DNS identity '{1}' as the Identity property of EndpointAddress when creating channel proxy. </target>
+        <target state="translated">传出消息标识检查失败。远程终结点需要的 DNS 标识为“{0}”，但是远程终结点提供的 DNS 声明为“{1}”。如果此远程终结点合法，可以通过在创建通道代理时将 DNS 标识“{1}”显式指定为 EndpointAddress 的 Identity 属性来解决此问题。</target>
         <note />
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessageLackOfDnsClaim">
         <source>The Identity check failed for the outgoing message. The remote endpoint did not provide a domain name system (DNS) claim and therefore did not satisfied DNS identity '{0}'. This may be caused by lack of DNS or CN name in the remote endpoint X.509 certificate's distinguished name.</source>
-        <target state="new">The Identity check failed for the outgoing message. The remote endpoint did not provide a domain name system (DNS) claim and therefore did not satisfied DNS identity '{0}'. This may be caused by lack of DNS or CN name in the remote endpoint X.509 certificate's distinguished name.</target>
+        <target state="translated">传出消息标识检查失败。远程终结点未提供域名系统(DNS)声明，因此不符合 DNS 标识“{0}”。这可能是由于远程终结点 X.509 证书的可分辨名称中缺少 DNS 或 CN 名称所致。</target>
         <note />
       </trans-unit>
       <trans-unit id="DuplexChannelAbortedDuringOpen">
         <source>Duplex channel to {0} was aborted during the open process.</source>
-        <target state="new">Duplex channel to {0} was aborted during the open process.</target>
+        <target state="translated">打开进程的过程中，到 {0} 的双工通道被中止。</target>
         <note />
       </trans-unit>
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
-        <target state="new">There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</target>
+        <target state="translated">没有终结点在侦听可以接受消息的 {0}。这通常是由于不正确的地址或者 SOAP 操作导致的。如果存在此情况，请参见 InnerException 以了解详细信息。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingAtEnd">
         <source>An attempt was made to decode a value after the framing stream was ended.</source>
-        <target state="new">An attempt was made to decode a value after the framing stream was ended.</target>
+        <target state="translated">组帧流结束之后尝试对某个值进行解码。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeMismatch">
         <source>Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</source>
-        <target state="new">Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</target>
+        <target state="translated">服务 {1} 不支持内容类型 {0}。客户端和服务绑定可能不匹配。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeTooLong">
         <source>The framing content type size ({0}) exceeds the quota.</source>
-        <target state="new">The framing content type size ({0}) exceeds the quota.</target>
+        <target state="translated">组帧内容类型大小({0})超过配额。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeTooLongFault">
         <source>Content type '{0}' is too long to be processed by the remote host. See the server logs for more details.</source>
-        <target state="new">Content type '{0}' is too long to be processed by the remote host. See the server logs for more details.</target>
+        <target state="translated">内容类型“{0}”过长，远程主机无法处理。有关详细信息，请参见服务器日志。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingError">
         <source>Error while reading message framing format at position {0} of stream (state: {1})</source>
-        <target state="new">Error while reading message framing format at position {0} of stream (state: {1})</target>
+        <target state="translated">在流的位置 {0} 处读取消息组帧格式时出错(状态: {1})</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingFaultTooLong">
         <source>The framing fault size ({0}) exceeds the quota.</source>
-        <target state="new">The framing fault size ({0}) exceeds the quota.</target>
+        <target state="translated">组帧错误大小({0})超过配额。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingFaultUnrecognized">
         <source>Server faulted with code '{0}'.</source>
-        <target state="new">Server faulted with code '{0}'.</target>
+        <target state="translated">服务器错误，代码“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingMaxMessageSizeExceeded">
         <source>The maximum message size quota for incoming messages has been exceeded for the remote channel. See the server logs for more details.</source>
-        <target state="new">The maximum message size quota for incoming messages has been exceeded for the remote channel. See the server logs for more details.</target>
+        <target state="translated">传入消息的最大消息大小配额已超出远程通道的相应配额。有关详细信息，请参见服务器日志。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingModeNotSupported">
         <source>Framing mode {0} is not supported.</source>
-        <target state="new">Framing mode {0} is not supported.</target>
+        <target state="translated">不支持组帧模式 {0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingModeNotSupportedFault">
         <source>The .Net Framing mode being used is not supported by '{0}'. See the server logs for more details.</source>
-        <target state="new">The .Net Framing mode being used is not supported by '{0}'. See the server logs for more details.</target>
+        <target state="translated">“{0}”不支持正在使用的 .Net Framing 模式。有关详细信息，请参见服务器日志。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingPrematureEOF">
         <source>More data was expected, but EOF was reached.</source>
-        <target state="new">More data was expected, but EOF was reached.</target>
+        <target state="translated">需要更多数据，但已到达文件结尾。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingRecordTypeMismatch">
         <source>Expected record type '{0}', found '{1}'.</source>
-        <target state="new">Expected record type '{0}', found '{1}'.</target>
+        <target state="translated">需要记录类型“{0}”，找到“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingSizeTooLarge">
         <source>Specified size is too large for this implementation.</source>
-        <target state="new">Specified size is too large for this implementation.</target>
+        <target state="translated">为该实现指定的大小过大。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingUpgradeInvalid">
         <source>The requested upgrade is not supported by '{0}'. This could be due to mismatched bindings (for example security enabled on the client and not on the server).</source>
-        <target state="new">The requested upgrade is not supported by '{0}'. This could be due to mismatched bindings (for example security enabled on the client and not on the server).</target>
+        <target state="translated">“{0}”不支持请求的升级。这可能是由于绑定不匹配(例如，在客户端上启用了安全设置，而在服务器上未启用)造成的。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingValueNotAvailable">
         <source>The value cannot be accessed because it has not yet been fully decoded.</source>
-        <target state="new">The value cannot be accessed because it has not yet been fully decoded.</target>
+        <target state="translated">无法访问该值，因为它尚未完全解码。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingVersionNotSupported">
         <source>Framing major version {0} is not supported.</source>
-        <target state="new">Framing major version {0} is not supported.</target>
+        <target state="translated">不支持组帧主版本 {0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingVersionNotSupportedFault">
         <source>The .Net Framing version being used is not supported by '{0}'. See the server logs for more details.</source>
-        <target state="new">The .Net Framing version being used is not supported by '{0}'. See the server logs for more details.</target>
+        <target state="translated">“{0}”不支持正在使用的 .Net Framing 版本。有关详细信息，请参见服务器日志。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaNotUri">
         <source>The framing via ({0}) is not a valid URI.</source>
-        <target state="new">The framing via ({0}) is not a valid URI.</target>
+        <target state="translated">组帧中转({0})不是有效的 URI。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaTooLong">
         <source>The framing via size ({0}) exceeds the quota.</source>
-        <target state="new">The framing via size ({0}) exceeds the quota.</target>
+        <target state="translated">组帧中转大小({0})超过配额。</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaTooLongFault">
         <source>Via '{0}' is too long to be processed by the remote host. See the server logs for more details.</source>
-        <target state="new">Via '{0}' is too long to be processed by the remote host. See the server logs for more details.</target>
+        <target state="translated">中转“{0}”过长，远程主机无法处理。有关详细信息，请参见服务器日志。</target>
         <note />
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
+        <target state="translated">无法激活请求的服务“{0}”。有关详细信息，请参见服务器的诊断跟踪日志。</target>
         <note />
       </trans-unit>
       <trans-unit id="IdentityCheckFailedForOutgoingMessage">
         <source>The identity check failed for the outgoing message. The expected identity is '{0}' for the '{1}' target endpoint.</source>
-        <target state="new">The identity check failed for the outgoing message. The expected identity is '{0}' for the '{1}' target endpoint.</target>
+        <target state="translated">传出消息的标识检查失败。“{1}”目标终结点的所需标识为“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
         <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="new">Insufficient memory avaliable to complete the operation.</target>
+        <target state="translated">可用内存不足，无法完成操作。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDecoderStateMachine">
         <source>Invalid decoder state machine.</source>
-        <target state="new">Invalid decoder state machine.</target>
+        <target state="translated">解码器状态机无效。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTokenProvided">
         <source>The token provider of type '{0}' did not return a token of type '{1}'. Check the credential configuration.</source>
-        <target state="new">The token provider of type '{0}' did not return a token of type '{1}'. Check the credential configuration.</target>
+        <target state="translated">类型为“{0}”的令牌提供程序未返回类型为“{1}”的令牌。请检查凭据配置。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUriScheme">
         <source>The provided URI scheme '{0}' is invalid; expected '{1}'.</source>
-        <target state="new">The provided URI scheme '{0}' is invalid; expected '{1}'.</target>
+        <target state="translated">提供的 URI 方案“{0}”无效，应为“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="LockTimeoutExceptionMessage">
         <source>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">无法在分配的超时 {0} 内获得锁定。分配给此操作的时间可能比超时长。</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeExceeded">
         <source>The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</source>
-        <target state="new">The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</target>
+        <target state="translated">已超过传入消息({0})的最大消息大小配额。若要增加配额，请使用相应绑定元素上的 MaxReceivedMessageSize 属性。</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeMustBeInIntegerRange">
         <source>This factory buffers messages, so the message sizes must be in the range of an integer value.</source>
-        <target state="new">This factory buffers messages, so the message sizes must be in the range of an integer value.</target>
+        <target state="translated">这是工厂缓冲区消息，因此该消息大小必须在整数值范围内。</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxSentMessageSizeExceeded">
         <source>The maximum message size quota for outgoing messages ({0}) has been exceeded.</source>
-        <target state="new">The maximum message size quota for outgoing messages ({0}) has been exceeded.</target>
+        <target state="translated">已超过传出消息({0})的最大消息大小配额。</target>
         <note />
       </trans-unit>
       <trans-unit id="MessageXmlProtocolError">
         <source>There is a problem with the XML that was received from the network. See inner exception for more details.</source>
-        <target state="new">There is a problem with the XML that was received from the network. See inner exception for more details.</target>
+        <target state="translated">从网络接收的 XML 存在问题。有关详细信息，请参见内部异常。</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleMebesInParameters">
         <source>More than one MessageEncodingBindingElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple MessageEncodingBindingElements in a CustomBinding. Remove all but one of these elements.</source>
-        <target state="new">More than one MessageEncodingBindingElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple MessageEncodingBindingElements in a CustomBinding. Remove all but one of these elements.</target>
+        <target state="translated">在 BindingContext 的 BindingParameters 中找到多个 MessageEncodingBindingElement。这通常是因为在 CustomBinding 中具有多个 MessageEncodingBindingElements 所导致的。请保留一个元素，删除所有剩余元素。</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleStreamUpgradeProvidersInParameters">
         <source>More than one IStreamUpgradeProviderElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple IStreamUpgradeProviderElements in a CustomBinding. Remove all but one of these elements.</source>
-        <target state="new">More than one IStreamUpgradeProviderElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple IStreamUpgradeProviderElements in a CustomBinding. Remove all but one of these elements.</target>
+        <target state="translated">在 BindingContext 的 BindingParameters 中找到多个 IStreamUpgradeProviderElement。这通常是因为 CustomBinding 中具有多个 IStreamUpgradeProviderElements 所导致的。请保留一个元素，删除所有剩余元素。</target>
         <note />
       </trans-unit>
       <trans-unit id="NegotiationFailedIO">
         <source>Transport security negotiation failed due to an underlying IO error: {0}.</source>
-        <target state="new">Transport security negotiation failed due to an underlying IO error: {0}.</target>
+        <target state="translated">传输安全性协商由于基础 IO 错误而失败: {0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="OpenTimedOutEstablishingTransportSession">
         <source>Open timed out after {0} while establishing a transport session to {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Open timed out after {0} while establishing a transport session to {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">建立指向 {1} 的传输会话时在 {0} 后打开超时。分配给此操作的时间可能比超时长。</target>
         <note />
       </trans-unit>
       <trans-unit id="OperationAbortedDuringConnectionEstablishment">
         <source>Operation was aborted while establishing a connection to {0}.</source>
-        <target state="new">Operation was aborted while establishing a connection to {0}.</target>
+        <target state="translated">建立到 {0} 的连接时操作中止。</target>
         <note />
       </trans-unit>
       <trans-unit id="OperationInvalidBeforeSecurityNegotiation">
         <source>This operation is not valid until security negotiation is complete.</source>
-        <target state="new">This operation is not valid until security negotiation is complete.</target>
+        <target state="translated">在安全性协商结束前，此操作始终无效。</target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrect">
         <source>You have tried to create a channel to a service that does not support .Net Framing. </source>
-        <target state="new">You have tried to create a channel to a service that does not support .Net Framing. </target>
+        <target state="translated">已尝试创建连接不支持 .Net Framing 的服务的通道。</target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrectMaybeHttp">
         <source>You have tried to create a channel to a service that does not support .Net Framing. It is possible that you are encountering an HTTP endpoint.</source>
-        <target state="new">You have tried to create a channel to a service that does not support .Net Framing. It is possible that you are encountering an HTTP endpoint.</target>
+        <target state="translated">已尝试创建连接不支持 .Net Framing 的服务的通道。可能遇到的是 HTTP 终结点。</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedFault">
         <source>The channel received an unexpected fault input message while closing. The fault reason given is: '{0}'</source>
-        <target state="new">The channel received an unexpected fault input message while closing. The fault reason given is: '{0}'</target>
+        <target state="translated">通道在关闭时接收到意外的错误输入消息。给出的错误原因为:“{0}”</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedLargeFault">
         <source>The channel received an unexpected fault input message with Action = '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</source>
-        <target state="new">The channel received an unexpected fault input message with Action = '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</target>
+        <target state="translated">通道在关闭时接收到意外的错误输入消息，Action=“{0}”。只应在不再需要任何输入消息时关闭通道。</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedMessage">
         <source>The channel received an unexpected input message with Action '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</source>
-        <target state="new">The channel received an unexpected input message with Action '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</target>
+        <target state="translated">通道在关闭时接收到意外的输入消息，Action 为“{0}”。只应在不再需要任何输入消息时关闭通道。</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveTimedOut2">
         <source>Receive timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Receive timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">接收操作在 {0} 之后超时。分配给此操作的时间可能比超时长。</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteIdentityFailedVerification">
         <source>The following remote identity failed verification: '{0}'.</source>
-        <target state="new">The following remote identity failed verification: '{0}'.</target>
+        <target state="translated">未能确认以下远程标识:“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestChannelSendTimedOut">
         <source>The request channel timed out attempting to send after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The request channel timed out attempting to send after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">请求通道在 {0} 以后尝试发送超时。增加传递给请求调用的超时值，或增加绑定上的 SendTimeout 值。分配给此操作的时间可能比超时长。</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestChannelWaitForReplyTimedOut">
         <source>The request channel timed out while waiting for a reply after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The request channel timed out while waiting for a reply after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">请求通道在等待 {0} 以后回复时超时。增加传递给请求调用的超时值，或增加绑定上的 SendTimeout 值。分配给此操作的时间可能比超时长。</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestTimedOutEstablishingTransportSession">
         <source>Request timed out after {0} while establishing a transport connection to {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Request timed out after {0} while establishing a transport connection to {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">建立到 {1} 的传输连接时，请求在 {0} 以后超时。分配给此操作的时间可能已经是更长超时的一部分。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
+        <target state="translated">超时必须大于或等于 TimeSpan.Zero。要禁用超时，请指定 TimeSpan.MaxValue。</target>
         <note />
       </trans-unit>
       <trans-unit id="SPS_SeekNotSupported">
         <source>Seek is not supported on this stream.</source>
-        <target state="new">Seek is not supported on this stream.</target>
+        <target state="translated">此流上不支持查找。</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
+        <target state="translated">服务器“{0}”发回错误，指示其正在关机。有关错误的详细信息，请参见内部异常。</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
+        <target state="translated">服务器“{0}”发回错误，指示其太忙，无法处理请求。请稍后重试。有关错误的详细信息，请参见内部异常。</target>
         <note />
       </trans-unit>
       <trans-unit id="SendCannotBeCalledAfterCloseOutputSession">
         <source>You cannot Send messages on a channel after CloseOutputSession has been called.</source>
-        <target state="new">You cannot Send messages on a channel after CloseOutputSession has been called.</target>
+        <target state="translated">调用 CloseOutputSession 以后，无法在通道上发送消息。</target>
         <note />
       </trans-unit>
       <trans-unit id="SendToViaTimedOut">
         <source>Sending to via {0} timed out after {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Sending to via {0} timed out after {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">通过 {0} 发送在 {1} 以后超时。分配给此操作的时间可能比超时长。</target>
         <note />
       </trans-unit>
       <trans-unit id="ServerRejectedSessionPreamble">
         <source>The server at {0} rejected the session-establishment request.</source>
-        <target state="new">The server at {0} rejected the session-establishment request.</target>
+        <target state="translated">{0} 处的服务器拒绝了会话建立请求。</target>
         <note />
       </trans-unit>
       <trans-unit id="ServerRejectedUpgradeRequest">
         <source>The server rejected the upgrade request.</source>
-        <target state="new">The server rejected the upgrade request.</target>
+        <target state="translated">服务器拒绝了升级请求。</target>
         <note />
       </trans-unit>
       <trans-unit id="ServerTooBusy">
         <source>Server '{0}' is too busy to process this request. Try again later.</source>
-        <target state="new">Server '{0}' is too busy to process this request. Try again later.</target>
+        <target state="translated">服务器“{0}”太忙，无法处理此请求。请稍后重试。</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
+        <target state="translated">无法将消息调度到地址“{0}”上的服务。有关详细信息，请参见服务器事件日志</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
+        <target state="translated">无法调度消息，因为终结点地址“{0}”上的服务对该地址的协议不可用。</target>
         <note />
       </trans-unit>
       <trans-unit id="SizeExceedsRemainingBufferSpace">
         <source>The specified size exceeds the remaining buffer space ({0} bytes).</source>
-        <target state="new">The specified size exceeds the remaining buffer space ({0} bytes).</target>
+        <target state="translated">指定的大小超出了剩余缓冲区空间({0} 个字节)。</target>
         <note />
       </trans-unit>
       <trans-unit id="SpaceNeededExceedsMessageFrameOffset">
         <source>The space needed for encoding ({0} bytes) exceeds the message frame offset.</source>
-        <target state="new">The space needed for encoding ({0} bytes) exceeds the message frame offset.</target>
+        <target state="translated">编码所需的空间({0} 字节)超过了消息帧偏移量。</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamDoesNotSupportTimeout">
         <source>TimeoutStream requires an inner Stream that supports timeouts; its CanTimeout property must be true.</source>
-        <target state="new">TimeoutStream requires an inner Stream that supports timeouts; its CanTimeout property must be true.</target>
+        <target state="translated">TimeoutStream 需要一个支持超时的内部 Stream；其 CanTimeout 属性必须为 True。</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamError">
         <source>An error occurred while transmitting data.</source>
-        <target state="new">An error occurred while transmitting data.</target>
+        <target state="translated">传输数据时出错。</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamMutualAuthNotSatisfied">
         <source>The remote server did not satisfy the mutual authentication requirement.</source>
-        <target state="new">The remote server did not satisfy the mutual authentication requirement.</target>
+        <target state="translated">远程服务器不满足相互身份验证要求。</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamUpgradeUnsupportedChannelBindingKind">
         <source>The StreamUpgradeProvider {0} does not support the specified ChannelBindingKind ({1}). </source>
-        <target state="new">The StreamUpgradeProvider {0} does not support the specified ChannelBindingKind ({1}). </target>
+        <target state="translated">StreamUpgradeProvider {0} 不支持指定的 ChannelBindingKind ({1})。</target>
         <note />
       </trans-unit>
       <trans-unit id="TimeoutOnOpen">
         <source>The open operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The open operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">打开操作没有在分配的超时 {0} 内完成。分配给此操作的时间可能比超时长。</target>
         <note />
       </trans-unit>
       <trans-unit id="TimeoutOnRequest">
         <source>The request operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The request operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">在分配的超时 {0} 内，请求操作没有完成。分配给此操作的时间可能已经是更长超时的一部分。</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeConnectionPoolIdleTimeoutReached">
         <source>A connection has exceeded the idle timeout of this connection pool ({0}) and been closed.</source>
-        <target state="new">A connection has exceeded the idle timeout of this connection pool ({0}) and been closed.</target>
+        <target state="translated">连接已超出此连接池({0})的空闲超时，并已被关闭。</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeConnectionPoolLeaseTimeoutReached">
         <source>A connection has exceeded the connection lease timeout of this connection pool ({0}) and been closed.</source>
-        <target state="new">A connection has exceeded the connection lease timeout of this connection pool ({0}) and been closed.</target>
+        <target state="translated">连接已超出此连接池({0})的连接租约超时，并已被关闭。</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeConnectionPoolMaxOutboundConnectionsPerEndpointQuotaReached">
         <source>MaxOutboundConnectionsPerEndpoint quota ({0}) has been reached, so connection was closed and not stored in this connection pool.</source>
-        <target state="new">MaxOutboundConnectionsPerEndpoint quota ({0}) has been reached, so connection was closed and not stored in this connection pool.</target>
+        <target state="translated">已达到 MaxOutboundConnectionsPerEndpoint 配额({0})，因此连接被关闭且未存储在此连接池中。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedUpgradeInitiator">
         <source>The StreamUpgradeInitiator specified ({0}) is not supported by this IStreamUpgradeChannelBindingProvider  implementation.  The most likely cause of this is passing a StreamUpgradeInitiator that was not created by the StreamUpgradeProvider associated with the current IStreamUpgradeChannelBindingProvider  implementation.</source>
-        <target state="new">The StreamUpgradeInitiator specified ({0}) is not supported by this IStreamUpgradeChannelBindingProvider  implementation.  The most likely cause of this is passing a StreamUpgradeInitiator that was not created by the StreamUpgradeProvider associated with the current IStreamUpgradeChannelBindingProvider  implementation.</target>
+        <target state="translated">此 IStreamUpgradeChannelBindingProvider 实现不支持所指定的 StreamUpgradeInitiator ({0})。最可能的原因是，所传递的 StreamUpgradeInitiator 不是由当前 IStreamUpgradeChannelBindingProvider 实现的关联 StreamUpgradeProvider 创建的。</target>
         <note />
       </trans-unit>
       <trans-unit id="UriGeneratorSchemeMustNotBeEmpty">
         <source>The scheme parameter must not be empty.</source>
-        <target state="new">The scheme parameter must not be empty.</target>
+        <target state="translated">方案参数不得为空。</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">此参数的值必须介于 {0} 至 {1} 的范围内。</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="new">The value of this argument must be non-negative.</target>
+        <target state="translated">此参数的值必须为非负。</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBePositive">
         <source>The value of this argument must be positive.</source>
-        <target state="new">The value of this argument must be positive.</target>
+        <target state="translated">此参数的值必须为正。</target>
         <note />
       </trans-unit>
       <trans-unit id="WaitForMessageTimedOut">
         <source>WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">WaitForMessage 在 {0} 之后超时。分配给此操作的时间可能比超时长。</target>
         <note />
       </trans-unit>
     </body>

@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="needs-review-translation">ActivityBoundary</target>
+        <target state="translated">活动边界</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityCallback">
@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">客户端无法以 SspiNegotiation/Kerberos 为目的根据目标地址“{0}”中的标识确定服务主体名称。目标地址标识必须是 UPN 标识(例如 acmedomain\alice)或 SPN 标识(例如 host/bobs-machine)。</target>
+        <target state="translated">客户端无法为 SspiNegotiation/Kerberos 根据目标地址“{0}”中的标识确定服务主体名称。目标地址标识必须是 UPN 标识(例如 acmedomain\alice)或 SPN 标识(例如 host/bobs-machine)。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -949,7 +949,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">此平台上不支持扩展保护。请安装适当的修补程序，或者将 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 更改为 PolicyEnforcement 值为“Never”或“WhenSupported”的某个值。</target>
+        <target state="translated">此平台不支持扩展保护。请安装适当的补丁，或者将 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 更改为 PolicyEnforcement 值为“Never”或“WhenSupported”的某个值。</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
@@ -1109,7 +1109,7 @@
       </trans-unit>
       <trans-unit id="GenericCallbackException">
         <source>A user callback threw an exception.  Check the exception stack and inner exception to determine the callback that failed.</source>
-        <target state="needs-review-translation">GenericCallbackException</target>
+        <target state="translated">用户回调引发异常。请检查异常堆栈和内部异常，以确定失败的回调。</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderAlreadyNotUnderstood">
@@ -1134,7 +1134,7 @@
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
+        <target state="translated">无法激活请求的服务“{0}”。有关详细信息，请参见服务器的诊断跟踪日志。</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAddressingNoneHeaderOnWire">
@@ -3759,12 +3759,12 @@
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
+        <target state="translated">无法将消息调度到地址“{0}”上的服务。有关详细信息，请参见服务器事件日志</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
+        <target state="translated">无法调度消息，因为终结点地址“{0}”上的服务对该地址的协议不可用。</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureConfirmationNotSupported">
@@ -3854,7 +3854,7 @@
       </trans-unit>
       <trans-unit id="StringNullOrEmpty">
         <source>The input string parameter is either null or empty.</source>
-        <target state="needs-review-translation">StringNullOrEmpty</target>
+        <target state="translated">输入字符串参数为 null 或为空。</target>
         <note />
       </trans-unit>
       <trans-unit id="SuiteDoesNotAcceptAlgorithm">
@@ -4479,7 +4479,7 @@
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">此参数的值必须介于 {0} 至 {1} 的范围内。</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">

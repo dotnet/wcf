@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="needs-review-translation">ActivityBoundary</target>
+        <target state="translated">Hranice aktivity</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityCallback">
@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Klient nemůže určit hlavní název služby založený na identitě v cílové adrese {0} pro účel třídy SspiNegotiation nebo protokolu Kerberos. Identitou cílové adresy musí být identita UPN (jako například acmedomain\alice) nebo identita SPN (například host/honzuv-pocitac).</target>
+        <target state="translated">Klient nemůže určit hlavní název služby (SPN) založený na identitě v cílové adrese {0} pro účel třídy SspiNegotiation nebo protokolu Kerberos. Identitou cílové adresy musí být identita UPN (jako například acmedomain\alice) nebo identita SPN (například host/honzuv-pocitac).</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -949,7 +949,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">Rozšířená ochrana není na této platformě podporována. Instalujte odpovídající opravu nebo změňte vlastnost ExtendedProtectionPolicy objektu Binding nebo BindingElement na hodnotu s nastavením PolicyEnforcement Never nebo WhenSupported.</target>
+        <target state="translated">Rozšířená ochrana se na této platformě nepodporuje. Instalujte odpovídající opravu nebo změňte vlastnost ExtendedProtectionPolicy objektu Binding nebo BindingElement na hodnotu s nastavením PolicyEnforcement Never nebo WhenSupported.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
@@ -1109,7 +1109,7 @@
       </trans-unit>
       <trans-unit id="GenericCallbackException">
         <source>A user callback threw an exception.  Check the exception stack and inner exception to determine the callback that failed.</source>
-        <target state="needs-review-translation">GenericCallbackException</target>
+        <target state="translated">Při zpětném volání uživatele došlo k výjimce. Podle zásobníku výjimky a informací o vnitřní výjimce určete, které zpětné volání selhalo.</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderAlreadyNotUnderstood">
@@ -1134,7 +1134,7 @@
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
+        <target state="translated">Požadovanou službu {0} nebylo možné aktivovat. Další informace naleznete v protokolech trasování diagnostiky serveru.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAddressingNoneHeaderOnWire">
@@ -3759,12 +3759,12 @@
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
+        <target state="translated">Zpráva nebyla odeslána ke službě na adrese {0}. Další podrobnosti naleznete v Protokolu událostí</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
+        <target state="translated">Zpráva nebyla odeslána, protože služba na adrese koncového bodu {0} není dostupná pro protokol adresy.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureConfirmationNotSupported">
@@ -3854,7 +3854,7 @@
       </trans-unit>
       <trans-unit id="StringNullOrEmpty">
         <source>The input string parameter is either null or empty.</source>
-        <target state="needs-review-translation">StringNullOrEmpty</target>
+        <target state="translated">Parametr vstupního řetězce má buď hodnotu null, nebo je prázdný.</target>
         <note />
       </trans-unit>
       <trans-unit id="SuiteDoesNotAcceptAlgorithm">
@@ -4479,7 +4479,7 @@
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">Hodnota tohoto argumentu musí být v rozsahu od {0} do {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">

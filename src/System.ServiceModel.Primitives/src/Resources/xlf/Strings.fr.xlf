@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="needs-review-translation">ActivityBoundary</target>
+        <target state="translated">Limite d’activité</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityCallback">
@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Le client ne peut pas déterminer le nom de principal de service (SPN) basé sur l'identité dans l'adresse cible '{0}' pour les besoins de SspiNegotiation/Kerberos. L'identité de l'adresse cible doit être une identité UPN (comme acmedomain\alice) ou une identité SPN (comme host/bobs-machine).</target>
+        <target state="translated">Le client ne peut pas déterminer le nom de principal du service en fonction de l’identité de l’adresse cible '{0}' pour les besoins de SspiNegotiation/Kerberos. L’identité de l’adresse cible doit être une identité UPN (par exemple acmedomain\alice) ou une identité SPN (par exemple host/bobs-machine).</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -949,7 +949,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">La protection étendue n'est pas prise en charge sur cette plateforme. Installez le correctif approprié ou remplacez le ExtendedProtectionPolicy sur Binding ou BindingElement en par une valeur PolicyEnforcement de "Never" ou "WhenSupported".</target>
+        <target state="translated">La protection étendue n’est pas prise en charge sur cette plateforme. Installez le correctif approprié ou remplacez le ExtendedProtectionPolicy sur Binding ou BindingElement en par une valeur PolicyEnforcement de « Never » ou « WhenSupported ».</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
@@ -1109,7 +1109,7 @@
       </trans-unit>
       <trans-unit id="GenericCallbackException">
         <source>A user callback threw an exception.  Check the exception stack and inner exception to determine the callback that failed.</source>
-        <target state="needs-review-translation">GenericCallbackException</target>
+        <target state="translated">Un rappel d'utilisateur a généré une exception. Vérifiez la pile d'exception et l'exception interne pour identifier le rappel non réussi.</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderAlreadyNotUnderstood">
@@ -1134,7 +1134,7 @@
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
+        <target state="translated">Le service demandé '{0}' n'a pas pu être activé. Pour plus d'informations, consultez les journaux de trace de diagnostic du serveur.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAddressingNoneHeaderOnWire">
@@ -3759,12 +3759,12 @@
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
+        <target state="translated">Impossible de distribuer le message au service à l'adresse '{0}'. Pour plus d'informations, consultez le journal des événements du serveur</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
+        <target state="translated">Impossible de distribuer le message, car le service à l'adresse de point de terminaison '{0}' n'est pas disponible pour le protocole de l'adresse.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureConfirmationNotSupported">
@@ -3854,7 +3854,7 @@
       </trans-unit>
       <trans-unit id="StringNullOrEmpty">
         <source>The input string parameter is either null or empty.</source>
-        <target state="needs-review-translation">StringNullOrEmpty</target>
+        <target state="translated">Le paramètre de chaîne d’entrée est vide ou a la valeur null.</target>
         <note />
       </trans-unit>
       <trans-unit id="SuiteDoesNotAcceptAlgorithm">
@@ -4479,7 +4479,7 @@
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">La valeur de cet argument doit être comprise entre {0} et {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
@@ -4509,7 +4509,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">Une chaîne vide n'est pas une valeur de sous-protocole valide. Utilisez "null" pour ne spécifier aucune valeur.</target>
+        <target state="translated">Une chaîne vide n’est pas une valeur de sous-protocole valide. Utilisez « null » pour ne spécifier aucune valeur.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">

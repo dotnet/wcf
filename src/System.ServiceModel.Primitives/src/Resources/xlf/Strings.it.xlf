@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="needs-review-translation">ActivityBoundary</target>
+        <target state="translated">Limite dell'attività</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityCallback">
@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Il client non è in grado di determinare il nome dell'entità servizio in base all'identità nell'indirizzo di destinazione '{0}' per SspiNegotiation/Kerberos. L'identità indirizzo di destinazione deve essere un'identità UPN (ad esempio dominioacme\nomeutente) o un'identità SPN (ad esempio host/nomecomputer).</target>
+        <target state="translated">Il client non può determinare il nome dell'entità servizio sulla base dell'identità nell'indirizzo di destinazione '{0}' ai fini di SspiNegotiation/Kerberos. L'identità nell'indirizzo di destinazione deve essere un'identità UPN (ad esempio dominioutente\nomeutente) o un'identità SPN (ad esempio host/nomecomputer).</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -1109,7 +1109,7 @@
       </trans-unit>
       <trans-unit id="GenericCallbackException">
         <source>A user callback threw an exception.  Check the exception stack and inner exception to determine the callback that failed.</source>
-        <target state="needs-review-translation">GenericCallbackException</target>
+        <target state="translated">Un callback utente ha generato un'eccezione. Controllare lo stack dell'eccezione e l'eccezione interna per determinare il callback interessato dal problema.</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderAlreadyNotUnderstood">
@@ -1134,7 +1134,7 @@
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
+        <target state="translated">Non è stato possibile attivare il servizio richiesto '{0}'. Per altre informazioni, vedere i log di traccia di diagnostica del server.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAddressingNoneHeaderOnWire">
@@ -3759,12 +3759,12 @@
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
+        <target state="translated">Non è stato possibile inviare il messaggio al servizio all'indirizzo '{0}'. Per maggiori dettagli, vedere il log eventi</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
+        <target state="translated">Non è stato possibile inviare il messaggio perché il servizio all'indirizzo dell'endpoint '{0}' non è disponibile per il protocollo dell'indirizzo.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureConfirmationNotSupported">
@@ -3854,7 +3854,7 @@
       </trans-unit>
       <trans-unit id="StringNullOrEmpty">
         <source>The input string parameter is either null or empty.</source>
-        <target state="needs-review-translation">StringNullOrEmpty</target>
+        <target state="translated">Il parametro della stringa di input è Null o vuoto.</target>
         <note />
       </trans-unit>
       <trans-unit id="SuiteDoesNotAcceptAlgorithm">
@@ -4479,7 +4479,7 @@
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">Il valore di questo argomento deve essere compreso tra {0} e {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
@@ -4509,7 +4509,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">La stringa vuota non è un valore di sottoprotocollo valido. Utilizzare "null" per non specificare un valore.</target>
+        <target state="translated">La stringa vuota non è un valore di protocollo secondario valido. Usare "null" per non specificare alcun valore.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">

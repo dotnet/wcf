@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="needs-review-translation">ActivityBoundary</target>
+        <target state="translated">活動界限</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityCallback">
@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">用戶端無法根據目標位址 '{0}' 中的身分識別判斷服務主要名稱，以用於 SspiNegotiation/Kerberos。目標位址身分識別必須是 UPN 身分識別 (像是 acmedomain\alice) 或 SPN 身分識別 (像是 host/bobs-machine)。</target>
+        <target state="translated">用戶端無法根據目標位址 '{0}' 中的身分識別來判斷服務主體名稱，以用於 SspiNegotiation/Kerberos。目標位址身分識別必須是 UPN 身分識別 (如 acmedomain\alice) 或 SPN 身分識別 (如 host/bobs-machine)。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -949,7 +949,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">這個平台不支援延伸的保護。請安裝適當的修補程式，或者將 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 值變更為 "Never" 或 "WhenSupported" 的 PolicyEnforcement 值。</target>
+        <target state="translated">此平台上不支援延伸的保護。請安裝適當的修補程式，或者將 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 變更為 PolicyEnforcement 值為 "Never" 或 "WhenSupported" 的值。</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
@@ -1109,7 +1109,7 @@
       </trans-unit>
       <trans-unit id="GenericCallbackException">
         <source>A user callback threw an exception.  Check the exception stack and inner exception to determine the callback that failed.</source>
-        <target state="needs-review-translation">GenericCallbackException</target>
+        <target state="translated">使用者回呼擲回例外狀況。請檢查例外狀況堆疊及內部例外狀況，以判斷失敗的回呼。</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderAlreadyNotUnderstood">
@@ -1134,7 +1134,7 @@
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
+        <target state="translated">無法啟動要求的服務 '{0}'。如需詳細資訊，請參閱伺服器的診斷追蹤記錄檔。</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAddressingNoneHeaderOnWire">
@@ -3759,12 +3759,12 @@
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
+        <target state="translated">無法將訊息發送至位於位址 '{0}' 的服務。如需詳細資訊，請參閱事件記錄檔</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
+        <target state="translated">無法發送訊息，因為位址的通訊協定無法使用端點位址 '{0}' 的服務。</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureConfirmationNotSupported">
@@ -3854,7 +3854,7 @@
       </trans-unit>
       <trans-unit id="StringNullOrEmpty">
         <source>The input string parameter is either null or empty.</source>
-        <target state="needs-review-translation">StringNullOrEmpty</target>
+        <target state="translated">輸入字串參數為 Null 或空白。</target>
         <note />
       </trans-unit>
       <trans-unit id="SuiteDoesNotAcceptAlgorithm">
@@ -4479,7 +4479,7 @@
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">此引數的值必須介於 {0} 到 {1} 之間。</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
@@ -4509,7 +4509,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">空白字串為無效的 subprotocol 值。請使用 "null" 指定無值。</target>
+        <target state="translated">空白字串不是有效的 subprotocol 值。請使用 "null" 來指定沒有值。</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">
