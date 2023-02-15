@@ -162,7 +162,6 @@ stages:
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: Linux
           timeoutInMinutes: 90
-          container: ubuntu_2004_20211215
           pool:
             name:  NetCore-Public
             demands: ImageOverride -equals build.Ubuntu.1804.Amd64.Open
