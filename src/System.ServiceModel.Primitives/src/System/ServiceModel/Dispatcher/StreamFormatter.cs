@@ -57,7 +57,7 @@ namespace System.ServiceModel.Dispatcher
         {
             Stream streamValue = GetStreamAndWriteStartWrapperIfNecessary(writer, parameters, returnValue);
             var streamProvider = new OperationStreamProvider(streamValue);
-            StreamFormatterHelper.WriteValue(writer, streamProvider);
+            writer.WriteValue(streamProvider);
             WriteEndWrapperIfNecessary(writer);
         }
 
@@ -65,7 +65,7 @@ namespace System.ServiceModel.Dispatcher
         {
             Stream streamValue = await GetStreamAndWriteStartWrapperIfNecessaryAsync(writer, parameters, returnValue);
             var streamProvider = new OperationStreamProvider(streamValue);
-            await StreamFormatterHelper.WriteValueAsync(writer, streamProvider);
+            await writer.WriteValueAsync(streamProvider);
             await WriteEndWrapperIfNecessaryAsync(writer);
         }
 
@@ -451,7 +451,7 @@ namespace System.ServiceModel.Dispatcher
             public override void Write(byte[] buffer, int offset, int count) { throw TraceUtility.ThrowHelperError(new NotSupportedException(), _message); }
         }
 
-        internal class OperationStreamProvider
+        internal class OperationStreamProvider : IStreamProvider
         {
             private Stream _stream;
 
@@ -467,88 +467,6 @@ namespace System.ServiceModel.Dispatcher
             public void ReleaseStream(Stream stream)
             {
                 //Noop
-            }
-        }
-
-        internal class StreamFormatterHelper
-        {
-            // The method was duplicated from the desktop implementation of
-            // System.Xml.XmlDictionaryWriter.WriteValue(IStreamProvider)
-            public static void WriteValue(XmlDictionaryWriter writer, OperationStreamProvider value)
-            {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
-                }
-
-                Stream stream = value.GetStream();
-                if (stream == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRP.Format(SRP.XmlInvalidStream)));
-                }
-
-                int blockSize = 256;
-                int bytesRead = 0;
-                byte[] block = new byte[blockSize];
-                while (true)
-                {
-                    bytesRead = stream.Read(block, 0, blockSize);
-                    if (bytesRead > 0)
-                    {
-                        writer.WriteBase64(block, 0, bytesRead);
-                    }
-                    else
-                    {
-                        break;
-                    }
-
-                    if (blockSize < 65536 && bytesRead == blockSize)
-                    {
-                        blockSize = blockSize * 16;
-                        block = new byte[blockSize];
-                    }
-                }
-
-                value.ReleaseStream(stream);
-            }
-
-            public static async Task WriteValueAsync(XmlDictionaryWriter writer, OperationStreamProvider value)
-            {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
-                }
-
-                Stream stream = value.GetStream();
-                if (stream == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRP.Format(SRP.XmlInvalidStream)));
-                }
-
-                int blockSize = 256;
-                int bytesRead = 0;
-                byte[] block = new byte[blockSize];
-                while (true)
-                {
-                    bytesRead = await stream.ReadAsync(block, 0, blockSize);
-                    if (bytesRead > 0)
-                    {
-                        // XmlDictionaryWriter has not implemented WriteBase64Async() yet.
-                        writer.WriteBase64(block, 0, bytesRead);
-                    }
-                    else
-                    {
-                        break;
-                    }
-
-                    if (blockSize < 65536 && bytesRead == blockSize)
-                    {
-                        blockSize = blockSize * 16;
-                        block = new byte[blockSize];
-                    }
-                }
-
-                value.ReleaseStream(stream);
             }
         }
     }
