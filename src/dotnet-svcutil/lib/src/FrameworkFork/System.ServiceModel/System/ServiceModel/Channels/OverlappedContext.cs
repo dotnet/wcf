@@ -44,6 +44,7 @@ namespace System.ServiceModel.Channels
 
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public OverlappedContext()
         {
             if (OverlappedContext.s_completeCallback == null)
@@ -74,6 +75,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         ~OverlappedContext()
         {
             if (this._nativeOverlapped != null && !AppDomain.CurrentDomain.IsFinalizingForUnload() && !Environment.HasShutdownStarted)
@@ -101,6 +103,7 @@ namespace System.ServiceModel.Channels
         // Free or FreeOrDefer can only be called once.  FreeIfDeferred can be called any number of times, as long as it's only
         // called once after FreeOrDefer.
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public void Free()
         {
             if (this._pendingCallback != null)
@@ -136,6 +139,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public bool FreeOrDefer()
         {
             if (this._pendingCallback != null || this._syncOperationPending)
@@ -149,6 +153,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public bool FreeIfDeferred()
         {
             if (this._deferredFree)
@@ -160,6 +165,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public void StartAsyncOperation(byte[] buffer, OverlappedIOCompleteCallback callback, bool bound)
         {
             if (callback == null)
@@ -212,6 +218,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public void CancelAsyncOperation()
         {
             this._rootedHolder.ThisHolder = null;
@@ -232,6 +239,7 @@ namespace System.ServiceModel.Channels
 
         // The only holder allowed is Holder[0].  It can be passed in as a ref to prevent repeated expensive array lookups.
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public void StartSyncOperation(byte[] buffer, ref object holder)
         {
             if (this._syncOperationPending)
@@ -265,6 +273,7 @@ namespace System.ServiceModel.Channels
 
         // If this returns false, the OverlappedContext is no longer usable.  It shouldn't be freed or anything.
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public bool WaitForSyncOperation(TimeSpan timeout)
         {
             return WaitForSyncOperation(timeout, ref this._bufferHolder[0]);
@@ -305,6 +314,7 @@ namespace System.ServiceModel.Channels
 
         // The only holder allowed is Holder[0].  It can be passed in as a ref to prevent repeated expensive array lookups.
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public void CancelSyncOperation(ref object holder)
         {
             this._bufferPtr = null;
@@ -319,6 +329,7 @@ namespace System.ServiceModel.Channels
         public object[] Holder
         {
             //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+            [SecuritySafeCritical]
             get
             {
                 return this._bufferHolder;
@@ -328,6 +339,7 @@ namespace System.ServiceModel.Channels
         public byte* BufferPtr
         {
             //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+            [SecuritySafeCritical]
             get
             {
                 byte* ptr = this._bufferPtr;
@@ -345,6 +357,7 @@ namespace System.ServiceModel.Channels
         public NativeOverlapped* NativeOverlapped
         {
             //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+            [SecuritySafeCritical]
             get
             {
                 NativeOverlapped* ptr = this._nativeOverlapped;
@@ -373,6 +386,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         static void CompleteCallback(uint error, uint numBytes, NativeOverlapped* nativeOverlapped)
         {
             // Empty out the AsyncResult ASAP to close the leak window.
@@ -398,6 +412,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         static void EventCallback(object state, bool timedOut)
         {
             OverlappedContext pThis = state as OverlappedContext;
@@ -434,6 +449,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         static void CleanupCallback(object state, bool timedOut)
         {
             OverlappedContext pThis = state as OverlappedContext;

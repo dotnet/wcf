@@ -481,6 +481,7 @@ namespace System.ServiceModel.Channels
 
         // NOTE: a macro in win32
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         internal unsafe static bool HasOverlappedIoCompleted(
             NativeOverlapped* overlapped)
         {

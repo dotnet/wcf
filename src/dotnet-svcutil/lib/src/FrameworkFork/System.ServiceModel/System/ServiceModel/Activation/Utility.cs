@@ -344,6 +344,7 @@ namespace System.ServiceModel.Activation
         //}
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         internal static SecurityIdentifier GetLogonSidForPid(int pid)
         {
             SafeCloseHandle process = OpenProcessForQuery(pid);
@@ -413,6 +414,7 @@ namespace System.ServiceModel.Activation
         //}
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         static ListenerUnsafeNativeMethods.SERVICE_STATUS_PROCESS GetStatusForService(string serviceName)
         {
             SafeServiceHandle scManager = OpenSCManager();

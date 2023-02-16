@@ -249,6 +249,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe AsyncCompletionResult IConnection.BeginRead(int offset, int size, TimeSpan timeout,
             /*WaitCallback callback */Action<object> callback, object state)
         {
@@ -347,6 +348,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe AsyncCompletionResult IConnection.BeginWrite(byte[] buffer, int offset, int size, bool immediate, System.TimeSpan timeout, System.Action<object> callback, object state)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
@@ -878,6 +880,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void OnAsyncReadComplete(bool haveResult, int error, int numBytes)
         {
             Action<object> callback;
@@ -951,6 +954,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void OnAsyncWriteComplete(bool haveResult, int error, int numBytes)
         {
             Action<object> callback;
@@ -1027,6 +1031,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe public int Read(byte[] buffer, int offset, int size, TimeSpan timeout)
         {
             ConnectionUtilities.ValidateBufferBounds(buffer, offset, size);
@@ -1107,6 +1112,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void StartReadZero()
         {
             lock (this._readLock)
@@ -1118,6 +1124,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void StartWriteZero(TimeSpan timeout)
         {
             FinishPendingWrite(timeout);
@@ -1226,6 +1233,7 @@ namespace System.ServiceModel.Channels
 
         // The holder is a perf optimization that lets us avoid repeatedly indexing into the array.
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void WriteHelper(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, ref object holder)
         {
             try
@@ -1294,6 +1302,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public unsafe void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, BufferManager bufferManager)
         {
             bool shouldReturnBuffer = true;
@@ -1416,6 +1425,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void StartSyncRead(byte[] buffer, int offset, int size, ref object holder)
         {
             if (this._isReadOutstanding)
@@ -1454,6 +1464,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void WaitForSyncRead(TimeSpan timeout, bool traceExceptionsAsErrors)
         {
             if (this._isReadOutstanding)
@@ -1482,6 +1493,7 @@ namespace System.ServiceModel.Channels
 
         // Must be called in a lock.
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe int FinishSyncRead(bool traceExceptionsAsErrors)
         {
             int bytesRead = -1;
@@ -1515,6 +1527,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void StartSyncWrite(byte[] buffer, int offset, int size, ref object holder)
         {
             if (this._isWriteOutstanding)
@@ -1556,6 +1569,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void WaitForSyncWrite(TimeSpan timeout, bool traceExceptionsAsErrors, ref object holder)
         {
             if (this._isWriteOutstanding)
@@ -1584,6 +1598,7 @@ namespace System.ServiceModel.Channels
 
         // Must be called in a lock.
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         unsafe void FinishSyncWrite(bool traceExceptionsAsErrors)
         {
             int bytesWritten;
@@ -1649,6 +1664,7 @@ namespace System.ServiceModel.Channels
 
             // Must be called in a lock, after checking for HandleClosed.
             //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+            [SecuritySafeCritical]
             public static unsafe PipeException GetOverlappedWriteException(PipeHandle pipe,
                 NativeOverlapped* nativeOverlapped, out int bytesWritten)
             {
@@ -1665,6 +1681,7 @@ namespace System.ServiceModel.Channels
 
             // Must be called in a lock, after checking for HandleClosed.
             //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+            [SecuritySafeCritical]
             public static unsafe PipeException GetOverlappedReadException(PipeHandle pipe,
                 NativeOverlapped* nativeOverlapped, out int bytesRead)
             {
@@ -2122,6 +2139,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         [ResourceConsumption(ResourceScope.Machine)]
         unsafe PipeHandle CreatePipe()
         {
@@ -2286,6 +2304,7 @@ namespace System.ServiceModel.Channels
             EventTraceActivity _eventTraceActivity;
 
             //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+            [SecuritySafeCritical]
             public unsafe PendingAccept(PipeConnectionListener listener, PipeHandle pipeHandle, bool isBoundToCompletionPort,
                 AsyncCallback callback, object state)
                 : base(callback, state)
@@ -2338,6 +2357,7 @@ namespace System.ServiceModel.Channels
             }
 
             //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+            [SecuritySafeCritical]
             unsafe void StartAccept(bool synchronous)
             {
                 Exception completionException = null;
@@ -2435,6 +2455,7 @@ namespace System.ServiceModel.Channels
             }
 
             //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+            [SecuritySafeCritical]
             unsafe void OnAcceptComplete(bool haveResult, int error, int numBytes)
             {
                 this._listener.RemovePendingAccept(this);
@@ -2615,6 +2636,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         public unsafe static bool TryCreate(List<SecurityIdentifier> allowedSids, Uri pipeUri, string sharedMemoryName, out PipeSharedMemory result)
         {
             Guid pipeGuid = Guid.NewGuid();
@@ -2733,6 +2755,7 @@ namespace System.ServiceModel.Channels
         public string PipeName
         {
             //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+            [SecuritySafeCritical]
             get
             {
                 if (_pipeName == null)
@@ -2779,6 +2802,7 @@ namespace System.ServiceModel.Channels
         }
 
         //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        [SecuritySafeCritical]
         void InitializeContents(Guid pipeGuid)
         {
             SafeViewOfFileHandle view = GetView(true);
