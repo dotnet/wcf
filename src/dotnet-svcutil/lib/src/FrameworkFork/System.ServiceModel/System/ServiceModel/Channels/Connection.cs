@@ -804,6 +804,14 @@ namespace System.ServiceModel.Channels
             }
         }
     }
+
+    // Low level abstraction for listening for sockets/pipes
+    interface IConnectionListener : IDisposable
+    {
+        void Listen();
+        IAsyncResult BeginAccept(AsyncCallback callback, object state);
+        IConnection EndAccept(IAsyncResult result);
+    }
 }
 
 namespace System.ServiceModel.Channels.ConnectionHelpers

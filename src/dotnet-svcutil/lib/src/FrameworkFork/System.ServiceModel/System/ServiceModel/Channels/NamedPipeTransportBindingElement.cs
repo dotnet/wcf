@@ -6,6 +6,7 @@ namespace System.ServiceModel.Channels
 {
     using System.Collections.Generic;
     using System.Security.Principal;
+    using Microsoft.Tools.ServiceModel.Svcutil;
 
     public class NamedPipeTransportBindingElement : ConnectionOrientedTransportBindingElement
     {
@@ -45,7 +46,17 @@ namespace System.ServiceModel.Channels
 
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
-            throw new NotImplementedException();
+            if (context == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+            }
+
+            if (!this.CanBuildChannelFactory<TChannel>(context))
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", string.Format(SRServiceModel.ChannelTypeNotSupported, typeof(TChannel)));
+            }
+
+            return (IChannelFactory<TChannel>)(object)new NamedPipeChannelFactory<TChannel>(this, context);
         }
 
         public override T GetProperty<T>(BindingContext context)

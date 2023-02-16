@@ -11,12 +11,13 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Diagnostics;
 using System.Security;
 using System.ServiceModel;
+using System.Threading;
 
 namespace System.Runtime
 {
     public static class Fx
     {
-        private const string defaultEventSource = "System.Runtime";
+        private const string DefaultEventSource = "System.Runtime";
 
 #if DEBUG
         private const string AssertsFailFastName = "AssertsFailFast";
@@ -42,7 +43,7 @@ namespace System.Runtime
                 if (s_exceptionTrace == null)
                 {
                     // don't need a lock here since a true singleton is not required
-                    s_exceptionTrace = new ExceptionTrace(defaultEventSource, Trace);
+                    s_exceptionTrace = new ExceptionTrace(DefaultEventSource, Trace);
                 }
 
                 return s_exceptionTrace;
@@ -68,7 +69,7 @@ namespace System.Runtime
             Justification = "This is a method that creates ETW provider passing Guid Provider ID.")]
         private static EtwDiagnosticTrace InitializeTracing()
         {
-            EtwDiagnosticTrace trace = new EtwDiagnosticTrace(defaultEventSource, EtwDiagnosticTrace.DefaultEtwProviderId);
+            EtwDiagnosticTrace trace = new EtwDiagnosticTrace(DefaultEventSource, EtwDiagnosticTrace.DefaultEtwProviderId);
 
             return trace;
         }
@@ -287,6 +288,18 @@ namespace System.Runtime
             return (new AsyncThunk(callback)).ThunkFrame;
         }
 
+        //internal static IOCompletionCallback ThunkCallback(IOCompletionCallback iOCompletionCallback)
+        //{
+        //    return iOCompletionCallback;
+        //}
+
+        [Fx.Tag.SecurityNote(Critical = "Construct the unsafe object IOCompletionThunk")]
+        [SecurityCritical]
+        public static IOCompletionCallback ThunkCallback(IOCompletionCallback callback)
+        {
+            return (new IOCompletionThunk(callback)).ThunkFrame;
+        }
+
         [SuppressMessage(FxCop.Category.ReliabilityBasic, FxCop.Rule.UseNewGuidHelperRule,
             Justification = "These are the core methods that should be used for all other Guid(string) calls.")]
         public static Guid CreateGuid(string guidString)
@@ -434,10 +447,93 @@ namespace System.Runtime
             UpdateLevel(Fx.Trace);
         }
 
+        //internal static WaitOrTimerCallback ThunkCallback(WaitOrTimerCallback waitOrTimerCallback) => throw new NotImplementedException();
+
+        public static WaitOrTimerCallback ThunkCallback(WaitOrTimerCallback callback)
+        {
+            return (new WaitOrTimerThunk(callback)).ThunkFrame;
+        }
+
         public abstract class ExceptionHandler
         {
             [Fx.Tag.SecurityNote(Miscellaneous = "Must not call into PT code as it is called within a CER.")]
             public abstract bool HandleException(Exception exception);
+        }
+
+        // This can't derive from Thunk since T would be unsafe.
+        [Fx.Tag.SecurityNote(Critical = "unsafe object")]
+        [SecurityCritical]
+        unsafe sealed class IOCompletionThunk
+        {
+            [Fx.Tag.SecurityNote(Critical = "Make these safe to use in SecurityCritical contexts.")]
+            IOCompletionCallback _callback;
+
+            [Fx.Tag.SecurityNote(Critical = "Accesses critical field.", Safe = "Data provided by caller.")]
+            public IOCompletionThunk(IOCompletionCallback callback)
+            {
+                this._callback = callback;
+            }
+
+            public IOCompletionCallback ThunkFrame
+            {
+                [Fx.Tag.SecurityNote(Safe = "returns a delegate around the safe method UnhandledExceptionFrame")]
+                get
+                {
+                    return new IOCompletionCallback(UnhandledExceptionFrame);
+                }
+            }
+
+            [Fx.Tag.SecurityNote(Critical = "Accesses critical field, calls PrepareConstrainedRegions which has a LinkDemand",
+                Safe = "Delegates can be invoked, guaranteed not to call into PT user code from the finally.")]
+            void UnhandledExceptionFrame(uint error, uint bytesRead, NativeOverlapped* nativeOverlapped)
+            {
+                RuntimeHelpers.PrepareConstrainedRegions();
+                try
+                {
+                    this._callback(error, bytesRead, nativeOverlapped);
+                }
+                catch (Exception exception)
+                {
+                    if (!Fx.HandleAtThreadBase(exception))
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+
+        sealed class WaitOrTimerThunk : Thunk<WaitOrTimerCallback>
+        {
+            public WaitOrTimerThunk(WaitOrTimerCallback callback) : base(callback)
+            {
+            }
+
+            public WaitOrTimerCallback ThunkFrame
+            {
+                get
+                {
+                    return new WaitOrTimerCallback(UnhandledExceptionFrame);
+                }
+            }
+
+            [Fx.Tag.SecurityNote(Critical = "Calls PrepareConstrainedRegions which has a LinkDemand",
+                Safe = "Guaranteed not to call into PT user code from the finally.")]
+            [SecuritySafeCritical]
+            void UnhandledExceptionFrame(object state, bool timedOut)
+            {
+                RuntimeHelpers.PrepareConstrainedRegions();
+                try
+                {
+                    Callback(state, timedOut);
+                }
+                catch (Exception exception)
+                {
+                    if (!Fx.HandleAtThreadBase(exception))
+                    {
+                        throw;
+                    }
+                }
+            }
         }
 
         public static class Tag
