@@ -45,7 +45,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (!this._pipeNameCache.TryGetValue(via, out result))
                     {
-                        result = "dumb-pipe-name";//PipeConnectionInitiator.GetPipeName(via, this._transportFactorySettings);
+                        result = PipeConnectionInitiator.GetPipeName(via, this._transportFactorySettings);
                         this._pipeNameCache.Add(via, result);
                     }
                 }
@@ -129,5 +129,3 @@ namespace System.ServiceModel.Channels
         }
     }
 }
-
-

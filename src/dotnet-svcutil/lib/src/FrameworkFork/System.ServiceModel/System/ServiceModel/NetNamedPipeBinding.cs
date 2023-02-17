@@ -27,11 +27,7 @@ namespace System.ServiceModel
         {
             this._security.Mode = securityMode;
         }
-        //public NetNamedPipeBinding(string configurationName)
-        //    : this()
-        //{
-        //    ApplyConfiguration(configurationName);
-        //}
+        
         NetNamedPipeBinding(NetNamedPipeSecurity security)
             : this()
         {
@@ -84,19 +80,9 @@ namespace System.ServiceModel
 
         public int MaxConnections
         {
-            //get { return _namedPipe.MaxPendingConnections; }
-            //set
-            //{
-            //    _namedPipe.MaxPendingConnections = value;
-            //    _namedPipe.ConnectionPoolSettings.MaxOutboundConnectionsPerEndpoint = value;
-            //}
-            get;set;
+            get { return _namedPipe.ConnectionPoolSettings.MaxOutboundConnectionsPerEndpoint; }
+            set { _namedPipe.ConnectionPoolSettings.MaxOutboundConnectionsPerEndpoint = value; }
         }
-
-        //internal bool IsMaxConnectionsSet
-        //{
-        //    get { return _namedPipe.IsMaxPendingConnectionsSet; }
-        //}
 
         [DefaultValue(TransportDefaults.MaxReceivedMessageSize)]
         public long MaxReceivedMessageSize
@@ -157,10 +143,7 @@ namespace System.ServiceModel
             this.HostNameComparisonMode = namedPipe.HostNameComparisonMode;
             this.MaxBufferPoolSize = namedPipe.MaxBufferPoolSize;
             this.MaxBufferSize = namedPipe.MaxBufferSize;
-            //if (namedPipe.IsMaxPendingConnectionsSet)
-            //{
-            //    this.MaxConnections = namedPipe.MaxPendingConnections;    
-            //}
+            
             this.MaxReceivedMessageSize = namedPipe.MaxReceivedMessageSize;
             this.TransferMode = namedPipe.TransferMode;
 
@@ -183,23 +166,6 @@ namespace System.ServiceModel
                 return false;
             return true;
         }
-
-        //void ApplyConfiguration(string configurationName)
-        //{
-        //    NetNamedPipeBindingCollectionElement section = NetNamedPipeBindingCollectionElement.GetBindingCollectionElement();
-        //    NetNamedPipeBindingElement element = section.Bindings[configurationName];
-        //    if (element == null)
-        //    {
-        //        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
-        //            SR.GetString(SR.ConfigInvalidBindingConfigurationName,
-        //                         configurationName,
-        //                         ConfigurationStrings.NetNamedPipeBindingCollectionElementName)));
-        //    }
-        //    else
-        //    {
-        //        element.ApplyConfiguration(this);
-        //    }
-        //}
 
         public override BindingElementCollection CreateBindingElements()
         {   // return collection of BindingElements
@@ -306,17 +272,5 @@ namespace System.ServiceModel
             }
             return false;
         }
-
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public bool ShouldSerializeTransactionProtocol()
-        //{
-        //    return (TransactionProtocol != NetTcpDefaults.TransactionProtocol);
-        //}
-
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public bool ShouldSerializeMaxConnections()
-        //{
-        //    return _namedPipe.ShouldSerializeMaxPendingConnections();
-        //}
     }
 }

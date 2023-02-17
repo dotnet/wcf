@@ -1,15 +1,14 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Runtime;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Threading;
 
 namespace System.ServiceModel.Channels
 {
-    using System.Runtime;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Security.Permissions;
-    using System.Threading;
-
     delegate void OverlappedIOCompleteCallback(bool haveResult, int error, int bytesRead);
 
     unsafe class OverlappedContext
@@ -42,8 +41,6 @@ namespace System.ServiceModel.Channels
         StackTrace freeStack;
 #endif
 
-
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         public OverlappedContext()
         {
@@ -74,7 +71,6 @@ namespace System.ServiceModel.Channels
             this._overlapped.AsyncResult = _rootedHolder;
         }
 
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         ~OverlappedContext()
         {
@@ -102,7 +98,6 @@ namespace System.ServiceModel.Channels
         // None of the OverlappedContext methods are threadsafe.
         // Free or FreeOrDefer can only be called once.  FreeIfDeferred can be called any number of times, as long as it's only
         // called once after FreeOrDefer.
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         public void Free()
         {
@@ -138,7 +133,6 @@ namespace System.ServiceModel.Channels
             GC.SuppressFinalize(this);
         }
 
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         public bool FreeOrDefer()
         {
@@ -152,7 +146,6 @@ namespace System.ServiceModel.Channels
             return true;
         }
 
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         public bool FreeIfDeferred()
         {
@@ -164,7 +157,6 @@ namespace System.ServiceModel.Channels
             return false;
         }
 
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         public void StartAsyncOperation(byte[] buffer, OverlappedIOCompleteCallback callback, bool bound)
         {
@@ -217,7 +209,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         public void CancelAsyncOperation()
         {
@@ -230,15 +221,9 @@ namespace System.ServiceModel.Channels
             this._bufferPtr = null;
             this._bufferHolder[0] = OverlappedContext.s_dummyBuffer;
             this._pendingCallback = null;
-        }
-
-        //  public void StartSyncOperation(byte[] buffer)
-        //  {
-        //      StartSyncOperation(buffer, ref this.bufferHolder[0], false);
-        //  }
-
+        }       
+        
         // The only holder allowed is Holder[0].  It can be passed in as a ref to prevent repeated expensive array lookups.
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         public void StartSyncOperation(byte[] buffer, ref object holder)
         {
@@ -272,7 +257,6 @@ namespace System.ServiceModel.Channels
         }
 
         // If this returns false, the OverlappedContext is no longer usable.  It shouldn't be freed or anything.
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         public bool WaitForSyncOperation(TimeSpan timeout)
         {
@@ -307,13 +291,7 @@ namespace System.ServiceModel.Channels
             return true;
         }
 
-        //  public void CancelSyncOperation()
-        //  {
-        //      CancelSyncOperation(ref this.bufferHolder[0]);
-        //  }
-
         // The only holder allowed is Holder[0].  It can be passed in as a ref to prevent repeated expensive array lookups.
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         public void CancelSyncOperation(ref object holder)
         {
@@ -328,7 +306,6 @@ namespace System.ServiceModel.Channels
         // This should ONLY be used to make a 'ref object' parameter to the zeroth element, to prevent repeated expensive array lookups.
         public object[] Holder
         {
-            //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
             [SecuritySafeCritical]
             get
             {
@@ -338,7 +315,6 @@ namespace System.ServiceModel.Channels
 
         public byte* BufferPtr
         {
-            //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
             [SecuritySafeCritical]
             get
             {
@@ -356,7 +332,6 @@ namespace System.ServiceModel.Channels
 
         public NativeOverlapped* NativeOverlapped
         {
-            //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
             [SecuritySafeCritical]
             get
             {
@@ -385,7 +360,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         static void CompleteCallback(uint error, uint numBytes, NativeOverlapped* nativeOverlapped)
         {
@@ -411,7 +385,6 @@ namespace System.ServiceModel.Channels
             callback(true, (int)error, checked((int)numBytes));
         }
 
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         static void EventCallback(object state, bool timedOut)
         {
@@ -448,7 +421,6 @@ namespace System.ServiceModel.Channels
             callback(false, 0, 0);
         }
 
-        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         [SecuritySafeCritical]
         static void CleanupCallback(object state, bool timedOut)
         {
