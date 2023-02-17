@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
+using Microsoft.IdentityModel.Protocols.WsFed;
 using Microsoft.IdentityModel.Protocols.WsTrust;
 using Microsoft.IdentityModel.Tokens.Saml2;
 
@@ -49,11 +50,25 @@ namespace System.ServiceModel.Federation
             : base(other)
         {
             foreach (var parameter in other.AdditionalRequestParameters)
-                AdditionalRequestParameters.Add(parameter);
+                AdditionalRequestParameters.Add((XmlElement)parameter.CloneNode(true));
 
             CacheIssuedTokens = other.CacheIssuedTokens;
-            foreach (var claimType in ClaimTypes)
-                ClaimTypes.Add(claimType);
+
+            if (other.Claims != null)
+            {
+                List<ClaimType> claimTypes = new List<ClaimType>();
+                foreach (var claimType in other.Claims.ClaimTypes)
+                {
+                    claimTypes.Add(new ClaimType()
+                    {
+                        IsOptional = claimType.IsOptional,
+                        Uri = claimType.Uri,
+                        Value = claimType.Value
+                    });
+                }
+
+                Claims = new Claims(other.Claims.Dialect, claimTypes);
+            }
 
             _issuedTokenRenewalThresholdPercentage = other.IssuedTokenRenewalThresholdPercentage;
             KeySize = other.KeySize;
@@ -84,7 +99,7 @@ namespace System.ServiceModel.Federation
         /// Allows the addition of <see cref="Claims"/> to the WSTrust request
         /// <para>see: http://docs.oasis-open.org/ws-sx/ws-trust/200512/ws-trust-1.3-os.html </para>
         /// </summary>
-        public ICollection<Claims> ClaimTypes { get; } = new Collection<Claims>();
+        public Claims Claims { get; set; }
 
         /// <summary>
         /// Gets or sets the percentage of the issued token's lifetime at which it should be renewed instead of cached.
