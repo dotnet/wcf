@@ -67,7 +67,7 @@ namespace System.ServiceModel.Channels
             // When replacing the buffer, we need to provoke the CLR to fix up the handle of the pin.
             this._pinnedHandle = GCHandle.FromIntPtr(*((IntPtr*)_nativeOverlapped +
                 (IntPtr.Size == 4 ? HandleOffsetFromOverlapped32 : HandleOffsetFromOverlapped64)));
-            this._pinnedTarget = this._pinnedHandle.Target;
+            //this._pinnedTarget = this._pinnedHandle.Target;
 
             // Create the permanently rooted holder and put it in the Overlapped.
             this._rootedHolder = new RootedHolder();
@@ -191,7 +191,7 @@ namespace System.ServiceModel.Channels
             {
                 Fx.Assert(object.ReferenceEquals(this._bufferHolder[0], OverlappedContext.s_dummyBuffer), "StartAsyncOperation: buffer holder corrupted.");
                 this._bufferHolder[0] = buffer;
-                this._pinnedHandle.Target = this._pinnedTarget;
+                //this._pinnedHandle.Target = this._pinnedTarget;
                 this._bufferPtr = (byte*)Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0);
             }
 
@@ -266,7 +266,7 @@ namespace System.ServiceModel.Channels
             {
                 Fx.Assert(object.ReferenceEquals(holder, OverlappedContext.s_dummyBuffer), "StartSyncOperation: buffer holder corrupted.");
                 holder = buffer;
-                this._pinnedHandle.Target = this._pinnedTarget;
+                //this._pinnedHandle.Target = this._pinnedTarget;
                 this._bufferPtr = (byte*)Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0);
             }
         }

@@ -395,12 +395,12 @@ namespace System.ServiceModel.Channels
                         this._writeOverlapped.StartAsyncOperation(buffer, this._onAsyncWriteComplete, this._isBoundToCompletionPort);
                         if (UnsafeNativeMethods.WriteFile(this._pipe.DangerousGetHandle(), this._writeOverlapped.BufferPtr + offset, size, IntPtr.Zero, this._writeOverlapped.NativeOverlapped) == 0)
                         {
-                            int error = Marshal.GetLastWin32Error();
-                            if (error != UnsafeNativeMethods.ERROR_IO_PENDING)
-                            {
-                                this._isWriteOutstanding = false;
-                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(Exceptions.CreateWriteException(error));
-                            }
+                            //int error = Marshal.GetLastWin32Error();
+                            //if (error != UnsafeNativeMethods.ERROR_IO_PENDING)
+                            //{
+                            //    this._isWriteOutstanding = false;
+                            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(Exceptions.CreateWriteException(error));
+                            //}
                         }
                     }
                     finally
