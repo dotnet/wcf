@@ -731,7 +731,7 @@ namespace System.ServiceModel.Channels
             // otherwise EnsureWriteMessageState would get called twice. Also see OnWriteMessage()
             // for the example.
             await OnWriteBodyContentsAsync(writer);
-            WriteMessagePostamble(writer);
+            await WriteMessagePostambleAsync(writer);
         }
 
         private void EnsureWriteMessageState(XmlDictionaryWriter writer)
@@ -808,6 +808,15 @@ namespace System.ServiceModel.Channels
             {
                 writer.WriteEndElement();
                 writer.WriteEndElement();
+            }
+        }
+
+        internal async Task WriteMessagePostambleAsync(XmlDictionaryWriter writer)
+        {
+            if (Version.Envelope != EnvelopeVersion.None)
+            {
+                await writer.WriteEndElementAsync();
+                await writer.WriteEndElementAsync();
             }
         }
 
@@ -1222,45 +1231,6 @@ namespace System.ServiceModel.Channels
         }
 
         protected internal BodyWriter BodyWriter { get; private set; }
-
-        private class OnWriteMessageAsyncResult : AsyncResult
-        {
-            private BodyWriterMessage _message;
-            private XmlDictionaryWriter _writer;
-
-            public OnWriteMessageAsyncResult(XmlDictionaryWriter writer, BodyWriterMessage message, AsyncCallback callback, object state)
-                : base(callback, state)
-            {
-                _message = message;
-                _writer = writer;
-
-                if (HandleWriteBodyContents(null))
-                {
-                    Complete(true);
-                }
-            }
-
-            private bool HandleWriteBodyContents(IAsyncResult result)
-            {
-                if (result == null)
-                {
-                    result = _message.OnBeginWriteBodyContents(_writer, PrepareAsyncCompletion(HandleWriteBodyContents), this);
-                    if (!result.CompletedSynchronously)
-                    {
-                        return false;
-                    }
-                }
-
-                _message.OnEndWriteBodyContents(result);
-                _message.WriteMessagePostamble(_writer);
-                return true;
-            }
-
-            public static void End(IAsyncResult result)
-            {
-                AsyncResult.End<OnWriteMessageAsyncResult>(result);
-            }
-        }
     }
 
     internal abstract class ReceivedMessage : Message
