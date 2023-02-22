@@ -15,6 +15,7 @@ namespace System.Runtime
     internal class ExceptionTrace
     {
         private const ushort FailFastEventLogCategory = 6;
+        internal const int MaxExceptionStringLength = 28 * 1024;
         private string _eventSourceName;
         private readonly EtwDiagnosticTrace _diagnosticTrace;
 
@@ -34,21 +35,21 @@ namespace System.Runtime
                 case EventLevel.Warning:
                     if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
                     {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
                         WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
                     }
                     break;
                 case EventLevel.Critical:
                     if (WcfEventSource.Instance.EtwUnhandledExceptionIsEnabled())
                     {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
                         WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
                     }
                     break;
                 default:
                     if (WcfEventSource.Instance.ThrowingEtwExceptionVerboseIsEnabled())
                     {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
                         WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
                     }
 
@@ -64,21 +65,21 @@ namespace System.Runtime
                 case TraceEventType.Warning:
                     if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
                     {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
                         WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
                     }
                     break;
                 case TraceEventType.Critical:
                     if (WcfEventSource.Instance.EtwUnhandledExceptionIsEnabled())
                     {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
                         WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
                     }
                     break;
                 default:
                     if (WcfEventSource.Instance.ThrowingEtwExceptionVerboseIsEnabled())
                     {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
                         WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
                     }
 
