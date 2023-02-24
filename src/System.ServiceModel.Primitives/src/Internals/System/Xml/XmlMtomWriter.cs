@@ -302,7 +302,7 @@ namespace System.Xml
                 return Task.CompletedTask;
             }
             else
-                return Task.FromResult(Writer.WriteValueAsync(value));
+                return Writer.WriteValueAsync(value);
         }
 
         public override void WriteBase64(byte[] buffer, int index, int count)
