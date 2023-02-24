@@ -9,6 +9,7 @@
     <TargetFrameworks>net6.0-windows</TargetFrameworks>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageDescription>Provides the types that permit SOAP messages to be exchanged using named pipes (example: NetNamedPipeBinding).</PackageDescription>
   </PropertyGroup>
 
   <ItemGroup>

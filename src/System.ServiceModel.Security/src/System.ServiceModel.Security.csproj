@@ -9,6 +9,9 @@
     <NoWarn>$(NoWarn);NU5131</NoWarn>
     <TargetFrameworks>net6.0;net461</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <PackageDescription>Provides the types that support additional security features.
+This package is deprecated, 6.0 is the last release of this package.
+</PackageDescription>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net461'">

@@ -11,6 +11,7 @@
     <RootNamespace>System.ServiceModel</RootNamespace>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <PackageDescription>Contain common types for NetFraming based transports such as NetTcp and NetNamedPipe.</PackageDescription>
   </PropertyGroup>
 
   <ItemGroup>
