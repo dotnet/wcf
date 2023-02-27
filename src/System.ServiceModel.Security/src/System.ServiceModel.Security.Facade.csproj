@@ -14,6 +14,7 @@
     <IsBuilding Condition="$(BuildFrameworks.Contains('$(TargetFramework);'))">true</IsBuilding>
     <IsHarvesting Condition="$(HarvestFrameworks.Contains('$(TargetFramework);'))">true</IsHarvesting>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <PackageDescription>Provides the types that support additional security features.</PackageDescription>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsBuilding)' == 'true'">

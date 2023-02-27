@@ -7,13 +7,13 @@
     <IsPackable>true</IsPackable>
     <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
     <NoWarn>$(NoWarn);NU5131</NoWarn>
-
     <BuildFrameworks>net6.0;netstandard2.0;net461;</BuildFrameworks>
     <HarvestFrameworks>MonoAndroid10;MonoTouch10;net45;net46;netcore50;netstandard1.1;netstandard1.3;portable-net45+win8;win8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10;</HarvestFrameworks>
     <TargetFrameworks>$(BuildFrameworks)$(HarvestFrameworks)</TargetFrameworks>
     <IsBuilding Condition="$(BuildFrameworks.Contains('$(TargetFramework);'))">true</IsBuilding>
     <IsHarvesting Condition="$(HarvestFrameworks.Contains('$(TargetFramework);'))">true</IsHarvesting>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <PackageDescription>Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).</PackageDescription>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsBuilding)' == 'true'">
