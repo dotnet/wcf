@@ -9,8 +9,7 @@
     <NoWarn>$(NoWarn);NU5131</NoWarn>
     <TargetFrameworks>net6.0;net461</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <PackageDescription>Provides the types that support additional security features.
-</PackageDescription>
+    <PackageDescription>Provides the types that support additional security features.</PackageDescription>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
