@@ -9,9 +9,7 @@
     <NoWarn>$(NoWarn);NU5131</NoWarn>
     <TargetFrameworks>net6.0</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <PackageDescription>Provides the types that permit 2-way ("duplex") exchanges of messages.
-This package is deprecated, 6.0 is the last release of this package.
-</PackageDescription>
+    <PackageDescription>Provides the types that permit 2-way ("duplex") exchanges of messages.</PackageDescription>
   </PropertyGroup>
 
   <ItemGroup>
