@@ -7,7 +7,6 @@ trigger:
   branches:
     include:
     - main
-    - release/3.*
     - release/4.*
 
 # trigger ci builds for pull requests into listed branches
@@ -15,7 +14,6 @@ pr:
   branches:
     include:
     - main
-    - release/3.*
     - release/4.*
 
 variables:  
