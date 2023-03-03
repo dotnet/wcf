@@ -385,8 +385,8 @@ namespace System.ServiceModel.Channels
             return builder.ToString();
         }
 
-        internal const string UseSha1InMsmqEncryptionAlgorithmString = "Switch.System.ServiceModel.UseSha1InMsmqEncryptionAlgorithm";
-        internal static bool s_useSha1InPipeConnectionGetHashAlgorithm = AppContext.TryGetSwitch(UseSha1InMsmqEncryptionAlgorithmString, out bool enabled) && enabled;
+        internal const string UseSha1InPipeConnectionGetHashAlgorithmString = "Switch.System.ServiceModel.UseSha1InPipeConnectionGetHashAlgorithm";
+        internal static bool s_useSha1InPipeConnectionGetHashAlgorithm = AppContext.TryGetSwitch(UseSha1InPipeConnectionGetHashAlgorithmString, out bool enabled) && enabled;
 
         private static HashAlgorithm GetHashAlgorithm()
         {
