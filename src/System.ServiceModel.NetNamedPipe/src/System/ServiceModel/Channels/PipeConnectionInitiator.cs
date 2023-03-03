@@ -392,11 +392,11 @@ namespace System.ServiceModel.Channels
         {
             if (s_useSha1InPipeConnectionGetHashAlgorithm)
             {
-                return SHA256.Create();
+                return SHA1.Create(); // CodeQL [SM02196] Here SHA1 is not used for cryptographic purposes, it's for compatibility.
             }
             else
             {
-                return SHA1.Create();
+                return SHA256.Create();
             }
         }
 
