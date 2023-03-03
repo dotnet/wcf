@@ -65,11 +65,11 @@ stages:
         timeoutInMinutes: 90
         pool:
           ${{ if eq(variables._RunAsPublic, True) }}:
-            name: NetCore1ESPool-Public
-            demands: ImageOverride -equals build.windows.10.amd64.vs2017.open
+            name: NetCore-Public
+            demands: ImageOverride -equals windows.vs2022.amd64.open
           ${{ if eq(variables._RunAsInternal, True) }}:
             name: NetCore1ESPool-Internal
-            demands: ImageOverride -equals build.windows.10.amd64.vs2017
+            demands: ImageOverride -equals windows.vs2022.amd64
         variables:
         - _InternalBuildArgs: ''
         - HelixApiAccessToken: ''
@@ -166,7 +166,7 @@ stages:
           timeoutInMinutes: 90
           container: ubuntu_2004_20211215
           pool:
-            name:  NetCore1ESPool-Public
+            name:  NetCore-Public
             demands: ImageOverride -equals build.Ubuntu.1804.Amd64.Open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
@@ -225,8 +225,8 @@ stages:
         - job: MacOS
           timeoutInMinutes: 90
           pool:
-            name: NetCore1ESPool-Public
-            demands: ImageOverride -equals build.windows.10.amd64.vs2017.open
+            name: NetCore-Public
+            demands: ImageOverride -equals windows.vs2022.amd64.open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
