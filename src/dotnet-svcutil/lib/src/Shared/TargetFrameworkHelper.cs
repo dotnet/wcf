@@ -97,7 +97,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             ProjectDependency.FromPackage("System.Private.ServiceModel", "*"),
             ProjectDependency.FromPackage("System.ServiceModel.Security", "*"),
             ProjectDependency.FromPackage("System.Xml.XmlSerializer", "*"),
-            ProjectDependency.FromPackage("System.ServiceModel.Federation", "*")
+            ProjectDependency.FromPackage("System.ServiceModel.Federation", "*"),
+            ProjectDependency.FromPackage("System.ServiceModel.NetNamedPipe", "*"),
+            ProjectDependency.FromPackage("System.ServiceModel.NetFramingBase", "*")
         };
 
         public static Version MinSupportedNetFxVersion { get; } = new Version("4.5");
