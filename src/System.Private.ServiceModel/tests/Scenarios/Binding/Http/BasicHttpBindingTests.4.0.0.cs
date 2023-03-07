@@ -4,11 +4,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using Infrastructure.Common;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
 using Xunit;
 
 public static class Binding_Http_BasicHttpBindingTests
@@ -348,6 +351,46 @@ public static class Binding_Http_BasicHttpBindingTests
 
             // *** VALIDATE *** \\
             Assert.Equal(result, decompressionEnabled);
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfTheory]
+    [InlineData(65536)]      // 64KB
+    [InlineData(1048576)]    // 1MB
+    [InlineData(67108864)]   // 64MB
+    [InlineData(4294967296)] // 4GB
+    [OuterLoop]
+    public static async void DefaultSettings_Http_Mtom_Stream_Upload(long uploadBytes)
+    {
+        ChannelFactory<MtomBindingTestHelper.IMtomStreamingService> factory = null;
+        MtomBindingTestHelper.IMtomStreamingService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            // WCF Service
+            await using (WebApplication app = MtomBindingTestHelper.BuildWCFService())
+            {
+                app.Start();
+
+                // WCF Client
+                factory = new ChannelFactory<MtomBindingTestHelper.IMtomStreamingService>(
+                    MtomBindingTestHelper.CreateMtomClientBinding(),
+                    new EndpointAddress(app.Urls.First(u => u.StartsWith("http:"))));
+                serviceProxy = factory.CreateChannel();
+
+                // *** EXECUTE *** \\
+                long result = serviceProxy.UploadStream(new BloatedStream(uploadBytes));
+            }
 
             // *** CLEANUP *** \\
             factory.Close();
