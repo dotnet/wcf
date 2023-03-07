@@ -385,18 +385,18 @@ namespace System.ServiceModel.Channels
             return builder.ToString();
         }
 
-        internal const string UseSha1InMsmqEncryptionAlgorithmString = "Switch.System.ServiceModel.UseSha1InMsmqEncryptionAlgorithm";
-        internal static bool s_useSha1InPipeConnectionGetHashAlgorithm = AppContext.TryGetSwitch(UseSha1InMsmqEncryptionAlgorithmString, out bool enabled) && enabled;
+        internal const string UseSha1InPipeConnectionGetHashAlgorithmString = "Switch.System.ServiceModel.UseSha1InPipeConnectionGetHashAlgorithm";
+        internal static bool s_useSha1InPipeConnectionGetHashAlgorithm = AppContext.TryGetSwitch(UseSha1InPipeConnectionGetHashAlgorithmString, out bool enabled) && enabled;
 
         private static HashAlgorithm GetHashAlgorithm()
         {
             if (s_useSha1InPipeConnectionGetHashAlgorithm)
             {
-                return SHA256.Create();
+                return SHA1.Create(); // CodeQL [SM02196] Here SHA1 is not used for cryptographic purposes, it's for compatibility.
             }
             else
             {
-                return SHA1.Create();
+                return SHA256.Create();
             }
         }
 
