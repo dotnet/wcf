@@ -62,10 +62,16 @@ namespace System.ServiceModel.Channels
             this._nativeOverlapped = this._overlapped.UnsafePack(OverlappedContext.s_completeCallback, this._bufferHolder);
 
             // When replacing the buffer, we need to provoke the CLR to fix up the handle of the pin.
-            this._pinnedHandle = GCHandle.FromIntPtr(*((IntPtr*)_nativeOverlapped +
+            try
+            {
+                this._pinnedHandle = GCHandle.FromIntPtr(*((IntPtr*)_nativeOverlapped +
                 (IntPtr.Size == 4 ? HandleOffsetFromOverlapped32 : HandleOffsetFromOverlapped64)));
-            //this._pinnedTarget = this._pinnedHandle.Target;
-
+                //this._pinnedTarget = this._pinnedHandle.Target;
+            }
+            catch (InvalidOperationException) //GCHandle.FromIntPtr intermittently throws: Handle is not initialized.
+            {
+            }
+            
             // Create the permanently rooted holder and put it in the Overlapped.
             this._rootedHolder = new RootedHolder();
             this._overlapped.AsyncResult = _rootedHolder;
