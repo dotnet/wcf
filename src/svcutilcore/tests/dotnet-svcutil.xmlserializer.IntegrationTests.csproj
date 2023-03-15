@@ -2,7 +2,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CLSCompliant>false</CLSCompliant>
@@ -16,14 +16,14 @@
     <SkipTestsOnPlatform Condition="'$(TargetGroup)' == 'uap' OR '$(TargetGroup)' == 'netfx' OR '$(ArchGroup)' == 'arm' OR '$(ArchGroup)' == 'arm64' OR '$(ArchGroup)' == 'armel'">true</SkipTestsOnPlatform>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <!-- We're building netcoreap, run on the test CLI
          Reuse the same runtimeconfig that the tests use. -->
     <GeneratorRuntimeConfig>$(ArtifactsBinDir)\dotnet-svcutil.xmlserializer\$(Configuration)\$(TargetFramework)\dotnet-svcutil.xmlserializer.runtimeconfig.json</GeneratorRuntimeConfig>
     <GeneratorCliPath>$(DOTNET_INSTALL_DIR)/</GeneratorCliPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' != 'netcoreapp3.1'">
+  <PropertyGroup Condition="'$(TargetFramework)' != 'net6.0">
     <!-- We're building some non-netcoreapp target, run on the Tools CLI.
          Reuse the same runtimeconfig used by CSC. -->
     <GeneratorRuntimeConfig>$(ToolsDir)csc.runtimeconfig.json</GeneratorRuntimeConfig>
