@@ -3,7 +3,7 @@
     <AssemblyVersion>1.1.1.0</AssemblyVersion>
     <AssemblyName>dotnet-svcutil.xmlserializer</AssemblyName>
     <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer</RootNamespace>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <TargetExt>.dll</TargetExt>
     <NoWarn>$(NoWarn);1634;1691;649;168;169;NU5129</NoWarn>
