@@ -107,8 +107,7 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("netcoreapp3.1", "-edb")]
-        [InlineData("net5.0", "-elm")]
+        [InlineData("net6.0", "-elm")]
         public void ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
         {
             this_TestCaseName = "ParamsFiles_SDK_TFM";
