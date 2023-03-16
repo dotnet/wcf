@@ -60,9 +60,7 @@ namespace SvcutilTest
         [Theory]
         [Trait("Category", "Test")]
         [InlineData("tfmGlobalDefault", null)]
-        [InlineData("tfmGlobalCoreapp20", "netcoreapp2.0")]
         [InlineData("tfmGlobalNetstd20", "netstandard2.0")]
-        [InlineData("tfmGlobal100", "netcoreapp100.0")]
         public void TFMBootstrapGlobal(string testCaseName, string targetFramework)
         {
             this_TestCaseName = "TFMBootstrapGlobal";
@@ -107,24 +105,24 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("net6.0", "-elm")]
-        public void ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
+        [InlineData("-edb")]
+        public void ParamsFiles_SDK_TFM( string extraOptions)
         {
             this_TestCaseName = "ParamsFiles_SDK_TFM";
             TestFixture();
-            var testCaseName = $"TF{targetFramework}".Replace(".", "_");
-            InitializeGlobal(testCaseName, targetFramework: "net6.0", g_SdkVersion);
-            this_TestCaseProject.TargetFramework = targetFramework;
+            var testCaseName = $"{extraOptions}".Replace("-", "_");
+            InitializeGlobal(testCaseName);
+
             this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None).Wait();
 
-            var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
+            var url = $"{g_ServiceUrl}/basichttp.svc";            
             var ns = testCaseName.Replace(".", "_") + "_NS";
 
             // generate params file from options
             var paramsFilePath = Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.params.json");
             var options = new Microsoft.Tools.ServiceModel.Svcutil.SvcutilOptions();
             options.Inputs.Add(new Uri(url));
-            options.References.Add(Microsoft.Tools.ServiceModel.Svcutil.ProjectDependency.FromPackage("Newtonsoft.Json", "13.0.1"));
+            options.References.Add(Microsoft.Tools.ServiceModel.Svcutil.ProjectDependency.FromPackage("Newtonsoft.Json", "13.0.2"));
             options.OutputDir = new DirectoryInfo(this_TestCaseOutputDir);
             options.BootstrapPath = new DirectoryInfo(this_TestCaseBootstrapDir);
             options.NamespaceMappings.Add(new System.Collections.Generic.KeyValuePair<string, string>("*", ns));

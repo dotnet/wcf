@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NetHttp_NS
+namespace _edb_NS
 {
     
     
@@ -585,13 +585,13 @@ namespace NetHttp_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="NetHttp_NS.IWcfService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="_edb_NS.IWcfService")]
     public interface IWcfService
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoWithTimeout", ReplyAction="http://tempuri.org/IWcfService/EchoWithTimeoutResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(NetHttp_NS.EchoWithTimeoutRequest request);
+        System.Threading.Tasks.Task<_edb_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(_edb_NS.EchoWithTimeoutRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageRequestReply", ReplyAction="http://tempuri.org/IWcfService/MessageRequestReplyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -599,16 +599,16 @@ namespace NetHttp_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/Echo", ReplyAction="http://tempuri.org/IWcfService/EchoResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoResponse> EchoAsync(NetHttp_NS.EchoRequest request);
+        System.Threading.Tasks.Task<_edb_NS.EchoResponse> EchoAsync(_edb_NS.EchoRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoComplex", ReplyAction="http://tempuri.org/IWcfService/EchoComplexResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoComplexResponse> EchoComplexAsync(NetHttp_NS.EchoComplexRequest request);
+        System.Threading.Tasks.Task<_edb_NS.EchoComplexResponse> EchoComplexAsync(_edb_NS.EchoComplexRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFault", ReplyAction="http://tempuri.org/IWcfService/TestFaultResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttp_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(_edb_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.TestFaultResponse> TestFaultAsync(NetHttp_NS.TestFaultRequest request);
+        System.Threading.Tasks.Task<_edb_NS.TestFaultResponse> TestFaultAsync(_edb_NS.TestFaultRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaultInt", ReplyAction="http://tempuri.org/IWcfService/TestFaultIntResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(int), Action="http://tempuri.org/IWcfService/TestFaultIntFault", Name="IntFault", Namespace="http://www.contoso.com/wcfnamespace")]
@@ -616,62 +616,62 @@ namespace NetHttp_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttp_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttp_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(_edb_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(_edb_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.TestFaultsResponse> TestFaultsAsync(NetHttp_NS.TestFaultsRequest request);
+        System.Threading.Tasks.Task<_edb_NS.TestFaultsResponse> TestFaultsAsync(_edb_NS.TestFaultsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaultWithKnownType", ReplyAction="http://tempuri.org/IWcfService/TestFaultWithKnownTypeResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttp_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(_edb_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(NetHttp_NS.TestFaultWithKnownTypeRequest request);
+        System.Threading.Tasks.Task<_edb_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(_edb_NS.TestFaultWithKnownTypeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ThrowInvalidOperationException", ReplyAction="http://tempuri.org/IWcfService/ThrowInvalidOperationExceptionResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(NetHttp_NS.ThrowInvalidOperationExceptionRequest request);
+        System.Threading.Tasks.Task<_edb_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(_edb_NS.ThrowInvalidOperationExceptionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IWcfService/GetDataUsingDataContractResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(NetHttp_NS.GetDataUsingDataContractRequest request);
+        System.Threading.Tasks.Task<_edb_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(_edb_NS.GetDataUsingDataContractRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ValidateMessagePropertyHeaders", ReplyAction="http://tempuri.org/IWcfService/ValidateMessagePropertyHeadersResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync(NetHttp_NS.ValidateMessagePropertyHeadersRequest request);
+        System.Threading.Tasks.Task<_edb_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync(_edb_NS.ValidateMessagePropertyHeadersRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/UserGetAuthToken", ReplyAction="http://tempuri.org/IWcfService/UserGetAuthTokenResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync(NetHttp_NS.UserGetAuthTokenRequest request);
+        System.Threading.Tasks.Task<_edb_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync(_edb_NS.UserGetAuthTokenRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReply", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.ReplyBankingData> MessageContractRequestReplyAsync(NetHttp_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<_edb_NS.ReplyBankingData> MessageContractRequestReplyAsync(_edb_NS.RequestBankingData request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReplyNotWrapped", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyNotWrappedResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(NetHttp_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<_edb_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(_edb_NS.RequestBankingData request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeader", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(NetHttp_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<_edb_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(_edb_NS.RequestBankingData request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderNotNec" +
             "essaryUnderstood", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderNotNec" +
             "essaryUnderstoodResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(NetHttp_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<_edb_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(_edb_NS.RequestBankingData request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoHttpMessageProperty", ReplyAction="http://tempuri.org/IWcfService/EchoHttpRequestMessagePropertyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync(NetHttp_NS.EchoHttpRequestMessagePropertyRequest request);
+        System.Threading.Tasks.Task<_edb_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync(_edb_NS.EchoHttpRequestMessagePropertyRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetRestartServiceEndpoint", ReplyAction="http://tempuri.org/IWcfService/GetRestartServiceEndpointResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync(NetHttp_NS.GetRestartServiceEndpointRequest request);
+        System.Threading.Tasks.Task<_edb_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync(_edb_NS.GetRestartServiceEndpointRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoXmlSerializerFormat", ReplyAction="http://tempuri.org/IWcfService/EchoXmlSerializerFormatResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -687,11 +687,11 @@ namespace NetHttp_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetDataUsingXmlSerializer", ReplyAction="http://tempuri.org/IWcfService/GetDataUsingXmlSerializerResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(NetHttp_NS.XmlCompositeType composite);
+        System.Threading.Tasks.Task<_edb_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(_edb_NS.XmlCompositeType composite);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/MtcRequest/loginRequest", ReplyAction="http://www.contoso.com/MtcRequest/loginResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.LoginResponse> LoginAsync(NetHttp_NS.LoginRequest request);
+        System.Threading.Tasks.Task<_edb_NS.LoginResponse> LoginAsync(_edb_NS.LoginRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessage", ReplyAction="http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessageResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -699,11 +699,11 @@ namespace NetHttp_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetStreamFromString", ReplyAction="http://tempuri.org/IWcfService/GetStreamFromStringResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(NetHttp_NS.GetStreamFromStringRequest request);
+        System.Threading.Tasks.Task<_edb_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(_edb_NS.GetStreamFromStringRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetStringFromStream", ReplyAction="http://tempuri.org/IWcfService/GetStringFromStreamResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(NetHttp_NS.GetStringFromStreamRequest request);
+        System.Threading.Tasks.Task<_edb_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(_edb_NS.GetStringFromStreamRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoStream", ReplyAction="http://tempuri.org/IWcfService/EchoStreamResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -711,11 +711,11 @@ namespace NetHttp_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoMessageParameter", ReplyAction="http://tempuri.org/IWcfService/EchoMessageParameterResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(NetHttp_NS.EchoMessageParameterRequest request);
+        System.Threading.Tasks.Task<_edb_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(_edb_NS.EchoMessageParameterRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoItems", ReplyAction="http://tempuri.org/IWcfService/EchoItemsResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoItemsResponse> EchoItemsAsync(NetHttp_NS.EchoItemsRequest request);
+        System.Threading.Tasks.Task<_edb_NS.EchoItemsResponse> EchoItemsAsync(_edb_NS.EchoItemsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoItemsXml", ReplyAction="http://tempuri.org/IWcfService/EchoItems_XmlResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -727,23 +727,23 @@ namespace NetHttp_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoXmlVeryComplexType", ReplyAction="http://tempuri.org/IWcfService/EchoXmlVeryComplexTypeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(NetHttp_NS.XmlVeryComplexType complex);
+        System.Threading.Tasks.Task<_edb_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(_edb_NS.XmlVeryComplexType complex);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ReturnContentType", ReplyAction="http://tempuri.org/IWcfService/ReturnContentTypeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(NetHttp_NS.ReturnContentTypeRequest request);
+        System.Threading.Tasks.Task<_edb_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(_edb_NS.ReturnContentTypeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResponseWithMess" +
             "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResponseWithMess" +
             "ageHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(NetHttp_NS.XmlMessageContractTestRequest request);
+        System.Threading.Tasks.Task<_edb_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(_edb_NS.XmlMessageContractTestRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
             "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
             "ageHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(NetHttp_NS.XmlMessageContractTestRequestWithMessageHeader request);
+        System.Threading.Tasks.Task<_edb_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(_edb_NS.XmlMessageContractTestRequestWithMessageHeader request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabled", ReplyAction="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabledResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -751,7 +751,7 @@ namespace NetHttp_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetRequestHttpHeaders", ReplyAction="http://tempuri.org/IWcfService/GetRequestHttpHeadersResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync(NetHttp_NS.GetRequestHttpHeadersRequest request);
+        System.Threading.Tasks.Task<_edb_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync(_edb_NS.GetRequestHttpHeadersRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -852,13 +852,13 @@ namespace NetHttp_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttp_NS.ComplexCompositeType message;
+        public _edb_NS.ComplexCompositeType message;
         
         public EchoComplexRequest()
         {
         }
         
-        public EchoComplexRequest(NetHttp_NS.ComplexCompositeType message)
+        public EchoComplexRequest(_edb_NS.ComplexCompositeType message)
         {
             this.message = message;
         }
@@ -873,13 +873,13 @@ namespace NetHttp_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttp_NS.ComplexCompositeType EchoComplexResult;
+        public _edb_NS.ComplexCompositeType EchoComplexResult;
         
         public EchoComplexResponse()
         {
         }
         
-        public EchoComplexResponse(NetHttp_NS.ComplexCompositeType EchoComplexResult)
+        public EchoComplexResponse(_edb_NS.ComplexCompositeType EchoComplexResult)
         {
             this.EchoComplexResult = EchoComplexResult;
         }
@@ -1102,13 +1102,13 @@ namespace NetHttp_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttp_NS.CompositeType composite;
+        public _edb_NS.CompositeType composite;
         
         public GetDataUsingDataContractRequest()
         {
         }
         
-        public GetDataUsingDataContractRequest(NetHttp_NS.CompositeType composite)
+        public GetDataUsingDataContractRequest(_edb_NS.CompositeType composite)
         {
             this.composite = composite;
         }
@@ -1123,13 +1123,13 @@ namespace NetHttp_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttp_NS.CompositeType GetDataUsingDataContractResult;
+        public _edb_NS.CompositeType GetDataUsingDataContractResult;
         
         public GetDataUsingDataContractResponse()
         {
         }
         
-        public GetDataUsingDataContractResponse(NetHttp_NS.CompositeType GetDataUsingDataContractResult)
+        public GetDataUsingDataContractResponse(_edb_NS.CompositeType GetDataUsingDataContractResult)
         {
             this.GetDataUsingDataContractResult = GetDataUsingDataContractResult;
         }
@@ -1197,13 +1197,13 @@ namespace NetHttp_NS
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
-        public NetHttp_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult;
+        public _edb_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult;
         
         public ValidateMessagePropertyHeadersResponse()
         {
         }
         
-        public ValidateMessagePropertyHeadersResponse(NetHttp_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult)
+        public ValidateMessagePropertyHeadersResponse(_edb_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult)
         {
             this.ValidateMessagePropertyHeadersResult = ValidateMessagePropertyHeadersResult;
         }
@@ -1482,13 +1482,13 @@ namespace NetHttp_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttp_NS.ResultOfstring UserGetAuthTokenResult;
+        public _edb_NS.ResultOfstring UserGetAuthTokenResult;
         
         public UserGetAuthTokenResponse()
         {
         }
         
-        public UserGetAuthTokenResponse(NetHttp_NS.ResultOfstring UserGetAuthTokenResult)
+        public UserGetAuthTokenResponse(_edb_NS.ResultOfstring UserGetAuthTokenResult)
         {
             this.UserGetAuthTokenResult = UserGetAuthTokenResult;
         }
@@ -1762,13 +1762,13 @@ namespace NetHttp_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttp_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult;
+        public _edb_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult;
         
         public EchoHttpRequestMessagePropertyResponse()
         {
         }
         
-        public EchoHttpRequestMessagePropertyResponse(NetHttp_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult)
+        public EchoHttpRequestMessagePropertyResponse(_edb_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult)
         {
             this.EchoHttpRequestMessagePropertyResult = EchoHttpRequestMessagePropertyResult;
         }
@@ -2234,26 +2234,26 @@ namespace NetHttp_NS
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
-        public NetHttp_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult;
+        public _edb_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult;
         
         public GetRequestHttpHeadersResponse()
         {
         }
         
-        public GetRequestHttpHeadersResponse(NetHttp_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult)
+        public GetRequestHttpHeadersResponse(_edb_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult)
         {
             this.GetRequestHttpHeadersResult = GetRequestHttpHeadersResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface IWcfServiceChannel : NetHttp_NS.IWcfService, System.ServiceModel.IClientChannel
+    public interface IWcfServiceChannel : _edb_NS.IWcfService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class WcfServiceClient : System.ServiceModel.ClientBase<NetHttp_NS.IWcfService>, NetHttp_NS.IWcfService
+    public partial class WcfServiceClient : System.ServiceModel.ClientBase<_edb_NS.IWcfService>, _edb_NS.IWcfService
     {
         
         /// <summary>
@@ -2290,17 +2290,17 @@ namespace NetHttp_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoWithTimeoutResponse> NetHttp_NS.IWcfService.EchoWithTimeoutAsync(NetHttp_NS.EchoWithTimeoutRequest request)
+        System.Threading.Tasks.Task<_edb_NS.EchoWithTimeoutResponse> _edb_NS.IWcfService.EchoWithTimeoutAsync(_edb_NS.EchoWithTimeoutRequest request)
         {
             return base.Channel.EchoWithTimeoutAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
+        public System.Threading.Tasks.Task<_edb_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
         {
-            NetHttp_NS.EchoWithTimeoutRequest inValue = new NetHttp_NS.EchoWithTimeoutRequest();
+            _edb_NS.EchoWithTimeoutRequest inValue = new _edb_NS.EchoWithTimeoutRequest();
             inValue.message = message;
             inValue.serviceOperationTimeout = serviceOperationTimeout;
-            return ((NetHttp_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request)
@@ -2309,42 +2309,42 @@ namespace NetHttp_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoResponse> NetHttp_NS.IWcfService.EchoAsync(NetHttp_NS.EchoRequest request)
+        System.Threading.Tasks.Task<_edb_NS.EchoResponse> _edb_NS.IWcfService.EchoAsync(_edb_NS.EchoRequest request)
         {
             return base.Channel.EchoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.EchoResponse> EchoAsync(string message)
+        public System.Threading.Tasks.Task<_edb_NS.EchoResponse> EchoAsync(string message)
         {
-            NetHttp_NS.EchoRequest inValue = new NetHttp_NS.EchoRequest();
+            _edb_NS.EchoRequest inValue = new _edb_NS.EchoRequest();
             inValue.message = message;
-            return ((NetHttp_NS.IWcfService)(this)).EchoAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).EchoAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoComplexResponse> NetHttp_NS.IWcfService.EchoComplexAsync(NetHttp_NS.EchoComplexRequest request)
+        System.Threading.Tasks.Task<_edb_NS.EchoComplexResponse> _edb_NS.IWcfService.EchoComplexAsync(_edb_NS.EchoComplexRequest request)
         {
             return base.Channel.EchoComplexAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.EchoComplexResponse> EchoComplexAsync(NetHttp_NS.ComplexCompositeType message)
+        public System.Threading.Tasks.Task<_edb_NS.EchoComplexResponse> EchoComplexAsync(_edb_NS.ComplexCompositeType message)
         {
-            NetHttp_NS.EchoComplexRequest inValue = new NetHttp_NS.EchoComplexRequest();
+            _edb_NS.EchoComplexRequest inValue = new _edb_NS.EchoComplexRequest();
             inValue.message = message;
-            return ((NetHttp_NS.IWcfService)(this)).EchoComplexAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).EchoComplexAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.TestFaultResponse> NetHttp_NS.IWcfService.TestFaultAsync(NetHttp_NS.TestFaultRequest request)
+        System.Threading.Tasks.Task<_edb_NS.TestFaultResponse> _edb_NS.IWcfService.TestFaultAsync(_edb_NS.TestFaultRequest request)
         {
             return base.Channel.TestFaultAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.TestFaultResponse> TestFaultAsync(string faultMsg)
+        public System.Threading.Tasks.Task<_edb_NS.TestFaultResponse> TestFaultAsync(string faultMsg)
         {
-            NetHttp_NS.TestFaultRequest inValue = new NetHttp_NS.TestFaultRequest();
+            _edb_NS.TestFaultRequest inValue = new _edb_NS.TestFaultRequest();
             inValue.faultMsg = faultMsg;
-            return ((NetHttp_NS.IWcfService)(this)).TestFaultAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).TestFaultAsync(inValue);
         }
         
         public System.Threading.Tasks.Task TestFaultIntAsync(int faultCode)
@@ -2353,125 +2353,125 @@ namespace NetHttp_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.TestFaultsResponse> NetHttp_NS.IWcfService.TestFaultsAsync(NetHttp_NS.TestFaultsRequest request)
+        System.Threading.Tasks.Task<_edb_NS.TestFaultsResponse> _edb_NS.IWcfService.TestFaultsAsync(_edb_NS.TestFaultsRequest request)
         {
             return base.Channel.TestFaultsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.TestFaultsResponse> TestFaultsAsync(string faultMsg, bool throwFaultDetail)
+        public System.Threading.Tasks.Task<_edb_NS.TestFaultsResponse> TestFaultsAsync(string faultMsg, bool throwFaultDetail)
         {
-            NetHttp_NS.TestFaultsRequest inValue = new NetHttp_NS.TestFaultsRequest();
+            _edb_NS.TestFaultsRequest inValue = new _edb_NS.TestFaultsRequest();
             inValue.faultMsg = faultMsg;
             inValue.throwFaultDetail = throwFaultDetail;
-            return ((NetHttp_NS.IWcfService)(this)).TestFaultsAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).TestFaultsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.TestFaultWithKnownTypeResponse> NetHttp_NS.IWcfService.TestFaultWithKnownTypeAsync(NetHttp_NS.TestFaultWithKnownTypeRequest request)
+        System.Threading.Tasks.Task<_edb_NS.TestFaultWithKnownTypeResponse> _edb_NS.IWcfService.TestFaultWithKnownTypeAsync(_edb_NS.TestFaultWithKnownTypeRequest request)
         {
             return base.Channel.TestFaultWithKnownTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
+        public System.Threading.Tasks.Task<_edb_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
         {
-            NetHttp_NS.TestFaultWithKnownTypeRequest inValue = new NetHttp_NS.TestFaultWithKnownTypeRequest();
+            _edb_NS.TestFaultWithKnownTypeRequest inValue = new _edb_NS.TestFaultWithKnownTypeRequest();
             inValue.faultMsg = faultMsg;
             inValue.objects = objects;
-            return ((NetHttp_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.ThrowInvalidOperationExceptionResponse> NetHttp_NS.IWcfService.ThrowInvalidOperationExceptionAsync(NetHttp_NS.ThrowInvalidOperationExceptionRequest request)
+        System.Threading.Tasks.Task<_edb_NS.ThrowInvalidOperationExceptionResponse> _edb_NS.IWcfService.ThrowInvalidOperationExceptionAsync(_edb_NS.ThrowInvalidOperationExceptionRequest request)
         {
             return base.Channel.ThrowInvalidOperationExceptionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(string message)
+        public System.Threading.Tasks.Task<_edb_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(string message)
         {
-            NetHttp_NS.ThrowInvalidOperationExceptionRequest inValue = new NetHttp_NS.ThrowInvalidOperationExceptionRequest();
+            _edb_NS.ThrowInvalidOperationExceptionRequest inValue = new _edb_NS.ThrowInvalidOperationExceptionRequest();
             inValue.message = message;
-            return ((NetHttp_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetDataUsingDataContractResponse> NetHttp_NS.IWcfService.GetDataUsingDataContractAsync(NetHttp_NS.GetDataUsingDataContractRequest request)
+        System.Threading.Tasks.Task<_edb_NS.GetDataUsingDataContractResponse> _edb_NS.IWcfService.GetDataUsingDataContractAsync(_edb_NS.GetDataUsingDataContractRequest request)
         {
             return base.Channel.GetDataUsingDataContractAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(NetHttp_NS.CompositeType composite)
+        public System.Threading.Tasks.Task<_edb_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(_edb_NS.CompositeType composite)
         {
-            NetHttp_NS.GetDataUsingDataContractRequest inValue = new NetHttp_NS.GetDataUsingDataContractRequest();
+            _edb_NS.GetDataUsingDataContractRequest inValue = new _edb_NS.GetDataUsingDataContractRequest();
             inValue.composite = composite;
-            return ((NetHttp_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.ValidateMessagePropertyHeadersResponse> NetHttp_NS.IWcfService.ValidateMessagePropertyHeadersAsync(NetHttp_NS.ValidateMessagePropertyHeadersRequest request)
+        System.Threading.Tasks.Task<_edb_NS.ValidateMessagePropertyHeadersResponse> _edb_NS.IWcfService.ValidateMessagePropertyHeadersAsync(_edb_NS.ValidateMessagePropertyHeadersRequest request)
         {
             return base.Channel.ValidateMessagePropertyHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync()
+        public System.Threading.Tasks.Task<_edb_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync()
         {
-            NetHttp_NS.ValidateMessagePropertyHeadersRequest inValue = new NetHttp_NS.ValidateMessagePropertyHeadersRequest();
-            return ((NetHttp_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
+            _edb_NS.ValidateMessagePropertyHeadersRequest inValue = new _edb_NS.ValidateMessagePropertyHeadersRequest();
+            return ((_edb_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.UserGetAuthTokenResponse> NetHttp_NS.IWcfService.UserGetAuthTokenAsync(NetHttp_NS.UserGetAuthTokenRequest request)
+        System.Threading.Tasks.Task<_edb_NS.UserGetAuthTokenResponse> _edb_NS.IWcfService.UserGetAuthTokenAsync(_edb_NS.UserGetAuthTokenRequest request)
         {
             return base.Channel.UserGetAuthTokenAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync()
+        public System.Threading.Tasks.Task<_edb_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync()
         {
-            NetHttp_NS.UserGetAuthTokenRequest inValue = new NetHttp_NS.UserGetAuthTokenRequest();
-            return ((NetHttp_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue);
+            _edb_NS.UserGetAuthTokenRequest inValue = new _edb_NS.UserGetAuthTokenRequest();
+            return ((_edb_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.ReplyBankingData> MessageContractRequestReplyAsync(NetHttp_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<_edb_NS.ReplyBankingData> MessageContractRequestReplyAsync(_edb_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(NetHttp_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<_edb_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(_edb_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyNotWrappedAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(NetHttp_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<_edb_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(_edb_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyWithMessageHeaderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(NetHttp_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<_edb_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(_edb_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoHttpRequestMessagePropertyResponse> NetHttp_NS.IWcfService.EchoHttpRequestMessagePropertyAsync(NetHttp_NS.EchoHttpRequestMessagePropertyRequest request)
+        System.Threading.Tasks.Task<_edb_NS.EchoHttpRequestMessagePropertyResponse> _edb_NS.IWcfService.EchoHttpRequestMessagePropertyAsync(_edb_NS.EchoHttpRequestMessagePropertyRequest request)
         {
             return base.Channel.EchoHttpRequestMessagePropertyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync()
+        public System.Threading.Tasks.Task<_edb_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync()
         {
-            NetHttp_NS.EchoHttpRequestMessagePropertyRequest inValue = new NetHttp_NS.EchoHttpRequestMessagePropertyRequest();
-            return ((NetHttp_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
+            _edb_NS.EchoHttpRequestMessagePropertyRequest inValue = new _edb_NS.EchoHttpRequestMessagePropertyRequest();
+            return ((_edb_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetRestartServiceEndpointResponse> NetHttp_NS.IWcfService.GetRestartServiceEndpointAsync(NetHttp_NS.GetRestartServiceEndpointRequest request)
+        System.Threading.Tasks.Task<_edb_NS.GetRestartServiceEndpointResponse> _edb_NS.IWcfService.GetRestartServiceEndpointAsync(_edb_NS.GetRestartServiceEndpointRequest request)
         {
             return base.Channel.GetRestartServiceEndpointAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync()
+        public System.Threading.Tasks.Task<_edb_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync()
         {
-            NetHttp_NS.GetRestartServiceEndpointRequest inValue = new NetHttp_NS.GetRestartServiceEndpointRequest();
-            return ((NetHttp_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue);
+            _edb_NS.GetRestartServiceEndpointRequest inValue = new _edb_NS.GetRestartServiceEndpointRequest();
+            return ((_edb_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<string> EchoXmlSerializerFormatAsync(string message)
@@ -2489,24 +2489,24 @@ namespace NetHttp_NS
             return base.Channel.EchoXmlSerializerFormatUsingRpcAsync(message);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(NetHttp_NS.XmlCompositeType composite)
+        public System.Threading.Tasks.Task<_edb_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(_edb_NS.XmlCompositeType composite)
         {
             return base.Channel.GetDataUsingXmlSerializerAsync(composite);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.LoginResponse> NetHttp_NS.IWcfService.LoginAsync(NetHttp_NS.LoginRequest request)
+        System.Threading.Tasks.Task<_edb_NS.LoginResponse> _edb_NS.IWcfService.LoginAsync(_edb_NS.LoginRequest request)
         {
             return base.Channel.LoginAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.LoginResponse> LoginAsync(string clientId, string user, string pwd)
+        public System.Threading.Tasks.Task<_edb_NS.LoginResponse> LoginAsync(string clientId, string user, string pwd)
         {
-            NetHttp_NS.LoginRequest inValue = new NetHttp_NS.LoginRequest();
+            _edb_NS.LoginRequest inValue = new _edb_NS.LoginRequest();
             inValue.clientId = clientId;
             inValue.user = user;
             inValue.pwd = pwd;
-            return ((NetHttp_NS.IWcfService)(this)).LoginAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).LoginAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<string> GetIncomingMessageHeadersMessageAsync(string customHeaderName, string customHeaderNS)
@@ -2515,29 +2515,29 @@ namespace NetHttp_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetStreamFromStringResponse> NetHttp_NS.IWcfService.GetStreamFromStringAsync(NetHttp_NS.GetStreamFromStringRequest request)
+        System.Threading.Tasks.Task<_edb_NS.GetStreamFromStringResponse> _edb_NS.IWcfService.GetStreamFromStringAsync(_edb_NS.GetStreamFromStringRequest request)
         {
             return base.Channel.GetStreamFromStringAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(string data)
+        public System.Threading.Tasks.Task<_edb_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(string data)
         {
-            NetHttp_NS.GetStreamFromStringRequest inValue = new NetHttp_NS.GetStreamFromStringRequest();
+            _edb_NS.GetStreamFromStringRequest inValue = new _edb_NS.GetStreamFromStringRequest();
             inValue.data = data;
-            return ((NetHttp_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetStringFromStreamResponse> NetHttp_NS.IWcfService.GetStringFromStreamAsync(NetHttp_NS.GetStringFromStreamRequest request)
+        System.Threading.Tasks.Task<_edb_NS.GetStringFromStreamResponse> _edb_NS.IWcfService.GetStringFromStreamAsync(_edb_NS.GetStringFromStreamRequest request)
         {
             return base.Channel.GetStringFromStreamAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(System.IO.Stream stream)
+        public System.Threading.Tasks.Task<_edb_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(System.IO.Stream stream)
         {
-            NetHttp_NS.GetStringFromStreamRequest inValue = new NetHttp_NS.GetStringFromStreamRequest();
+            _edb_NS.GetStringFromStreamRequest inValue = new _edb_NS.GetStringFromStreamRequest();
             inValue.stream = stream;
-            return ((NetHttp_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<System.IO.Stream> EchoStreamAsync(System.IO.Stream stream)
@@ -2546,29 +2546,29 @@ namespace NetHttp_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoMessageParameterResponse> NetHttp_NS.IWcfService.EchoMessageParameterAsync(NetHttp_NS.EchoMessageParameterRequest request)
+        System.Threading.Tasks.Task<_edb_NS.EchoMessageParameterResponse> _edb_NS.IWcfService.EchoMessageParameterAsync(_edb_NS.EchoMessageParameterRequest request)
         {
             return base.Channel.EchoMessageParameterAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(string name)
+        public System.Threading.Tasks.Task<_edb_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(string name)
         {
-            NetHttp_NS.EchoMessageParameterRequest inValue = new NetHttp_NS.EchoMessageParameterRequest();
+            _edb_NS.EchoMessageParameterRequest inValue = new _edb_NS.EchoMessageParameterRequest();
             inValue.name = name;
-            return ((NetHttp_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.EchoItemsResponse> NetHttp_NS.IWcfService.EchoItemsAsync(NetHttp_NS.EchoItemsRequest request)
+        System.Threading.Tasks.Task<_edb_NS.EchoItemsResponse> _edb_NS.IWcfService.EchoItemsAsync(_edb_NS.EchoItemsRequest request)
         {
             return base.Channel.EchoItemsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.EchoItemsResponse> EchoItemsAsync(object[] objects)
+        public System.Threading.Tasks.Task<_edb_NS.EchoItemsResponse> EchoItemsAsync(object[] objects)
         {
-            NetHttp_NS.EchoItemsRequest inValue = new NetHttp_NS.EchoItemsRequest();
+            _edb_NS.EchoItemsRequest inValue = new _edb_NS.EchoItemsRequest();
             inValue.objects = objects;
-            return ((NetHttp_NS.IWcfService)(this)).EchoItemsAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).EchoItemsAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<object[]> EchoItems_XmlAsync(object[] objects)
@@ -2581,48 +2581,48 @@ namespace NetHttp_NS
             return base.Channel.EchoItems_Xml1Async(objects);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(NetHttp_NS.XmlVeryComplexType complex)
+        public System.Threading.Tasks.Task<_edb_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(_edb_NS.XmlVeryComplexType complex)
         {
             return base.Channel.EchoXmlVeryComplexTypeAsync(complex);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.ReturnContentTypeResponse> NetHttp_NS.IWcfService.ReturnContentTypeAsync(NetHttp_NS.ReturnContentTypeRequest request)
+        System.Threading.Tasks.Task<_edb_NS.ReturnContentTypeResponse> _edb_NS.IWcfService.ReturnContentTypeAsync(_edb_NS.ReturnContentTypeRequest request)
         {
             return base.Channel.ReturnContentTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(string contentType)
+        public System.Threading.Tasks.Task<_edb_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(string contentType)
         {
-            NetHttp_NS.ReturnContentTypeRequest inValue = new NetHttp_NS.ReturnContentTypeRequest();
+            _edb_NS.ReturnContentTypeRequest inValue = new _edb_NS.ReturnContentTypeRequest();
             inValue.contentType = contentType;
-            return ((NetHttp_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.XmlMessageContractTestResponse> NetHttp_NS.IWcfService.EchoMessageResponseWithMessageHeaderAsync(NetHttp_NS.XmlMessageContractTestRequest request)
+        System.Threading.Tasks.Task<_edb_NS.XmlMessageContractTestResponse> _edb_NS.IWcfService.EchoMessageResponseWithMessageHeaderAsync(_edb_NS.XmlMessageContractTestRequest request)
         {
             return base.Channel.EchoMessageResponseWithMessageHeaderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(string Message)
+        public System.Threading.Tasks.Task<_edb_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(string Message)
         {
-            NetHttp_NS.XmlMessageContractTestRequest inValue = new NetHttp_NS.XmlMessageContractTestRequest();
+            _edb_NS.XmlMessageContractTestRequest inValue = new _edb_NS.XmlMessageContractTestRequest();
             inValue.Message = Message;
-            return ((NetHttp_NS.IWcfService)(this)).EchoMessageResponseWithMessageHeaderAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).EchoMessageResponseWithMessageHeaderAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.XmlMessageContractTestResponse> NetHttp_NS.IWcfService.EchoMessageResquestWithMessageHeaderAsync(NetHttp_NS.XmlMessageContractTestRequestWithMessageHeader request)
+        System.Threading.Tasks.Task<_edb_NS.XmlMessageContractTestResponse> _edb_NS.IWcfService.EchoMessageResquestWithMessageHeaderAsync(_edb_NS.XmlMessageContractTestRequestWithMessageHeader request)
         {
             return base.Channel.EchoMessageResquestWithMessageHeaderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
+        public System.Threading.Tasks.Task<_edb_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
         {
-            NetHttp_NS.XmlMessageContractTestRequestWithMessageHeader inValue = new NetHttp_NS.XmlMessageContractTestRequestWithMessageHeader();
+            _edb_NS.XmlMessageContractTestRequestWithMessageHeader inValue = new _edb_NS.XmlMessageContractTestRequestWithMessageHeader();
             inValue.XmlMessageContractTestRequestWithMessageHeaderMessage = XmlMessageContractTestRequestWithMessageHeaderMessage;
-            return ((NetHttp_NS.IWcfService)(this)).EchoMessageResquestWithMessageHeaderAsync(inValue);
+            return ((_edb_NS.IWcfService)(this)).EchoMessageResquestWithMessageHeaderAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<bool> IsHttpKeepAliveDisabledAsync()
@@ -2631,15 +2631,15 @@ namespace NetHttp_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttp_NS.GetRequestHttpHeadersResponse> NetHttp_NS.IWcfService.GetRequestHttpHeadersAsync(NetHttp_NS.GetRequestHttpHeadersRequest request)
+        System.Threading.Tasks.Task<_edb_NS.GetRequestHttpHeadersResponse> _edb_NS.IWcfService.GetRequestHttpHeadersAsync(_edb_NS.GetRequestHttpHeadersRequest request)
         {
             return base.Channel.GetRequestHttpHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttp_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync()
+        public System.Threading.Tasks.Task<_edb_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync()
         {
-            NetHttp_NS.GetRequestHttpHeadersRequest inValue = new NetHttp_NS.GetRequestHttpHeadersRequest();
-            return ((NetHttp_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue);
+            _edb_NS.GetRequestHttpHeadersRequest inValue = new _edb_NS.GetRequestHttpHeadersRequest();
+            return ((_edb_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
@@ -2649,34 +2649,22 @@ namespace NetHttp_NS
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.Binary_IWcfService))
-            {
-                System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
-                result.Elements.Add(new System.ServiceModel.Channels.BinaryMessageEncodingBindingElement());
-                System.ServiceModel.Channels.HttpTransportBindingElement httpBindingElement = new System.ServiceModel.Channels.HttpTransportBindingElement();
-                httpBindingElement.AllowCookies = true;
-                httpBindingElement.MaxBufferSize = int.MaxValue;
-                httpBindingElement.MaxReceivedMessageSize = int.MaxValue;
-                result.Elements.Add(httpBindingElement);
-                return result;
-            }
             if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
             {
-                System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
+                System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
+                result.MaxBufferSize = int.MaxValue;
                 result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
-                result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 return result;
             }
             if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
             {
-                System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
+                System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
+                result.MaxBufferSize = int.MaxValue;
                 result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
-                result.MessageEncoding = System.ServiceModel.WSMessageEncoding.Mtom;
-                result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 return result;
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
@@ -2684,26 +2672,21 @@ namespace NetHttp_NS
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.Binary_IWcfService))
-            {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/NetHttp.svc/Binary" +
-                        "");
-            }
             if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/NetHttp.svc/Text");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/BasicHttp.svc/Text" +
+                        "");
             }
             if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/NetHttp.svc/Mtom");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/BasicHttp.svc/Mtom" +
+                        "");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
         public enum EndpointConfiguration
         {
-            
-            Binary_IWcfService,
             
             Text_IWcfService,
             

@@ -616,8 +616,8 @@ namespace BasicHttps_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(BasicHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(BasicHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(BasicHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<BasicHttps_NS.TestFaultsResponse> TestFaultsAsync(BasicHttps_NS.TestFaultsRequest request);
         
@@ -2645,11 +2645,6 @@ namespace BasicHttps_NS
         public virtual System.Threading.Tasks.Task OpenAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
-        }
-        
-        public virtual System.Threading.Tasks.Task CloseAsync()
-        {
-            return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)

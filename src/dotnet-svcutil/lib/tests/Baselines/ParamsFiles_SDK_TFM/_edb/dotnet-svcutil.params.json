@@ -3,10 +3,10 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/Simple.wsdl"
+      "http://wcfcoresrv53.westus3.cloudapp.azure.com/wcftestservice1/basichttp.svc"
     ],
     "namespaceMappings": [
-      "*, TFnet5_0_NS"
+      "*, _edb_NS"
     ],
     "outputFile": "Reference.cs",
     "references": [
