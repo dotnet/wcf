@@ -26,9 +26,9 @@
 
   <PropertyGroup>
     <ScenarioTestTargetFrameworks>net6.0;net7.0</ScenarioTestTargetFrameworks>
-	<UnitTestTargetFrameworks>netcoreapp3.1;net6.0;net7.0</UnitTestTargetFrameworks>
-	<!-- This is the target framework version of the built tests picked up to send to Helix -->
-    <XUnitPublishTargetFramework>netcoreapp3.1</XUnitPublishTargetFramework>
+    <UnitTestTargetFrameworks>net6.0;net7.0</UnitTestTargetFrameworks>
+    <!-- This is the target framework version of the built tests picked up to send to Helix -->
+    <XUnitPublishTargetFramework>net6.0</XUnitPublishTargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
