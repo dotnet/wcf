@@ -257,7 +257,7 @@ namespace System.ServiceModel.Channels
             public TaskCompletionSourceProxy(Type resultType)
             {
                 _tcsInfo = TaskCompletionSourceInfo.GetTaskCompletionSourceInfo(resultType);
-                _tcsInstance = Activator.CreateInstance(_tcsInfo.GenericType);
+                _tcsInstance = _tcsInfo.CreateInstance();
             }
 
             public Task Task { get { return (Task)_tcsInfo.TaskProperty.GetValue(_tcsInstance); } }
@@ -281,6 +281,8 @@ namespace System.ServiceModel.Channels
         private class TaskCompletionSourceInfo
         {
             private static ConcurrentDictionary<Type, TaskCompletionSourceInfo> s_cache = new ConcurrentDictionary<Type, TaskCompletionSourceInfo>();
+            private static MethodInfo s_createTcsOpenGenericMethod = typeof(TaskCompletionSourceInfo).GetMethod(nameof(CreateTaskCompletionSource), BindingFlags.Static | BindingFlags.NonPublic);
+            private Func<object> _createDelegate;
 
             public TaskCompletionSourceInfo(Type resultType)
             {
@@ -299,6 +301,22 @@ namespace System.ServiceModel.Channels
             public MethodInfo TrySetResultMethod { get; private set; }
             public MethodInfo TrySetExceptionMethod { get; set; }
             public MethodInfo TrySetCanceledMethod { get; set; }
+
+            internal object CreateInstance()
+            {
+                if (_createDelegate == null)
+                {
+                    var createTcsGenericMethod = s_createTcsOpenGenericMethod.MakeGenericMethod(ResultType);
+                    _createDelegate = (Func<object>)Delegate.CreateDelegate(typeof(Func<object>), createTcsGenericMethod);
+                }
+
+                return _createDelegate();
+            }
+
+            private static object CreateTaskCompletionSource<T>()
+            {
+                return new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
+            }
 
             public static TaskCompletionSourceInfo GetTaskCompletionSourceInfo(Type resultType)
             {
