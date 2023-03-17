@@ -70,7 +70,9 @@ public class MockGetSymmetricAlgorithm : SymmetricSecurityKey
 
     public override SymmetricAlgorithm GetSymmetricAlgorithm(string algorithm)
     {
+#pragma warning disable SYSLIB0045 // Type or member is obsolete
         return DES.Create(algorithm);
+#pragma warning restore SYSLIB0045 // Type or member is obsolete
     }
 
     public override byte[] GetSymmetricKey()

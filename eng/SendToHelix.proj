@@ -5,6 +5,8 @@
     <HelixType>test/product/</HelixType>
     <HelixBuild>$(BUILD_BUILDNUMBER)</HelixBuild>
     <HelixBuild Condition="'$(HelixBuild)' == ''">123460.01</HelixBuild>
+  	<DotNetCliPackageType>sdk</DotNetCliPackageType>
+    <DotNetCliVersion>6.0.404</DotNetCliVersion>
 
     <IncludeDotNetCli>true</IncludeDotNetCli>
 
@@ -15,8 +17,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj"/>
-    <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj"/>
+    <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj">
+      <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
+    </XUnitProject>
+    <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj">
+      <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
+    </XUnitProject>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsPublic)' == 'true'" >
