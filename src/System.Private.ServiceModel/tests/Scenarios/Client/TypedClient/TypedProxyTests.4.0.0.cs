@@ -404,6 +404,7 @@ public static partial class TypedProxyTests
         }
     }
 
+    [CallbackBehavior(UseSynchronizationContext = false)]
     public class DuplexChannelServiceCallback : IDuplexChannelCallback
     {
         private TaskCompletionSource<Guid> _tcs;

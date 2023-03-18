@@ -696,6 +696,7 @@ public class XmlCompositeTypeDuplexCallbackOnly
     }
 }
 
+[CallbackBehavior(UseSynchronizationContext = false)]
 public class WcfDuplexService_CallbackDebugBehavior_Callback : IWcfDuplexService_CallbackDebugBehavior_Callback
 {
     public void ReplyThrow(string input)
