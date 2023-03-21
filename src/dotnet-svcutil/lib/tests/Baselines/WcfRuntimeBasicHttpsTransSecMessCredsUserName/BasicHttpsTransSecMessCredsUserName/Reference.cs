@@ -616,8 +616,8 @@ namespace BasicHttpsTransSecMessCredsUserName_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(BasicHttpsTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(BasicHttpsTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(BasicHttpsTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<BasicHttpsTransSecMessCredsUserName_NS.TestFaultsResponse> TestFaultsAsync(BasicHttpsTransSecMessCredsUserName_NS.TestFaultsRequest request);
         
@@ -2263,13 +2263,6 @@ namespace BasicHttpsTransSecMessCredsUserName_NS
         /// <param name="clientCredentials">The client credentials</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
         
-        public WcfServiceClient() : 
-                base(WcfServiceClient.GetDefaultBinding(), WcfServiceClient.GetDefaultEndpointAddress())
-        {
-            this.Endpoint.Name = EndpointConfiguration.https_message_credentials_username_IWcfService.ToString();
-            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        }
-        
         public WcfServiceClient(EndpointConfiguration endpointConfiguration) : 
                 base(WcfServiceClient.GetBindingForEndpoint(endpointConfiguration), WcfServiceClient.GetEndpointAddress(endpointConfiguration))
         {
@@ -2654,14 +2647,19 @@ namespace BasicHttpsTransSecMessCredsUserName_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
         
-        public virtual System.Threading.Tasks.Task CloseAsync()
-        {
-            return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
-        }
-        
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.https_message_credentials_username_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.https_message_credentials_username_x002F_Buffered_IWcfService))
+            {
+                System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
+                result.MaxBufferSize = int.MaxValue;
+                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.MaxReceivedMessageSize = int.MaxValue;
+                result.AllowCookies = true;
+                result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.TransportWithMessageCredential;
+                return result;
+            }
+            if ((endpointConfiguration == EndpointConfiguration.https_message_credentials_username_x002F_Streamed_IWcfService))
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
@@ -2676,28 +2674,25 @@ namespace BasicHttpsTransSecMessCredsUserName_NS
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.https_message_credentials_username_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.https_message_credentials_username_x002F_Buffered_IWcfService))
             {
                 return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/BasicHttpsTransSecMessCredsUserName.svc/http" +
-                        "s-message-credentials-username");
+                        "s-message-credentials-username/Buffered");
+            }
+            if ((endpointConfiguration == EndpointConfiguration.https_message_credentials_username_x002F_Streamed_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/BasicHttpsTransSecMessCredsUserName.svc/http" +
+                        "s-message-credentials-username/Streamed");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
-        }
-        
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
-        {
-            return WcfServiceClient.GetBindingForEndpoint(EndpointConfiguration.https_message_credentials_username_IWcfService);
-        }
-        
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
-        {
-            return WcfServiceClient.GetEndpointAddress(EndpointConfiguration.https_message_credentials_username_IWcfService);
         }
         
         public enum EndpointConfiguration
         {
             
-            https_message_credentials_username_IWcfService,
+            https_message_credentials_username_x002F_Buffered_IWcfService,
+            
+            https_message_credentials_username_x002F_Streamed_IWcfService,
         }
     }
 }
