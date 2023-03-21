@@ -4,8 +4,11 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>N.N</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
