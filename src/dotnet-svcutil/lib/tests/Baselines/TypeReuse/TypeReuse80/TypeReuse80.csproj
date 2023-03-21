@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>N.N</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="dotnet-svcutil-lib" Version="99.99.99" />

@@ -203,7 +203,7 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("TypeReuse60", "net6.0")]
+        [InlineData("TypeReuse80", "net8.0")]
         public void TypeReuse(string testCaseName, string targetFramework)
         {
             this_TestCaseName = "TypeReuse";

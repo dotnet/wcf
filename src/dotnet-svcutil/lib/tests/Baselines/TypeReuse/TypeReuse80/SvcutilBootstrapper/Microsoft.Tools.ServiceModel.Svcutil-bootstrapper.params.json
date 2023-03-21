@@ -5,20 +5,20 @@
     "inputs": [
       "$resultPath$/TestResults/TypeReuse/TypeReuseSvc.wsdl"
     ],
-    "bootstrapPath": "$resultPath$/TestResults/TypeReuse/TypeReuse60",
+    "bootstrapPath": "$resultPath$/TestResults/TypeReuse/TypeReuse80",
     "namespaceMappings": [
-      "*, TypeReuse60_NS"
+      "*, TypeReuse80_NS"
     ],
     "noBootstrapping": true,
     "noLogo": true,
     "noProjectUpdates": true,
-    "outputDir": "$resultPath$/TestResults/TypeReuse/TypeReuse60/ServiceReference",
-    "outputFile": "$resultPath$/TestResults/TypeReuse/TypeReuse60/ServiceReference/Reference.cs",
-    "projectFile": "$resultPath$/TestResults/TypeReuse/TypeReuse60/TypeReuse60.csproj",
+    "outputDir": "$resultPath$/TestResults/TypeReuse/TypeReuse80/ServiceReference",
+    "outputFile": "$resultPath$/TestResults/TypeReuse/TypeReuse80/ServiceReference/Reference.cs",
+    "projectFile": "$resultPath$/TestResults/TypeReuse/TypeReuse80/TypeReuse80.csproj",
     "references": [
-      "$resultPath$//TestResults//TypeReuse//TypeReuse60//bin//Debug//net6.0//BinLib.dll",
-      "$resultPath$//TestResults//TypeReuse//TypeReuse60//bin//Debug//net6.0//TypesLib.dll",
       "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse80//bin//Debug//net8.0//BinLib.dll",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse80//bin//Debug//net8.0//TypesLib.dll",
       "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
       "Microsoft.DotNet.InternalAbstractions, {Microsoft.DotNet.InternalAbstractions, 99.99.99}",
       "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",
