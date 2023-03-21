@@ -9,13 +9,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="dotnet-svcutil-lib">
-      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse60/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
+      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse80/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
     <Reference Include="BinLib">
-      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse60/bin/Debug/net6.0/BinLib.dll</HintPath>
+      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse80/bin/Debug/net8.0/BinLib.dll</HintPath>
     </Reference>
     <Reference Include="TypesLib">
-      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse60/bin/Debug/net6.0/TypesLib.dll</HintPath>
+      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse80/bin/Debug/net8.0/TypesLib.dll</HintPath>
     </Reference>
     <PackageReference Include="dotnet-svcutil-lib" Version="99.99.99" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="99.99.99" />
