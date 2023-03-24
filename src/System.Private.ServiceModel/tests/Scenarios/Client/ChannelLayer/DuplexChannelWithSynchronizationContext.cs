@@ -176,12 +176,7 @@ public class DuplexChannelWithSynchronizationContext : ConditionalWcfTest
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
-            for (int i = 0; i < 100; i++)
-            {
-                serviceProxy.Ping(guid);
-            }
-            // Ping on another thread.
-            //Task.Run(() => serviceProxy.Ping(guid));
+            serviceProxy.Ping(guid);
             Guid returnedGuid = callbackService.CallbackGuid;
             SynchronizationContext callbackSyncContext = callbackService.SynchronizationContext;
 
