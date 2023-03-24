@@ -14,6 +14,10 @@ using Xunit.Sdk;
 public class DuplexChannelWithSynchronizationContext : ConditionalWcfTest
 {
     [WcfFact]
+    [Issue(1945, OS = OSID.OSX)]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void SingleThreadedSyncContext_SetOnInstanceContext()
     {
@@ -70,6 +74,10 @@ public class DuplexChannelWithSynchronizationContext : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(1945, OS = OSID.OSX)]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void SingleThreadedSyncContext_AmbientCapture()
     {
@@ -130,6 +138,10 @@ public class DuplexChannelWithSynchronizationContext : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(1945, OS = OSID.OSX)]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void SingleThreadedSyncContext_CallbackUsingDefaultSyncCtx_SyncCallNotBlocked()
     {
