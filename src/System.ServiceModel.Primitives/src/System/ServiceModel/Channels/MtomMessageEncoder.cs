@@ -501,14 +501,17 @@ namespace System.ServiceModel.Channels
 
         public override void WriteMessage(Message message, Stream stream)
         {
-            var valueTask = WriteMessageAsync(message, stream);
-            if (valueTask.IsCompleted)
+            using (TaskHelpers.RunTaskContinuationsOnOurThreads())
             {
-                valueTask.GetAwaiter().GetResult();
-            }
-            else
-            {
-                valueTask.AsTask().WaitForCompletionNoSpin();
+                var valueTask = WriteMessageAsync(message, stream);
+                if (valueTask.IsCompleted)
+                {
+                    valueTask.GetAwaiter().GetResult();
+                }
+                else
+                {
+                    valueTask.AsTask().WaitForCompletionNoSpin();
+                }
             }
         }
 

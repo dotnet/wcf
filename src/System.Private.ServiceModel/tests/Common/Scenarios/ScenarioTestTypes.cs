@@ -863,6 +863,7 @@ public class MyDuplexClientBase<T> : DuplexClientBase<T> where T : class
     }
 }
 
+[CallbackBehavior(UseSynchronizationContext = false)]
 public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback, IWcfDuplexService_DataContract_Callback, IWcfDuplexService_Xml_Callback
 {
     private TaskCompletionSource<Guid> _tcs;
