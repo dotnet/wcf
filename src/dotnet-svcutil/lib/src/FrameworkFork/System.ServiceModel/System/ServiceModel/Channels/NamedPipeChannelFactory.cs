@@ -38,15 +38,16 @@ namespace System.ServiceModel.Channels
             return bindingElement.ConnectionPoolSettings.GroupName + bindingElement.PipeSettings.ApplicationContainerSettings.GetConnectionGroupSuffix();
         }
 
-//        internal override IConnectionInitiator GetConnectionInitiator()
-//        {
+        internal override IConnectionInitiator GetConnectionInitiator()
+        {
 //            IConnectionInitiator pipeConnectionInitiator =
 //                new PipeConnectionInitiator(ConnectionBufferSize, this);
 //#if CONNECTIONDUMP
 //            pipeConnectionInitiator = new ConnectionDumpInitiator(pipeConnectionInitiator);
 //#endif
 //            return new BufferedConnectionInitiator(pipeConnectionInitiator, MaxOutputDelay, ConnectionBufferSize);
-//        }
+            return new PipeConnectionInitiator(ConnectionBufferSize);
+        }
 
         internal override ConnectionPool GetConnectionPool()
         {
@@ -62,7 +63,5 @@ namespace System.ServiceModel.Channels
         {
             return !(upgradeBindingElement is SslStreamSecurityBindingElement);
         }
-
-        internal override IConnectionInitiator GetConnectionInitiator() => throw new NotImplementedException();
     }
 }

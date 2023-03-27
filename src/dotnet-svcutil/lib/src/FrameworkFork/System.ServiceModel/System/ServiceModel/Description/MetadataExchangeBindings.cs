@@ -202,7 +202,10 @@ namespace System.ServiceModel.Description
 
         private static CustomBinding CreateNamedPipeBinding()
         {
-            throw new NotImplementedException();
+            CustomBinding binding = new CustomBinding(MetadataStrings.MetadataExchangeStrings.TcpBindingName, MetadataStrings.MetadataExchangeStrings.BindingNamespace);
+            TcpTransportBindingElement tcpTransport = new TcpTransportBindingElement();
+            binding.Elements.Add(tcpTransport);
+            return binding;
         }
 
         internal static bool IsSchemeSupported(string scheme)

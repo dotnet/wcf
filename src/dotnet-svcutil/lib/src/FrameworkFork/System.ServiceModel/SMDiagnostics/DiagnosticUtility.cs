@@ -31,6 +31,10 @@ namespace System
 #pragma warning restore 618
         }
 
+        internal static void TraceHandledException(Exception exception, TraceEventType traceEventType)
+        {
+            FxTrace.Exception.TraceHandledException(exception, traceEventType);
+        }
 
         public static ExceptionUtility ExceptionUtility
         {
