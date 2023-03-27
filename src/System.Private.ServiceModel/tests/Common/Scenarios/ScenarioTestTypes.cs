@@ -185,7 +185,20 @@ namespace TestTypes
         public override void Post(SendOrPostCallback d, object state)
         {
             if (d == null) throw new ArgumentNullException("d");
-            _queue.Add(new KeyValuePair<SendOrPostCallback, object>(d, state));
+            if (ExecutionContext.IsFlowSuppressed())
+            {
+                _queue.Add(new KeyValuePair<SendOrPostCallback, object>(d, state));
+            }
+            else
+            {
+                var ec = ExecutionContext.Capture();
+                _queue.Add(new KeyValuePair<SendOrPostCallback, object>(RunOnCapturedState, (d, state, ec)));
+                void RunOnCapturedState(object obj)
+                {
+                    var s = ((SendOrPostCallback d, object state, ExecutionContext ec))obj;
+                    ExecutionContext.Run(s.ec, new ContextCallback(d), s.state);
+                }
+            }
         }
 
         public override void Send(SendOrPostCallback d, object state)
@@ -216,6 +229,15 @@ namespace TestTypes
             {
                 workItem.Key(workItem.Value);
             }
+        }
+
+        public Task RunOnThreadPoolThread()
+        {
+            return Task.Run(() =>
+            {
+                SetSynchronizationContext(this);
+                RunOnCurrentThread();
+            });
         }
 
         public void Complete()
@@ -674,6 +696,7 @@ public class XmlCompositeTypeDuplexCallbackOnly
     }
 }
 
+[CallbackBehavior(UseSynchronizationContext = false)]
 public class WcfDuplexService_CallbackDebugBehavior_Callback : IWcfDuplexService_CallbackDebugBehavior_Callback
 {
     public void ReplyThrow(string input)
@@ -840,6 +863,7 @@ public class MyDuplexClientBase<T> : DuplexClientBase<T> where T : class
     }
 }
 
+[CallbackBehavior(UseSynchronizationContext = false)]
 public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback, IWcfDuplexService_DataContract_Callback, IWcfDuplexService_Xml_Callback
 {
     private TaskCompletionSource<Guid> _tcs;

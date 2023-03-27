@@ -498,10 +498,9 @@ namespace System.ServiceModel.Channels
             OpenAsyncInternal(timeout).WaitForCompletion();
         }
 
-        private async Task OpenAsyncInternal(TimeSpan timeout)
+        private Task OpenAsyncInternal(TimeSpan timeout)
         {
-            await TaskHelpers.EnsureDefaultTaskScheduler();
-            await ((IAsyncCommunicationObject)this).OpenAsync(timeout);
+            return ((IAsyncCommunicationObject)this).OpenAsync(timeout);
         }
 
         async Task IAsyncCommunicationObject.OpenAsync(TimeSpan timeout)
@@ -526,15 +525,18 @@ namespace System.ServiceModel.Channels
                 OnOpening();
                 if (!_onOpeningCalled)
                 {
-                    throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException("OnOpening"), Guid.Empty, this);
+                    throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException(nameof(OnOpening)), Guid.Empty, this);
                 }
 
+                // EnsureDefaultTaskScheduler must be called after OnOpening to ensure that any SynchronizationContext
+                // is captured by the DispatchRuntime
+                await TaskHelpers.EnsureDefaultTaskScheduler();
                 await OnOpenAsyncInternal(actualTimeout.RemainingTime());
 
                 OnOpened();
                 if (!_onOpenedCalled)
                 {
-                    throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException("OnOpened"), Guid.Empty, this);
+                    throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException(nameof(OnOpened)), Guid.Empty, this);
                 }
 
                 throwing = false;

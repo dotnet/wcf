@@ -4,11 +4,10 @@
 
 using System;
 using System.ServiceModel;
-using System.Runtime.Serialization;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
+using System.Threading;
 
 public static class SessionTests
 {
@@ -184,7 +183,7 @@ public static class SessionTests
                 // The service behind service2Url has the same contract and implementation as service1Url
                 // But it has a different binding with a very short receiveTimeout ="00:00:05"
                 // So waiting for just 10 seconds is enough to get the connection and the session implicitly closed
-                Task.Delay(10000).Wait();
+                Thread.Sleep(TimeSpan.FromSeconds(10));
                 try
                 {
                     channel.MethodCTerminating();

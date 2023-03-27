@@ -57,6 +57,7 @@ namespace System.ServiceModel.Channels
             allowOutputBatching = message.Properties.AllowOutputBatching;
             messageData = EncodeMessage(message);
 
+            await TaskHelpers.EnsureDefaultTaskScheduler();
             await Connection.WriteAsync(messageData, !allowOutputBatching, timeout);
             BufferManager.ReturnBuffer(messageData.Array);
         }
