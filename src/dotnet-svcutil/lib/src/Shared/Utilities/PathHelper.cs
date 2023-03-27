@@ -55,7 +55,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     input = input.Trim(new char[] { '"' }).Trim();
 
                     var isUrl = input.StartsWith("http", StringComparison.OrdinalIgnoreCase) ||
-                                input.StartsWith("net.tcp", StringComparison.OrdinalIgnoreCase);
+                                input.StartsWith("net.tcp", StringComparison.OrdinalIgnoreCase) ||
+                                input.StartsWith("net.pipe", StringComparison.OrdinalIgnoreCase);
 
                     if (!isUrl && (Uri.TryCreate(Path.Combine(basePath, input), UriKind.Absolute, out var uri)) && uri.Scheme == "file")
                     {

@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
@@ -104,6 +105,23 @@ namespace System
         internal Exception ThrowHelper(Exception exception, EventLevel eventLevel)
         {
             FxTrace.Exception.TraceEtwException(exception, eventLevel);
+
+            return exception;
+        }
+
+        internal Exception ThrowHelper(Exception exception, TraceEventType eventType)
+        {
+            return ThrowHelper(exception, eventType, null);
+        }
+
+        internal static void TraceHandledException(Exception exception, TraceEventType traceEventType)
+        {
+            FxTrace.Exception.TraceHandledException(exception, traceEventType);
+        }
+
+        internal Exception ThrowHelper(Exception exception, TraceEventType eventType, TraceRecord extendedData)
+        {
+            FxTrace.Exception.TraceEtwException(exception, eventType);
 
             return exception;
         }
