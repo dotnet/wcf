@@ -76,12 +76,9 @@ namespace SvcutilTest
         [Trait("Category", "Test")]
         [Theory]
         [InlineData("tfmDefault", null)]
-        [InlineData("tfmNetCoreapp31", "netcoreapp3.1")]
-        [InlineData("tfmNet50", "net5.0")]
         [InlineData("tfmNet60", "net6.0")]
         [InlineData("tfmNetstd20", "netstandard2.0")]
         [InlineData("tfmNetstd21", "netstandard2.1")]
-        [InlineData("tfm100", "netcoreapp100.0")]
         public void TFMBootstrap(string testCaseName, string targetFramework)
         {
             this_TestCaseName = "TFMBootstrap";
