@@ -5,6 +5,7 @@
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IdentityModel.Selectors;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -1030,6 +1031,15 @@ namespace System.ServiceModel.Channels
                         if (!suppressEntityBody)
                         {
                             httpRequestMessage.Content = MessageContent.Create(_factory, request, _timeoutHelper);
+                            var contentType = httpRequestMessage.Content.Headers.ContentType;
+                            if (contentType!= null &&
+                                contentType.MediaType == "multipart/related" &&
+                                contentType.Parameters.Contains(new NameValueHeaderValue("type", "\"application/xop+xml\"")))
+                            {
+                                // For MTOM messages, add a MIME version header
+                                AddMimeVersion("1.0");
+                            }
+
                         }
 
                         if (Fx.IsUap)
@@ -1093,6 +1103,11 @@ namespace System.ServiceModel.Channels
                             request.Close();
                         }
                     }
+                }
+
+                private void AddMimeVersion(string version)
+                {
+                    _httpRequestMessage.Headers.Add(HttpChannelUtilities.MIMEVersionHeader, version);
                 }
 
                 private void Cleanup()

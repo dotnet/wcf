@@ -423,12 +423,12 @@ namespace System.ServiceModel.Channels
 
         public override ArraySegment<byte> WriteMessage(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset)
         {
-            return WriteMessageInternal(message, maxMessageSize, bufferManager, messageOffset, GenerateStartInfoString(), _boundary, MtomStartUri, writeMessageHeaders: true);
+            return WriteMessageInternal(message, maxMessageSize, bufferManager, messageOffset, GenerateStartInfoString(), _boundary, MtomStartUri, writeMessageHeaders: false);
         }
 
         public override ValueTask<ArraySegment<byte>> WriteMessageAsync(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset)
         {
-            return new ValueTask<ArraySegment<byte>>(WriteMessageInternal(message, maxMessageSize, bufferManager, messageOffset, GenerateStartInfoString(), _boundary, MtomStartUri, writeMessageHeaders: true));
+            return new ValueTask<ArraySegment<byte>>(WriteMessageInternal(message, maxMessageSize, bufferManager, messageOffset, GenerateStartInfoString(), _boundary, MtomStartUri, writeMessageHeaders: false));
         }
 
         private string GetContentType(out string boundary)
@@ -517,7 +517,7 @@ namespace System.ServiceModel.Channels
 
         public override ValueTask WriteMessageAsync(Message message, Stream stream)
         {
-            return WriteMessageInternalAsync(message, stream, GenerateStartInfoString(), _boundary, MtomStartUri, writeMessageHeaders: true);
+            return WriteMessageInternalAsync(message, stream, GenerateStartInfoString(), _boundary, MtomStartUri, writeMessageHeaders: false);
         }
 
         public override IAsyncResult BeginWriteMessage(Message message, Stream stream, AsyncCallback callback, object state)
