@@ -1038,6 +1038,7 @@ namespace System.ServiceModel.Channels
                             {
                                 // For MTOM messages, add a MIME version header
                                 AddMimeVersion("1.0");
+                                request.Properties.Add("System.ServiceModel.Channel.MtomMessageEncoder.WriteMessageHeaders", false);
                             }
 
                         }
