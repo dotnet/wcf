@@ -423,12 +423,12 @@ namespace System.ServiceModel.Channels
 
         public override ArraySegment<byte> WriteMessage(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset)
         {
-            return WriteMessageInternal(message, maxMessageSize, bufferManager, messageOffset, GenerateStartInfoString(), _boundary, MtomStartUri, writeMessageHeaders: false);
+            return WriteMessageInternal(message, maxMessageSize, bufferManager, messageOffset, GenerateStartInfoString(), _boundary, MtomStartUri);
         }
 
         public override ValueTask<ArraySegment<byte>> WriteMessageAsync(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset)
         {
-            return new ValueTask<ArraySegment<byte>>(WriteMessageInternal(message, maxMessageSize, bufferManager, messageOffset, GenerateStartInfoString(), _boundary, MtomStartUri, writeMessageHeaders: false));
+            return new ValueTask<ArraySegment<byte>>(WriteMessageInternal(message, maxMessageSize, bufferManager, messageOffset, GenerateStartInfoString(), _boundary, MtomStartUri));
         }
 
         private string GetContentType(out string boundary)
@@ -446,8 +446,14 @@ namespace System.ServiceModel.Channels
                 MtomContentType, MtomStartUri, boundary, startInfo);
         }
 
-        private ArraySegment<byte> WriteMessageInternal(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset, string startInfo, string boundary, string startUri, bool writeMessageHeaders)
+        private ArraySegment<byte> WriteMessageInternal(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset, string startInfo, string boundary, string startUri)
         {
+            bool writeMessageHeaders = true;
+            if (message.Properties.TryGetValue("System.ServiceModel.Channel.MtomMessageEncoder.WriteMessageHeaders", out object boolAsObject) && boolAsObject is bool)
+            {
+                writeMessageHeaders = (bool)boolAsObject;
+            }
+
             if (message == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
             if (bufferManager == null)
@@ -517,7 +523,7 @@ namespace System.ServiceModel.Channels
 
         public override ValueTask WriteMessageAsync(Message message, Stream stream)
         {
-            return WriteMessageInternalAsync(message, stream, GenerateStartInfoString(), _boundary, MtomStartUri, writeMessageHeaders: false);
+            return WriteMessageInternalAsync(message, stream, GenerateStartInfoString(), _boundary, MtomStartUri);
         }
 
         public override IAsyncResult BeginWriteMessage(Message message, Stream stream, AsyncCallback callback, object state)
@@ -530,8 +536,14 @@ namespace System.ServiceModel.Channels
             result.ToApmEnd();
         }
 
-        private async ValueTask WriteMessageInternalAsync(Message message, Stream stream, string startInfo, string boundary, string startUri, bool writeMessageHeaders)
+        private async ValueTask WriteMessageInternalAsync(Message message, Stream stream, string startInfo, string boundary, string startUri)
         {
+            bool writeMessageHeaders = true;
+            if (message.Properties.TryGetValue("System.ServiceModel.Channel.MtomMessageEncoder.WriteMessageHeaders", out object boolAsObject) && boolAsObject is bool)
+            {
+                writeMessageHeaders = (bool)boolAsObject;
+            }
+
             if (message == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(message)));
             if (stream == null)

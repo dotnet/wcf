@@ -475,6 +475,17 @@ namespace System.IdentityModel.Tokens
         public SecurityTokenValidationException(string message, System.Exception innerException)  { }
         protected SecurityTokenValidationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
+    public partial class UserNameSecurityToken : SecurityToken
+    {
+        public UserNameSecurityToken(string userName, string password) { }
+        public UserNameSecurityToken(string userName, string password, string id) { }
+        public override string Id => default;
+        public override System.Collections.ObjectModel.ReadOnlyCollection<SecurityKey> SecurityKeys => default;
+        public override DateTime ValidFrom => default;
+        public override DateTime ValidTo => default;
+        public string UserName => default;
+        public string Password => default;
+    }
     public partial class X509SecurityToken : SecurityToken, IDisposable
     {
         public X509SecurityToken(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) { }
