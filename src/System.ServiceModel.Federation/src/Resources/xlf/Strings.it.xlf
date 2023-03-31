@@ -2,139 +2,114 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../Strings.resx">
     <body>
-      <trans-unit id="ActivityProcessAction">
-        <source>Process action '{0}'.</source>
-        <target state="translated">Elaborazione dell'azione '{0}'.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
-        <target state="translated">Gli scenari chiave di connessione non devono includere un token di prova o un'entropia dell'autorità di certificazione nella risposta.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CannotDetermineSPNBasedOnAddress">
-        <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Il client non è in grado di determinare il nome dell'entità servizio in base all'identità nell'indirizzo di destinazione '{0}' per SspiNegotiation/Kerberos. L'identità indirizzo di destinazione deve essere un'identità UPN (ad esempio dominioacme\nomeutente) o un'identità SPN (ad esempio host/nomecomputer).</target>
+        <target state="new">Bearer key scenarios should not include a proof token or issuer entropy in the response.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
         <source>ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</source>
-        <target state="translated">ChannelnnelFactory deve supportare l'interfaccia 'System.ServiceModel.Channels.IRequestChannel'.</target>
+        <target state="new">ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="translated">L'oggetto comunicazione {0} si trova nello stato {1}. Non è possibile usare oggetti comunicazione per la comunicazione a meno che non siano nello stato Opened.</target>
+        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">Non è possibile usare l'oggetto comunicazione {0} per la comunicazione perché si trova nello stato Faulted.</target>
+        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensAreOnlySupportedWithSymmetricKeyTypes">
         <source>Computed key proof tokens are only supported with symmetric key types.</source>
-        <target state="translated">I token di prova della chiave calcolati sono supportati solo con tipi di chiave simmetrica.</target>
+        <target state="new">Computed key proof tokens are only supported with symmetric key types.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensRequireIssuerToSupplyKeyMaterialViaEntropy">
         <source>Computed key proof tokens require issuer to supply key material via entropy.</source>
-        <target state="translated">I token di prova della chiave calcolati richiedono all'autorità emittente di fornire il materiale della chiave tramite entropia.</target>
+        <target state="new">Computed key proof tokens require issuer to supply key material via entropy.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensRequireRequesterToSupplyKeyMaterialViaEntropy">
         <source>Computed key proof tokens require requester to supply key material via entropy.</source>
-        <target state="translated">I token di prova della chiave calcolati richiedono al richiedente di fornire il materiale della chiave tramite entropia.</target>
+        <target state="new">Computed key proof tokens require requester to supply key material via entropy.</target>
         <note />
       </trans-unit>
       <trans-unit id="EncryptedKeysForProofTokensNotSupported">
         <source>Encrypted keys for proof tokens are not supported.</source>
-        <target state="translated">Le chiavi crittografate per i token di prova non sono supportate.</target>
+        <target state="new">Encrypted keys for proof tokens are not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="IRequestChannelMustBeCreated">
         <source>The IRequestChannel must be in the created state. Was: '{0}'.</source>
-        <target state="translated">IRequestChannel deve essere nello stato creato. Era: '{0}'.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InsufficentMemory">
-        <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">La memoria disponibile non è sufficiente per completare l'operazione.</target>
+        <target state="new">The IRequestChannel must be in the created state. Was: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedSecurityTokenParametersIncorrectType">
         <source>tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</source>
-        <target state="translated">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; deve essere di tipo: WSTrustTokenParameters. Era: '{0}.</target>
+        <target state="new">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedTokenRenewalThresholdPercentageIncorrect">
         <source>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</source>
-        <target state="translated">IssuedTokenRenewalThresholdPercentage deve essere maggiore o uguale a 1 e minore o uguale a 100. Era: '{0}'.</target>
+        <target state="new">IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">
         <source>MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</source>
-        <target state="translated">MaxIssuedTokenCachingTime deve essere maggiore di TimeSpan.Zero. Era: '{0}'.</target>
+        <target state="new">MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeySizeProvided">
         <source>No key size provided.</source>
-        <target state="translated">Nessuna dimensione della chiave specificata.</target>
+        <target state="new">No key size provided.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyPSHA1ComputedKeysAreSupported">
         <source>Only PSHA1 computed keys are supported.</source>
-        <target state="translated">Sono supportate solo le chiavi calcolate PSHA1.</target>
+        <target state="new">Only PSHA1 computed keys are supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProtectedKeyEntropyIsNotSupported">
         <source>Protected key entropy is not supported.</source>
-        <target state="translated">L'entropia della chiave protetta non è supportata.</target>
+        <target state="new">Protected key entropy is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="RSTRProofTokenShouldNotHaveAComputedKeyAlgorithmOrIssuerEntropy">
         <source>An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</source>
-        <target state="translated">Un RSTR contenente un token di prova non deve avere anche un algoritmo di chiave calcolato o un'entropia dell'autorità emittente.</target>
+        <target state="new">An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestTypeNotSupported">
         <source>The RequestType '{0}', is not supported.</source>
-        <target state="translated">Il RequestType '{0}' non è supportato.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SFxTimeoutOutOfRange0">
-        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">Il valore del timeout deve essere maggiore o uguale a TimeSpan.Zero. Per disabilitare il timeout, specificare TimeSpan.MaxValue.</target>
+        <target state="new">The RequestType '{0}', is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">Il server '{0}' ha restituito un errore che indica che è in fase di arresto. Per ulteriori informazioni sull'errore, vedere l'eccezione interna.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">Il server '{0}' ha restituito un errore che indica che è troppo occupato per elaborare la richiesta. Riprovare più tardi. Per dettagli sull'errore, vedere l'eccezione interna.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToGetToken">
         <source>The token provider '{0}' was unable to provide a security token.</source>
-        <target state="translated">Il provider di token '{0}' non è riuscito a fornire un token di sicurezza.</target>
+        <target state="new">The token provider '{0}' was unable to provide a security token.</target>
         <note />
       </trans-unit>
       <trans-unit id="UseKeysAreNotSupported">
         <source>UseKeys are not supported</source>
-        <target state="translated">Le chiavi di utilizzo non sono supportate</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ValueMustBePositive">
-        <source>The value of this argument must be positive.</source>
-        <target state="translated">Il valore di questo argomento deve essere positivo.</target>
+        <target state="new">UseKeys are not supported</target>
         <note />
       </trans-unit>
       <trans-unit id="WsTrustVersionNotSupported">
         <source>The WsTrust wersion '{0}' is not supported.</source>
-        <target state="translated">La versione di WsTrust '{0}' non è supportata.</target>
+        <target state="new">The WsTrust wersion '{0}' is not supported.</target>
         <note />
       </trans-unit>
     </body>

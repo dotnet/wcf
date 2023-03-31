@@ -2,139 +2,114 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../Strings.resx">
     <body>
-      <trans-unit id="ActivityProcessAction">
-        <source>Process action '{0}'.</source>
-        <target state="translated">Zpracujte akci {0}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
-        <target state="translated">Scénáře nosných klíčů by v odpovědi neměly obsahovat ověřovací token nebo entropii vystavitele.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CannotDetermineSPNBasedOnAddress">
-        <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Klient nemůže určit hlavní název služby založený na identitě v cílové adrese {0} pro účel třídy SspiNegotiation nebo protokolu Kerberos. Identitou cílové adresy musí být identita UPN (jako například acmedomain\alice) nebo identita SPN (například host/honzuv-pocitac).</target>
+        <target state="new">Bearer key scenarios should not include a proof token or issuer entropy in the response.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
         <source>ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</source>
-        <target state="translated">Třída ChannnelFactory musí podporovat rozhraní 'System.ServiceModel.Channels.IRequestChannel'.</target>
+        <target state="new">ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="translated">Objekt komunikace {0} je ve stavu {1}. Pokud objekty komunikace nejsou ve stavu Opened, nelze je použít ke komunikaci.</target>
+        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">Objekt komunikace {0} nelze použít ke komunikaci, protože je ve stavu Faulted.</target>
+        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensAreOnlySupportedWithSymmetricKeyTypes">
         <source>Computed key proof tokens are only supported with symmetric key types.</source>
-        <target state="translated">Vypočítané ověřovací tokeny klíče se podporují jen s typy symetrických klíčů.</target>
+        <target state="new">Computed key proof tokens are only supported with symmetric key types.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensRequireIssuerToSupplyKeyMaterialViaEntropy">
         <source>Computed key proof tokens require issuer to supply key material via entropy.</source>
-        <target state="translated">Vypočítané ověřovací tokeny klíčů vyžadují, aby žadatel dodal materiál klíče prostřednictvím entropie.</target>
+        <target state="new">Computed key proof tokens require issuer to supply key material via entropy.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensRequireRequesterToSupplyKeyMaterialViaEntropy">
         <source>Computed key proof tokens require requester to supply key material via entropy.</source>
-        <target state="translated">Vypočítané ověřovací tokeny klíčů vyžadují, aby žadatel dodal materiál klíče prostřednictvím entropie.</target>
+        <target state="new">Computed key proof tokens require requester to supply key material via entropy.</target>
         <note />
       </trans-unit>
       <trans-unit id="EncryptedKeysForProofTokensNotSupported">
         <source>Encrypted keys for proof tokens are not supported.</source>
-        <target state="translated">Šifrované klíče pro ověřovací tokeny nejsou podporovány.</target>
+        <target state="new">Encrypted keys for proof tokens are not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="IRequestChannelMustBeCreated">
         <source>The IRequestChannel must be in the created state. Was: '{0}'.</source>
-        <target state="translated">IRequestChannel musí být ve vytvořeném stavu. Bylo: '{0}'.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InsufficentMemory">
-        <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">K dokončení operace není dostatek paměti.</target>
+        <target state="new">The IRequestChannel must be in the created state. Was: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedSecurityTokenParametersIncorrectType">
         <source>tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</source>
-        <target state="translated">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; musí být typu WSTrustTokenParameters. Bylo: '{0}.</target>
+        <target state="new">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedTokenRenewalThresholdPercentageIncorrect">
         <source>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</source>
-        <target state="translated">IssuedTokenRenewalThresholdPercentage musí být větší nebo rovno 1 a menší nebo rovno 100. Bylo: '{0}'.</target>
+        <target state="new">IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">
         <source>MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</source>
-        <target state="translated">MaxIssuedTokenCachingTime musí být větší než TimeSpan.Zero. Bylo: '{0}'.</target>
+        <target state="new">MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeySizeProvided">
         <source>No key size provided.</source>
-        <target state="translated">Nezadala se žádná velikost klíče.</target>
+        <target state="new">No key size provided.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyPSHA1ComputedKeysAreSupported">
         <source>Only PSHA1 computed keys are supported.</source>
-        <target state="translated">Podporují se jen počítané klíče PSHA1.</target>
+        <target state="new">Only PSHA1 computed keys are supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProtectedKeyEntropyIsNotSupported">
         <source>Protected key entropy is not supported.</source>
-        <target state="translated">Entropie chráněného klíče se nepodporuje.</target>
+        <target state="new">Protected key entropy is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="RSTRProofTokenShouldNotHaveAComputedKeyAlgorithmOrIssuerEntropy">
         <source>An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</source>
-        <target state="translated">RSTR obsahující ověřovací token by také neměl mít vypočítaný algoritmus klíče nebo entropii vystavitele.</target>
+        <target state="new">An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestTypeNotSupported">
         <source>The RequestType '{0}', is not supported.</source>
-        <target state="translated">Typ požadavku (RequestType) '{0}' není podporován.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SFxTimeoutOutOfRange0">
-        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">Časový limit musí být větší než nula nebo se rovnat hodnotě TimeSpan.Zero. Pokud chcete časový limit zakázat, zadejte hodnotu TimeSpan.MaxValue.</target>
+        <target state="new">The RequestType '{0}', is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">Server {0} odeslal zpět chybu, která udává, že probíhá jeho vypínání. Podrobné informace o chybě naleznete v popisu vnitřní výjimky.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">Server {0} odeslal zpět chybu, která udává, že je příliš zaneprázdněn a nemůže zpracovat požadavek. Podrobné informace o chybě naleznete v popisu vnitřní výjimky.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToGetToken">
         <source>The token provider '{0}' was unable to provide a security token.</source>
-        <target state="translated">Poskytovatel tokenu {0} nemohl poskytnout token zabezpečení.</target>
+        <target state="new">The token provider '{0}' was unable to provide a security token.</target>
         <note />
       </trans-unit>
       <trans-unit id="UseKeysAreNotSupported">
         <source>UseKeys are not supported</source>
-        <target state="translated">UseKeys se nepodporují.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ValueMustBePositive">
-        <source>The value of this argument must be positive.</source>
-        <target state="translated">Hodnota tohoto argumentu musí být kladná.</target>
+        <target state="new">UseKeys are not supported</target>
         <note />
       </trans-unit>
       <trans-unit id="WsTrustVersionNotSupported">
         <source>The WsTrust wersion '{0}' is not supported.</source>
-        <target state="translated">'{0}' WsTrust verze není podporována.</target>
+        <target state="new">The WsTrust wersion '{0}' is not supported.</target>
         <note />
       </trans-unit>
     </body>
