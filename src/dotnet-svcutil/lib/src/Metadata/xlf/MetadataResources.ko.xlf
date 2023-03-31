@@ -4,69 +4,69 @@
     <body>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="translated">액세스 권한이 있는 Windows (R) Communication Foundation 서비스일 경우 지정한 주소에서 메타데이터 게시를 사용하도록 설정했는지 확인하세요. 메타데이터 게시 설정에 대한 도움말을 보려면 http://go.microsoft.com/fwlink/?LinkId=65455의 MSDN 설명서를 참조하세요.</target>
+        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateAMetadataExchangeClientFormat">
         <source>Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</source>
-        <target state="translated">{0}에서 메타데이터를 가져올 수 없습니다. URI 스키마 '{1}'은(는) 기본적으로 지원되지 않습니다.</target>
+        <target state="new">Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryInsteadOfFileFormat">
         <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</source>
-        <target state="translated">입력 경로 '{0}'이(가) 디렉터리입니다. 입력은 URL 또는 파일 경로여야 합니다.</target>
+        <target state="new">The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryNotFoundFormat">
         <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
-        <target state="translated">'{0}' 디렉터리를 찾을 수 없습니다. 디렉터리가 있는지 확인하고 해당 디렉터리를 읽을 수 있는 권한이 있는지 확인하세요.</target>
+        <target state="new">The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrFileAlreadyExistsFormat">
         <source>The file '{0}' already exists.</source>
-        <target state="translated">'{0}' 파일이 이미 있습니다.</target>
+        <target state="new">The file '{0}' already exists.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidUriFormat">
         <source>The specified URI '{0}' does not appear to be valid.</source>
-        <target state="translated">지정한 URI '{0}'은(는) 잘못된 것 같습니다.</target>
+        <target state="new">The specified URI '{0}' does not appear to be valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoFilesFoundFormat">
         <source>The input path '{0}' doesn't appear to refer to any existing files</source>
-        <target state="translated">입력 경로 '{0}'이(가) 기존 파일을 참조하지 않습니다.</target>
+        <target state="new">The input path '{0}' doesn't appear to refer to any existing files</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotXmlMetadataFileFormat">
         <source>The specified path '{0}' does not appear to refer to an XML metadata file.</source>
-        <target state="translated">지정한 경로 '{0}'이(가) XML 메타데이터 파일을 참조하는 것 같지 않습니다.</target>
+        <target state="new">The specified path '{0}' does not appear to refer to an XML metadata file.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceMetadataNotImported">
         <source>The service metadata has not been imported yet.</source>
-        <target state="translated">서비스 메타데이터를 아직 가져오지 않았습니다.</target>
+        <target state="new">The service metadata has not been imported yet.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToConnectToUriFormat">
         <source>Cannot obtain Metadata from the URI: {0} 
  Check the URI and try again.{1}</source>
-        <target state="translated">URI에서 메타데이터를 가져올 수 없습니다. {0} 
- URI를 확인하고 다시 시도하세요.{1}</target>
+        <target state="new">Cannot obtain Metadata from the URI: {0} 
+ Check the URI and try again.{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToCreateUniqueFileNameFormat">
         <source>Too many files are being created with the prefix '{0}'.</source>
-        <target state="translated">'{0}' 접두사를 사용하여 너무 많은 파일을 만들고 있습니다.</target>
+        <target state="new">Too many files are being created with the prefix '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToResolveSchemaReferenceFormat">
         <source>Unable to resolve schema reference '{0}'.</source>
-        <target state="translated">스키마 참조 '{0}'을(를) 확인할 수 없습니다.</target>
+        <target state="new">Unable to resolve schema reference '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUrlNotAllowedOnMultipleInputsFormat">
         <source>"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</source>
-        <target state="translated">"허용되지 않는 URL('{0}')입니다.  여러 입력이 지정된 경우 메타데이터 문서 파일만 허용됩니다."</target>
+        <target state="new">"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</target>
         <note />
       </trans-unit>
     </body>

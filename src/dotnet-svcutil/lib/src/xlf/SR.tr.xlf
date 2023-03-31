@@ -4,647 +4,637 @@
     <body>
       <trans-unit id="BindingBinaryMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported binary message encoding version: '{0}'. It must be '{1}'.</source>
-        <target state="translated">Desteklenmeyen ikili ileti kodlama sürümü: '{0}'. '{1}' olmalıdır.</target>
+        <target state="new">Unsupported binary message encoding version: '{0}'. It must be '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingClientCertRequirementNotSupported">
         <source>Client certificate security requirement is not supported.</source>
-        <target state="translated">İstemci sertifikası güvenliği gereksinimi desteklenmiyor.</target>
+        <target state="new">Client certificate security requirement is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingElementTypeNotSupportedFormat">
         <source>Unsupported binding element type: '{0}'.</source>
-        <target state="translated">Desteklenmeyen bağlama öğesi türü: '{0}'.</target>
+        <target state="new">Unsupported binding element type: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingMessageEncodingElementNotSupportedFormat">
         <source>Unsupported message encoding element type: '{0}'. It must be one of the following types: '{1}', '{2}.'</source>
-        <target state="translated">Desteklenmeyen ileti kodlama öğesi türü: '{0}'. Şu türlerden biri olmalıdır: '{1}', '{2}.'</target>
+        <target state="new">Unsupported message encoding element type: '{0}'. It must be one of the following types: '{1}', '{2}.'</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingMessageEncodingNotSupportedFormat">
         <source>Unsupported message encoding value: '{0}'. It must be '{1}'.</source>
-        <target state="translated">Desteklenmeyen ileti kodlaması değeri: '{0}'. '{1}' olmalıdır.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
-        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">Desteklenmeyen MTOM mesajı kodlama sürümü: '{0}'. '{1}' veya '{2}' veya '{3}' veya '{4}' olmalıdır.</target>
+        <target state="new">Unsupported message encoding value: '{0}'. It must be '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
-        <target state="translated">Güvenilir oturum desteklenmiyor.</target>
+        <target state="new">Reliable session is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTextMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported text message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}' or '{5}'.</source>
-        <target state="translated">Desteklenmeyen kısa mesaj kodlaması sürümü: '{0}'. '{1}' veya '{2}' veya '{3}' veya '{4}' veya '{5}' olmalıdır.</target>
+        <target state="new">Unsupported text message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}' or '{5}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransactionFlowNotSupported">
         <source>Transaction flow is not supported.</source>
-        <target state="translated">İşlem akışı desteklenmiyor.</target>
+        <target state="new">Transaction flow is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportDetectReplaysNotSupported">
         <source>Transport Security with DetectReplays enabled is not supported.</source>
-        <target state="translated">DetectReplays etkinken Aktarım Güvenliği desteklenmez.</target>
+        <target state="new">Transport Security with DetectReplays enabled is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportMessageSecurityVersionNotSupportedFormat">
         <source>Transport message security version value is not supported: '{0}'. It must be one of the following values: {1}.</source>
-        <target state="translated">Aktarım iletisi güvenlik sürümünün değeri desteklenmiyor: '{0}'. Şu değerlerden biri olmalıdır: {1}.</target>
+        <target state="new">Transport message security version value is not supported: '{0}'. It must be one of the following values: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat">
         <source>Transport default security algorithm suite is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="translated">Aktarım varsayılan güvenlik algoritması paketi desteklenmiyor: '{0}'. '{1}' olmalıdır.</target>
+        <target state="new">Transport default security algorithm suite is not supported: '{0}'. It must be '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityElementTypeNotSupportedFormat">
         <source>Transport security element type not supported: '{0}'. It must be '{1}'.</source>
-        <target state="translated">Aktarım güvenlik öğesinin türü desteklenmiyor: '{0}'. '{1}' olmalıdır.</target>
+        <target state="new">Transport security element type not supported: '{0}'. It must be '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityHeaderLayoutValueNotSupportedFormat">
         <source>Transport security header layout value is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="translated">Aktarım güvenliği üst bilgi düzeninin değeri desteklenmiyor: '{0}'. '{1}' olmalıdır.</target>
+        <target state="new">Transport security header layout value is not supported: '{0}'. It must be '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityMustIncludeTimestamp">
         <source>Transport security must include timestamp.</source>
-        <target state="translated">Aktarım güvenliği zaman damgasını içermelidir.</target>
+        <target state="new">Transport security must include timestamp.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenEndorsingParamsTypeFormat">
         <source>Unsupported transport security token endorsing parameters type: '{0}'. It must be '{1}'.</source>
-        <target state="translated">Desteklenmeyen aktarım güvenliği belirteci onaylama parametreleri türü: '{0}'. '{1}' olmalıdır.</target>
+        <target state="new">Unsupported transport security token endorsing parameters type: '{0}'. It must be '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenMustBeOneOfEitherEndorsingOrSignedEncrypted">
         <source>Transport security token must have one and only one type of parameters and it must be either 'Endorsing' or 'SignedEncrypted'.</source>
-        <target state="translated">Aktarım güvenliği belirtecinin tam olarak bir parametre türüne sahip olması ve bunun 'Endorsing' ya da 'SignedEncrypted' olması gerekir.</target>
+        <target state="new">Transport security token must have one and only one type of parameters and it must be either 'Endorsing' or 'SignedEncrypted'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsInclusionModeValueNotSupportedFormat">
         <source>Transport security token parameters inclusion mode value is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="translated">Aktarım güvenliği belirteç parametrelerinin içerme modu değeri desteklenmiyor: '{0}'. '{1}' olmalıdır.</target>
+        <target state="new">Transport security token parameters inclusion mode value is not supported: '{0}'. It must be '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsReferenceStyleNotSupportedFormat">
         <source>Transport security token parameters reference style is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="translated">Aktarım güvenliği belirteç parametrelerinin başvuru stili desteklenmiyor: '{0}'. '{1}' olmalıdır.</target>
+        <target state="new">Transport security token parameters reference style is not supported: '{0}'. It must be '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsRequiringDerivedKeysNotSupported">
         <source>Security token parameters requiring derived keys is not supported.</source>
-        <target state="translated">Türetilen anahtarlar gerektiren güvenlik belirteci parametreleri desteklenmiyor.</target>
+        <target state="new">Security token parameters requiring derived keys is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsTypeNotSupportedFormat">
         <source>Security token parameters type is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="translated">Güvenlik belirtecinin parametreler türü desteklenmiyor: '{0}'. '{1}' olmalıdır.</target>
+        <target state="new">Security token parameters type is not supported: '{0}'. It must be '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenSignedOrSignedEndorsingNotSupported">
         <source>Transport security token with signed or signed and endorsing paramaters is not supported.</source>
-        <target state="translated">İmzalı veya imzalı ve onaylanan parametrelere sahip aktarım güvenliği belirteci desteklenmiyor.</target>
+        <target state="new">Transport security token with signed or signed and endorsing paramaters is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportTypeNotSupportedFormat">
         <source>Unsupported transport type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}'.</source>
-        <target state="translated">Desteklenmeyen aktarım türü: '{0}'. Şu türlerden birinde olmalıdır: '{1}', '{2}', '{3}'.</target>
+        <target state="new">Unsupported transport type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTypeNotSupportedFormat">
         <source>Unsupported binding type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}', '{4}' or '{5}'.</source>
-        <target state="translated">Desteklenmeyen bağlama türü: '{0}'. Şu türlerden birinde olmalıdır: '{1}', '{2}', '{3}', '{4}' veya '{5}'.</target>
+        <target state="new">Unsupported binding type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}', '{4}' or '{5}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateIndexPrompt">
         <source>Please enter the index of the certificate to use or ESC to cancel:</source>
-        <target state="translated">Lütfen kullanılacak sertifikanın dizinini girin veya iptal etmek için ESC tuşuna basın:</target>
+        <target state="new">Please enter the index of the certificate to use or ESC to cancel:</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateSelectionMessageFormat">
         <source>The site {0} is asking for a client certificate, a list of possible valid certificates will be presented.</source>
-        <target state="translated">{0} sitesi bir istemci sertifikası istiyor, olası geçerli sertifikaların listesi sunulacak.</target>
+        <target state="new">The site {0} is asking for a client certificate, a list of possible valid certificates will be presented.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientCredentialsComment">
         <source>The client credentials</source>
-        <target state="translated">İstemci kimlik bilgileri</target>
+        <target state="new">The client credentials</target>
         <note />
       </trans-unit>
       <trans-unit id="CodeExpressionCouldNotFindEndpoint">
         <source>Could not find endpoint with name '{0}'.</source>
-        <target state="translated">'{0}' adlı uç nokta bulunamadı.</target>
+        <target state="new">Could not find endpoint with name '{0}'.</target>
         <note>This is not a formatting string (no trailing Format).</note>
       </trans-unit>
       <trans-unit id="ConfigureEndpointCommentSummary">
         <source>Implement this partial method to configure the service endpoint.</source>
-        <target state="translated">Hizmet uç noktasını yapılandırmak için bu kısmi metodu uygulayın.</target>
+        <target state="new">Implement this partial method to configure the service endpoint.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="translated">Bu hizmet, erişim iznine sahip olduğunuz bir Windows (R) Communication Foundation hizmetiyse lütfen belirtilen adreste meta veri yayımlamayı etkinleştirdiğinizden emin olun. Meta veri yayımlamayı etkinleştirme konusunda yardım almak için http://go.microsoft.com/fwlink/?LinkId=65455 adresindeki MSDN belgelerine başvurun.</target>
+        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterOrEscapeMessage">
         <source>Press the ENTER to accept or ESC to cancel:</source>
-        <target state="translated">Kabul etmek için ENTER veya iptal etmek için ESC tuşuna basın:</target>
+        <target state="new">Press the ENTER to accept or ESC to cancel:</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterYesOrNoMessage">
         <source>Invalid answer.  Please enter 'yes' or 'no':</source>
-        <target state="translated">Geçersiz yanıt. Lütfen 'evet' veya 'hayır' girin:</target>
+        <target state="new">Invalid answer.  Please enter 'yes' or 'no':</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrArgumentWithoutValue">
         <source>The --{0} option requires a value to be passed, but none was found.</source>
-        <target state="translated">--{0} seçeneği için bir değer geçirilmesi gerekiyor, ancak bir değer bulunamadı.</target>
+        <target state="new">The --{0} option requires a value to be passed, but none was found.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrBindingElementNotSupportedFormat">
         <source>Binding element of type '{0}' is not supported.</source>
-        <target state="translated">'{0}' türündeki bağlama öğesi desteklenmiyor.</target>
+        <target state="new">Binding element of type '{0}' is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrBindingTypeNotSupportedFormat">
         <source>Binding type '{0}' is not supported.</source>
-        <target state="translated">'{0}' bağlama türü desteklenmiyor.</target>
+        <target state="new">Binding type '{0}' is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateDirectoryFormat">
         <source>Cannot create directory: '{0}'.</source>
-        <target state="translated">Dizin oluşturulamıyor: '{0}'.</target>
+        <target state="new">Cannot create directory: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateFileFormat">
         <source>Cannot create output file: '{0}'.</source>
-        <target state="translated">Çıkış dosyası oluşturulamıyor: '{0}'.</target>
+        <target state="new">Cannot create output file: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotDisambiguateSpecifiedTypesFormat">
         <source>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</source>
-        <target state="translated">Başvurulan bütünleştirilmiş kod kümesinde aynı ada sahip birden çok tür var. '{1}' ve '{2}' şeklindeki --{0} türlerini birbirinden ayırmak için bütünleştirilmiş kodla nitelenen adlar kullanın</target>
+        <target state="new">More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotLoadSpecifiedTypeFormat">
         <source>No type could be loaded for the value '{1}' passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</source>
-        <target state="translated">--{0} seçeneğine geçirilen '{1}' değeri için tür yüklenemedi. Bu türün ait olduğu bütünleştirilmiş kodun --{2} seçeneği aracılığıyla belirtildiğinden emin olun.</target>
+        <target state="new">No type could be loaded for the value '{1}' passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotWriteFile">
         <source>Cannot write to output file.</source>
-        <target state="translated">Çıkış dosyasına yazılamıyor.</target>
+        <target state="new">Cannot write to output file.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCodegenError">
         <source>There was an error trying to generate code in the specified language.
 This could be because the language does not support all the code elements being generated. Consider using another language.</source>
-        <target state="translated">Belirtilen dilde kod oluşturulmaya çalışılırken bir hata oluştu.
-Bunun nedeni, dilin oluşturulmakta olan tüm kod öğelerini desteklememesi olabilir. Başka bir dil kullanmayı deneyin.</target>
+        <target state="new">There was an error trying to generate code in the specified language.
+This could be because the language does not support all the code elements being generated. Consider using another language.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
-        <target state="translated">--{1} seçeneğine geçirilen '{0}' değeri için bir kod sağlayıcısı oluşturulamadı. Kod sağlayıcısının düzgün bir biçimde yüklenip yapılandırıldığından emin olun.</target>
+        <target state="new">A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateInstanceFormat">
         <source>Cannot create instance of the type '{0}' passed to the --{1} option.</source>
-        <target state="translated">--{1} seçeneğine geçirilen '{0}' türündeki örnek oluşturulamıyor.</target>
+        <target state="new">Cannot create instance of the type '{0}' passed to the --{1} option.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAtFormat">
         <source>Cannot load any types in assembly '{0}'.</source>
-        <target state="translated">'{0}' bütünleştirilmiş kodundaki türler yüklenemiyor.</target>
+        <target state="new">Cannot load any types in assembly '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateReferenceValuesFormat">
         <source>The assembly '{1}' was loaded twice through the --{0} option. You may reference each assembly only once.</source>
-        <target state="translated">'{1}' bütünleştirilmiş kodu --{0} seçeneği aracılığıyla iki kere yüklendi. Her bütünleştirilmiş koda yalnızca bir kere başvurabilirsiniz.</target>
+        <target state="new">The assembly '{1}' was loaded twice through the --{0} option. You may reference each assembly only once.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateValuePassedToTypeArgFormat">
         <source>The value '{1}' was passed to the --{0} option multiple times. Each type may be specified only once.</source>
-        <target state="translated">'{1}' değeri --{0} seçeneğine birden çok kez geçirildi. Her tür yalnızca bir kere belirtilebilir.</target>
+        <target state="new">The value '{1}' was passed to the --{0} option multiple times. Each type may be specified only once.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrEncodingNotSupportedFormat">
         <source>Encoding '{0}' is not supported.</source>
-        <target state="translated">'{0}' kodlaması desteklenmiyor.</target>
+        <target state="new">Encoding '{0}' is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrIncompatibleContractSoapEncodingFormat">
         <source>The contract '{0}' contains one or more operations with SOAP Encoding (use='encoded'). This is not supported by the current target framework. Only the non-encoded operations will be generated, if any.</source>
-        <target state="translated">'{0}' sözleşmesi, SOAP Kodlamasına sahip (use='encoded') bir veya daha fazla işlem içeriyor. Bu, geçerli hedef çerçeve tarafından desteklenmiyor. Varsa yalnızca kodlanmış olmayan işlemler oluşturulacak.</target>
+        <target state="new">The contract '{0}' contains one or more operations with SOAP Encoding (use='encoded'). This is not supported by the current target framework. Only the non-encoded operations will be generated, if any.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputEPRFileParseErrorFormat">
         <source>Cannot read Endpoint Reference from: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="translated">'{0}' öğesinden Uç Nokta Başvurusu okunamıyor. XML'nin düzgün biçimlendirildiğini ve geçerli olduğunu doğrulayın.</target>
+        <target state="new">Cannot read Endpoint Reference from: '{0}'. Verify that the XML is both well-formed and valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputPolicyParseErrorFormat">
         <source>WS-Policy Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="translated">'{0}' okunurken WS-Policy Ayrıştırma Hatası oluştu. XML'nin hem düzgün biçimlendirildiğini hem de geçerli olduğunu doğrulayın.</target>
+        <target state="new">WS-Policy Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputSchemaParseErrorFormat">
         <source>XML Schema Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="translated">'{0}' okunurken XML Şeması Ayrıştırma Hatası oluştu. XML'nin hem düzgün biçimlendirildiğini hem de geçerli olduğunu doğrulayın.</target>
+        <target state="new">XML Schema Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputWsdlParseErrorFormat">
         <source>WSDL Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="translated">'{0}' okunurken WSDL Ayrıştırma Hatası oluştu. XML'nin hem düzgün biçimlendirildiğini hem de geçerli olduğunu doğrulayın.</target>
+        <target state="new">WSDL Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidNamespaceFormat">
         <source>The specified namespace mappings {0} contain invalid identifiers.</source>
-        <target state="translated">Belirtilen {0} ad alanı eşlemeleri geçersiz tanımlayıcılar içeriyor.</target>
+        <target state="new">The specified namespace mappings {0} contain invalid identifiers.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidOperationNoProjectFileFoundUnderFolderFormat">
         <source>The current operation is invalid outside the context of a project and no project file was found under the '{0}' directory.</source>
-        <target state="translated">Geçerli işlem bir proje bağlamı dışında geçersiz ve '{0}' dizini altında proje dosyası bulunamadı.</target>
+        <target state="new">The current operation is invalid outside the context of a project and no project file was found under the '{0}' directory.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidPathFormat">
         <source>Invalid path '{0}'. Check the --{1} option value.</source>
-        <target state="translated">Geçersiz yol: '{0}'. --{1} seçeneği değerini denetleyin.</target>
+        <target state="new">Invalid path '{0}'. Check the --{1} option value.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMessageVersionNotSupportedFormat">
         <source>MessageVersion '{0}' is not supported.</source>
-        <target state="translated">'{0}' MessageVersion öğesi desteklenmiyor.</target>
+        <target state="new">MessageVersion '{0}' is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMoreThanOneProjectFoundFormat">
         <source>The directory '{0}' contains more than one project file.</source>
-        <target state="translated">'{0}' dizini birden fazla proje dosyası içeriyor.</target>
+        <target state="new">The directory '{0}' contains more than one project file.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMoreThanOneUpdateParamsFilesFoundFormat">
         <source>More than one web service reference was found under the project '{0}'.  Please use the --{1} option to specify the service reference to update. The possible values are: {2}.</source>
-        <target state="translated">'{0}' projesi altında birden fazla web hizmeti başvurusu bulundu. Lütfen güncelleştirilecek hizmet başvurusunu belirtmek için --{1} seçeneğini kullanın. Olası değerler şunlardır: {2}.</target>
+        <target state="new">More than one web service reference was found under the project '{0}'.  Please use the --{1} option to specify the service reference to update. The possible values are: {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoCompatibleEndpoints">
         <source>No endpoints compatible with .Net Core apps were found.</source>
-        <target state="translated">.Net Core uygulamalarıyla uyumlu uç nokta bulunamadı.</target>
+        <target state="new">No endpoints compatible with .Net Core apps were found.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoUpdateParamsFileFoundFormat">
         <source>The project '{0}' does not have a web service reference that can be updated.</source>
-        <target state="translated">'{0}' projesinin güncelleştirilebilir bir web hizmeti başvurusu yok.</target>
+        <target state="new">The project '{0}' does not have a web service reference that can be updated.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoValidInputSpecified">
         <source>No valid input specified. Specify either a service url or a wsdl file.</source>
-        <target state="translated">Geçerli bir giriş belirtilmedi. Bir hizmet URL'si veya wsdl dosyası belirtin.</target>
+        <target state="new">No valid input specified. Specify either a service url or a wsdl file.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotCodeDomTypeFormat">
         <source>The type '{0}' passed to the --{1} option is not a subclass of '{2}'.</source>
-        <target state="translated">--{1} seçeneğine geçirilen '{0}' türü, '{2}' sınıfının bir alt sınıfı değil.</target>
+        <target state="new">The type '{0}' passed to the --{1} option is not a subclass of '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotLanguageOrCodeDomTypeFormat">
         <source>The value '{0}' passed to the --{1} option does not represent a defined language and it could not be loaded as a fully qualified CLR type.</source>
-        <target state="translated">--{1} seçeneğine geçirilen '{0}' değeri tanımlı bir dili temsil etmiyor ve tam bir CLR türü olarak yüklenemedi.</target>
+        <target state="new">The value '{0}' passed to the --{1} option does not represent a defined language and it could not be loaded as a fully qualified CLR type.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOutputFileAlreadyExistsFormat">
         <source>The source file '{0}' resolved from the value specified with the option --{1} already exists!</source>
-        <target state="translated">--{1} seçeneği ile belirtilen değerden çözümlenen '{0}' kaynak dosyası zaten var!</target>
+        <target state="new">The source file '{0}' resolved from the value specified with the option --{1} already exists!</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOutputFileNotUnderOutputDirFormat">
         <source>The value of the --{0} option resolves to the path '{1}' which is not under the directory '{2}' resolved from the value specified with the --{3} option. The file must be a relative file name or a full path under this directory.</source>
-        <target state="translated">--{0} seçeneğinin değeri, --{3} seçeneği ile belirtilen değerden çözümlenen '{2}' dizini altında olmayan '{1}' yoluna çözümlenir. Dosya bu dizin altında göreli bir dosya adı veya tam yol olmalıdır.</target>
+        <target state="new">The value of the --{0} option resolves to the path '{1}' which is not under the directory '{2}' resolved from the value specified with the --{3} option. The file must be a relative file name or a full path under this directory.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLongDirOnlyFormat">
         <source>The resultant path '{0}' is too long. Review the --{1} option value.</source>
-        <target state="translated">Sonuçta elde edilen '{0}' yolu çok uzun. --{1} seçeneğinin değerini gözden geçirin.</target>
+        <target state="new">The resultant path '{0}' is too long. Review the --{1} option value.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLongFormat">
         <source>The resultant path '{0}' is too long. Review the --{1} and --{2} option values.</source>
-        <target state="translated">Sonuçta elde edilen '{0}' yolu çok uzun. --{1} ve --{2} seçeneklerinin değerlerini gözden geçirin.</target>
+        <target state="new">The resultant path '{0}' is too long. Review the --{1} and --{2} option values.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrProjectToUpdateNotFoundFormat">
         <source>The --{0} option requires a project to be specified, please use the --{1} option to specify the project to use.</source>
-        <target state="translated">--{0} seçeneği proje belirtilmesini gerektirir, lütfen kullanılacak projeyi belirtmek için --{1} seçeneğini kullanın.</target>
+        <target state="new">The --{0} option requires a project to be specified, please use the --{1} option to specify the project to use.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServerCertFailedValidationFormat">
         <source>There were errors when validating the server certificate: {0}
 {1}</source>
-        <target state="translated">Sunucu sertifikası doğrulanırken hatalar oluştu:{0}
+        <target state="new">There were errors when validating the server certificate: {0}
 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceReferenceNotFoundUnderProjectFormat">
         <source>The specified web service reference '{0}' was not found under the project '{1}'.</source>
-        <target state="translated">Belirtilen '{0}' web hizmeti başvurusu '{1}' projesi altında bulunamadı.</target>
+        <target state="new">The specified web service reference '{0}' was not found under the project '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSingleUseSwitchFormat">
         <source>The --{0} option cannot be specified multiple times.</source>
-        <target state="translated">--{0} seçeneği birkaç kez belirtilemez.</target>
+        <target state="new">The --{0} option cannot be specified multiple times.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToImportMetadata">
         <source>A critical error occurred while attempting to import metadata.</source>
-        <target state="translated">Meta veriler içeri aktarılmaya çalışılırken kritik bir hata gerçekleşti.</target>
+        <target state="new">A critical error occurred while attempting to import metadata.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadExtensionsFormat">
         <source>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</source>
-        <target state="translated">İçeri aktarma uzantıları yüklenirken bir hata oluştu. --{0} seçeneğini kullanarak bu uzantıları içeren bütünleştirilmiş kodları başvuru bütünleştirilmiş kodları olarak sağladığınızdan emin olun.</target>
+        <target state="new">There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadInputs">
         <source>There was an error reading the loaded metadata.</source>
-        <target state="translated">Yüklenen meta veriler okunurken bir hata oluştu.</target>
+        <target state="new">There was an error reading the loaded metadata.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadMetadataDocumentFormat">
         <source>There was an error reading the metadata from one of the loaded documents.
 Document Identifier: '{0}'.</source>
-        <target state="translated">Yüklenen belgelerin birinden meta veriler okunurken bir hata oluştu.
-Belge Tanımlayıcısı: '{0}'.</target>
+        <target state="new">There was an error reading the metadata from one of the loaded documents.
+Document Identifier: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadReferenceFormat">
         <source>Reference cannot be loaded: '{0}', {1}</source>
-        <target state="translated">Başvuru yüklenemedi: '{0}', {1}</target>
+        <target state="new">Reference cannot be loaded: '{0}', {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToRetrieveMetadataFromUriFormat">
         <source>Cannot obtain Metadata from {0} 
 
 {1}</source>
-        <target state="translated">{0} öğesinden Meta Veriler alınamadı
+        <target state="new">Cannot obtain Metadata from {0} 
 
 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToUniquifyFilenameFormat">
         <source>Cannot create output filename. Too many files are being created with the prefix '{0}'.</source>
-        <target state="translated">Çıkış dosyası adı oluşturulamıyor. '{0}' ön ekine sahip çok fazla dosya oluşturuluyor.</target>
+        <target state="new">Cannot create output filename. Too many files are being created with the prefix '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedError">
         <source>An error occurred in the tool.</source>
-        <target state="translated">Araçta bir hata oluştu.</target>
+        <target state="new">An error occurred in the tool.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnknownSwitchFormat">
         <source>Unrecognized option '{0}' specified.</source>
-        <target state="translated">Tanınmayan seçenek '{0}' belirtildi.</target>
+        <target state="new">Unrecognized option '{0}' specified.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorPrefix">
         <source>Error:</source>
-        <target state="translated">Hata:</target>
+        <target state="new">Error:</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
-        <target state="translated">Dosyalar oluşturuluyor...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HelpAcceptCertificateFormat">
-        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">Hizmet meta verilerini indirirken uzak sertifikayı güvenilir olarak kabul edin. (Kısa form: - {0})</target>
+        <target state="new">Generating files...</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
-        <target state="translated">Serileştiriciyi otomatik olarak seç. Bu, Veri Anlaşması serileştiricisini kullanır ve bu serileştiricinin başarısız olması durumunda XmlSerializer'ı kullanır. (Kısa Biçim: -{0})</target>
+        <target state="new">Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput1">
         <source>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</source>
-        <target state="translated">Bir meta veri belgesinin (wsdl veya xsd) yolu. Dosya yolunda standart komut satırı joker parçacıkları kullanılabilir.</target>
+        <target state="new">The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput2">
         <source>The URL to a service endpoint that provides metadata or to a metadata document hosted online.</source>
-        <target state="translated">Meta verileri ya da çevrimiçi barındırılan bir meta veri belgesini sağlayan bir hizmet uç noktasının URL'si.</target>
+        <target state="new">The URL to a service endpoint that provides metadata or to a metadata document hosted online.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput3">
         <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</source>
-        <target state="translated">WS-Metadata Exchange'i destekleyen bir hizmet uç noktası için WS-Addressing EndpointReference içeren bir XML dosyasının yolu.</target>
+        <target state="new">The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCollectionTypeFormat">
         <source>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</source>
-        <target state="translated">Şemalardan kod üretilirken bir koleksiyon veri türü olarak kullanılacak türün tam veya bütünleştirilmiş kodla nitelenen adı. (Kısa Biçim: -{0})</target>
+        <target state="new">A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCommonOptionsCategory">
         <source>-= COMMON OPTIONS =-</source>
-        <target state="translated">-= ORTAK SEÇENEKLER =-</target>
+        <target state="new">-= COMMON OPTIONS =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpDataContractSerializer">
         <source>Generate data types that use the Data Contract Serializer for serialization and deserialization</source>
-        <target state="translated">Serileştirme ve seri durumdan çıkarma için Veri Anlaşması Serileştiricisi'ni kullanan veri türleri oluşturma</target>
+        <target state="new">Generate data types that use the Data Contract Serializer for serialization and deserialization</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpDirectoryFormat">
         <source>Directory to create files in. Default: A directory called ServiceReference inside the current directory. (Short Form: -{0})</source>
-        <target state="translated">İçinde dosyaların oluşturulacağı dizin. Varsayılan: Geçerli dizindeki ServiceReference adlı dizin. (Kısa Biçim: -{0})</target>
+        <target state="new">Directory to create files in. Default: A directory called ServiceReference inside the current directory. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpEnableDataBindingFormat">
         <source>Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: -{0})</source>
-        <target state="translated">Veri bağlamayı etkinleştirmek için tüm Veri Anlaşması türlerinde System.ComponentModel.INotifyPropertyChanged arabirimini uygulayın. (Kısa Biçim: -{0})</target>
+        <target state="new">Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples">
         <source>-= EXAMPLES =-</source>
-        <target state="translated">-= ÖRNEKLER =-</target>
+        <target state="new">-= EXAMPLES =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples10">
         <source>dotnet-svcutil -u ServiceReference</source>
-        <target state="translated">dotnet-svcutil -u ServiceReference</target>
+        <target state="new">dotnet-svcutil -u ServiceReference</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples11">
         <source>- Update existing web service reference named ServiceReference. The command need to be executed under directory which contains the project file.</source>
-        <target state="translated">- ServiceReference adlı mevcut web servisi başvurusunu güncelleştirin. Komutun, proje dosyasını içeren dizin altında yürütülmesi gerekir.</target>
+        <target state="new">- Update existing web service reference named ServiceReference. The command need to be executed under directory which contains the project file.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples2">
         <source>dotnet-svcutil http://example.com/service.svc?wsdl</source>
-        <target state="translated">dotnet-svcutil http://example.com/service.svc?wsdl</target>
+        <target state="new">dotnet-svcutil http://example.com/service.svc?wsdl</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples3">
         <source>- Generate client code from a running service or online metadata documents.</source>
-        <target state="translated">- Çalışmakta olan hizmetten veya çevrimiçi meta veri belgelerinden istemci kodu oluşturma.</target>
+        <target state="new">- Generate client code from a running service or online metadata documents.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples6">
         <source>dotnet-svcutil *.wsdl *.xsd --language:C#</source>
-        <target state="translated">dotnet-svcutil *.wsdl *.xsd --language:C#</target>
+        <target state="new">dotnet-svcutil *.wsdl *.xsd --language:C#</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples7">
         <source>- Generate client code in Visual Basic from local metadata documents.</source>
-        <target state="translated">- Visual Basic'te yerel meta veri belgelerinden istemci kodu oluşturma.</target>
+        <target state="new">- Generate client code in Visual Basic from local metadata documents.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples8">
         <source>dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</source>
-        <target state="translated">dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</target>
+        <target state="new">dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples9">
         <source>- Generate client code from a running service using settings that emulate the default "WCF Connected Service" behavior in Visual Studio</source>
-        <target state="translated">- Visual Studio'daki varsayılan "WCF Connected Service" davranışına öykünen ayarları kullanan çalışmakta olan bir hizmetten istemci kodu oluşturma</target>
+        <target state="new">- Generate client code from a running service using settings that emulate the default "WCF Connected Service" behavior in Visual Studio</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExcludeTypeCodeGenerationFormat">
         <source>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</source>
-        <target state="translated">Başvurulan anlaşma türlerinin dışında tutulacak bir tam veya bütünleştirilmiş kodla nitelenen tür adı. (Kısa Biçim: -{0})</target>
+        <target state="new">A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpHelpFormat">
         <source>Display command syntax and options for the tool. (Short Form: -{0})</source>
-        <target state="translated">Araç için komut söz dizimini ve seçenekleri görüntüleme. (Kısa Biçim: -{0})</target>
+        <target state="new">Display command syntax and options for the tool. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputEpr">
         <source>&lt;epr&gt;</source>
-        <target state="translated">&lt;epr&gt;</target>
+        <target state="new">&lt;epr&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="translated">&lt;meta veri belgesinin yolu&gt;</target>
+        <target state="new">&lt;metadata document path&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
         <source>&lt;url&gt;</source>
-        <target state="translated">&lt;url&gt;</target>
+        <target state="new">&lt;url&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
-        <target state="translated">İç olarak işaretlenmiş sınıflar oluşturun. Varsayılan: Genel sınıflar oluşturma. (Kısa Biçim: -{0})</target>
+        <target state="new">Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
-        <target state="translated">Kod oluşturmak için kullanılan programlama dili. machine.config dosyasında kayıtlı bir dili ya da System.CodeDom.Compiler.CodeDomProvider'dan devralan bir sınıfın tam adını sağlayın. Kullanılabilecek dil adlarına örnek olarak CS ve VB verilebilir. Varsayılan: C#. (Kısa Biçim: -{0})</target>
+        <target state="new">The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMessageContractFormat">
         <source>Generate Message Contract types. (Short Form: -{0})</source>
-        <target state="translated">İleti Anlaşması türleri oluşturun. (Kısa Biçim: -{0})</target>
+        <target state="new">Generate Message Contract types. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNamespaceFormat">
         <source>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</source>
-        <target state="translated">Bir WSDL veya XML Schema targetNamespace'ten CLR ad alanına eşleme. targetNamespace için '*' kullanılırsa, ilgili CLR ad alanına açık bir eşleme olmaksızın tüm targetNamespace'ler eşlenir. Varsayılan: Veri Anlaşmaları için şema belgesinin hedef ad alanından türetilir. Diğer tüm oluşturulan türler için varsayılan ad alanı kullanılır. (Kısa Biçim: -{0})</target>
+        <target state="new">A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
-        <target state="translated">Proje başvurularından yeniden tür kullanılmasını devre dışı bırakın. --{1} seçeneği ile sağlanan başvurular yalnızca --{2} seçeneği ile belirtilen koleksiyon türlerini çözümlemek için kabul edilir. (Kısa Biçim: -{0})</target>
+        <target state="new">Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNologoFormat">
         <source>Suppress the copyright and banner message. (Short Form: -{0})</source>
-        <target state="translated">Telif hakkı ve başlık iletisini gizle. (Kısa Biçim: -{0})</target>
+        <target state="new">Suppress the copyright and banner message. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNostdlibFormat">
         <source>Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</source>
-        <target state="translated">Standart kitaplıklara başvurmayın. Varsayılan olarak System.Runtime (mscorlib) ve System.ServiceModel (WCF) kitaplıklarına başvurulur. (Kısa Biçim: -{0})</target>
+        <target state="new">Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOptions">
         <source>Options:</source>
-        <target state="translated">Seçenekler:</target>
+        <target state="new">Options:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOutFormat">
         <source>The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</source>
-        <target state="translated">Oluşturulan kodun dosya adı. Varsayılan: WSDL tanım adı, WSDL hizmet adı veya şemalardan birinin targetNamespace değerinden türetilir. (Kısa Biçim: -{0})</target>
+        <target state="new">The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpProjectFileFormat">
         <source>The project file to add the client to (if any). (Short Form: -{0}).</source>
-        <target state="translated">İstemciye eklenecek proje dosyası (varsa). (Kısa Biçimi: -{0}).</target>
+        <target state="new">The project file to add the client to (if any). (Short Form: -{0}).</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpReferenceCodeGenerationFormat">
         <source>Package or project references to reuse types from. When generating clients, use this option to specify references in the user's project that might contain types representing the metadata being imported. The reference can be specified as a nuget package name and version or the path to a .Net Core project. (Short Form: -{0})</source>
-        <target state="translated">İçerdiği türler yeniden kullanılacak olan paket veya proje başvuruları. İstemci oluştururken, içeri aktarılmakta olan meta verileri temsil eden türleri içerebilecek kullanıcı projesinde başvuruları belirtmek için bu seçeneği kullanın. Başvuru bir nuget paket adı ve sürümü veya bir .Net Core projesinin yolu olarak belirtilebilir. (Kısa Biçim: -{0})</target>
+        <target state="new">Package or project references to reuse types from. When generating clients, use this option to specify references in the user's project that might contain types representing the metadata being imported. The reference can be specified as a nuget package name and version or the path to a .Net Core project. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpRuntimeIdentifierFormat">
         <source>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</source>
-        <target state="translated">Başvuru projelerini (varsa) derlemek için kullanılan çalışma zamanı tanımlayıcısı. (Kısa Biçim: -{0})</target>
+        <target state="new">The runtime identifier used for building reference projects (if any). (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
-        <target state="translated">İşlemler için zaman uyumsuz yöntemlerin yanı sıra zaman uyumlu yöntemler oluştur. (Kısa Biçim: -{0})</target>
+        <target state="new">Generate synchronous methods for operations in addition to async. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
         <source>The target framework used for building reference projects. (Short Form: -{0}).</source>
-        <target state="translated">Başvuru projelerini derlemek için kullanılan hedef çerçeve. (Kısa Biçim: -{0}).</target>
+        <target state="new">The target framework used for building reference projects. (Short Form: -{0}).</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUpdateWebServiceReferenceFormat">
         <source>Updates an existing web service reference. If the project contains more than one web service reference, the name of the web service reference to be updated is required. (Short Form: -{0})</source>
-        <target state="translated">Mevcut bir web hizmeti başvurusunu güncelleştirir. Proje birden çok web hizmeti başvurusu içeriyorsa güncelleştirilecek web hizmeti başvurusunun adı gereklidir. (Kısa Biçim: -{0})</target>
+        <target state="new">Updates an existing web service reference. If the project contains more than one web service reference, the name of the web service reference to be updated is required. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage1">
         <source>USE:</source>
-        <target state="translated">KULLANIM:</target>
+        <target state="new">USE:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage2">
         <source> - Generate web service proxy code from running services or static metadata documents. </source>
-        <target state="translated"> - Çalışmakta olan hizmetlerden veya statik meta veri belgelerinden web hizmeti ara sunucu kodu oluşturma. </target>
+        <target state="new"> - Generate web service proxy code from running services or static metadata documents. </target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsageCategory">
         <source>-= USAGE =-</source>
-        <target state="translated">-= KULLANIM =-</target>
+        <target state="new">-= USAGE =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpVerbosityFormat">
         <source>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</source>
-        <target state="translated">Araç tarafından görüntülenen bilgi miktarını belirler. Geçerli değerler: '{0}'. (Kısa Biçim: -{1})</target>
+        <target state="new">Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpWrappedFormat">
         <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages. (Short Form: -{0})</source>
-        <target state="translated">Oluşturulan kod, document-wrapped-literal iletilerinin "parameters" üyesinin kaydırmasını kaldırmaz. (Kısa Biçimi: -{0})</target>
+        <target state="new">Generated code will not unwrap "parameters" member of document-wrapped-literal messages. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializer">
         <source>Generate data types that use the XmlSerializer for serialization and deserialization</source>
-        <target state="translated">Serileştirme ve seri durumdan çıkarma için XmlSerializer'ı kullanan veri türleri oluşturma</target>
+        <target state="new">Generate data types that use the XmlSerializer for serialization and deserialization</target>
         <note />
       </trans-unit>
       <trans-unit id="LogoFormat">
@@ -652,193 +642,193 @@ Belge Tanımlayıcısı: '{0}'.</target>
 [{0}, Version {1}]
 {2}
 </source>
-        <target state="translated">.Net Core platformu için Microsoft (R) WCF Service Model Ara Sunucu Oluşturma Aracı
-[{0}, Sürüm {1}]
+        <target state="new">Microsoft (R) WCF Service Model Proxy Generation Tool for .Net Core platform
+[{0}, Version {1}]
 {2}
 </target>
         <note />
       </trans-unit>
       <trans-unit id="Microsoft_Copyright_CommandLine_Logo">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="translated">Teklif Hakkı (c) Microsoft Corporation. Tüm hakları saklıdır.</target>
+        <target state="new">Copyright (c) Microsoft Corporation.  All rights reserved.</target>
         <note />
       </trans-unit>
       <trans-unit id="MoreHelpFormat">
         <source>If you would like more help, type "dotnet-svcutil -{0}"</source>
-        <target state="translated">Daha fazla yardım almak istiyorsanız "dotnet-svcutil -{0}" yazın</target>
+        <target state="new">If you would like more help, type "dotnet-svcutil -{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="NoCodeWasGenerated">
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services, or because all contracts/services were discovered to exist in --reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">Kod oluşturulmadı.
-İstemci oluşturmaya çalışıyorsanız bunun nedeni meta veri belgelerinin geçerli anlaşma veya hizmetler içermemesi ya da bulunan tüm anlaşma ve hizmetlerin --reference bütünleştirilmiş kodlarında yer alması olabilir. Araca tüm meta veri belgelerini geçirdiğinizi doğrulayın.</target>
+        <target state="new">No code was generated.
+If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services, or because all contracts/services were discovered to exist in --reference assemblies. Verify that you passed all the metadata documents to the tool.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotClientBaseType">
         <source>Type does not inherit from ClientBase&lt;T&gt;</source>
-        <target state="translated">Tür, ClientBase&lt;T&gt; türünden devralınmıyor</target>
+        <target state="new">Type does not inherit from ClientBase&lt;T&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;tür&gt;</target>
+        <target state="new">&lt;type&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
         <source>&lt;directory&gt;</source>
-        <target state="translated">&lt;directory&gt;</target>
+        <target state="new">&lt;directory&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;tür&gt;</target>
+        <target state="new">&lt;type&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
         <source>&lt;language&gt;</source>
-        <target state="translated">&lt;language&gt;</target>
+        <target state="new">&lt;language&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersNamespace">
         <source>&lt;string,string&gt;</source>
-        <target state="translated">&lt;string,string&gt;</target>
+        <target state="new">&lt;string,string&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersOut">
         <source>&lt;file&gt;</source>
-        <target state="translated">&lt;file&gt;</target>
+        <target state="new">&lt;file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="translated">&lt;proje dosyası&gt;</target>
+        <target state="new">&lt;project file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;package&gt;</source>
-        <target state="translated">&lt;paket&gt;</target>
+        <target state="new">&lt;package&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="translated">&lt;çalışma zamanı tanımlayıcısı&gt;</target>
+        <target state="new">&lt;runtime identifier&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
         <source>&lt;framework&gt;</source>
-        <target state="translated">&lt;çerçeve&gt;</target>
+        <target state="new">&lt;framework&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="translated">&lt;ayrıntı düzeyi&gt;</target>
+        <target state="new">&lt;verbosity level&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="translated">&lt;web hizmeti başvurusu&gt;</target>
+        <target state="new">&lt;web service reference&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
         <source>Enter password (ESC to cancel):</source>
-        <target state="translated">Parolayı girin (iptal etmek için ESC tuşuna basın):</target>
+        <target state="new">Enter password (ESC to cancel):</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadingMetadataMessageFormat">
         <source>Attempting to load metadata from '{0}'.</source>
-        <target state="translated">'{0}' konumundan meta veriler yüklenmeye çalışılıyor.</target>
+        <target state="new">Attempting to load metadata from '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestReplyCallbackContractNotSupported">
         <source>Request/Reply callback contracts are not supported for .Net Core apps.</source>
-        <target state="translated">.Net Core uygulamaları için Request/Reply geri çağırma anlaşmaları desteklenmez.</target>
+        <target state="new">Request/Reply callback contracts are not supported for .Net Core apps.</target>
         <note />
       </trans-unit>
       <trans-unit id="RetreivingMetadataMsgFormat">
         <source>Attempting to download metadata from '{0}' using WS-Metadata Exchange and HttpGet.</source>
-        <target state="translated">WS-Metadata Exchange ve HttpGet kullanılarak '{0}' öğesinden meta veriler indirilmeye çalışılıyor.</target>
+        <target state="new">Attempting to download metadata from '{0}' using WS-Metadata Exchange and HttpGet.</target>
         <note />
       </trans-unit>
       <trans-unit id="ServiceEndpointComment">
         <source>The endpoint to configure</source>
-        <target state="translated">Yapılandırılacak uç nokta</target>
+        <target state="new">The endpoint to configure</target>
         <note />
       </trans-unit>
       <trans-unit id="TelemetryEnabled">
         <source>This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
 </source>
-        <target state="translated">Bu araç, iyileştirme amacıyla nasıl kullanıldığına ilişkin bilgileri toplar. Bu işlev, "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" ortam değişkeni 1 olarak ayarlanarak devre dışı bırakılabilir.
+        <target state="new">This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
 </target>
         <note />
       </trans-unit>
       <trans-unit id="UseProjectFileOptionOnMultipleFilesMsgFormat">
         <source>Please use the --{0} option to specify the project to use, possible values: {1}.</source>
-        <target state="translated">Lütfen kullanılacak projeyi belirtmek için --{0} seçeneğini kullanın, olası değerler: {1}.</target>
+        <target state="new">Please use the --{0} option to specify the project to use, possible values: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="UsernamePrompt">
         <source>Enter username (ESC to cancel):</source>
-        <target state="translated">Kullanıcı adını girin (iptal etmek için ESC):</target>
+        <target state="new">Enter username (ESC to cancel):</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningPrefix">
         <source>Warning:</source>
-        <target state="translated">Uyarı:</target>
+        <target state="new">Warning:</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnCouldNotGenerateContractOperationsFormat">
         <source>Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</source>
-        <target state="translated">'{0}' türü kullanılarak ve '{1}' türü denenerek sözleşme işlemleri üretilemedi.</target>
+        <target state="new">Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnCouldNotLoadTypesFromReferenceAssemblyAtFormat">
         <source>Cannot load some types in assembly '{0}', types will not be available to the tool.</source>
-        <target state="translated">'{0}' bütünleştirilmiş kodundaki bazı türler yüklenemedi. Bu türler araçta kullanılamayacak.</target>
+        <target state="new">Cannot load some types in assembly '{0}', types will not be available to the tool.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnExtraParamsOnInputFileParamIgnoredFormat">
         <source>An input parameters file was specified in the command line, the following parameter(s) will be ignored: {0}.</source>
-        <target state="translated">Komut satırında bir giriş parametreleri dosyası belirtildi, şu parametreler yoksayılacak: {0}.</target>
+        <target state="new">An input parameters file was specified in the command line, the following parameter(s) will be ignored: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
-        <target state="translated">'{1}' adresindeki '{0}' uç noktası, .Net Core uygulamalarıyla uyumsuz bir veya daha fazla bağlama içerdiğinden atlanıyor...</target>
+        <target state="new">Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
-        <target state="translated">--{0} seçeneği ile belirtilen değer, '{2}' projesi dizini altında olmayan '{1}' dosya yoluna çözümlenir. Dosya derlenemeyebilir!</target>
+        <target state="new">The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
         <source>The specified --{0} option is not expected in the current operational context of the tool!</source>
-        <target state="translated">Belirtilen--{0} seçeneği, aracın geçerli operasyonel bağlamında beklenmiyor!</target>
+        <target state="new">The specified --{0} option is not expected in the current operational context of the tool!</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedInputsFormat">
         <source>The specified input(s) {0} are not expected in the current operational context of the tool!</source>
-        <target state="translated">Belirtilen {0} girişleri aracın geçerli operasyonel bağlamında beklenmiyor!</target>
+        <target state="new">The specified input(s) {0} are not expected in the current operational context of the tool!</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUserBasicCredentialsInClearText">
         <source>The server needs to authenticate your request.
 Your credentials will be sent to the server in clear text.</source>
-        <target state="translated">Sunucunun, isteğinizin kimliğini doğrulaması gerekiyor.
-Kimlik bilgileriniz sunucuya düz metin olarak gönderilecek.</target>
+        <target state="new">The server needs to authenticate your request.
+Your credentials will be sent to the server in clear text.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnWSMExFailedFormat">
         <source>WS-Metadata Exchange Error
     URI: {0}</source>
-        <target state="translated">WS-Metadata Exchange Hatası
+        <target state="new">WS-Metadata Exchange Error
     URI: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlOrSchemaFilesMsg">
         <source>WSDL files</source>
-        <target state="translated">WSDL dosyaları</target>
+        <target state="new">WSDL files</target>
         <note />
       </trans-unit>
     </body>
