@@ -4,247 +4,247 @@
     <body>
       <trans-unit id="Binding">
         <source>Binding '{0}' from namespace '{1}'.</source>
-        <target state="translated">네임스페이스 '{1}'의 바인딩 '{0}'입니다.</target>
+        <target state="new">Binding '{0}' from namespace '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CanTSpecifyElementOnEncodedMessagePartsPart">
         <source>The element attribute is not allowed on encoded message parts. The erroneous part is named '{0}' in message '{1}'.</source>
-        <target state="translated">인코딩된 메시지 부분에는 요소 특성을 사용할 수 없습니다. '{1}' 메시지에서 오류 부분은 '{0}'(으)로 명명됩니다.</target>
+        <target state="new">The element attribute is not allowed on encoded message parts. The erroneous part is named '{0}' in message '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CodegenWarningDetails">
         <source>CODEGEN: {0}</source>
-        <target state="translated">CODEGEN: {0}</target>
+        <target state="new">CODEGEN: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="Description">
         <source>Service description with targetNamespace='{0}'.</source>
-        <target state="translated">targetNamespace='{0}'인 서비스 설명입니다.</target>
+        <target state="new">Service description with targetNamespace='{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Element">
         <source>{0} from service description with targetNamespace='{1}'.</source>
-        <target state="translated">targetNamespace='{1}'인 서비스 설명의 {0}입니다.</target>
+        <target state="new">{0} from service description with targetNamespace='{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Fault">
         <source>soapbind:fault '{0}' on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</source>
-        <target state="translated">soapbind: 네임스페이스 '{3}'의 portType '{2}'에 대한 작업 '{1}'의 오류 '{0}'입니다. {4}</target>
+        <target state="new">soapbind:fault '{0}' on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</target>
         <note />
       </trans-unit>
       <trans-unit id="FaultBinding">
         <source>Fault '{0}' on operation '{1}' on binding '{2}' from namespace '{3}'.</source>
-        <target state="translated">네임스페이스 '{3}'의 바인딩 '{2}'에 대한 작업 '{1}'의 오류 '{0}'입니다.</target>
+        <target state="new">Fault '{0}' on operation '{1}' on binding '{2}' from namespace '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderFault">
         <source>{0} on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</source>
-        <target state="translated">네임스페이스 '{3}'의 portType '{2}'에 대한 작업 '{1}'의 {0}입니다. {4}</target>
+        <target state="new">{0} on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</target>
         <note />
       </trans-unit>
       <trans-unit id="Message">
         <source>Message '{0}' from service description with targetNamespace='{1}'.</source>
-        <target state="translated">targetNamespace='{1}'인 서비스 설명의 '{0}' 메시지입니다.</target>
+        <target state="new">Message '{0}' from service description with targetNamespace='{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingMessagePartForMessageFromNamespace3">
         <source>Missing message part '{0}' for message '{1}' from namespace '{2}'.</source>
-        <target state="translated">네임스페이스 '{2}'에서 '{1}' 메시지에 대한 메시지 부분 '{0}'이(가) 없습니다.</target>
+        <target state="new">Missing message part '{0}' for message '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyOperationInputOrOperationOutputTypes">
         <source>Only objects of type OperationInput or OperationOutput may be added.</source>
-        <target state="translated">OperationInput 또는 OperationOutput 형식의 개체만 추가할 수 있습니다.</target>
+        <target state="new">Only objects of type OperationInput or OperationOutput may be added.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyXmlElementsOrTypesDerivingFromServiceDescriptionFormatExtension0">
         <source>Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</source>
-        <target state="translated">XmlElements 또는 ServiceDescriptionFormatExtension에서 파생되는 형식만 추가할 수 있습니다.</target>
+        <target state="new">Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</target>
         <note />
       </trans-unit>
       <trans-unit id="Operation">
         <source>Operation '{0}' on portType '{1}' from namespace '{2}'.</source>
-        <target state="translated">네임스페이스 '{2}'의 portType '{1}'에 대한 작업 '{0}'입니다.</target>
+        <target state="new">Operation '{0}' on portType '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="OperationBinding">
         <source>Operation '{0}' on binding '{1}' from namespace '{2}'.</source>
-        <target state="translated">네임스페이스 '{2}'의 바인딩 '{1}'에 대한 작업 '{0}'입니다.</target>
+        <target state="new">Operation '{0}' on binding '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Part">
         <source>Part '{0}' of message '{1}' from service description with targetNamespace='{2}'.</source>
-        <target state="translated">targetNamespace='{2}'인 서비스 설명자의 '{1}' 메시지 중 '{0}' 부분입니다.</target>
+        <target state="new">Part '{0}' of message '{1}' from service description with targetNamespace='{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Port">
         <source>Port '{0}' on service {1} from namespace='{2}'.</source>
-        <target state="translated">namespace='{2}'의 {1} 서비스에 대한 '{0}' 포트입니다.</target>
+        <target state="new">Port '{0}' on service {1} from namespace='{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProtocolWithNameIsNotRecognized1">
         <source>Protocol with name '{0}' is not recognized.</source>
-        <target state="translated">이름이 '{0}'인 프로토콜을 인식할 수 없습니다.</target>
+        <target state="new">Protocol with name '{0}' is not recognized.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequiredXmlFormatExtensionAttributeIsMissing1">
         <source>Required XmlFormatExtension attribute is missing on class {0}.</source>
-        <target state="translated">필요한 XmlFormatExtension 특성이 {0} 클래스에 없습니다.</target>
+        <target state="new">Required XmlFormatExtension attribute is missing on class {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SchemaSyntaxErrorDetails">
         <source>Schema with targetNamespace='{0}' has invalid syntax. {1} Line {2}, position {3}.</source>
-        <target state="translated">targetNamespace='{0}'인 스키마에 잘못된 구문이 있습니다. {1} 줄 {2}, 위치 {3}.</target>
+        <target state="new">Schema with targetNamespace='{0}' has invalid syntax. {1} Line {2}, position {3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SchemaValidationError">
         <source>Schema validation error: {0}</source>
-        <target state="translated">스키마 유효성 검사 오류: {0}</target>
+        <target state="new">Schema validation error: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="TheSyntaxOfTypeMayNotBeExtended1">
         <source>The syntax of type {0} may not be extended.</source>
-        <target state="translated">{0} 형식의 구문을 확장할 수 없습니다.</target>
+        <target state="new">The syntax of type {0} may not be extended.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValidationError">
         <source>Error: {0} Line {1}, position {2}.</source>
-        <target state="translated">오류: {0} 줄 {1}, 위치 {2}.</target>
+        <target state="new">Error: {0} Line {1}, position {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissing">
         <source>Cannot find definition for {0}.  Service Description with namespace {1} is missing.</source>
-        <target state="translated">{0}에 대한 정의를 찾을 수 없습니다. 네임스페이스가 {1}인 서비스 정의가 없습니다.</target>
+        <target state="new">Cannot find definition for {0}.  Service Description with namespace {1} is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissingItem">
         <source>Element {0} named {1} from namespace {2} is missing.</source>
-        <target state="translated">네임스페이스 {2}에 이름이 {1}인 {0} 요소가 없습니다.</target>
+        <target state="new">Element {0} named {1} from namespace {2} is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionTooManyMessages">
         <source>No more than one input and one output message may be specified.</source>
-        <target state="translated">입력/출력 메시지를 하나씩만 지정할 수 있습니다.</target>
+        <target state="new">No more than one input and one output message may be specified.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateBinding">
         <source>More than one binding named '{0}' was specified. Each binding must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 바인딩이 두 개 이상 지정되었습니다. 각 바인딩은 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one binding named '{0}' was specified. Each binding must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFaultBinding">
         <source>More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 오류 바인딩이 두 개 이상 지정되었습니다. 각 오류 바인딩은 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFormatExtension">
         <source>More than one format extension named '{0}' was specified. Each format extension must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 형식 확장이 두 개 이상 지정되었습니다. 각 형식 확장은 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one format extension named '{0}' was specified. Each format extension must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateImport">
         <source>More than one import named '{0}' was specified. Each import must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 가져오기가 두 개 이상 지정되었습니다. 각 가져오기는 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one import named '{0}' was specified. Each import must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessage">
         <source>More than one message named '{0}' was specified. Each message must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 메시지가 두 개 이상 지정되었습니다. 각 메시지는 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one message named '{0}' was specified. Each message must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessagePart">
         <source>More than one message part named '{0}' was specified. Each message part must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 메시지 부분이 두 개 이상 지정되었습니다. 각 메시지 부분은 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one message part named '{0}' was specified. Each message part must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperation">
         <source>More than one operation named '{0}' was specified. Each operation must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 작업이 두 개 이상 지정되었습니다. 각 작업은 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one operation named '{0}' was specified. Each operation must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationBinding">
         <source>More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 작업 바인딩이 두 개 이상 지정되었습니다. 각 작업 바인딩은 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationFault">
         <source>More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 작업 오류가 두 개 이상 지정되었습니다. 각 작업 오류는 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationMessage">
         <source>More than one operation message named '{0}' was specified. Each operation message must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 작업 메시지가 두 개 이상 지정되었습니다. 각 작업 메시지는 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one operation message named '{0}' was specified. Each operation message must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePort">
         <source>More than one port named '{0}' was specified. Each port must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 포트가 두 개 이상 지정되었습니다. 각 포트는 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one port named '{0}' was specified. Each port must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePortType">
         <source>More than one port type named '{0}' was specified. Each port type must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 포트 종류가 두 개 이상 지정되었습니다. 각 포트 종류는 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one port type named '{0}' was specified. Each port type must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateService">
         <source>More than one service named '{0}' was specified. Each service must have a unique name.</source>
-        <target state="translated">이름이 '{0}'인 서비스가 두 개 이상 지정되었습니다. 각 서비스는 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one service named '{0}' was specified. Each service must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateUnknownElement">
         <source>More than one {0} named '{1}' was specified. Each {0} must have a unique name.</source>
-        <target state="translated">이름이 '{1}'인 {0}이(가) 두 개 이상 지정되었습니다. 각 {0}은(는) 고유한 이름을 가져야 합니다.</target>
+        <target state="new">More than one {0} named '{1}' was specified. Each {0} must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebNegativeValue">
         <source>The value for '{0}' cannot be negative.</source>
-        <target state="translated">'{0}'의 값은 음수일 수 없습니다.</target>
+        <target state="new">The value for '{0}' cannot be negative.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlInstanceValidation">
         <source>Warning: {0}</source>
-        <target state="translated">경고: {0}</target>
+        <target state="new">Warning: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlInstanceValidationDetails">
         <source>Warning: {0} Line {1}, position {2}.</source>
-        <target state="translated">경고: {0} 줄 {1}, 위치 {2}.</target>
+        <target state="new">Warning: {0} Line {1}, position {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlLang">
         <source>en</source>
-        <target state="translated">ko</target>
+        <target state="new">en</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchema">
         <source>Schema with targetNamespace='{0}' has invalid syntax. {1}</source>
-        <target state="translated">targetNamespace='{0}'인 스키마의 구문이 잘못되었습니다. {1}</target>
+        <target state="new">Schema with targetNamespace='{0}' has invalid syntax. {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaAttributeReference">
         <source>Attribute reference '{0}' declared in schema type '{1}' from namespace '{2}'.</source>
-        <target state="translated">네임스페이스 '{2}'의 스키마 형식 '{1}'에서 특성 참조 '{0}'이(가) 선언되었습니다.</target>
+        <target state="new">Attribute reference '{0}' declared in schema type '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaContentDef">
         <source>Check content definition of schema type '{0}' from namespace '{1}'. {2}</source>
-        <target state="translated">네임스페이스 '{1}'에서 스키마 형식 '{0}'의 콘텐츠 정의를 확인하세요. {2}</target>
+        <target state="new">Check content definition of schema type '{0}' from namespace '{1}'. {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaElementReference">
         <source>Element reference '{0}' declared in schema type '{1}' from namespace '{2}'.</source>
-        <target state="translated">네임스페이스 '{2}'의 스키마 테이블 '{1}'에서 요소 참조 '{0}'이(가) 선언되었습니다.</target>
+        <target state="new">Element reference '{0}' declared in schema type '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaItem">
         <source>Schema item '{1}' from namespace '{0}'. {2}</source>
-        <target state="translated">네임스페이스 '{0}'의 스키마 항목 '{1}'입니다. {2}</target>
+        <target state="new">Schema item '{1}' from namespace '{0}'. {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaNamedItem">
         <source>Schema item '{1}' named '{2}' from namespace '{0}' is invalid. {3}</source>
-        <target state="translated">네임스페이스 '{0}'의 '{2}'(이)라는 스키마 항목 '{1}'이(가) 잘못되었습니다. {3}</target>
+        <target state="new">Schema item '{1}' named '{2}' from namespace '{0}' is invalid. {3}</target>
         <note />
       </trans-unit>
     </body>
