@@ -2,19 +2,9 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../Strings.resx">
     <body>
-      <trans-unit id="ActivityProcessAction">
-        <source>Process action '{0}'.</source>
-        <target state="translated">Processar a ação '{0}'.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
         <target state="translated">Os cenários principais do portador não devem incluir um token de prova ou entropia do emissor na resposta.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CannotDetermineSPNBasedOnAddress">
-        <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">O cliente não pode determinar o Nome Principal de Serviço com base na identidade presente no endereço de destino '{0}' destinado a SspiNegotiation/Kerberos. A identidade do endereço de destino deve ser uma identidade UPN (como acmedomain\alice) ou uma identidade SPN (como host/bobs-machine).</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
@@ -57,11 +47,6 @@
         <target state="translated">O IRequestChannel deve estar no estado criado. Era: '{0}'.</target>
         <note />
       </trans-unit>
-      <trans-unit id="InsufficentMemory">
-        <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">Memória insuficiente disponível para concluir a operação.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="IssuedSecurityTokenParametersIncorrectType">
         <source>tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</source>
         <target state="translated">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; deve ser do tipo: WSTrustTokenParameters. Era: '{0}.</target>
@@ -102,11 +87,6 @@
         <target state="translated">Não há suporte para o RequestType '{0}'.</target>
         <note />
       </trans-unit>
-      <trans-unit id="SFxTimeoutOutOfRange0">
-        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">O tempo limite deve ser maior ou igual a TimeSpan.Zero. Para desabilitar o tempo limite, especifique TimeSpan.MaxValue.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
         <target state="translated">O servidor '{0}' retornou uma falha indicando que ele está desligando. Consulte a exceção interna para obter os detalhes da falha.</target>
@@ -125,11 +105,6 @@
       <trans-unit id="UseKeysAreNotSupported">
         <source>UseKeys are not supported</source>
         <target state="translated">Não há suporte para UseKeys</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ValueMustBePositive">
-        <source>The value of this argument must be positive.</source>
-        <target state="translated">O valor deste argumento deve ser positivo.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsTrustVersionNotSupported">
