@@ -2879,7 +2879,7 @@
       </trans-unit>
       <trans-unit id="SFxKnownTypeAttributeReturnType3">
         <source>The return type of method {1} in type {2} must be IEnumerable&lt;Type&gt; to be used by ServiceKnownTypeAttribute in {0}</source>
-        <target state="new">The return type of method {1} in type {2} must be IEnumerable&lt;Type&gt; to be used by ServiceKnownTypeAttribute in {0}</target>
+        <target state="translated">型 {2} のメソッド {1} の戻り値の型は、{0} の ServiceKnownTypeAttribute で使用できるように、IEnumerable&lt;型&gt; の形式である必要があります</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxKnownTypeAttributeUnknownMethod3">

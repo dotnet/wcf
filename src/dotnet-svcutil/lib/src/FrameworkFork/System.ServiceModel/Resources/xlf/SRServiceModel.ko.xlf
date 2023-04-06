@@ -404,7 +404,7 @@
       </trans-unit>
       <trans-unit id="ChildNodeTypeMissing">
         <source>The XML element {0} does not have a child of type {1}.</source>
-        <target state="new">The XML element {0} does not have a child of type {1}.</target>
+        <target state="translated">XML 요소 {0}에 {1} 형식의 자식 항목이 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClaimTypeCannotBeEmpty">
@@ -719,12 +719,12 @@
       </trans-unit>
       <trans-unit id="ElementFound">
         <source>The {0}:{1} element requires a {2}:{3} child element but has the {4} child element under the {5} namespace.</source>
-        <target state="new">The {0}:{1} element requires a {2}:{3} child element but has the {4} child element under the {5} namespace.</target>
+        <target state="translated">{0}:{1} 요소에는 {2}:{3} 자식 요소가 필요하지만 {5} 네임스페이스 아래의 {4} 자식 요소가 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ElementRequired">
         <source>The {0}:{1} element requires a {2}:{3} child element but has no child elements.</source>
-        <target state="new">The {0}:{1} element requires a {2}:{3} child element but has no child elements.</target>
+        <target state="translated">{0}:{1} 요소에는 {2}:{3} 자식 요소가 필요하지만 자식 요소가 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EmptyBase64Attribute">
@@ -2494,7 +2494,7 @@
       </trans-unit>
       <trans-unit id="SFxDocExt_NoMetadataSection1">
         <source>This is a Windows&amp;#169; Communication Foundation service.&lt;BR/&gt;&lt;BR/&gt;&lt;B&gt;Metadata publishing for this service is currently disabled.&lt;/B&gt;&lt;BR/&gt;&lt;BR/&gt;If you have access to the service, you can enable metadata publishing by completing the following steps to modify your web or application configuration file:&lt;BR/&gt;&lt;BR/&gt;1. Create the following service behavior configuration, or add the &amp;lt;serviceMetadata&amp;gt; element to an existing service behavior configuration:</source>
-        <target state="new">This is a Windows&amp;#169; Communication Foundation service.&lt;BR/&gt;&lt;BR/&gt;&lt;B&gt;Metadata publishing for this service is currently disabled.&lt;/B&gt;&lt;BR/&gt;&lt;BR/&gt;If you have access to the service, you can enable metadata publishing by completing the following steps to modify your web or application configuration file:&lt;BR/&gt;&lt;BR/&gt;1. Create the following service behavior configuration, or add the &amp;lt;serviceMetadata&amp;gt; element to an existing service behavior configuration:</target>
+        <target state="translated">Windows&amp;#169; Communication Foundation 서비스입니다.&lt;BR/&gt;&lt;BR/&gt;&lt;B&gt;이 서비스에 대한 메타데이터 게시는 현재 사용할 수 없습니다.&lt;/B&gt;&lt;BR/&gt;&lt;BR/&gt;서비스에 액세스할 수 있으면 다음 단계를 완료하여 웹 또는 애플리케이션 구성 파일을 수정함으로써 메타데이터 게시를 사용할 수 있습니다.&lt;BR/&gt;&lt;BR/&gt;1. 다음 서비스 동작 구성을 만들거나, &amp;lt;serviceMetadata&amp;gt; 요소를 기존 서비스 동작 구성에 추가합니다:</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxDocExt_NoMetadataSection2">
@@ -3984,7 +3984,7 @@
       </trans-unit>
       <trans-unit id="UnexpectedXmlChildNode">
         <source>XML child node {0} of type {1} is unexpected for element {2}.</source>
-        <target state="new">XML child node {0} of type {1} is unexpected for element {2}.</target>
+        <target state="translated">{1} 형식의 XML 자식 노드 {0}은(는) 요소 {2}에 대해 예기치 않은 자식 노드입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnknownComputedKeyAlgorithm">
