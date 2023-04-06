@@ -27,6 +27,11 @@
         <target state="translated">Il valore '{0}' della codifica dei messaggi non è supportato. Deve essere '{1}'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">La versione '{0}' della codifica dei messaggi MTOM non è supportata. Deve essere '{1}', '{2}', '{3}' o '{4}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">La sessione affidabile non è supportata.</target>
@@ -417,6 +422,11 @@ Identificatore di documento: '{0}'.</target>
         <target state="translated">Generazione dei file...</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">Accettare il certificato remoto come attendibile durante il download dei metadati del servizio. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">Seleziona automaticamente il serializzatore. Prova a usare il serializzatore di contratti di dati e usa XmlSerializer se l'operazione non riesce. Forma breve: -{0}</target>
@@ -524,12 +534,12 @@ Identificatore di documento: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="new">&lt;metadata document path&gt;</target>
+        <target state="translated">&lt;percorso del documento di metadati&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
         <source>&lt;url&gt;</source>
-        <target state="new">&lt;url&gt;</target>
+        <target state="translated">&lt;URL&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInternalFormat">
@@ -672,7 +682,7 @@ Se si stava provando a creare un client, il problema può dipendere dal fatto ch
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;tipo&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -682,7 +692,7 @@ Se si stava provando a creare un client, il problema può dipendere dal fatto ch
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;tipo&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
@@ -702,17 +712,17 @@ Se si stava provando a creare un client, il problema può dipendere dal fatto ch
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="new">&lt;project file&gt;</target>
+        <target state="translated">&lt;file di progetto&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;package&gt;</source>
-        <target state="new">&lt;package&gt;</target>
+        <target state="translated">&lt;pacchetto&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="new">&lt;runtime identifier&gt;</target>
+        <target state="translated">&lt;identificatore di runtime&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
@@ -722,12 +732,12 @@ Se si stava provando a creare un client, il problema può dipendere dal fatto ch
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="new">&lt;verbosity level&gt;</target>
+        <target state="translated">&lt;livello di dettaglio&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="new">&lt;web service reference&gt;</target>
+        <target state="translated">&lt;riferimento al servizio Web&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">

@@ -27,6 +27,11 @@
         <target state="translated">Desteklenmeyen ileti kodlaması değeri: '{0}'. '{1}' olmalıdır.</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">Desteklenmeyen MTOM mesajı kodlama sürümü: '{0}'. '{1}' veya '{2}' veya '{3}' veya '{4}' olmalıdır.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">Güvenilir oturum desteklenmiyor.</target>
@@ -417,6 +422,11 @@ Belge Tanımlayıcısı: '{0}'.</target>
         <target state="translated">Dosyalar oluşturuluyor...</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">Hizmet meta verilerini indirirken uzak sertifikayı güvenilir olarak kabul edin. (Kısa form: - {0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">Serileştiriciyi otomatik olarak seç. Bu, Veri Anlaşması serileştiricisini kullanır ve bu serileştiricinin başarısız olması durumunda XmlSerializer'ı kullanır. (Kısa Biçim: -{0})</target>
@@ -524,7 +534,7 @@ Belge Tanımlayıcısı: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="new">&lt;metadata document path&gt;</target>
+        <target state="translated">&lt;meta veri belgesinin yolu&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
@@ -672,7 +682,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;tür&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -682,7 +692,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;tür&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
@@ -702,27 +712,27 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="new">&lt;project file&gt;</target>
+        <target state="translated">&lt;proje dosyası&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;package&gt;</source>
-        <target state="new">&lt;package&gt;</target>
+        <target state="translated">&lt;paket&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="new">&lt;runtime identifier&gt;</target>
+        <target state="translated">&lt;çalışma zamanı tanımlayıcısı&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
         <source>&lt;framework&gt;</source>
-        <target state="new">&lt;framework&gt;</target>
+        <target state="translated">&lt;çerçeve&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="new">&lt;verbosity level&gt;</target>
+        <target state="translated">&lt;ayrıntı düzeyi&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">

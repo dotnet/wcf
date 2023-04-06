@@ -27,6 +27,11 @@
         <target state="translated">不支持消息编码值:“{0}”。它必须是“{1}”。</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">不支持 MTOM 消息编码版本:“{0}”。它必须是“{1}”、“{2}”、“{3}”、或“{4}”。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">不支持可靠会话。</target>
@@ -417,6 +422,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">正在生成文件...</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">下载服务元数据时接受受信任的远程证书。(短格式: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">自动选择序列化程序。此选项先尝试使用数据协定序列化程序，如果失败，再尝试使用 XmlSerializer。(缩写: -{0})</target>
@@ -672,7 +682,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;类型&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -682,7 +692,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;类型&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">

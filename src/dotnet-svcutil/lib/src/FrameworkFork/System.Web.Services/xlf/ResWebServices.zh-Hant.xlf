@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="XmlLang">
         <source>en</source>
-        <target state="new">en</target>
+        <target state="translated">zh-Hant</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchema">

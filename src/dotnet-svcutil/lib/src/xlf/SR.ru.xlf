@@ -27,6 +27,11 @@
         <target state="translated">Неподдерживаемое значение кодирования сообщения: "{0}". Должно быть "{1}".</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">Неподдерживаемая версия кодирования текстовых сообщений MTOM: "{0}". Должна быть "{1}", "{2}", "{3}" или "{4}".</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">Надежный сеанс не поддерживается.</target>
@@ -417,6 +422,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">Создание файлов...</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">Принимать удаленный сертификат как доверенный при загрузке метаданных службы. (Краткая форма: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">Автоматический выбор сериализатора. Будет предпринята попытка использовать сериализатор контрактов данных, а в случае его отказа — сериализатор XmlSerializer. (Краткая форма: /{0})</target>
@@ -524,12 +534,12 @@ Document Identifier: '{0}'.</source>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="new">&lt;metadata document path&gt;</target>
+        <target state="translated">&lt;путь к документу метаданных&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
         <source>&lt;url&gt;</source>
-        <target state="new">&lt;url&gt;</target>
+        <target state="translated">&lt;URL-адрес&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInternalFormat">
@@ -672,7 +682,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;тип&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -682,7 +692,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;тип&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
@@ -702,32 +712,32 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="new">&lt;project file&gt;</target>
+        <target state="translated">&lt;файл проекта&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;package&gt;</source>
-        <target state="new">&lt;package&gt;</target>
+        <target state="translated">&lt;пакет&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="new">&lt;runtime identifier&gt;</target>
+        <target state="translated">&lt;идентификатор среды выполнения&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
         <source>&lt;framework&gt;</source>
-        <target state="new">&lt;framework&gt;</target>
+        <target state="translated">&lt;платформа&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="new">&lt;verbosity level&gt;</target>
+        <target state="translated">&lt;уровень детализации&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="new">&lt;web service reference&gt;</target>
+        <target state="translated">&lt;ссылка на веб-службу&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
