@@ -4,137 +4,137 @@
     <body>
       <trans-unit id="MissingMessagePartForMessageFromNamespace3">
         <source>Missing message part '{0}' for message '{1}' from namespace '{2}'.</source>
-        <target state="new">Missing message part '{0}' for message '{1}' from namespace '{2}'.</target>
+        <target state="translated">네임스페이스 '{2}'에서 '{1}' 메시지에 대한 메시지 부분 '{0}'이(가) 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyOperationInputOrOperationOutputTypes">
         <source>Only objects of type OperationInput or OperationOutput may be added.</source>
-        <target state="new">Only objects of type OperationInput or OperationOutput may be added.</target>
+        <target state="translated">OperationInput 또는 OperationOutput 형식의 개체만 추가할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyXmlElementsOrTypesDerivingFromServiceDescriptionFormatExtension0">
         <source>Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</source>
-        <target state="new">Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</target>
+        <target state="translated">XmlElements 또는 ServiceDescriptionFormatExtension에서 파생되는 형식만 추가할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequiredXmlFormatExtensionAttributeIsMissing1">
         <source>Required XmlFormatExtension attribute is missing on class {0}.</source>
-        <target state="new">Required XmlFormatExtension attribute is missing on class {0}.</target>
+        <target state="translated">필요한 XmlFormatExtension 특성이 {0} 클래스에 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="TheSyntaxOfTypeMayNotBeExtended1">
         <source>The syntax of type {0} may not be extended.</source>
-        <target state="new">The syntax of type {0} may not be extended.</target>
+        <target state="translated">{0} 형식의 구문을 확장할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceExceptionCaught">
         <source>Exception caught in {0}.\r\n    {1}: {2}</source>
-        <target state="new">Exception caught in {0}.\r\n    {1}: {2}</target>
+        <target state="translated">{0}에서 예외가 발생했습니다.\r\n    {1}: {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceExceptionDetails">
         <source>Exception Details:\r\n{0}</source>
-        <target state="new">Exception Details:\r\n{0}</target>
+        <target state="translated">예외 세부 정보:\r\n{0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissing">
         <source>Cannot find definition for {0}.  Service Description with namespace {1} is missing.</source>
-        <target state="new">Cannot find definition for {0}.  Service Description with namespace {1} is missing.</target>
+        <target state="translated">{0}에 대한 정의를 찾을 수 없습니다. 네임스페이스가 {1}인 서비스 정의가 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissingItem">
         <source>Element {0} named {1} from namespace {2} is missing.</source>
-        <target state="new">Element {0} named {1} from namespace {2} is missing.</target>
+        <target state="translated">네임스페이스 {2}에 이름이 {1}인 {0} 요소가 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionTooManyMessages">
         <source>No more than one input and one output message may be specified.</source>
-        <target state="new">No more than one input and one output message may be specified.</target>
+        <target state="translated">입력/출력 메시지를 하나씩만 지정할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateBinding">
         <source>More than one binding named '{0}' was specified. Each binding must have a unique name.</source>
-        <target state="new">More than one binding named '{0}' was specified. Each binding must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 바인딩이 두 개 이상 지정되었습니다. 각 바인딩은 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFaultBinding">
         <source>More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</source>
-        <target state="new">More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 오류 바인딩이 두 개 이상 지정되었습니다. 각 오류 바인딩은 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFormatExtension">
         <source>More than one format extension named '{0}' was specified. Each format extension must have a unique name.</source>
-        <target state="new">More than one format extension named '{0}' was specified. Each format extension must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 형식 확장이 두 개 이상 지정되었습니다. 각 형식 확장은 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateImport">
         <source>More than one import named '{0}' was specified. Each import must have a unique name.</source>
-        <target state="new">More than one import named '{0}' was specified. Each import must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 가져오기가 두 개 이상 지정되었습니다. 각 가져오기는 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessage">
         <source>More than one message named '{0}' was specified. Each message must have a unique name.</source>
-        <target state="new">More than one message named '{0}' was specified. Each message must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 메시지가 두 개 이상 지정되었습니다. 각 메시지는 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessagePart">
         <source>More than one message part named '{0}' was specified. Each message part must have a unique name.</source>
-        <target state="new">More than one message part named '{0}' was specified. Each message part must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 메시지 부분이 두 개 이상 지정되었습니다. 각 메시지 부분은 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperation">
         <source>More than one operation named '{0}' was specified. Each operation must have a unique name.</source>
-        <target state="new">More than one operation named '{0}' was specified. Each operation must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 작업이 두 개 이상 지정되었습니다. 각 작업은 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationBinding">
         <source>More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</source>
-        <target state="new">More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 작업 바인딩이 두 개 이상 지정되었습니다. 각 작업 바인딩은 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationFault">
         <source>More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</source>
-        <target state="new">More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 작업 오류가 두 개 이상 지정되었습니다. 각 작업 오류는 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationMessage">
         <source>More than one operation message named '{0}' was specified. Each operation message must have a unique name.</source>
-        <target state="new">More than one operation message named '{0}' was specified. Each operation message must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 작업 메시지가 두 개 이상 지정되었습니다. 각 작업 메시지는 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePort">
         <source>More than one port named '{0}' was specified. Each port must have a unique name.</source>
-        <target state="new">More than one port named '{0}' was specified. Each port must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 포트가 두 개 이상 지정되었습니다. 각 포트는 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePortType">
         <source>More than one port type named '{0}' was specified. Each port type must have a unique name.</source>
-        <target state="new">More than one port type named '{0}' was specified. Each port type must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 포트 종류가 두 개 이상 지정되었습니다. 각 포트 종류는 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateService">
         <source>More than one service named '{0}' was specified. Each service must have a unique name.</source>
-        <target state="new">More than one service named '{0}' was specified. Each service must have a unique name.</target>
+        <target state="translated">이름이 '{0}'인 서비스가 두 개 이상 지정되었습니다. 각 서비스는 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateServiceDescription">
         <source>More than one service description with targetNamespace '{0}' was specified.</source>
-        <target state="new">More than one service description with targetNamespace '{0}' was specified.</target>
+        <target state="translated">targetNamespace가 '{0}'인 서비스 설명을 두 개 이상 지정했습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateUnknownElement">
         <source>More than one {0} named '{1}' was specified. Each {0} must have a unique name.</source>
-        <target state="new">More than one {0} named '{1}' was specified. Each {0} must have a unique name.</target>
+        <target state="translated">이름이 '{1}'인 {0}이(가) 두 개 이상 지정되었습니다. 각 {0}은(는) 고유한 이름을 가져야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebNegativeValue">
         <source>The value for '{0}' cannot be negative.</source>
-        <target state="new">The value for '{0}' cannot be negative.</target>
+        <target state="translated">'{0}'의 값은 음수일 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebUnknownElement">
         <source>The element was not expected in this context: {0}.</source>
-        <target state="new">The element was not expected in this context: {0}.</target>
+        <target state="translated">이 {0} 컨텍스트에서는 요소가 필요하지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebUnknownElement1">
@@ -144,12 +144,12 @@
       </trans-unit>
       <trans-unit id="WebUnknownElement2">
         <source>The element was not expected in this context: {0}. Expected elements: {1}.</source>
-        <target state="new">The element was not expected in this context: {0}. Expected elements: {1}.</target>
+        <target state="translated">이 {0} 컨텍스트에서는 요소가 필요하지 않습니다. 필요한 요소는 {1}입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlInstanceValidationDetails">
         <source>Warning: {0} Line {1}, position {2}.</source>
-        <target state="new">Warning: {0} Line {1}, position {2}.</target>
+        <target state="translated">경고: {0} 줄 {1}, 위치 {2}.</target>
         <note />
       </trans-unit>
     </body>

@@ -4,112 +4,112 @@
     <body>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
-        <target state="new">Bearer key scenarios should not include a proof token or issuer entropy in the response.</target>
+        <target state="translated">전달자 키 시나리오는 응답에 증명 토큰 또는 발급자 엔트로피를 포함하지 않아야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
         <source>ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</source>
-        <target state="new">ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</target>
+        <target state="translated">ChannelFactory는 'System.ServiceModel.Channels.IRequestChannel' 인터페이스를 지원해야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
+        <target state="translated">통신 개체 {0}이(가) {1} 상태입니다. 통신 개체는 열림 상태가 아닌 경우 통신에 사용할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
+        <target state="translated">통신 개체 {0}은(는) Faulted 상태이기 때문에 통신에 사용할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensAreOnlySupportedWithSymmetricKeyTypes">
         <source>Computed key proof tokens are only supported with symmetric key types.</source>
-        <target state="new">Computed key proof tokens are only supported with symmetric key types.</target>
+        <target state="translated">계산 키 증명 토큰은 대칭 키 유형에서만 지원됩니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensRequireIssuerToSupplyKeyMaterialViaEntropy">
         <source>Computed key proof tokens require issuer to supply key material via entropy.</source>
-        <target state="new">Computed key proof tokens require issuer to supply key material via entropy.</target>
+        <target state="translated">계산 키 증명 토큰은 발급자가 엔트로피를 통해 키 자료를 제공해야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensRequireRequesterToSupplyKeyMaterialViaEntropy">
         <source>Computed key proof tokens require requester to supply key material via entropy.</source>
-        <target state="new">Computed key proof tokens require requester to supply key material via entropy.</target>
+        <target state="translated">계산 키 증명 토큰은 요청자가 엔트로피를 통해 키 자료를 제공해야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EncryptedKeysForProofTokensNotSupported">
         <source>Encrypted keys for proof tokens are not supported.</source>
-        <target state="new">Encrypted keys for proof tokens are not supported.</target>
+        <target state="translated">증명 토큰에 대한 암호화된 키는 지원되지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="IRequestChannelMustBeCreated">
         <source>The IRequestChannel must be in the created state. Was: '{0}'.</source>
-        <target state="new">The IRequestChannel must be in the created state. Was: '{0}'.</target>
+        <target state="translated">IRequestChannel은 생성된 상태여야 합니다. 이전: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedSecurityTokenParametersIncorrectType">
         <source>tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</source>
-        <target state="new">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</target>
+        <target state="translated">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt;는 WSTrustTokenParameters 유형이어야 합니다. 이전: '{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedTokenRenewalThresholdPercentageIncorrect">
         <source>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</source>
-        <target state="new">IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</target>
+        <target state="translated">IssuedTokenRenewalThresholdPercentage는 1보다 크거나 같고 100보다 작거나 같아야 합니다. 이전: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">
         <source>MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</source>
-        <target state="new">MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</target>
+        <target state="translated">MaxIssuedTokenCachingTime은 TimeSpan.Zero보다 커야 합니다. 이전: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeySizeProvided">
         <source>No key size provided.</source>
-        <target state="new">No key size provided.</target>
+        <target state="translated">키 크기가 제공되지 않았습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyPSHA1ComputedKeysAreSupported">
         <source>Only PSHA1 computed keys are supported.</source>
-        <target state="new">Only PSHA1 computed keys are supported.</target>
+        <target state="translated">PSHA1 계산 키만 지원됩니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProtectedKeyEntropyIsNotSupported">
         <source>Protected key entropy is not supported.</source>
-        <target state="new">Protected key entropy is not supported.</target>
+        <target state="translated">보호된 키 엔트로피는 지원되지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="RSTRProofTokenShouldNotHaveAComputedKeyAlgorithmOrIssuerEntropy">
         <source>An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</source>
-        <target state="new">An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</target>
+        <target state="translated">증명 토큰을 포함하는 RSTR에는 계산 키 알고리즘이나 발급자 엔트로피도 없어야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestTypeNotSupported">
         <source>The RequestType '{0}', is not supported.</source>
-        <target state="new">The RequestType '{0}', is not supported.</target>
+        <target state="translated">RequestType '{0}'은(는) 지원되지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
+        <target state="translated">종료하는 중이라는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 자세한 오류 내용은 내부 예외를 참조하십시오.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
+        <target state="translated">사용 중이어서 요청을 처리할 수 없다는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 나중에 다시 시도하세요. 자세한 오류 내용은 내부 예외를 참조하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToGetToken">
         <source>The token provider '{0}' was unable to provide a security token.</source>
-        <target state="new">The token provider '{0}' was unable to provide a security token.</target>
+        <target state="translated">토큰 공급자 '{0}'에서 보안 토큰을 제공하지 못했습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UseKeysAreNotSupported">
         <source>UseKeys are not supported</source>
-        <target state="new">UseKeys are not supported</target>
+        <target state="translated">UseKeys는 지원되지 않습니다</target>
         <note />
       </trans-unit>
       <trans-unit id="WsTrustVersionNotSupported">
         <source>The WsTrust wersion '{0}' is not supported.</source>
-        <target state="new">The WsTrust wersion '{0}' is not supported.</target>
+        <target state="translated">WsTrust 버전 '{0}'은(는) 지원되지 않습니다.</target>
         <note />
       </trans-unit>
     </body>
