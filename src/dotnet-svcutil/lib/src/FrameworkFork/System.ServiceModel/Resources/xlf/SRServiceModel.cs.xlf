@@ -2099,7 +2099,7 @@
       </trans-unit>
       <trans-unit id="SFxBadMetadataDialect">
         <source>There was a problem reading the MetadataSet argument: a MetadataSection instance with identifier '{0}' and dialect '{1}' has a Metadata property whose type does not match the dialect. The expected Metadata type for this dialect is '{2}' but was found to be '{3}'.</source>
-        <target state="translated">Při čtení argumentu MetadataSet došlo k potížím: instance MetadataSection s identifikátorem {0} a dialektem {1} má vlastnost metadat, jejíž typ neodpovídá dialektu. Očekávaný typ metadat pro tento dialekt je {2}, ale bylo zjištěno, že je {3}.</target>
+        <target state="new">There was a problem reading the MetadataSet argument: a MetadataSection instance with identifier '{0}' and dialect '{1}' has a Metadata property whose type does not match the dialect. The expected Metadata type for this dialect is '{2}' but was found to be '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBadMetadataLocationNoAppropriateBaseAddress">
@@ -2914,7 +2914,7 @@
       </trans-unit>
       <trans-unit id="SFxMetadataExchangeClientCouldNotCreateChannelFactory">
         <source>The MetadataExchangeClient could not create an IChannelFactory for: address='{0}', dialect='{1}', and  identifier='{2}'. </source>
-        <target state="translated">Třída MetadataExchangeClient nemohla vytvořit třídu IChannelFactory pro: adresa={0}, dialekt={1} a identifikátor={2}. </target>
+        <target state="new">The MetadataExchangeClient could not create an IChannelFactory for: address='{0}', dialect='{1}', and  identifier='{2}'. </target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMetadataExchangeClientCouldNotCreateChannelFactoryBadScheme">
@@ -2924,7 +2924,7 @@
       </trans-unit>
       <trans-unit id="SFxMetadataExchangeClientCouldNotCreateWebRequest">
         <source>The MetadataExchangeClient could not create an HttpWebRequest for: address='{0}', dialect='{1}', and  identifier='{2}'. </source>
-        <target state="translated">Třída MetadataExchangeClient nemohla vytvořit třídu HttpWebRequest pro: adresa={0}, dialekt={1} a identifikátor={2}. </target>
+        <target state="new">The MetadataExchangeClient could not create an HttpWebRequest for: address='{0}', dialect='{1}', and  identifier='{2}'. </target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMetadataExchangeClientNoMetadataAddress">

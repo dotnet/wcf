@@ -3649,7 +3649,7 @@
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Parameters5">
         <source>The task-based asynchronous OperationContract method '{0}' in type '{1}' was matched with the asynchronous OperationContract methods '{2}' and '{3}' because they have the same operation name '{4}'. When a task-based asynchronous OperationContract method is matched to a pair of asynchronous OperationContract methods, the two OperationContracts must define the same number and types of parameters. In this case, some of the arguments are different. To fix it, ensure that the OperationContracts define the same number and types of arguments, in the same order. Alternatively, changing the name of one of the methods will prevent matching.</source>
-        <target state="translated">El método "{0}" OperationContract asincrónico basado en tareas en el tipo "{1}" coincide con los métodos "{2}" y "{3}" OperationContract asincrónicos porque tiene el mismo nombre de operación "{4}". Cuando un método OperationContract asincrónico basado en tareas coincide con un par de métodos OperationContract asincrónicos, los dos métodos OperationContracts deben definir el mismo número y tipos de parámetros. En este caso, algunos de los argumentos son diferentes. Para solucionarlo, asegúrese de que OperationContracts define el mismo número y tipos de argumentos y en el mismo orden. También puede cambiar el nombre de uno de los métodos para evitar que coincidan.</target>
+        <target state="translated">El método '{0}' OperationContract asincrónico basado en tareas en el tipo '{1}' coincide con los métodos '{2}' y '{3}' OperationContract asincrónicos porque tiene el mismo nombre de operación '{4}'. Cuando un método OperationContract asincrónico basado en tareas coincide con un par de métodos OperationContract asincrónicos, los dos métodos OperationContracts deben definir el mismo número y tipos de parámetros. En este caso, algunos de los argumentos son diferentes. Para solucionarlo, asegúrese de que OperationContracts define el mismo número y tipos de argumentos y en el mismo orden. También puede cambiar el nombre de uno de los métodos para evitar que coincidan.</target>
         <note />
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Property6">
@@ -4099,7 +4099,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedTokenImpersonationLevel">
         <source>The value '{1}' for the '{0}' property is not supported in Windows Store apps.</source>
-        <target state="translated">El valor "{1}" de la propiedad "{0}" no se admite en las aplicaciones de la Tienda Windows.</target>
+        <target state="translated">El valor '{1}' de la propiedad '{0}' no se admite en las aplicaciones de la Tienda Windows.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedUpgradeAcceptor">
@@ -4119,7 +4119,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedWSDLTheFault">
         <source>Unsupported WSDL, the fault message part must reference an element. This fault message does not reference an element. If you have edit access to the WSDL document, you can fix the problem by referencing a schema element using the 'element' attribute.</source>
-        <target state="translated">No se admite WSDL. La parte de mensaje de error debe hacer referencia a un elemento. Este mensaje de error no hace referencia a un elemento. Si tiene acceso de edición al documento WSDL, puede corregir el problema haciendo referencia a un elemento de esquema mediante el atributo "element".</target>
+        <target state="translated">No se admite WSDL. La parte de mensaje de error debe hacer referencia a un elemento. Este mensaje de error no hace referencia a un elemento. Si tiene acceso de edición al documento WSDL, puede corregir el problema haciendo referencia a un elemento de esquema mediante el atributo 'element'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UriGeneratorSchemeMustNotBeEmpty">
