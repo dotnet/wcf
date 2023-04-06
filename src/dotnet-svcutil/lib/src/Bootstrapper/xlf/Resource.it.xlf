@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="BootstrapErrorDisableReferences">
         <source>An error occurred while bootstrapping svcutil. This usually happens when processing references.  You might be able to work around this problem by not providing reference parameters, and manually removing any types redefined in the generated proxy code.</source>
-        <target state="new">An error occurred while bootstrapping svcutil. This usually happens when processing references.  You might be able to work around this problem by not providing reference parameters, and manually removing any types redefined in the generated proxy code.</target>
+        <target state="translated">Si è verificato un errore durante il bootstrap di svcutil. Questo errore si verifica in genere quando vengono elaborati i riferimenti. Per ovviare al problema, provare a non specificare i parametri per riferimento e a rimuovere manualmente tutti i tipi ridefiniti nel codice proxy generato.</target>
         <note />
       </trans-unit>
       <trans-unit id="BootstrappingApplicationMsg">
         <source>Bootstrapping application ...</source>
-        <target state="new">Bootstrapping application ...</target>
+        <target state="translated">Bootstrap dell'applicazione...</target>
         <note />
       </trans-unit>
       <trans-unit id="BuildingProjectMsg">
         <source>Building bootstrapper project ...</source>
-        <target state="new">Building bootstrapper project ...</target>
+        <target state="translated">Compilazione del progetto del programma di bootstrap...</target>
         <note />
       </trans-unit>
       <trans-unit id="CouldNotFindEmbeddedResourceFormat">
         <source>Could not find embedded resource '{0}'</source>
-        <target state="new">Could not find embedded resource '{0}'</target>
+        <target state="translated">La risorsa incorporata '{0}' non è stata trovata</target>
         <note />
       </trans-unit>
       <trans-unit id="CreatingProjectMsg">
         <source>Creating bootstrapper project ...</source>
-        <target state="new">Creating bootstrapper project ...</target>
+        <target state="translated">Creazione del progetto del programma di bootstrap...</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotFindNuGetPackageFormat">
         <source>Unable to locate NuGet package '{0}'.</source>
-        <target state="new">Unable to locate NuGet package '{0}'.</target>
+        <target state="translated">Non è possibile individuare il pacchetto NuGet '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvokingProjectMsg">
         <source>Invoking bootstrapper ...</source>
-        <target state="new">Invoking bootstrapper ...</target>
+        <target state="translated">Richiamo del programma di bootstrap...</target>
         <note />
       </trans-unit>
       <trans-unit id="RestoringNuGetPackagesMsg">
         <source>Restoring NuGet packages for bootstrapper project ...</source>
-        <target state="new">Restoring NuGet packages for bootstrapper project ...</target>
+        <target state="translated">Ripristino dei pacchetti NuGet per il progetto del programma di bootstrap...</target>
         <note />
       </trans-unit>
       <trans-unit id="TypesReuseDisabled">
         <source>Reusing types in referenced assemblies has been disabled.</source>
-        <target state="new">Reusing types in referenced assemblies has been disabled.</target>
+        <target state="translated">Il riutilizzo di tipi in assembly di riferimento è stato disabilitato.</target>
         <note />
       </trans-unit>
     </body>
