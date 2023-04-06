@@ -27,11 +27,6 @@
         <target state="translated">不支援的訊息編碼值: '{0}'。其必須是 '{1}'。</target>
         <note />
       </trans-unit>
-      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
-        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">不支援的 MTOM 訊息編碼版本: '{0}'。其必須是 '{1}'、'{2}'、'{3}' 或 '{4}'。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">不支援可靠工作階段。</target>
@@ -420,11 +415,6 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
         <target state="translated">正在產生檔案...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HelpAcceptCertificateFormat">
-        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">下載服務中繼資料時，接受受信任的遠端憑證。(短形式: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">

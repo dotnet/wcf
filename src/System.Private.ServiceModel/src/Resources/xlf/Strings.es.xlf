@@ -649,7 +649,7 @@
       </trans-unit>
       <trans-unit id="DelayedSecurityApplicationAlreadyCompleted">
         <source>Delayed security application has already been completed.</source>
-        <target state="new">Delayed security application has already been completed.</target>
+        <target state="translated">La solicitud de seguridad retrasada ya ha sido completada..</target>
         <note />
       </trans-unit>
       <trans-unit id="DelegatingHandlerArrayFromFuncContainsNullItem">

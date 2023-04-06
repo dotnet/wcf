@@ -27,11 +27,6 @@
         <target state="translated">Nepodporovaná hodnota kódování zprávy: {0}. Hodnota musí být {1}.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
-        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">Nepodporovaná verze kódování MTOM zprávy: {0}. Verze musí být {1}, {2}, {3} nebo {4}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">Spolehlivá relace není podporována.</target>
@@ -422,11 +417,6 @@ Identifikátor dokumentu: {0}</target>
         <target state="translated">Generují se soubory...</target>
         <note />
       </trans-unit>
-      <trans-unit id="HelpAcceptCertificateFormat">
-        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">Při stahování metadat služby přijmout vzdálený certifikát jako důvěryhodný (Krátký tvar: -{0})</target>
-        <note />
-      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">Automatický výběr serializátoru. Tato funkce se pokusí použít serializátor kontraktu dat. Není-li tento pokus úspěšný, je použit XmlSerializer. (Krátký tvar: /{0})</target>
@@ -534,7 +524,7 @@ Identifikátor dokumentu: {0}</target>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="translated">&lt;cesta k dokumentu metadat&gt;</target>
+        <target state="new">&lt;metadata document path&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
@@ -682,7 +672,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;typ&gt;</target>
+        <target state="new">&lt;type&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -692,7 +682,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;typ&gt;</target>
+        <target state="new">&lt;type&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
@@ -712,7 +702,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="translated">&lt;soubor projektu&gt;</target>
+        <target state="new">&lt;project file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
@@ -722,7 +712,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="translated">&lt;identifikátor modulu runtime&gt;</target>
+        <target state="new">&lt;runtime identifier&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
@@ -737,7 +727,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="translated">&lt;odkaz na webovou službu&gt;</target>
+        <target state="new">&lt;web service reference&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
