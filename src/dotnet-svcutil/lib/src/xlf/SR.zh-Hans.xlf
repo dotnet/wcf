@@ -4,637 +4,637 @@
     <body>
       <trans-unit id="BindingBinaryMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported binary message encoding version: '{0}'. It must be '{1}'.</source>
-        <target state="new">Unsupported binary message encoding version: '{0}'. It must be '{1}'.</target>
+        <target state="translated">不支持二进制消息编码版本:“{0}”。它必须是“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingClientCertRequirementNotSupported">
         <source>Client certificate security requirement is not supported.</source>
-        <target state="new">Client certificate security requirement is not supported.</target>
+        <target state="translated">不支持客户端证书安全要求。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingElementTypeNotSupportedFormat">
         <source>Unsupported binding element type: '{0}'.</source>
-        <target state="new">Unsupported binding element type: '{0}'.</target>
+        <target state="translated">不支持绑定元素类型:“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingMessageEncodingElementNotSupportedFormat">
         <source>Unsupported message encoding element type: '{0}'. It must be one of the following types: '{1}', '{2}.'</source>
-        <target state="new">Unsupported message encoding element type: '{0}'. It must be one of the following types: '{1}', '{2}.'</target>
+        <target state="translated">不支持消息编码元素类型:“{0}”。它必须是以下两种类型之一:“{1}”，“{2}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingMessageEncodingNotSupportedFormat">
         <source>Unsupported message encoding value: '{0}'. It must be '{1}'.</source>
-        <target state="new">Unsupported message encoding value: '{0}'. It must be '{1}'.</target>
+        <target state="translated">不支持消息编码值:“{0}”。它必须是“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
-        <target state="new">Reliable session is not supported.</target>
+        <target state="translated">不支持可靠会话。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTextMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported text message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}' or '{5}'.</source>
-        <target state="new">Unsupported text message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}' or '{5}'.</target>
+        <target state="translated">不支持文本消息编码版本:“{0}”。它必须是“{1}”、“{2}”、“{3}”、“{4}”或“{5}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransactionFlowNotSupported">
         <source>Transaction flow is not supported.</source>
-        <target state="new">Transaction flow is not supported.</target>
+        <target state="translated">不支持事务流。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportDetectReplaysNotSupported">
         <source>Transport Security with DetectReplays enabled is not supported.</source>
-        <target state="new">Transport Security with DetectReplays enabled is not supported.</target>
+        <target state="translated">不支持启用了 DetectReplays 的传输安全性。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportMessageSecurityVersionNotSupportedFormat">
         <source>Transport message security version value is not supported: '{0}'. It must be one of the following values: {1}.</source>
-        <target state="new">Transport message security version value is not supported: '{0}'. It must be one of the following values: {1}.</target>
+        <target state="translated">不支持传输消息安全版本值:“{0}”。它必须是以下值之一: {1}。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat">
         <source>Transport default security algorithm suite is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport default security algorithm suite is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">不支持传输默认安全算法套件“{0}”。它必须是“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityElementTypeNotSupportedFormat">
         <source>Transport security element type not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security element type not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">不支持传输安全性元素类型“{0}”。它必须是“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityHeaderLayoutValueNotSupportedFormat">
         <source>Transport security header layout value is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security header layout value is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">不支持传输安全性标头布局值“{0}”。它必须是“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityMustIncludeTimestamp">
         <source>Transport security must include timestamp.</source>
-        <target state="new">Transport security must include timestamp.</target>
+        <target state="translated">传输安全性必须包含时间戳。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenEndorsingParamsTypeFormat">
         <source>Unsupported transport security token endorsing parameters type: '{0}'. It must be '{1}'.</source>
-        <target state="new">Unsupported transport security token endorsing parameters type: '{0}'. It must be '{1}'.</target>
+        <target state="translated">不支持传输安全性令牌认可参数类型:“{0}”。它必须是“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenMustBeOneOfEitherEndorsingOrSignedEncrypted">
         <source>Transport security token must have one and only one type of parameters and it must be either 'Endorsing' or 'SignedEncrypted'.</source>
-        <target state="new">Transport security token must have one and only one type of parameters and it must be either 'Endorsing' or 'SignedEncrypted'.</target>
+        <target state="translated">传输安全性令牌必须有且只有一种类型的参数，它必须为 "Endorsing" 或 "SignedEncrypted"。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsInclusionModeValueNotSupportedFormat">
         <source>Transport security token parameters inclusion mode value is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security token parameters inclusion mode value is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">不支持传输安全性令牌参数包含模式值“{0}”。它必须是“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsReferenceStyleNotSupportedFormat">
         <source>Transport security token parameters reference style is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security token parameters reference style is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">不支持传输安全性令牌参数引用样式“{0}”。它必须是“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsRequiringDerivedKeysNotSupported">
         <source>Security token parameters requiring derived keys is not supported.</source>
-        <target state="new">Security token parameters requiring derived keys is not supported.</target>
+        <target state="translated">不支持需要派生密钥的安全令牌参数。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsTypeNotSupportedFormat">
         <source>Security token parameters type is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Security token parameters type is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">不支持安全令牌参数类型:“{0}”。类型必须是“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenSignedOrSignedEndorsingNotSupported">
         <source>Transport security token with signed or signed and endorsing paramaters is not supported.</source>
-        <target state="new">Transport security token with signed or signed and endorsing paramaters is not supported.</target>
+        <target state="translated">不支持具有已签名或已签名且正在认可的参数的传输安全令牌。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportTypeNotSupportedFormat">
         <source>Unsupported transport type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}'.</source>
-        <target state="new">Unsupported transport type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}'.</target>
+        <target state="translated">不支持的传输类型:“{0}”。必须是以下类型之一:“{1}”、“{2}”、“{3}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTypeNotSupportedFormat">
         <source>Unsupported binding type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}', '{4}' or '{5}'.</source>
-        <target state="new">Unsupported binding type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}', '{4}' or '{5}'.</target>
+        <target state="translated">不支持的绑定类型:“{0}”。必须是以下类型之一:“{1}”、“{2}”、“{3}”、“{4}”或“{5}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateIndexPrompt">
         <source>Please enter the index of the certificate to use or ESC to cancel:</source>
-        <target state="new">Please enter the index of the certificate to use or ESC to cancel:</target>
+        <target state="translated">请输入证书的索引来使用 Esc 进行取消:</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateSelectionMessageFormat">
         <source>The site {0} is asking for a client certificate, a list of possible valid certificates will be presented.</source>
-        <target state="new">The site {0} is asking for a client certificate, a list of possible valid certificates will be presented.</target>
+        <target state="translated">站点 {0} 要求客户端证书，将显示可能的有效证书的列表。</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientCredentialsComment">
         <source>The client credentials</source>
-        <target state="new">The client credentials</target>
+        <target state="translated">客户端凭据</target>
         <note />
       </trans-unit>
       <trans-unit id="CodeExpressionCouldNotFindEndpoint">
         <source>Could not find endpoint with name '{0}'.</source>
-        <target state="new">Could not find endpoint with name '{0}'.</target>
+        <target state="translated">找不到名称为“{0}”的终结点。</target>
         <note>This is not a formatting string (no trailing Format).</note>
       </trans-unit>
       <trans-unit id="ConfigureEndpointCommentSummary">
         <source>Implement this partial method to configure the service endpoint.</source>
-        <target state="new">Implement this partial method to configure the service endpoint.</target>
+        <target state="translated">实现此分部方法，配置服务终结点。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
+        <target state="translated">如果这是你有权访问的 Windows (R) Communication Foundation 服务，请检查是否已启用在指定地址发布元数据。有关启用元数据发布的帮助，请参阅 http://go.microsoft.com/fwlink/?LinkId=65455 上的 MSDN 文档。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterOrEscapeMessage">
         <source>Press the ENTER to accept or ESC to cancel:</source>
-        <target state="new">Press the ENTER to accept or ESC to cancel:</target>
+        <target state="translated">按 Enter 接受，或按 Esc 取消:</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterYesOrNoMessage">
         <source>Invalid answer.  Please enter 'yes' or 'no':</source>
-        <target state="new">Invalid answer.  Please enter 'yes' or 'no':</target>
+        <target state="translated">答案无效。请输入“是”或“否”:</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrArgumentWithoutValue">
         <source>The --{0} option requires a value to be passed, but none was found.</source>
-        <target state="new">The --{0} option requires a value to be passed, but none was found.</target>
+        <target state="translated">--{0} 选项需要传递一个值，但找不到任何值。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrBindingElementNotSupportedFormat">
         <source>Binding element of type '{0}' is not supported.</source>
-        <target state="new">Binding element of type '{0}' is not supported.</target>
+        <target state="translated">不支持类型为“{0}”的绑定元素。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrBindingTypeNotSupportedFormat">
         <source>Binding type '{0}' is not supported.</source>
-        <target state="new">Binding type '{0}' is not supported.</target>
+        <target state="translated">不支持绑定类型“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateDirectoryFormat">
         <source>Cannot create directory: '{0}'.</source>
-        <target state="new">Cannot create directory: '{0}'.</target>
+        <target state="translated">无法创建目录:“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateFileFormat">
         <source>Cannot create output file: '{0}'.</source>
-        <target state="new">Cannot create output file: '{0}'.</target>
+        <target state="translated">无法创建输出文件:“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotDisambiguateSpecifiedTypesFormat">
         <source>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</source>
-        <target state="new">More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</target>
+        <target state="translated">所引用的程序集组中存在多个同名类型。请使用程序集限定的名称来区分类型“{1}”和“{2}”的 --{0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotLoadSpecifiedTypeFormat">
         <source>No type could be loaded for the value '{1}' passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</source>
-        <target state="new">No type could be loaded for the value '{1}' passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</target>
+        <target state="translated">无法为传递给 --{0} 选项的值“{1}”加载任何类型。请确保此类型所属的程序集已通过 --{2} 选项指定。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotWriteFile">
         <source>Cannot write to output file.</source>
-        <target state="new">Cannot write to output file.</target>
+        <target state="translated">无法写入到输出文件。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCodegenError">
         <source>There was an error trying to generate code in the specified language.
 This could be because the language does not support all the code elements being generated. Consider using another language.</source>
-        <target state="new">There was an error trying to generate code in the specified language.
-This could be because the language does not support all the code elements being generated. Consider using another language.</target>
+        <target state="translated">尝试以指定语言生成代码时出错。
+这可能是由于该语言不支持正在生成的所有代码元素。请考虑使用其他语言。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
-        <target state="new">A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</target>
+        <target state="translated">无法为传递给 --{1} 选项的值“{0}”创建代码提供程序。请验证是否正确安装并配置了代码提供程序。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateInstanceFormat">
         <source>Cannot create instance of the type '{0}' passed to the --{1} option.</source>
-        <target state="new">Cannot create instance of the type '{0}' passed to the --{1} option.</target>
+        <target state="translated">无法创建传递给 --{1} 选项的类型“{0}”的实例。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAtFormat">
         <source>Cannot load any types in assembly '{0}'.</source>
-        <target state="new">Cannot load any types in assembly '{0}'.</target>
+        <target state="translated">无法加载程序集“{0}”中的任何类型。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateReferenceValuesFormat">
         <source>The assembly '{1}' was loaded twice through the --{0} option. You may reference each assembly only once.</source>
-        <target state="new">The assembly '{1}' was loaded twice through the --{0} option. You may reference each assembly only once.</target>
+        <target state="translated">通过 --{0} 选项加载了两次程序集“{1}”。每个程序集只能引用一次。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateValuePassedToTypeArgFormat">
         <source>The value '{1}' was passed to the --{0} option multiple times. Each type may be specified only once.</source>
-        <target state="new">The value '{1}' was passed to the --{0} option multiple times. Each type may be specified only once.</target>
+        <target state="translated">多次将值“{1}”传递给了 --{0} 选项。每个类型只能指定一次。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrEncodingNotSupportedFormat">
         <source>Encoding '{0}' is not supported.</source>
-        <target state="new">Encoding '{0}' is not supported.</target>
+        <target state="translated">不支持编码“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrIncompatibleContractSoapEncodingFormat">
         <source>The contract '{0}' contains one or more operations with SOAP Encoding (use='encoded'). This is not supported by the current target framework. Only the non-encoded operations will be generated, if any.</source>
-        <target state="new">The contract '{0}' contains one or more operations with SOAP Encoding (use='encoded'). This is not supported by the current target framework. Only the non-encoded operations will be generated, if any.</target>
+        <target state="translated">协定“{0}”包含 SOAP 编码(use= "encoded")的一个或多个操作。这不受当前目标框架支持。将仅生成非编码操作(若有)。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputEPRFileParseErrorFormat">
         <source>Cannot read Endpoint Reference from: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">Cannot read Endpoint Reference from: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">无法从“{0}”读取终结点引用。请验证 XML 格式是否正确以及是否有效。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputPolicyParseErrorFormat">
         <source>WS-Policy Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">WS-Policy Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">读取“{0}”时出现 WS 策略分析错误。请验证 XML 格式是否正确以及是否有效。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputSchemaParseErrorFormat">
         <source>XML Schema Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">XML Schema Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">读取“{0}”时出现 XML 架构分析错误。请验证 XML 格式是否正确以及是否有效。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputWsdlParseErrorFormat">
         <source>WSDL Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">WSDL Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">读取“{0}”时出现 WSDL 分析错误。请验证 XML 格式是否正确以及是否有效。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidNamespaceFormat">
         <source>The specified namespace mappings {0} contain invalid identifiers.</source>
-        <target state="new">The specified namespace mappings {0} contain invalid identifiers.</target>
+        <target state="translated">指定的命名空间映射 {0} 包含无效的标识符。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidOperationNoProjectFileFoundUnderFolderFormat">
         <source>The current operation is invalid outside the context of a project and no project file was found under the '{0}' directory.</source>
-        <target state="new">The current operation is invalid outside the context of a project and no project file was found under the '{0}' directory.</target>
+        <target state="translated">当前操作在项目上下文之外无效，且在“{0}”目录下找不到任何项目文件。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidPathFormat">
         <source>Invalid path '{0}'. Check the --{1} option value.</source>
-        <target state="new">Invalid path '{0}'. Check the --{1} option value.</target>
+        <target state="translated">无效路径“{0}”。请检查 --{1} 选项值。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMessageVersionNotSupportedFormat">
         <source>MessageVersion '{0}' is not supported.</source>
-        <target state="new">MessageVersion '{0}' is not supported.</target>
+        <target state="translated">不支持 MessageVersion“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMoreThanOneProjectFoundFormat">
         <source>The directory '{0}' contains more than one project file.</source>
-        <target state="new">The directory '{0}' contains more than one project file.</target>
+        <target state="translated">目录“{0}”包含多个项目文件。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMoreThanOneUpdateParamsFilesFoundFormat">
         <source>More than one web service reference was found under the project '{0}'.  Please use the --{1} option to specify the service reference to update. The possible values are: {2}.</source>
-        <target state="new">More than one web service reference was found under the project '{0}'.  Please use the --{1} option to specify the service reference to update. The possible values are: {2}.</target>
+        <target state="translated">在项目“{0}”下找到了多个 Web 服务引用。请使用 --{1} 选项指定要更新的服务引用。可能的值为: {2}。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoCompatibleEndpoints">
         <source>No endpoints compatible with .Net Core apps were found.</source>
-        <target state="new">No endpoints compatible with .Net Core apps were found.</target>
+        <target state="translated">未找到任何与 .Net Core 应用兼容的终结点。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoUpdateParamsFileFoundFormat">
         <source>The project '{0}' does not have a web service reference that can be updated.</source>
-        <target state="new">The project '{0}' does not have a web service reference that can be updated.</target>
+        <target state="translated">项目“{0}”没有可以更新的 Web 服务引用。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoValidInputSpecified">
         <source>No valid input specified. Specify either a service url or a wsdl file.</source>
-        <target state="new">No valid input specified. Specify either a service url or a wsdl file.</target>
+        <target state="translated">未指定任何有效输入。请指定服务 URL 或 WSDL 文件。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotCodeDomTypeFormat">
         <source>The type '{0}' passed to the --{1} option is not a subclass of '{2}'.</source>
-        <target state="new">The type '{0}' passed to the --{1} option is not a subclass of '{2}'.</target>
+        <target state="translated">传递给 --{1} 选项的类型“{0}”不是“{2}”的子类。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotLanguageOrCodeDomTypeFormat">
         <source>The value '{0}' passed to the --{1} option does not represent a defined language and it could not be loaded as a fully qualified CLR type.</source>
-        <target state="new">The value '{0}' passed to the --{1} option does not represent a defined language and it could not be loaded as a fully qualified CLR type.</target>
+        <target state="translated">传递给 --{1} 选项的值“{0}”不代表已定义的语言，无法作为完全限定的 CLR 类型加载。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOutputFileAlreadyExistsFormat">
         <source>The source file '{0}' resolved from the value specified with the option --{1} already exists!</source>
-        <target state="new">The source file '{0}' resolved from the value specified with the option --{1} already exists!</target>
+        <target state="translated">从通过选项 --{1} 指定的值解析的源文件“{0}”已存在!</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOutputFileNotUnderOutputDirFormat">
         <source>The value of the --{0} option resolves to the path '{1}' which is not under the directory '{2}' resolved from the value specified with the --{3} option. The file must be a relative file name or a full path under this directory.</source>
-        <target state="new">The value of the --{0} option resolves to the path '{1}' which is not under the directory '{2}' resolved from the value specified with the --{3} option. The file must be a relative file name or a full path under this directory.</target>
+        <target state="translated">--{0} 选项的值解析为路径“{1}”，该路径不位于从通过 --{3} 选项指定的值解析的目录“{2}”下。该文件必须是此目录下的相对文件名或完整路径。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLongDirOnlyFormat">
         <source>The resultant path '{0}' is too long. Review the --{1} option value.</source>
-        <target state="new">The resultant path '{0}' is too long. Review the --{1} option value.</target>
+        <target state="translated">生成的路径“{0}”过长。请检查 --{1} 选项值。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLongFormat">
         <source>The resultant path '{0}' is too long. Review the --{1} and --{2} option values.</source>
-        <target state="new">The resultant path '{0}' is too long. Review the --{1} and --{2} option values.</target>
+        <target state="translated">生成的路径“{0}”过长。请检查 --{1} 和 --{2} 选项值。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrProjectToUpdateNotFoundFormat">
         <source>The --{0} option requires a project to be specified, please use the --{1} option to specify the project to use.</source>
-        <target state="new">The --{0} option requires a project to be specified, please use the --{1} option to specify the project to use.</target>
+        <target state="translated">--{0} 选项需要指定项目，请使用 --{1} 选项指定要使用的项目。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServerCertFailedValidationFormat">
         <source>There were errors when validating the server certificate: {0}
 {1}</source>
-        <target state="new">There were errors when validating the server certificate: {0}
+        <target state="translated">验证服务器证书时出现错误: {0}
 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceReferenceNotFoundUnderProjectFormat">
         <source>The specified web service reference '{0}' was not found under the project '{1}'.</source>
-        <target state="new">The specified web service reference '{0}' was not found under the project '{1}'.</target>
+        <target state="translated">在项目“{1}”下找不到指定的 Web 服务引用“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSingleUseSwitchFormat">
         <source>The --{0} option cannot be specified multiple times.</source>
-        <target state="new">The --{0} option cannot be specified multiple times.</target>
+        <target state="translated">不能多次指定 --{0} 选项。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToImportMetadata">
         <source>A critical error occurred while attempting to import metadata.</source>
-        <target state="new">A critical error occurred while attempting to import metadata.</target>
+        <target state="translated">尝试导入元数据时出现严重错误。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadExtensionsFormat">
         <source>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</source>
-        <target state="new">There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</target>
+        <target state="translated">加载导入扩展时出错。请确保使用 --{0} 选项将包含这些扩展的程序集作为引用程序集提供。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadInputs">
         <source>There was an error reading the loaded metadata.</source>
-        <target state="new">There was an error reading the loaded metadata.</target>
+        <target state="translated">读取已加载元数据时出错。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadMetadataDocumentFormat">
         <source>There was an error reading the metadata from one of the loaded documents.
 Document Identifier: '{0}'.</source>
-        <target state="new">There was an error reading the metadata from one of the loaded documents.
-Document Identifier: '{0}'.</target>
+        <target state="translated">从某个已加载文档读取元数据时出错。
+文档标识符:“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadReferenceFormat">
         <source>Reference cannot be loaded: '{0}', {1}</source>
-        <target state="new">Reference cannot be loaded: '{0}', {1}</target>
+        <target state="translated">无法加载引用:“{0}”，{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToRetrieveMetadataFromUriFormat">
         <source>Cannot obtain Metadata from {0} 
 
 {1}</source>
-        <target state="new">Cannot obtain Metadata from {0} 
+        <target state="translated">无法从 {0} 获取元数据 
 
 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToUniquifyFilenameFormat">
         <source>Cannot create output filename. Too many files are being created with the prefix '{0}'.</source>
-        <target state="new">Cannot create output filename. Too many files are being created with the prefix '{0}'.</target>
+        <target state="translated">无法创建输出文件名。使用前缀“{0}”创建的文件过多。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedError">
         <source>An error occurred in the tool.</source>
-        <target state="new">An error occurred in the tool.</target>
+        <target state="translated">工具中出错。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnknownSwitchFormat">
         <source>Unrecognized option '{0}' specified.</source>
-        <target state="new">Unrecognized option '{0}' specified.</target>
+        <target state="translated">无法识别指定的选项“{0}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorPrefix">
         <source>Error:</source>
-        <target state="new">Error:</target>
+        <target state="translated">错误:</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
-        <target state="new">Generating files...</target>
+        <target state="translated">正在生成文件...</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
-        <target state="new">Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</target>
+        <target state="translated">自动选择序列化程序。此选项先尝试使用数据协定序列化程序，如果失败，再尝试使用 XmlSerializer。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput1">
         <source>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</source>
-        <target state="new">The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</target>
+        <target state="translated">元数据文档(wsdl 或 xsd)的路径。可以在文件路径中使用标准的命令行通配符。</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput2">
         <source>The URL to a service endpoint that provides metadata or to a metadata document hosted online.</source>
-        <target state="new">The URL to a service endpoint that provides metadata or to a metadata document hosted online.</target>
+        <target state="translated">提供元数据的服务终结点的 URL，或指向联机托管元数据文档的 URL。 </target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput3">
         <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</source>
-        <target state="new">The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</target>
+        <target state="translated">包含服务终结点的 WS-Addressing EndpointReference (它支持 WS-Metadata Exchange)的 XML 文件路径。</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCollectionTypeFormat">
         <source>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</source>
-        <target state="new">A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</target>
+        <target state="translated">基于架构生成代码时，作为集合数据类型使用的类型的完全限定的名称或程序集限定名称。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCommonOptionsCategory">
         <source>-= COMMON OPTIONS =-</source>
-        <target state="new">-= COMMON OPTIONS =-</target>
+        <target state="translated">-= 常用选项 =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpDataContractSerializer">
         <source>Generate data types that use the Data Contract Serializer for serialization and deserialization</source>
-        <target state="new">Generate data types that use the Data Contract Serializer for serialization and deserialization</target>
+        <target state="translated">生成使用数据协定序列化程序进行序列化和反序列化的数据类型</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpDirectoryFormat">
         <source>Directory to create files in. Default: A directory called ServiceReference inside the current directory. (Short Form: -{0})</source>
-        <target state="new">Directory to create files in. Default: A directory called ServiceReference inside the current directory. (Short Form: -{0})</target>
+        <target state="translated">要在其中创建文件的目录。默认设置: 在当前目录中名为 ServiceReference 的目录。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpEnableDataBindingFormat">
         <source>Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: -{0})</source>
-        <target state="new">Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: -{0})</target>
+        <target state="translated">在所有数据协定类型上实现 System.ComponentModel.INotifyPropertyChanged 接口，以启用数据绑定。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples">
         <source>-= EXAMPLES =-</source>
-        <target state="new">-= EXAMPLES =-</target>
+        <target state="translated">-= 示例 =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples10">
         <source>dotnet-svcutil -u ServiceReference</source>
-        <target state="new">dotnet-svcutil -u ServiceReference</target>
+        <target state="translated">dotnet-svcutil -u ServiceReference</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples11">
         <source>- Update existing web service reference named ServiceReference. The command need to be executed under directory which contains the project file.</source>
-        <target state="new">- Update existing web service reference named ServiceReference. The command need to be executed under directory which contains the project file.</target>
+        <target state="translated">- 更新名为 ServiceReference 的现有 Web 服务引用。需要在包含项目文件的目录下执行该命令。</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples2">
         <source>dotnet-svcutil http://example.com/service.svc?wsdl</source>
-        <target state="new">dotnet-svcutil http://example.com/service.svc?wsdl</target>
+        <target state="translated">dotnet-svcutil http://example.com/service.svc?wsdl</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples3">
         <source>- Generate client code from a running service or online metadata documents.</source>
-        <target state="new">- Generate client code from a running service or online metadata documents.</target>
+        <target state="translated">- 通过正在运行的服务或联机元数据文档生成客户端代码。</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples6">
         <source>dotnet-svcutil *.wsdl *.xsd --language:C#</source>
-        <target state="new">dotnet-svcutil *.wsdl *.xsd --language:C#</target>
+        <target state="translated">dotnet-svcutil *.wsdl *.xsd --language:C#</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples7">
         <source>- Generate client code in Visual Basic from local metadata documents.</source>
-        <target state="new">- Generate client code in Visual Basic from local metadata documents.</target>
+        <target state="translated">- 从本地元数据文档在 Visual Basic 中生成客户端代码。</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples8">
         <source>dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</source>
-        <target state="new">dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</target>
+        <target state="translated">dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples9">
         <source>- Generate client code from a running service using settings that emulate the default "WCF Connected Service" behavior in Visual Studio</source>
-        <target state="new">- Generate client code from a running service using settings that emulate the default "WCF Connected Service" behavior in Visual Studio</target>
+        <target state="translated">- 使用在 Visual Studio 中枚举默认“WCF 连接服务”行为的设置通过正在运行的服务生成客户端代码</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExcludeTypeCodeGenerationFormat">
         <source>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</source>
-        <target state="new">A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</target>
+        <target state="translated">要从引用的协定类型中排除的完全限定的类型名称或程序集限定类型名称。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpHelpFormat">
         <source>Display command syntax and options for the tool. (Short Form: -{0})</source>
-        <target state="new">Display command syntax and options for the tool. (Short Form: -{0})</target>
+        <target state="translated">显示工具的命令语法和选项。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputEpr">
         <source>&lt;epr&gt;</source>
-        <target state="new">&lt;epr&gt;</target>
+        <target state="translated">&lt;epr&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="new">&lt;metadata document path&gt;</target>
+        <target state="translated">&lt;metadata document path&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
         <source>&lt;url&gt;</source>
-        <target state="new">&lt;url&gt;</target>
+        <target state="translated">&lt;url&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
-        <target state="new">Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</target>
+        <target state="translated">生成标记为内部的类。默认设置: 生成公共类。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
-        <target state="new">The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
+        <target state="translated">用于生成代码的编程语言。提供在 machine.config 文件中注册的语言名称，或提供从 System.CodeDom.Compiler.CodeDomProvider 继承的类的完全限定名称。要使用的语言名称示例包括 CS 和 VB。默认语言名称: C#。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMessageContractFormat">
         <source>Generate Message Contract types. (Short Form: -{0})</source>
-        <target state="new">Generate Message Contract types. (Short Form: -{0})</target>
+        <target state="translated">生成消息协定类型。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNamespaceFormat">
         <source>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</source>
-        <target state="new">A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</target>
+        <target state="translated">从 WSDL 或 XML targetNamespace 到 CLR 命名空间的映射。如果将 "*" 用于 targetNamespace，会将没有显式映射的所有 targetNamespace 映射到该 CLR 命名空间。默认设置: 从数据协定架构文档的目标命名空间派生。默认命名空间用于所有其他生成的类型。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
-        <target state="new">Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</target>
+        <target state="translated">禁止重新使用项目引用中的类型。通过 --{1} 选项提供的引用仅用于解析通过 --{2} 选项指定的集合类型。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNologoFormat">
         <source>Suppress the copyright and banner message. (Short Form: -{0})</source>
-        <target state="new">Suppress the copyright and banner message. (Short Form: -{0})</target>
+        <target state="translated">禁止显示版权和标题消息。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNostdlibFormat">
         <source>Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</source>
-        <target state="new">Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</target>
+        <target state="translated">不要引用标准库。默认情况下引用 System.Runtime (mscorlib) 和 System.ServiceModel (WCF)库。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOptions">
         <source>Options:</source>
-        <target state="new">Options:</target>
+        <target state="translated">选项:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOutFormat">
         <source>The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</source>
-        <target state="new">The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</target>
+        <target state="translated">所生成代码的文件名。默认设置: 从某种架构的 WSDL 定义名称、WSDL 服务名称或 targetNamespace 派生。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpProjectFileFormat">
         <source>The project file to add the client to (if any). (Short Form: -{0}).</source>
-        <target state="new">The project file to add the client to (if any). (Short Form: -{0}).</target>
+        <target state="translated">要向其添加客户端的项目文件(若有)。(短格式: -{0})。</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpReferenceCodeGenerationFormat">
         <source>Package or project references to reuse types from. When generating clients, use this option to specify references in the user's project that might contain types representing the metadata being imported. The reference can be specified as a nuget package name and version or the path to a .Net Core project. (Short Form: -{0})</source>
-        <target state="new">Package or project references to reuse types from. When generating clients, use this option to specify references in the user's project that might contain types representing the metadata being imported. The reference can be specified as a nuget package name and version or the path to a .Net Core project. (Short Form: -{0})</target>
+        <target state="translated">要从中重用类型的包或项目引用。生成客户端时, 使用此选项可指定用户项目中的一些引用，这些引用可能包含那些表示正被导入的元数据的类型。该引用可指定为 NuGet 包名称和版本，或指定为 .Net Core 项目的路径。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpRuntimeIdentifierFormat">
         <source>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</source>
-        <target state="new">The runtime identifier used for building reference projects (if any). (Short Form: -{0})</target>
+        <target state="translated">用于构建引用项目的运行时标识符(若有)。(短格式: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
-        <target state="new">Generate synchronous methods for operations in addition to async. (Short Form: -{0})</target>
+        <target state="translated">为除异步以外的操作生成同步方法。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
         <source>The target framework used for building reference projects. (Short Form: -{0}).</source>
-        <target state="new">The target framework used for building reference projects. (Short Form: -{0}).</target>
+        <target state="translated">用于构建引用项目的目标框架。(缩写: -{0})。</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUpdateWebServiceReferenceFormat">
         <source>Updates an existing web service reference. If the project contains more than one web service reference, the name of the web service reference to be updated is required. (Short Form: -{0})</source>
-        <target state="new">Updates an existing web service reference. If the project contains more than one web service reference, the name of the web service reference to be updated is required. (Short Form: -{0})</target>
+        <target state="translated">更新现有的 Web 服务引用。如果项目包含多个 Web 服务引用，则必须更新 Web 服务引用的名称。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage1">
         <source>USE:</source>
-        <target state="new">USE:</target>
+        <target state="translated">使用:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage2">
         <source> - Generate web service proxy code from running services or static metadata documents. </source>
-        <target state="new"> - Generate web service proxy code from running services or static metadata documents. </target>
+        <target state="translated"> - 通过正在运行的服务或静态元数据文档生成 Web 服务代理代码。 </target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsageCategory">
         <source>-= USAGE =-</source>
-        <target state="new">-= USAGE =-</target>
+        <target state="translated">-= 用法 =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpVerbosityFormat">
         <source>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</source>
-        <target state="new">Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</target>
+        <target state="translated">确定工具显示的信息量。有效值为“{0}”。(缩写: -{1})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpWrappedFormat">
         <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages. (Short Form: -{0})</source>
-        <target state="new">Generated code will not unwrap "parameters" member of document-wrapped-literal messages. (Short Form: -{0})</target>
+        <target state="translated">生成的代码将不会展开 document-wrapped-literal 消息的 "parameters" 成员。(缩写: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializer">
         <source>Generate data types that use the XmlSerializer for serialization and deserialization</source>
-        <target state="new">Generate data types that use the XmlSerializer for serialization and deserialization</target>
+        <target state="translated">生成使用 XmlSerializer 进行序列化和反序列化的数据类型。</target>
         <note />
       </trans-unit>
       <trans-unit id="LogoFormat">
@@ -642,32 +642,32 @@ Document Identifier: '{0}'.</target>
 [{0}, Version {1}]
 {2}
 </source>
-        <target state="new">Microsoft (R) WCF Service Model Proxy Generation Tool for .Net Core platform
-[{0}, Version {1}]
+        <target state="translated">适用于 .Net Core 平台的 Microsoft (R) WCF 服务模型代理生成工具
+[{0}，版本 {1}]
 {2}
 </target>
         <note />
       </trans-unit>
       <trans-unit id="Microsoft_Copyright_CommandLine_Logo">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="new">Copyright (c) Microsoft Corporation.  All rights reserved.</target>
+        <target state="translated">版权所有(C) Microsoft Corporation。保留所有权利。</target>
         <note />
       </trans-unit>
       <trans-unit id="MoreHelpFormat">
         <source>If you would like more help, type "dotnet-svcutil -{0}"</source>
-        <target state="new">If you would like more help, type "dotnet-svcutil -{0}"</target>
+        <target state="translated">如果希望获取更多帮助，请键入“dotnet-svcutil -{0}”</target>
         <note />
       </trans-unit>
       <trans-unit id="NoCodeWasGenerated">
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services, or because all contracts/services were discovered to exist in --reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="new">No code was generated.
-If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services, or because all contracts/services were discovered to exist in --reference assemblies. Verify that you passed all the metadata documents to the tool.</target>
+        <target state="translated">未生成任何代码。
+如果是在尝试生成客户端，此问题可能是因元数据文档中未包含任何有效协定或服务所致，或因发现所有协定/服务均存在于 -reference 程序集中所致。请验证是否已将所有元数据文档传递给工具。</target>
         <note />
       </trans-unit>
       <trans-unit id="NotClientBaseType">
         <source>Type does not inherit from ClientBase&lt;T&gt;</source>
-        <target state="new">Type does not inherit from ClientBase&lt;T&gt;</target>
+        <target state="translated">类型不从 ClientBase&lt;T&gt; 继承</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
@@ -677,7 +677,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersDirectory">
         <source>&lt;directory&gt;</source>
-        <target state="new">&lt;directory&gt;</target>
+        <target state="translated">&lt;directory&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
@@ -687,148 +687,148 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersLanguage">
         <source>&lt;language&gt;</source>
-        <target state="new">&lt;language&gt;</target>
+        <target state="translated">&lt;language&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersNamespace">
         <source>&lt;string,string&gt;</source>
-        <target state="new">&lt;string,string&gt;</target>
+        <target state="translated">&lt;string,string&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersOut">
         <source>&lt;file&gt;</source>
-        <target state="new">&lt;file&gt;</target>
+        <target state="translated">&lt;file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="new">&lt;project file&gt;</target>
+        <target state="translated">&lt;project file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;package&gt;</source>
-        <target state="new">&lt;package&gt;</target>
+        <target state="translated">&lt;package&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="new">&lt;runtime identifier&gt;</target>
+        <target state="translated">&lt;runtime identifier&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
         <source>&lt;framework&gt;</source>
-        <target state="new">&lt;framework&gt;</target>
+        <target state="translated">&lt;framework&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="new">&lt;verbosity level&gt;</target>
+        <target state="translated">&lt;verbosity level&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="new">&lt;web service reference&gt;</target>
+        <target state="translated">&lt;web service reference&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
         <source>Enter password (ESC to cancel):</source>
-        <target state="new">Enter password (ESC to cancel):</target>
+        <target state="translated">输入密码(按 Esc 取消):</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadingMetadataMessageFormat">
         <source>Attempting to load metadata from '{0}'.</source>
-        <target state="new">Attempting to load metadata from '{0}'.</target>
+        <target state="translated">尝试加载来自“{0}”的元数据。</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestReplyCallbackContractNotSupported">
         <source>Request/Reply callback contracts are not supported for .Net Core apps.</source>
-        <target state="new">Request/Reply callback contracts are not supported for .Net Core apps.</target>
+        <target state="translated">.Net Core 应用不支持请求/回复回拨协定。</target>
         <note />
       </trans-unit>
       <trans-unit id="RetreivingMetadataMsgFormat">
         <source>Attempting to download metadata from '{0}' using WS-Metadata Exchange and HttpGet.</source>
-        <target state="new">Attempting to download metadata from '{0}' using WS-Metadata Exchange and HttpGet.</target>
+        <target state="translated">正在尝试使用 WS-Metadata Exchange 和 HttpGet 从“{0}”下载元数据。</target>
         <note />
       </trans-unit>
       <trans-unit id="ServiceEndpointComment">
         <source>The endpoint to configure</source>
-        <target state="new">The endpoint to configure</target>
+        <target state="translated">要配置的终结点</target>
         <note />
       </trans-unit>
       <trans-unit id="TelemetryEnabled">
         <source>This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
 </source>
-        <target state="new">This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
+        <target state="translated">此工具将收集使用方式相关信息以便改进该工具。可以通过将环境变量 "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" 设置为 1 来禁用此功能。
 </target>
         <note />
       </trans-unit>
       <trans-unit id="UseProjectFileOptionOnMultipleFilesMsgFormat">
         <source>Please use the --{0} option to specify the project to use, possible values: {1}.</source>
-        <target state="new">Please use the --{0} option to specify the project to use, possible values: {1}.</target>
+        <target state="translated">请使用 --{0} 选项指定要使用项目，可能的值为: {1}。</target>
         <note />
       </trans-unit>
       <trans-unit id="UsernamePrompt">
         <source>Enter username (ESC to cancel):</source>
-        <target state="new">Enter username (ESC to cancel):</target>
+        <target state="translated">输入用户名(按 Esc 取消):</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningPrefix">
         <source>Warning:</source>
-        <target state="new">Warning:</target>
+        <target state="translated">警告:</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnCouldNotGenerateContractOperationsFormat">
         <source>Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</source>
-        <target state="new">Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</target>
+        <target state="translated">无法使用“{0}”类型生成协定操作，使用“{1}”类型尝试。</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnCouldNotLoadTypesFromReferenceAssemblyAtFormat">
         <source>Cannot load some types in assembly '{0}', types will not be available to the tool.</source>
-        <target state="new">Cannot load some types in assembly '{0}', types will not be available to the tool.</target>
+        <target state="translated">无法加载程序集“{0}”中的某些类型，工具将无法使用这些类型。</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnExtraParamsOnInputFileParamIgnoredFormat">
         <source>An input parameters file was specified in the command line, the following parameter(s) will be ignored: {0}.</source>
-        <target state="new">An input parameters file was specified in the command line, the following parameter(s) will be ignored: {0}.</target>
+        <target state="translated">已在命令行中指定输入参数文件，将忽略以下参数: {0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
-        <target state="new">Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</target>
+        <target state="translated">地址“{1}”处的终结点“{0}”包含一个或多个与 .Net Core 应用不兼容的绑定，正在跳过...</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
-        <target state="new">The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</target>
+        <target state="translated">通过 --{0} 选项指定的值解析为文件路径“{1}”，该文件路径不位于项目“{2}”的目录下。可能无法编译文件!</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
         <source>The specified --{0} option is not expected in the current operational context of the tool!</source>
-        <target state="new">The specified --{0} option is not expected in the current operational context of the tool!</target>
+        <target state="translated">工具的当前操作上下文中不需要指定的 --{0} 选项!</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedInputsFormat">
         <source>The specified input(s) {0} are not expected in the current operational context of the tool!</source>
-        <target state="new">The specified input(s) {0} are not expected in the current operational context of the tool!</target>
+        <target state="translated">工具的当前操作上下文中不需要指定的输入 {0}!</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUserBasicCredentialsInClearText">
         <source>The server needs to authenticate your request.
 Your credentials will be sent to the server in clear text.</source>
-        <target state="new">The server needs to authenticate your request.
-Your credentials will be sent to the server in clear text.</target>
+        <target state="translated">服务器需要对你的请求进行身份验证。
+你的凭据将以明文形式发送到服务器。</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnWSMExFailedFormat">
         <source>WS-Metadata Exchange Error
     URI: {0}</source>
-        <target state="new">WS-Metadata Exchange Error
+        <target state="translated">WS-Metadata Exchange 错误
     URI: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlOrSchemaFilesMsg">
         <source>WSDL files</source>
-        <target state="new">WSDL files</target>
+        <target state="translated">WSDL 文件</target>
         <note />
       </trans-unit>
     </body>
