@@ -3429,7 +3429,7 @@
       </trans-unit>
       <trans-unit id="XmlRemarks">
         <source>&lt;remarks/&gt;</source>
-        <target state="new">&lt;remarks/&gt;</target>
+        <target state="translated">&lt;remarks/&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlRpcArrayOfValueTypes">

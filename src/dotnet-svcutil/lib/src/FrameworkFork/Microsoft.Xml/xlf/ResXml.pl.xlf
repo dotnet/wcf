@@ -3429,7 +3429,7 @@
       </trans-unit>
       <trans-unit id="XmlRemarks">
         <source>&lt;remarks/&gt;</source>
-        <target state="new">&lt;remarks/&gt;</target>
+        <target state="translated">&lt;remarks/&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlRpcArrayOfValueTypes">
@@ -4169,7 +4169,7 @@
       </trans-unit>
       <trans-unit id="Xml_InvalidCDataChars">
         <source>Cannot have ']]&gt;' inside an XML CDATA block.</source>
-        <target state="translated">Wewnątrz bloku XML CDATA nie może znajdować się ']]&gt;'.</target>
+        <target state="translated">Wewnątrz bloku XML CDATA nie może znajdować się „]]&gt;”.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_InvalidCharInThisEncoding">
@@ -4519,7 +4519,7 @@
       </trans-unit>
       <trans-unit id="Xml_RedefinePrefix">
         <source>The prefix '{0}' cannot be redefined from '{1}' to '{2}' within the same start element tag.</source>
-        <target state="translated">Nie można zmienić zdefiniowanego prefiksu '{0}' z '{1}' na '{2}' w obrębie tego samego tagu początkowego.</target>
+        <target state="translated">Nie można przedefiniować prefiksu „{0}” z „{1}” na „{2}” w tym samym tagu początkowym elementu.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_RelativeUriNotSupported">
