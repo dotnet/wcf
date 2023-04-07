@@ -524,7 +524,7 @@ Identifikátor dokumentu: {0}</target>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="new">&lt;metadata document path&gt;</target>
+        <target state="translated">&lt;cesta k dokumentu metadat&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
@@ -672,7 +672,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;typ&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -682,7 +682,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;typ&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
@@ -702,7 +702,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="new">&lt;project file&gt;</target>
+        <target state="translated">&lt;soubor projektu&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
@@ -712,7 +712,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="new">&lt;runtime identifier&gt;</target>
+        <target state="translated">&lt;identifikátor modulu runtime&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
@@ -727,7 +727,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="new">&lt;web service reference&gt;</target>
+        <target state="translated">&lt;odkaz na webovou službu&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
