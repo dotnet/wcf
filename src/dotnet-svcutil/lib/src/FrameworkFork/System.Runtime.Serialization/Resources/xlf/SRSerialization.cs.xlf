@@ -1129,7 +1129,7 @@
       </trans-unit>
       <trans-unit id="KnownTypeAttributeReturnType">
         <source>KnownTypeAttribute attribute on type '{0}' specifies a method named '{1}' to provide known types. The return type of this method is invalid because it is not assignable to IEnumerable&lt;Type&gt;. Ensure that the method exists and has a valid signature.</source>
-        <target state="new">KnownTypeAttribute attribute on type '{0}' specifies a method named '{1}' to provide known types. The return type of this method is invalid because it is not assignable to IEnumerable&lt;Type&gt;. Ensure that the method exists and has a valid signature.</target>
+        <target state="translated">Atribut KnownTypeAttribute u typu {0} určuje metodu s názvem {1}, která bude poskytovat známé typy. Návratový typ této metody není platný, protože ho nelze přiřadit k IEnumerable&lt;typ&gt;. Ujistěte se, že metoda existuje a že má platnou signaturu.</target>
         <note />
       </trans-unit>
       <trans-unit id="KnownTypeAttributeUnknownMethod">
