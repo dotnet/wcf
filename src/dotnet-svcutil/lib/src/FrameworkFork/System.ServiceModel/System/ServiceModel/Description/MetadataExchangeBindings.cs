@@ -202,9 +202,9 @@ namespace System.ServiceModel.Description
 
         private static CustomBinding CreateNamedPipeBinding()
         {
-            CustomBinding binding = new CustomBinding(MetadataStrings.MetadataExchangeStrings.TcpBindingName, MetadataStrings.MetadataExchangeStrings.BindingNamespace);
-            TcpTransportBindingElement tcpTransport = new TcpTransportBindingElement();
-            binding.Elements.Add(tcpTransport);
+            CustomBinding binding = new CustomBinding(MetadataStrings.MetadataExchangeStrings.NamedPipeBindingName, MetadataStrings.MetadataExchangeStrings.BindingNamespace);
+            NamedPipeTransportBindingElement pipeTransport = new NamedPipeTransportBindingElement();
+            binding.Elements.Add(pipeTransport);
             return binding;
         }
 

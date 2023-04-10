@@ -8,6 +8,7 @@ using System.Runtime;
 using System.ServiceModel.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using static Microsoft.Tools.ServiceModel.Svcutil.Metadata.MetadataConstants;
 
 namespace System.ServiceModel.Channels
 {
@@ -24,7 +25,7 @@ namespace System.ServiceModel.Channels
         private readonly object _readLock = new object();
         private bool _inReadingState;     // This keeps track of the state machine (IConnection interface).
         private readonly int _connectionBufferSize;
-        private readonly TaskCompletionSource _atEOFTask;
+        private readonly TaskCompletionSource<bool> _atEOFTask;
         private bool _isAtEOF;
 
         // write state
@@ -48,7 +49,7 @@ namespace System.ServiceModel.Channels
             _closeState = CloseState.Open;
             _exceptionEventType = TraceEventType.Error;
             _connectionBufferSize = connectionBufferSize;
-            _atEOFTask = new TaskCompletionSource();
+            _atEOFTask = new TaskCompletionSource<bool>();
         }
 
         public int ConnectionBufferSize
@@ -72,6 +73,10 @@ namespace System.ServiceModel.Channels
             get { return _exceptionEventType; }
             set { _exceptionEventType = value; }
         }
+
+        byte[] IConnection.AsyncReadBuffer => throw new NotImplementedException();
+
+        int IConnection.AsyncReadBufferSize => throw new NotImplementedException();
 
         public void Abort()
         {
@@ -134,7 +139,7 @@ namespace System.ServiceModel.Channels
                 if (bytesRead == 0)
                 {
                     _isAtEOF = true;
-                    _atEOFTask.TrySetResult();
+                    _atEOFTask.TrySetResult(true);
                 }
 
                 if (_closeState == CloseState.PipeClosed)
@@ -183,6 +188,10 @@ namespace System.ServiceModel.Channels
             {
                 Abort(string.Format(SRServiceModel.PipeConnectionAbortedWriteTimedOut, timeout), TransferOperation.Write);
                 throw;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
             }
             finally
             {
@@ -362,7 +371,7 @@ namespace System.ServiceModel.Channels
                     _aborted = abort;
                     _closeState = CloseState.PipeClosed;
                     _pipe.Close();
-                    _atEOFTask.TrySetResult();
+                    _atEOFTask.TrySetResult(true);
                 }
             }
 
@@ -452,7 +461,7 @@ namespace System.ServiceModel.Channels
                         {
                             if (bytesRead != 0)
                             {
-                                Exception exception = ConvertPipeException(new PipeException(SR.PipeSignalExpected), TransferOperation.Read);
+                                Exception exception = ConvertPipeException(new PipeException(SRServiceModel.PipeSignalExpected), TransferOperation.Read);
                                 TraceEventType traceEventType = TraceEventType.Information;
                                 if (traceExceptionsAsErrors)
                                 {
@@ -555,6 +564,21 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(buffer));
             }
         }
+
+        void IConnection.Close(TimeSpan timeout, bool asyncAndLinger) => throw new NotImplementedException();
+        AsyncCompletionResult IConnection.BeginWrite(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, Action<object> callback, object state) => throw new NotImplementedException();
+        //{
+        //    WriteAsync(buffer, immediate, timeout).AsTask().ToApm(callback, state);
+        //    return AsyncCompletionResult.Completed;
+
+        //    //return DownloadStringAsync(url).AsApm(callback, state);
+        //}
+        void IConnection.EndWrite() => throw new NotImplementedException();
+        void IConnection.Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout) => throw new NotImplementedException();
+        void IConnection.Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, BufferManager bufferManager) => throw new NotImplementedException();
+        int IConnection.Read(byte[] buffer, int offset, int size, TimeSpan timeout) => throw new NotImplementedException();
+        AsyncCompletionResult IConnection.BeginRead(int offset, int size, TimeSpan timeout, Action<object> callback, object state) => throw new NotImplementedException();
+        int IConnection.EndRead() => throw new NotImplementedException();
 
         private enum CloseState
         {
