@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 6.0.0-rc.23205.4
+
+* [NuGet Package](https://www.nuget.org/packages/System.Web.Services.Description/6.0.0-rc.23205.4)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v6.0.0-rc)
+
 ### 6.0.0-Preview1
 
 * [NuGet Package](https://www.nuget.org/packages/System.Web.Services.Description/6.0.0-preview1.23060.3)
