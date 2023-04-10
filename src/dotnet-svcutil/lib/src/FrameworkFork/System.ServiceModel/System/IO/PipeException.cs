@@ -28,10 +28,10 @@ namespace System.IO
         {
         }
 
-        protected PipeException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+        //protected PipeException(SerializationInfo info, StreamingContext context)
+        //    : base(info, context)
+        //{
+        //}
 
         public virtual int ErrorCode
         {
