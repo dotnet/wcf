@@ -114,6 +114,23 @@ namespace System
             return exception;
         }
 
+        internal Exception ThrowHelper(Exception exception, TraceEventType eventType)
+        {
+            return ThrowHelper(exception, eventType, null);
+        }
+
+        internal static void TraceHandledException(Exception exception, TraceEventType traceEventType)
+        {
+            FxTrace.Exception.TraceHandledException(exception, traceEventType);
+        }
+
+        internal Exception ThrowHelper(Exception exception, TraceEventType eventType, TraceRecord extendedData)
+        {
+            FxTrace.Exception.TraceEtwException(exception, eventType);
+
+            return exception;
+        }
+
         internal Exception ThrowHelperXml(XmlReader reader, string message)
         {
             return this.ThrowHelperXml(reader, message, null);

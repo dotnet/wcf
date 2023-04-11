@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 using System.Diagnostics;
 using System.IO;
@@ -13,6 +14,130 @@ using Microsoft.Tools.ServiceModel.Svcutil.FrameworkFork.System.ServiceModel.Res
 namespace System.ServiceModel.Channels
 {
     internal sealed class PipeConnection : IConnection
+    using System.Runtime.InteropServices;
+    using System.Runtime.Versioning;
+    using System.Security.AccessControl;
+    using System.ComponentModel;
+    using System.Security;
+    using System.Security.Cryptography;
+    using System.Security.Permissions;
+    using System.Security.Principal;
+    using System.ServiceModel;
+    //using System.ServiceModel.Activation;
+    using System.ServiceModel.Diagnostics;
+    //using System.ServiceModel.Diagnostics.Application;
+    using System.ServiceModel.Security;
+    using System.Text;
+    using System.Threading;
+    //using SafeCloseHandle = System.ServiceModel.Activation.SafeCloseHandle;
+    using Microsoft.Xml;
+    using MS.Internal.Xml.XPath;
+    using static System.ServiceModel.Channels.SingletonMessageDecoder;
+    using System.Drawing;
+    using System.Runtime.InteropServices.ComTypes;
+
+    sealed class PipeConnection : IConnection
+    using System.Runtime.InteropServices;
+    using System.Runtime.Versioning;
+    using System.Security.AccessControl;
+    using System.ComponentModel;
+    using System.Security;
+    using System.Security.Cryptography;
+    using System.Security.Permissions;
+    using System.Security.Principal;
+    using System.ServiceModel;
+    //using System.ServiceModel.Activation;
+    using System.ServiceModel.Diagnostics;
+    //using System.ServiceModel.Diagnostics.Application;
+    using System.ServiceModel.Security;
+    using System.Text;
+    using System.Threading;
+    //using SafeCloseHandle = System.ServiceModel.Activation.SafeCloseHandle;
+    using Microsoft.Xml;
+    using MS.Internal.Xml.XPath;
+    using static System.ServiceModel.Channels.SingletonMessageDecoder;
+    using System.Drawing;
+    using System.Runtime.InteropServices.ComTypes;
+
+    sealed class PipeConnection : IConnection
+    using System.Runtime.InteropServices;
+    using System.Runtime.Versioning;
+    using System.Security.AccessControl;
+    using System.ComponentModel;
+    using System.Security;
+    using System.Security.Cryptography;
+    using System.Security.Permissions;
+    using System.Security.Principal;
+    using System.ServiceModel;
+    //using System.ServiceModel.Activation;
+    using System.ServiceModel.Diagnostics;
+    //using System.ServiceModel.Diagnostics.Application;
+    using System.ServiceModel.Security;
+    using System.Text;
+    using System.Threading;
+    //using SafeCloseHandle = System.ServiceModel.Activation.SafeCloseHandle;
+    using Microsoft.Xml;
+    using MS.Internal.Xml.XPath;
+    using static System.ServiceModel.Channels.SingletonMessageDecoder;
+    using System.Drawing;
+    using System.Runtime.InteropServices.ComTypes;
+
+    sealed class PipeConnection : IConnection
+    using System.Runtime.InteropServices;
+    using System.Runtime.Versioning;
+    using System.Security.AccessControl;
+    //using SafeCloseHandle = System.ServiceModel.Activation.SafeCloseHandle;
+    using Microsoft.Xml;
+    using MS.Internal.Xml.XPath;
+    using static System.ServiceModel.Channels.SingletonMessageDecoder;
+    using System.Drawing;
+    using System.Runtime.InteropServices.ComTypes;
+
+    sealed class PipeConnection : IConnection
+    using System.Runtime.InteropServices;
+    using System.Runtime.Versioning;
+    using System.Security.AccessControl;
+    using System.ComponentModel;
+    using System.Security;
+    using System.Security.Cryptography;
+    using System.Security.Permissions;
+    using System.Security.Principal;
+    using System.ServiceModel;
+    //using System.ServiceModel.Activation;
+    using System.ServiceModel.Diagnostics;
+    //using System.ServiceModel.Diagnostics.Application;
+    using System.ServiceModel.Security;
+    using System.Text;
+    using System.Threading;
+    //using SafeCloseHandle = System.ServiceModel.Activation.SafeCloseHandle;
+    using Microsoft.Xml;
+    using MS.Internal.Xml.XPath;
+    using static System.ServiceModel.Channels.SingletonMessageDecoder;
+    using System.Drawing;
+    using System.Runtime.InteropServices.ComTypes;
+
+    sealed class PipeConnection : IConnection
+    using System.Runtime.InteropServices;
+    using System.Runtime.Versioning;
+    using System.Security.AccessControl;
+    using System.ComponentModel;
+    using System.Security;
+    using System.Security.Cryptography;
+    using System.Security.Permissions;
+        public async ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout)
+    using System.ServiceModel.Diagnostics;
+    //using System.ServiceModel.Diagnostics.Application;
+    using System.ServiceModel.Security;
+    using System.Text;
+    using System.Threading;
+    //using SafeCloseHandle = System.ServiceModel.Activation.SafeCloseHandle;
+    using Microsoft.Xml;
+    using MS.Internal.Xml.XPath;
+    using static System.ServiceModel.Channels.SingletonMessageDecoder;
+    using System.Drawing;
+    using System.Runtime.InteropServices.ComTypes;
+
+    sealed class PipeConnection : IConnection
     {
         // common state
         private readonly NamedPipeClientStream _pipe;
@@ -47,19 +172,9 @@ namespace System.ServiceModel.Channels
             this._asyncReadBuffer = DiagnosticUtility.Utility.AllocateByteArray(connectionBufferSize);
             _pipe = namedPipeClient;
             _closeState = CloseState.Open;
-            _exceptionEventType = TraceEventType.Error;
-            _connectionBufferSize = connectionBufferSize;
-            _atEOFTask = new TaskCompletionSource<bool>();
-        }
-
-        public int ConnectionBufferSize
+        public async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, bool immediate, TimeSpan timeout)
         {
-            get
-            {
-                return _connectionBufferSize;
-            }
-        }
-
+            ValidateBufferBounds(buffer);
         private static byte[] ZeroBuffer
         {
             get
@@ -73,38 +188,21 @@ namespace System.ServiceModel.Channels
             get { return _exceptionEventType; }
             set { _exceptionEventType = value; }
         }
-
-        public byte[] AsyncReadBuffer
-        {
-            get { return _asyncReadBuffer; }
-        }
-
-        public int AsyncReadBufferSize
-        {
-            get { return _connectionBufferSize; }
-        }
-       
-
-        public void Abort()
-        {
-            Abort(null, TransferOperation.Undefined);
-        }
-
-        private void Abort(string timeoutErrorString, TransferOperation transferOperation)
-        {
-            ClosePipe(true, timeoutErrorString, transferOperation);
-        }
-
-        private Exception ConvertPipeException(PipeException pipeException, TransferOperation transferOperation)
-        {
-            return ConvertPipeException(pipeException.Message, pipeException, transferOperation);
-        }
-
-        private Exception ConvertPipeException(string exceptionMessage, PipeException pipeException, TransferOperation transferOperation)
-        {
-            if (_timeoutErrorString != null)
+                if (_closeState == CloseState.PipeClosed)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreatePipeClosedException(TransferOperation.Write));
+                }
+            }
+            catch(OperationCanceledException)
             {
-                if (transferOperation == _timeoutErrorTransferOperation)
+                Abort(string.Format(SRServiceModel.PipeConnectionAbortedWriteTimedOut, timeout), TransferOperation.Write);
+                throw;
+            }
+            finally
+            {
+                lock (_writeLock)
+            if (_timeoutErrorString != null)
+                    ExitWritingState();
                 {
                     return new TimeoutException(_timeoutErrorString, pipeException);
                 }
@@ -123,12 +221,12 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public async ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout)
+        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        unsafe AsyncCompletionResult IConnection.BeginRead(int offset, int size, TimeSpan timeout,
+            /*WaitCallback callback */Action<object> callback, object state)
         {
-            ValidateBufferBounds(buffer);
-            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
-
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
+                                new PipeException(SRServiceModel.PipeCantCloseWithPendingWrite), ExceptionEventType);
             lock (_readLock)
             {
                 ValidateEnterReadingState(true);
@@ -171,106 +269,9 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, bool immediate, TimeSpan timeout)
-        {
-            ValidateBufferBounds(buffer);
-            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
-
-            lock (_writeLock)
-            {
-                ValidateEnterWritingState(true);
-                EnterWritingState();
-            }
-
-            try
-            {
-                await _pipe.WriteAsync(buffer, cancellationToken);
-
-                if (_closeState == CloseState.PipeClosed)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreatePipeClosedException(TransferOperation.Write));
+                    return this._isReadOutstanding ? AsyncCompletionResult.Queued : AsyncCompletionResult.Completed;
                 }
-            }
-            catch(OperationCanceledException)
-            {
-                Abort(string.Format(SRServiceModel.PipeConnectionAbortedWriteTimedOut, timeout), TransferOperation.Write);
-                throw;
-            }
-            finally
-            {
-                lock (_writeLock)
-                {
-                    ExitWritingState();
-                }
-            }
-        }
-
-        public async ValueTask CloseAsync(TimeSpan timeout)
-        {
-            bool existingReadIsPending = false;
-            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
-
-            bool shouldClosePipe = false;
-            try
-            {
-                bool shouldReadEOF = false;
-                bool shouldWriteEOF = false;
-
-                lock (_readLock)
-                {
-                    lock (_writeLock)
-                    {
-                        if (!_isShutdownWritten && _inWritingState)
-                        {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
-                                new PipeException(SRServiceModel.PipeCantCloseWithPendingWrite), ExceptionEventType);
-                        }
-
-                        if (_closeState == CloseState.Closing || _closeState == CloseState.PipeClosed)
-                        {
-                            // already closing or closed, so just return
-                            return;
-                        }
-
-                        _closeState = CloseState.Closing;
-
-                        shouldClosePipe = true;
-
-                        if (!_isAtEOF)
-                        {
-                            if (_inReadingState)
-                            {
-                                existingReadIsPending = true;
-                            }
-                            else
-                            {
-                                shouldReadEOF = true;
-                            }
-                        }
-
-                        if (!_isShutdownWritten)
-                        {
-                            shouldWriteEOF = true;
-                            _isShutdownWritten = true;
-                        }
-                    }
-                }
-
-                ValueTask writeValueTask = default;
-                ValueTask<int> readValueTask = default;
-                if (shouldWriteEOF)
-                {
-                    writeValueTask = StartWriteZeroAsync(cancellationToken);
-                }
-
-                if (shouldReadEOF)
-                {
-                    readValueTask = StartReadZeroAsync(cancellationToken);
-                }
-
-                // wait for shutdown write to complete
+                catch (PipeException e)
                 if (shouldWriteEOF)
                 {
                     try
@@ -282,73 +283,132 @@ namespace System.ServiceModel.Channels
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
                             new TimeoutException(SRServiceModel.PipeShutdownWriteError, e), ExceptionEventType);
                     }
-                }
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
 
-                // ensure we have received EOF signal
-                if (shouldReadEOF)
-                {
-                    try
-                    {
-                        await WaitForReadZero(readValueTask, timeout, true);
-                    }
-                    catch (TimeoutException e)
-                    {
+            lock (_writeLock)
+            {
+                ValidateEnterWritingState(true);
+                EnterWritingState();
+            }
+
+            try
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
                             new TimeoutException(SRServiceModel.PipeShutdownReadError, e), ExceptionEventType);
-                    }
-                }
-                else if (existingReadIsPending)
-                {
-                    if (!await _atEOFTask.Task.AwaitWithTimeout(timeoutHelper.RemainingTime()))
+                    if (this._isWriteOutstanding)
                     {
+                        throw Fx.AssertAndThrow("Write I/O already pending when BeginWrite called.");
+                    }
+
+                    try
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
                             new TimeoutException(SRServiceModel.PipeShutdownReadError), ExceptionEventType);
+
+                        this._asyncBytesToWrite = size;
+                        this._asyncWriteException = null;
+                        this._asyncWriteCallback = callback;
+                        this._asyncWriteCallbackState = state;
+
+                        this._isWriteOutstanding = true;
+                        this._writeOverlapped.StartAsyncOperation(buffer, this._onAsyncWriteComplete, this._isBoundToCompletionPort);
+                        if (UnsafeNativeMethods.WriteFile(this._pipe.DangerousGetHandle(), this._writeOverlapped.BufferPtr + offset, size, IntPtr.Zero, this._writeOverlapped.NativeOverlapped) == 0)
+                        {
+                            int error = Marshal.GetLastWin32Error();
+                            if (error != UnsafeNativeMethods.ERROR_IO_PENDING)
+                            {
+                                this._isWriteOutstanding = false;
+                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(Exceptions.CreateWriteException(error));
+                            }
+                        }
                     }
-                }
-                // else we had already seen EOF.
+                    finally
+                    {
+                        if (!this._isWriteOutstanding)
+                        {
+                            // Unbind the buffer.
+                            this._writeOverlapped.CancelAsyncOperation();
 
-                // at this point, we may get exceptions if the other side closes the pipe first
-                try
-                {
-                    // write an ack for eof
-                    writeValueTask = StartWriteZeroAsync(cancellationToken);
+                            this.ResetWriteState();
+                            this.WriteTimer.Cancel();
+                        }
+                    }
 
-                    // read an ack for eof
-                    readValueTask = StartReadZeroAsync(cancellationToken);
+                    if (!this._isWriteOutstanding)
+                    {
+                        int bytesWritten;
+                        Exception writeException = Exceptions.GetOverlappedWriteException(
+                            this._pipe,
+                            this._writeOverlapped.NativeOverlapped,
+                            out bytesWritten);
+                        if (writeException == null && bytesWritten != size)
+                        {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
+                    new TimeoutException(SRServiceModel.PipeCloseFailed, e), ExceptionEventType);
+                        if (writeException != null)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(writeException);
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
+                    ConvertPipeException(SRServiceModel.PipeCloseFailed, e, TransferOperation.Undefined), ExceptionEventType);
+                    {
+                        EnterWritingState();
+                    }
 
-                    // wait for write to complete/fail
-                    await WaitForWriteZero(writeValueTask, timeout, false);
-
-                    // wait for read to complete/fail
-                    await WaitForReadZero(readValueTask, timeout, false);
+                    return this._isWriteOutstanding ? AsyncCompletionResult.Queued : AsyncCompletionResult.Completed;
                 }
                 catch (PipeException e)
                 {
-                    int errorCode = PipeError.GetErrorFromHResult(e.ErrorCode);
-                    if (!IsBrokenPipeError(errorCode))
-                    {
-                        throw;
-                    }
-                    DiagnosticUtility.TraceHandledException(e, TraceEventType.Information);
+                    //throw DiagnosticUtility.ExceptionUtility.ThrowHelper(ConvertPipeException(e, TransferOperation.Write), ExceptionEventType);
+                    throw e;
                 }
-                catch (CommunicationException e)
+            }
+        }
+
+        public async ValueTask CloseAsync(TimeSpan timeout)
+        {
+            bool existingReadIsPending = false;
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
+
+            bool shouldClosePipe = false;
+                    _timeoutErrorString = timeoutErrorString;
+                    _timeoutErrorTransferOperation = transferOperation;
+                    _aborted = abort;
+                    _closeState = CloseState.PipeClosed;
+                    _pipe.Close();
+                    _atEOFTask.TrySetResult(true);
+                            {
+                                existingReadIsPending = true;
+
+            if (abort)
+            {
+                TraceEventType traceEventType = TraceEventType.Warning;
+
+                // we could be timing out a cached connection
+                if (ExceptionEventType == TraceEventType.Information)
                 {
-                    DiagnosticUtility.TraceHandledException(e, TraceEventType.Information);
+                    traceEventType = ExceptionEventType;
                 }
-                catch (TimeoutException e)
+                            _isShutdownWritten = true;
+                //if (DiagnosticUtility.ShouldTrace(traceEventType))
+                //{
+                //    TraceUtility.TraceEvent(traceEventType, TraceCode.PipeConnectionAbort, SR.TraceCodePipeConnectionAbort, this);
+                //}
                 {
                     DiagnosticUtility.TraceHandledException(e, TraceEventType.Information);
                 }
             }
             catch (TimeoutException e)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
-                    new TimeoutException(SRServiceModel.PipeCloseFailed, e), ExceptionEventType);
+                //throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
+                //    new TimeoutException(SR.GetString(SR.PipeCloseFailed), e), ExceptionEventType);
+                throw e;
             }
             catch (PipeException e)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
-                    ConvertPipeException(SRServiceModel.PipeCloseFailed, e, TransferOperation.Undefined), ExceptionEventType);
+                //throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
+                //    ConvertPipeException(SR.GetString(SR.PipeCloseFailed), e, TransferOperation.Undefined), ExceptionEventType);
+                throw e;
             }
             finally
             {
@@ -361,131 +421,99 @@ namespace System.ServiceModel.Channels
 
         private void ClosePipe(bool abort, string timeoutErrorString, TransferOperation transferOperation)
         {
-            lock (_readLock)
-            {
-                lock (_writeLock)
-                {
-                    if (_closeState == CloseState.PipeClosed)
-                    {
-                        return;
-                    }
-
-                    _timeoutErrorString = timeoutErrorString;
-                    _timeoutErrorTransferOperation = transferOperation;
-                    _aborted = abort;
-                    _closeState = CloseState.PipeClosed;
-                    _pipe.Close();
-                    _atEOFTask.TrySetResult(true);
-                }
-            }
-
-            if (abort)
-            {
-                TraceEventType traceEventType = TraceEventType.Warning;
-
-                // we could be timing out a cached connection
-                if (ExceptionEventType == TraceEventType.Information)
-                {
-                    traceEventType = ExceptionEventType;
-                }
-
-                //if (DiagnosticUtility.ShouldTrace(traceEventType))
-                //{
-                //    TraceUtility.TraceEvent(traceEventType, TraceCode.PipeConnectionAbort, SR.TraceCodePipeConnectionAbort, this);
-                //}
-            }
-        }
-
-        private void EnterReadingState()
-        {
-            Fx.Assert(Monitor.IsEntered(_readLock), "_readLock must be entered");
-            _inReadingState = true;
-        }
-
-        private void EnterWritingState()
-        {
-            Fx.Assert(Monitor.IsEntered(_writeLock), "_writeLock must be entered");
-            _inWritingState = true;
-        }
-
-        private void ExitReadingState()
-        {
-            Fx.Assert(Monitor.IsEntered(_readLock), "_readLock must be entered");
-            _inReadingState = false;
-        }
-
-        private void ExitWritingState()
-        {
-            Fx.Assert(Monitor.IsEntered(_writeLock), "_writeLock must be entered");
-            _inWritingState = false;
-        }
-
         private bool IsBrokenPipeError(int error)
-        {
-            return error == UnsafeNativeMethods.ERROR_NO_DATA ||
-                error == UnsafeNativeMethods.ERROR_BROKEN_PIPE;
-        }
-
-        private Exception CreatePipeClosedException(TransferOperation transferOperation)
-        {
+        //    }
+        //    try
+        //    {
+        //        // no need to close this handle, it's a pseudo handle. expected value is -1.
+        //        IntPtr sourceProcessHandle = ListenerUnsafeNativeMethods.GetCurrentProcess();
+        //        if (sourceProcessHandle == IntPtr.Zero)
+        //        {
             return ConvertPipeException(new PipeException(SRServiceModel.PipeClosed), transferOperation);
-        }
-
+        //                CreatePipeDuplicationFailedException(Marshal.GetLastWin32Error()), ExceptionEventType);
+        //        }
         private ValueTask<int> StartReadZeroAsync(CancellationToken token)
-        {
-            lock (_readLock)
-            {
+        //        if (!success)
+        //        {
+        //            throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
                 ValidateEnterReadingState(false);
                 EnterReadingState();
                 return _pipe.ReadAsync(ZeroBuffer, token);
             }
         }
-
+                        {
         private ValueTask StartWriteZeroAsync(CancellationToken token)
         {
             lock (_writeLock)
             {
-                ValidateEnterWritingState(false);
-                EnterWritingState();
-                return _pipe.WriteAsync(ZeroBuffer, token);
-            }
-        }
-
-        private async ValueTask WaitForReadZero(ValueTask<int> readTask, TimeSpan timeout, bool traceExceptionsAsErrors)
-        {
-            bool success = false;
-            int bytesRead = -1;
-            try
-            {
-                bytesRead = await readTask;
-                success = true;
-            }
-            finally
-            {
-                lock (_readLock)
                 {
                     try
                     {
-                        if (success)
+                        if (this._closeState == CloseState.HandleClosed)
                         {
-                            if (bytesRead != 0)
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreatePipeClosedException(TransferOperation.Write));
+                        }
+                        if (!haveResult)
+                        {
+                            if (UnsafeNativeMethods.GetOverlappedResult(this._pipe.DangerousGetHandle(), this._writeOverlapped.NativeOverlapped, out numBytes, 0) == 0)
                             {
-                                Exception exception = ConvertPipeException(new PipeException(SRServiceModel.PipeSignalExpected), TransferOperation.Read);
-                                TraceEventType traceEventType = TraceEventType.Information;
-                                if (traceExceptionsAsErrors)
-                                {
-                                    traceEventType = TraceEventType.Error;
-                                }
-                                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(exception, traceEventType);
+                                error = Marshal.GetLastWin32Error();
+                            }
+                            else
+                            {
+                                error = 0;
                             }
                         }
+
+                        if (error != 0)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(Exceptions.CreateWriteException(error));
+                        }
+                        else if (numBytes != this._asyncBytesToWrite)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new PipeException("SR.PipeWriteIncomplete"));
+                        }
                     }
-                    finally
+                    catch (PipeException e)
                     {
-                        ExitReadingState();
+                        //throw DiagnosticUtility.ExceptionUtility.ThrowHelper(ConvertPipeException(e, TransferOperation.Write), ExceptionEventType);
+                        throw e;
                     }
                 }
+#pragma warning suppress 56500 // elliotw, transferring exception to another thread
+                catch (Exception e)
+                {
+                    if (Fx.IsFatal(e))
+                    {
+                        throw;
+                    }
+
+                    writeException = e;
+                }
+                finally
+                {
+                    this._isWriteOutstanding = false;
+                    WriteIOCompleted();
+                    ExitWritingState();
+                    this._asyncWriteException = writeException;
+                    callback = this._asyncWriteCallback;
+                Abort(string.Format(SRServiceModel.PipeConnectionAbortedWriteTimedOut, timeout), TransferOperation.Write);
+                    {
+                        try
+                        {
+                            if (success)
+                            {
+                                bytesRead = FinishSyncRead(true);
+                                HandleReadComplete(bytesRead);
+                            }
+                // This intentionally doesn't reset isWriteOutstanding, because technically it still is, and we need to not free the buffer.
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(timeoutException, traceEventType);
             }
+            finally
+            {
+                lock (_writeLock)
+                {
+                    ExitWritingState();
         }
 
         private async ValueTask WaitForWriteZero(ValueTask writeTask, TimeSpan timeout, bool traceExceptionsAsErrors)
@@ -496,76 +524,49 @@ namespace System.ServiceModel.Channels
             }
             catch(Exception)
             {
-                Abort(string.Format(SRServiceModel.PipeConnectionAbortedWriteTimedOut, timeout), TransferOperation.Write);
-
-                Exception timeoutException = new TimeoutException(string.Format(SRServiceModel.PipeWriteTimedOut, timeout));
-                TraceEventType traceEventType = TraceEventType.Information;
-                if (traceExceptionsAsErrors)
+                lock (this._writeLock)
                 {
-                    traceEventType = TraceEventType.Error;
-                }
-
-                // This intentionally doesn't reset isWriteOutstanding, because technically it still is, and we need to not free the buffer.
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(timeoutException, traceEventType);
-            }
-            finally
-            {
-                lock (_writeLock)
-                {
-                    ExitWritingState();
-                }
-            }
-        }
-
-        private void ValidateEnterReadingState(bool checkEOF)
-        {
-            Fx.Assert(Monitor.IsEntered(_readLock), "_readLock must be entered");
-            if (checkEOF)
-            {
-                if (_closeState == CloseState.Closing)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SRServiceModel.PipeAlreadyClosing), ExceptionEventType);
-                }
-            }
-
-            if (_inReadingState)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SRServiceModel.PipeReadPending), ExceptionEventType);
-            }
-
-            if (_closeState == CloseState.PipeClosed)
-            {
+                    try
+                    {
+                        if (success)
+                        {
+                            FinishSyncWrite(traceExceptionsAsErrors);
+                        }
+                    }
+                    finally
+                    {
+                        ExitWritingState();
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SRServiceModel.PipeClosed), ExceptionEventType);
+                            WriteIOCompleted();
+                        }
+                    }
+                }
             }
         }
 
-        private void ValidateEnterWritingState(bool checkShutdown)
+        public void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout)
         {
-            Fx.Assert(Monitor.IsEntered(_writeLock), "_writeLock must be entered");
-            if (checkShutdown)
-            {
-                if (_isShutdownWritten)
-                {
+            WriteHelper(buffer, offset, size, immediate, timeout, ref this._writeOverlapped.Holder[0]);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SRServiceModel.PipeAlreadyShuttingDown), ExceptionEventType);
-                }
-
-                if (_closeState == CloseState.Closing)
-                {
+        // The holder is a perf optimization that lets us avoid repeatedly indexing into the array.
+        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        unsafe void WriteHelper(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, ref object holder)
+        {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SRServiceModel.PipeAlreadyClosing), ExceptionEventType);
-                }
-            }
+                FinishPendingWrite(timeout);
 
-            if (_inWritingState)
-            {
+                ConnectionUtilities.ValidateBufferBounds(buffer, offset, size);
+
+                int bytesToWrite = size;
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SRServiceModel.PipeWritePending), ExceptionEventType);
             }
 
             if (_closeState == CloseState.PipeClosed)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SRServiceModel.PipeClosed), ExceptionEventType);
-            }
-        }
-
+                    try
+                    {
+                        shouldReturnBuffer = false;
         internal static void ValidateBufferBounds(ReadOnlyMemory<byte> buffer)
         {
             if (buffer.IsEmpty)
@@ -573,17 +574,17 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(buffer));
             }
         }
-
-
-        public void Close(TimeSpan timeout, bool asyncAndLinger)
-        {
-            CloseAsync(timeout).GetAwaiter().GetResult();
-        }
+            {
+                if (_closeState == CloseState.Closing)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SRServiceModel.PipeAlreadyClosing), ExceptionEventType);
+                }
+            }
 
         AsyncCompletionResult IConnection.BeginWrite(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, Action<object> callback, object state) => throw new NotImplementedException();
         public void EndWrite()
         {
-
+            if (checkShutdown)
         }
         void IConnection.Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout) => throw new NotImplementedException();
         void IConnection.Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, BufferManager bufferManager) => throw new NotImplementedException();
@@ -592,21 +593,182 @@ namespace System.ServiceModel.Channels
        public  int EndRead()
         {
             return _asyncBytesRead;
-        }
+                    //throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new PipeException(SR.GetString(SR.PipeAlreadyClosing)), ExceptionEventType);
   
-
+                throw new Exception("SR.PipeWritePending");
         private enum CloseState
         {
-            Open,
-            Closing,
-            PipeClosed,
+                    if (error != UnsafeNativeMethods.ERROR_IO_PENDING)
+                    {
+                        this._isReadOutstanding = false;
+                        if (error != UnsafeNativeMethods.ERROR_MORE_DATA)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(Exceptions.CreateReadException(error));
+                        }
+                    }
+                }
+                else
+                {
+    static class PipeUri
+    {
+        public static string BuildSharedMemoryName(Uri uri, HostNameComparisonMode hostNameComparisonMode, bool global)
+        {
+            string path = PipeUri.GetPath(uri);
+            string host = null;
+
+            switch (hostNameComparisonMode)
+            {
+                case HostNameComparisonMode.StrongWildcard:
+                    host = "+";
+                    break;
+                case HostNameComparisonMode.Exact:
+                    host = uri.Host;
+                    break;
+                case HostNameComparisonMode.WeakWildcard:
+                    host = "*";
+                    break;
+            }
+
+            return PipeUri.BuildSharedMemoryName(host, path, global);
         }
 
-        private enum TransferOperation
+        internal static string BuildSharedMemoryName(string hostName, string path, bool global, AppContainerInfo appContainerInfo)
         {
-            Write,
-            Read,
-            Undefined,
+            if (appContainerInfo == null)
+            {
+                return BuildSharedMemoryName(hostName, path, global);
+            }
+            else
+            {
+                Fx.Assert(appContainerInfo.SessionId != ApplicationContainerSettingsDefaults.CurrentSession, "Session has not yet been initialized.");
+                Fx.Assert(!String.IsNullOrEmpty(appContainerInfo.NamedObjectPath),
+                    "NamedObjectPath cannot be empty when creating the SharedMemoryName when running in an AppContainer.");
+
+                //We need to use a session symlink for the lowbox appcontainer.
+                // Session\{0}\{1}\{2}\<SharedMemoryName>                
+                return string.Format(
+                            CultureInfo.InvariantCulture,
+                            @"Session\{0}\{1}\{2}",
+                            appContainerInfo.SessionId,
+                            appContainerInfo.NamedObjectPath,
+                            BuildSharedMemoryName(hostName, path, global));
+            }
+        }
+
+        static string BuildSharedMemoryName(string hostName, string path, bool global)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(Uri.UriSchemeNetPipe);
+            builder.Append("://");
+            builder.Append(hostName.ToUpperInvariant());
+            builder.Append(path);
+            string canonicalName = builder.ToString();
+
+            byte[] canonicalBytes = Encoding.UTF8.GetBytes(canonicalName);
+            byte[] hashedBytes;
+            string separator;
+
+            if (canonicalBytes.Length >= 128)
+            {
+                using (HashAlgorithm hash = GetHashAlgorithm())
+                {
+                    hashedBytes = hash.ComputeHash(canonicalBytes);
+                }
+                separator = ":H";
+            }
+            else
+            {
+                hashedBytes = canonicalBytes;
+                separator = ":E";
+            }
+
+            builder = new StringBuilder();
+            if (global)
+            {
+                // we may need to create the shared memory in the global namespace so we work with terminal services+admin 
+                builder.Append("Global\\");
+            }
+            else
+            {
+                builder.Append("Local\\");
+            }
+            builder.Append(Uri.UriSchemeNetPipe);
+            builder.Append(separator);
+            builder.Append(Convert.ToBase64String(hashedBytes));
+            return builder.ToString();
+        }
+
+        [SuppressMessage("Microsoft.Security.Cryptography", "CA5354:DoNotUseSHA1", Justification = "Cannot change. It will cause compatibility issue. Not used for cryptographic purposes.")]
+        static HashAlgorithm GetHashAlgorithm()
+        {
+            //if (!LocalAppContextSwitches.UseSha1InPipeConnectionGetHashAlgorithm)
+            //{
+            //    if (SecurityUtilsEx.RequiresFipsCompliance)
+            //        return new SHA256CryptoServiceProvider();
+            //    else
+            //        return new SHA256Managed();
+            //}
+            //else
+            //{
+            //    if (SecurityUtilsEx.RequiresFipsCompliance)
+            //        return new SHA1CryptoServiceProvider();
+            //    else
+            //        return new SHA1Managed();
+            //}
+
+            return new SHA256Managed();
+        }
+
+        public static string GetPath(Uri uri)
+        {
+            string path = uri.LocalPath.ToUpperInvariant();
+            if (!path.EndsWith("/", StringComparison.Ordinal))
+                path = path + "/";
+            return path;
+        }
+
+        public static string GetParentPath(string path)
+        {
+            if (path.EndsWith("/", StringComparison.Ordinal))
+                path = path.Substring(0, path.Length - 1);
+            if (path.Length == 0)
+                return path;
+            return path.Substring(0, path.LastIndexOf('/') + 1);
+        }
+
+        public static void Validate(Uri uri)
+        {
+            if (uri.Scheme != Uri.UriSchemeNetPipe)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("uri", "SR.PipeUriSchemeWrong");
+        }
+    }
+
+    static class PipeError
+    {
+        public static string GetErrorString(int error)
+        {
+            StringBuilder stringBuilder = new StringBuilder(512);
+            if (UnsafeNativeMethods.FormatMessage(UnsafeNativeMethods.FORMAT_MESSAGE_IGNORE_INSERTS |
+                UnsafeNativeMethods.FORMAT_MESSAGE_FROM_SYSTEM | UnsafeNativeMethods.FORMAT_MESSAGE_ARGUMENT_ARRAY,
+                IntPtr.Zero, error, CultureInfo.CurrentCulture.LCID, stringBuilder, stringBuilder.Capacity, IntPtr.Zero) != 0)
+            {
+                stringBuilder = stringBuilder.Replace("\n", "");
+                stringBuilder = stringBuilder.Replace("\r", "");
+                //return SR.GetString(
+                //    SR.PipeKnownWin32Error,
+                //    stringBuilder.ToString(),
+                //    error.ToString(CultureInfo.InvariantCulture),
+                //    Convert.ToString(error, 16));
+                return "SR.PipeKnownWin32Error:"+ Convert.ToString(error, 16) + ":" + stringBuilder.ToString();
+            }
+            else
+            {
+                //return SR.GetString(
+                //    SR.PipeUnknownWin32Error,
+                //    error.ToString(CultureInfo.InvariantCulture),
+                //    Convert.ToString(error, 16));
+                return "SR.PipeKnownWin32Error:" + Convert.ToString(error, 16);
+            }
         }
     }
 }

@@ -1,20 +1,16 @@
-//----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
+using System.Security;
+using System.Text;
+using Microsoft.Win32.SafeHandles;
 
 namespace System.ServiceModel.Activation
 {
-    using System;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.ServiceModel.Channels;
-    //using System.ServiceModel.ComIntegration;
-    using Microsoft.Win32.SafeHandles;
-    using System.Runtime.ConstrainedExecution;
-    using System.Runtime.Versioning;
-    using System.ServiceModel.Security;
-    using System.Text;
-
     [SuppressUnmanagedCodeSecurityAttribute()]
     static class ListenerUnsafeNativeMethods
     {
@@ -58,10 +54,6 @@ namespace System.ServiceModel.Activation
         [ResourceExposure(ResourceScope.None)]
         internal static extern bool LookupAccountName(string systemName, string accountName, byte[] sid,
           ref uint cbSid, StringBuilder referencedDomainName, ref uint cchReferencedDomainName, out short peUse);
-
-        //[DllImport(ADVAPI32, CharSet = CharSet.Unicode, SetLastError = true)]
-        //[ResourceExposure(ResourceScope.None)]
-        //internal static unsafe extern bool LookupPrivilegeValue(IntPtr lpSystemName, string lpName, LUID* lpLuid);
 
         [DllImport(ADVAPI32, ExactSpelling = true, SetLastError = true)]
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
@@ -171,20 +163,6 @@ namespace System.ServiceModel.Activation
             MaxTokenInfoClass  // MaxTokenInfoClass should always be the last enum  
         }
 
-        //[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        //internal struct QUERY_SERVICE_CONFIG
-        //{
-        //    internal int dwServiceType;
-        //    internal int dwStartType;
-        //    internal int dwErrorControl;
-        //    internal string lpBinaryPathName;
-        //    internal string lpLoadOrderGroup;
-        //    internal int dwTagId;
-        //    internal string lpDependencies;
-        //    internal string lpServiceStartName;
-        //    internal string lpDisplayName;
-        //}
-
         [StructLayout(LayoutKind.Sequential)]
         internal struct TOKEN_GROUPS
         {
@@ -212,26 +190,6 @@ namespace System.ServiceModel.Activation
             internal int _dwProcessId;
             internal int _dwServiceFlags;
         }
-
-        //[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-        //internal struct SID_AND_ATTRIBUTES
-        //{
-        //    internal IntPtr Sid;
-        //    internal SidAttribute Attributes;
-        //}
-
-        //[StructLayout(LayoutKind.Sequential)]
-        //internal struct TOKEN_GROUPS
-        //{
-        //    internal int GroupCount;
-        //    internal IntPtr Groups; // array of SID_AND_ATTRIBUTES
-        //}
-
-        //[StructLayout(LayoutKind.Sequential)]
-        //internal struct TOKEN_USER
-        //{
-        //    internal IntPtr User; // a SID_AND_ATTRIBUTES
-        //}
 
         [StructLayout(LayoutKind.Sequential)]
         internal unsafe struct TOKEN_PRIVILEGES

@@ -288,11 +288,6 @@ namespace System.Runtime
             return (new AsyncThunk(callback)).ThunkFrame;
         }
 
-        //internal static IOCompletionCallback ThunkCallback(IOCompletionCallback iOCompletionCallback)
-        //{
-        //    return iOCompletionCallback;
-        //}
-
         [Fx.Tag.SecurityNote(Critical = "Construct the unsafe object IOCompletionThunk")]
         [SecurityCritical]
         public static IOCompletionCallback ThunkCallback(IOCompletionCallback callback)
@@ -446,8 +441,6 @@ namespace System.Runtime
         {
             UpdateLevel(Fx.Trace);
         }
-
-        //internal static WaitOrTimerCallback ThunkCallback(WaitOrTimerCallback waitOrTimerCallback) => throw new NotImplementedException();
 
         public static WaitOrTimerCallback ThunkCallback(WaitOrTimerCallback callback)
         {
