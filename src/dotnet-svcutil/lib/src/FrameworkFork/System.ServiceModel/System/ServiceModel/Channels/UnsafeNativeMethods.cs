@@ -10,6 +10,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
+using System.Security.Permissions;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -339,6 +340,15 @@ namespace System.ServiceModel.Channels
            IntPtr collectionDataTimeout
        );
 
+        // [DllImport(ADVAPI32, SetLastError = true)]
+        // [ResourceExposure(ResourceScope.None)]
+        // internal static extern bool OpenProcessToken
+        //(
+        //    IntPtr ProcessHandle,
+        //    TokenAccessLevels DesiredAccess,
+        //    out SafeCloseHandle TokenHandle
+        //);
+
         // Token marshalled as byte[]
         [DllImport(ADVAPI32, SetLastError = true)]
         static extern unsafe bool GetTokenInformation
@@ -470,7 +480,7 @@ namespace System.ServiceModel.Channels
         }
 
         // NOTE: a macro in win32
-        [SecuritySafeCritical]
+        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         internal unsafe static bool HasOverlappedIoCompleted(
             NativeOverlapped* overlapped)
         {
@@ -526,6 +536,18 @@ namespace System.ServiceModel.Channels
         {
             SetHandle(handle);
         }
+
+        //        internal int GetClientPid()
+        //        {
+        //            int pid;
+        //#pragma warning suppress 56523 // elliotw, Win32Exception ctor calls Marshal.GetLastWin32Error()
+        //            bool success = UnsafeNativeMethods.GetNamedPipeClientProcessId(this, out pid);
+        //            if (!success)
+        //            {
+        //                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new Win32Exception());
+        //            }
+        //            return pid;
+        //        }
 
         protected override bool ReleaseHandle()
         {

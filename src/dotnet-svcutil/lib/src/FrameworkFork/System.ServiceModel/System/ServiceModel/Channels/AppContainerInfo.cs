@@ -28,6 +28,17 @@ namespace System.ServiceModel.Channels
         static int? s_currentSessionId;
         static volatile SecurityIdentifier s_currentAppContainerSid;
 
+        //static AppContainerInfo()
+        //{
+        //    // AppContainers are supported starting in Win8
+        //    s_isAppContainerSupported = OSEnvironmentHelper.IsAtLeast(OSVersion.Win8);
+
+        //    if (!s_isAppContainerSupported)
+        //    {
+        //        s_isRunningInAppContainerSet = true;
+        //    }
+        //}
+
         AppContainerInfo(int sessionId, string namedObjectPath)
         {
             this.SessionId = sessionId;
@@ -128,6 +139,7 @@ namespace System.ServiceModel.Channels
         [Fx.Tag.SecurityNote(Safe = "Process token handle access and dispose is ensured here and we only return a non-critical flag.")]
         static bool RunningInAppContainer()
         {
+            //Fx.Assert(AppContainerInfo.IsAppContainerSupported, "AppContainers are not supported.");
             SafeCloseHandle tokenHandle = null;
             try
             {
@@ -237,7 +249,7 @@ namespace System.ServiceModel.Channels
             SafeCloseHandle tokenHandle = null;
             if (!UnsafeNativeMethods.OpenProcessToken(
                             UnsafeNativeMethods.GetCurrentProcess(),
-                            (UnsafeNativeMethods.TokenAccessLevels)8,
+                            /*TokenAccessLevels.Query*/(UnsafeNativeMethods.TokenAccessLevels)8,
                             out tokenHandle))
             {
                 int error = Marshal.GetLastWin32Error();

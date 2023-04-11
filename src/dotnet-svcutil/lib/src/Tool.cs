@@ -278,11 +278,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     bool needSave = false;
                     foreach (var dep in dependencies)
                     {
-                        if (dep.Name.Contains("NetNamedPipe") && !project.TargetFrameworks.First().Contains("windows"))
-                        {
-                            continue;
-                        }
-
                         needSave |= project.AddDependency(dep);
                     }
 

@@ -68,7 +68,7 @@ namespace System.ServiceModel.Channels
         internal string GetConnectionGroupSuffix()
         {
             string suffix = string.Empty;
-            if (this.TargetingAppContainer)
+            if (/*AppContainerInfo.IsAppContainerSupported && */this.TargetingAppContainer)
             {
                 suffix = string.Format(CultureInfo.InvariantCulture, GroupNameSuffixFormat, this.SessionId, this.PackageFullName);
             }

@@ -40,11 +40,6 @@ namespace System
             }
         }
 
-        internal static void TraceHandledException(Exception exception, TraceEventType traceEventType)
-        {
-            FxTrace.Exception.TraceHandledException(exception, traceEventType);
-        }
-
         private static ExceptionUtility GetExceptionUtility()
         {
             lock (DiagnosticUtility.s_lockObject)

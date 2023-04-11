@@ -1,18 +1,24 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Security.AccessControl;
-using System.Security.Principal;
-
+//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+//-----------------------------------------------------------------------------
 namespace System.ServiceModel.Activation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.Runtime;
+    using System.Runtime.InteropServices;
+    using System.Security;
+    using System.Security.AccessControl;
+    using System.Security.Permissions;
+    using System.Security.Principal;
+    using System.ServiceModel;
+    using System.ServiceModel.Channels;
+    //using System.ServiceModel.ComIntegration;
+    using System.Text;
+
     unsafe static class Utility
     {
         const string WindowsServiceAccountFormat = "NT Service\\{0}";
@@ -180,6 +186,63 @@ namespace System.ServiceModel.Activation
             }
         }
 
+        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        //internal static void KeepOnlyPrivilegeInProcess(string privilege)
+        //{
+        //    SafeCloseHandle process = OpenCurrentProcessForWrite();
+        //    try
+        //    {
+        //        SafeCloseHandle token = GetProcessToken(process, ListenerUnsafeNativeMethods.TOKEN_QUERY | ListenerUnsafeNativeMethods.TOKEN_ADJUST_PRIVILEGES | ListenerUnsafeNativeMethods.READ_CONTROL);
+        //        try
+        //        {
+        //            LUID luid;
+        //            bool success = ListenerUnsafeNativeMethods.LookupPrivilegeValue(IntPtr.Zero, privilege, &luid);
+        //            if (!success)
+        //            {
+        //                int error = Marshal.GetLastWin32Error();
+        //                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new Win32Exception(error));
+        //            }
+
+        //            int length = GetTokenInformationLength(token, ListenerUnsafeNativeMethods.TOKEN_INFORMATION_CLASS.TokenPrivileges);
+        //            byte[] tokenInformation = new byte[length];
+        //            fixed (byte* pTokenPrivileges = tokenInformation)
+        //            {
+        //                GetTokenInformation(token, ListenerUnsafeNativeMethods.TOKEN_INFORMATION_CLASS.TokenPrivileges,
+        //                    tokenInformation);
+
+        //                ListenerUnsafeNativeMethods.TOKEN_PRIVILEGES* pTP = (ListenerUnsafeNativeMethods.TOKEN_PRIVILEGES*)pTokenPrivileges;
+        //                LUID_AND_ATTRIBUTES* pLuidAndAttributes = (LUID_AND_ATTRIBUTES*)(&(pTP->Privileges));
+        //                int privilegeCount = 0;
+        //                for (int i = 0; i < pTP->PrivilegeCount; i++)
+        //                {
+        //                    if (!pLuidAndAttributes[i].Luid.Equals(luid))
+        //                    {
+        //                        pLuidAndAttributes[privilegeCount].Attributes = PrivilegeAttribute.SE_PRIVILEGE_REMOVED;
+        //                        pLuidAndAttributes[privilegeCount].Luid = pLuidAndAttributes[i].Luid;
+        //                        privilegeCount++;
+        //                    }
+        //                }
+        //                pTP->PrivilegeCount = privilegeCount;
+
+        //                success = ListenerUnsafeNativeMethods.AdjustTokenPrivileges(token, false, pTP, tokenInformation.Length, IntPtr.Zero, IntPtr.Zero);
+        //                int error = Marshal.GetLastWin32Error();
+        //                if (!success || error != UnsafeNativeMethods.ERROR_SUCCESS)
+        //                {
+        //                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new Win32Exception(error));
+        //                }
+        //            }
+        //        }
+        //        finally
+        //        {
+        //            token.Close();
+        //        }
+        //    }
+        //    finally
+        //    {
+        //        process.Close();
+        //    }
+        //}
+
         // Do not use this method unless you understand the consequnces of lack of synchronization
         static void EditKernelObjectSecurity(SafeCloseHandle kernelObject, List<SecurityIdentifier> accounts, SecurityIdentifier account, int right, bool add)
         {
@@ -243,7 +306,44 @@ namespace System.ServiceModel.Activation
             }
         }
 
-        [SecuritySafeCritical]
+        //internal static SecurityIdentifier GetWindowsServiceSid(string name)
+        //{
+        //    Fx.Assert(OSEnvironmentHelper.IsVistaOrGreater, "This method can be called only on Vista or greater.");
+        //    string accountName = string.Format(CultureInfo.InvariantCulture, WindowsServiceAccountFormat, name);
+
+        //    byte[] sid = null;
+        //    uint cbSid = 0;
+        //    uint cchReferencedDomainName = 0;
+        //    short peUse;
+        //    int error = UnsafeNativeMethods.ERROR_SUCCESS;
+        //    if (!ListenerUnsafeNativeMethods.LookupAccountName(null, accountName, sid, ref cbSid,
+        //        null, ref cchReferencedDomainName, out peUse))
+        //    {
+        //        error = Marshal.GetLastWin32Error();
+        //        if (error != ListenerUnsafeNativeMethods.ERROR_INSUFFICIENT_BUFFER)
+        //        {
+        //            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new Win32Exception(error));
+        //        }
+        //    }
+
+        //    sid = new byte[cbSid];
+        //    StringBuilder referencedDomainName = new StringBuilder((int)cchReferencedDomainName);
+        //    if (!ListenerUnsafeNativeMethods.LookupAccountName(null, accountName, sid, ref cbSid,
+        //        referencedDomainName, ref cchReferencedDomainName, out peUse))
+        //    {
+        //        error = Marshal.GetLastWin32Error();
+        //        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new Win32Exception(error));
+        //    }
+
+        //    return new SecurityIdentifier(sid, 0);
+        //}
+
+        //internal static int GetPidForService(string serviceName)
+        //{
+        //    return GetStatusForService(serviceName).dwProcessId;
+        //}
+
+        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         internal static SecurityIdentifier GetLogonSidForPid(int pid)
         {
             SafeCloseHandle process = OpenProcessForQuery(pid);
@@ -281,7 +381,38 @@ namespace System.ServiceModel.Activation
             }
         }
 
-        [SecuritySafeCritical]
+        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
+        //internal static SecurityIdentifier GetUserSidForPid(int pid)
+        //{
+        //    SafeCloseHandle process = OpenProcessForQuery(pid);
+        //    try
+        //    {
+        //        SafeCloseHandle token = GetProcessToken(process, ListenerUnsafeNativeMethods.TOKEN_QUERY);
+        //        try
+        //        {
+        //            int length = GetTokenInformationLength(token, ListenerUnsafeNativeMethods.TOKEN_INFORMATION_CLASS.TokenUser);
+        //            byte[] tokenInformation = new byte[length];
+        //            fixed (byte* pTokenInformation = tokenInformation)
+        //            {
+        //                GetTokenInformation(token, ListenerUnsafeNativeMethods.TOKEN_INFORMATION_CLASS.TokenUser, tokenInformation);
+
+        //                ListenerUnsafeNativeMethods.TOKEN_USER* ptg = (ListenerUnsafeNativeMethods.TOKEN_USER*)pTokenInformation;
+        //                ListenerUnsafeNativeMethods.SID_AND_ATTRIBUTES* sids = (ListenerUnsafeNativeMethods.SID_AND_ATTRIBUTES*)(&(ptg->User));
+        //                return new SecurityIdentifier(sids->Sid);
+        //            }
+        //        }
+        //        finally
+        //        {
+        //            token.Close();
+        //        }
+        //    }
+        //    finally
+        //    {
+        //        process.Close();
+        //    }
+        //}
+
+        //[PermissionSet(SecurityAction.Demand, Unrestricted = true), SecuritySafeCritical]
         static ListenerUnsafeNativeMethods.SERVICE_STATUS_PROCESS GetStatusForService(string serviceName)
         {
             SafeServiceHandle scManager = OpenSCManager();

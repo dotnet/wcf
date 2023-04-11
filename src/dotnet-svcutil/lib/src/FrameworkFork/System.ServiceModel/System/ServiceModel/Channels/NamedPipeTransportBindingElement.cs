@@ -4,6 +4,10 @@
 
 namespace System.ServiceModel.Channels
 {
+    using System.Collections.Generic;
+    using System.Security.Principal;
+    using Microsoft.Tools.ServiceModel.Svcutil;
+
     public class NamedPipeTransportBindingElement : ConnectionOrientedTransportBindingElement
     {
         private NamedPipeSettings _settings = new NamedPipeSettings();

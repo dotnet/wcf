@@ -1,14 +1,16 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using System.ComponentModel;
-using System.Security;
-using System.Threading;
-using Microsoft.Win32.SafeHandles;
+//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+//------------------------------------------------------------
 
 namespace System.Runtime
 {
+    using System;
+    using System.ComponentModel;
+    //using System.Runtime.Interop;
+    using System.Security;
+    using System.Threading;
+    using Microsoft.Win32.SafeHandles;
+
     // IOThreadTimer has several characterstics that are important for performance:
     // - Timers that expire benefit from being scheduled to run on IO threads using IOThreadScheduler.Schedule.
     // - The timer "waiter" thread thread is only allocated if there are set timers.
@@ -72,6 +74,15 @@ namespace System.Runtime
         [SecuritySafeCritical]
         static long GetSystemTimeResolution()
         {
+            //int dummyAdjustment;
+            //uint increment;
+            //uint dummyAdjustmentDisabled;
+
+            //if (UnsafeNativeMethods.GetSystemTimeAdjustment(out dummyAdjustment, out increment, out dummyAdjustmentDisabled) != 0)
+            //{
+            //    return (long)increment;
+            //}
+
             // Assume the default, which is around 15 milliseconds.
             return 15 * TimeSpan.TicksPerMillisecond;
         }
@@ -639,3 +650,5 @@ namespace System.Runtime
         }
     }
 }
+
+
