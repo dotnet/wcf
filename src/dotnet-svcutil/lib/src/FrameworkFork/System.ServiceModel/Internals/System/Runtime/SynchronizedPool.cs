@@ -46,10 +46,10 @@ namespace System.Runtime
     // 
     internal class SynchronizedPool<T> where T : class
     {
-        private const int maxPendingEntries = 128;
-        private const int maxPromotionFailures = 64;
-        private const int maxReturnsBeforePromotion = 64;
-        private const int maxThreadItemsPerProcessor = 16;
+        private const int MaxPendingEntries = 128;
+        private const int MaxPromotionFailures = 64;
+        private const int MaxReturnsBeforePromotion = 64;
+        private const int MaxThreadItemsPerProcessor = 16;
         private Entry[] _entries;
         private GlobalPool _globalPool;
         private int _maxCount;
@@ -59,7 +59,7 @@ namespace System.Runtime
         public SynchronizedPool(int maxCount)
         {
             int threadCount = maxCount;
-            int maxThreadCount = maxThreadItemsPerProcessor + SynchronizedPoolHelper.ProcessorCount;
+            int maxThreadCount = MaxThreadItemsPerProcessor + SynchronizedPoolHelper.ProcessorCount;
             if (threadCount > maxThreadCount)
             {
                 threadCount = maxThreadCount;
@@ -94,7 +94,7 @@ namespace System.Runtime
         {
             int newPromotionFailures = _promotionFailures + 1;
 
-            if (newPromotionFailures >= maxPromotionFailures)
+            if (newPromotionFailures >= MaxPromotionFailures)
             {
                 lock (ThisLock)
                 {
@@ -147,7 +147,7 @@ namespace System.Runtime
                 {
                     int newReturnCount = localPending[i].returnCount + 1;
 
-                    if (newReturnCount >= maxReturnsBeforePromotion)
+                    if (newReturnCount >= MaxReturnsBeforePromotion)
                     {
                         localPending[i].returnCount = 0;
 
@@ -194,7 +194,7 @@ namespace System.Runtime
                 }
             }
 
-            if (localPending.Length >= maxPendingEntries)
+            if (localPending.Length >= MaxPendingEntries)
             {
                 _pending = new PendingEntry[localPending.Length];
             }

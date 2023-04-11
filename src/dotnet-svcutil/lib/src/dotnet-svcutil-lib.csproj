@@ -4,7 +4,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
   </PropertyGroup>
@@ -29,6 +29,8 @@
     <IncludeSource>false</IncludeSource>
     <!-- Enable localization -->
     <EnableXlfLocalization>true</EnableXlfLocalization>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -66,6 +68,7 @@
     <PackageReference Include="System.Reflection.DispatchProxy" Version="4.4.0" />
     <PackageReference Include="System.Security.AccessControl" Version="6.0.0" />
     <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
+    <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
   </ItemGroup>
 
   <!-- Include resx files here so that arcade will handle them correctly. -->

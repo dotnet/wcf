@@ -280,3 +280,4 @@ config.ps1
 # Debug files
 *.etl
 *.dmp
+/src/System.Private.ServiceModel/tests/Scenarios/Binding/NamedPipe

@@ -298,9 +298,11 @@ namespace System.ServiceModel.Channels
             return new BufferedConnection(_connectionInitiator.Connect(uri, timeout), _flushTimeout, _writeBufferSize);
         }
 
-        public async Task<IConnection> ConnectAsync(Uri uri, TimeSpan timeout)
+        public async ValueTask<IConnection> ConnectAsync(Uri uri, TimeSpan timeout)
         {
             return new BufferedConnection(await _connectionInitiator.ConnectAsync(uri, timeout), _flushTimeout, _writeBufferSize);
         }
+
+
     }
 }

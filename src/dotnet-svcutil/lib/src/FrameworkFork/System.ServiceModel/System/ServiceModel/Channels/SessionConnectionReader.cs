@@ -204,12 +204,28 @@ namespace System.ServiceModel.Channels
                 if (EnvelopeBuffer != null &&
                     (EnvelopeSize - EnvelopeOffset) >= _buffer.Length)
                 {
-                    bytesRead = _connection.Read(EnvelopeBuffer, EnvelopeOffset, _buffer.Length, timeoutHelper.RemainingTime());
+                    if (_connection is PipeConnection)
+                    {
+                        bytesRead = _connection.ReadAsync(new Memory<byte>(EnvelopeBuffer, EnvelopeOffset, _buffer.Length), timeoutHelper.RemainingTime()).GetAwaiter().GetResult();                        
+                    }
+                    else
+                    {
+                        bytesRead = _connection.Read(EnvelopeBuffer, EnvelopeOffset, _buffer.Length, timeoutHelper.RemainingTime());                        
+                    }
+
                     HandleReadComplete(bytesRead, true);
                 }
                 else
                 {
-                    bytesRead = _connection.Read(_buffer, 0, _buffer.Length, timeoutHelper.RemainingTime());
+                    if (_connection is PipeConnection)
+                    {
+                        bytesRead = _connection.ReadAsync(new Memory<byte>(_buffer, 0, _buffer.Length), timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                    }
+                    else
+                    {
+                        bytesRead = _connection.Read(_buffer, 0, _buffer.Length, timeoutHelper.RemainingTime());
+                    }
+                    
                     HandleReadComplete(bytesRead, false);
                 }
             }

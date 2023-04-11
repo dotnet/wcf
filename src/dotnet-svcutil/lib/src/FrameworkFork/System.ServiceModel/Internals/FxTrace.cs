@@ -12,7 +12,7 @@ namespace System
 {
     internal static partial class FxTrace
     {
-        private const string baseEventSourceName = "System.ServiceModel";
+        private const string BaseEventSourceName = "System.ServiceModel";
         private const string EventSourceVersion = "4.0.0.0";
 
         private static Guid s_etwProviderId;
@@ -57,7 +57,7 @@ namespace System
             {
                 if (s_eventSourceName == null)
                 {
-                    s_eventSourceName = string.Concat(baseEventSourceName, " ", EventSourceVersion);
+                    s_eventSourceName = string.Concat(BaseEventSourceName, " ", EventSourceVersion);
                 }
 
                 return s_eventSourceName;
@@ -71,7 +71,7 @@ namespace System
             //Etw tracing is switched off by not enabling the session
             s_etwProviderId = EtwDiagnosticTrace.DefaultEtwProviderId;
 
-            EtwDiagnosticTrace trace = new EtwDiagnosticTrace(baseEventSourceName, s_etwProviderId);
+            EtwDiagnosticTrace trace = new EtwDiagnosticTrace(BaseEventSourceName, s_etwProviderId);
 
             return trace;
         }

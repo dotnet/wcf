@@ -6,6 +6,7 @@ namespace System.Runtime
 {
     using System;
     using System.Threading;
+    using System.Threading.Tasks;
 
     sealed class BackoffTimeoutHelper
     {
@@ -95,6 +96,12 @@ namespace System.Runtime
         public void WaitAndBackoff()
         {
             Thread.Sleep(WaitTimeWithDrift());
+            Backoff();
+        }
+
+        public async Task WaitAndBackoffAsync()
+        {
+            await Task.Delay(WaitTimeWithDrift());
             Backoff();
         }
 

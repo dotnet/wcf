@@ -30,18 +30,23 @@ namespace System.ServiceModel.Channels
         int Read(byte[] buffer, int offset, int size, TimeSpan timeout);
         AsyncCompletionResult BeginRead(int offset, int size, TimeSpan timeout, Action<object> callback, object state);
         int EndRead();
+
+        int ConnectionBufferSize { get; }
+        ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout);
+        ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, bool immediate, TimeSpan timeout);       
+        ValueTask CloseAsync(TimeSpan timeout);
     }
 
     // Low level abstraction for connecting a socket/pipe
     public interface IConnectionInitiator
     {
         IConnection Connect(Uri uri, TimeSpan timeout);
-        Task<IConnection> ConnectAsync(Uri uri, TimeSpan timeout);
+        ValueTask<IConnection> ConnectAsync(Uri uri, TimeSpan timeout);
     }
 
     internal abstract class DelegatingConnection : IConnection
     {
-        private IConnection _connection;
+        private IConnection _connection;       
 
         protected DelegatingConnection(IConnection connection)
         {
@@ -77,7 +82,16 @@ namespace System.ServiceModel.Channels
         public virtual AsyncCompletionResult BeginWrite(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout,
             Action<object> callback, object state)
         {
-            return _connection.BeginWrite(buffer, offset, size, immediate, timeout, callback, state);
+            if (_connection is PipeConnection)
+            {
+                _connection.WriteAsync(new Memory<byte>(buffer, offset, size), immediate, timeout).GetAwaiter().GetResult();
+                return AsyncCompletionResult.Completed;
+            }
+            else
+            {
+                return _connection.BeginWrite(buffer, offset, size, immediate, timeout, callback, state);
+            }
+            
         }
 
         public virtual void EndWrite()
@@ -87,29 +101,66 @@ namespace System.ServiceModel.Channels
 
         public virtual void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout)
         {
-            _connection.Write(buffer, offset, size, immediate, timeout);
+            if (_connection is PipeConnection)
+            {
+                _connection.WriteAsync(new Memory<byte>(buffer, offset, size), immediate, timeout).GetAwaiter().GetResult();
+            }
+            else
+            {
+                _connection.Write(buffer, offset, size, immediate, timeout);
+            }
+               
         }
 
         public virtual void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, BufferManager bufferManager)
         {
-            _connection.Write(buffer, offset, size, immediate, timeout, bufferManager);
+            if (_connection is PipeConnection)
+            {
+                _connection.WriteAsync(new Memory<byte>(buffer, offset, size), immediate, timeout).GetAwaiter().GetResult();
+            }
+            else
+            {
+                _connection.Write(buffer, offset, size, immediate, timeout, bufferManager);
+            }
         }
 
         public virtual int Read(byte[] buffer, int offset, int size, TimeSpan timeout)
         {
-            return _connection.Read(buffer, offset, size, timeout);
+            if (_connection is PipeConnection)
+            {
+               return  _connection.ReadAsync(new Memory<byte>(buffer, offset, size), timeout).GetAwaiter().GetResult();
+            }
+            else
+            {
+                return _connection.Read(buffer, offset, size, timeout);
+            }
         }
 
         public virtual AsyncCompletionResult BeginRead(int offset, int size, TimeSpan timeout,
             Action<object> callback, object state)
         {
-            return _connection.BeginRead(offset, size, timeout, callback, state);
+            if (_connection is PipeConnection)
+            {
+               _connection.ReadAsync(new Memory<byte>(AsyncReadBuffer,offset, size), timeout).GetAwaiter().GetResult();
+                return AsyncCompletionResult.Completed;
+            }
+            else
+            {
+                return _connection.BeginRead(offset, size, timeout, callback, state);
+            }
         }
 
         public virtual int EndRead()
         {
             return _connection.EndRead();
         }
+
+        public virtual int ConnectionBufferSize => Connection.ConnectionBufferSize;
+
+        public virtual ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout) => Connection.ReadAsync(buffer, timeout);
+        public virtual ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, bool immediate, TimeSpan timeout) => Connection.WriteAsync(buffer, immediate, timeout);
+        public virtual ValueTask CloseAsync(TimeSpan timeout) => Connection.CloseAsync(timeout);
+
     }
 
     internal class PreReadConnection : DelegatingConnection
@@ -194,6 +245,21 @@ namespace System.ServiceModel.Channels
             }
 
             return base.EndRead();
+        }
+
+        public override ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout)
+        {
+            ConnectionUtilities.ValidateBufferBounds(buffer);
+
+            if (!new Memory<byte>(_preReadData).IsEmpty)
+            {
+                int bytesToCopy = Math.Min(buffer.Length, _preReadData.Length);
+                new Memory<byte>(_preReadData).Slice(0, bytesToCopy).CopyTo(buffer);
+                _preReadData = new Memory<byte>(_preReadData).Slice(bytesToCopy).ToArray();
+                return new ValueTask<int>(bytesToCopy);
+            }
+
+            return base.ReadAsync(buffer, timeout);
         }
     }
 
@@ -499,6 +565,7 @@ namespace System.ServiceModel.Channels
             get { return this; }
         }
 
+        public int ConnectionBufferSize => _innerStream.Connection.ConnectionBufferSize;
 
         public IPEndPoint RemoteIPEndPoint
         {
@@ -717,6 +784,48 @@ namespace System.ServiceModel.Channels
             _readResult = antecedant;
             _readCallback(state);
         }
+
+        public async ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout)
+        {
+            ConnectionUtilities.ValidateBufferBounds(buffer);
+
+            try
+            {
+                SetReadTimeout(timeout);
+                return await Stream.ReadAsync(buffer);
+            }
+            catch (IOException ioException)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(ConvertIOException(ioException));
+            }
+        }
+
+        public async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, bool immediate, TimeSpan timeout)
+        {
+            try
+            {
+                _innerStream.Immediate = immediate;
+                SetWriteTimeout(timeout);
+                await Stream.WriteAsync(buffer);
+            }
+            catch (IOException ioException)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(ConvertIOException(ioException));
+            }
+        }
+
+        public async ValueTask CloseAsync(TimeSpan timeout)
+        {
+            _innerStream.CloseTimeout = timeout;
+            try
+            {
+                await Stream.DisposeAsync();
+            }
+            catch (IOException ioException)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(ConvertIOException(ioException));
+            }
+        }
     }
 
     internal class ConnectionMessageProperty
@@ -767,6 +876,14 @@ namespace System.ServiceModel.Channels
         internal static void ValidateBufferBounds(ArraySegment<byte> buffer)
         {
             ValidateBufferBounds(buffer.Array, buffer.Offset, buffer.Count);
+        }
+
+        internal static void ValidateBufferBounds(Memory<byte> buffer)
+        {
+            if (buffer.IsEmpty)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(buffer));
+            }
         }
 
         internal static void ValidateBufferBounds(byte[] buffer, int offset, int size)

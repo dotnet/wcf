@@ -45,7 +45,7 @@ namespace System.ServiceModel.Channels
         public SocketConnection(ConnectionBufferPool connectionBufferPool)
         {
             Contract.Assert(connectionBufferPool != null, "Argument connectionBufferPool cannot be null");
-
+            ConnectionBufferSize=connectionBufferPool.BufferSize;
             _closeState = CloseState.Open;
             _connectionBufferPool = connectionBufferPool;
             _readBuffer = _connectionBufferPool.Take();
@@ -72,6 +72,8 @@ namespace System.ServiceModel.Channels
         }
 
         protected abstract IPEndPoint RemoteEndPoint { get; }
+
+       public int ConnectionBufferSize { get; }
 
         protected static void OnReceiveTimeout(object state)
         {
@@ -402,6 +404,10 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        ValueTask<int> IConnection.ReadAsync(Memory<byte> buffer, TimeSpan timeout) => throw new NotImplementedException();
+        ValueTask IConnection.WriteAsync(ReadOnlyMemory<byte> buffer, bool immediate, TimeSpan timeout) => throw new NotImplementedException();
+        ValueTask IConnection.CloseAsync(TimeSpan timeout) => throw new NotImplementedException();
+
         protected enum CloseState
         {
             Open,
@@ -635,5 +641,7 @@ namespace System.ServiceModel.Channels
 
             return socketConnection;
         }
+
+        ValueTask<IConnection> IConnectionInitiator.ConnectAsync(Uri uri, TimeSpan timeout) => throw new NotImplementedException();
     }
 }

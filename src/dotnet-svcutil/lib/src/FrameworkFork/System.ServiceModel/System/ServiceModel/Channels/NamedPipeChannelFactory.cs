@@ -41,7 +41,7 @@ namespace System.ServiceModel.Channels
         internal override IConnectionInitiator GetConnectionInitiator()
         {
             IConnectionInitiator pipeConnectionInitiator =
-                new PipeConnectionInitiator(ConnectionBufferSize, this);
+                new PipeConnectionInitiator(ConnectionBufferSize);
 #if CONNECTIONDUMP
             pipeConnectionInitiator = new ConnectionDumpInitiator(pipeConnectionInitiator);
 #endif

@@ -59,6 +59,11 @@ namespace System
             get { return DiagnosticUtility.s_shouldUseActivity; }
         }
 
+        internal static void TraceHandledException(Exception exception, TraceEventType traceEventType)
+        {
+            FxTrace.Exception.TraceHandledException(exception, traceEventType);
+        }
+
         internal static class Utility
         {
             public static byte[] AllocateByteArray(int size)

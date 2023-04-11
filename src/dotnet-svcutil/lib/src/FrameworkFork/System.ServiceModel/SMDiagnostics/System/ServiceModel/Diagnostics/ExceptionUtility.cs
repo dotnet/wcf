@@ -17,7 +17,7 @@ namespace System
 
 #pragma warning disable 649
         // This field should be only used for debug build.
-        internal static ExceptionUtility mainInstance;
+        internal static ExceptionUtility s_mainInstance;
 #pragma warning restore 649
 
         private ExceptionTrace _exceptionTrace;
@@ -105,6 +105,12 @@ namespace System
         {
             FxTrace.Exception.TraceEtwException(exception, eventLevel);
 
+            return exception;
+        }
+
+        internal Exception ThrowHelper(Exception exception, TraceEventType eventType)
+        {
+            FxTrace.Exception.TraceEtwException(exception, eventType);
             return exception;
         }
 
