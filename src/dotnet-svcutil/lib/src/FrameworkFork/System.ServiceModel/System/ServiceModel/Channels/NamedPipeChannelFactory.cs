@@ -40,7 +40,8 @@ namespace System.ServiceModel.Channels
 
         internal override IConnectionInitiator GetConnectionInitiator()
         {
-            return new PipeConnectionInitiator(ConnectionBufferSize);
+            IConnectionInitiator pipeConnectionInitiator = new PipeConnectionInitiator(ConnectionBufferSize);
+            return new BufferedConnectionInitiator(pipeConnectionInitiator, MaxOutputDelay, ConnectionBufferSize);
         }
 
         internal override ConnectionPool GetConnectionPool()
