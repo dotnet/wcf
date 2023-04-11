@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Buffers;
 using System.Runtime;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
@@ -145,14 +146,28 @@ namespace System.ServiceModel.Channels
                 int bytesRead;
 
                 var tcs = new TaskCompletionSource<bool>();
-                var result = _connection.BeginRead(0, _buffer.Length, timeoutHelper.RemainingTime(), TaskHelpers.OnAsyncCompletionCallback, tcs);
-                if (result == AsyncCompletionResult.Completed)
-                {
-                    tcs.TrySetResult(true);
-                }
-                await tcs.Task;
 
-                bytesRead = _connection.EndRead();
+                if (_connection is PipeConnection)
+                {
+                    if (_buffer.Length == 0)
+                    {
+                        _buffer = ArrayPool<byte>.Shared.Rent((_connection as PipeConnection).ConnectionBufferSize);
+                    }
+                        
+                    bytesRead = await (_connection as PipeConnection).ReadAsync(_buffer, timeoutHelper.RemainingTime());
+                }
+                else
+                {
+                    var result = _connection.BeginRead(0, _buffer.Length, timeoutHelper.RemainingTime(), TaskHelpers.OnAsyncCompletionCallback, tcs);
+                    if (result == AsyncCompletionResult.Completed)
+                    {
+                        tcs.TrySetResult(true);
+                    }
+                    await tcs.Task;
+
+                    bytesRead = _connection.EndRead();
+                }
+
                 HandleReadComplete(bytesRead, false);
             }
         }
