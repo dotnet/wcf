@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
@@ -77,7 +76,15 @@ namespace System.ServiceModel.Channels
         public virtual AsyncCompletionResult BeginWrite(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout,
             Action<object> callback, object state)
         {
-            return _connection.BeginWrite(buffer, offset, size, immediate, timeout, callback, state);
+            if (_connection is PipeConnection)
+            {
+                (_connection as PipeConnection).WriteAsync(new Memory<byte>(buffer, offset, size), immediate, timeout).GetAwaiter().GetResult();
+                return AsyncCompletionResult.Completed;
+            }
+            else
+            {
+                return _connection.BeginWrite(buffer, offset, size, immediate, timeout, callback, state);
+            }
         }
 
         public virtual void EndWrite()
@@ -87,23 +94,52 @@ namespace System.ServiceModel.Channels
 
         public virtual void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout)
         {
-            _connection.Write(buffer, offset, size, immediate, timeout);
+            if (_connection is PipeConnection)
+            {
+                (_connection as PipeConnection).WriteAsync(new Memory<byte>(buffer, offset, size), immediate, timeout).GetAwaiter().GetResult();
+            }
+            else
+            {
+                _connection.Write(buffer, offset, size, immediate, timeout);
+            }
         }
 
         public virtual void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, BufferManager bufferManager)
         {
-            _connection.Write(buffer, offset, size, immediate, timeout, bufferManager);
+            if (_connection is PipeConnection)
+            {
+                (_connection as PipeConnection).WriteAsync(new Memory<byte>(buffer, offset, size), immediate, timeout).GetAwaiter().GetResult();
+            }
+            else
+            {
+                _connection.Write(buffer, offset, size, immediate, timeout, bufferManager);
+            }
         }
 
         public virtual int Read(byte[] buffer, int offset, int size, TimeSpan timeout)
         {
-            return _connection.Read(buffer, offset, size, timeout);
+            if (_connection is PipeConnection)
+            {
+                return (_connection as PipeConnection).ReadAsync(new Memory<byte>(buffer, offset, size), timeout).GetAwaiter().GetResult();
+            }
+            else
+            {
+                return _connection.Read(buffer, offset, size, timeout);
+            }
         }
 
         public virtual AsyncCompletionResult BeginRead(int offset, int size, TimeSpan timeout,
             Action<object> callback, object state)
         {
-            return _connection.BeginRead(offset, size, timeout, callback, state);
+            if (_connection is PipeConnection)
+            {
+                (_connection as PipeConnection).ReadAsync(new Memory<byte>(AsyncReadBuffer, offset, size), timeout).GetAwaiter().GetResult();
+                return AsyncCompletionResult.Completed;
+            }
+            else
+            {
+                return _connection.BeginRead(offset, size, timeout, callback, state);
+            }
         }
 
         public virtual int EndRead()

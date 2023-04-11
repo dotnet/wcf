@@ -19,6 +19,7 @@ namespace System.ServiceModel.Channels
         private TraceEventType _exceptionEventType;
         private static readonly byte[] s_zeroBuffer = Array.Empty<byte>();
         byte[] _asyncReadBuffer;
+        private int _asyncBytesRead;
 
         // read state
         private readonly object _readLock = new object();
@@ -145,6 +146,7 @@ namespace System.ServiceModel.Channels
                 }
 
                 int bytesRead = await _pipe.ReadAsync(buffer, cancellationToken);
+                _asyncBytesRead = bytesRead;
                 if (bytesRead == 0)
                 {
                     _isAtEOF = true;
@@ -581,7 +583,11 @@ namespace System.ServiceModel.Channels
         void IConnection.Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, BufferManager bufferManager) => throw new NotImplementedException();
         int IConnection.Read(byte[] buffer, int offset, int size, TimeSpan timeout) => throw new NotImplementedException();
         AsyncCompletionResult IConnection.BeginRead(int offset, int size, TimeSpan timeout, Action<object> callback, object state) => throw new NotImplementedException();
-        int IConnection.EndRead() => throw new NotImplementedException();
+        int IConnection.EndRead()
+        {
+            return _asyncBytesRead;
+        }
+
 
         private enum CloseState
         {
