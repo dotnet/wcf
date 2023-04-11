@@ -5,10 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Runtime;
-using System.ServiceModel.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using static Microsoft.Tools.ServiceModel.Svcutil.Metadata.MetadataConstants;
 
 namespace System.ServiceModel.Channels
 {
@@ -20,6 +18,7 @@ namespace System.ServiceModel.Channels
         private bool _aborted;
         private TraceEventType _exceptionEventType;
         private static readonly byte[] s_zeroBuffer = Array.Empty<byte>();
+        byte[] _asyncReadBuffer;
 
         // read state
         private readonly object _readLock = new object();
@@ -45,6 +44,7 @@ namespace System.ServiceModel.Channels
             if (!namedPipeClient.IsConnected)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(namedPipeClient));
 
+            _asyncReadBuffer = DiagnosticUtility.Utility.AllocateByteArray(connectionBufferSize);
             _pipe = namedPipeClient;
             _closeState = CloseState.Open;
             _exceptionEventType = TraceEventType.Error;
@@ -74,9 +74,18 @@ namespace System.ServiceModel.Channels
             set { _exceptionEventType = value; }
         }
 
-        byte[] IConnection.AsyncReadBuffer => throw new NotImplementedException();
+        byte[] IConnection.AsyncReadBuffer
+        {
+            get
+            {
+                return _asyncReadBuffer; ;
+            }
+        }
 
-        int IConnection.AsyncReadBufferSize => throw new NotImplementedException();
+        int IConnection.AsyncReadBufferSize
+        {
+            get { return ConnectionBufferSize; }
+        }
 
         public void Abort()
         {
@@ -567,13 +576,7 @@ namespace System.ServiceModel.Channels
 
         void IConnection.Close(TimeSpan timeout, bool asyncAndLinger) => throw new NotImplementedException();
         AsyncCompletionResult IConnection.BeginWrite(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, Action<object> callback, object state) => throw new NotImplementedException();
-        //{
-        //    WriteAsync(buffer, immediate, timeout).AsTask().ToApm(callback, state);
-        //    return AsyncCompletionResult.Completed;
-
-        //    //return DownloadStringAsync(url).AsApm(callback, state);
-        //}
-        void IConnection.EndWrite() => throw new NotImplementedException();
+        void IConnection.EndWrite() { }
         void IConnection.Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout) => throw new NotImplementedException();
         void IConnection.Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, BufferManager bufferManager) => throw new NotImplementedException();
         int IConnection.Read(byte[] buffer, int offset, int size, TimeSpan timeout) => throw new NotImplementedException();

@@ -49,12 +49,11 @@ namespace System.ServiceModel.Channels
             get { return false; }
         }
 
-        protected override async void CloseOutputSessionCore(TimeSpan timeout)
+        protected override void CloseOutputSessionCore(TimeSpan timeout)
         {
-            Connection.Write(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length, true, timeout);
-            if(Connection is PipeConnection)
+            if (Connection is PipeConnection)
             {
-                await (Connection as PipeConnection).WriteAsync(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length, true, timeout);
+                (Connection as PipeConnection).WriteAsync(new Memory<byte>(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length), true, timeout).GetAwaiter().GetResult();
             }
             else
             {
@@ -66,13 +65,12 @@ namespace System.ServiceModel.Channels
         {
             if (Connection is PipeConnection)
             {
-                return (Connection as PipeConnection).WriteAsync(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length, true, timeout);
+                return (Connection as PipeConnection).WriteAsync(new Memory<byte>(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length), true, timeout).AsTask();
             }
             else
             {
                 return Connection.WriteAsync(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length, true, timeout);
             }
-                
         }
 
         protected override void CompleteClose(TimeSpan timeout)
@@ -89,49 +87,49 @@ namespace System.ServiceModel.Channels
             base.PrepareMessage(message);
         }
 
-        protected override async void OnSendCore(Message message, TimeSpan timeout)
+        protected override void OnSendCore(Message message, TimeSpan timeout)
         {
             bool allowOutputBatching;
             ArraySegment<byte> messageData;
 
             allowOutputBatching = message.Properties.AllowOutputBatching;
             messageData = this.EncodeMessage(message);
-
-            if(this.Connection is PipeConnection)
+            if (Connection is PipeConnection)
             {
-                await (this.Connection as PipeConnection).WriteAsync(messageData.Array, messageData.Offset, messageData.Count, !allowOutputBatching, timeout);
+                (Connection as PipeConnection).WriteAsync(new Memory<byte>(messageData.Array, messageData.Offset, messageData.Count), !allowOutputBatching,
+                timeout).GetAwaiter().GetResult();
             }
             else
             {
                 this.Connection.Write(messageData.Array, messageData.Offset, messageData.Count, !allowOutputBatching,
                 timeout, this.BufferManager);
             }
-            
         }
 
         protected override AsyncCompletionResult BeginCloseOutput(TimeSpan timeout, Action<object> callback, object state)
         {
-            return this.Connection.BeginWrite(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length,
+            if (Connection is PipeConnection)
+            {
+                (Connection as PipeConnection).WriteAsync(new Memory<byte>(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length), true, timeout).GetAwaiter().GetResult();
+                return AsyncCompletionResult.Completed;
+            }
+            else
+            {
+                return this.Connection.BeginWrite(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length,
                     true, timeout, callback, state);
+            }
         }
 
         protected override void FinishWritingMessage()
         {
-            if (this.Connection is PipeConnection)
-            {
-                //no op
-            }
-            else
-            {
-                this.Connection.EndWrite();
-            }
+            this.Connection.EndWrite();
         }
 
         protected override AsyncCompletionResult StartWritingBufferedMessage(Message message, ArraySegment<byte> messageData, bool allowOutputBatching, TimeSpan timeout, Action<object> callback, object state)
         {
-            if(this.Connection is PipeConnection)
+            if (Connection is PipeConnection)
             {
-                (this.Connection as PipeConnection).WriteAsync(messageData.Array,!allowOutputBatching, timeout).GetAwaiter().GetResult();
+                (Connection as PipeConnection).WriteAsync(new Memory<byte>(messageData.Array, messageData.Offset, messageData.Count), true, timeout).GetAwaiter().GetResult();
                 return AsyncCompletionResult.Completed;
             }
             else
@@ -139,7 +137,6 @@ namespace System.ServiceModel.Channels
                 return this.Connection.BeginWrite(messageData.Array, messageData.Offset, messageData.Count,
                     !allowOutputBatching, timeout, callback, state);
             }
-            
         }
 
         protected override AsyncCompletionResult StartWritingStreamedMessage(Message message, TimeSpan timeout, Action<object> callback, object state)
@@ -285,14 +282,15 @@ namespace System.ServiceModel.Channels
             // initialize a new decoder
             _decoder = new ClientDuplexDecoder(0);
             byte[] ackBuffer = new byte[1];
-            if(connection is PipeConnection)
+
+            if (connection is PipeConnection)
             {
-                await (connection as PipeConnection).WriteAsync(preamble.Array, true, timeoutHelper.RemainingTime());
+                await (connection as PipeConnection).WriteAsync(new Memory<byte>(preamble.Array, preamble.Offset, preamble.Count), true, timeoutHelper.RemainingTime());
             }
             else
             {
                 await connection.WriteAsync(preamble.Array, preamble.Offset, preamble.Count, true, timeoutHelper.RemainingTime());
-            }            
+            }
 
             if (_upgrade != null)
             {
@@ -313,25 +311,24 @@ namespace System.ServiceModel.Channels
 
                 if (connection is PipeConnection)
                 {
-                    await (connection as PipeConnection).WriteAsync(ClientDuplexEncoder.PreambleEndBytes, true, timeoutHelper.RemainingTime());
+                    await (Connection as PipeConnection).WriteAsync(new Memory<byte>(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length), true, timeoutHelper.RemainingTime());
                 }
                 else
                 {
                     await connection.WriteAsync(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
                 }
-                
             }
 
-            int ackBytesRead;
+            int ackBytesRead = 0;
+
             if (connection is PipeConnection)
             {
-                ackBytesRead = await(connection as PipeConnection).ReadAsync(ackBuffer, timeoutHelper.RemainingTime());
+                ackBytesRead = await (connection as PipeConnection).ReadAsync(new Memory<byte>(ackBuffer, 0, ackBuffer.Length), timeoutHelper.RemainingTime());
             }
             else
             {
                 ackBytesRead = await connection.ReadAsync(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
             }
-            
 
             if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, _decoder, Via))
             {
@@ -348,15 +345,15 @@ namespace System.ServiceModel.Channels
             // initialize a new decoder
             _decoder = new ClientDuplexDecoder(0);
             byte[] ackBuffer = new byte[1];
+
             if (connection is PipeConnection)
             {
-                (connection as PipeConnection).WriteAsync(preamble.Array, true, timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                (connection as PipeConnection).WriteAsync(new Memory<byte>(preamble.Array, preamble.Offset, preamble.Count), true, timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
             }
             else
             {
                 connection.Write(preamble.Array, preamble.Offset, preamble.Count, true, timeoutHelper.RemainingTime());
             }
-
 
             if (_upgrade != null)
             {
@@ -370,20 +367,28 @@ namespace System.ServiceModel.Channels
 
                 SetRemoteSecurity(upgradeInitiator);
                 upgradeInitiator.Close(timeoutHelper.RemainingTime());
-                connection.Write(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
+
+                if (connection is PipeConnection)
+                {
+                    (connection as PipeConnection).WriteAsync(new Memory<byte>(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length), true, timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                }
+                else
+                {
+                    connection.Write(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
+                }
             }
 
             // read ACK
             int ackBytesRead;
             if (connection is PipeConnection)
             {
-                ackBytesRead = (connection as PipeConnection).ReadAsync(ackBuffer, timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                ackBytesRead = (connection as PipeConnection).ReadAsync(new Memory<byte>(ackBuffer, 0, ackBuffer.Length), timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
             }
             else
             {
                 ackBytesRead = connection.Read(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
             }
-            
+
             if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, _decoder, Via))
             {
                 ConnectionUpgradeHelper.DecodeFramingFault(_decoder, connection, Via,
@@ -573,7 +578,16 @@ namespace System.ServiceModel.Channels
 
             int offset = 0;
             byte[] faultBuffer = Fx.AllocateByteArray(FaultStringDecoder.FaultSizeQuota);
-            int size = connection.Read(faultBuffer, offset, faultBuffer.Length, timeoutHelper.RemainingTime());
+
+            int size;
+            if (connection is PipeConnection)
+            {
+                size = (connection as PipeConnection).ReadAsync(new Memory<byte>(faultBuffer, offset, faultBuffer.Length), timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+            }
+            else
+            {
+                size = connection.Read(faultBuffer, offset, faultBuffer.Length, timeoutHelper.RemainingTime());
+            }
 
             while (size > 0)
             {
@@ -596,7 +610,14 @@ namespace System.ServiceModel.Channels
                     if (size == 0)
                     {
                         offset = 0;
-                        size = connection.Read(faultBuffer, offset, faultBuffer.Length, timeoutHelper.RemainingTime());
+                        if (connection is PipeConnection)
+                        {
+                            size = (connection as PipeConnection).ReadAsync(new Memory<byte>(faultBuffer, offset, faultBuffer.Length), timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                        }
+                        else
+                        {
+                            size = connection.Read(faultBuffer, offset, faultBuffer.Length, timeoutHelper.RemainingTime());
+                        }
                     }
                 }
             }
@@ -616,8 +637,16 @@ namespace System.ServiceModel.Channels
                 connection.Write(encodedUpgrade.EncodedBytes, 0, encodedUpgrade.EncodedBytes.Length, true, timeoutHelper.RemainingTime());
                 byte[] buffer = new byte[1];
 
-                // read upgrade response framing 
-                int size = connection.Read(buffer, 0, buffer.Length, timeoutHelper.RemainingTime());
+                // read upgrade response framing
+                int size;
+                if (connection is PipeConnection)
+                {
+                    size = (connection as PipeConnection).ReadAsync(new Memory<byte>(buffer, 0, buffer.Length), timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                }
+                else
+                {
+                    size = connection.Read(buffer, 0, buffer.Length, timeoutHelper.RemainingTime());
+                }
 
                 if (!ValidateUpgradeResponse(buffer, size, decoder)) // we have a problem
                 {
@@ -647,11 +676,28 @@ namespace System.ServiceModel.Channels
             {
                 EncodedUpgrade encodedUpgrade = new EncodedUpgrade(upgradeContentType);
                 // write upgrade request framing for synchronization
-                await connection.WriteAsync(encodedUpgrade.EncodedBytes, 0, encodedUpgrade.EncodedBytes.Length, true, timeout);
+                if (connection is PipeConnection)
+                {
+                    await (connection as PipeConnection).WriteAsync(new Memory<byte>(encodedUpgrade.EncodedBytes, 0, encodedUpgrade.EncodedBytes.Length), true, timeout);
+                }
+                else
+                {
+                    await connection.WriteAsync(encodedUpgrade.EncodedBytes, 0, encodedUpgrade.EncodedBytes.Length, true, timeout);
+                }
+
                 byte[] buffer = new byte[1];
 
-                // read upgrade response framing 
-                int size = await connection.ReadAsync(buffer, 0, buffer.Length, timeout);
+                // read upgrade response framing
+                int size;
+
+                if (connection is PipeConnection)
+                {
+                    size = await (connection as PipeConnection).ReadAsync(new Memory<byte>(buffer, 0, buffer.Length), timeout);
+                }
+                else
+                {
+                    size = await connection.ReadAsync(buffer, 0, buffer.Length, timeout);
+                }
 
                 if (!ValidateUpgradeResponse(buffer, size, decoder)) // we have a problem
                 {

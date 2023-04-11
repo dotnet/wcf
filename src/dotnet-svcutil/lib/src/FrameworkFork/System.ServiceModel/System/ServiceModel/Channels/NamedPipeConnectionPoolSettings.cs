@@ -46,13 +46,13 @@ namespace System.ServiceModel.Channels
                 if (value < TimeSpan.Zero)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                        "SR.SFxTimeoutOutOfRange0"));
+                        SRServiceModel.SFxTimeoutOutOfRange0));
                 }
 
                 if (TimeoutHelper.IsTooLarge(value))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                        "SR.SFxTimeoutOutOfRangeTooBig"));
+                        SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
                 this._idleTimeout = value;
@@ -66,7 +66,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value < 0)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                        "SR.ValueMustBeNonNegative"));
+                        SRServiceModel.ValueMustBeNonNegative));
 
                 this._maxOutputConnectionsPerEndpoint = value;
             }
