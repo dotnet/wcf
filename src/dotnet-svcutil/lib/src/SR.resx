@@ -619,4 +619,7 @@ Your credentials will be sent to the server in clear text.</value>
   <data name="HelpAcceptCertificateFormat" xml:space="preserve">
     <value>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</value>
   </data>
+  <data name="TargetFrameworkNotSupported_NetNamedPipe" xml:space="preserve">
+    <value>NetNamedPipe is not supported on this .net target framework.</value>
+  </data>
 </root>

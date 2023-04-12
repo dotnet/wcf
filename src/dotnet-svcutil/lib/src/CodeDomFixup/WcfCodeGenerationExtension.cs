@@ -4,7 +4,9 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 
@@ -55,6 +57,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (!importer.Errors.Contains(error))
                 {
                     importer.Errors.Add(error);
+                }
+            }
+
+            foreach(var binding in bindings)
+            {
+                if(binding is NetNamedPipeBinding && _options.Project!=null && !_options.Project.TargetFrameworks.FirstOrDefault().ToLower().Contains("windows"))
+                {
+                    MetadataConversionError error = new MetadataConversionError(SR.TargetFrameworkNotSupported_NetNamedPipe, isWarning: true);
+                    if (!importer.Errors.Contains(error))
+                    {
+                        importer.Errors.Add(error);
+                    }
                 }
             }
 
