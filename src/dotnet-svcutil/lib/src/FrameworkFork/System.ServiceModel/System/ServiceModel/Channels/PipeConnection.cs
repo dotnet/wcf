@@ -1,10 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Buffers;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Runtime;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -174,7 +176,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, bool immediate, TimeSpan timeout)
+        public async Task WriteAsync(ReadOnlyMemory<byte> buffer, bool immediate, TimeSpan timeout)
         {
             ValidateBufferBounds(buffer);
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
@@ -213,7 +215,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public async ValueTask CloseAsync(TimeSpan timeout)
+        public async Task CloseAsync(TimeSpan timeout)
         {
             bool existingReadIsPending = false;
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
@@ -265,8 +267,8 @@ namespace System.ServiceModel.Channels
                     }
                 }
 
-                ValueTask writeValueTask = default;
-                ValueTask<int> readValueTask = default;
+                Task writeValueTask = default;
+                Task<int> readValueTask = default;
                 if (shouldWriteEOF)
                 {
                     writeValueTask = StartWriteZeroAsync(cancellationToken);
@@ -433,7 +435,7 @@ namespace System.ServiceModel.Channels
             return ConvertPipeException(new PipeException(SRServiceModel.PipeClosed), transferOperation);
         }
 
-        private ValueTask<int> StartReadZeroAsync(CancellationToken token)
+        private Task<int> StartReadZeroAsync(CancellationToken token)
         {
             lock (_readLock)
             {
@@ -443,7 +445,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private ValueTask StartWriteZeroAsync(CancellationToken token)
+        private Task StartWriteZeroAsync(CancellationToken token)
         {
             lock (_writeLock)
             {
@@ -453,7 +455,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private async ValueTask WaitForReadZero(ValueTask<int> readTask, TimeSpan timeout, bool traceExceptionsAsErrors)
+        private async Task WaitForReadZero(Task<int> readTask, TimeSpan timeout, bool traceExceptionsAsErrors)
         {
             bool success = false;
             int bytesRead = -1;
@@ -490,7 +492,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private async ValueTask WaitForWriteZero(ValueTask writeTask, TimeSpan timeout, bool traceExceptionsAsErrors)
+        private async Task WaitForWriteZero(Task writeTask, TimeSpan timeout, bool traceExceptionsAsErrors)
         {
             try
             {
@@ -601,6 +603,92 @@ namespace System.ServiceModel.Channels
             Write,
             Read,
             Undefined,
+        }
+    }
+
+    /// <summary>
+    /// Helpers to write Memory<byte> to Stream on netstandard 2.0
+    /// </summary>
+    internal static class StreamExtensions
+    {
+        public static Task<int> ReadAsync(this Stream stream, Memory<byte> buffer, CancellationToken cancellationToken = default)
+        {
+            if (MemoryMarshal.TryGetArray(buffer, out ArraySegment<byte> array))
+            {
+                return stream.ReadAsync(array.Array, array.Offset, array.Count, cancellationToken);
+            }
+            else
+            {
+                byte[] sharedBuffer = ArrayPool<byte>.Shared.Rent(buffer.Length);
+                return FinishReadAsync(stream.ReadAsync(sharedBuffer, 0, buffer.Length, cancellationToken), sharedBuffer, buffer);               
+            }
+        }
+
+        static async Task<int> FinishReadAsync(Task<int> readTask, byte[] localBuffer, Memory<byte> localDestination)
+        {
+            try
+            {
+                int result = await readTask.ConfigureAwait(false);
+                new Span<byte>(localBuffer, 0, result).CopyTo(localDestination.Span);
+                return result;
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(localBuffer);
+            }
+        }
+
+        public static void Write(this Stream stream, ReadOnlyMemory<byte> buffer)
+        {
+            if (MemoryMarshal.TryGetArray(buffer, out ArraySegment<byte> array))
+            {
+                stream.Write(array.Array, array.Offset, array.Count);
+            }
+            else
+            {
+                byte[] sharedBuffer = ArrayPool<byte>.Shared.Rent(buffer.Length);
+                try
+                {
+                    buffer.Span.CopyTo(sharedBuffer);
+                    stream.Write(sharedBuffer, 0, buffer.Length);
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(sharedBuffer);
+                }
+            }
+        }
+
+        public static Task WriteAsync(this Stream stream, ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+        {
+            if (MemoryMarshal.TryGetArray(buffer, out ArraySegment<byte> array))
+            {
+                return stream.WriteAsync(array.Array, array.Offset, array.Count, cancellationToken);
+            }
+            else
+            {
+                byte[] sharedBuffer = ArrayPool<byte>.Shared.Rent(buffer.Length);
+                buffer.Span.CopyTo(sharedBuffer);
+                return FinishWriteAsync(stream.WriteAsync(sharedBuffer, 0, buffer.Length, cancellationToken), sharedBuffer);
+            }
+        }
+
+        private static async Task FinishWriteAsync(Task writeTask, byte[] localBuffer)
+        {
+            try
+            {
+                await writeTask.ConfigureAwait(false);
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(localBuffer);
+            }
+        }
+
+        public static Task CopyToAsync(this Stream source, Stream destination, CancellationToken cancellationToken = default)
+        {
+            const int DefaultBufferSize = 81920;
+            return source.CopyToAsync(destination, DefaultBufferSize, cancellationToken);
         }
     }
 }
