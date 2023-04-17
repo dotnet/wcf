@@ -126,8 +126,12 @@ namespace System.ServiceModel
                 bindingElements.Add(wsSecurity);
             }
             // add encoding
-            if (MessageEncoding == WSMessageEncoding.Text)
-                bindingElements.Add(TextMessageEncodingBindingElement);
+            WSMessageEncodingHelper.SyncUpEncodingBindingElementProperties(this.TextMessageEncodingBindingElement, this.MtomMessageEncodingBindingElement);
+            if (this.MessageEncoding == WSMessageEncoding.Text)
+                bindingElements.Add(this.TextMessageEncodingBindingElement);
+            else if (this.MessageEncoding == WSMessageEncoding.Mtom)
+                bindingElements.Add(this.MtomMessageEncodingBindingElement);
+
             // add transport (http or https)
             bindingElements.Add(GetTransport());
 
