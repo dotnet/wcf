@@ -17,7 +17,9 @@ namespace System.ServiceModel
     {
         internal static bool IsDefined(WSMessageEncoding value)
         {
-            return value == WSMessageEncoding.Text;
+            return
+               value == WSMessageEncoding.Text
+               || value == WSMessageEncoding.Mtom;
         }
 
         internal static void SyncUpEncodingBindingElementProperties(TextMessageEncodingBindingElement textEncoding, MtomMessageEncodingBindingElement mtomEncoding)
