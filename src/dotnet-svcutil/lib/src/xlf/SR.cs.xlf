@@ -27,11 +27,6 @@
         <target state="translated">Nepodporovaná hodnota kódování zprávy: {0}. Hodnota musí být {1}.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
-        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">Nepodporovaná verze kódování MTOM zprávy: {0}. Verze musí být {1}, {2}, {3} nebo {4}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">Spolehlivá relace není podporována.</target>
@@ -420,11 +415,6 @@ Identifikátor dokumentu: {0}</target>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
         <target state="translated">Generují se soubory...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HelpAcceptCertificateFormat">
-        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">Při stahování metadat služby přijmout vzdálený certifikát jako důvěryhodný (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
