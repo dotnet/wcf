@@ -20,15 +20,24 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (TargetFrameworkHelper.NetCoreVersionReferenceTable.TryGetValue(options.TargetFramework.Version, out var referenceTable))
                 {
-                    string version = referenceTable.FirstOrDefault().Version;
-                    string[] vers = version.Split('.');
-                    if (vers.Length > 1)
+                    string version = referenceTable.FirstOrDefault().Version.Trim(new char[] { '(', ')', '[', ']'} );
+                    var versions = version.Split(',');
+                    foreach(var v in versions)
                     {
-                        Version v = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
-                        // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
-                        if (v.CompareTo(new Version(4, 10)) < 0)
+                        if (!string.IsNullOrEmpty(v))
                         {
-                            _generateCloseAsync = true;
+                            string[] vers = version.Split('.');
+                            if (vers.Length > 1)
+                            {
+                                Version ver = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
+                                // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
+                                if (ver.CompareTo(new Version(4, 10)) < 0)
+                                {
+                                    _generateCloseAsync = true;
+                                }
+                            }
+
+                            break;
                         }
                     }
                 }

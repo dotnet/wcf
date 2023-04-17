@@ -86,7 +86,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 packageVersion = DefaultVersion;
             }
-            else if (!IsValidVersion(packageVersion))
+            else if (!IsValidPackageVersion(packageVersion))
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Shared.Resources.ErrorInvalidDependencyValue, packageVersion, nameof(packageVersion)));
             }
@@ -327,7 +327,49 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return dependencyType;
         }
 
-        internal static bool IsValidVersion(string version)
+        internal static bool IsValidPackageVersion(string version)
+        {
+            version = version.Trim();
+            if (version.StartsWith("(") || version.StartsWith("["))
+            {
+                if (!(version.EndsWith(")") || version.EndsWith("]")))
+                {
+                    return false;
+                }
+                else
+                {
+                    version = version.Trim(new char[] { '(', ')', ']', '[' });
+                    var vers = version.Split(',');
+                    if (vers.Length == 2)
+                    {
+                        if (string.IsNullOrEmpty(vers[0]) && string.IsNullOrEmpty(vers[1]))
+                        {
+                            return false;
+                        }
+
+                        if (!string.IsNullOrEmpty(vers[0]) && !IsValidVersion(vers[0]))
+                        {
+                            return false;
+                        }
+
+                        if (!string.IsNullOrEmpty(vers[1]) && !IsValidVersion(vers[1]))
+                        {
+                            return false;
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+            else
+            {
+                return IsValidVersion(version);
+            }
+        }
+
+        private static bool IsValidVersion(string version)
         {
             // https://semver.org/spec/v2.0.0.html
 

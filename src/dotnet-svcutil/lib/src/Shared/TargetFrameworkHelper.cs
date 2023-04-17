@@ -73,12 +73,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 ProjectDependency.FromPackage("System.ServiceModel.Federation", "4.10.*")
             } },
             {new Version("7.0"), new List<ProjectDependency> {
-                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "6.0.0-rc.23205.4"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Http", "6.0.0-rc.23205.4"    ),
-                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "6.0.0-rc.23205.4"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Security", "6.0.0-rc.23205.4"),
-                ProjectDependency.FromPackage("System.ServiceModel.Federation", "6.0.0-rc.23205.4"),
-                ProjectDependency.FromPackage("System.ServiceModel.NetNamedPipe", "6.0.0-rc.23205.4")
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "(6.0.0-*,)"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "(6.0.0-*,)"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "(6.0.0-*,)"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "(6.0.0-*,)"),
+                ProjectDependency.FromPackage("System.ServiceModel.Federation", "(6.0.0-*,)"),
+                ProjectDependency.FromPackage("System.ServiceModel.NetNamedPipe", "(6.0.0-*,)")
             } }
         };
 

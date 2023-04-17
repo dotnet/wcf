@@ -219,7 +219,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         continue;
 
                     string version = GetItemValue(reference, "Version");
-                    if (!ProjectDependency.IsValidVersion(version))
+                    if (!ProjectDependency.IsValidPackageVersion(version))
                     {
                         version = "";
                     }
