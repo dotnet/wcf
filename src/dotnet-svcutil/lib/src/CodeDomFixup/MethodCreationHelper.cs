@@ -1296,7 +1296,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             NamedPipeTransportBindingElement defaultBindingElement = new NamedPipeTransportBindingElement();
             CodeVariableDeclarationStatement namedPipeBindingElement = new CodeVariableDeclarationStatement(
-                typeof(TcpTransportBindingElement),
+                typeof(NamedPipeTransportBindingElement),
                 "namedPipeBindingElement",
                 new CodeObjectCreateExpression(typeof(NamedPipeTransportBindingElement)));
             statements.Add(namedPipeBindingElement);
