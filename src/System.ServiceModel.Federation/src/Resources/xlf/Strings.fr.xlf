@@ -2,9 +2,19 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="fr" original="../Strings.resx">
     <body>
+      <trans-unit id="ActivityProcessAction">
+        <source>Process action '{0}'.</source>
+        <target state="translated">Traiter l'action '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
         <target state="translated">Les scénarios de clé de porteur ne doivent pas inclure de jeton de preuve ou d’entropie d’émetteur dans la réponse.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotDetermineSPNBasedOnAddress">
+        <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
+        <target state="translated">Le client ne peut pas déterminer le nom de principal de service (SPN) basé sur l'identité dans l'adresse cible '{0}' pour les besoins de SspiNegotiation/Kerberos. L'identité de l'adresse cible doit être une identité UPN (comme acmedomain\alice) ou une identité SPN (comme host/bobs-machine).</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
@@ -19,7 +29,7 @@
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">L'objet de communication {0} ne peut pas être utilisé pour la communication car il est dans l'état Faulted.</target>
+        <target state="translated">L'objet de communication {0} ne peut pas être utilisé pour la communication, car il est dans l'état Faulted.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensAreOnlySupportedWithSymmetricKeyTypes">
@@ -45,6 +55,11 @@
       <trans-unit id="IRequestChannelMustBeCreated">
         <source>The IRequestChannel must be in the created state. Was: '{0}'.</source>
         <target state="translated">IRequestChannel doit être dans l’état créé. Was: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InsufficentMemory">
+        <source>Insufficient memory avaliable to complete the operation.</source>
+        <target state="translated">Mémoire disponible insuffisante pour effectuer l'opération.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedSecurityTokenParametersIncorrectType">
@@ -87,6 +102,11 @@
         <target state="translated">RequestType '{0}' n’est pas pris en charge.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRange0">
+        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Le délai d'expiration doit être supérieur ou égal à TimeSpan.Zero. Pour désactiver le délai d'expiration, spécifiez TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
         <target state="translated">Le serveur '{0}' a renvoyé une erreur indiquant qu'il est en cours d'arrêt. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
@@ -94,7 +114,7 @@
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">Le serveur '{0}' a envoyé une erreur indiquant qu'il est trop occupé pour traiter la demande. Réessayez ultérieurement. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
+        <target state="translated">Le serveur '{0}' a envoyé une erreur indiquant qu'il est trop occupé pour traiter la requête. Réessayez plus tard. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToGetToken">
@@ -105,6 +125,11 @@
       <trans-unit id="UseKeysAreNotSupported">
         <source>UseKeys are not supported</source>
         <target state="translated">Les Userkeys ne sont pas pris en charge.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBePositive">
+        <source>The value of this argument must be positive.</source>
+        <target state="translated">La valeur de cet argument doit être positive.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsTrustVersionNotSupported">
