@@ -2,21 +2,6 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../strings.resx">
     <body>
-      <trans-unit id="ActivityBoundary">
-        <source>Activity boundary</source>
-        <target state="translated">작업 경계</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ActivityProcessAction">
-        <source>Process action '{0}'.</source>
-        <target state="translated">동작 '{0}'을(를) 처리하세요.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CannotDetermineSPNBasedOnAddress">
-        <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">클라이언트가 SspiNegotiation/Kerberos 목적으로 대상 주소 '{0}'의 ID에 기초하여 서비스 사용자 이름을 확인할 수 없습니다. 대상 주소 ID는 UPN ID(예: acmedomain\alice) 또는 SPN ID(예: host/bobs-machine)여야 합니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
         <target state="translated">지정된 채널 형식 {0}이(가) 이 채널 관리자에서 지원되지 않습니다.</target>
@@ -25,21 +10,6 @@
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
         <target state="translated">메시지를 수락할 수 있는 {0}에서 수신 대기 중인 엔드포인트가 없습니다. 이것은 흔히 잘못된 주소나 SOAP 동작으로 인해 발생합니다. 자세한 내용은 InnerException(있을 경우)을 참조하세요.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InsufficentMemory">
-        <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">작업을 완료하는 데 사용할 수 있는 메모리가 부족합니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LockTimeoutExceptionMessage">
-        <source>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">할당된 시간 제한인 {0} 내에서 잠금을 클레임할 수 없습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PackageFullNameInvalid">
-        <source>The package full name '{0}' is invalid.</source>
-        <target state="translated">패키지 전체 이름 '{0}'이(가) 잘못되었습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
@@ -172,21 +142,6 @@
         <target state="translated">Int32.MaxValue TotalMilliseconds(약 24일)보다 큰 시간 제한은 허용되지 않습니다. 시간 제한을 사용하지 않으려면 TimeSpan.MaxValue를 지정하세요.</target>
         <note />
       </trans-unit>
-      <trans-unit id="SecurityEndpointNotFound">
-        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">종료하는 중이라는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 자세한 오류 내용은 내부 예외를 참조하십시오.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SecurityServerTooBusy">
-        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">사용 중이어서 요청을 처리할 수 없다는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 나중에 다시 시도하세요. 자세한 오류 내용은 내부 예외를 참조하세요.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SessionValueInvalid">
-        <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
-        <target state="translated">세션 값 '{0}'이(가) 잘못되었습니다. 'CurrentSession', 'ServiceSession' 또는 음수가 아닌 유효한 Windows 세션 ID를 지정하세요.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
         <source>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</source>
         <target state="translated">'{1}'의 명명된 파이프 끝점에 연결할 수 없습니다. 전체 시간 제한에서 남아 있는 {0} 동안 다시 시도됩니다.</target>
@@ -205,11 +160,6 @@
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
         <target state="translated">이 인수의 값은 음수가 아니어야 합니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ValueMustBePositive">
-        <source>The value of this argument must be positive.</source>
-        <target state="translated">이 인수의 값은 양수여야 합니다.</target>
         <note />
       </trans-unit>
     </body>

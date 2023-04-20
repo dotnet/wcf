@@ -9,6 +9,7 @@ using System.IO.Pipes;
 using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.ServiceModel.Diagnostics;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
+    [SupportedOSPlatform("windows")]
     internal class PipeConnectionInitiator : IConnectionInitiator
     {
         private readonly int _bufferSize;
@@ -240,6 +242,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
+    [SupportedOSPlatform("windows")]
     internal unsafe class PipeSharedMemory : IDisposable
     {
         internal const string PipeLocalPrefix = @"Local\";

@@ -2,16 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Security.Principal;
 
 namespace System.ServiceModel.Channels
 {
+    [SupportedOSPlatform("windows")]
     public class NamedPipeTransportBindingElement : ConnectionOrientedTransportBindingElement
     {
         private readonly List<SecurityIdentifier> _allowedUsers = new List<SecurityIdentifier>();
         private readonly NamedPipeConnectionPoolSettings _connectionPoolSettings = new NamedPipeConnectionPoolSettings();
 
-        public NamedPipeTransportBindingElement() : base() { }
+        public NamedPipeTransportBindingElement() : base()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.PlatformNotSupported_NetNamedPipe));
+            }
+        }
 
         protected NamedPipeTransportBindingElement(NamedPipeTransportBindingElement elementToBeCloned)
             : base(elementToBeCloned)
