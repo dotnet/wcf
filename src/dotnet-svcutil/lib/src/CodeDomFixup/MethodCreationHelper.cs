@@ -1721,6 +1721,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             MaxOutProperties(statements, resultVar);
 
+            if (defaultBinding.MessageEncoding != basicHttp.MessageEncoding)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "MessageEncoding"),
+                        new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(WSMessageEncoding)),
+                            basicHttp.MessageEncoding.ToString())));
+            }
+
             // Set AllowCookies's default value to true.
             statements.Add(
                    new CodeAssignStatement(
