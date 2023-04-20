@@ -12,8 +12,7 @@
 
   <PropertyGroup>
     <!-- Disable some standard properties for building our projects -->
-    <!-- [todo:arcade] Disabling these because our shipped assemblies didn't include these attributes, not sure if we care or not. -->
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <GenerateTargetFrameworkAttribute>true</GenerateTargetFrameworkAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <!-- [todo:arcade] This attribute exists in our previously shipped S.P.SM assembly but not in all the Facade assemblies. For now removing accross all assemblies. -->
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
