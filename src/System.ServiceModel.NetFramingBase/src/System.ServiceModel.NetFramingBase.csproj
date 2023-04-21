@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <PackageReference Include="System.Security.Principal.Windows" Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" /> <!-- TODO: Parameterize version of Tasks.Extensions, nb, not needed if dropping netstandard2.0 -->
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
