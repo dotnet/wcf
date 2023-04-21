@@ -619,7 +619,7 @@
       </trans-unit>
       <trans-unit id="Sch_EmptyChoice">
         <source>Empty choice cannot be satisfied if 'minOccurs' is not equal to 0.</source>
-        <target state="translated">Пустой choice не может быть реализован, если "minOccurs" не равно 0.</target>
+        <target state="translated">Пустой элемент choice не может быть реализован, если minOccurs не равно 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_EmptyXPath">
@@ -1204,7 +1204,7 @@
       </trans-unit>
       <trans-unit id="Sch_InvalidWhitespaceInEmpty">
         <source>The element cannot contain white space. Content model is empty.</source>
-        <target state="translated">Данный элемент не может содержать пробелов. Модель содержимого пуста.</target>
+        <target state="translated">Элемент не может содержать пробелы. Модель содержимого пуста.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_InvalidXsdAttributeDatatypeValue">
@@ -1364,7 +1364,7 @@
       </trans-unit>
       <trans-unit id="Sch_MinExclusiveGtMaxExclusive">
         <source>The value specified for 'minExclusive' cannot be greater than the value specified for 'maxExclusive' for the same data type.</source>
-        <target state="translated">Значение "minExclusive" не может быть больше значения "maxExclusive", заданного для того же типа данных.</target>
+        <target state="translated">Значение minExclusive не может быть больше значения maxExclusive, заданного для того же типа данных.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_MinExclusiveGtMaxInclusive">
@@ -2094,7 +2094,7 @@
       </trans-unit>
       <trans-unit id="Sch_WhiteSpaceRestriction2">
         <source>It is an error if 'whiteSpace' is among the members of {facets} of {base type definition}, {value} is 'preserve', and the {value} of the parent 'whiteSpace' is 'replace'.</source>
-        <target state="translated">Ошибка заключается в том, что "whiteSpace" указан среди членов {facets} для {base type definition}, {value} равен "preserve", а {value} родительского "whiteSpace" равен "replace".</target>
+        <target state="translated">Ошибка заключается в том, что whiteSpace указан среди членов {facets} для {base type definition}, {value} — preserve, а {value} родительского whiteSpace — replace.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_XSDSchemaOnly">
@@ -2199,7 +2199,7 @@
       </trans-unit>
       <trans-unit id="Xdom_Attr_InUse">
         <source>The 'Attribute' node cannot be inserted because it is already an attribute of another element.</source>
-        <target state="translated">Вставка узла "Attribute" невозможна, т. к. он уже является атрибутом другого элемента.</target>
+        <target state="translated">Вставка узла Attribute невозможна, так как он уже является атрибутом другого элемента.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xdom_Attr_Name">
@@ -2694,7 +2694,7 @@
       </trans-unit>
       <trans-unit id="XmlConvert_TypeToString">
         <source>Xml type '{0}' cannot convert from Clr type '{1}' unless the destination type is String or XmlAtomicValue.</source>
-        <target state="translated">Тип Xml "{0}" не поддерживает преобразования из типа Clr "{1}", кроме случаев, когда результирующий тип является строкой String или XmlAtomicValue.</target>
+        <target state="translated">Тип Xml "{0}" не поддерживает преобразование из типа Clr "{1}", кроме случаев, когда результирующий тип является String или XmlAtomicValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlDataTypeMismatch">
@@ -2944,7 +2944,7 @@
       </trans-unit>
       <trans-unit id="XmlIllegalSimpleContentExtension">
         <source>Cannot serialize object of type '{0}'. Base type '{1}' has simpleContent and can only be extended by adding XmlAttribute elements. Please consider changing XmlText member of the base class to string array.</source>
-        <target state="translated">Невозможно сериализовать объект типа "{0}". Базовый тип "{1}" имеет элемент simpleContent и может расширяться только за счет добавления элементов XmlAttribute. Рекомендуется заменить член XmlText базового класса на массив строк.</target>
+        <target state="translated">Невозможно сериализовать объект типа "{0}". Базовый тип "{1}" имеет элемент simpleContent и может расширяться только за счет добавления элементов XmlAttribute. Рекомендуется заменить член XmlText базового класса массивом строк.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlIllegalSoapAttribute">
@@ -3394,7 +3394,7 @@
       </trans-unit>
       <trans-unit id="XmlPregenOrphanType">
         <source>Cannot pre-generate serializer for multiple assemblies. Type '{0}' does not belong to assembly {1}.</source>
-        <target state="translated">Не удается создать предварительный преобразователь для нескольких сборок. Тип "{0}" не принадлежит сборке {1}.</target>
+        <target state="translated">Невозможно создать предварительный сериализатор для нескольких сборок. Тип "{0}" не принадлежит сборке {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlPregenTypeDynamic">
@@ -3419,7 +3419,7 @@
       </trans-unit>
       <trans-unit id="XmlReadOnlyPropertyError">
         <source>Cannot deserialize type '{0}' because it contains property '{1}' which has no public setter.</source>
-        <target state="translated">Не удалось выполнить десериализацию типа "{0}", поскольку он содержит свойство "{1}", не имеющее общего метода задания.</target>
+        <target state="translated">Невозможно выполнить десериализацию типа "{0}", поскольку он содержит свойство "{1}", не имеющее общего метода задания.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlReflectionError">
@@ -3544,7 +3544,7 @@
       </trans-unit>
       <trans-unit id="XmlSequenceInconsistent">
         <source>Inconsistent sequencing: if used on one of the class's members, the '{0}' property is required on all particle-like members, please explicitly set '{0}' using XmlElement, XmlAnyElement or XmlArray custom attribute on class member '{1}'.</source>
-        <target state="translated">Противоречивое следование: в случае использования для одного из членов класса свойство "{0}" становится обязательным для всех членов, имеющих вид части; явно установите "{0}" с помощью особого атрибута XmlElement, XmlAnyElement или XmlArray для члена класса "{1}".</target>
+        <target state="translated">Противоречивая последовательность: при использовании для одного из членов класса свойство "{0}" становится обязательным для всех членов, имеющих вид части; явно установите "{0}" с помощью особого атрибута XmlElement, XmlAnyElement или XmlArray для члена класса "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSequenceMatch">
@@ -3624,7 +3624,7 @@
       </trans-unit>
       <trans-unit id="XmlSerializerExpiredDetails">
         <source>Pre-generated serializer '{0}' has expired. You need to re-generate serializer for '{1}'.</source>
-        <target state="translated">Срок действия предварительного преобразователя "{0}" истек. Нужно повторно создать преобразователь для "{1}".</target>
+        <target state="translated">Срок действия предварительного сериализатора "{0}" истек. Нужно повторно создать сериализатор для "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSerializerUnsupportedMember">
@@ -3849,7 +3849,7 @@
       </trans-unit>
       <trans-unit id="Xml_BadNameCharWithPos">
         <source>The '{0}' character, hexadecimal value {1}, at position {2} within the name, cannot be included in a name.</source>
-        <target state="translated">Знак "{0}", шестнадцатеричное значение {1}, в позиции {2} внутри имени, не может использоваться в именах.</target>
+        <target state="translated">Символ "{0}", шестнадцатеричное значение {1}, в позиции {2} внутри имени, не может использоваться в именах.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_BadNamespaceDecl">
@@ -4004,7 +4004,7 @@
       </trans-unit>
       <trans-unit id="Xml_EncodingSwitchAfterResetState">
         <source>'{0}' is an invalid value for the 'encoding' attribute. The encoding cannot be switched after a call to ResetState.</source>
-        <target state="translated">"{0}" является недопустимым значением для атрибута "encoding". Нельзя изменить кодирование после вызова ResetState.</target>
+        <target state="translated">"{0}" является недопустимым значением для атрибута encoding. Нельзя изменить кодирование после вызова ResetState.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_EntityHandling">
@@ -4289,7 +4289,7 @@
       </trans-unit>
       <trans-unit id="Xml_InvalidSurrogateHighChar">
         <source>Invalid high surrogate character (0x{0}). A high surrogate character must have a value from range (0xD800 - 0xDBFF).</source>
-        <target state="translated">Недействительный верхний суррогатный знак (0x{0}). Значение верхнего суррогатного знака должно быть в диапазоне (0xD800 - 0xDBFF).</target>
+        <target state="translated">Недействительный верхний суррогатный символ (0x{0}). Значение верхнего суррогатного символа должно быть в диапазоне (0xD800–0xDBFF).</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_InvalidSurrogateMissingLowChar">
@@ -4579,7 +4579,7 @@
       </trans-unit>
       <trans-unit id="Xml_UndefPrefix">
         <source>An undefined prefix is in use.</source>
-        <target state="translated">Используется не определенный префикс.</target>
+        <target state="translated">Используется неопределенный префикс.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_UnexpectedCDataEnd">
@@ -4804,7 +4804,7 @@
       </trans-unit>
       <trans-unit id="Xp_UndefinedXsltContext">
         <source>XsltContext is needed for this query because of an unknown function.</source>
-        <target state="translated">Из-за присутствия неизвестной функции для этого запроса требеуется XsltContext.</target>
+        <target state="translated">Из-за присутствия неизвестной функции для этого запроса требуется XsltContext.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xpn_BadPosition">
@@ -4834,7 +4834,7 @@
       </trans-unit>
       <trans-unit id="Xslt_NotCompiledStylesheet">
         <source>Type '{0}' is not a compiled stylesheet class.</source>
-        <target state="translated">Тип "{0}" не является  скомпилированным классом таблицы стилей.</target>
+        <target state="translated">Тип "{0}" не является скомпилированным классом таблицы стилей.</target>
         <note />
       </trans-unit>
     </body>
