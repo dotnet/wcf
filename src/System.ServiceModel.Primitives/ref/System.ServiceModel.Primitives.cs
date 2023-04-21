@@ -863,11 +863,6 @@ namespace System.ServiceModel
         StreamedRequest = 2,
         StreamedResponse = 3,
     }
-    public enum WSMessageEncoding
-    {
-        Test = 0,
-        Mtom
-    }
     public sealed partial class UnknownMessageReceivedEventArgs : System.EventArgs
     {
         internal UnknownMessageReceivedEventArgs() { }
