@@ -13,4 +13,8 @@
     <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 </Project>

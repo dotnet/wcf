@@ -2,7 +2,7 @@
   "tools": {
     "dotnet": "8.0.100-preview.3.23178.7",
     "runtimes": {
-      "dotnet": [
+      "aspnetcore": [
         "3.1.5",
         "6.0.15",
         "7.0.4"
