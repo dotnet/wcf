@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Il client non è in grado di determinare il nome dell'entità servizio in base all'identità nell'indirizzo di destinazione '{0}' per SspiNegotiation/Kerberos. L'identità indirizzo di destinazione deve essere un'identità UPN (ad esempio dominioacme\nomeutente) o un'identità SPN (ad esempio host/nomecomputer).</target>
+        <target state="translated">Il client non può determinare il nome dell'entità servizio sulla base dell'identità nell'indirizzo di destinazione '{0}' ai fini di SspiNegotiation/Kerberos. L'identità nell'indirizzo di destinazione deve essere un'identità UPN (ad esempio dominioutente\nomeutente) o un'identità SPN (ad esempio host/nomecomputer).</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -2429,7 +2429,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Errore di analisi di Soap, xsd:type '{0}' non valido {1}</target>
+        <target state="translated">Errore di analisi Soap, xsd:type '{0}' {1}non valido</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -3409,7 +3409,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">Impossibile caricare l'operazione '{0}' perché specifica "rpc-style" in modalità "literal", ma utilizza tipi di contratto messaggio o System.ServiceModel.Channels.Message. Tale combinazione non è consentita. Specificare un valore diverso per lo stile o utilizzare parametri diversi da tipi di contratto messaggi o System.ServiceModel.Channels.Message.</target>
+        <target state="translated">Non è stato possibile caricare l'operazione '{0}' perché specifica "rpc-style" in modalità "literal", ma usa tipi di contratto di messaggio o l'elemento System.ServiceModel.Channels.Message. Questa combinazione non è consentita. Specificare un valore diverso per lo stile o usare parametri diversi dai tipi di contratto di messaggio o System.ServiceModel.Channels.Message.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
@@ -4279,7 +4279,7 @@
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
         <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
-        <target state="translated">Impossibile risolvere il nome host dell'URI "{0}" tramite DNS.</target>
+        <target state="translated">Non è possibile risolvere il nome host dell'URI "{0}" con il servizio DNS.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyInfoClauseInDerivedKeyToken">
@@ -4604,7 +4604,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">La stringa vuota non è un valore di sottoprotocollo valido. Utilizzare "null" per non specificare un valore.</target>
+        <target state="translated">La stringa vuota non è un valore di protocollo secondario valido. Usare "null" per non specificare alcun valore.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">
