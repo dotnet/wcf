@@ -2,21 +2,6 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../strings.resx">
     <body>
-      <trans-unit id="ActivityBoundary">
-        <source>Activity boundary</source>
-        <target state="translated">活動界限</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ActivityProcessAction">
-        <source>Process action '{0}'.</source>
-        <target state="translated">處理動作 '{0}'。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CannotDetermineSPNBasedOnAddress">
-        <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">用戶端無法根據目標位址 '{0}' 中的身分識別來判斷服務主體名稱，以用於 SspiNegotiation/Kerberos。目標位址身分識別必須是 UPN 身分識別 (如 acmedomain\alice) 或 SPN 身分識別 (如 host/bobs-machine)。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
         <target state="translated">此通道管理員不支援指定的通道類型 {0}。</target>
@@ -25,21 +10,6 @@
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
         <target state="translated">沒有任何在 {0} 上進行接聽的端點可以接受該訊息。這通常是由不正確位址或 SOAP 動作所造成。若有 InnerException，可參閱以取得詳細資訊。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InsufficentMemory">
-        <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">記憶體不足，無法完成作業。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LockTimeoutExceptionMessage">
-        <source>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">無法在分配的逾時 {0} 內宣告鎖定。分配給此作業的時間可能是較長逾時的一部分。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PackageFullNameInvalid">
-        <source>The package full name '{0}' is invalid.</source>
-        <target state="translated">套件的完整名稱 '{0}' 無效。</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
@@ -172,21 +142,6 @@
         <target state="translated">無法遵循大於 Int32.MaxValue TotalMilliseconds (大約等於 24 天) 的逾時。若要停用逾時，請指定 TimeSpan.MaxValue。</target>
         <note />
       </trans-unit>
-      <trans-unit id="SecurityEndpointNotFound">
-        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">伺服器 '{0}' 傳回錯誤，指出正在進行關機。如需錯誤詳細資訊，請參閱內部例外狀況。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SecurityServerTooBusy">
-        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">伺服器 '{0}' 傳回錯誤，指出因過於忙碌，無法處理要求。請稍後重試。請參考內部例外狀況，以取得錯誤詳細資料。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SessionValueInvalid">
-        <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
-        <target state="translated">工作階段值 '{0}' 無效。請指定 'CurrentSession'、'ServiceSession' 或有效的非負數 Windows 工作階段識別碼。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
         <source>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</source>
         <target state="translated">嘗試在 '{1}' 連接到具名管道端點已失敗。在整體逾時之前還可以嘗試 {0} 次。</target>
@@ -205,11 +160,6 @@
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
         <target state="translated">此引數的值必須是非負數。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ValueMustBePositive">
-        <source>The value of this argument must be positive.</source>
-        <target state="translated">此引數值必須是正數。</target>
         <note />
       </trans-unit>
     </body>

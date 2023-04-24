@@ -3,11 +3,14 @@
 
 using System.ComponentModel;
 using System.Net.Security;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 
 namespace System.ServiceModel
 {
+    [SupportedOSPlatform("windows")]
     public sealed class NamedPipeTransportSecurity
     {
         internal const ProtectionLevel DefaultProtectionLevel = ProtectionLevel.EncryptAndSign;
@@ -15,6 +18,11 @@ namespace System.ServiceModel
 
         public NamedPipeTransportSecurity()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.PlatformNotSupported_NetNamedPipe));
+            }
+
             _protectionLevel = DefaultProtectionLevel;
         }
 

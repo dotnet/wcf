@@ -2,11 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.ServiceModel.Channels;
 using System.Xml;
 
 namespace System.ServiceModel
 {
+    [SupportedOSPlatform("windows")]
     public class NetNamedPipeBinding : Binding
     {
         // private BindingElements
@@ -16,6 +19,11 @@ namespace System.ServiceModel
 
         public NetNamedPipeBinding() : base()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.PlatformNotSupported_NetNamedPipe));
+            }
+
             Initialize();
         }
 

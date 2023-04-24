@@ -2,21 +2,6 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../strings.resx">
     <body>
-      <trans-unit id="ActivityBoundary">
-        <source>Activity boundary</source>
-        <target state="translated">Etkinlik sınırı</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ActivityProcessAction">
-        <source>Process action '{0}'.</source>
-        <target state="translated">'{0}' eylemini işleyin.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CannotDetermineSPNBasedOnAddress">
-        <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">İstemci, SspiNegotiation/Kerberos amacıyla, '{0}' hedef adresindeki kimliğe dayanan Hizmet Asıl Adı (SPN) öğesini belirleyemiyor. Hedef adres kimliği, bir UPN kimliği (örneketkialanı\ayse gibi) veya SPN kimliği (konak/ebrunun-makinesi gibi) olmalıdır.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
         <target state="translated">Belirtilen kanal türü {0}, bu kanal yöneticisi tarafından desteklenmiyor.</target>
@@ -25,21 +10,6 @@
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
         <target state="translated">{0} konumunda dinleme yapan, iletiyi kabul edebilecek uç nokta yoktu. Bunun nedeni genellikle hatalı bir adres ya da SOAP eylemidir. Ayrıntılar için varsa InnerException öğesine bakın.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InsufficentMemory">
-        <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">İşlemi tamamlamak için yetersiz kullanılabilir bellek.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LockTimeoutExceptionMessage">
-        <source>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Ayrılan {0} süre sonu içinde kilit talebi yapılamıyor. Bu işlem için ayrılan süre, daha uzun bir süre sonu değerinin bir bölümü olabilir.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PackageFullNameInvalid">
-        <source>The package full name '{0}' is invalid.</source>
-        <target state="translated">'{0}' tam paket adı geçersiz.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
@@ -172,21 +142,6 @@
         <target state="translated">Int32.MaxValue TotalMilliseconds (yaklaşık 24 gün) değerinden büyük zaman aşımı değerleri dikkate alınmaz. Zaman aşımını devre dışı bırakmak için TimeSpan.MaxValue değeri belirtin.</target>
         <note />
       </trans-unit>
-      <trans-unit id="SecurityEndpointNotFound">
-        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">'{0}' sunucusu, kapanmakta olduğunu belirten bir hata gönderdi. Hata ayrıntıları için iç özel duruma bakın.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SecurityServerTooBusy">
-        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">'{0}' sunucusu bir hata geri göndererek, isteği işleyemeyecek kadar meşgul olduğunu belirtti. Lütfen daha sonra yeniden deneyin. Hata ayrıntıları için iç özel duruma bakın.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SessionValueInvalid">
-        <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
-        <target state="translated">'{0}' Oturum değeri geçersiz. Lütfen 'CurrentSession','ServiceSession' geçerli bir negatif olmayan Windows Oturum Kimliği belirtin.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
         <source>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</source>
         <target state="translated">'{1}' konumunda adlandırılan kanal bitiş noktasına bağlanma denemesi başarısız oldu. Genel zaman aşımında {0} kaldığında başka bir deneme yapılacak.</target>
@@ -205,11 +160,6 @@
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
         <target state="translated">Bu bağımsız değişkenin değeri negatif olmamalıdır.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ValueMustBePositive">
-        <source>The value of this argument must be positive.</source>
-        <target state="translated">Bu bağımsız değişkenin değeri pozitif olmalıdır.</target>
         <note />
       </trans-unit>
     </body>

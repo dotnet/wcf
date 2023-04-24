@@ -2,10 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
+    [SupportedOSPlatform("windows")]
     public sealed class NetNamedPipeSecurity
     {
         internal const NetNamedPipeSecurityMode DefaultMode = NetNamedPipeSecurityMode.Transport;
@@ -14,6 +17,11 @@ namespace System.ServiceModel
 
         public NetNamedPipeSecurity()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.PlatformNotSupported_NetNamedPipe));
+            }
+
             _mode = DefaultMode;
         }
 

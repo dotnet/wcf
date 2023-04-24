@@ -126,12 +126,6 @@
   <data name="ValueMustBeNonNegative" xml:space="preserve">
     <value>The value of this argument must be non-negative.</value>
   </data>
-  <data name="SessionValueInvalid" xml:space="preserve">
-    <value>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</value>
-  </data>
-  <data name="PackageFullNameInvalid" xml:space="preserve">
-    <value>The package full name '{0}' is invalid.</value>
-  </data>
   <data name="ChannelTypeNotSupported" xml:space="preserve">
     <value>The specified channel type {0} is not supported by this channel manager.</value>
   </data>
@@ -149,12 +143,6 @@
   </data>
   <data name="PipeEndpointNotFound" xml:space="preserve">
     <value>The pipe endpoint '{0}' could not be found on your local machine.</value>
-  </data>
-  <data name="SecurityServerTooBusy" xml:space="preserve">
-    <value>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</value>
-  </data>
-  <data name="SecurityEndpointNotFound" xml:space="preserve">
-    <value>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</value>
   </data>
   <data name="PipeUriSchemeWrong" xml:space="preserve">
     <value>URIs used with pipes must use the scheme: 'net.pipe'.</value>
@@ -198,9 +186,6 @@
   <data name="PipeShutdownReadError" xml:space="preserve">
     <value>The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</value>
   </data>
-  <data name="LockTimeoutExceptionMessage" xml:space="preserve">
-    <value>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
-  </data>
   <data name="PipeClosed" xml:space="preserve">
     <value>The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</value>
   </data>
@@ -224,21 +209,6 @@
   </data>
   <data name="TraceCodeFailedPipeConnect" xml:space="preserve">
     <value>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</value>
-  </data>
-  <data name="ActivityBoundary" xml:space="preserve">
-    <value>Activity boundary</value>
-  </data>
-  <data name="InsufficentMemory" xml:space="preserve">
-    <value>Insufficient memory avaliable to complete the operation.</value>
-  </data>
-  <data name="ActivityProcessAction" xml:space="preserve">
-    <value>Process action '{0}'.</value>
-  </data>
-  <data name="CannotDetermineSPNBasedOnAddress" xml:space="preserve">
-    <value>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</value>
-  </data>
-  <data name="ValueMustBePositive" xml:space="preserve">
-    <value>The value of this argument must be positive.</value>
   </data>
   <data name="PlatformNotSupported_NetNamedPipe" xml:space="preserve">
     <value>NetNamedPipe is not supported on this platform.</value>

@@ -2,9 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Runtime;
+using System.Runtime.Versioning;
 
 namespace System.ServiceModel.Channels
 {
+    [SupportedOSPlatform("windows")]
     public sealed class NamedPipeConnectionPoolSettings
     {
         private string _groupName;

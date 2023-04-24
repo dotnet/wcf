@@ -2,21 +2,6 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../strings.resx">
     <body>
-      <trans-unit id="ActivityBoundary">
-        <source>Activity boundary</source>
-        <target state="translated">Limite attività</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ActivityProcessAction">
-        <source>Process action '{0}'.</source>
-        <target state="translated">Elaborazione dell'azione '{0}'.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CannotDetermineSPNBasedOnAddress">
-        <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Il client non può determinare il nome dell'entità servizio sulla base dell'identità nell'indirizzo di destinazione '{0}' ai fini di SspiNegotiation/Kerberos. L'identità nell'indirizzo di destinazione deve essere un'identità UPN (ad esempio dominioutente\nomeutente) o un'identità SPN (ad esempio host/nomecomputer).</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
         <target state="translated">Il tipo di canale specificato {0} non è supportato da questo gestore canali.</target>
@@ -25,21 +10,6 @@
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
         <target state="translated">Non è disponibile alcun endpoint in ascolto su {0} in grado di accettare il messaggio. Questo problema dipende spesso da un'azione SOAP o da un indirizzo non corretto. Per maggiori dettagli, vedere InnerException, se presente.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InsufficentMemory">
-        <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">La memoria disponibile non è sufficiente per completare l'operazione.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LockTimeoutExceptionMessage">
-        <source>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Non è possibile richiedere il blocco entro il timeout allocato pari a {0}. È possibile che il tempo allocato a questa operazione fosse incluso in un timeout più lungo.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PackageFullNameInvalid">
-        <source>The package full name '{0}' is invalid.</source>
-        <target state="translated">Il nome completo del pacchetto '{0}' non è valido.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
@@ -172,21 +142,6 @@
         <target state="translated">Non è possibile rispettare i timeout in cui il valore di TotalMilliseconds è maggiore di Int32.MaxValue (circa 24 giorni). Per disabilitare il timeout, specificare TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
-      <trans-unit id="SecurityEndpointNotFound">
-        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">Il server '{0}' ha restituito un errore che indica che è in fase di arresto. Per ulteriori informazioni sull'errore, vedere l'eccezione interna.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SecurityServerTooBusy">
-        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">Il server '{0}' ha restituito un errore che indica che è troppo occupato per elaborare la richiesta. Riprovare più tardi. Per dettagli sull'errore, vedere l'eccezione interna.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SessionValueInvalid">
-        <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
-        <target state="translated">Il valore '{0}' di Session non è valido. Specificare 'CurrentSession', 'ServiceSession' o un ID sessione Windows valido non negativo.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
         <source>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</source>
         <target state="translated">Tentativo di connessione all'endpoint della named pipe su '{1}' non riuscito. Verrà effettuato un altro tentativo con {0} rimanenti nel timeout complessivo.</target>
@@ -205,11 +160,6 @@
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
         <target state="translated">Il valore di questo argomento non deve essere negativo.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ValueMustBePositive">
-        <source>The value of this argument must be positive.</source>
-        <target state="translated">Il valore di questo argomento deve essere positivo.</target>
         <note />
       </trans-unit>
     </body>
