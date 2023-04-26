@@ -3274,7 +3274,7 @@
       </trans-unit>
       <trans-unit id="SFxWsdlOperationFaultNeedsMessageAttribute2">
         <source>The wsdl operation {0} in portType {1} contains a fault that does not reference a message. This is either because the message attribute is missing or empty.</source>
-        <target state="translated">A operação wsdl {0} em portType {1} contém uma falha que não faz referência a uma mensagem. Isso ocorre porque o atributo da mensagem está ausente ou vazio.</target>
+        <target state="translated">A operação WSDL {0} em portType {1} contém uma falha que não faz referência a uma mensagem. Isso ocorre porque o atributo da mensagem está ausente ou vazio.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxWsdlOperationInputNeedsMessageAttribute2">
@@ -3489,7 +3489,7 @@
       </trans-unit>
       <trans-unit id="SigningTokenHasNoKeysSupportingTheAlgorithmSuite">
         <source>The signing token {0} has no key that supports the algorithm suite {1}.</source>
-        <target state="translated">O token de assinatura {0} não tem uma chave que ofereça suporte ao pacote de algoritmos {1}.</target>
+        <target state="translated">O token de assinatura {0} não tem nenhuma chave que dê suporte ao pacote de algoritmos {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SizeExceedsRemainingBufferSpace">
@@ -3649,7 +3649,7 @@
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Parameters5">
         <source>The task-based asynchronous OperationContract method '{0}' in type '{1}' was matched with the asynchronous OperationContract methods '{2}' and '{3}' because they have the same operation name '{4}'. When a task-based asynchronous OperationContract method is matched to a pair of asynchronous OperationContract methods, the two OperationContracts must define the same number and types of parameters. In this case, some of the arguments are different. To fix it, ensure that the OperationContracts define the same number and types of arguments, in the same order. Alternatively, changing the name of one of the methods will prevent matching.</source>
-        <target state="translated">O método OperationContract assíncrono baseado em tarefa '{0}' no tipo '{1}' coincidiu com os métodos OperationContract assíncronos '{2}' e '{3}' porque eles têm o mesmo nome da operação '{4}'. Quando um método OperationContract assíncrono baseado em tarefa coincide com um par de métodos OperationContract assíncronos, os dois OperationContracts devem definir os mesmos números e tipos de parâmetros. Nesse caso, alguns argumentos são diferentes. Para corrigir isso, verifique se os OperationContracts definem os mesmos números e tipos de argumentos, na mesma ordem. Alternativamente, a alteração do nome de um dos métodos impedirá a correspondência.</target>
+        <target state="translated">O método assíncrono OperationContract baseado em tarefa '{0}' no tipo '{1}' coincidiu com os métodos assíncronos OperationContract '{2}' e '{3}' porque eles têm o mesmo nome de operação '{4}'. Quando um método assíncrono OperationContract baseado em tarefa coincide com um par de métodos assíncronos OperationContract, os dois OperationContracts devem definir o mesmo número e tipos de parâmetros. Nesse caso, alguns dos argumentos são diferentes. Para corrigir isso, verifique se os OperationContracts definem o mesmo número e tipos de argumentos, na mesma ordem. Como alternativa, altere o nome de um dos métodos para evitar a correspondência. </target>
         <note />
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Property6">
@@ -4099,7 +4099,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedTokenImpersonationLevel">
         <source>The value '{1}' for the '{0}' property is not supported in Windows Store apps.</source>
-        <target state="translated">O valor '{1}' da propriedade '{0}' não tem suporte nos aplicativos da Windows Store.</target>
+        <target state="translated">O valor '{1}' da propriedade '{0}' não tem suporte nos Aplicativos da Windows Store.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedUpgradeAcceptor">
@@ -4119,7 +4119,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedWSDLTheFault">
         <source>Unsupported WSDL, the fault message part must reference an element. This fault message does not reference an element. If you have edit access to the WSDL document, you can fix the problem by referencing a schema element using the 'element' attribute.</source>
-        <target state="translated">WSDL sem suporte, a parte da mensagem de falha deve fazer referência a um elemento. Essa mensagem de falha não faz referência a um elemento. Caso tenha acesso de edição ao documento WSDL, você poderá consertar o problema fazendo referência a um elemento de esquema usando o atributo 'elemento'.</target>
+        <target state="translated">WSDL sem suporte, a parte da mensagem de falha deve fazer referência a um elemento. Essa mensagem de falha não faz referência a um elemento. Caso tenha acesso de edição ao documento WSDL, você poderá corrigir o problema fazendo referência a um elemento de esquema usando o atributo 'element'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UriGeneratorSchemeMustNotBeEmpty">
