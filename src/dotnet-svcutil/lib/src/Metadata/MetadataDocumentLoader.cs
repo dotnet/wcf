@@ -72,7 +72,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         /// <summary>
         /// The object LoadState value.
         /// </summary>
-        public LoadState State { get; private set; }
+        public LoadState State { get; set; }
 
 
         /// <summary>
@@ -262,7 +262,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                     uri = uri.Trim(new char[] { '"' }).Trim();
 
                     var isUrl = uri.StartsWith(MetadataConstants.Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) ||
-                                uri.StartsWith(MetadataConstants.Uri.UriSchemeNetTcp, StringComparison.OrdinalIgnoreCase);
+                                uri.StartsWith(MetadataConstants.Uri.UriSchemeNetTcp, StringComparison.OrdinalIgnoreCase) ||
+                                uri.StartsWith(MetadataConstants.Uri.UriSchemeNetPipe, StringComparison.OrdinalIgnoreCase);
 
                     if (Uri.TryCreate(uri, UriKind.Absolute, out serviceUri) ||
                         isUrl && Uri.TryCreate(baseUrl, UriKind.Absolute, out Uri baseUri) && Uri.TryCreate(baseUri, uri, out serviceUri) ||
@@ -271,6 +272,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                         return serviceUri.Scheme == MetadataConstants.Uri.UriSchemeHttp ||
                             serviceUri.Scheme == MetadataConstants.Uri.UriSchemeHttps ||
                             serviceUri.Scheme == MetadataConstants.Uri.UriSchemeNetTcp ||
+                            serviceUri.Scheme == MetadataConstants.Uri.UriSchemeNetPipe ||
                             serviceUri.Scheme == MetadataConstants.Uri.UriSchemeFile;
                     }
                 }

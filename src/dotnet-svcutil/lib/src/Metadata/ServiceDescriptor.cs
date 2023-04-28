@@ -5,13 +5,16 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Xml;
 using WsdlNS = System.Web.Services.Description;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
@@ -93,7 +96,42 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 return;
             }
 
-            await this.metadataDocumentLoader.LoadAsync(cancellationToken).ConfigureAwait(false);
+            //if it's net.pipe url and current platform is windows?
+            if (!MetadataUrl.Scheme.Equals("net.pipe"))
+            {
+                await this.metadataDocumentLoader.LoadAsync(cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                string toolPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                Assembly assembly = Assembly.LoadFrom($"{toolPath}/internalAssets/NamedPipeMetadataImporter.dll");
+                Type type = assembly.GetType("Microsoft.Tools.ServiceModel.Svcutil.NamedPipeMetadataImporter");
+                if (type != null)
+                {
+                    object typeInstance = Activator.CreateInstance(type, null);
+                    MethodInfo methodInfo = type.GetMethod("GetMetadatadataAsync", BindingFlags.Public | BindingFlags.Instance);
+                    Task<System.Xml.XmlReader> task = (Task<System.Xml.XmlReader>)methodInfo.Invoke(typeInstance, new object[] { MetadataUrl });
+                    var xmlReader = task.GetAwaiter().GetResult();
+                    if (xmlReader != null)
+                    {
+                        Encoding encoding = Encoding.UTF8;
+                        MemoryStream stream = new MemoryStream(encoding.GetBytes(xmlReader.ReadOuterXml()));
+                        stream.Position = 0;
+                        XmlReader reader = XmlDictionaryReader.CreateTextReader(
+                            new MaxMessageSizeStream(stream, int.MaxValue),
+                            Encoding.UTF8,
+                            EncoderDefaults.ReaderQuotas,
+                            null);
+
+                        reader.Read();
+                        reader.MoveToContent();
+
+                        MetadataSet newSet = MetadataSet.ReadFrom(reader);
+                        (this.metadataDocumentLoader.MetadataSections as List<MetadataSection>).AddRange(newSet.MetadataSections);
+                        this.metadataDocumentLoader.State = MetadataDocumentLoader.LoadState.Successful;
+                    }
+                }
+            }
 
             bool useMessageFormat = ServiceDescriptor.DefaultUseMessageFormat;
             bool importSuccess = false;
