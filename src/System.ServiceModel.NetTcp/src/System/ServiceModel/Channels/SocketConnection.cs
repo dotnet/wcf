@@ -233,6 +233,7 @@ namespace System.ServiceModel.Channels
             }
             finally
             {
+                CancelReceiveTimer();
                 // Restore the current ExecutionContext
                 if (restoreFlow)
                     ExecutionContext.RestoreFlow();
@@ -319,6 +320,7 @@ namespace System.ServiceModel.Channels
             finally
             {
                 _asyncWritePending = false;
+                CancelSendTimer();
                 // Restore the current ExecutionContext
                 if (restoreFlow)
                     ExecutionContext.RestoreFlow();
@@ -635,13 +637,19 @@ namespace System.ServiceModel.Channels
         private static void OnReceiveTimeout(object state)
         {
             SocketConnection thisPtr = (SocketConnection)state;
-            thisPtr.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, thisPtr._asyncReceiveTimeout), TransferOperation.Read);
+            if (thisPtr._receiveTimerEnabled)
+            {
+                thisPtr.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, thisPtr._asyncReceiveTimeout), TransferOperation.Read);
+            }
         }
 
         private static void OnSendTimeout(object state)
         {
             SocketConnection thisPtr = (SocketConnection)state;
-            thisPtr.Abort(TraceEventType.Warning, SR.Format(SR.SocketAbortedSendTimedOut, thisPtr._asyncSendTimeout), TransferOperation.Write);
+            if (thisPtr._sendTimerEnabled)
+            {
+                thisPtr.Abort(TraceEventType.Warning, SR.Format(SR.SocketAbortedSendTimedOut, thisPtr._asyncSendTimeout), TransferOperation.Write);
+            }
         }
 
         private Exception ConvertObjectDisposedException(ObjectDisposedException originalException, TransferOperation transferOperation)
