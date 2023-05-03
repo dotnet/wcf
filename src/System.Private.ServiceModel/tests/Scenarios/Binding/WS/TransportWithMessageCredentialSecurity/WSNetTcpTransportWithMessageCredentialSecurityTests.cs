@@ -7,6 +7,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
+using System.Threading;
+using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
@@ -107,5 +109,22 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
+    }
+
+    [WcfFact]
+    [Issue(2870, OS = OSID.OSX)]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(SSL_Available))]
+    [OuterLoop]
+    public static void NetTcp_SecModeTransWithMessCred_UserNameClientCredential_Succeeds_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => NetTcp_SecModeTransWithMessCred_UserNameClientCredential_Succeeds(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(ScenarioTestHelpers.TestTimeout * 10000);
+        Assert.True(success, "Test Scenario: NetTcp_SecModeTransWithMessCred_UserNameClientCredential_Succeeds_WithSingleThreadedSyncContext timed-out.");
     }
 }

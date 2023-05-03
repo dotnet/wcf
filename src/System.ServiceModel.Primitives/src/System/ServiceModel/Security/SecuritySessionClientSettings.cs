@@ -1466,11 +1466,11 @@ namespace System.ServiceModel.Security
 
             Message IRequestChannel.Request(Message message) => ((IRequestChannel)this).Request(message, DefaultSendTimeout);
 
-            Message IRequestChannel.Request(Message message, TimeSpan timeout) => RequestAsyncInternal(message, timeout).WaitForCompletionNoSpin();
+            Message IRequestChannel.Request(Message message, TimeSpan timeout) => RequestAsync(message, timeout).WaitForCompletionNoSpin();
 
             IAsyncResult IRequestChannel.BeginRequest(Message message, AsyncCallback callback, object state) => ((IRequestChannel)this).BeginRequest(message, DefaultSendTimeout, callback, state);
 
-            IAsyncResult IRequestChannel.BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state) => RequestAsyncInternal(message, timeout).ToApm(callback, state);
+            IAsyncResult IRequestChannel.BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state) => RequestAsync(message, timeout).ToApm(callback, state);
 
             Message IRequestChannel.EndRequest(IAsyncResult result) => result.ToApmEnd<Message>();
 
@@ -1515,18 +1515,13 @@ namespace System.ServiceModel.Security
                 return processedReply;
             }
 
-            private async Task<Message> RequestAsyncInternal(Message message, TimeSpan timeout)
-            {
-                await TaskHelpers.EnsureDefaultTaskScheduler();
-                return await RequestAsync(message, timeout);
-            }
-
             public async Task<Message> RequestAsync(Message message, TimeSpan timeout)
             {
                 ThrowIfFaulted();
                 CheckOutputOpen();
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SecurityProtocolCorrelationState correlationState;
+                await TaskHelpers.EnsureDefaultTaskScheduler();
                 (correlationState, message) = await SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime());
                 Message reply = await ChannelBinder.RequestAsync(message, timeoutHelper.RemainingTime());
                 return ProcessReply(reply, timeoutHelper.RemainingTime(), correlationState);
@@ -1618,6 +1613,7 @@ namespace System.ServiceModel.Security
             public async Task<(bool, Message)> TryReceiveAsync(TimeSpan timeout)
             {
                 ThrowIfFaulted();
+                await TaskHelpers.EnsureDefaultTaskScheduler();
                 (bool wasDequeued, Message message) = await _queue.TryDequeueAsync(timeout);
                 if (message == null)
                 {
@@ -1627,14 +1623,11 @@ namespace System.ServiceModel.Security
                 return (wasDequeued, message);
             }
 
-            public void Send(Message message) => SendAsync(message).GetAwaiter().GetResult();
+            public void Send(Message message) => SendAsync(message).WaitForCompletionNoSpin();
 
-            public Task SendAsync(Message message)
-            {
-                return SendAsync(message, DefaultSendTimeout);
-            }
+            public Task SendAsync(Message message) => SendAsync(message, DefaultSendTimeout);
 
-            public void Send(Message message, TimeSpan timeout) => SendAsync(message, timeout).GetAwaiter().GetResult();
+            public void Send(Message message, TimeSpan timeout) => SendAsync(message, timeout).WaitForCompletionNoSpin();
 
             public async Task SendAsync(Message message, TimeSpan timeout)
             {
@@ -1642,6 +1635,7 @@ namespace System.ServiceModel.Security
                 CheckOutputOpen();
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SecurityProtocolCorrelationState dummy;
+                await TaskHelpers.EnsureDefaultTaskScheduler();
                 (dummy, message) = await SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime());
                 await ChannelBinder.SendAsync(message, timeoutHelper.RemainingTime());
             }
