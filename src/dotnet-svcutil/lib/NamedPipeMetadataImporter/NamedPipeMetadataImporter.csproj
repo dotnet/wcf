@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="System.ServiceModel.NetNamedPipe" Version="6.0.0-rc.23205.4">
+			<PrivateAssets>contentfiles;analyzers;build</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+</Project>
