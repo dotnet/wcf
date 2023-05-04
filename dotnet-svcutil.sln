@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil", "src\dotne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil-lib.Tests", "src\dotnet-svcutil\lib\tests\src\dotnet-svcutil-lib.Tests.csproj", "{41376AC5-871E-4CAB-BCF9-1D5CD3351A90}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NamedPipeMetadataImporter", "src\dotnet-svcutil\lib\NamedPipeMetadataImporter\NamedPipeMetadataImporter.csproj", "{94910701-DD66-47DF-AF98-0F40CF5BE5C4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{41376AC5-871E-4CAB-BCF9-1D5CD3351A90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41376AC5-871E-4CAB-BCF9-1D5CD3351A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41376AC5-871E-4CAB-BCF9-1D5CD3351A90}.Release|Any CPU.Build.0 = Release|Any CPU
-		{94910701-DD66-47DF-AF98-0F40CF5BE5C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94910701-DD66-47DF-AF98-0F40CF5BE5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94910701-DD66-47DF-AF98-0F40CF5BE5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94910701-DD66-47DF-AF98-0F40CF5BE5C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
