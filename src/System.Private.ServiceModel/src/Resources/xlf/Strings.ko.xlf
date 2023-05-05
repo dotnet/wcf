@@ -4374,7 +4374,7 @@
       </trans-unit>
       <trans-unit id="UnexpectedXmlChildNode">
         <source>XML child node {0} of type {1} is unexpected for element {2}.</source>
-        <target state="translated">{0} 형식의 XML 자식 노드 {1}은(는) 요소 {2}에 대해 예기치 않은 자식 노드입니다.</target>
+        <target state="translated">{1} 형식의 XML 자식 노드 {0}은(는) {2} 요소에 필요하지 않은 자식 노드입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnknownComputedKeyAlgorithm">
@@ -4604,7 +4604,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">빈 문자열은 유효한 하위 프로토콜 값이 아닙니다. 값을 지정하지 않으려면 "Null"을 사용하십시오.</target>
+        <target state="translated">빈 문자열은 유효한 하위 프로토콜 값이 아닙니다. 값을 지정하지 않으려면 "Null"을 사용하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">
