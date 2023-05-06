@@ -622,4 +622,7 @@ Your credentials will be sent to the server in clear text.</value>
   <data name="HelpServiceContractFormat" xml:space="preserve">
     <value>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</value>
   </data>
+  <data name="WrnTargetFrameworkNotSupported_NetNamedPipe" xml:space="preserve">
+    <value>NetNamedPipe is not supported on current .net target framework.</value>
+  </data>
 </root>

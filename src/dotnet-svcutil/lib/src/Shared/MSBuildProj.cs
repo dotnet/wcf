@@ -448,7 +448,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             throw new Exception(Shared.Resources.ErrorInvalidProjectFormat);
         }
 
-        public bool AddDependency(ProjectDependency dependency)
+        public bool AddDependency(ProjectDependency dependency, bool copyInternalAssets = false)
         {
             // a nuget package can contain multiple assemblies, we need to filter package references so we don't add dups.
             bool addDependency = !_dependencies.Any(d =>
@@ -483,6 +483,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     case ProjectDependencyType.Tool:
                         this.ReferenceGroup.Add(new XElement("DotNetCliToolReference", new XAttribute("Include", dependency.Name), new XAttribute("Version", dependency.Version)));
                         break;
+                }
+
+                if(copyInternalAssets && dependency.AssemblyName == "dotnet-svcutil-lib")
+                {
+                    this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", Path.Combine(dependency.FullPath.Substring(0,dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar)),"internalAssets","*.*")), new XAttribute("Link", "internalAssets/%(RecursiveDir)%(Filename)%(Extension)")));
                 }
 
                 _dependencies.Add(dependency);

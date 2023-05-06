@@ -71,6 +71,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.10.*"  ),
                 ProjectDependency.FromPackage("System.ServiceModel.Security", "4.10.*"),
                 ProjectDependency.FromPackage("System.ServiceModel.Federation", "4.10.*")
+            } },
+            {new Version("7.0"), new List<ProjectDependency> {
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "*-*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "*-*"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "*-*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "*-*"),
+                ProjectDependency.FromPackage("System.ServiceModel.Federation", "*-*"),
+                ProjectDependency.FromPackage("System.ServiceModel.NetNamedPipe", "*-*")
             } }
         };
 
@@ -89,7 +97,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             ProjectDependency.FromPackage("System.Private.ServiceModel", "*"),
             ProjectDependency.FromPackage("System.ServiceModel.Security", "*"),
             ProjectDependency.FromPackage("System.Xml.XmlSerializer", "*"),
-            ProjectDependency.FromPackage("System.ServiceModel.Federation", "*")
+            ProjectDependency.FromPackage("System.ServiceModel.Federation", "*"),
+            ProjectDependency.FromPackage("System.ServiceModel.NetNamedPipe", "*"),
+            ProjectDependency.FromPackage("System.ServiceModel.NetFramingBase", "*")
         };
 
         public static Version MinSupportedNetFxVersion { get; } = new Version("4.5");
