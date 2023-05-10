@@ -96,12 +96,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 return;
             }
 
-            //if it's net.pipe url and current platform is windows?
-            if (!MetadataUrl.Scheme.Equals("net.pipe"))
-            {
-                await this.metadataDocumentLoader.LoadAsync(cancellationToken).ConfigureAwait(false);
-            }
-            else
+            //if it's net.pipe url
+            if (MetadataUrl != null && MetadataUrl.Scheme.Equals("net.pipe"))
             {
                 string toolPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 Assembly assembly = Assembly.LoadFrom($"{toolPath}/internalAssets/NamedPipeMetadataImporter.dll");
@@ -131,6 +127,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                         this.metadataDocumentLoader.State = MetadataDocumentLoader.LoadState.Successful;
                     }
                 }
+            }
+            else
+            {
+                await this.metadataDocumentLoader.LoadAsync(cancellationToken).ConfigureAwait(false);
             }
 
             bool useMessageFormat = ServiceDescriptor.DefaultUseMessageFormat;
