@@ -4604,7 +4604,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">Boş dize geçerli bir alt protokol değeri değildir. Değer belirtmemek için "null" değerini kullanın.</target>
+        <target state="translated">Boş dize geçerli bir alt protokol değeri değil. Değer belirtmemek için "null" değerini kullanın.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">
