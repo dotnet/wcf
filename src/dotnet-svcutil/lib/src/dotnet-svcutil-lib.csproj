@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CS0108;CS0219;CS0168;CS0169;CS0414;CS0436;CS0649</NoWarn>
+    <NoWarn>$(NoWarn);CS0108;CS0219;CS0168;CS0169;CS0414;CS0436;CS0649;NU5100</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>$(DefineConstants);HIDE_XSL;FEATURE_CORECLR;PRIVATE_RTLIB;NETCORE</DefineConstants>
   </PropertyGroup>
@@ -120,23 +120,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="internalAssets\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="internalAssets\Microsoft.Extensions.ObjectPool.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="internalAssets\NamedPipeMetadataImporter.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="internalAssets\System.ServiceModel.NetFramingBase.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="internalAssets\System.ServiceModel.NetNamedPipe.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="internalAssets\System.ServiceModel.Primitives.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Content Include="internalAssets\*.*">
+      <Link>internalAssets/%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>
