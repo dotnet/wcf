@@ -64,7 +64,7 @@ namespace SvcutilTest
                 var svcutilPkgRef = ProjectDependency.FromPackage("dotnet-svcutil-lib", svcutilPkgVersion);
                 if (!project.Dependencies.Any(d => d.Equals(svcutilPkgRef)))
                 {
-                    bool success = project.AddDependency(svcutilPkgRef);
+                    bool success = project.AddDependency(svcutilPkgRef, true);
                     Assert.True(success, $"Could not add tool package dependency: dotnet-svcutil-lib.{svcutilPkgVersion}");
                 }
             }
