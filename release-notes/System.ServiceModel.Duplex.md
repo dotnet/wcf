@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 6.0.0
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Duplex/6.0.0)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v6.0.0-rtm)
+
 ### 6.0.0-rc.23205.4
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Duplex/6.0.0-rc.23205.4)
