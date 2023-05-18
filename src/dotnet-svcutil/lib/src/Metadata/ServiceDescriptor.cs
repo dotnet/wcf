@@ -22,6 +22,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
     public class ServiceDescriptor
     {
         public const bool DefaultUseMessageFormat = true;
+        internal OperationalContext? OperationalCtx { get; set; }
 
         protected MetadataDocumentLoader metadataDocumentLoader;
 
@@ -99,15 +100,26 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             //if it's net.pipe url
             if (MetadataUrl != null && MetadataUrl.Scheme.Equals("net.pipe"))
             {
+                string tfn;                
+                if(OperationalCtx == OperationalContext.Infrastructure)
+                {
+                    tfn = "net472";
+                }
+                else
+                {
+                    tfn = "net6.0-windows";
+                }
+
                 string toolPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                Assembly assembly = Assembly.LoadFrom($"{toolPath}/internalAssets/NamedPipeMetadataImporter.dll");
+                Assembly assembly = Assembly.LoadFrom($"{toolPath}/internalAssets/{tfn}/NamedPipeMetadataImporter.dll");
+
                 Type type = assembly.GetType("Microsoft.Tools.ServiceModel.Svcutil.NamedPipeMetadataImporter");
                 if (type != null)
                 {
                     object typeInstance = Activator.CreateInstance(type, null);
                     MethodInfo methodInfo = type.GetMethod("GetMetadatadataAsync", BindingFlags.Public | BindingFlags.Instance);
-                    Task<System.Xml.XmlReader> task = (Task<System.Xml.XmlReader>)methodInfo.Invoke(typeInstance, new object[] { MetadataUrl });
-                    var xmlReader = task.GetAwaiter().GetResult();
+                    var xmlReader = await (Task<System.Xml.XmlReader>)methodInfo.Invoke(typeInstance, new object[] { MetadataUrl });
+
                     if (xmlReader != null)
                     {
                         Encoding encoding = Encoding.UTF8;
