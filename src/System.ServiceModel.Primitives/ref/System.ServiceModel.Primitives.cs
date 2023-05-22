@@ -1755,6 +1755,9 @@ namespace System.ServiceModel.Description
         public string Name { get { return default; } }
         public System.Collections.ObjectModel.KeyedCollection<System.Type, System.ServiceModel.Description.IOperationBehavior> OperationBehaviors { get { return default; } }
         public System.Reflection.MethodInfo TaskMethod { get { return default; } set { } }
+        public System.Reflection.MethodInfo BeginMethod { get { return default; } set { } }
+        public System.Reflection.MethodInfo EndMethod { get { return default; } set { } }
+        public System.Reflection.MethodInfo SyncMethod { get { return default; } set { } }
     }
     public partial class OperationDescriptionCollection : System.Collections.ObjectModel.Collection<System.ServiceModel.Description.OperationDescription>
     {

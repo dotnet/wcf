@@ -202,4 +202,23 @@ public static class ContractDescriptionTest
         Assert.Equal(typeof(IDescriptionTestsService).Name, contractDescription.ContractType.Name);
         Assert.Equal("http://tempuri.org/", contractDescription.Namespace);
     }
+
+    [WcfFact]
+    public static void OperationDescription_BeginEndSyncMethod_Property()
+    {
+        ContractDescription contractDescription = ContractDescription.GetContract(typeof(IDescriptionTestsServiceBeginEndGenerated));
+        Assert.Equal(2, contractDescription.Operations.Count);
+        foreach(OperationDescription operation in contractDescription.Operations)
+        {
+            Assert.NotNull(operation.BeginMethod);
+            Assert.NotNull(operation.EndMethod);
+        }
+
+        contractDescription = ContractDescription.GetContract(typeof(IDescriptionTestsService));
+        Assert.Equal(2, contractDescription.Operations.Count);
+        foreach (OperationDescription operation in contractDescription.Operations)
+        {
+            Assert.NotNull(operation.SyncMethod);
+        }
+    }
 }

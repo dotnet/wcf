@@ -117,6 +117,28 @@ public interface IDescriptionTestsServiceGenerated
     System.Threading.Tasks.Task<string> EchoAsync(string message);
 }
 
+// Dummy interface used for ContractDescriptionTests
+// This code is deliberately not cleaned up after svcutil to test that we work with the raw Add Service Reference code.
+[System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IDescriptionTestsService")]
+public interface IDescriptionTestsServiceBeginEndGenerated
+{
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDescriptionTestsService/MessageRequestReply", ReplyAction = "http://tempuri.org/IDescriptionTestsService/MessageRequestReplyResponse")]
+    System.ServiceModel.Channels.Message MessageRequestReply(System.ServiceModel.Channels.Message request);
+
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern = true, Action = "http://tempuri.org/IDescriptionTestsService/MessageRequestReply", ReplyAction = "http://tempuri.org/IDescriptionTestsService/MessageRequestReplyResponse")]
+    System.IAsyncResult BeginMessageRequestReply(System.ServiceModel.Channels.Message request, System.AsyncCallback callback, object asyncState);
+
+    System.ServiceModel.Channels.Message EndMessageRequestReply(System.IAsyncResult result);
+
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDescriptionTestsService/Echo", ReplyAction = "http://tempuri.org/IDescriptionTestsService/EchoResponse")]
+    string Echo(string message);
+
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern = true, Action = "http://tempuri.org/IDescriptionTestsService/Echo", ReplyAction = "http://tempuri.org/IDescriptionTestsService/EchoResponse")]
+    System.IAsyncResult BeginEcho(string message, System.AsyncCallback callback, object asyncState);
+
+    string EndEcho(System.IAsyncResult result);
+}
+
 // Manually constructed service interface to validate MessageContract operations.
 // This interface closely matches the one found at http://app.thefreedictionary.com/w8feedback.asmx
 // This was done to test that we would work with that real world app.
