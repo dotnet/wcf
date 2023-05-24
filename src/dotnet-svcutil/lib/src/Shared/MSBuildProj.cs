@@ -871,7 +871,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (!this.GlobalProperties.Any(p => p.Key == "TargetFramework"))
             {
-                this.GlobalProperties["TargetFramework"] = this.TargetFramework;
+                this.GlobalProperties["TargetFramework"] = this.TargetFrameworks.FirstOrDefault();
             }
 
             if (!this.GlobalProperties.Any(p => p.Key == "SdkVersion"))
@@ -885,7 +885,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if (propertyTable.Count() != propertyNames.Count())
                 {
-                    propertyTable = await _propertyResolver.EvaluateProjectPropertiesAsync(this.FullPath, this.TargetFramework, propertyNames, this.GlobalProperties, logger, cancellationToken).ConfigureAwait(false);
+                    propertyTable = await _propertyResolver.EvaluateProjectPropertiesAsync(this.FullPath, this.TargetFrameworks.FirstOrDefault(), propertyNames, this.GlobalProperties, logger, cancellationToken).ConfigureAwait(false);
 
                     foreach (var entry in propertyTable)
                     {
@@ -915,7 +915,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     var depsFiles = Directory.GetFiles(binFolder, "*", SearchOption.AllDirectories)
                         .Where(d => Path.GetFileName(d).Equals(fileName, RuntimeEnvironmentHelper.FileStringComparison))
-                        .Where(f => PathHelper.GetFolderName(Path.GetDirectoryName(f)) == this.TargetFramework)
+                        .Where(f => PathHelper.GetFolderName(Path.GetDirectoryName(f)) == this.TargetFrameworks.FirstOrDefault())
                         .Select(f => new FileInfo(f))
                         .OrderByDescending(f => f.CreationTimeUtc);
 
