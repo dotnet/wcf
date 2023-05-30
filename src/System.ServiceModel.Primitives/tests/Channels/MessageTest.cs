@@ -77,4 +77,36 @@ public static class MessageTest
         string actual = version.ToString();
         Assert.Equal(expected, actual);
     }
+
+    [WcfFact]
+    public static void CreateMessageWithFaultCode()
+    {
+        FaultCode faultCode = new FaultCode("fName");
+        string faultReason = "fault reason";
+        object faultDetail = new FaultDetail("fault details");
+
+        //create message without fault detail
+        var message = Message.CreateMessage(MessageVersion.Soap12WSAddressing10, faultCode, faultReason, s_action);
+        Assert.Equal(MessageVersion.Soap12WSAddressing10, message.Version);
+        Assert.Equal(s_action, message.Headers.Action);
+        Assert.False(message.IsEmpty);
+        Assert.True(message.IsFault);
+
+        var msgFault = MessageFault.CreateFault(message, int.MaxValue);
+        Assert.Equal(faultReason, msgFault.Reason.GetMatchingTranslation().Text);
+
+        //create message with fault detail
+        message = Message.CreateMessage(MessageVersion.Soap12WSAddressing10, faultCode, faultReason, faultDetail, s_action);
+        Assert.Equal(MessageVersion.Soap12WSAddressing10, message.Version);
+        Assert.Equal(s_action, message.Headers.Action);
+        Assert.False(message.IsEmpty);
+        Assert.True(message.IsFault);
+
+        msgFault = MessageFault.CreateFault(message, int.MaxValue);
+        Assert.Equal(faultReason, msgFault.Reason.GetMatchingTranslation().Text);
+        Assert.True(msgFault.HasDetail);
+        var msgFDetail = msgFault.GetDetail<FaultDetail>();
+        Assert.NotNull(msgFDetail);
+        Assert.Equal(((FaultDetail)faultDetail).Message, msgFDetail.Message);
+    }
 }
