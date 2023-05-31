@@ -212,6 +212,16 @@ public static class ContractDescriptionTest
         {
             Assert.NotNull(operation.BeginMethod);
             Assert.NotNull(operation.EndMethod);
+            if(operation.Name.Equals("Echo"))
+            {
+                Assert.Equal(typeof(IDescriptionTestsServiceBeginEndGenerated).GetMethod(nameof(IDescriptionTestsServiceBeginEndGenerated.BeginEcho)), operation.BeginMethod);
+                Assert.Equal(typeof(IDescriptionTestsServiceBeginEndGenerated).GetMethod(nameof(IDescriptionTestsServiceBeginEndGenerated.EndEcho)), operation.EndMethod);
+            }
+            else
+            {
+                Assert.Equal(typeof(IDescriptionTestsServiceBeginEndGenerated).GetMethod(nameof(IDescriptionTestsServiceBeginEndGenerated.BeginMessageRequestReply)), operation.BeginMethod);
+                Assert.Equal(typeof(IDescriptionTestsServiceBeginEndGenerated).GetMethod(nameof(IDescriptionTestsServiceBeginEndGenerated.EndMessageRequestReply)), operation.EndMethod);
+            }
         }
 
         contractDescription = ContractDescription.GetContract(typeof(IDescriptionTestsService));
@@ -219,6 +229,14 @@ public static class ContractDescriptionTest
         foreach (OperationDescription operation in contractDescription.Operations)
         {
             Assert.NotNull(operation.SyncMethod);
+            if (operation.Name.Equals("Echo"))
+            {
+                Assert.Equal(typeof(IDescriptionTestsService).GetMethod(nameof(IDescriptionTestsService.Echo)), operation.SyncMethod);
+            }
+            else
+            {
+                Assert.Equal(typeof(IDescriptionTestsService).GetMethod(nameof(IDescriptionTestsService.MessageRequestReply)), operation.SyncMethod);
+            }
         }
     }
 }
