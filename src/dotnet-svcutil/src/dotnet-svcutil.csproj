@@ -8,7 +8,7 @@
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_SvcUtilPackages)</IsShipping>
     <MajorVersion>2</MajorVersion>
-    <MinorVersion>1</MinorVersion>
+    <MinorVersion>2</MinorVersion>
     <PatchVersion>0</PatchVersion>
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
