@@ -42,7 +42,7 @@ namespace System.ServiceModel.Channels
             return _remoteSecurity;
         }
 
-        internal override async Task<Stream> InitiateUpgradeAsync(Stream stream)
+        public override async Task<Stream> InitiateUpgradeAsync(Stream stream)
         {
             if (stream == null)
             {

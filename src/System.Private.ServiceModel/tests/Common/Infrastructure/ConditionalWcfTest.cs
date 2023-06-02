@@ -98,6 +98,11 @@ namespace Infrastructure.Common
                                      ConditionalTestDetectors.IsWindows);
         }
 
+        public static bool IsNotWindows()
+        {
+            return !Is_Windows();
+        }
+
         // Returns 'true' if both the server and the client are domain-joined.
         public static bool Domain_Joined()
         {
