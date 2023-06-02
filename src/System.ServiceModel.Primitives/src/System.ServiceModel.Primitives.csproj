@@ -19,6 +19,7 @@
     <InternalsVisibleTo Include="System.ServiceModel.Federation" />
     <InternalsVisibleTo Include="System.ServiceModel.NetFramingBase" />
     <InternalsVisibleTo Include="System.ServiceModel.NetTcp" />
+    <InternalsVisibleTo Include="System.ServiceModel.UnixDomainSocket" />
     <InternalsVisibleTo Include="System.ServiceModel.NetNamedPipe" />
   </ItemGroup>
 

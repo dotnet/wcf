@@ -10,7 +10,7 @@ namespace System.ServiceModel.Channels
     {
         protected StreamUpgradeInitiator() { }
         public abstract string GetNextUpgrade();
-        internal abstract Task<Stream> InitiateUpgradeAsync(Stream stream);
+        public abstract Task<Stream> InitiateUpgradeAsync(Stream stream);
         internal virtual ValueTask OpenAsync(TimeSpan timeout) => default;
         internal virtual ValueTask CloseAsync(TimeSpan timeout) => default;
     }
