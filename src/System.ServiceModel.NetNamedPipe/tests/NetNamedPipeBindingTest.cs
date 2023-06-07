@@ -5,6 +5,7 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
@@ -12,6 +13,7 @@ using Xunit;
 public static class NetNamedPipeBindingTest
 {
     [WcfFact]
+    [SupportedOSPlatform("windows")]
     public static void AppContextSwitch_useSha1InPipeConnectionGetHashAlgorithm()
     {
         Type t = Assembly.GetAssembly(typeof(NamedPipeTransportBindingElement))
