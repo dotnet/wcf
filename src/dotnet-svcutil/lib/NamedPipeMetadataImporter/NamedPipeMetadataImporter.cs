@@ -2,8 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
@@ -13,22 +15,29 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         const string UriSchemeNetPipe = "net.pipe";
         const string NamedPipeBindingName = "MetadataExchangeNamedPipeBinding";
         const string BindingNamespace = "http://schemas.microsoft.com/ws/2005/02/mex/bindings";
-        XmlReader? _xmlReader;
+        XmlReader _xmlReader;
 
-        public XmlReader? GetReader(Uri uri)
+#if NET6_0
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
+        public XmlReader GetReader(Uri uri)
         {
             return GetMetadatadataAsync(uri).GetAwaiter().GetResult();
         }
-        public async Task<XmlReader?> GetMetadatadataAsync(Uri uri)
+
+#if NET6_0
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
+        public async Task<XmlReader> GetMetadatadataAsync(Uri uri)
         {
-            if(uri.Scheme != UriSchemeNetPipe)
+            if (uri.Scheme != UriSchemeNetPipe)
             {
                 return null;
             }
 
             ChannelFactory<IMetadataExchange> factory = new ChannelFactory<IMetadataExchange>(CreateNamedPipeBinding(), new EndpointAddress(uri.AbsoluteUri));
-            var proxy = factory.CreateChannel();
-            var messageVersion = factory.Endpoint.Binding.MessageVersion;
+            IMetadataExchange proxy = factory.CreateChannel();
+            MessageVersion messageVersion = factory.Endpoint.Binding.MessageVersion;
 
             try
             {
@@ -58,8 +67,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             if (result.CompletedSynchronously)
                 return;
 
-            IMetadataExchange? metadataClient = result.AsyncState as IMetadataExchange;
-            if (metadataClient != null)
+            if (result.AsyncState is IMetadataExchange metadataClient)
             {
                 Message response = metadataClient.EndGet(result);
                 if (!response.IsFault)
@@ -69,6 +77,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
+#if NET6_0
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
         public CustomBinding CreateNamedPipeBinding()
         {
             CustomBinding binding = new CustomBinding(NamedPipeBindingName, BindingNamespace);
