@@ -23,7 +23,6 @@ namespace System.ServiceModel
         private SynchronizationContext _synchronizationContext;
         private object _userObject;
         private bool _wellKnown;
-        private SynchronizedCollection<IChannel> _wmiChannels;
         private bool _isUserCreated;
 
         public InstanceContext(object implementation)
@@ -147,24 +146,6 @@ namespace System.ServiceModel
         internal object UserObject
         {
             get { return _userObject; }
-        }
-
-        internal ICollection<IChannel> WmiChannels
-        {
-            get
-            {
-                if (_wmiChannels == null)
-                {
-                    lock (ThisLock)
-                    {
-                        if (_wmiChannels == null)
-                        {
-                            _wmiChannels = new SynchronizedCollection<IChannel>();
-                        }
-                    }
-                }
-                return _wmiChannels;
-            }
         }
 
         protected override void OnAbort()
