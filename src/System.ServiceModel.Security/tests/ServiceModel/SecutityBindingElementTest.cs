@@ -44,6 +44,22 @@ public static class SecutityBindingElementTest
     }
 
     [WcfFact]
+    public static void Property_EnableUnsecuredResponse()
+    {
+        //default value in derived class
+        TransportSecurityBindingElement securityBindingElement = new TransportSecurityBindingElement();
+        Assert.False(securityBindingElement.EnableUnsecuredResponse);
+
+        //initializable from derived class ctor
+        securityBindingElement = new TransportSecurityBindingElement() { EnableUnsecuredResponse = true};
+        Assert.True(securityBindingElement.EnableUnsecuredResponse);
+
+        //property settable
+        securityBindingElement.EnableUnsecuredResponse = false;
+        Assert.False(securityBindingElement.EnableUnsecuredResponse);
+    }
+
+    [WcfFact]
     public static void Method_CreateIssuedTokenOverTransportBindingElement()
     {
         IssuedSecurityTokenParameters tokenParameters = new IssuedSecurityTokenParameters();
