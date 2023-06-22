@@ -179,7 +179,7 @@ namespace GitHub3149_cyclical_deps_wsdl_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
         
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService1))
             {
@@ -193,7 +193,7 @@ namespace GitHub3149_cyclical_deps_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService1))
             {
@@ -202,12 +202,12 @@ namespace GitHub3149_cyclical_deps_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        public static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return Service1Client.GetBindingForEndpoint(EndpointConfiguration.BasicHttpBinding_IService1);
         }
         
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
+        public static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return Service1Client.GetEndpointAddress(EndpointConfiguration.BasicHttpBinding_IService1);
         }
@@ -293,7 +293,7 @@ namespace GitHub3149_cyclical_deps_wsdl_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
         
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService2))
             {
@@ -307,7 +307,7 @@ namespace GitHub3149_cyclical_deps_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService2))
             {
@@ -316,12 +316,12 @@ namespace GitHub3149_cyclical_deps_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        public static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return Service2Client.GetBindingForEndpoint(EndpointConfiguration.BasicHttpBinding_IService2);
         }
         
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
+        public static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return Service2Client.GetEndpointAddress(EndpointConfiguration.BasicHttpBinding_IService2);
         }
@@ -407,7 +407,7 @@ namespace GitHub3149_cyclical_deps_wsdl_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
         
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService3))
             {
@@ -421,7 +421,7 @@ namespace GitHub3149_cyclical_deps_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService3))
             {
@@ -430,12 +430,12 @@ namespace GitHub3149_cyclical_deps_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        public static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return Service3Client.GetBindingForEndpoint(EndpointConfiguration.BasicHttpBinding_IService3);
         }
         
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
+        public static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return Service3Client.GetEndpointAddress(EndpointConfiguration.BasicHttpBinding_IService3);
         }

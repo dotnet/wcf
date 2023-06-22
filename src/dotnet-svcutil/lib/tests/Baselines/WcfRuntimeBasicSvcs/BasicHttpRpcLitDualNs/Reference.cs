@@ -256,7 +256,7 @@ namespace BasicHttpRpcLitDualNs_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
         
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_ICalculatorRpcLit))
             {
@@ -270,7 +270,7 @@ namespace BasicHttpRpcLitDualNs_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_ICalculatorRpcLit))
             {
@@ -280,12 +280,12 @@ namespace BasicHttpRpcLitDualNs_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        public static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return CalculatorRpcLitClient.GetBindingForEndpoint(EndpointConfiguration.Basic_ICalculatorRpcLit);
         }
         
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
+        public static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return CalculatorRpcLitClient.GetEndpointAddress(EndpointConfiguration.Basic_ICalculatorRpcLit);
         }
@@ -376,7 +376,7 @@ namespace BasicHttpRpcLitDualNs_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
         
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_IHelloWorldRpcLit))
             {
@@ -390,7 +390,7 @@ namespace BasicHttpRpcLitDualNs_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_IHelloWorldRpcLit))
             {
@@ -400,12 +400,12 @@ namespace BasicHttpRpcLitDualNs_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        public static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return HelloWorldRpcLitClient.GetBindingForEndpoint(EndpointConfiguration.Basic_IHelloWorldRpcLit);
         }
         
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
+        public static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return HelloWorldRpcLitClient.GetEndpointAddress(EndpointConfiguration.Basic_IHelloWorldRpcLit);
         }

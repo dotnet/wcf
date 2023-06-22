@@ -131,7 +131,7 @@ namespace GitHub2848_WildcardService_svc_wsdl_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
         
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IWildcardsService))
             {
@@ -145,7 +145,7 @@ namespace GitHub2848_WildcardService_svc_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IWildcardsService))
             {
@@ -154,12 +154,12 @@ namespace GitHub2848_WildcardService_svc_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        public static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return WildcardsServiceClient.GetBindingForEndpoint(EndpointConfiguration.BasicHttpBinding_IWildcardsService);
         }
         
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
+        public static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return WildcardsServiceClient.GetEndpointAddress(EndpointConfiguration.BasicHttpBinding_IWildcardsService);
         }

@@ -25,7 +25,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             this.GetEndpointAddress = new CodeMemberMethod
             {
                 Name = ConfigToCodeConstants.GetEndpointAddressMethod,
-                Attributes = MemberAttributes.Private | MemberAttributes.Static,
+                Attributes = MemberAttributes.Public | MemberAttributes.Static,
                 ReturnType = new CodeTypeReference(typeof(EndpointAddress)),
             };
 
@@ -34,7 +34,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             this.GetBinding = new CodeMemberMethod
             {
                 Name = ConfigToCodeConstants.GetBindingMethod,
-                Attributes = MemberAttributes.Private | MemberAttributes.Static,
+                Attributes = MemberAttributes.Public | MemberAttributes.Static,
                 ReturnType = new CodeTypeReference(typeof(Binding)),
             };
 
@@ -1998,14 +1998,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             this.GetDefaultBinding = new CodeMemberMethod
             {
-                Attributes = MemberAttributes.Static | MemberAttributes.Private,
+                Attributes = MemberAttributes.Static | MemberAttributes.Public,
                 Name = ConfigToCodeConstants.GetDefaultBindingMethod,
                 ReturnType = new CodeTypeReference(typeof(Binding)),
             };
 
             this.GetDefaultEndpointAddress = new CodeMemberMethod
             {
-                Attributes = MemberAttributes.Static | MemberAttributes.Private,
+                Attributes = MemberAttributes.Static | MemberAttributes.Public,
                 Name = ConfigToCodeConstants.GetDefaultEndpointAddressMethod,
                 ReturnType = new CodeTypeReference(typeof(EndpointAddress)),
             };

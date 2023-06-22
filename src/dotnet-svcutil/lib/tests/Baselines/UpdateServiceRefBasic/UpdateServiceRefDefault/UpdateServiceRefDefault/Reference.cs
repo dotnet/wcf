@@ -153,7 +153,7 @@ namespace UpdateServiceRefDefault
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
         
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_ITypeReuseSvc))
             {
@@ -167,7 +167,7 @@ namespace UpdateServiceRefDefault
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_ITypeReuseSvc))
             {
@@ -176,12 +176,12 @@ namespace UpdateServiceRefDefault
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        public static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return TypeReuseSvcClient.GetBindingForEndpoint(EndpointConfiguration.BasicHttpBinding_ITypeReuseSvc);
         }
         
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
+        public static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return TypeReuseSvcClient.GetEndpointAddress(EndpointConfiguration.BasicHttpBinding_ITypeReuseSvc);
         }

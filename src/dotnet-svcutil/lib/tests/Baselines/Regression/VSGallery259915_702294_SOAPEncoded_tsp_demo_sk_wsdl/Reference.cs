@@ -3336,7 +3336,7 @@ namespace VSGallery259915_702294_SOAPEncoded_tsp_demo_sk_wsdl_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
         
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.DigiDocService))
             {
@@ -3351,7 +3351,7 @@ namespace VSGallery259915_702294_SOAPEncoded_tsp_demo_sk_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        public static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.DigiDocService))
             {
@@ -3360,12 +3360,12 @@ namespace VSGallery259915_702294_SOAPEncoded_tsp_demo_sk_wsdl_NS
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        public static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return DigiDocServicePortTypeClient.GetBindingForEndpoint(EndpointConfiguration.DigiDocService);
         }
         
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
+        public static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return DigiDocServicePortTypeClient.GetEndpointAddress(EndpointConfiguration.DigiDocService);
         }
