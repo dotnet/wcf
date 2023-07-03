@@ -52,4 +52,39 @@ public static class TypedProxyDuplexTests
             }
         }
     }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void DuplexChanelFactory_Ctor_Type_Overload_E2E()
+    {
+        DuplexChannelFactory<IWcfDuplexTaskReturnService> factory = null;
+        Guid guid = Guid.NewGuid();
+
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.None;
+
+        DuplexTaskReturnServiceCallback callbackService = new DuplexTaskReturnServiceCallback();
+        InstanceContext context = new InstanceContext(callbackService);
+
+        try
+        {
+            factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(typeof(DuplexTaskReturnServiceCallback), binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address));
+            IWcfDuplexTaskReturnService serviceProxy = factory.CreateChannel(context);
+
+            Task<Guid> task = serviceProxy.Ping(guid);
+
+            Guid returnedGuid = task.Result;
+
+            Assert.Equal(guid, returnedGuid);
+
+            factory.Close();
+        }
+        finally
+        {
+            if (factory != null && factory.State != CommunicationState.Closed)
+            {
+                factory.Abort();
+            }
+        }
+    }
 }

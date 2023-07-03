@@ -7,6 +7,7 @@ using System;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
 using Infrastructure.Common;
 using Xunit;
 
@@ -145,6 +146,39 @@ public class DuplexChannelFactoryTest
 
         DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
         IWcfDuplexService proxy = factory.CreateChannel();
+        Assert.NotNull(proxy);
+    }
+
+    [WcfFact]
+    public static void Ctor_Type_Overloads_Can_CreateChannel()
+    {        
+        Binding binding = new NetTcpBinding();
+        string remoteAddress = "net.tcp://not-an-endpoint";
+        EndpointAddress endpoint = new EndpointAddress(remoteAddress);
+        ServiceEndpoint serviceEndpoint = new ServiceEndpoint(ContractDescription.GetContract(typeof(IWcfDuplexService)), binding, endpoint);
+        WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);        
+
+        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(typeof(WcfDuplexServiceCallback), binding, endpoint);
+        IWcfDuplexService proxy = factory.CreateChannel(context);
+        Assert.NotNull(proxy);
+
+        factory = new DuplexChannelFactory<IWcfDuplexService>(typeof(WcfDuplexServiceCallback), binding, remoteAddress);
+        proxy = factory.CreateChannel(context);
+        Assert.NotNull(proxy);
+
+        factory = new DuplexChannelFactory<IWcfDuplexService>(typeof(WcfDuplexServiceCallback), binding);
+        proxy = factory.CreateChannel(context, endpoint);
+        Assert.NotNull(proxy);
+
+        factory = new DuplexChannelFactory<IWcfDuplexService>(typeof(WcfDuplexServiceCallback));
+        factory.Endpoint.Binding = binding;
+        factory.Endpoint.Address = endpoint;
+        proxy = factory.CreateChannel(context);
+        Assert.NotNull(proxy);
+
+        factory = new DuplexChannelFactory<IWcfDuplexService>(typeof(WcfDuplexServiceCallback), serviceEndpoint);
+        proxy = factory.CreateChannel(context);
         Assert.NotNull(proxy);
     }
 

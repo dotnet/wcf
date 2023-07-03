@@ -28,6 +28,11 @@ namespace System.ServiceModel
     }
     public partial class DuplexChannelFactory<TChannel> : System.ServiceModel.ChannelFactory<TChannel>
     {
+        public DuplexChannelFactory(Type callbackInstanceType) : base(default(System.Type)) { }
+        public DuplexChannelFactory(Type callbackInstanceType, System.ServiceModel.Channels.Binding binding) : base(default(System.Type)) { }
+        public DuplexChannelFactory(Type callbackInstanceType, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : base(default(System.Type)) { }
+        public DuplexChannelFactory(Type callbackInstanceType, System.ServiceModel.Channels.Binding binding, string remoteAddress) : base(default(System.Type)) { }
+        public DuplexChannelFactory(Type callbackInstanceType, System.ServiceModel.Description.ServiceEndpoint serviceEndpoint) : base(default(System.Type)) { }
         public DuplexChannelFactory(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding) : base(default(System.Type)) { }
         public DuplexChannelFactory(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : base(default(System.Type)) { }
         public DuplexChannelFactory(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, string remoteAddress) : base(default(System.Type)) { }
