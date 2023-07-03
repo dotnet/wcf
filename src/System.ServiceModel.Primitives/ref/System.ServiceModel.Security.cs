@@ -89,6 +89,7 @@ namespace System.ServiceModel.Channels
         public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default; }
         public override string ToString() { return default; }
         public System.ServiceModel.Security.SecurityKeyEntropyMode KeyEntropyMode { get { return default;} set { } }
+        public bool EnableUnsecuredResponse { get { return default; } set { } }
     }
     public enum SecurityHeaderLayout
     {
