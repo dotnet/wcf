@@ -203,12 +203,12 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("TypeReuse80", "net8.0")]
-        public void TypeReuse(string testCaseName, string targetFramework)
+        [InlineData("TypeReuse")]
+        public void TypeReuse(string testCaseName)
         {
             this_TestCaseName = "TypeReuse";
             TestFixture();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: targetFramework, sdkVersion: g_SdkVersion);
+            InitializeE2E(testCaseName, createUniqueProject: true);
 
             var uri = SetupProjectDependencies();
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");

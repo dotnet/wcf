@@ -6,13 +6,13 @@
       "../../TypeReuseSvc.wsdl"
     ],
     "namespaceMappings": [
-      "*, TypeReuse80_NS"
+      "*, TypeReuse_NS"
     ],
     "outputFile": "Reference.cs",
     "references": [
       "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
-      "$resultPath$//TestResults//TypeReuse//TypeReuse80//bin//Debug//net8.0//BinLib.dll",
-      "$resultPath$//TestResults//TypeReuse//TypeReuse80//bin//Debug//net8.0//TypesLib.dll",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//net8.0//BinLib.dll",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//net8.0//TypesLib.dll",
       "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
       "Microsoft.DotNet.InternalAbstractions, {Microsoft.DotNet.InternalAbstractions, 99.99.99}",
       "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",
