@@ -1,18 +1,18 @@
 {
-  "providerId": "TFnet8_0",
+  "providerId": "elm",
   "version": "99.99.99",
   "options": {
     "inputs": [
       "$testCasesPath$/wsdl/Simple.wsdl"
     ],
-    "bootstrapPath": "$resultPath$/TestBootstrap/ParamsFiles_SDK_TFM/TFnet8_0",
+    "bootstrapPath": "$resultPath$/TestBootstrap/ParamsFiles/elm",
     "namespaceMappings": [
-      "*, TFnet8_0_NS"
+      "*, elm_NS"
     ],
     "noLogo": true,
     "noTelemetry": true,
-    "outputDir": "$resultPath$/TestResults/ParamsFiles_SDK_TFM/TFnet8_0",
-    "projectFile": "$resultPath$/TestResults/ParamsFiles_SDK_TFM/TFnet8_0/TFnet8_0.csproj",
+    "outputDir": "$resultPath$/TestResults/ParamsFiles/elm",
+    "projectFile": "$resultPath$/TestResults/ParamsFiles/elm/elm.csproj",
     "references": [
       "Newtonsoft.Json, {Newtonsoft.Json, 99.99.99}"
     ],

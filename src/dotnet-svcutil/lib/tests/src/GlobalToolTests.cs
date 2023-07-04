@@ -184,18 +184,17 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("net8.0", "-elm")]
-        public void ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
+        [InlineData("-elm")]
+        public void ParamsFiles(string extraOptions)
         {
-            this_TestCaseName = "ParamsFiles_SDK_TFM";
+            this_TestCaseName = "ParamsFiles";
             TestFixture();
-            var testCaseName = $"TF{targetFramework}".Replace(".", "_");
-            InitializeGlobal(testCaseName, targetFramework: targetFramework, g_SdkVersion);
-            this_TestCaseProject.TargetFramework = targetFramework;
+            var testCaseName = extraOptions.Substring(1);
+            InitializeGlobal(testCaseName);
             await this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None);
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
-            var ns = testCaseName.Replace(".", "_") + "_NS";
+            var ns = testCaseName + "_NS";
 
             // generate params file from options
             var paramsFilePath = Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.params.json");
