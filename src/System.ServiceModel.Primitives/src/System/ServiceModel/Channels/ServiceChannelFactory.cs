@@ -351,11 +351,6 @@ namespace System.ServiceModel.Channels
             }
 
             serviceChannel.ClientRuntime.GetRuntime().InitializeChannel(clientChannel);
-            OperationContext current = OperationContext.Current;
-            if ((current != null) && (current.InstanceContext != null))
-            {
-                current.InstanceContext.WmiChannels.Add((IChannel)serviceChannel.Proxy);
-            }
 
             return (TChannel)serviceChannel.Proxy;
         }
