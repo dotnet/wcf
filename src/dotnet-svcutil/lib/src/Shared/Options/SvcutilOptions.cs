@@ -24,6 +24,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public const string ToolContextKey = "toolContext";
         public const string VerbosityKey = "verbosity";
         public const string AccecptCertificateKey = "acceptCertificate";
+        public const string ServiceContractKey = "serviceContract";
         #endregion
 
         #region Properties
@@ -40,6 +41,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public OperationalContext? ToolContext { get { return GetValue<OperationalContext?>(ToolContextKey); } set { SetValue(ToolContextKey, value); } }
         public Verbosity? Verbosity { get { return GetValue<Verbosity?>(VerbosityKey); } set { SetValue(VerbosityKey, value); } }
         public bool? AcceptCert { get { return GetValue<bool?>(AccecptCertificateKey); } set { SetValue(AccecptCertificateKey, value); } }
+        public bool? ServiceContract { get { return GetValue<bool?>(ServiceContractKey); } set { SetValue(ServiceContractKey, value); } }
         #endregion
 
         public SvcutilOptions()
@@ -57,7 +59,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 new SingleValueOption<MSBuildProj>(ProjectFileKey, ProjectFileKey),
                 new SingleValueOption<OperationalContext>(ToolContextKey),
                 new SingleValueOption<Verbosity>(VerbosityKey) { DefaultValue = Svcutil.Verbosity.Normal },
-                new SingleValueOption<bool>(AccecptCertificateKey));
+                new SingleValueOption<bool>(AccecptCertificateKey),
+                new SingleValueOption<bool>(ServiceContractKey));
         }
 
         public static new SvcutilOptions FromFile(string filePath, bool throwOnError = true)

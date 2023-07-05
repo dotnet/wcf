@@ -247,6 +247,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     contractGenerator.Options &= ~ServiceContractGenerationOptions.TypedMessages;
                 }
+
+                if (options.ServiceContract == true)
+                {
+                    contractGenerator.Options &= ~ServiceContractGenerationOptions.ChannelInterface & ~ServiceContractGenerationOptions.ClientClass;
+                }
             }
 
             public static void RemoveUnneededSerializers(CommandProcessorOptions options, ServiceDescriptor serviceDescriptor, Collection<IWsdlImportExtension> wsdlImportExtensions)
