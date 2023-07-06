@@ -31,10 +31,12 @@ namespace System.ServiceModel.Federation
         private int _issuedTokenRenewalThresholdPercentage = DefaultIssuedTokenRenewalThresholdPercentage;
 
         /// <summary>
-        /// Instantiates a <see cref="wsTrustTokenParameters"/> that describe the parameters for a WSTrust request.
+        /// Instantiates a <see cref="WSTrustTokenParameters"/> that describe the parameters for a WSTrust request.
         /// </summary>
-        /// <remarks><see cref="KeyType"/> == <see cref="SecurityKeyType.SymmetricKey"/>.
-        /// <para><see cref="MessageSecurityVersion"/> == <see cref="MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10"/></para></remarks>
+        /// <remarks>
+        /// <para>Sets: <see cref="IssuedSecurityTokenParameters.KeyType"/> == <see cref="SecurityKeyType.SymmetricKey"/>.</para>
+        /// <para>Sets: <see cref="IssuedSecurityTokenParameters.DefaultMessageSecurityVersion"/> == <see cref="MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10"/></para>
+        /// <para>Sets: <see cref="MessageSecurityVersion"/> == <see cref="MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10"/></para></remarks>
         public WSTrustTokenParameters()
         {
             KeyType = DefaultSecurityKeyType;

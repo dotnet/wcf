@@ -81,7 +81,7 @@ namespace System.ServiceModel.Federation
         /// <summary>
         /// Gets the WS-Addressing SOAP action that corresponds to the <see cref="WsTrustRequest"/>.RequestType and <see cref="WsTrustRequest"/>.WsTrustVersion.
         /// </summary>
-        /// <param name="trustRequest">The <see cref="WsTrustRequest"/> to generate the WS-Addressing action.
+        /// <param name="trustRequest">The <see cref="WsTrustRequest"/> to generate the WS-Addressing action.</param>
         /// <returns>The WS-Addressing action to use.</returns>
         public static string GetRequestAction(WsTrustRequest trustRequest)
         {
@@ -112,7 +112,7 @@ namespace System.ServiceModel.Federation
         /// <summary>
         /// Gets the <see cref="WsSerializationContext"/> to use when serializing the <see cref="WsTrustRequest"/>.
         /// </summary>
-        /// <param name="trustRequest">The <see cref="WsTrustRequest"/> that will be serialized.
+        /// <param name="trustRequest">The <see cref="WsTrustRequest"/> that will be serialized.</param>
         /// <returns>The <see cref="WsSerializationContext"/> for the <see cref="WsTrustRequest"/>.</returns>
         private WsSerializationContext GetSerializationContext(WsTrustRequest trustRequest)
         {
