@@ -20,6 +20,7 @@ namespace System.ServiceModel.Federation
     /// </summary>
     internal static class WSTrustUtilities
     {
+        /// <summary>
         /// Get a proof token from a WsTrust request/response pair based on section 4.4.3 of the WS-Trust 1.3 spec.
         /// How the proof token is retrieved depends on whether the requester or issuer provide key material:
         /// Requester   |   Issuer                  | Results
@@ -32,6 +33,8 @@ namespace System.ServiceModel.Federation
         /// </summary>
         /// <param name="request">The WS-Trust request (RST).</param>
         /// <param name="response">The WS-Trust response (RSTR).</param>
+        /// <param name="serializationContext">The serialization context.</param>
+        /// <param name="algorithmSuite">The algorithm suite.</param>
         /// <returns>The proof token or null if there is no proof token.</returns>
         internal static BinarySecretSecurityToken GetProofToken(WsTrustRequest request, Microsoft.IdentityModel.Protocols.WsTrust.RequestSecurityTokenResponse response, WsSerializationContext serializationContext, SecurityAlgorithmSuite algorithmSuite)
         {

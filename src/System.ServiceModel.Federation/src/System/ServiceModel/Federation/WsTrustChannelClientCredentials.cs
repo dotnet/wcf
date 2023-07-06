@@ -36,7 +36,7 @@ namespace System.ServiceModel.Federation
         /// Crates an instance of <see cref="WSTrustChannelClientCredentials"/> with specifying a <see cref="ClientCredentials"/>
         /// </summary>
         /// <param name="clientCredentials">The <see cref="SecurityTokenManager"/> from this parameter will be used to
-        /// create the <see cref="SecurityTokenProvider"/> in the case the <see cref="SecurityTokenParameters"/> in the channel are not a <see cref="WSTrustTokenParameters"/></para></remarks>
+        /// create the <see cref="SecurityTokenProvider"/> in the case the <see cref="System.ServiceModel.Security.Tokens.SecurityTokenParameters"/> in the channel are not a <see cref="WSTrustTokenParameters"/></param>
         public WSTrustChannelClientCredentials(ClientCredentials clientCredentials)
             : base(clientCredentials)
         {
@@ -62,7 +62,7 @@ namespace System.ServiceModel.Federation
         /// </summary>
         /// <remarks>The <see cref="SecurityTokenManager"/> is responsible to return the <see cref="SecurityTokenProvider"/> to obtain the issued token.
         /// <para>If <see cref="ClientCredentials"/> was passed to the constructor, then that <see cref="SecurityTokenManager"/> will be used to
-        /// create the <see cref="SecurityTokenProvider"/> in the case the <see cref="SecurityTokenParameters"/> in the channel are not a <see cref="WSTrustTokenParameters"/></para></remarks>
+        /// create the <see cref="SecurityTokenProvider"/> in the case the <see cref="System.ServiceModel.Security.Tokens.SecurityTokenParameters"/> in the channel are not a <see cref="WSTrustTokenParameters"/></para></remarks>
         /// <returns>An instance of <see cref="WSTrustChannelSecurityTokenManager" />.</returns>
         public override SecurityTokenManager CreateSecurityTokenManager()
         {

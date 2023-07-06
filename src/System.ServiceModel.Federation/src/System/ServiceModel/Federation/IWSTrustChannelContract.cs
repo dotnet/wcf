@@ -19,7 +19,6 @@ namespace System.ServiceModel.Federation
         /// </summary>
         /// <param name="request">The <see cref="WsTrustRequest" /> to send to the STS.</param>
         /// <returns>A <see cref="SecurityToken" /> issued by the STS.</returns>
-        /// <summary>
         [OperationContract(Name = "Issue", Action = "*", ReplyAction = "*")]
         Task<SecurityToken> IssueAsync(WsTrustRequest request);
     }

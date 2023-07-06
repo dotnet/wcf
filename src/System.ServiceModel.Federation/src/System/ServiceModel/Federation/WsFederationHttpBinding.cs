@@ -45,8 +45,8 @@ namespace System.ServiceModel.Federation
         /// </summary>
         /// <returns>a <see cref="SecurityBindingElement"/> for the RelyingParty channel.</returns>
         /// <remarks>Creates a new <see cref="TransportBindingElement"/> and adds <see cref="WSTrustTokenParameters"/> to the appropriate EndpointSupportingTokenParameters (Endorsing or Signed).
-        /// <para>Sets: <see cref="MessageSecurityVersion"/> == <see cref="WSTrustTokenParameters.MessageSecurityVersion"/>.</para></para>
-        /// <para>Sets: <see cref="IncludeTimestamp"/> == true.</para></remarks>
+        /// <para>Sets: <see cref="SecurityBindingElement.MessageSecurityVersion"/> == <see cref="WSTrustTokenParameters.MessageSecurityVersion"/>.</para>
+        /// <para>Sets: <see cref="SecurityBindingElement.IncludeTimestamp"/> == true.</para></remarks>
         protected override SecurityBindingElement CreateMessageSecurity()
         {
             WSTrustTokenParameters.RequireDerivedKeys = false;
