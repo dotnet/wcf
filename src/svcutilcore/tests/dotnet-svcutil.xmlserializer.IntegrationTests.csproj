@@ -23,7 +23,7 @@
     <GeneratorCliPath>$(DOTNET_INSTALL_DIR)/</GeneratorCliPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' != 'net6.0">
+  <PropertyGroup Condition="'$(TargetFramework)' != 'net6.0'">
     <!-- We're building some non-netcoreapp target, run on the Tools CLI.
          Reuse the same runtimeconfig used by CSC. -->
     <GeneratorRuntimeConfig>$(ToolsDir)csc.runtimeconfig.json</GeneratorRuntimeConfig>
