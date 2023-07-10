@@ -103,7 +103,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 string tfn;                
                 if(OperationalCtx == OperationalContext.Infrastructure)
                 {
-                    tfn = "net472";
+                    tfn = "net462";
                 }
                 else
                 {
