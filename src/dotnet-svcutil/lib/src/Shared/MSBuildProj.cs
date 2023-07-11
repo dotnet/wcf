@@ -448,7 +448,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             throw new Exception(Shared.Resources.ErrorInvalidProjectFormat);
         }
 
-        public bool AddDependency(ProjectDependency dependency)
+        public bool AddDependency(ProjectDependency dependency, bool copyInternalAssets = false)
         {
             // a nuget package can contain multiple assemblies, we need to filter package references so we don't add dups.
             bool addDependency = !_dependencies.Any(d =>
@@ -483,6 +483,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     case ProjectDependencyType.Tool:
                         this.ReferenceGroup.Add(new XElement("DotNetCliToolReference", new XAttribute("Include", dependency.Name), new XAttribute("Version", dependency.Version)));
                         break;
+                }
+
+                if(copyInternalAssets && dependency.AssemblyName == "dotnet-svcutil-lib")
+                {
+                    switch(dependency.DependencyType)
+                    {
+                        case ProjectDependencyType.Binary:
+                            this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", Path.Combine(dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar)), "internalAssets\\**")), new XAttribute("Link", "internalAssets/%(RecursiveDir)%(Filename)%(Extension)")));
+                            break;
+                        case ProjectDependencyType.Package:
+                            string path = $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}\\content\\internalAssets\\**";
+                            this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", path), new XAttribute("Link", "internalAssets/%(RecursiveDir)%(Filename)%(Extension)")));
+                            break;
+                    }
                 }
 
                 _dependencies.Add(dependency);
@@ -857,7 +871,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (!this.GlobalProperties.Any(p => p.Key == "TargetFramework"))
             {
-                this.GlobalProperties["TargetFramework"] = this.TargetFramework;
+                this.GlobalProperties["TargetFramework"] = this.TargetFrameworks.FirstOrDefault();
             }
 
             if (!this.GlobalProperties.Any(p => p.Key == "SdkVersion"))
@@ -871,7 +885,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if (propertyTable.Count() != propertyNames.Count())
                 {
-                    propertyTable = await _propertyResolver.EvaluateProjectPropertiesAsync(this.FullPath, this.TargetFramework, propertyNames, this.GlobalProperties, logger, cancellationToken).ConfigureAwait(false);
+                    propertyTable = await _propertyResolver.EvaluateProjectPropertiesAsync(this.FullPath, this.TargetFrameworks.FirstOrDefault(), propertyNames, this.GlobalProperties, logger, cancellationToken).ConfigureAwait(false);
 
                     foreach (var entry in propertyTable)
                     {
@@ -901,7 +915,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     var depsFiles = Directory.GetFiles(binFolder, "*", SearchOption.AllDirectories)
                         .Where(d => Path.GetFileName(d).Equals(fileName, RuntimeEnvironmentHelper.FileStringComparison))
-                        .Where(f => PathHelper.GetFolderName(Path.GetDirectoryName(f)) == this.TargetFramework)
+                        .Where(f => PathHelper.GetFolderName(Path.GetDirectoryName(f)) == this.TargetFrameworks.FirstOrDefault())
                         .Select(f => new FileInfo(f))
                         .OrderByDescending(f => f.CreationTimeUtc);
 

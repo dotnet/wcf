@@ -53,6 +53,10 @@ namespace System.ServiceModel.Channels
                 {
                     SetBinding(endpointContext.Endpoint, binding);
                 }
+                else if (transport is NamedPipeTransportBindingElement && NetNamedPipeBinding.TryCreate(elements, out binding))
+                {
+                    SetBinding(endpointContext.Endpoint, binding);
+                }
             }
         }
 

@@ -121,7 +121,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
 
                 this.MSBuildProj = await MSBuildProj.DotNetNewAsync(projectFullPath, logger, cancellationToken).ConfigureAwait(false);
-                this.MSBuildProj.AddDependency(svcutilPkgRef);
+                this.MSBuildProj.AddDependency(svcutilPkgRef, true);
 
                 // Comment out code below for reasons: 1. it never used for .net core later than V2.1 since when the approach is always use TF from the generated project.
                 // 2. with below code applied when target framework is netstandard2.0 client machine require netcoreapp2.0 (obsolete) for bootstrapper to work

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Microsoft.Tools.ServiceModel.Svcutil;
 using Xunit;
@@ -276,6 +277,31 @@ namespace SvcutilTest
             TestSvcutil(options, expectSuccess: true);
         }
 
+        [Trait("Category", "BVT")]
+        [Theory]
+        [InlineData("UpdateNetPipeServiceRefDefault", false)]
+        [InlineData("UpdateNetPipeServiceRefBootstrapping", true)]
+        public void UpdateNetPipeServiceRef(string referenceFolderName, bool bootstrapping)
+        {
+            this_TestCaseName = "UpdateNetPipeServiceRef";
+            TestFixture();
+            var testCaseName = referenceFolderName;
+            InitializeE2E(testCaseName, createUniqueProject: true, sdkVersion: g_SdkVersion);
+
+            var paramsFile = SetupServiceReferenceFolder("dotnet-svcutil.params.json", referenceFolderName, 1, true, "updateNetPipeServiceReference");
+
+            if (bootstrapping)
+            {
+                var updateOptions = UpdateOptions.FromFile(paramsFile);
+                // this forces bootstrapping of svcutil as the project reference is not available at runtime.
+                updateOptions.References.Add(ProjectDependency.FromPackage("Newtonsoft.Json", "*"));
+                updateOptions.Save(paramsFile);
+            }
+
+            var options = "-u -v minimal";
+            TestSvcutil(options, expectSuccess: true);
+        }
+
         [Trait("Category", "Test")]
         [Theory]
         [InlineData("UpdateServiceRefOptionsDefault", 1, null, true)]
@@ -336,9 +362,9 @@ namespace SvcutilTest
             TestSvcutil(options, expectSuccess: true);
         }
 
-        private string SetupServiceReferenceFolder(string paramsFileName, string referenceFolderName, int refCount = 1, bool addNamespace = true)
+        private string SetupServiceReferenceFolder(string paramsFileName, string referenceFolderName, int refCount = 1, bool addNamespace = true, string filePath = "updateServiceReference")
         {
-            var srcParamsFilePath = Path.Combine(g_TestCasesDir, "updateServiceReference", paramsFileName);
+            var srcParamsFilePath = Path.Combine(g_TestCasesDir, filePath, paramsFileName);
             Assert.True(File.Exists(srcParamsFilePath), $"{nameof(srcParamsFilePath)} not initialized!");
 
             // copy common test group project files into test cases's directory.

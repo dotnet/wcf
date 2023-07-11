@@ -467,12 +467,13 @@ namespace SvcutilTest
 
             var fileLines1 = new List<string>();
             var fileLines2 = new List<string>();
-            var exceptLines = new List<string>() { "    <ImplicitUsings>enable</ImplicitUsings>", "    <Nullable>enable</Nullable>" };
+            var exceptLines = new List<string>() { "<ImplicitUsings>enable</ImplicitUsings>", "<Nullable>enable</Nullable>", "<Content CopyToOutputDirectory" };
 
             fileLines1.AddRange(File.ReadAllLines(baselineFile));
             fileLines2.AddRange(File.ReadAllLines(generatedFile));
-            fileLines1.RemoveAll(l => exceptLines.Contains(l));
-            fileLines2.RemoveAll(l => exceptLines.Contains(l));
+
+            fileLines1.RemoveAll(l => exceptLines.Any(ex => l.Contains(ex)));
+            fileLines2.RemoveAll(l => exceptLines.Any(ex => l.Contains(ex)));
 
             // to reduce noise, let's ignore empty lines in log files (only).
             var isLogFile = Path.GetExtension(baselineFile).Equals(".log", StringComparison.OrdinalIgnoreCase);

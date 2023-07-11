@@ -606,7 +606,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        private abstract class MetadataRetriever
+        internal abstract class MetadataRetriever
         {
             protected MetadataExchangeClient resolver;
             protected string dialect;

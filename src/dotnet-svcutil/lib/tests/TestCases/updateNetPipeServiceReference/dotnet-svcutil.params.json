@@ -1,0 +1,18 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "1.0.4-prerelease-40343.1313",
+  "options": {
+    "inputs": [
+      "$testCasesPath$/wsdl/netNamedPipe.wsdl"
+    ],
+    "collectionTypes": [
+      "System.Collections.Generic.List`1",
+      "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    ],
+    "excludeTypes": [
+      "System.Array, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+      "System.DateTime"
+    ],
+    "targetFramework": "net6.0-windows"
+  }
+}

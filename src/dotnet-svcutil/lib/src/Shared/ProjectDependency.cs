@@ -329,6 +329,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         internal static bool IsValidVersion(string version)
         {
+            if (version == "*-*")
+            {
+                return true;
+            }
             // https://semver.org/spec/v2.0.0.html
 
             bool? isValid = null;
