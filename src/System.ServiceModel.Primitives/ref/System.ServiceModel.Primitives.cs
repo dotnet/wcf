@@ -6,8 +6,8 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace System.Collections.Generic {
       public partial class SynchronizedCollection<T> : IList<T>, IList
@@ -1909,6 +1909,7 @@ namespace System.ServiceModel.Dispatcher
         object BeforeCall(string operationName, object[] inputs);
     }
 }
+
 namespace System.ServiceModel.Security
 {
     public sealed partial class HttpDigestClientCredential
@@ -1986,5 +1987,18 @@ namespace System.ServiceModel.Security
         None = 0,
         PeerOrChainTrust = 3,
         PeerTrust = 1,
+    }
+    internal interface ISecurityCommunicationObject
+    {
+        TimeSpan DefaultOpenTimeout { get; }
+        TimeSpan DefaultCloseTimeout { get; }
+        void OnAbort();
+        Task OnCloseAsync(TimeSpan timeout);
+        void OnClosed();
+        void OnClosing();
+        void OnFaulted();
+        Task OnOpenAsync(TimeSpan timeout);
+        void OnOpened();
+        void OnOpening();
     }
 }
