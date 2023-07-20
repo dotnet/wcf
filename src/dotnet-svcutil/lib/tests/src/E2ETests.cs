@@ -202,12 +202,12 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("TypeReuse60", "net6.0")]
-        public void TypeReuse(string testCaseName, string targetFramework)
+        [InlineData("TypeReuseDefault")]
+        public void TypeReuse(string testCaseName)
         {
             this_TestCaseName = "TypeReuse";
             TestFixture();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: targetFramework, sdkVersion: g_SdkVersion);
+            InitializeE2E(testCaseName, createUniqueProject: true);
 
             var uri = SetupProjectDependencies();
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
@@ -227,7 +227,6 @@ namespace SvcutilTest
                 var typeReuseProjectsPath = Path.Combine(g_TestCasesDir, "TypeReuse");
 
                 FileUtil.CopyDirectory(typeReuseProjectsPath, this_TestGroupOutputDir);
-                CreateGlobalJson(this_TestGroupOutputDir, this_TestCaseProject.SdkVersion);
 
                 MSBuildProj binProj = MSBuildProj.FromPathAsync(binProjPath, null, CancellationToken.None).Result;
                 ProcessRunner.ProcessResult result = binProj.BuildAsync(true, null, CancellationToken.None).Result;

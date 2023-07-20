@@ -1,0 +1,22 @@
+{
+  "providerId": "_edb",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "http://wcfcoresrv53.westus3.cloudapp.azure.com/wcftestservice1/basichttp.svc"
+    ],
+    "bootstrapPath": "$resultPath$/TestBootstrap/ParamsFiles_SDK_TFM/_edb",
+    "namespaceMappings": [
+      "*, _edb_NS"
+    ],
+    "noLogo": true,
+    "noTelemetry": true,
+    "outputDir": "$resultPath$/TestResults/ParamsFiles_SDK_TFM/_edb",
+    "projectFile": "$resultPath$/TestResults/ParamsFiles_SDK_TFM/_edb/_edb.csproj",
+    "references": [
+      "Newtonsoft.Json, {Newtonsoft.Json, 99.99.99}"
+    ],
+    "toolContext": "Global",
+    "verbosity": "Minimal"
+  }
+}

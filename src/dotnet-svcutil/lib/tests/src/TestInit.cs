@@ -131,7 +131,7 @@ namespace SvcutilTest
 
             var vsTestsRoot = GetSTestRootDir();
 
-            g_SdkVersion = "5.0.100";
+            g_SdkVersion = "7.0.201";
             ProcessRunner.ProcessResult procResult = ProcessRunner.TryRunAsync("dotnet", "--version", Directory.GetCurrentDirectory(), null, new CancellationToken()).ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (procResult.ExitCode == 0)
