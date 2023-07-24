@@ -27,7 +27,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public const string NetStandardLibraryPackageID = "NETStandard.Library";
 
         private static readonly IReadOnlyList<string> s_binaryExtensions = new List<string> { ".exe", ".dll" }.AsReadOnly();
-        private static readonly IReadOnlyList<string> s_projectExtensions = new List<string> { ".csproj", ".vbproj",".fsproj" }.AsReadOnly();
+        private static readonly IReadOnlyList<string> s_projectExtensions = new List<string> { ".csproj", ".vbproj", ".fsproj", ".vcxproj" }.AsReadOnly();
         private static readonly IReadOnlyList<string> s_exeExtensions = new List<string> { ".exe" }.AsReadOnly();
 
         /// <summary>
