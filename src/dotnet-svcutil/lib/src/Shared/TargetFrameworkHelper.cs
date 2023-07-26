@@ -75,6 +75,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             } }
         };
 
+        internal static List<ProjectDependency> MultiTargetFrameworkReferences = new List<ProjectDependency>()
+        {
+            ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.10.*"  ),
+            ProjectDependency.FromPackage("System.ServiceModel.Http", "4.10.*"    ),
+            ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.10.*"  ),
+            ProjectDependency.FromPackage("System.ServiceModel.Security", "4.10.*"),
+            ProjectDependency.FromPackage("System.ServiceModel.Federation", "4.10.*")
+        };
+
         internal static List<ProjectDependency> FullFrameworkReferences = new List<ProjectDependency>()
         {
             ProjectDependency.FromAssembly("System.ServiceModel"),
@@ -99,12 +108,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public static Version MinSupportedNetStandardVersion { get; } = NetStandardToNetCoreVersionMap.Keys.First();
         public static Version MinSupportedNetCoreAppVersion { get; } = NetStandardToNetCoreVersionMap.Values.First();
 
-        public static IEnumerable<ProjectDependency> GetWcfProjectReferences(string targetFramework)
+        public static IEnumerable<ProjectDependency> GetWcfProjectReferences(string targetFramework, bool isMultiTarget = false)
         {
             IEnumerable<ProjectDependency> dependencies = null;
 
             if (IsSupportedFramework(targetFramework, out var frameworkInfo))
             {
+                if(isMultiTarget)
+                {
+                    return MultiTargetFrameworkReferences;
+                }
+
                 if (frameworkInfo.IsDnx)
                 {
                     if (NetCoreVersionReferenceTable.ContainsKey(frameworkInfo.Version))

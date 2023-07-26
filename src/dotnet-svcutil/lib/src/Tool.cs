@@ -272,7 +272,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             try
             {
-                var dependencies = TargetFrameworkHelper.GetWcfProjectReferences(project.TargetFramework);
+                var dependencies = TargetFrameworkHelper.GetWcfProjectReferences(project.TargetFramework, project.TargetFrameworks.Count() > 1);
                 if (dependencies != null)
                 {
                     bool needSave = false;
