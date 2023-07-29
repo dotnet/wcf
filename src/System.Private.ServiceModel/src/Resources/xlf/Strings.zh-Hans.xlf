@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">客户端无法为 SspiNegotiation/Kerberos 根据目标地址“{0}”中的标识确定服务主体名称。目标地址标识必须是 UPN 标识(例如 acmedomain\alice)或 SPN 标识(例如 host/bobs-machine)。</target>
+        <target state="translated">客户端无法以 SspiNegotiation/Kerberos 为目的根据目标地址“{0}”中的标识确定服务主体名称。目标地址标识必须是 UPN 标识(例如 acmedomain\alice)或 SPN 标识(例如 host/bobs-machine)。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -954,7 +954,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">此平台不支持扩展保护。请安装适当的补丁，或者将 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 更改为 PolicyEnforcement 值为“Never”或“WhenSupported”的某个值。</target>
+        <target state="translated">此平台上不支持扩展保护。请安装适当的修补程序，或者将 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 更改为 PolicyEnforcement 值为 "Never" 或 "WhenSupported" 的某个值。</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
