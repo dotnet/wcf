@@ -20,6 +20,8 @@
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
     <!-- Adds a pkg ref to netfx references in order to resolve desktop refs in our facade projects. -->
     <UsingToolNetFrameworkReferenceAssemblies>true</UsingToolNetFrameworkReferenceAssemblies>
+    <!-- Enabling this rule will cause build failures on undocumented public APIs. -->
+    <SkipArcadeNoWarnCS1591>true</SkipArcadeNoWarnCS1591>
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
