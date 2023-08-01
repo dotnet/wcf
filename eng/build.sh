@@ -67,7 +67,7 @@ while [[ $# > 0 ]]; do
           exit 1
           ;;
       esac
-      arguments="$arguments /p:ConfigurationGroup=$val -configuration $val"
+      arguments="$arguments -configuration $val"
       shift 2
       ;;
 

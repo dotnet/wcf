@@ -12,8 +12,6 @@
     <PackageDescription>Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).</PackageDescription>
   </PropertyGroup>
 
-  <!-- DesignTimeBuild requires all the TargetFramework Derived Properties to not be present in the first property group. -->
-
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\src\System.ServiceModel.NetFramingBase.csproj" />
