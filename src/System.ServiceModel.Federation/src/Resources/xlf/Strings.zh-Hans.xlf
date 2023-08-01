@@ -2,19 +2,9 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../Strings.resx">
     <body>
-      <trans-unit id="ActivityProcessAction">
-        <source>Process action '{0}'.</source>
-        <target state="translated">处理操作“{0}”。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
         <target state="translated">持有者关键方案不应在响应中包含证明令牌或证书颁发者熵。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CannotDetermineSPNBasedOnAddress">
-        <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">客户端无法以 SspiNegotiation/Kerberos 为目的根据目标地址“{0}”中的标识确定服务主体名称。目标地址标识必须是 UPN 标识(例如 acmedomain\alice)或 SPN 标识(例如 host/bobs-machine)。</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
@@ -57,11 +47,6 @@
         <target state="translated">IRequestChannel 必须处于已创建状态。之前的状态为:“{0}”。</target>
         <note />
       </trans-unit>
-      <trans-unit id="InsufficentMemory">
-        <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">可用内存不足，无法完成操作。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="IssuedSecurityTokenParametersIncorrectType">
         <source>tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</source>
         <target state="translated">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; 必须是以下类型: WSTrustTokenParameters。其过去的类型是: '{0}。</target>
@@ -102,11 +87,6 @@
         <target state="translated">不支持 RequestType“{0}”。</target>
         <note />
       </trans-unit>
-      <trans-unit id="SFxTimeoutOutOfRange0">
-        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">超时必须大于或等于 TimeSpan.Zero。要禁用超时，请指定 TimeSpan.MaxValue。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
         <target state="translated">服务器“{0}”发回错误，指示其正在关机。有关错误的详细信息，请参见内部异常。</target>
@@ -125,11 +105,6 @@
       <trans-unit id="UseKeysAreNotSupported">
         <source>UseKeys are not supported</source>
         <target state="translated">不支持 UseKey</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ValueMustBePositive">
-        <source>The value of this argument must be positive.</source>
-        <target state="translated">此参数的值必须为正。</target>
         <note />
       </trans-unit>
       <trans-unit id="WsTrustVersionNotSupported">
