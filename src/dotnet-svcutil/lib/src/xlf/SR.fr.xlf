@@ -27,6 +27,11 @@
         <target state="translated">Valeur d'encodage de message non prise en charge : '{0}'. La valeur doit être '{1}'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">Version d'encodage de message MTOM non prise en charge : '{0}'. Il doit être '{1}' ou '{2}' ou '{3}' ou '{4}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">La session fiable n'est pas prise en charge.</target>
@@ -417,6 +422,11 @@ Identificateur de document : '{0}'.</target>
         <target state="translated">Génération de fichiers...</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">Acceptez le certificat distant comme approuvé lors du téléchargement des métadonnées du service. (Forme abrégée : -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">Sélectionnez le sérialiseur automatiquement. Ceci permet d'utiliser en premier lieu le sérialiseur de contrat de données avant d'utiliser le XmlSerializer en cas d'échec. (Forme abrégée : /{0})</target>
@@ -524,7 +534,7 @@ Identificateur de document : '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="translated">&lt;metadata document path&gt;</target>
+        <target state="translated">&lt;chemin du document de métadonnées&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
@@ -702,7 +712,7 @@ Si vous avez tenté de générer un client, cela peut être dû au fait que les 
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="translated">&lt;project file&gt;</target>
+        <target state="translated">&lt;fichier projet&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
@@ -712,7 +722,7 @@ Si vous avez tenté de générer un client, cela peut être dû au fait que les 
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="translated">&lt;runtime identifier&gt;</target>
+        <target state="translated">&lt;identificateur de runtime&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
@@ -722,12 +732,12 @@ Si vous avez tenté de générer un client, cela peut être dû au fait que les 
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="translated">&lt;verbosity level&gt;</target>
+        <target state="translated">&lt;niveau de verbosité&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="translated">&lt;web service reference&gt;</target>
+        <target state="translated">&lt;référence de services web&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
