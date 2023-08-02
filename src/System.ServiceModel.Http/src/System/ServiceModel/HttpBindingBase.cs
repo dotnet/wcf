@@ -11,7 +11,7 @@ using System.Xml;
 
 namespace System.ServiceModel
 {
-    public abstract class HttpBindingBase : Binding, IBindingRuntimePreferences
+    public abstract class HttpBindingBase : Binding
     {
         // private BindingElements
         private HttpTransportBindingElement _httpTransport;
@@ -213,11 +213,6 @@ namespace System.ServiceModel
                 _httpTransport.UseDefaultWebProxy = value;
                 _httpsTransport.UseDefaultWebProxy = value;
             }
-        }
-
-        bool IBindingRuntimePreferences.ReceiveSynchronously
-        {
-            get { return false; }
         }
 
         internal TextMessageEncodingBindingElement TextMessageEncodingBindingElement { get; }
