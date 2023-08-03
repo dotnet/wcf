@@ -34,6 +34,7 @@ function Get-Help() {
   Write-Host ""
 
   Write-Host "Libraries settings:"
+  Write-Host "  -vs                     Open the solution with VS for Test Explorer support. Path to solution file"
   Write-Host "  -coverage               Collect code coverage when testing"
   Write-Host "  -testscope              Scope tests, allowed values: innerloop, outerloop, all"
   Write-Host ""
@@ -44,6 +45,25 @@ function Get-Help() {
 
 if ($help -or (($null -ne $properties) -and ($properties.Contains('/help') -or $properties.Contains('/?')))) {
   Get-Help
+  exit 0
+}
+
+# VS Test Explorer support for libraries
+if ($vs) {
+  . $PSScriptRoot\common\tools.ps1
+
+  # This tells MSBuild to load the SDK from the directory of the bootstrapped SDK
+  $env:DOTNET_MSBUILD_SDK_RESOLVER_CLI_DIR=InitializeDotNetCli -install:$false
+
+  # This tells .NET Core not to go looking for .NET Core in other places
+  $env:DOTNET_MULTILEVEL_LOOKUP=0;
+
+  # Put our local dotnet.exe on PATH first so Visual Studio knows which one to use
+  $env:PATH=($env:DOTNET_ROOT + ";" + $env:PATH);
+
+  # Launch Visual Studio with the locally defined environment variables
+  Invoke-Item "$vs"
+
   exit 0
 }
 
