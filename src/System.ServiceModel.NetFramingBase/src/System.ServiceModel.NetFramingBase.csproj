@@ -6,7 +6,7 @@
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-	<!-- TODO: Make this net462 and netstandard2.0 after it's multi-targetting .NET Framework -->
+    <!-- TODO: Make this net462 and netstandard2.0 after it's multi-targetting .NET Framework -->
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <DebugType>full</DebugType>
@@ -16,10 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Security.Principal.Windows" Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
