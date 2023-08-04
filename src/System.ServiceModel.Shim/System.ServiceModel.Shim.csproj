@@ -14,13 +14,13 @@
     <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
     <StrongNameKeyId>ECMA</StrongNameKeyId>
 
-    <MicrosoftTargetingPackNETFrameworkv472Package>Microsoft.TargetingPack.NETFramework.v4.7.2</MicrosoftTargetingPackNETFrameworkv472Package>
+    <MicrosoftNetFrameworkReferenceAssembliesPackageId>Microsoft.NetFramework.ReferenceAssemblies.net472</MicrosoftNetFrameworkReferenceAssembliesPackageId>
     <IsPackable>false</IsPackable> 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageDownload Include="$(MicrosoftTargetingPackNETFrameworkv472Package)" Version="[$(MicrosoftTargetingPackNETFrameworkv472PackageVersion)]" />
-    <ResolvedMatchingContract Include="$(NuGetPackageRoot)$(MicrosoftTargetingPackNETFrameworkv472Package.ToLowerInvariant())\$(MicrosoftTargetingPackNETFrameworkv472PackageVersion)\lib\net472\System.ServiceModel.dll" />
+    <PackageDownload Include="$(MicrosoftNetFrameworkReferenceAssembliesPackageId)" Version="[$(MicrosoftNETFrameworkReferenceAssembliesLatestPackageVersion)]" />
+    <ResolvedMatchingContract Include="$(NuGetPackageRoot)$(MicrosoftNetFrameworkReferenceAssembliesPackageId.ToLowerInvariant())\$(MicrosoftNETFrameworkReferenceAssembliesLatestPackageVersion)\build\.NETFramework\v4.7.2\System.ServiceModel.dll" />
   </ItemGroup>
 
   <ItemGroup>
