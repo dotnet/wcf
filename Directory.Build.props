@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <PropertyGroup>
-    <ImportNetSdkFromRepoToolset>false</ImportNetSdkFromRepoToolset>
-  </PropertyGroup>
 
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
-  <Import Project="eng\ReferenceAssemblies.props" />
-  <Import Project="eng\Versioning.props"/>
-  <Import Project="eng\TestProperties.props"/>
-  <Import Project="eng\TargetFramework.props" />
 
   <!-- Packaging props -->
-  <PropertyGroup Condition="'$(CopyrightNetFoundation)' != ''">
+  <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Ship_SvcUtilXmlSerPackages Condition="'$(Ship_SvcUtilXmlSerPackages)'==''">false</Ship_SvcUtilXmlSerPackages>
+    <Ship_SvcUtilPackages Condition="'$(Ship_SvcUtilPackages)'==''">false</Ship_SvcUtilPackages>
+    <Ship_WcfPackages Condition="'$(Ship_WcfPackages)'==''">true</Ship_WcfPackages>
   </PropertyGroup>
+
+  <!-- Include license and third party files to packages -->
+  <ItemGroup>
+    <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
+    <Content Include="$(RepoRoot)LICENSE.TXT" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <PropertyGroup>
     <IsPartialFacadeAssembly Condition="'$(IsPartialFacadeAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Facade')))">true</IsPartialFacadeAssembly>
@@ -21,29 +23,36 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.8.0</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
+    <WcfPrivateServiceModelProj>$(RepoRoot)src\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj</WcfPrivateServiceModelProj>
+    <SvcUtilCoreProj>$(RepoRoot)src\svcutilcore\src\dotnet-svcutil.xmlserializer.csproj</SvcUtilCoreProj>
+    <WcfUnitTestCommonProj>$(RepoRoot)src\System.Private.ServiceModel\tests\Common\Unit\UnitTests.Common.csproj</WcfUnitTestCommonProj>
+    <WcfScenarioTestCommonProj>$(RepoRoot)src\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.Tests.csproj</WcfScenarioTestCommonProj>
+    <WcfInfrastructureCommonProj>$(RepoRoot)src\System.Private.ServiceModel\tests\Common\Infrastructure\Infrastructure.Common.csproj</WcfInfrastructureCommonProj>
   </PropertyGroup>
+
+  <!-- All reference assemblies should have a ReferenceAssemblyAttribute and the 0x70 flag which prevents them from loading. -->
+  <ItemGroup Condition="'$(IsReferenceAssembly)' == 'true'">
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.ReferenceAssemblyAttribute" />
+    <AssemblyAttribute Include="System.Reflection.AssemblyFlags">
+      <_Parameter1>(System.Reflection.AssemblyNameFlags)0x70</_Parameter1>
+      <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
+    </AssemblyAttribute>
+  </ItemGroup>
 
   <PropertyGroup>
     <ScenarioTestTargetFrameworks>net6.0;net7.0</ScenarioTestTargetFrameworks>
-	<UnitTestTargetFrameworks>net6.0;net7.0</UnitTestTargetFrameworks>
-	<!-- This is the target framework version of the built tests picked up to send to Helix -->
+    <UnitTestTargetFrameworks>net6.0;net7.0</UnitTestTargetFrameworks>
+    <!-- This is the target framework version of the built tests picked up to send to Helix -->
     <XUnitPublishTargetFramework>net6.0</XUnitPublishTargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
-    <!-- TODO: Remove this condition when VSTest is used in CI. -->
     <EnableRunSettingsSupport Condition="'$(ContinuousIntegrationBuild)' != 'true'">true</EnableRunSettingsSupport>
   </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Include license and third party files to packages -->
-    <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
-    <Content Include="$(RepoRoot)LICENSE.TXT" Pack="true" PackagePath="\" />
-  </ItemGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">
     <!-- Microsoft.NET.Test.Sdk package defaults to restore the minimum supported version for its dependency Newtonsoft.Json, here force test project to reference higher version for security reason. -->
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
+
 </Project>

@@ -3,26 +3,17 @@ Param(
   [switch][Alias('h')]$help,
   [switch][Alias('b')]$build,
   [switch][Alias('t')]$test,
-  [switch]$buildtests,
   [string][Alias('c')]$configuration = "Debug",
-  [string][Alias('f')]$framework,
-  [string]$vs,
   [string]$os,
-  [switch]$allconfigurations,
   [switch]$coverage,
   [string]$testscope,
   [string]$arch,
-  [string]$subsetCategory,
-  [string]$subset,
-  [string]$runtimeConfiguration,
   [string]$librariesConfiguration,
   [Parameter(ValueFromRemainingArguments=$true)][String[]]$properties
 )
 
 function Get-Help() {
   Write-Host "Common settings:"
-  Write-Host "  -subset                 Build a subset, print available subsets with -subset help"
-  Write-Host "  -subsetCategory         Build a subsetCategory, print available subsetCategories with -subset help"
   Write-Host "  -os                     Build operating system: Windows_NT or Unix"
   Write-Host "  -arch                   Build platform: x86, x64, arm or arm64"
   Write-Host "  -configuration <value>  Build configuration: Debug or Release (short: -c)"
@@ -34,7 +25,6 @@ function Get-Help() {
   Write-Host "Actions (defaults to -restore -build):"
   Write-Host "  -restore                Restore dependencies (short: -r)"
   Write-Host "  -build                  Build all source projects (short: -b)"
-  Write-Host "  -buildtests             Build all test projects"
   Write-Host "  -rebuild                Rebuild all source projects"
   Write-Host "  -test                   Run all unit tests (short: -t)"
   Write-Host "  -pack                   Package build outputs into NuGet packages"
@@ -44,11 +34,9 @@ function Get-Help() {
   Write-Host ""
 
   Write-Host "Libraries settings:"
-  Write-Host "  -vs                     Open the solution with VS for Test Explorer support. Path or solution name (ie -vs Microsoft.CSharp)"
-  Write-Host "  -framework              Build framework: netcoreapp or netfx (short: -f)"
+  Write-Host "  -vs                     Open the solution with VS for Test Explorer support. Path to solution file"
   Write-Host "  -coverage               Collect code coverage when testing"
   Write-Host "  -testscope              Scope tests, allowed values: innerloop, outerloop, all"
-  Write-Host "  -allconfigurations      Build packages for all build configurations"
   Write-Host ""
 
   Write-Host "Command-line arguments not listed above are passed thru to msbuild."
@@ -60,32 +48,9 @@ if ($help -or (($null -ne $properties) -and ($properties.Contains('/help') -or $
   exit 0
 }
 
-$subsetCategory = $subsetCategory.ToLowerInvariant()
-
 # VS Test Explorer support for libraries
 if ($vs) {
   . $PSScriptRoot\common\tools.ps1
-
-  # Microsoft.DotNet.CoreSetup.sln is special - hosting tests are currently meant to run on the
-  # bootstrapped .NET Core, not on the live-built runtime.
-  if ([System.IO.Path]::GetFileName($vs) -ieq "Microsoft.DotNet.CoreSetup.sln") {
-    if (-Not (Test-Path $vs)) {
-      $vs = Join-Path "$PSScriptRoot\..\src\installer" $vs
-    }
-
-    # This tells .NET Core to use the bootstrapped runtime to run the tests
-    $env:DOTNET_ROOT=InitializeDotNetCli -install:$false
-  }
-  else {
-    if (-Not (Test-Path $vs)) {
-      $vs = Join-Path "$PSScriptRoot\..\src\libraries" $vs | Join-Path -ChildPath "$vs.sln"
-    }
-
-    $archTestHost = if ($arch) { $arch } else { "x64" }
-
-    # This tells .NET Core to use the same dotnet.exe that build scripts use
-    $env:DOTNET_ROOT="$PSScriptRoot\..\artifacts\bin\testhost\netcoreapp5.0-Windows_NT-$configuration-$archTestHost";
-  }
 
   # This tells MSBuild to load the SDK from the directory of the bootstrapped SDK
   $env:DOTNET_MSBUILD_SDK_RESOLVER_CLI_DIR=InitializeDotNetCli -install:$false
@@ -103,7 +68,7 @@ if ($vs) {
 }
 
 # Check if an action is passed in
-$actions = "r","restore","b","build","buildtests","rebuild","t","test","pack","sign","publish","clean"
+$actions = "r","restore","b","build","rebuild","t","test","pack","sign","publish","clean"
 $actionPassedIn = @(Compare-Object -ReferenceObject @($PSBoundParameters.Keys) -DifferenceObject $actions -ExcludeDifferent -IncludeEqual).Length -ne 0
 if ($null -ne $properties -and $actionPassedIn -ne $true) {
   $actionPassedIn = @(Compare-Object -ReferenceObject $properties -DifferenceObject $actions.ForEach({ "-" + $_ }) -ExcludeDifferent -IncludeEqual).Length -ne 0
@@ -113,37 +78,17 @@ if (!$actionPassedIn) {
   $arguments = "-restore -build"
 }
 
-$possibleDirToBuild = if($properties.Length -gt 0) { $properties[0]; } else { $null }
-
-if ($null -ne $possibleDirToBuild -and $subsetCategory -eq "libraries") {
-  $dtb = $possibleDirToBuild.TrimEnd('\')
-  if (Test-Path $dtb) {
-    $properties[0] = "/p:DirectoryToBuild=$(Resolve-Path $dtb)"
-  }
-  else {
-    $dtb = Join-Path "$PSSCriptRoot\..\src\libraries" $dtb
-    if (Test-Path $dtb) {
-      $properties[0] = "/p:DirectoryToBuild=$(Resolve-Path $dtb)"
-    }
-  }
-}
-
 foreach ($argument in $PSBoundParameters.Keys)
 {
   switch($argument)
   {
     "build"                { $arguments += " -build" }
-    "buildtests"           { if ($build -eq $true) { $arguments += " /p:BuildTests=true" } else { $arguments += " -build /p:BuildTests=only" } }
     "test"                 { $arguments += " -test" }
-    "configuration"        { $configuration = (Get-Culture).TextInfo.ToTitleCase($($PSBoundParameters[$argument])); $arguments += " /p:ConfigurationGroup=$configuration -configuration $configuration" }
-    "runtimeConfiguration" { $arguments += " /p:RuntimeConfiguration=$((Get-Culture).TextInfo.ToTitleCase($($PSBoundParameters[$argument])))" }
-    # This should be removed after we have finalized our ci build pipeline.
-    "framework"            { if ($PSBoundParameters[$argument].ToLowerInvariant() -eq 'netcoreapp') { $arguments += " /p:TargetGroup=netcoreapp5.0" } else { if ($PSBoundParameters[$argument].ToLowerInvariant() -eq 'netfx') { $arguments += " /p:TargetGroup=net472" } else { $arguments += " /p:TargetGroup=$($PSBoundParameters[$argument].ToLowerInvariant())"}}}
-    "os"                   { $arguments += " /p:OSGroup=$($PSBoundParameters[$argument])" }
-    "allconfigurations"    { $arguments += " /p:BuildAllConfigurations=true" }
-    "arch"                 { $arguments += " /p:ArchGroup=$($PSBoundParameters[$argument]) /p:TargetArchitecture=$($PSBoundParameters[$argument])" }
+    "configuration"        { $configuration = (Get-Culture).TextInfo.ToTitleCase($($PSBoundParameters[$argument])); $arguments += " -configuration $configuration" }
+    "os"                   { $arguments += " /p:TargetOS=$($PSBoundParameters[$argument])" }
+    "arch"                 { $arguments += " /p:TargetArchitecture=$($PSBoundParameters[$argument])" }
     "properties"           { $arguments += " " + $properties }
-	"testscope"            
+	  "testscope"            
         {
          if ($testscope -eq "outerloop" -or $testscope -eq "all") { $arguments += " /p:IntegrationTest=true" }
          if ($testscope -eq "wcf") { $arguments += " -projects System.ServiceModel.sln /p:IntegrationTest=true" }
