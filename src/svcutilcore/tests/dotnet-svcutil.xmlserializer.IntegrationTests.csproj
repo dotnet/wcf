@@ -13,7 +13,6 @@
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);SVCUTILTESTS</DefineConstants>
     <XmlSerializerTestSource>..\..\System.Private.ServiceModel\tests\Scenarios\Contract\XmlSerializer\</XmlSerializerTestSource>
-    <SkipTestsOnPlatform Condition="'$(TargetGroup)' == 'uap' OR '$(TargetGroup)' == 'netfx' OR '$(ArchGroup)' == 'arm' OR '$(ArchGroup)' == 'arm64' OR '$(ArchGroup)' == 'armel'">true</SkipTestsOnPlatform>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">

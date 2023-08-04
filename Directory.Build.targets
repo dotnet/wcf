@@ -1,8 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
+
   <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" />
   <Import Project="eng\FacadeAssemblies.targets" Condition="'$(IsPartialFacadeAssembly)' == 'true'" />
-  <Import Project="eng\harvest.targets" Condition="'$(HarvestFromPackage)' == 'true'" />
-  <Import Project="eng\uwp.targets" />
   <Import Project="eng\testing\runsettings.targets" Condition="'$(EnableRunSettingsSupport)' == 'true'" />
+
+  <PropertyGroup>
+    <!-- Disable some standard properties for building our projects -->
+    <GenerateTargetFrameworkAttribute>true</GenerateTargetFrameworkAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <!-- [todo:arcade] This attribute exists in our previously shipped S.P.SM assembly but not in all the Facade assemblies. For now removing accross all assemblies. -->
+    <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- wcf has always added a description set to assembly name so include that here -->
+    <Description Condition="'$(Description)' == ''">$(AssemblyName)</Description>
+
+    <!-- SDK sets product to assembly but we want it to be our product name -->
+    <Product>Microsoft%AE .NET Core</Product>
+
+    <!-- Use the .NET Core product branding version for informational version description -->
+    <!-- [todo:arcade] Currently in local builds this is producing a weird version "3.0.0-ci.19157.1" need to verify what this looks like in an official build. -->
+    <InformationalVersion>$(ProductVersion)</InformationalVersion>
+    <InformationalVersion Condition="'$(VersionSuffix)' != ''">$(InformationalVersion)-$(VersionSuffix)</InformationalVersion>
+  </PropertyGroup>
+
+  <!-- [todo:arcade] Make sure all test projects set IsTestProject to true -->
+  <ItemGroup Condition="'$(IsTestProject)' != 'true'" >
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadata">
+      <_Parameter1>Serviceable</_Parameter1>
+      <_Parameter2>True</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadata">
+      <_Parameter1>PreferInbox</_Parameter1>
+      <_Parameter2>True</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyDefaultAliasAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="CLSCompliantAttribute" Condition="'$(CLSCompliant)' == 'true'">
+      <_Parameter1>true</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>

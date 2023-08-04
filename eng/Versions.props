@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project>
   <!-- Versioning specifications:  https://github.com/dotnet/arcade/blob/master/Documentation/CorePackages/Versioning.md -->
   <PropertyGroup>
     <ProductVersion>6.0.0</ProductVersion>
@@ -9,27 +9,19 @@
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
-    <PreReleaseVersionIteration>
-    </PreReleaseVersionIteration>
-    <!-- Use the compiler in the CLI instead of in the sdk, since the sdk one doesn't work with netcoreapp3.0 yet -->
-    <!--[todo:arcade] Current compiler is failing to build our generated testproperties code in Infrastructure.Common.csproj-->
-    <UsingToolMicrosoftNetCompilers>false</UsingToolMicrosoftNetCompilers>
+    <PreReleaseVersionIteration></PreReleaseVersionIteration>
     <!-- Opt-in repo features -->
-    <!-- IBC optimization data embedding by default true if Configuration is 'Release' and OfficialBuild is 'true'. -->
-    <!-- [todo:arcade] Setting it to true always seems to be common practice. Not sure if we need to or not. -->
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
-    <!-- Adds a pkg ref to netfx references in order to resolve desktop refs in our facade projects. -->
-    <UsingToolNetFrameworkReferenceAssemblies>true</UsingToolNetFrameworkReferenceAssemblies>
     <!-- Enabling this rule will cause build failures on undocumented public APIs. -->
     <SkipArcadeNoWarnCS1591>true</SkipArcadeNoWarnCS1591>
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
-    <MicrosoftDotNetArcadeSdkPackageVersion>8.0.0-beta.23381.1</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetHelixSdkPackageVersion>8.0.0-beta.23381.1</MicrosoftDotNetHelixSdkPackageVersion>
-    <MicrosoftDotNetGenFacadesPackageVersion>8.0.0-beta.23381.1</MicrosoftDotNetGenFacadesPackageVersion>
-    <MicrosoftDotNetXUnitExtensionsPackageVersion>8.0.0-beta.23381.1</MicrosoftDotNetXUnitExtensionsPackageVersion>
-    <MicrosoftDotNetSignToolVersion>8.0.0-beta.23381.1</MicrosoftDotNetSignToolVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>8.0.0-beta.23402.2</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetHelixSdkPackageVersion>8.0.0-beta.23402.2</MicrosoftDotNetHelixSdkPackageVersion>
+    <MicrosoftDotNetGenFacadesPackageVersion>8.0.0-beta.23402.2</MicrosoftDotNetGenFacadesPackageVersion>
+    <MicrosoftDotNetXUnitExtensionsPackageVersion>8.0.0-beta.23402.2</MicrosoftDotNetXUnitExtensionsPackageVersion>
+    <MicrosoftDotNetSignToolVersion>8.0.0-beta.23402.2</MicrosoftDotNetSignToolVersion>
   </PropertyGroup>
   <!-- CoreFx dependencies -->
   <PropertyGroup>
@@ -44,5 +36,6 @@
     <MicrosoftTargetingPackNETFrameworkv472PackageVersion>1.0.0</MicrosoftTargetingPackNETFrameworkv472PackageVersion>
     <!-- Needed by Infrastructure.Common.csproj -->
     <MicrosoftDotNetPlatformAbstractionsVersion>2.1.0</MicrosoftDotNetPlatformAbstractionsVersion>
+    <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.8.0</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
   </PropertyGroup>
 </Project>
