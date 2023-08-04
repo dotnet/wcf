@@ -31,7 +31,6 @@
   <!-- Additional dependencies -->
   <PropertyGroup>
     <XUnitStaFactPackageVersion>0.3.5</XUnitStaFactPackageVersion>
-    <MicrosoftTargetingPackNETFrameworkv472PackageVersion>1.0.0</MicrosoftTargetingPackNETFrameworkv472PackageVersion>
     <!-- Needed by Infrastructure.Common.csproj -->
     <MicrosoftDotNetPlatformAbstractionsVersion>2.1.0</MicrosoftDotNetPlatformAbstractionsVersion>
     <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.8.0</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
