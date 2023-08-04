@@ -8,7 +8,7 @@
     <IsPackable>true</IsPackable>
     <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
     <NoWarn>$(NoWarn);NU5131</NoWarn>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the common types used by all of the WCF libraries.</PackageDescription>
     <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Reflection.DispatchProxy" Version="$(SystemReflectionDispatchProxyPackageVersion)" />
     <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
     <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="$(MicrosoftExtensionsObjectPoolVersion)" />
   </ItemGroup>
