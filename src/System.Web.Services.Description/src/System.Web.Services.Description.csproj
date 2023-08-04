@@ -9,7 +9,7 @@
     <IsHarvesting>false</IsHarvesting>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-	<IsPartialFacadeAssembly Condition="'$(TargetFramework)' == 'net461'">true</IsPartialFacadeAssembly>
+    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == 'net461'">true</IsPartialFacadeAssembly>
     <PackageDescription>Contains classes that enable you to publicly describe an XML Web service by using the Web Services Description Language (WSDL).</PackageDescription>
   </PropertyGroup>
 
