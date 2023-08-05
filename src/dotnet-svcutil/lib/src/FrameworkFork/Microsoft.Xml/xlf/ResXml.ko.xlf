@@ -969,17 +969,17 @@
       </trans-unit>
       <trans-unit id="Sch_InvalidElementContentComplex">
         <source>The element {0} has invalid child element {1} - {2}</source>
-        <target state="translated">요소 {0}에 잘못된 자식 요소 {1}이(가) 있습니다. {2}</target>
+        <target state="translated">{0} 요소에 잘못된 자식 요소 {1}이(가) 있습니다. {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_InvalidElementContentExpecting">
         <source>The element {0} has invalid child element {1}. List of possible elements expected: {2}.</source>
-        <target state="translated">요소 {0}에 잘못된 자식 요소 {1}이(가) 있습니다. 가능한 요소 목록: {2}.</target>
+        <target state="translated">요소 {0}에 잘못된 자식 요소 {1}이(가) 있습니다. 필요한 요소 목록: {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_InvalidElementContentExpectingComplex">
         <source>The element {0} has invalid child element {1}. List of possible elements expected: {2}. {3}</source>
-        <target state="translated">요소 {0}에 잘못된 자식 요소 {1}이(가) 있습니다. 가능한 요소 목록: {2}. {3}</target>
+        <target state="translated">{0} 요소에 잘못된 자식 요소 {1}이(가) 있습니다. 필요한 요소 목록: {2}. {3}</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_InvalidElementDefaultValue">
@@ -994,22 +994,22 @@
       </trans-unit>
       <trans-unit id="Sch_InvalidElementInEmpty">
         <source>The element cannot contain child element. Content model is empty.</source>
-        <target state="translated">요소가 자식 요소를 포함할 수 없습니다. 콘텐츠 모델이 비어 있습니다.</target>
+        <target state="translated">요소는 자식 요소를 포함할 수 없습니다. 콘텐츠 모델이 비어 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_InvalidElementInEmptyEx">
         <source>The element '{0}' cannot contain child element '{1}' because the parent element's content model is empty.</source>
-        <target state="translated">'{0}' 요소는 부모 요소의 콘텐츠 모델이 비어 있기 때문에 '{1}' 자식 요소를 포함할 수 없습니다.</target>
+        <target state="translated">'{0}' 요소는 부모 요소의 콘텐츠 모델이 비어 있기 때문에 자식 요소 '{1}'을(를) 포함할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_InvalidElementInTextOnly">
         <source>The element cannot contain a child element. Content model is text only.</source>
-        <target state="translated">요소가 자식 요소를 포함할 수 없습니다. 콘텐츠 모델이 텍스트 전용입니다.</target>
+        <target state="translated">요소는 자식 요소를 포함할 수 없습니다. 콘텐츠 모델이 텍스트 전용입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_InvalidElementInTextOnlyEx">
         <source>The element '{0}' cannot contain child element '{1}' because the parent element's content model is text only.</source>
-        <target state="translated">'{0}' 요소는 부모 요소의 콘텐츠 모델이 텍스트 전용이기 때문에 '{1}' 자식 요소를 포함할 수 없습니다.</target>
+        <target state="translated">'{0}' 요소는 부모 요소의 콘텐츠 모델이 텍스트 전용이기 때문에 자식 요소 '{1}'을(를) 포함할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_InvalidElementRef">
@@ -1814,7 +1814,7 @@
       </trans-unit>
       <trans-unit id="Sch_SimpleTypeListRefBase">
         <source>SimpleType list should have either the itemType attribute or a simpleType child, but not both.</source>
-        <target state="translated">SimpleType 목록에는 itemType 특성 또는 simpleType 자식 둘 중 하나가 있어야 하며, 둘 다가 있을 순 없습니다.</target>
+        <target state="translated">SimpleType 목록에는 itemType 특성 또는 simpleType 자식 중 하나가 있어야 하지만 둘 다 지정할 필요는 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_SimpleTypeListRefBaseNone">
@@ -1829,12 +1829,12 @@
       </trans-unit>
       <trans-unit id="Sch_SimpleTypeRestRefBase">
         <source>SimpleType restriction should have either the base attribute or a simpleType child, but not both.</source>
-        <target state="translated">SimpleType 제한에는 base 특성 또는 simpleType 자식 둘 중 하나가 있어야 하며, 둘 다가 있을 순 없습니다.</target>
+        <target state="translated">SimpleType 제한에는 base 특성 또는 simpleType 자식 중 하나가 있어야 하지만 둘 다 지정할 필요는 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_SimpleTypeRestRefBaseNone">
         <source>SimpleType restriction should have either the base attribute or a simpleType child to indicate the base type for the derivation.</source>
-        <target state="translated">SimpleType 제한에는 base 특성이나 파생의 base 형식을 나타내는 simpleType 자식 중 하나가 있어야 합니다.</target>
+        <target state="translated">SimpleType 제한에는 기본 특성이나 파생의 기본 형식을 나타내는 simpleType 자식 중 하나가 있어야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sch_SimpleTypeRestriction">
