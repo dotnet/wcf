@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">El cliente no puede determinar el Nombre de entidad de seguridad de servicio en función de la identidad de la dirección de destino "{0}" para los fines de SspiNegotiation/Kerberos. La identidad de la dirección de destino debe ser una identidad UPN (como acmedomain\alice) o una identidad SPN (como host/bobs-machine).</target>
+        <target state="translated">El cliente no puede determinar el Nombre de entidad de seguridad de servicio en función de la identidad de la dirección de destino '{0}' para los fines de SspiNegotiation/Kerberos. La identidad de la dirección de destino debe ser una identidad UPN (como acmedomain\alice) o una identidad SPN (como host/bobs-machine).</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -649,7 +649,7 @@
       </trans-unit>
       <trans-unit id="DelayedSecurityApplicationAlreadyCompleted">
         <source>Delayed security application has already been completed.</source>
-        <target state="translated">La solicitud de seguridad retrasada ya ha sido completada..</target>
+        <target state="translated">La aplicación de seguridad retrasada ya se completó.</target>
         <note />
       </trans-unit>
       <trans-unit id="DelegatingHandlerArrayFromFuncContainsNullItem">
@@ -3974,7 +3974,7 @@
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Parameters5">
         <source>The task-based asynchronous OperationContract method '{0}' in type '{1}' was matched with the asynchronous OperationContract methods '{2}' and '{3}' because they have the same operation name '{4}'. When a task-based asynchronous OperationContract method is matched to a pair of asynchronous OperationContract methods, the two OperationContracts must define the same number and types of parameters. In this case, some of the arguments are different. To fix it, ensure that the OperationContracts define the same number and types of arguments, in the same order. Alternatively, changing the name of one of the methods will prevent matching.</source>
-        <target state="translated">El método '{0}' OperationContract asincrónico basado en tareas en el tipo '{1}' coincide con los métodos '{2}' y '{3}' OperationContract asincrónicos porque tiene el mismo nombre de operación '{4}'. Cuando un método OperationContract asincrónico basado en tareas coincide con un par de métodos OperationContract asincrónicos, los dos métodos OperationContracts deben definir el mismo número y tipos de parámetros. En este caso, algunos de los argumentos son diferentes. Para solucionarlo, asegúrese de que OperationContracts define el mismo número y tipos de argumentos y en el mismo orden. También puede cambiar el nombre de uno de los métodos para evitar que coincidan.</target>
+        <target state="translated">El método "{0}" OperationContract asincrónico basado en tareas en el tipo "{1}" coincide con los métodos "{2}" y "{3}" OperationContract asincrónicos porque tiene el mismo nombre de operación "{4}". Cuando un método OperationContract asincrónico basado en tareas coincide con un par de métodos OperationContract asincrónicos, los dos métodos OperationContracts deben definir el mismo número y tipos de parámetros. En este caso, algunos de los argumentos son diferentes. Para solucionarlo, asegúrese de que OperationContracts define el mismo número y tipos de argumentos y en el mismo orden. También puede cambiar el nombre de uno de los métodos para evitar que coincidan.</target>
         <note />
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Property6">
@@ -4529,7 +4529,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedTokenImpersonationLevel">
         <source>The value '{1}' for the '{0}' property is not supported in Windows Store apps.</source>
-        <target state="translated">El valor '{1}' de la propiedad '{0}' no se admite en las aplicaciones de la Tienda Windows.</target>
+        <target state="translated">El valor "{1}" de la propiedad "{0}" no se admite en las aplicaciones de la Tienda Windows.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedTokenInclusionMode">
