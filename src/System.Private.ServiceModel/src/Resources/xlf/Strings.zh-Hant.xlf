@@ -504,7 +504,7 @@
       </trans-unit>
       <trans-unit id="ClientSecurityNegotiationTimeout">
         <source>Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</source>
-        <target state="translated">用戶端無法在設定的逾時 ({0}) 內完成安全性交涉。目前的交涉階段為 {1} ({2})。</target>
+        <target state="translated">用戶端無法在設定的逾時 ({0}) 內完成安全性交涉。目前的交涉延隔為 {1} ({2})。</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientSecurityOutputSessionCloseTimeout">
@@ -2084,7 +2084,7 @@
       </trans-unit>
       <trans-unit id="NegotiationFailedIO">
         <source>Transport security negotiation failed due to an underlying IO error: {0}.</source>
-        <target state="translated">傳輸安全性交涉失敗，因為其下的 IO 錯誤: {0}。</target>
+        <target state="translated">由於基礎 IO 錯誤，傳輸安全性交涉失敗: {0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="NegotiationIsCompleted">
@@ -3829,7 +3829,7 @@
       </trans-unit>
       <trans-unit id="SoapSecurityNegotiationFailedForIssuerAndTarget">
         <source>SOAP security negotiation with '{0}' for target '{1}' failed. See inner exception for more details.</source>
-        <target state="translated">與目標 '{0}' 的 '{1}' 的 SOAP 安全性交涉失敗。如需詳細資訊，請參閱內部例外狀況。</target>
+        <target state="translated">與目標 '{1}' 的 '{0}' 的 SOAP 安全性交涉失敗。如需詳細資訊，請參閱內部例外狀況。</target>
         <note />
       </trans-unit>
       <trans-unit id="SocketAbortedReceiveTimedOut">
