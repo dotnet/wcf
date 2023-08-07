@@ -3395,6 +3395,10 @@ namespace Microsoft.CSharp
                 {
                     GenerateCodeRegionDirective((CodeRegionDirective)directive);
                 }
+                else if (directive is CodeIfDirective)
+                {
+                    GenerateCodeIfDirective((CodeIfDirective)directive);
+                }
             }
         }
 
@@ -3425,6 +3429,19 @@ namespace Microsoft.CSharp
             else if (regionDirective.RegionMode == CodeRegionMode.End)
             {
                 Output.WriteLine("#endregion");
+            }
+        }
+
+        private void GenerateCodeIfDirective(CodeIfDirective ifDirective)
+        {
+            if (ifDirective.IfMode == CodeIfMode.Start)
+            {
+                Output.Write("#if ");
+                Output.WriteLine(ifDirective.IfText);
+            }
+            else if (ifDirective.IfMode == CodeIfMode.End)
+            {
+                Output.WriteLine("#endif");
             }
         }
 

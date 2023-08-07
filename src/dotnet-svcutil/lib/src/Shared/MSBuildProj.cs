@@ -514,12 +514,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         this.ProjectReferceGroup.Add(new XElement("ProjectReference", new XAttribute("Include", dependency.FullPath)));
                         break;
                     case ProjectDependencyType.Binary:
-                        if (this.TargetFrameworks.Count() > 1 && dependency.Name.Equals(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault().Name))
+                        FrameworkInfo netfxInfo = null;
+                        FrameworkInfo dnxInfo = null;
+                        string dnxStr = this.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
+                        if (this.TargetFrameworks.Count() > 1 && dependency.Name.Equals(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault().Name)
+                            && !string.IsNullOrWhiteSpace(dnxStr) && dnxInfo.Version.Major >= 6)
                         {
-                            FrameworkInfo fxInfo = null;
-                            if (this.TargetFrameworks.Any(t => FrameworkInfo.TryParse(t, out fxInfo) && !fxInfo.IsDnx))
+                            if (this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out netfxInfo) && !netfxInfo.IsDnx))
                             {
-                                this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Condition", $"'$(TargetFramework)' == '{fxInfo.FullName}'"), new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
+                                this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Condition", $"'$(TargetFramework)' == '{netfxInfo.FullName}'"), new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
                             }
                         }
                         else
