@@ -894,7 +894,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of \"Never\" or \"WhenSupported\".</source>
-        <target state="translated">Ochrona rozszerzona jest nieobsługiwana na tej platformie. Zainstaluj odpowiednią poprawkę lub zmień wartość właściwości ExtendedProtectionPolicy obiektu Binding lub BindingElement na właściwość PolicyEnforcement o wartości \„Never\” lub \”WhenSupported\”.</target>
+        <target state="translated">Ochrona rozszerzona jest nieobsługiwana na tej platformie. Zainstaluj odpowiednią poprawkę lub zmień wartość właściwości ExtendedProtectionPolicy na Binding lub właściwości BindingElement na wartość właściwości PolicyEnforcement  \"Never\" lub \"WhenSupported.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtraContentIsPresentInFaultDetail">
