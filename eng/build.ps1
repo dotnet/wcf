@@ -4,6 +4,7 @@ Param(
   [switch][Alias('b')]$build,
   [switch][Alias('t')]$test,
   [string][Alias('c')]$configuration = "Debug",
+  [string]$vs,
   [string]$os,
   [switch]$coverage,
   [string]$testscope,

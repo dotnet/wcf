@@ -108,10 +108,13 @@ namespace System.ServiceModel.Federation
         /// <returns></returns>
         internal virtual ChannelFactory<IRequestChannel> ChannelFactory { get; set; }
 
+        /// <summary>
+        /// Gets or sets the <see cref="ClientCredentials"/> class used by the token provider.
+        /// </summary>
         internal protected ClientCredentials ClientCredentials { get; set; }
 
         /// <summary>
-        /// Creates a <see cref="WsTrustRequest"/> from the <see cref="WSTrustTokenParameters"/>
+        /// Creates a <see cref="WsTrustRequest"/> from the <see cref="WSTrustTokenParameters"/>.
         /// </summary>
         /// <returns></returns>
         protected virtual WsTrustRequest CreateWsTrustRequest()
@@ -436,8 +439,10 @@ namespace System.ServiceModel.Federation
             _requestSerializationContext = new WsSerializationContext(GetWsTrustVersion(messageSecurityVersion));
         }
 
+        /// <inheritdoc/>
         public override bool SupportsTokenCancellation => false;
 
+        /// <inheritdoc/>
         public override bool SupportsTokenRenewal => false;
 
         internal WSTrustTokenParameters WSTrustTokenParameters { get; }
