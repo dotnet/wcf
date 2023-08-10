@@ -25,7 +25,6 @@
   <!-- CoreFx dependencies -->
   <PropertyGroup>
     <SystemReflectionDispatchProxyPackageVersion>4.7.1</SystemReflectionDispatchProxyPackageVersion>
-    <SystemSecurityPrincipalWindowsPackageVersion>5.0.0</SystemSecurityPrincipalWindowsPackageVersion>
     <SystemSecurityCryptographyXmlPackageVersion>6.0.1</SystemSecurityCryptographyXmlPackageVersion>
     <MicrosoftExtensionsObjectPoolVersion>6.0.16</MicrosoftExtensionsObjectPoolVersion>
   </PropertyGroup>
