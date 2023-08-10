@@ -63,8 +63,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.IntegrationT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.TransportSecurity.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Security\TransportSecurity\Security.TransportSecurity.IntegrationTests.csproj", "{E878E412-F0AB-4D87-8A7A-3114AAC48CD5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Shim", "src\System.ServiceModel.Shim\System.ServiceModel.Shim.csproj", "{47EF7F95-82A4-4FF6-B1D9-3B6BE870373D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.WS.TransportWithMessageCredentialSecurity.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\WS\TransportWithMessageCredentialSecurity\Binding.WS.TransportWithMessageCredentialSecurity.IntegrationTests.csproj", "{161C03B5-B606-4DC2-BC10-5935D1DADDD5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Common", "src\System.Private.ServiceModel\tests\Common\Infrastructure\Infrastructure.Common.csproj", "{38F22923-DF54-4BD5-A40D-D4CA05DE3D17}"
@@ -219,10 +217,6 @@ Global
 		{E878E412-F0AB-4D87-8A7A-3114AAC48CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E878E412-F0AB-4D87-8A7A-3114AAC48CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E878E412-F0AB-4D87-8A7A-3114AAC48CD5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47EF7F95-82A4-4FF6-B1D9-3B6BE870373D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47EF7F95-82A4-4FF6-B1D9-3B6BE870373D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47EF7F95-82A4-4FF6-B1D9-3B6BE870373D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47EF7F95-82A4-4FF6-B1D9-3B6BE870373D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
