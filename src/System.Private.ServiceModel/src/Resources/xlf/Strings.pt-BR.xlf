@@ -954,7 +954,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">Não há suporte para a proteção estendida nesta plataforma.  Instale o patch apropriado ou altere ExtendedProtectionPolicy na Binding ou BindingElement para um valor com um valor PolicyEnforcement igual a "Never" ou "WhenSupported".</target>
+        <target state="translated">A proteção estendida não é suportada nesta plataforma.  Instale o patch apropriado ou altere a ExtendedProtectionPolicy em Binding ou BindingElement para um valor com PolicyEnforcement definido como "Never" ou "WhenSupported".</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
@@ -3794,7 +3794,7 @@
       </trans-unit>
       <trans-unit id="SigningTokenHasNoKeysSupportingTheAlgorithmSuite">
         <source>The signing token {0} has no key that supports the algorithm suite {1}.</source>
-        <target state="translated">O token de assinatura {0} não tem uma chave que ofereça suporte ao pacote de algoritmos {1}.</target>
+        <target state="translated">O token de assinatura {0} não tem nenhuma chave que dê suporte ao pacote de algoritmos {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SigningWithoutPrimarySignatureRequiresTimestamp">
@@ -3974,7 +3974,7 @@
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Parameters5">
         <source>The task-based asynchronous OperationContract method '{0}' in type '{1}' was matched with the asynchronous OperationContract methods '{2}' and '{3}' because they have the same operation name '{4}'. When a task-based asynchronous OperationContract method is matched to a pair of asynchronous OperationContract methods, the two OperationContracts must define the same number and types of parameters. In this case, some of the arguments are different. To fix it, ensure that the OperationContracts define the same number and types of arguments, in the same order. Alternatively, changing the name of one of the methods will prevent matching.</source>
-        <target state="translated">O método OperationContract assíncrono baseado em tarefa '{0}' no tipo '{1}' coincidiu com os métodos OperationContract assíncronos '{2}' e '{3}' porque eles têm o mesmo nome da operação '{4}'. Quando um método OperationContract assíncrono baseado em tarefa coincide com um par de métodos OperationContract assíncronos, os dois OperationContracts devem definir os mesmos números e tipos de parâmetros. Nesse caso, alguns argumentos são diferentes. Para corrigir isso, verifique se os OperationContracts definem os mesmos números e tipos de argumentos, na mesma ordem. Alternativamente, a alteração do nome de um dos métodos impedirá a correspondência.</target>
+        <target state="translated">O método assíncrono OperationContract baseado em tarefa '{0}' no tipo '{1}' coincidiu com os métodos assíncronos OperationContract '{2}' e '{3}' porque eles têm o mesmo nome de operação '{4}'. Quando um método assíncrono OperationContract baseado em tarefa coincide com um par de métodos assíncronos OperationContract, os dois OperationContracts devem definir o mesmo número e tipos de parâmetros. Nesse caso, alguns dos argumentos são diferentes. Para corrigir isso, verifique se os OperationContracts definem o mesmo número e tipos de argumentos, na mesma ordem. Como alternativa, altere o nome de um dos métodos para evitar a correspondência. </target>
         <note />
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Property6">
@@ -4529,7 +4529,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedTokenImpersonationLevel">
         <source>The value '{1}' for the '{0}' property is not supported in Windows Store apps.</source>
-        <target state="translated">O valor '{1}' da propriedade '{0}' não tem suporte nos aplicativos da Windows Store.</target>
+        <target state="translated">O valor '{1}' da propriedade '{0}' não tem suporte nos Aplicativos da Windows Store.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedTokenInclusionMode">
