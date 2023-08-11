@@ -13,6 +13,8 @@
     </PreReleaseVersionIteration>
     <!-- Opt-in repo features -->
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
+    <!-- Enabling this rule will cause build failures on undocumented public APIs. -->
+    <SkipArcadeNoWarnCS1591>true</SkipArcadeNoWarnCS1591>
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>

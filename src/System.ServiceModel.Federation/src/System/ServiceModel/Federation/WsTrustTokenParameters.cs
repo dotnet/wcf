@@ -21,9 +21,24 @@ namespace System.ServiceModel.Federation
     /// </summary>
     public class WSTrustTokenParameters : IssuedSecurityTokenParameters
     {
+        /// <summary>
+        /// Default value used for <see cref="CacheIssuedTokens"/>.
+        /// </summary>
         public static readonly bool DefaultCacheIssuedTokens = true;
+
+        /// <summary>
+        /// Default value used for <see cref="IssuedTokenRenewalThresholdPercentage"/>.
+        /// </summary>
         public static readonly int DefaultIssuedTokenRenewalThresholdPercentage = 60;
+
+        /// <summary>
+        /// Default value used for <see cref="MaxIssuedTokenCachingTime"/>.
+        /// </summary>
         public static readonly TimeSpan DefaultMaxIssuedTokenCachingTime = TimeSpan.MaxValue;
+
+        /// <summary>
+        /// Default value used for <see cref="IssuedSecurityTokenParameters.KeyType"/> when constructing a WSTrustTokenParameters instance.
+        /// </summary>
         public static readonly SecurityKeyType DefaultSecurityKeyType = SecurityKeyType.SymmetricKey;
 
         private TimeSpan _maxIssuedTokenCachingTime = DefaultMaxIssuedTokenCachingTime;
@@ -157,6 +172,12 @@ namespace System.ServiceModel.Federation
         /// </summary>
         public string RequestContext { get; set; }
 
+        /// <summary>
+        /// Factory method to create a <see cref="WSTrustTokenParameters"/> instance using the same MessageSecurityVersion as WSFederationHttpBinding uses in .NET Framework
+        /// </summary>
+        /// <param name="issuerBinding"></param>
+        /// <param name="issuerAddress"></param>
+        /// <returns></returns>
         public static WSTrustTokenParameters CreateWSFederationTokenParameters(Binding issuerBinding, EndpointAddress issuerAddress)
         {
             return new WSTrustTokenParameters
@@ -169,6 +190,9 @@ namespace System.ServiceModel.Federation
             };
         }
 
+        /// <summary>
+        /// Factory method to create a <see cref="WSTrustTokenParameters"/> instance using the same MessageSecurityVersion as WS2007FederationHttpBinding uses in .NET Framework
+        /// </summary>
         public static WSTrustTokenParameters CreateWS2007FederationTokenParameters(Binding issuerBinding, EndpointAddress issuerAddress)
         {
             return new WSTrustTokenParameters
