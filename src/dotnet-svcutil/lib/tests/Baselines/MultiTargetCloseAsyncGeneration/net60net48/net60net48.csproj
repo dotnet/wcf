@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net6.0;net48</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Condition="'$(TargetFramework)' == 'net48'" Include="System.ServiceModel">
+      <HintPath>System.ServiceModel</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
