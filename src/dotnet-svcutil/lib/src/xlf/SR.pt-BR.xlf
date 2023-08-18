@@ -602,6 +602,11 @@ Identificador do Documento: '{0}'.</target>
         <target state="translated">O identificador do tempo de execução usado para criar projetos de referência (se existentes). (Forma Abreviada: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpServiceContractFormat">
+        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
+        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Gere métodos síncronos para operações, além de assíncronos. (Forma Abreviada: -{0})</target>
@@ -810,6 +815,11 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">O valor especificado com a opção --{0} resolve para o caminho de arquivo '{1}', que não está sob o diretório do projeto '{2}'. O arquivo não pode ser compilado!</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
+        <source>NetNamedPipe is not supported on current .net target framework.</source>
+        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
