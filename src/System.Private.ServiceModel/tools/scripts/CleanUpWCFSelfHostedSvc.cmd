@@ -20,7 +20,7 @@ REM The CMD we call self-elevates and logs its results to %_cleanuplog%
 REM Errors stopping the service are logged but do not stop processing
 call %~dp0StopWcfSelfHostedSvc.cmd
 
-If NOT exist %~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe (
+If NOT exist %~dp0..\..\..\..\bin\CertificateGenerator\Release\net471\CertificateGenerator.exe (
   echo Building certificate generator...
 	call %~dp0BuildCertUtil.cmd >>%_cleanuplog%
 	set __EXITCODE=%ERRORLEVEL%
@@ -55,9 +55,9 @@ if NOT [%ERRORLEVEL%]==[0] (
 
 echo Removing certificates. >>%_cleanuplog%
 if '%_runelevated%' == '' (
-  call %~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe -Uninstall >>%_cleanuplog%
+  call %~dp0..\..\..\..\bin\CertificateGenerator\Release\net471\CertificateGenerator.exe -Uninstall >>%_cleanuplog%
 ) else (
-  call %_runelevated% %~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe -Uninstall >nul
+  call %_runelevated% %~dp0..\..\..\..\bin\CertificateGenerator\Release\net471\CertificateGenerator.exe -Uninstall >nul
 )
 
 if NOT [%ERRORLEVEL%]==[0] (
