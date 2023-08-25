@@ -122,14 +122,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return project;
         }
 
-        internal static async Task<MSBuildProj> FromPathAsync(string filePath, ILogger logger, string tfMonitor, CancellationToken cancellationToken)
+        internal static async Task<MSBuildProj> FromPathAsync(string filePath, ILogger logger, string tfMoniker, CancellationToken cancellationToken)
         {
-            var project = await ParseAsync(File.ReadAllText(filePath), filePath, logger, cancellationToken, tfMonitor).ConfigureAwait(false);
+            var project = await ParseAsync(File.ReadAllText(filePath), filePath, logger, cancellationToken, tfMoniker).ConfigureAwait(false);
             project._isSaved = true;
             return project;
         }
 
-        public static async Task<MSBuildProj> ParseAsync(string projectText, string projectFullPath, ILogger logger, CancellationToken cancellationToken, string tfMonitor = "")
+        public static async Task<MSBuildProj> ParseAsync(string projectText, string projectFullPath, ILogger logger, CancellationToken cancellationToken, string tfMoniker = "")
         {
             using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, $"Parsing project {Path.GetFileName(projectFullPath)}").ConfigureAwait(false))
             {
@@ -166,7 +166,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     var targetFramework = targetFrameworkElements.Last().Value.Trim().ToLowerInvariant();
                     if (!string.IsNullOrWhiteSpace(targetFramework))
                     {
-                        msbuildProj._targetFrameworks.Add(targetFramework);
+                        if(TargetFrameworkHelper.IsSupportedFramework(targetFramework, out FrameworkInfo fxInfo))
+                        {
+                            msbuildProj._targetFrameworks.Add(targetFramework);
+                        }
                     }
                 }
 
@@ -191,9 +194,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if(string.IsNullOrEmpty(msbuildProj._targetFramework))
                 {
-                    if(!string.IsNullOrEmpty(tfMonitor))
+                    if(!string.IsNullOrEmpty(tfMoniker) && FrameworkInfo.TryParse(tfMoniker, out FrameworkInfo fxInfo))
                     {
-                        msbuildProj._targetFramework = tfMonitor;
+                        msbuildProj._targetFramework = fxInfo.FullName;
                     }
                     else
                     {
