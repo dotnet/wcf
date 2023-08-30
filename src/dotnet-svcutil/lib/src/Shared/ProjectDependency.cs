@@ -395,9 +395,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public int CompareTo(ProjectDependency other)
         {
             if (other == null) return 1;
-            return this.DependencyType == other.DependencyType ?
-                StringComparer.CurrentCultureIgnoreCase.Compare(this.AssemblyName, other.AssemblyName) :
+            if (other.DependencyType == ProjectDependencyType.Binary)
+            {
+                return this.DependencyType == other.DependencyType ?
+                StringComparer.CurrentCultureIgnoreCase.Compare(this.FullPath, other.FullPath) :
                 this.DependencyType > other.DependencyType ? 1 : -1;
+            }
+
+            return this.DependencyType == other.DependencyType ?
+            StringComparer.CurrentCultureIgnoreCase.Compare(this.AssemblyName, other.AssemblyName) :
+            this.DependencyType > other.DependencyType ? 1 : -1;
         }
         #endregion
 
