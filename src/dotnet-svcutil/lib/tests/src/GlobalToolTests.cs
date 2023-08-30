@@ -108,14 +108,11 @@ namespace SvcutilTest
         [Trait("Category", "BVT")]
         [Theory]
         [InlineData("net48")] //System.ServiceModel get referened and CloseAsync() is generated
-        [InlineData("net50")] //WCF package older than V4.10 get referened and CloseAsync() is generated
+        [InlineData("netstd20")] //WCF package older than V4.10 get referened and CloseAsync() is generated
         [InlineData("net60")] //WCF package newer than V4.10 get referened and CloseAsync() is not generated
         [InlineData("net60net48")] //WCF package newer than V4.10 and System.ServiceModel.dll are referenced conditionally by target and CloseAsync() be generarted with conditional compilation mark
         public void MultiTargetCloseAsyncGeneration(string testCaseName)
         {
-            //net50 is kept as regression test because generation of CloseAsync() method depdends on whether the referenced wcf package version is before 4.10.* or after
-            //and only when user project targets to ealier .net core version will the tool add reference to early release of wcf package
-            //TargetFrameworkHelper.NetCoreVersionReferenceTable defines the mapping detail
             this_TestCaseName = "MultiTargetCloseAsyncGeneration";
             TestFixture();
 
