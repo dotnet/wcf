@@ -278,12 +278,22 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     bool needSave = false;
                     foreach (var dep in dependencies)
                     {
-                        if (dep.Name.Contains("NetNamedPipe") && !project.TargetFrameworks.First().Contains("windows"))
+                        if (dep.Name.Contains("NetNamedPipe") && !project.TargetFrameworks.Any(t => t.ToLower().Contains("windows")))
                         {
                             continue;
                         }
 
                         needSave |= project.AddDependency(dep);
+                    }
+
+                    if (project.TargetFrameworks.Count() > 1 && project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo fxInfo) && !fxInfo.IsDnx))
+                    {
+                        FrameworkInfo fxInfo = null;
+                        var tfx = project.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out fxInfo) && fxInfo.IsDnx);
+                        if (!string.IsNullOrEmpty(tfx) && fxInfo.Version.Major >= 6)
+                        {
+                            needSave |= project.AddDependency(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault());
+                        }
                     }
 
                     if (needSave)

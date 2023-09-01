@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+  </ItemGroup>
+</Project>

@@ -7,36 +7,51 @@ using Microsoft.CodeDom;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class AddAsyncOpenClose : ClientClassVisitor
     {
         private bool _generateCloseAsync = false;
+        private bool _addCondition = false;
 
         public AddAsyncOpenClose(CommandProcessorOptions options)
         {
-            if (options.TargetFramework.IsDnx)
+            if (options.Project.TargetFrameworks.Count() > 1 && options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
             {
-                if (TargetFrameworkHelper.NetCoreVersionReferenceTable.TryGetValue(options.TargetFramework.Version, out var referenceTable))
+                _generateCloseAsync = true;
+                FrameworkInfo dnxInfo = null;
+                var tfx = options.Project.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
+                if (!string.IsNullOrEmpty(tfx) && dnxInfo.Version.Major >= 6)
                 {
-                    string version = referenceTable.FirstOrDefault().Version;
-                    string[] vers = version.Split('.');
-                    if (vers.Length > 1)
-                    {
-                        Version v = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
-                        // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
-                        if (v.CompareTo(new Version(4, 10)) < 0)
-                        {
-                            _generateCloseAsync = true;
-                        }
-                    }
+                    _addCondition = true;
                 }
             }
             else
             {
-                // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
-                _generateCloseAsync = true;
+                if (options.TargetFramework.IsDnx)
+                {
+                    if (TargetFrameworkHelper.NetCoreVersionReferenceTable.TryGetValue(options.TargetFramework.Version, out var referenceTable))
+                    {
+                        string version = referenceTable.FirstOrDefault().Version;
+                        string[] vers = version.Split('.');
+                        if (vers.Length > 1)
+                        {
+                            Version v = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
+                            // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
+                            if (v.CompareTo(new Version(4, 10)) < 0)
+                            {
+                                _generateCloseAsync = true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
+                    _generateCloseAsync = true;
+                }
             }
         }
 
@@ -54,7 +69,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        private static CodeMemberMethod GenerateTaskBasedAsyncMethod(string methodName, NameScope nameScope)
+        private CodeMemberMethod GenerateTaskBasedAsyncMethod(string methodName, NameScope nameScope)
         {
             CodeTypeReference delegateType = new CodeTypeReference(typeof(Action<>));
             delegateType.TypeArguments.Add(new CodeTypeReference(typeof(IAsyncResult)));
@@ -89,11 +104,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     GenerateBeginMethodInvokeExpression(methodName),
                     delegateOfEndCall)));
 
+            if(_addCondition && methodName.Equals("Close"))
+            {
+                CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, "NETFRAMEWORK");
+                CodeIfDirective ifEnd = new CodeIfDirective(CodeIfMode.End, "");
+                implMethod.StartDirectives.Add(ifStart);
+                implMethod.EndDirectives.Add(ifEnd);
+            }
+
             return implMethod;
         }
 
         // ((ICommunicationObject)this).BeginOpen(null, null)
-        private static CodeMethodInvokeExpression GenerateBeginMethodInvokeExpression(string methodName)
+        private CodeMethodInvokeExpression GenerateBeginMethodInvokeExpression(string methodName)
         {
             return new CodeMethodInvokeExpression()
             {

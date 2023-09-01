@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>N.N</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+  </ItemGroup>
+</Project>

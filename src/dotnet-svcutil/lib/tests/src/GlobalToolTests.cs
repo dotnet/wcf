@@ -4,6 +4,8 @@
 
 using System;
 using System.IO;
+using Microsoft.Tools.ServiceModel.Svcutil;
+using System.Threading;
 using Xunit;
 
 namespace SvcutilTest
@@ -100,6 +102,38 @@ namespace SvcutilTest
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
             var options = $"{uri} -nl -d {outDir} -tf netcoreapp1.0";
             
+            TestGlobalSvcutil(options, expectSuccess: true);
+        }
+
+        [Trait("Category", "BVT")]
+        [Theory]
+        [InlineData("net48")] //System.ServiceModel get referened and CloseAsync() is generated
+        [InlineData("netstd20")] //WCF package older than V4.10 get referened and CloseAsync() is generated
+        [InlineData("net60")] //WCF package newer than V4.10 get referened and CloseAsync() is not generated
+        [InlineData("net60net48")] //WCF package newer than V4.10 and System.ServiceModel.dll are referenced conditionally by target and CloseAsync() be generarted with conditional compilation mark
+        public void MultiTargetCloseAsyncGeneration(string testCaseName)
+        {
+            this_TestCaseName = "MultiTargetCloseAsyncGeneration";
+            TestFixture();
+
+            this_TestCaseBaselinesDir = Path.Combine(this_TestGroupBaselinesDir, testCaseName);
+            Directory.CreateDirectory(this_TestCaseBaselinesDir);
+            this_TestGroupOutputDir = Path.Combine(Path.GetTempPath(), this_TestCaseName);
+            this_TestCaseLogFile = Path.Combine(this_TestGroupOutputDir, $"{testCaseName}.log");
+            this_TestCaseOutputDir = Path.Combine(this_TestGroupOutputDir, testCaseName);
+            FileUtil.TryDeleteDirectory(this_TestCaseOutputDir);            
+            Directory.CreateDirectory(this_TestCaseOutputDir);
+            File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, "Program.cs"), Path.Combine(this_TestCaseOutputDir, "Program.cs"), true);
+            File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, $"{testCaseName}.csproj"), Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), true);
+            this_TestCaseProject = MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), null, CancellationToken.None).Result;
+            
+            this_FixupUtil = new FixupUtil();
+            this_FixupUtil.Init(g_TestResultsDir, g_TestCasesDir, this_TestCaseOutputDir, g_ServiceUrl, g_ServiceId, g_RepositoryRoot);
+
+            var uri = Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl");
+            var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
+            var options = $"{uri} -nl --outputDir {outDir}";
+
             TestGlobalSvcutil(options, expectSuccess: true);
         }
 
