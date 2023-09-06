@@ -602,6 +602,11 @@ Belge Tanımlayıcısı: '{0}'.</target>
         <target state="translated">Başvuru projelerini (varsa) derlemek için kullanılan çalışma zamanı tanımlayıcısı. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpServiceContractFormat">
+        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
+        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">İşlemler için zaman uyumsuz yöntemlerin yanı sıra zaman uyumlu yöntemler oluştur. (Kısa Biçim: -{0})</target>
@@ -810,6 +815,11 @@ If you were trying to generate a client, this could be because the metadata docu
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">--{0} seçeneği ile belirtilen değer, '{2}' projesi dizini altında olmayan '{1}' dosya yoluna çözümlenir. Dosya derlenemeyebilir!</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
+        <source>NetNamedPipe is not supported on current .net target framework.</source>
+        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
