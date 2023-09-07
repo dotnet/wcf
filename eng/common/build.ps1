@@ -124,6 +124,7 @@ function Build {
     /p:PerformanceTest=$performanceTest `
     /p:Sign=$sign `
     /p:Publish=$publish `
+    /p:UpdateXlfOnBuild=true `
     @properties
 }
 

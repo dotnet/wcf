@@ -64,6 +64,7 @@
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.6.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="System.Reflection.DispatchProxy" Version="4.4.0" />
+    <PackageReference Include="Microsoft.DotNet.XliffTasks" Version="1.0.0-beta.21376.1" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Include resx files here so that arcade will handle them correctly. -->
