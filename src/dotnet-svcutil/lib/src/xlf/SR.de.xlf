@@ -602,6 +602,11 @@ Dokumentbezeichner: "{0}".</target>
         <target state="translated">Der Runtimebezeichner zum Erstellen von Verweisprojekten (sofern vorhanden). (Kurzform: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpServiceContractFormat">
+        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
+        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Hiermit werden synchrone Methoden für Vorgänge generiert, die zusätzlich zu asynchronen Vorgängen ausgeführt werden. (Kurzform: -{0})</target>
@@ -810,6 +815,11 @@ Wenn Sie versucht haben, einen Client zu generieren, könnte die Ursache hierfü
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">Der mit der Option --{0} angegebene Wert wird in den Dateipfad "{1}" aufgelöst, der nicht unter dem Verzeichnis des Projekts "{2}" vorhanden ist. Die Datei wird möglicherweise nicht kompiliert.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
+        <source>NetNamedPipe is not supported on current .net target framework.</source>
+        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">

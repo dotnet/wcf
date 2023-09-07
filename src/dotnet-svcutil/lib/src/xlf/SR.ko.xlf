@@ -602,6 +602,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">참조 프로젝트를 만드는 데 사용되는 런타임 식별자입니다(있는 경우)(약식: -{0}).</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpServiceContractFormat">
+        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
+        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">비동기 외에 작업에 대한 동기 메서드를 생성합니다. (약식: -{0})</target>
@@ -810,6 +815,11 @@ If you were trying to generate a client, this could be because the metadata docu
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">--{0} 옵션으로 지정된 값은 '{2}' 프로젝트의 디렉터리 아래에 없는 '{1}' 파일 경로로 확인됩니다. 파일이 컴파일되지 않을 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
+        <source>NetNamedPipe is not supported on current .net target framework.</source>
+        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">

@@ -602,6 +602,11 @@ Identifikátor dokumentu: {0}</target>
         <target state="translated">Identifikátor modulu runtime, který se použil k sestavení projektů odkazů (pokud nějaký existuje). (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpServiceContractFormat">
+        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
+        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Kromě asynchronních metod generovat pro operace i synchronní metody (krátký tvar: -{0})</target>
@@ -810,6 +815,11 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">Hodnota zadaná pomocí možnosti --{0} se překládá na cestu k souboru {1}, která se nenachází v adresáři projektu {2}. Je možné, že se soubor nezkompiluje!</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
+        <source>NetNamedPipe is not supported on current .net target framework.</source>
+        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
