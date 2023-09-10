@@ -33,8 +33,8 @@ public static class Binding_Http_BasicHttpBindingTests
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.MessageEncoding = messageEncoding;
 
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic + Enum.GetName(typeof(WSMessageEncoding), messageEncoding)));
-            serviceProxy = factory.CreateChannel();
+            factory = new ChannelFactory<IWcfService>(binding);
+            serviceProxy = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_Basic + Enum.GetName(typeof(WSMessageEncoding), messageEncoding)));
 
             // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);

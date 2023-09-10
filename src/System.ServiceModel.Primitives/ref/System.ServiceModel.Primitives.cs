@@ -259,6 +259,7 @@ namespace System.ServiceModel
     }
     public partial class ChannelFactory<TChannel> : System.ServiceModel.ChannelFactory, System.ServiceModel.Channels.IChannelFactory, System.ServiceModel.Channels.IChannelFactory<TChannel>, System.ServiceModel.ICommunicationObject
     {
+        public ChannelFactory(System.ServiceModel.Channels.Binding binding) { }
         public ChannelFactory(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) { }
         public ChannelFactory(System.ServiceModel.Description.ServiceEndpoint endpoint) { }
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
