@@ -14,6 +14,5 @@
     <Compile Include="System.ServiceModel.Security.cs" />
     <Compile Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
     <Compile Include="System.ServiceModel.Duplex.cs" />
-    <None Include="System.ServiceModel.Primitives.netframework.cs" />
   </ItemGroup>
 </Project>

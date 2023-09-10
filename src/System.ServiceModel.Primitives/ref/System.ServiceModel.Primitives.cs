@@ -1485,7 +1485,9 @@ namespace System.ServiceModel.Channels
         public System.ServiceModel.EnvelopeVersion Envelope { get { return default; } }
         public static System.ServiceModel.Channels.MessageVersion None { get { return default; } }
         public static System.ServiceModel.Channels.MessageVersion Soap11 { get { return default; } }
+        public static System.ServiceModel.Channels.MessageVersion Soap11WSAddressing10 { get { return default; } }
         public static System.ServiceModel.Channels.MessageVersion Soap11WSAddressingAugust2004 { get { return default; } }
+        public static System.ServiceModel.Channels.MessageVersion Soap12 { get { return default; } }
         public static System.ServiceModel.Channels.MessageVersion Soap12WSAddressing10 { get { return default; } }
         public static System.ServiceModel.Channels.MessageVersion Soap12WSAddressingAugust2004 { get { return default; } }
         public static System.ServiceModel.Channels.MessageVersion CreateVersion(System.ServiceModel.EnvelopeVersion envelopeVersion) { return default; }
