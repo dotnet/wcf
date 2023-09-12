@@ -27,6 +27,11 @@
         <target state="translated">不支援的訊息編碼值: '{0}'。其必須是 '{1}'。</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">不支援的 MTOM 訊息編碼版本: '{0}'。其必須是 '{1}'、'{2}'、'{3}' 或 '{4}'。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">不支援可靠工作階段。</target>
@@ -417,6 +422,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">正在產生檔案...</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">下載服務中繼資料時，接受受信任的遠端憑證。(短形式: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">自動選取序列化程式。此作業會嘗試使用資料合約序列化程式，並會在失敗時使用 XmlSerializer。(簡短形式: /{0})</target>
@@ -590,6 +600,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="HelpRuntimeIdentifierFormat">
         <source>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</source>
         <target state="translated">用於建置參考專案的執行階段識別碼 (如果有的話)。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpServiceContractFormat">
+        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
+        <target state="translated">產生服務合約的程式碼。將不會產生用戶端類別。(簡短形式: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -800,6 +815,11 @@ If you were trying to generate a client, this could be because the metadata docu
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">使用 --{0} 選項來指定的值會解析為檔案路徑 '{1}'，但該路徑不在專案 '{2}' 的目錄下。檔案可能無法編譯!</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
+        <source>NetNamedPipe is not supported on current .net target framework.</source>
+        <target state="translated">目前的 ..NET 目標 Framework 不支援 NetNamedPipe。</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">

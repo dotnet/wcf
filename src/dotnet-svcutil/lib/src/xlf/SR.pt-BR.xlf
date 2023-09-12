@@ -27,6 +27,11 @@
         <target state="translated">Valor de codificação de mensagem sem suporte: '{0}'. Deve ser '{1}'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">Versão de codificação de mensagem MTOM sem suporte: '{0}'. Deve ser '{1}' ou '{2}' ou '{3}' ou '{4}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">Não há suporte para a sessão confiável.</target>
@@ -417,6 +422,11 @@ Identificador do Documento: '{0}'.</target>
         <target state="translated">Gerando arquivos...</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">Aceite o certificado remoto como confiável ao baixar metadados de serviço. (Forma Abreviada: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">Selecionar o serializador de maneira automática. Isso tenta usar o serializador de Contrato de Dados e usa o XmlSerializer em caso de falha. (Forma Abreviada: /{0})</target>
@@ -524,7 +534,7 @@ Identificador do Documento: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="translated">&lt;metadata document path&gt;</target>
+        <target state="translated">&lt;caminho do documento de metadados&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
@@ -590,6 +600,11 @@ Identificador do Documento: '{0}'.</target>
       <trans-unit id="HelpRuntimeIdentifierFormat">
         <source>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</source>
         <target state="translated">O identificador do tempo de execução usado para criar projetos de referência (se existentes). (Forma Abreviada: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpServiceContractFormat">
+        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
+        <target state="translated">Gerar código para Contratos de Serviço. A classe de cliente não será gerada. (Forma resumida: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -702,7 +717,7 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="translated">&lt;project file&gt;</target>
+        <target state="translated">&lt;arquivo de projeto&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
@@ -712,7 +727,7 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="translated">&lt;runtime identifier&gt;</target>
+        <target state="translated">&lt;identificador do tempo de execução&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
@@ -727,7 +742,7 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="translated">&lt;web service reference&gt;</target>
+        <target state="translated">&lt;referência de serviço Web&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
@@ -800,6 +815,11 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">O valor especificado com a opção --{0} resolve para o caminho de arquivo '{1}', que não está sob o diretório do projeto '{2}'. O arquivo não pode ser compilado!</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
+        <source>NetNamedPipe is not supported on current .net target framework.</source>
+        <target state="translated">NetNamedPipe não é suportado na estrutura de destino .net atual.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
