@@ -604,7 +604,7 @@ Belge Tanımlayıcısı: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpServiceContractFormat">
         <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
-        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
+        <target state="translated">Hizmet Sözleşmeleri için kod oluşturun. İstemci sınıfı oluşturulmaz. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -819,7 +819,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on current .net target framework.</source>
-        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
+        <target state="translated">NetNamedPipe, geçerli .NET hedef Framework’ünde desteklenmiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">

@@ -604,7 +604,7 @@ Identificatore di documento: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpServiceContractFormat">
         <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
-        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
+        <target state="translated">Generare il codice per i contratti di servizio. La classe client non verrà generata. (Forma breve: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -819,7 +819,7 @@ Se si stava provando a creare un client, il problema può dipendere dal fatto ch
       </trans-unit>
       <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on current .net target framework.</source>
-        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
+        <target state="translated">NetNamedPipe non è supportato nel framework di destinazione .NET corrente.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
