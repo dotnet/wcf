@@ -18,7 +18,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public AddAsyncOpenClose(CommandProcessorOptions options)
         {
-            if (options.Project.TargetFrameworks.Count() > 1 && options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
+            if (options.Project != null && options.Project.TargetFrameworks.Count() > 1 && options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
             {
                 _generateCloseAsync = true;
                 FrameworkInfo dnxInfo = null;
