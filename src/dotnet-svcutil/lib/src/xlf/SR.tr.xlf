@@ -27,11 +27,6 @@
         <target state="translated">Desteklenmeyen ileti kodlaması değeri: '{0}'. '{1}' olmalıdır.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
-        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">Desteklenmeyen MTOM mesajı kodlama sürümü: '{0}'. '{1}' veya '{2}' veya '{3}' veya '{4}' olmalıdır.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">Güvenilir oturum desteklenmiyor.</target>
@@ -422,11 +417,6 @@ Belge Tanımlayıcısı: '{0}'.</target>
         <target state="translated">Dosyalar oluşturuluyor...</target>
         <note />
       </trans-unit>
-      <trans-unit id="HelpAcceptCertificateFormat">
-        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">Hizmet meta verilerini indirirken uzak sertifikayı güvenilir olarak kabul edin. (Kısa form: - {0})</target>
-        <note />
-      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">Serileştiriciyi otomatik olarak seç. Bu, Veri Anlaşması serileştiricisini kullanır ve bu serileştiricinin başarısız olması durumunda XmlSerializer'ı kullanır. (Kısa Biçim: -{0})</target>
@@ -600,11 +590,6 @@ Belge Tanımlayıcısı: '{0}'.</target>
       <trans-unit id="HelpRuntimeIdentifierFormat">
         <source>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</source>
         <target state="translated">Başvuru projelerini (varsa) derlemek için kullanılan çalışma zamanı tanımlayıcısı. (Kısa Biçim: -{0})</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HelpServiceContractFormat">
-        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
-        <target state="translated">Hizmet Sözleşmeleri için kod oluşturun. İstemci sınıfı oluşturulmaz. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -815,11 +800,6 @@ If you were trying to generate a client, this could be because the metadata docu
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">--{0} seçeneği ile belirtilen değer, '{2}' projesi dizini altında olmayan '{1}' dosya yoluna çözümlenir. Dosya derlenemeyebilir!</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
-        <source>NetNamedPipe is not supported on current .net target framework.</source>
-        <target state="translated">NetNamedPipe, geçerli .NET hedef Framework’ünde desteklenmiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
