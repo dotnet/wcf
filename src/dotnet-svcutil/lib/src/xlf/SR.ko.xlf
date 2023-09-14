@@ -27,6 +27,11 @@
         <target state="translated">지원되지 않는 메시지 인코딩 값 '{0}'입니다. '{1}'이어야 합니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">지원되지 않는 MTOM 메시지 인코딩 버전: '{0}'. '{1}' 또는 '{2}' 또는 '{3}' 또는 '{4}'이어야 합니다.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">신뢰할 수 있는 세션이 지원되지 않습니다.</target>
@@ -119,7 +124,7 @@
       </trans-unit>
       <trans-unit id="CertificateIndexPrompt">
         <source>Please enter the index of the certificate to use or ESC to cancel:</source>
-        <target state="translated">사용할 인증서의 인덱스를 입력하거나 &lt;Esc&gt; 키를 눌러 취소합니다.</target>
+        <target state="translated">사용할 인증서의 인덱스를 입력하거나, 취소하려면 &lt;Esc&gt; 키를 누릅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateSelectionMessageFormat">
@@ -149,7 +154,7 @@
       </trans-unit>
       <trans-unit id="EnterOrEscapeMessage">
         <source>Press the ENTER to accept or ESC to cancel:</source>
-        <target state="translated">&lt;Enter&gt; 키를 눌러 수락하거나 &lt;Esc&gt; 키를 눌러 취소합니다.</target>
+        <target state="translated">수락하려면 &lt;Enter&gt; 키를 누르거나, 취소하려면 &lt;Esc&gt; 키를 누릅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterYesOrNoMessage">
@@ -417,6 +422,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">파일 생성 중...</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">서비스 메타데이터를 다운로드할 때 원격 인증서를 신뢰할 수 있는 것으로 수락합니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">직렬 변환기를 자동으로 선택합니다. 데이터 계약 직렬 변환기를 사용하려고 시도한 후 실패하면 XmlSerializer를 사용합니다(약식: -{0}).</target>
@@ -592,6 +602,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">참조 프로젝트를 만드는 데 사용되는 런타임 식별자입니다(있는 경우)(약식: -{0}).</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpServiceContractFormat">
+        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
+        <target state="translated">서비스 계약에 대한 코드를 생성합니다. 클라이언트 클래스는 생성되지 않습니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">비동기 외에 작업에 대한 동기 메서드를 생성합니다. (약식: -{0})</target>
@@ -732,7 +747,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="PasswordPrompt">
         <source>Enter password (ESC to cancel):</source>
-        <target state="translated">암호 입력(취소는 &lt;Esc&gt; 키):</target>
+        <target state="translated">암호 입력(취소하려면 &lt;Esc&gt; 키):</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadingMetadataMessageFormat">
@@ -769,7 +784,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="UsernamePrompt">
         <source>Enter username (ESC to cancel):</source>
-        <target state="translated">사용자 이름 입력(취소는 &lt;Esc&gt; 키):</target>
+        <target state="translated">사용자 이름 입력(취소하려면 &lt;Esc&gt; 키):</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningPrefix">
@@ -800,6 +815,11 @@ If you were trying to generate a client, this could be because the metadata docu
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">--{0} 옵션으로 지정된 값은 '{2}' 프로젝트의 디렉터리 아래에 없는 '{1}' 파일 경로로 확인됩니다. 파일이 컴파일되지 않을 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
+        <source>NetNamedPipe is not supported on current .net target framework.</source>
+        <target state="translated">NetNamedPipe는 현재 .net 대상 프레임워크에서 지원되지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
