@@ -105,6 +105,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             ProjectDependency.FromPackage("System.ServiceModel.NetFramingBase", "*")
         };
 
+        //packages not supprted by "dotnet build" when handling type-reuse in bootstrapper project
+        internal static List<ProjectDependency> s_mauiAppWindowsPackages = new List<ProjectDependency>()
+        {
+            ProjectDependency.FromPackage("Microsoft.Graphics.Win2D", "*"),
+            ProjectDependency.FromPackage("Microsoft.WindowsAppSDK", "*" ),
+            ProjectDependency.FromPackage("Microsoft.Maui.Graphics.Win2D.WinUI.Desktop", "*"),
+        };
+
         public static Version MinSupportedNetFxVersion { get; } = new Version("4.5");
         public static Version MinSupportedNetStandardVersion { get; } = NetStandardToNetCoreVersionMap.Keys.First();
         public static Version MinSupportedNetCoreAppVersion { get; } = NetStandardToNetCoreVersionMap.Values.First();
@@ -158,11 +166,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         }
                     }
                 }
-            }
-
-            if (fxInfo != null)
-            {
-                return fxInfo.FullName;
             }
 
             return targetFramework;
@@ -221,12 +224,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public static bool IsSupportedFramework(string fullFrameworkName, out FrameworkInfo frameworkInfo)
         {
             bool isSupported = false;
-
-            var tfx = fullFrameworkName.Split('-');
-            if (tfx.Length > 1)
-            {
-                fullFrameworkName = tfx[0];
-            }
 
             if (FrameworkInfo.TryParse(fullFrameworkName, out frameworkInfo))
             {
