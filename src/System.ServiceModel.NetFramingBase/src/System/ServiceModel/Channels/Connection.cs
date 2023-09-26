@@ -67,8 +67,6 @@ namespace System.ServiceModel.Channels
 
         public override ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout)
         {
-            ConnectionUtilities.ValidateBufferBounds(buffer);
-
             if (!_preReadData.IsEmpty)
             {
                 int bytesToCopy = Math.Min(buffer.Length, _preReadData.Length);
@@ -293,8 +291,6 @@ namespace System.ServiceModel.Channels
 
         public async ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout)
         {
-            ConnectionUtilities.ValidateBufferBounds(buffer);
-
             try
             {
                 SetReadTimeout(timeout);

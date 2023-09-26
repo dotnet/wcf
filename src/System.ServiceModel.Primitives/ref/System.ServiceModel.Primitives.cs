@@ -587,6 +587,12 @@ namespace System.ServiceModel
         public string XmlLang { get { return default; } }
         public bool Matches(System.Globalization.CultureInfo cultureInfo) { return default; }
     }
+    public enum HostNameComparisonMode
+    {
+        StrongWildcard = 0, // +
+        Exact = 1,
+        WeakWildcard = 2,   // *
+    }
     public partial interface IClientChannel : System.IDisposable, System.ServiceModel.Channels.IChannel, System.ServiceModel.ICommunicationObject, System.ServiceModel.IContextChannel, System.ServiceModel.IExtensibleObject<System.ServiceModel.IContextChannel>
     {
         bool AllowInitializationUI { get; set; }

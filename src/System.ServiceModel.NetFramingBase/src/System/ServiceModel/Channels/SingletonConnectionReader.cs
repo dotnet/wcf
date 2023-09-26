@@ -292,7 +292,7 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     bytesRead = base.Read(buffer, offset, count);
-                    if (bytesRead == 0)
+                    if (count != 0 && bytesRead == 0)
                     {
                         ProcessEof();
                     }
@@ -314,7 +314,7 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     bytesRead = await base.ReadAsync(buffer);
-                    if (bytesRead == 0)
+                    if (!buffer.IsEmpty && bytesRead == 0)
                     {
                         ProcessEof();
                     }
@@ -525,6 +525,11 @@ namespace System.ServiceModel.Channels
 
             public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
             {
+                if (buffer.IsEmpty)
+                {
+                    return new ValueTask<int>(0);
+                }
+
                 if (MemoryMarshal.TryGetArray(buffer, out ArraySegment<byte> array))
                 {
                     return new ValueTask<int>(ReadAsync(array.Array!, array.Offset, array.Count, cancellationToken));
