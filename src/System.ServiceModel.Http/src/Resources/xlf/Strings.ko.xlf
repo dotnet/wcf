@@ -352,6 +352,11 @@
         <target state="translated">하위 프로토콜 '{0}'은(는) 잘못된 문자 '{1}'을(를) 포함하므로 유효하지 않습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WebSocketInvalidProtocolNotInClientList">
+        <source>The subprotocol '{0}' was not requested by the client. The client requested the following subprotocol(s): '{1}'.</source>
+        <target state="new">The subprotocol '{0}' was not requested by the client. The client requested the following subprotocol(s): '{1}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WebSocketOperationTimedOut">
         <source>The '{0}' operation timed out after '{1}'. The time allotted to this operation may have been a portion of a longer timeout.</source>
         <target state="translated">'{0}' 작업이 '{1}' 이후에 시간 초과되었습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
@@ -377,9 +382,29 @@
         <target state="translated">서버에서 연결 요청을 수락하지 않았습니다. 클라이언트에서 보낸 WebSocket 하위 프로토콜이 서버에서 지원되지 않을 수 있습니다. 서버에서 지원되는 프로토콜은 '{0}'입니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WebSocketTransportError">
+        <source>A WebSocket error occurred.</source>
+        <target state="new">A WebSocket error occurred.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WebSocketUnexpectedCloseMessageError">
         <source>Unexpected WebSocket close message received when receiving a message.</source>
         <target state="translated">메시지를 받을 때 예기치 않은 WebSocket 닫기 메시지를 받았습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebSocketUpgradeFailedError">
+        <source>WebSocket upgrade request failed. Received response status code '{0} ({1})', expected: '{2} ({3})'.</source>
+        <target state="new">WebSocket upgrade request failed. Received response status code '{0} ({1})', expected: '{2} ({3})'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebSocketUpgradeFailedHeaderMissingError">
+        <source>WebSocket upgrade request failed. The header '{0}' is missing in the response.</source>
+        <target state="new">WebSocket upgrade request failed. The header '{0}' is missing in the response.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebSocketUpgradeFailedWrongHeaderError">
+        <source>WebSocket upgrade request failed. The value of header '{0}' is '{1}'. The expected value is '{2}'.</source>
+        <target state="new">WebSocket upgrade request failed. The value of header '{0}' is '{1}'. The expected value is '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketVersionMismatchFromServer">
