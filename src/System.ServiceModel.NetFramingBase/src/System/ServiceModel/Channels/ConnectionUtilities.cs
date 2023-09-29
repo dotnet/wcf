@@ -29,13 +29,5 @@ namespace System.ServiceModel.Channels
                 }
             }
         }
-
-        internal static void ValidateBufferBounds(Memory<byte> buffer)
-        {
-            if (buffer.IsEmpty)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(buffer));
-            }
-        }
     }
 }

@@ -113,7 +113,6 @@ namespace System.ServiceModel.Channels
 
         public async ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout)
         {
-            ValidateBufferBounds(buffer);
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
 
@@ -131,7 +130,7 @@ namespace System.ServiceModel.Channels
                 }
 
                 int bytesRead = await _pipe.ReadAsync(buffer, cancellationToken);
-                if (bytesRead == 0)
+                if (!buffer.IsEmpty && bytesRead == 0)
                 {
                     _isAtEOF = true;
                     _atEOFTask.TrySetResult();
