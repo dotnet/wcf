@@ -31,6 +31,10 @@ namespace System.ServiceModel.Channels
             {
                 _sslCertificateValidator = credentials.ServiceCertificate.SslCertificateAuthentication.GetCertificateValidator();
                 _remoteCertificateValidationCallback = RemoteCertificateValidationCallback;
+                if (_sslCertificateValidator != null)
+                {
+                    WebSocketCertificateCallback = WebSocketRemoteCertificateValidationCallback;
+                }
             }
         }
 
@@ -51,6 +55,8 @@ namespace System.ServiceModel.Channels
                 return false;
             }
         }
+
+        internal System.Net.Security.RemoteCertificateValidationCallback WebSocketCertificateCallback { get; }
 
         public override T GetProperty<T>()
         {
@@ -108,7 +114,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, _clientWebSocketFactory, address, via);
+                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, address, via);
             }
         }
 
@@ -210,6 +216,37 @@ namespace System.ServiceModel.Channels
             try
             {
                 _sslCertificateValidator.Validate(certificate);
+                return true;
+            }
+            catch (SecurityTokenValidationException ex)
+            {
+                FxTrace.Exception.AsInformation(ex);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                if (Fx.IsFatal(ex))
+                {
+                    throw;
+                }
+
+                FxTrace.Exception.AsWarning(ex);
+                return false;
+            }
+        }
+
+        private bool WebSocketRemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            Fx.Assert(_sslCertificateValidator != null, "sslCertificateValidator should not be null.");
+
+            if (certificate is not X509Certificate2 certificate2)
+            {
+                return false;
+            }
+
+            try
+            {
+                _sslCertificateValidator.Validate(certificate2);
                 return true;
             }
             catch (SecurityTokenValidationException ex)
