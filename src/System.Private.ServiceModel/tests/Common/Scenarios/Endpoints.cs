@@ -484,6 +484,14 @@ public static partial class Endpoints
         }
     }
 
+    public static string WebSocketHttpsRequestReplyClientCertAuth_Address
+    {
+        get
+        {
+            return GetEndpointAddress("ClientCertificateAccepted/HttpsClientCertificate.svc/WebSocket-client-certificate", protocol: "https");
+        }
+    }
+
     public static string WebSocketHttpsDuplexBuffered_Address
     {
         get
