@@ -27,6 +27,11 @@
         <target state="translated">Nicht unterstützter Wert der Nachrichtencodierung: "{0}". Der Wert muss "{1}" lauten.</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="translated">Nicht unterstützte Version der MTOM-Nachrichtencodierung: „{0}“. Die Version muss „{1}“, „{2}“, „{3}“ oder „{4}“ lauten.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">Zuverlässige Sitzung wird nicht unterstützt.</target>
@@ -417,6 +422,11 @@ Dokumentbezeichner: "{0}".</target>
         <target state="translated">Dateien werden generiert...</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="translated">Akzeptieren Sie das Remotezertifikat als vertrauenswürdig, wenn Sie Dienstmetadaten herunterladen. (Kurzform: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">Das Serialisierungsmodul wird automatisch ausgewählt. Hier wird versucht, das Datenvertragsserialisierungsmodul zu verwenden und, falls dies nicht möglich ist, den XmlSerializer zu verwenden. (Kurzform: /{0})</target>
@@ -590,6 +600,11 @@ Dokumentbezeichner: "{0}".</target>
       <trans-unit id="HelpRuntimeIdentifierFormat">
         <source>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</source>
         <target state="translated">Der Runtimebezeichner zum Erstellen von Verweisprojekten (sofern vorhanden). (Kurzform: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpServiceContractFormat">
+        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
+        <target state="translated">Generieren Sie Code für Dienstleistungsverträge. Die Clientklasse wird nicht generiert. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -800,6 +815,11 @@ Wenn Sie versucht haben, einen Client zu generieren, könnte die Ursache hierfü
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">Der mit der Option --{0} angegebene Wert wird in den Dateipfad "{1}" aufgelöst, der nicht unter dem Verzeichnis des Projekts "{2}" vorhanden ist. Die Datei wird möglicherweise nicht kompiliert.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
+        <source>NetNamedPipe is not supported on current .net target framework.</source>
+        <target state="translated">NetNamedPipe wird im aktuellen .NET-Zielframework nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
