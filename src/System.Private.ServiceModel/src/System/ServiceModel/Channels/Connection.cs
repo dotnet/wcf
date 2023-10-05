@@ -365,6 +365,11 @@ namespace System.ServiceModel.Channels
 
         public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
+            if (count == 0)
+            { 
+                return 0; 
+            }
+
             var tcs = new TaskCompletionSource<int>(this);
             AsyncCompletionResult asyncCompletionResult = Connection.BeginRead(0, Math.Min(count, Connection.AsyncReadBufferSize),
                 TimeoutHelper.FromMilliseconds(ReadTimeout), s_onReadComplete, tcs);
@@ -777,7 +782,7 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(offset), offset, SR.Format(SR.OffsetExceedsBufferSize, bufferSize)));
             }
 
-            if (size <= 0)
+            if (size < 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(size), size, SR.ValueMustBePositive));
             }
