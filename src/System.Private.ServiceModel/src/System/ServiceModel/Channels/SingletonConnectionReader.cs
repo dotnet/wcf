@@ -295,6 +295,11 @@ namespace System.ServiceModel.Channels
 
             private int ReadCore(byte[] buffer, int offset, int count)
             {
+                if (count == 0)
+                {
+                    return 0;
+                }
+
                 int bytesRead = -1;
                 try
                 {

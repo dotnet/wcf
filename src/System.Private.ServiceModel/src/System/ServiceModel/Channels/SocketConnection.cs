@@ -979,6 +979,12 @@ namespace System.ServiceModel.Channels
         private AsyncCompletionResult BeginReadCore(int offset, int size, TimeSpan timeout,
             Action<object> callback, object state)
         {
+            if (size == 0)
+            {
+                _asyncReadSize = 0;
+                return AsyncCompletionResult.Completed;
+            }
+
             bool abortRead = true;
 
             lock (ThisLock)

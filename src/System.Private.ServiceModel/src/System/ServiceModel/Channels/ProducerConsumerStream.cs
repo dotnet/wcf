@@ -39,6 +39,11 @@ namespace System.ServiceModel.Channels
 
         public override int Read(byte[] buffer, int offset, int count)
         {
+            if (count == 0)
+            {
+                return 0;
+            }
+
             try
             {
                 return ReadAsync(buffer, offset, count, CancellationToken.None).GetAwaiter().GetResult();
@@ -55,18 +60,23 @@ namespace System.ServiceModel.Channels
         {
             if (buffer == null)
             {
-                throw new ArgumentNullException("buffer");
+                throw new ArgumentNullException(nameof(buffer));
             }
             if (offset < 0 || offset > buffer.Length)
             {
-                throw new ArgumentOutOfRangeException("offset");
+                throw new ArgumentOutOfRangeException(nameof(offset));
             }
-            if (count <= 0 || count > buffer.Length - offset)
+            if (count < 0 || count > buffer.Length - offset)
             {
-                throw new ArgumentOutOfRangeException("count");
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
             cancellationToken.ThrowIfCancellationRequested();
+
+            if (count == 0)
+            {
+                return 0;
+            }
 
             // _dataAvail must be set before the disposed check to avoid a race condition
             // when Dispose is called just after the _disposed check which would result in

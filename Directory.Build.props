@@ -25,8 +25,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <ScenarioTestTargetFrameworks>net6.0;net7.0</ScenarioTestTargetFrameworks>
-    <UnitTestTargetFrameworks>net6.0;net7.0</UnitTestTargetFrameworks>
+    <ScenarioTestTargetFrameworks>net6.0;net7.0;net8.0</ScenarioTestTargetFrameworks>
+    <UnitTestTargetFrameworks>net6.0;net7.0;net8.0</UnitTestTargetFrameworks>
     <!-- This is the target framework version of the built tests picked up to send to Helix -->
     <XUnitPublishTargetFramework>net6.0</XUnitPublishTargetFramework>
   </PropertyGroup>
