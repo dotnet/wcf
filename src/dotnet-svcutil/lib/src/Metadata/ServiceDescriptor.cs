@@ -111,7 +111,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 }
 
                 string toolPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                Assembly assembly = Assembly.LoadFrom($"{toolPath}/internalAssets/{tfn}/NamedPipeMetadataImporter.dll");
+                Assembly assembly = Assembly.LoadFrom($"{toolPath}/internalAssets/{tfn}/Microsoft.Svcutil.NamedPipeMetadataImporter.dll");
 
                 Type type = assembly.GetType("Microsoft.Tools.ServiceModel.Svcutil.NamedPipeMetadataImporter");
                 if (type != null)
