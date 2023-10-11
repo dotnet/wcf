@@ -27,11 +27,6 @@
         <target state="translated">Nepodporovaná hodnota kódování zprávy: {0}. Hodnota musí být {1}.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
-        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">Nepodporovaná verze kódování MTOM zprávy: {0}. Verze musí být {1}, {2}, {3} nebo {4}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">Spolehlivá relace není podporována.</target>
@@ -422,11 +417,6 @@ Identifikátor dokumentu: {0}</target>
         <target state="translated">Generují se soubory...</target>
         <note />
       </trans-unit>
-      <trans-unit id="HelpAcceptCertificateFormat">
-        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">Při stahování metadat služby přijmout vzdálený certifikát jako důvěryhodný (Krátký tvar: -{0})</target>
-        <note />
-      </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
         <target state="translated">Automatický výběr serializátoru. Tato funkce se pokusí použít serializátor kontraktu dat. Není-li tento pokus úspěšný, je použit XmlSerializer. (Krátký tvar: /{0})</target>
@@ -600,11 +590,6 @@ Identifikátor dokumentu: {0}</target>
       <trans-unit id="HelpRuntimeIdentifierFormat">
         <source>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</source>
         <target state="translated">Identifikátor modulu runtime, který se použil k sestavení projektů odkazů (pokud nějaký existuje). (Krátký tvar: -{0})</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HelpServiceContractFormat">
-        <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
-        <target state="translated">Vygenerovat kód pro kontrakty služeb Třída klienta se nevygeneruje. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -815,11 +800,6 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">Hodnota zadaná pomocí možnosti --{0} se překládá na cestu k souboru {1}, která se nenachází v adresáři projektu {2}. Je možné, že se soubor nezkompiluje!</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
-        <source>NetNamedPipe is not supported on current .net target framework.</source>
-        <target state="translated">NetNamedPipe se v aktuální cílové architektuře platformy .NET nepodporuje.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
