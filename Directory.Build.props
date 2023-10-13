@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <WcfPrivateServiceModelProj>$(RepoRoot)src\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj</WcfPrivateServiceModelProj>
+    <WcfServiceModelHttpProj>$(RepoRoot)src\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj</WcfServiceModelHttpProj>
     <SvcUtilCoreProj>$(RepoRoot)src\svcutilcore\src\dotnet-svcutil.xmlserializer.csproj</SvcUtilCoreProj>
     <WcfUnitTestCommonProj>$(RepoRoot)src\System.Private.ServiceModel\tests\Common\Unit\UnitTests.Common.csproj</WcfUnitTestCommonProj>
     <WcfScenarioTestCommonProj>$(RepoRoot)src\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.Tests.csproj</WcfScenarioTestCommonProj>
