@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IdentityModel.Selectors;
@@ -28,16 +29,12 @@ namespace System.ServiceModel.Channels
     internal class HttpChannelFactory<TChannel> : TransportChannelFactory<TChannel>
     {
         private static CacheControlHeaderValue s_requestCacheHeader = new CacheControlHeaderValue { NoCache = true, MaxAge = new TimeSpan(0) };
-
-        protected readonly ClientWebSocketFactory _clientWebSocketFactory;
         private HttpCookieContainerManager _httpCookieContainerManager;
 
         // Double-checked locking pattern requires volatile for read/write synchronization
         private volatile MruCache<Uri, Uri> _credentialCacheUriPrefixCache;
         private volatile MruCache<string, string> _credentialHashCache;
         private volatile MruCache<string, HttpClient> _httpClientCache;
-        private IWebProxy _proxy;
-        private WebProxyFactory _proxyFactory;
         private SecurityCredentialsManager _channelCredentials;
         private ISecurityCapabilities _securityCapabilities;
         private Func<HttpClientHandler, HttpMessageHandler> _httpMessageHandlerFactory;
@@ -101,7 +98,7 @@ namespace System.ServiceModel.Channels
 
             if (bindingElement.Proxy != null)
             {
-                _proxy = bindingElement.Proxy;
+                Proxy = bindingElement.Proxy;
             }
             else if (bindingElement.ProxyAddress != null)
             {
@@ -112,19 +109,19 @@ namespace System.ServiceModel.Channels
 
                 if (bindingElement.ProxyAuthenticationScheme == AuthenticationSchemes.Anonymous)
                 {
-                    _proxy = new WebProxy(bindingElement.ProxyAddress, bindingElement.BypassProxyOnLocal);
+                    Proxy = new WebProxy(bindingElement.ProxyAddress, bindingElement.BypassProxyOnLocal);
                 }
                 else
                 {
-                    _proxy = null;
-                    _proxyFactory =
+                    Proxy = null;
+                    ProxyFactory =
                         new WebProxyFactory(bindingElement.ProxyAddress, bindingElement.BypassProxyOnLocal,
                         bindingElement.ProxyAuthenticationScheme);
                 }
             }
             else if (!bindingElement.UseDefaultWebProxy)
             {
-                _proxy = new WebProxy();
+                Proxy = new WebProxy();
             }
 
             _channelCredentials = context.BindingParameters.Find<SecurityCredentialsManager>();
@@ -132,7 +129,6 @@ namespace System.ServiceModel.Channels
             _httpMessageHandlerFactory = context.BindingParameters.Find<Func<HttpClientHandler, HttpMessageHandler>>();
 
             WebSocketSettings = WebSocketHelper.GetRuntimeWebSocketSettings(bindingElement.WebSocketSettings);
-            _clientWebSocketFactory = ClientWebSocketFactory.GetFactory();
             _webSocketSoapContentType = new Lazy<string>(() => MessageEncoderFactory.CreateSessionEncoder().ContentType, LazyThreadSafetyMode.ExecutionAndPublication);
             _httpClientCache = bindingElement.GetProperty<MruCache<string, HttpClient>>(context);
         }
@@ -154,6 +150,9 @@ namespace System.ServiceModel.Channels
         public SecurityTokenManager SecurityTokenManager { get; private set; }
 
         public int MaxBufferSize { get; }
+
+        internal IWebProxy Proxy { get; set; }
+        internal WebProxyFactory ProxyFactory { get; set; }
 
         public TransferMode TransferMode { get; }
 
@@ -192,14 +191,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        protected ClientWebSocketFactory ClientWebSocketFactory
-        {
-            get
-            {
-                return _clientWebSocketFactory;
-            }
-        }
-
         private bool AuthenticationSchemeMayRequireResend()
         {
             return AuthenticationScheme != AuthenticationSchemes.Anonymous;
@@ -219,12 +210,12 @@ namespace System.ServiceModel.Channels
             return base.GetProperty<T>();
         }
 
-        private HttpCookieContainerManager GetHttpCookieContainerManager()
+        internal HttpCookieContainerManager GetHttpCookieContainerManager()
         {
             return _httpCookieContainerManager;
         }
 
-        private Uri GetCredentialCacheUriPrefix(Uri via)
+        internal Uri GetCredentialCacheUriPrefix(Uri via)
         {
             Uri result;
 
@@ -290,14 +281,14 @@ namespace System.ServiceModel.Channels
 
                 if (clientHandler.SupportsProxy)
                 {
-                    if (_proxy != null)
+                    if (Proxy != null)
                     {
-                        clientHandler.Proxy = _proxy;
+                        clientHandler.Proxy = Proxy;
                         clientHandler.UseProxy = true;
                     }
-                    else if (_proxyFactory != null)
+                    else if (ProxyFactory != null)
                     {
-                        clientHandler.Proxy = await _proxyFactory.CreateWebProxyAsync(authenticationLevel,
+                        clientHandler.Proxy = await ProxyFactory.CreateWebProxyAsync(authenticationLevel,
                             impersonationLevel, proxyTokenProvider, timeout);
                         clientHandler.UseProxy = true;
                     }
@@ -523,7 +514,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, _clientWebSocketFactory, remoteAddress, via);
+                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, remoteAddress, via);
             }
         }
 
@@ -570,7 +561,7 @@ namespace System.ServiceModel.Channels
             {
                 return true;
             }
-            if (_proxyFactory != null && _proxyFactory.AuthenticationScheme != AuthenticationSchemes.Anonymous)
+            if (ProxyFactory != null && ProxyFactory.AuthenticationScheme != AuthenticationSchemes.Anonymous)
             {
                 return true;
             }
@@ -753,9 +744,9 @@ namespace System.ServiceModel.Channels
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             SecurityTokenProviderContainer tokenProvider = await CreateAndOpenTokenProviderAsync(timeoutHelper.RemainingTime(), AuthenticationScheme, to, via, channelParameters);
             SecurityTokenProviderContainer proxyTokenProvider;
-            if (_proxyFactory != null)
+            if (ProxyFactory != null)
             {
-                proxyTokenProvider = await CreateAndOpenTokenProviderAsync(timeoutHelper.RemainingTime(), _proxyFactory.AuthenticationScheme, to, via, channelParameters);
+                proxyTokenProvider = await CreateAndOpenTokenProviderAsync(timeoutHelper.RemainingTime(), ProxyFactory.AuthenticationScheme, to, via, channelParameters);
             }
             else
             {
@@ -1368,7 +1359,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private class WebProxyFactory
+        internal class WebProxyFactory
         {
             private Uri _address;
             private bool _bypassOnLocal;

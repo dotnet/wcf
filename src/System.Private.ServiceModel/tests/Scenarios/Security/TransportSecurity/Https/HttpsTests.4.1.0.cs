@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
@@ -448,4 +447,128 @@ public partial class HttpsTests : ConditionalWcfTest
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+           nameof(Client_Certificate_Installed),
+           nameof(Server_Accepts_Certificates),
+           nameof(SSL_Available))]
+    [Issue(3572, OS = OSID.OSX)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
+    [OuterLoop]
+    public static void WebSocket_RequestReply_CertificateCredentials()
+    {
+        string clientCertThumb = null;
+        EndpointAddress endpointAddress;
+        NetHttpsBinding binding = null;
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpsBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.TransferMode = TransferMode.Buffered;
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
+            var uriBuilder = new UriBuilder(Endpoints.WebSocketHttpsRequestReplyClientCertAuth_Address);
+            uriBuilder.Scheme = "wss";
+            endpointAddress = new EndpointAddress(uriBuilder.Uri);
+            clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ClientCertificate.SetCertificate(
+                StoreLocation.CurrentUser,
+                StoreName.My,
+                X509FindType.FindByThumbprint,
+                clientCertThumb);
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+       nameof(Client_Certificate_Installed),
+       nameof(Server_Accepts_Certificates),
+       nameof(SSL_Available))]
+    [Issue(3572, OS = OSID.OSX)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
+    [OuterLoop]
+    public static void WebSocket_ServerCertificateValidation()
+    {
+        string clientCertThumb = null;
+        EndpointAddress endpointAddress;
+        NetHttpsBinding binding = null;
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpsBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.TransferMode = TransferMode.Buffered;
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
+            var uriBuilder = new UriBuilder(Endpoints.WebSocketHttpsRequestReplyClientCertAuth_Address);
+            uriBuilder.Scheme = "wss";
+            endpointAddress = new EndpointAddress(uriBuilder.Uri);
+            clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ClientCertificate.SetCertificate(
+                StoreLocation.CurrentUser,
+                StoreName.My,
+                X509FindType.FindByThumbprint,
+                clientCertThumb);
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
+            MyX509CertificateValidator myX509CertificateValidator = new MyX509CertificateValidator(ScenarioTestHelpers.CertificateIssuerName);
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication.CustomCertificateValidator = myX509CertificateValidator;
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.True(myX509CertificateValidator.validateMethodWasCalled, "The Validate method of the X509CertificateValidator was NOT called.");
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
 }
