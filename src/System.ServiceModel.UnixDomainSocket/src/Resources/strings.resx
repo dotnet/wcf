@@ -204,4 +204,7 @@
   <data name="TransferModeNotSupported" xml:space="preserve">
     <value>Transfer mode {0} is not supported by {1}.</value>
   </data>
+  <data name="UnsupportedSecuritySetting" xml:space="preserve">
+<value>The value '{1}' is not supported in this context for the binding security property '{0}'.</value>
+</data>
 </root>

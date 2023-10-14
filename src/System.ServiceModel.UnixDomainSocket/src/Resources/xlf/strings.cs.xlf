@@ -132,6 +132,11 @@
         <target state="translated">Nelze vyřešit název hostitele identifikátoru URI {0} pomocí služby DNS.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
         <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
         <target state="translated">Byla zadána úroveň zabezpečení {0}, ale zabezpečení přenosu SSL podporuje pouze EncryptAndSign.</target>

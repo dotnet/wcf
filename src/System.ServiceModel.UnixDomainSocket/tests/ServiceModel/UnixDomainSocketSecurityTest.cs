@@ -4,6 +4,7 @@
 
 
 using System;
+using System.Runtime.InteropServices;
 using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
@@ -14,7 +15,9 @@ public static class UnixDomainSocketSecurityTest
     public static void Ctor_Default_Initializes_Properties()
     {
         UnixDomainSocketSecurity security = new UnixDomainSocketSecurity();
-        Assert.Equal<UnixDomainSocketSecurityMode>(UnixDomainSocketSecurityMode.Transport, security.Mode);
+        UnixDomainSocketSecurityMode mode = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
+                UnixDomainSocketSecurityMode.Transport : UnixDomainSocketSecurityMode.TransportCredentialOnly;
+        Assert.Equal<UnixDomainSocketSecurityMode>(mode, security.Mode);
     }
 
     [WcfTheory]
