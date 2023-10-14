@@ -137,6 +137,11 @@
         <target state="translated">'{1}' değeri, bu bağlamda '{0}' bağlama güvenlik özelliği için desteklenmiyor.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
         <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
         <target state="translated">SSL aktarım güvenliği yalnızca EncryptAndSign özelliğini desteklese de, '{0}' koruma düzeyi belirtildi.</target>

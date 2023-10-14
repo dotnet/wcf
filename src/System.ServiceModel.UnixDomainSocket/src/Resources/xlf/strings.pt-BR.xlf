@@ -137,6 +137,11 @@
         <target state="translated">Não há suporte para o valor '{1}' neste contexto da propriedade de segurança de associação '{0}'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
         <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
         <target state="translated">O nível de proteção '{0}' foi especificado, ainda assim a segurança do transporte SSL apenas dá suporte a EncryptAndSign.</target>
