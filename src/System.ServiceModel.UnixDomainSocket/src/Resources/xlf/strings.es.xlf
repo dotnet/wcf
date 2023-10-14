@@ -132,6 +132,11 @@
         <target state="translated">No se puede resolver el nombre de host del URI "{0}" con DNS.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
         <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
         <target state="translated">Se especificó el nivel de protección "{0}", pero la seguridad de transporte SSL solo admite EncryptAndSign.</target>

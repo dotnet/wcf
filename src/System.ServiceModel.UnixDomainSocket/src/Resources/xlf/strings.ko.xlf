@@ -132,6 +132,11 @@
         <target state="translated">DNS를 사용하여 URI "{0}"의 호스트 이름을 확인할 수 없습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
         <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
         <target state="translated">보호 수준 '{0}'이(가) 지정되었지만, SSL 전송 보안은 EncryptAndSign만 지원합니다.</target>

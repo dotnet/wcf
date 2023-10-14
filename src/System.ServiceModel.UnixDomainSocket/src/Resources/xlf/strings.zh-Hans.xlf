@@ -132,6 +132,11 @@
         <target state="translated">无法使用 DNS 解析 URI“{0}”的主机名。</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
         <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
         <target state="translated">指定了保护级别“{0}”，但 SSL 传输安全性仅支持 EncryptAndSign。</target>
