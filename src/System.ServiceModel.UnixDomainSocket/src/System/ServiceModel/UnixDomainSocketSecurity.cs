@@ -3,6 +3,7 @@
 
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
+using System.Runtime.InteropServices;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
@@ -13,7 +14,12 @@ namespace System.ServiceModel
 
         private UnixDomainSocketSecurityMode _mode;
 
-        public UnixDomainSocketSecurity() : this(DefaultMode, new UnixDomainSocketTransportSecurity()) { }
+        public UnixDomainSocketSecurity()
+        {
+            _mode = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
+                UnixDomainSocketSecurityMode.Transport : UnixDomainSocketSecurityMode.TransportCredentialOnly;
+            Transport = new UnixDomainSocketTransportSecurity();
+        }
 
         private UnixDomainSocketSecurity(UnixDomainSocketSecurityMode mode, UnixDomainSocketTransportSecurity transportSecurity)
         {
@@ -50,7 +56,7 @@ namespace System.ServiceModel
             {
                 if(_mode == UnixDomainSocketSecurityMode.TransportCredentialOnly && Transport.ClientCredentialType != UnixDomainSocketClientCredentialType.PosixIdentity)
                 {
-                    throw new NotSupportedException();
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedSecuritySetting, "Mode", _mode)));
                 }
                 return Transport.CreateTransportProtectionAndAuthentication();
             }

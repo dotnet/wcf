@@ -132,6 +132,11 @@
         <target state="translated">Nie można rozpoznać nazwy hosta o identyfikatorze URI „{0}” za pomocą usługi DNS.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
         <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
         <target state="translated">Określono poziom zabezpieczeń „{0}”, jednak zabezpieczenia transportowe protokołu SSL obsługują tylko metodę EncryptAndSign.</target>
