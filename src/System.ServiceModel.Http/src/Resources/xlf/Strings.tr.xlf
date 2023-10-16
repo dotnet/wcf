@@ -354,7 +354,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolNotInClientList">
         <source>The subprotocol '{0}' was not requested by the client. The client requested the following subprotocol(s): '{1}'.</source>
-        <target state="new">The subprotocol '{0}' was not requested by the client. The client requested the following subprotocol(s): '{1}'.</target>
+        <target state="translated">'{0}' alt protokolü istemci tarafından istenmedi. İstemci şu protokolleri istedi: '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketOperationTimedOut">
@@ -384,7 +384,7 @@
       </trans-unit>
       <trans-unit id="WebSocketTransportError">
         <source>A WebSocket error occurred.</source>
-        <target state="new">A WebSocket error occurred.</target>
+        <target state="translated">WebSocket hatası oluştu.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketUnexpectedCloseMessageError">
@@ -394,17 +394,17 @@
       </trans-unit>
       <trans-unit id="WebSocketUpgradeFailedError">
         <source>WebSocket upgrade request failed. Received response status code '{0} ({1})', expected: '{2} ({3})'.</source>
-        <target state="new">WebSocket upgrade request failed. Received response status code '{0} ({1})', expected: '{2} ({3})'.</target>
+        <target state="translated">WebSocket yükseltme isteği başarısız oldu. Alınan yanıt durum kodu: '{0} ({1})', beklenen: '{2} ({3})'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketUpgradeFailedHeaderMissingError">
         <source>WebSocket upgrade request failed. The header '{0}' is missing in the response.</source>
-        <target state="new">WebSocket upgrade request failed. The header '{0}' is missing in the response.</target>
+        <target state="translated">WebSocket yükseltme isteği başarısız oldu. Yanıtta '{0}' üst bilgisi eksik.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketUpgradeFailedWrongHeaderError">
         <source>WebSocket upgrade request failed. The value of header '{0}' is '{1}'. The expected value is '{2}'.</source>
-        <target state="new">WebSocket upgrade request failed. The value of header '{0}' is '{1}'. The expected value is '{2}'.</target>
+        <target state="translated">WebSocket yükseltme isteği başarısız oldu. '{0}' üst bilgisinin değeri '{1}'. Beklenen değer '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketVersionMismatchFromServer">
