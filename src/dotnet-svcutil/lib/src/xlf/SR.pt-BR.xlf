@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">Versão de codificação de mensagem MTOM sem suporte: '{0}'. Deve ser '{1}' ou '{2}' ou '{3}' ou '{4}'.</target>
+        <target state="new">Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
@@ -424,7 +424,7 @@ Identificador do Documento: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpAcceptCertificateFormat">
         <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">Aceite o certificado remoto como confiável ao baixar metadados de serviço. (Forma Abreviada: -{0})</target>
+        <target state="new">Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
@@ -534,7 +534,7 @@ Identificador do Documento: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="translated">&lt;caminho do documento de metadados&gt;</target>
+        <target state="translated">&lt;metadata document path&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
@@ -604,7 +604,7 @@ Identificador do Documento: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpServiceContractFormat">
         <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
-        <target state="translated">Gerar código para Contratos de Serviço. A classe de cliente não será gerada. (Forma resumida: -{0})</target>
+        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -717,7 +717,7 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="translated">&lt;arquivo de projeto&gt;</target>
+        <target state="translated">&lt;project file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
@@ -727,7 +727,7 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="translated">&lt;identificador do tempo de execução&gt;</target>
+        <target state="translated">&lt;runtime identifier&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
@@ -742,7 +742,7 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="translated">&lt;referência de serviço Web&gt;</target>
+        <target state="translated">&lt;web service reference&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
@@ -819,7 +819,7 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       </trans-unit>
       <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on current .net target framework.</source>
-        <target state="translated">NetNamedPipe não é suportado na estrutura de destino .net atual.</target>
+        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">

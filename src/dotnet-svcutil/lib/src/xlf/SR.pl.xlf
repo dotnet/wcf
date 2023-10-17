@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">Nieobsługiwana wersja kodowania wiadomości metodą MTOM: „{0}”. Wymagana wersja to „{1}”, „{2}”, „{3}”, lub „{4}”.</target>
+        <target state="new">Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
@@ -424,7 +424,7 @@ Identyfikator dokumentu: „{0}”.</target>
       </trans-unit>
       <trans-unit id="HelpAcceptCertificateFormat">
         <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">Zaakceptuj certyfikat zdalny jako zaufany podczas pobierania metadanych usługi. (Krótka forma: -{0})</target>
+        <target state="new">Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
@@ -534,7 +534,7 @@ Identyfikator dokumentu: „{0}”.</target>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="translated">&lt;ścieżka dokumentu metadanych&gt;</target>
+        <target state="translated">&lt;metadata document path&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
@@ -604,7 +604,7 @@ Identyfikator dokumentu: „{0}”.</target>
       </trans-unit>
       <trans-unit id="HelpServiceContractFormat">
         <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
-        <target state="translated">Generuj kod dla kontraktów usług. Klasa klienta nie zostanie wygenerowana. (Krótka wersja: —{0})</target>
+        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -687,7 +687,7 @@ Jeśli próbowano wygenerować klienta, może być to spowodowane przez dokument
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;typ&gt;</target>
+        <target state="translated">&lt;type&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -697,7 +697,7 @@ Jeśli próbowano wygenerować klienta, może być to spowodowane przez dokument
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;typ&gt;</target>
+        <target state="translated">&lt;type&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
@@ -717,32 +717,32 @@ Jeśli próbowano wygenerować klienta, może być to spowodowane przez dokument
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="translated">&lt;plik projektu&gt;</target>
+        <target state="translated">&lt;project file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;package&gt;</source>
-        <target state="translated">&lt;pakiet&gt;</target>
+        <target state="translated">&lt;package&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="translated">&lt;identyfikator środowiska uruchomieniowego&gt;</target>
+        <target state="translated">&lt;runtime identifier&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
         <source>&lt;framework&gt;</source>
-        <target state="translated">&lt;platforma&gt;</target>
+        <target state="translated">&lt;framework&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="translated">&lt;poziom szczegółowości&gt;</target>
+        <target state="translated">&lt;verbosity level&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="translated">&lt;odwołanie do usługi internetowej&gt;</target>
+        <target state="translated">&lt;web service reference&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
@@ -819,7 +819,7 @@ Jeśli próbowano wygenerować klienta, może być to spowodowane przez dokument
       </trans-unit>
       <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on current .net target framework.</source>
-        <target state="translated">Powiązanie NetNamedPipe nie jest obsługiwane na bieżącej platformie docelowej .NET.</target>
+        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">

@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">Desteklenmeyen MTOM mesajı kodlama sürümü: '{0}'. '{1}' veya '{2}' veya '{3}' veya '{4}' olmalıdır.</target>
+        <target state="new">Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
@@ -424,7 +424,7 @@ Belge Tanımlayıcısı: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpAcceptCertificateFormat">
         <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">Hizmet meta verilerini indirirken uzak sertifikayı güvenilir olarak kabul edin. (Kısa form: - {0})</target>
+        <target state="new">Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
@@ -604,7 +604,7 @@ Belge Tanımlayıcısı: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpServiceContractFormat">
         <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
-        <target state="translated">Hizmet Sözleşmeleri için kod oluşturun. İstemci sınıfı oluşturulmaz. (Kısa Biçim: -{0})</target>
+        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -819,7 +819,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on current .net target framework.</source>
-        <target state="translated">NetNamedPipe, geçerli .NET hedef Framework’ünde desteklenmiyor.</target>
+        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">

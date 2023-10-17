@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="translated">Versión de codificación de mensajes MTOM no admitida: “{0}”. Debe ser “{1}”, “{2}”, “{3}” o “{4}”.</target>
+        <target state="new">Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
@@ -424,7 +424,7 @@ Identificador del documento: "{0}".</target>
       </trans-unit>
       <trans-unit id="HelpAcceptCertificateFormat">
         <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="translated">Acepte el certificado remoto como de confianza al descargar los metadatos del servicio. (Formulario corto: -{0})</target>
+        <target state="new">Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
@@ -604,7 +604,7 @@ Identificador del documento: "{0}".</target>
       </trans-unit>
       <trans-unit id="HelpServiceContractFormat">
         <source>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</source>
-        <target state="translated">Generar código para Service Contracts. La clase cliente no se generará. (Forma corta: {0})</target>
+        <target state="new">Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
@@ -819,7 +819,7 @@ Si intentaba generar un cliente, es posible que se deba a que los documentos de 
       </trans-unit>
       <trans-unit id="WrnTargetFrameworkNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on current .net target framework.</source>
-        <target state="translated">NetNamedPipe no se admite en la plataforma de destino actual de .NET.</target>
+        <target state="new">NetNamedPipe is not supported on current .net target framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">

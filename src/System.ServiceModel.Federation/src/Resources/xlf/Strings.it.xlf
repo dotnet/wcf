@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="ActivityProcessAction">
         <source>Process action '{0}'.</source>
-        <target state="translated">Elaborazione dell'azione '{0}'.</target>
+        <target state="new">Process action '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Il client non è in grado di determinare il nome dell'entità servizio in base all'identità nell'indirizzo di destinazione '{0}' per SspiNegotiation/Kerberos. L'identità indirizzo di destinazione deve essere un'identità UPN (ad esempio dominioacme\nomeutente) o un'identità SPN (ad esempio host/nomecomputer).</target>
+        <target state="new">Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="InsufficentMemory">
         <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">La memoria disponibile non è sufficiente per completare l'operazione.</target>
+        <target state="new">Insufficient memory avaliable to complete the operation.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedSecurityTokenParametersIncorrectType">
@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">Il valore del timeout deve essere maggiore o uguale a TimeSpan.Zero. Per disabilitare il timeout, specificare TimeSpan.MaxValue.</target>
+        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="ValueMustBePositive">
         <source>The value of this argument must be positive.</source>
-        <target state="translated">Il valore di questo argomento deve essere positivo.</target>
+        <target state="new">The value of this argument must be positive.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsTrustVersionNotSupported">
