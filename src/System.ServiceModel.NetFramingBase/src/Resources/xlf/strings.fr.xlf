@@ -4,437 +4,437 @@
     <body>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="translated">Limite d’activité</target>
+        <target state="new">Activity boundary</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityProcessAction">
         <source>Process action '{0}'.</source>
-        <target state="translated">Traiter l'action '{0}'.</target>
+        <target state="new">Process action '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityProcessingMessage">
         <source>Processing message {0}.</source>
-        <target state="translated">Traitement du message {0}.</target>
+        <target state="new">Processing message {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Le client ne peut pas déterminer le nom de principal du service en fonction de l’identité de l’adresse cible '{0}' pour les besoins de SspiNegotiation/Kerberos. L’identité de l’adresse cible doit être une identité UPN (par exemple acmedomain\alice) ou une identité SPN (par exemple host/bobs-machine).</target>
+        <target state="new">Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientCredentialsUnableToCreateLocalTokenProvider">
         <source>ClientCredentials cannot create a local token provider for token requirement {0}.</source>
-        <target state="translated">ClientCredentials ne peut pas créer de fournisseur de jetons local pour les exigences de jeton {0}.</target>
+        <target state="new">ClientCredentials cannot create a local token provider for token requirement {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="CloseTimedOut">
         <source>Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Close a dépassé le délai d'expiration après {0}. Augmentez la valeur du délai d'expiration passée à l'appel à Close ou augmentez la valeur de CloseTimeout sur la liaison. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="new">Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="translated">L'objet de communication {0} est dans l'état {1}. Les objets de communication ne peuvent pas être utilisés à moins d'être dans l'état Opened.</target>
+        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">L'objet de communication {0} ne peut pas être utilisé pour la communication, car il est dans l'état Faulted.</target>
+        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
         <note />
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessage">
         <source>Identity check failed for outgoing message. The expected DNS identity of the remote endpoint was '{0}' but the remote endpoint provided DNS claim '{1}'. If this is a legitimate remote endpoint, you can fix the problem by explicitly specifying DNS identity '{1}' as the Identity property of EndpointAddress when creating channel proxy. </source>
-        <target state="translated">Échec de la vérification d'identité pour le message sortant. L'identité DNS attendue sur le point de terminaison distant était '{0}', mais le DNS fourni pour le point de terminaison distant revendique '{1}'. S'il s'agit d'un point de terminaison distant valable, vous pouvez résoudre le problème en spécifiant explicitement l'identité DNS '{1}' pour la propriété Identity de EndpointAddress durant la création du proxy du canal. </target>
+        <target state="new">Identity check failed for outgoing message. The expected DNS identity of the remote endpoint was '{0}' but the remote endpoint provided DNS claim '{1}'. If this is a legitimate remote endpoint, you can fix the problem by explicitly specifying DNS identity '{1}' as the Identity property of EndpointAddress when creating channel proxy. </target>
         <note />
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessageLackOfDnsClaim">
         <source>The Identity check failed for the outgoing message. The remote endpoint did not provide a domain name system (DNS) claim and therefore did not satisfied DNS identity '{0}'. This may be caused by lack of DNS or CN name in the remote endpoint X.509 certificate's distinguished name.</source>
-        <target state="translated">Échec du contrôle d'identité pour le message sortant. Le point de terminaison distant n'a pas fourni de revendication DNS (Domain Name System) et n'a donc pas satisfait l'identité DNS '{0}'. Cet incident pourrait être causé par l'absence d'un nom DNS ou CN dans le nom unique du certificat X.509 du point de terminaison distant.</target>
+        <target state="new">The Identity check failed for the outgoing message. The remote endpoint did not provide a domain name system (DNS) claim and therefore did not satisfied DNS identity '{0}'. This may be caused by lack of DNS or CN name in the remote endpoint X.509 certificate's distinguished name.</target>
         <note />
       </trans-unit>
       <trans-unit id="DuplexChannelAbortedDuringOpen">
         <source>Duplex channel to {0} was aborted during the open process.</source>
-        <target state="translated">Le canal duplex vers {0} a été abandonné durant le processus d'ouverture.</target>
+        <target state="new">Duplex channel to {0} was aborted during the open process.</target>
         <note />
       </trans-unit>
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
-        <target state="translated">Il n'existait pas de point de terminaison à l'écoute sur {0} pouvant accepter le message. Ceci est souvent dû à une adresse ou une action SOAP incorrecte. S'il est présent, consultez InnerException pour plus d'informations.</target>
+        <target state="new">There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingAtEnd">
         <source>An attempt was made to decode a value after the framing stream was ended.</source>
-        <target state="translated">Une tentative a été faite pour décoder une valeur après la fin du flux de tramage.</target>
+        <target state="new">An attempt was made to decode a value after the framing stream was ended.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeMismatch">
         <source>Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</source>
-        <target state="translated">Le type de contenu {0} n'a pas été pris en charge par le service {1}. Les liaisons du client et du service risquent de ne pas correspondre.</target>
+        <target state="new">Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeTooLong">
         <source>The framing content type size ({0}) exceeds the quota.</source>
-        <target state="translated">La taille du type de contenu de tramage ({0}) dépasse le quota.</target>
+        <target state="new">The framing content type size ({0}) exceeds the quota.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeTooLongFault">
         <source>Content type '{0}' is too long to be processed by the remote host. See the server logs for more details.</source>
-        <target state="translated">Le type de contenu '{0}' est trop long pour être traité par l'hôte distant. Pour plus d'informations, consultez les journaux du serveur.</target>
+        <target state="new">Content type '{0}' is too long to be processed by the remote host. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingError">
         <source>Error while reading message framing format at position {0} of stream (state: {1})</source>
-        <target state="translated">Erreur durant la lecture du format de tramage du message à la position {0} du flux (état : {1})</target>
+        <target state="new">Error while reading message framing format at position {0} of stream (state: {1})</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingFaultTooLong">
         <source>The framing fault size ({0}) exceeds the quota.</source>
-        <target state="translated">La taille d'anomalie de tramage ({0}) dépasse le quota.</target>
+        <target state="new">The framing fault size ({0}) exceeds the quota.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingFaultUnrecognized">
         <source>Server faulted with code '{0}'.</source>
-        <target state="translated">Erreur sur le serveur avec le code '{0}'.</target>
+        <target state="new">Server faulted with code '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingMaxMessageSizeExceeded">
         <source>The maximum message size quota for incoming messages has been exceeded for the remote channel. See the server logs for more details.</source>
-        <target state="translated">Le quota de taille maximale des messages entrants a été dépassé pour le canal distant. Pour plus d'informations, consultez les journaux du serveur.</target>
+        <target state="new">The maximum message size quota for incoming messages has been exceeded for the remote channel. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingModeNotSupported">
         <source>Framing mode {0} is not supported.</source>
-        <target state="translated">Le mode de tramage {0} n'est pas pris en charge.</target>
+        <target state="new">Framing mode {0} is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingModeNotSupportedFault">
         <source>The .Net Framing mode being used is not supported by '{0}'. See the server logs for more details.</source>
-        <target state="translated">Le mode de tramage .Net utilisé n'est pas pris en charge par '{0}'. Pour plus d'informations, consultez les journaux du serveur.</target>
+        <target state="new">The .Net Framing mode being used is not supported by '{0}'. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingPrematureEOF">
         <source>More data was expected, but EOF was reached.</source>
-        <target state="translated">Davantage de données étaient attendues, mais la fin du fichier (EOF) a été atteinte.</target>
+        <target state="new">More data was expected, but EOF was reached.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingRecordTypeMismatch">
         <source>Expected record type '{0}', found '{1}'.</source>
-        <target state="translated">Type d'enregistrement attendu '{0}', type trouvé '{1}'.</target>
+        <target state="new">Expected record type '{0}', found '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingSizeTooLarge">
         <source>Specified size is too large for this implementation.</source>
-        <target state="translated">La taille spécifiée est trop grande pour cette implémentation.</target>
+        <target state="new">Specified size is too large for this implementation.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingUpgradeInvalid">
         <source>The requested upgrade is not supported by '{0}'. This could be due to mismatched bindings (for example security enabled on the client and not on the server).</source>
-        <target state="translated">La mise à jour demandée n'est pas prise en charge par '{0}'. Ceci peut être dû à des liaisons non correspondantes (par exemple à sécurité activée sur le client, mais pas sur le serveur).</target>
+        <target state="new">The requested upgrade is not supported by '{0}'. This could be due to mismatched bindings (for example security enabled on the client and not on the server).</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingValueNotAvailable">
         <source>The value cannot be accessed because it has not yet been fully decoded.</source>
-        <target state="translated">Impossible d'accéder à la valeur, car elle n'a pas encore été entièrement décodée.</target>
+        <target state="new">The value cannot be accessed because it has not yet been fully decoded.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingVersionNotSupported">
         <source>Framing major version {0} is not supported.</source>
-        <target state="translated">La version principale du tramage {0} n'est pas prise en charge.</target>
+        <target state="new">Framing major version {0} is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingVersionNotSupportedFault">
         <source>The .Net Framing version being used is not supported by '{0}'. See the server logs for more details.</source>
-        <target state="translated">La version du tramage .Net utilisée n'est pas prise en charge par '{0}'. Pour plus d'informations, consultez les journaux du serveur.</target>
+        <target state="new">The .Net Framing version being used is not supported by '{0}'. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaNotUri">
         <source>The framing via ({0}) is not a valid URI.</source>
-        <target state="translated">Le via de tramage ({0}) n'est pas un URI valide.</target>
+        <target state="new">The framing via ({0}) is not a valid URI.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaTooLong">
         <source>The framing via size ({0}) exceeds the quota.</source>
-        <target state="translated">La taille de via de tramage ({0}) dépasse le quota.</target>
+        <target state="new">The framing via size ({0}) exceeds the quota.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaTooLongFault">
         <source>Via '{0}' is too long to be processed by the remote host. See the server logs for more details.</source>
-        <target state="translated">Le via '{0}' est trop long pour être traité par l'hôte distant. Pour plus d'informations, consultez les journaux du serveur.</target>
+        <target state="new">Via '{0}' is too long to be processed by the remote host. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="translated">Le service demandé '{0}' n'a pas pu être activé. Pour plus d'informations, consultez les journaux de trace de diagnostic du serveur.</target>
+        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
         <note />
       </trans-unit>
       <trans-unit id="IdentityCheckFailedForOutgoingMessage">
         <source>The identity check failed for the outgoing message. The expected identity is '{0}' for the '{1}' target endpoint.</source>
-        <target state="translated">Échec de la vérification d'identité pour le message sortant. L'identité attendue est '{0}' pour le point de terminaison cible '{1}'.</target>
+        <target state="new">The identity check failed for the outgoing message. The expected identity is '{0}' for the '{1}' target endpoint.</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
         <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">Mémoire disponible insuffisante pour effectuer l'opération.</target>
+        <target state="new">Insufficient memory avaliable to complete the operation.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDecoderStateMachine">
         <source>Invalid decoder state machine.</source>
-        <target state="translated">Machine à états de décodeur non valide.</target>
+        <target state="new">Invalid decoder state machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTokenProvided">
         <source>The token provider of type '{0}' did not return a token of type '{1}'. Check the credential configuration.</source>
-        <target state="translated">Le fournisseur de jetons de type '{0}' n'a pas retourné un jeton de type '{1}'. Vérifiez la configuration des informations d'identification.</target>
+        <target state="new">The token provider of type '{0}' did not return a token of type '{1}'. Check the credential configuration.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUriScheme">
         <source>The provided URI scheme '{0}' is invalid; expected '{1}'.</source>
-        <target state="translated">Le schéma d'URI '{0}' fourni est non valide ; le schéma '{1}' était attendu.</target>
+        <target state="new">The provided URI scheme '{0}' is invalid; expected '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockTimeoutExceptionMessage">
         <source>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Impossible de revendiquer un verrou dans le délai imparti de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="new">Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeExceeded">
         <source>The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</source>
-        <target state="translated">Le quota de taille maximale des messages entrants ({0}) a été dépassé. Pour augmenter le quota, utilisez la propriété MaxReceivedMessageSize sur l'élément de liaison approprié.</target>
+        <target state="new">The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeMustBeInIntegerRange">
         <source>This factory buffers messages, so the message sizes must be in the range of an integer value.</source>
-        <target state="translated">Cette fabrique place les messages en mémoire tampon : les tailles des messages doivent donc se trouver dans la plage d'une valeur entière.</target>
+        <target state="new">This factory buffers messages, so the message sizes must be in the range of an integer value.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxSentMessageSizeExceeded">
         <source>The maximum message size quota for outgoing messages ({0}) has been exceeded.</source>
-        <target state="translated">Le quota de taille maximale autorisée pour les messages sortants ({0}) a été dépassé.</target>
+        <target state="new">The maximum message size quota for outgoing messages ({0}) has been exceeded.</target>
         <note />
       </trans-unit>
       <trans-unit id="MessageXmlProtocolError">
         <source>There is a problem with the XML that was received from the network. See inner exception for more details.</source>
-        <target state="translated">Un problème s'est produit avec le code XML qui a été reçu du réseau. Pour plus d'informations, consultez l'exception interne.</target>
+        <target state="new">There is a problem with the XML that was received from the network. See inner exception for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleMebesInParameters">
         <source>More than one MessageEncodingBindingElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple MessageEncodingBindingElements in a CustomBinding. Remove all but one of these elements.</source>
-        <target state="translated">Plusieurs éléments MessageEncodingBindingElement ont été trouvés dans les paramètres BindingParameters du contexte BindingContext. Cette situation est généralement due à l'existence de plusieurs éléments MessageEncodingBindingElements dans un élément CustomBinding. Supprimez tous ces éléments sauf un.</target>
+        <target state="new">More than one MessageEncodingBindingElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple MessageEncodingBindingElements in a CustomBinding. Remove all but one of these elements.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleStreamUpgradeProvidersInParameters">
         <source>More than one IStreamUpgradeProviderElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple IStreamUpgradeProviderElements in a CustomBinding. Remove all but one of these elements.</source>
-        <target state="translated">Plusieurs éléments IStreamUpgradeProviderElement ont été trouvés dans les paramètres BindingParameters du contexte BindingContext. Cette situation est généralement due à l'existence de plusieurs éléments IStreamUpgradeProviderElements dans un élément CustomBinding. Supprimez tous ces éléments sauf un.</target>
+        <target state="new">More than one IStreamUpgradeProviderElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple IStreamUpgradeProviderElements in a CustomBinding. Remove all but one of these elements.</target>
         <note />
       </trans-unit>
       <trans-unit id="NegotiationFailedIO">
         <source>Transport security negotiation failed due to an underlying IO error: {0}.</source>
-        <target state="translated">Échec de la négociation de sécurité du transport en raison d'une erreur d'E/S sous-jacente : {0}.</target>
+        <target state="new">Transport security negotiation failed due to an underlying IO error: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="OpenTimedOutEstablishingTransportSession">
         <source>Open timed out after {0} while establishing a transport session to {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Dépassement du délai d'expiration d'ouverture après {0} durant l'établissement d'une session de transport vers {1}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="new">Open timed out after {0} while establishing a transport session to {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="OperationAbortedDuringConnectionEstablishment">
         <source>Operation was aborted while establishing a connection to {0}.</source>
-        <target state="translated">L'opération a été annulée durant l'établissement d'une connexion à {0}.</target>
+        <target state="new">Operation was aborted while establishing a connection to {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="OperationInvalidBeforeSecurityNegotiation">
         <source>This operation is not valid until security negotiation is complete.</source>
-        <target state="translated">Cette opération est non valide tant que la négociation de sécurité n'a pas été effectuée.</target>
+        <target state="new">This operation is not valid until security negotiation is complete.</target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrect">
         <source>You have tried to create a channel to a service that does not support .Net Framing. </source>
-        <target state="translated">Vous avez tenté de créer un canal vers un service qui ne prend pas en charge le tramage .Net. </target>
+        <target state="new">You have tried to create a channel to a service that does not support .Net Framing. </target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrectMaybeHttp">
         <source>You have tried to create a channel to a service that does not support .Net Framing. It is possible that you are encountering an HTTP endpoint.</source>
-        <target state="translated">Vous avez tenté de créer un canal vers un service qui ne prend pas en charge le tramage .Net. Il est possible que vous rencontriez un point de terminaison HTTP.</target>
+        <target state="new">You have tried to create a channel to a service that does not support .Net Framing. It is possible that you are encountering an HTTP endpoint.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedFault">
         <source>The channel received an unexpected fault input message while closing. The fault reason given is: '{0}'</source>
-        <target state="translated">Le canal a reçu un message d'entrée d'erreur inattendu durant sa fermeture. La raison de l'erreur donnée est : '{0}'</target>
+        <target state="new">The channel received an unexpected fault input message while closing. The fault reason given is: '{0}'</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedLargeFault">
         <source>The channel received an unexpected fault input message with Action = '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</source>
-        <target state="translated">Le canal a reçu un message d'entrée d'erreur inattendu avec Action = '{0}' durant sa fermeture. Vous devez fermer le canal uniquement quand vous n'attendez plus de messages d'entrée.</target>
+        <target state="new">The channel received an unexpected fault input message with Action = '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedMessage">
         <source>The channel received an unexpected input message with Action '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</source>
-        <target state="translated">Le canal a reçu un message d'entrée inattendu avec Action '{0}' durant sa fermeture. Vous devez fermer le canal uniquement quand vous n'attendez plus de messages d'entrée.</target>
+        <target state="new">The channel received an unexpected input message with Action '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveTimedOut2">
         <source>Receive timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">La réception a expiré après {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="new">Receive timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteIdentityFailedVerification">
         <source>The following remote identity failed verification: '{0}'.</source>
-        <target state="translated">Échec de l'identité distante suivante durant la vérification : '{0}'.</target>
+        <target state="new">The following remote identity failed verification: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestChannelSendTimedOut">
         <source>The request channel timed out attempting to send after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Le canal de requête a dépassé le délai imparti en tentant d'envoyer après {0}. Augmentez la valeur du délai d'expiration passée à l'appel de Request ou augmentez la valeur SendTimeout sur Binding. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="new">The request channel timed out attempting to send after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestChannelWaitForReplyTimedOut">
         <source>The request channel timed out while waiting for a reply after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Le canal de requête a dépassé le délai imparti en attendant une réponse après {0}. Augmentez la valeur du délai d'expiration passée à l'appel de Request ou augmentez la valeur SendTimeout sur Binding. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="new">The request channel timed out while waiting for a reply after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestTimedOutEstablishingTransportSession">
         <source>Request timed out after {0} while establishing a transport connection to {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">La demande a dépassé le délai imparti après {0} pendant l'établissement d'une connexion de transport vers {1}. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
+        <target state="new">Request timed out after {0} while establishing a transport connection to {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">Le délai d'expiration doit être supérieur ou égal à TimeSpan.Zero. Pour désactiver le délai d'expiration, spécifiez TimeSpan.MaxValue.</target>
+        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SPS_SeekNotSupported">
         <source>Seek is not supported on this stream.</source>
-        <target state="translated">Seek n'est pas pris en charge sur ce flux.</target>
+        <target state="new">Seek is not supported on this stream.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">Le serveur '{0}' a renvoyé une erreur indiquant qu'il est en cours d'arrêt. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">Le serveur '{0}' a envoyé une erreur indiquant qu'il est trop occupé pour traiter la requête. Réessayez plus tard. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SendCannotBeCalledAfterCloseOutputSession">
         <source>You cannot Send messages on a channel after CloseOutputSession has been called.</source>
-        <target state="translated">Vous ne pouvez pas envoyer de message sur un canal après l'appel de CloseOutputSession.</target>
+        <target state="new">You cannot Send messages on a channel after CloseOutputSession has been called.</target>
         <note />
       </trans-unit>
       <trans-unit id="SendToViaTimedOut">
         <source>Sending to via {0} timed out after {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">L'envoi via {0} a dépassé le délai imparti après {1}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="new">Sending to via {0} timed out after {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="ServerRejectedSessionPreamble">
         <source>The server at {0} rejected the session-establishment request.</source>
-        <target state="translated">Le serveur à {0} a refusé la demande d'établissement de session.</target>
+        <target state="new">The server at {0} rejected the session-establishment request.</target>
         <note />
       </trans-unit>
       <trans-unit id="ServerRejectedUpgradeRequest">
         <source>The server rejected the upgrade request.</source>
-        <target state="translated">Le serveur a refusé la demande de mise à niveau.</target>
+        <target state="new">The server rejected the upgrade request.</target>
         <note />
       </trans-unit>
       <trans-unit id="ServerTooBusy">
         <source>Server '{0}' is too busy to process this request. Try again later.</source>
-        <target state="translated">Le serveur '{0}' est trop occupé pour traiter cette requête. Réessayez plus tard.</target>
+        <target state="new">Server '{0}' is too busy to process this request. Try again later.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="translated">Impossible de distribuer le message au service à l'adresse '{0}'. Pour plus d'informations, consultez le journal des événements du serveur</target>
+        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="translated">Impossible de distribuer le message, car le service à l'adresse de point de terminaison '{0}' n'est pas disponible pour le protocole de l'adresse.</target>
+        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
         <note />
       </trans-unit>
       <trans-unit id="SizeExceedsRemainingBufferSpace">
         <source>The specified size exceeds the remaining buffer space ({0} bytes).</source>
-        <target state="translated">La taille spécifiée est supérieure à l'espace restant de la mémoire tampon ({0} octets).</target>
+        <target state="new">The specified size exceeds the remaining buffer space ({0} bytes).</target>
         <note />
       </trans-unit>
       <trans-unit id="SpaceNeededExceedsMessageFrameOffset">
         <source>The space needed for encoding ({0} bytes) exceeds the message frame offset.</source>
-        <target state="translated">L'espace nécessaire à l'encodage ({0} octets) dépasse le décalage de trame du message.</target>
+        <target state="new">The space needed for encoding ({0} bytes) exceeds the message frame offset.</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamDoesNotSupportTimeout">
         <source>TimeoutStream requires an inner Stream that supports timeouts; its CanTimeout property must be true.</source>
-        <target state="translated">TimeoutStream nécessite un Stream interne qui prend en charge les délais d'expiration ; sa propriété CanTimeout doit avoir la valeur true.</target>
+        <target state="new">TimeoutStream requires an inner Stream that supports timeouts; its CanTimeout property must be true.</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamError">
         <source>An error occurred while transmitting data.</source>
-        <target state="translated">Une erreur s'est produite durant la transmission des données.</target>
+        <target state="new">An error occurred while transmitting data.</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamMutualAuthNotSatisfied">
         <source>The remote server did not satisfy the mutual authentication requirement.</source>
-        <target state="translated">Le serveur distant n'a pas satisfait à l'exigence d'authentification mutuelle.</target>
+        <target state="new">The remote server did not satisfy the mutual authentication requirement.</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamUpgradeUnsupportedChannelBindingKind">
         <source>The StreamUpgradeProvider {0} does not support the specified ChannelBindingKind ({1}). </source>
-        <target state="translated">Le StreamUpgradeProvider {0} ne prend pas en charge le ChannelBindingKind ({1}) spécifié. </target>
+        <target state="new">The StreamUpgradeProvider {0} does not support the specified ChannelBindingKind ({1}). </target>
         <note />
       </trans-unit>
       <trans-unit id="TimeoutOnOpen">
         <source>The open operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">L'opération d'ouverture ne s'est pas effectuée dans le délai imparti de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="new">The open operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="TimeoutOnRequest">
         <source>The request operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">L'opération de demande ne s'est pas terminée dans le délai imparti de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
+        <target state="new">The request operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeConnectionPoolIdleTimeoutReached">
         <source>A connection has exceeded the idle timeout of this connection pool ({0}) and been closed.</source>
-        <target state="translated">Une connexion a dépassé le délai d'expiration d'inactivité de ce pool de connexions ({0}) et a été fermée.</target>
+        <target state="new">A connection has exceeded the idle timeout of this connection pool ({0}) and been closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeConnectionPoolLeaseTimeoutReached">
         <source>A connection has exceeded the connection lease timeout of this connection pool ({0}) and been closed.</source>
-        <target state="translated">Une connexion a dépassé le délai d'expiration du bail de connexion de ce pool de connexions ({0}) et a été fermée.</target>
+        <target state="new">A connection has exceeded the connection lease timeout of this connection pool ({0}) and been closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeConnectionPoolMaxOutboundConnectionsPerEndpointQuotaReached">
         <source>MaxOutboundConnectionsPerEndpoint quota ({0}) has been reached, so connection was closed and not stored in this connection pool.</source>
-        <target state="translated">Le quota MaxOutboundConnectionsPerEndpoint ({0}) a été atteint ; la connexion a donc été fermée et n'a pas été stockée dans ce pool de connexions.</target>
+        <target state="new">MaxOutboundConnectionsPerEndpoint quota ({0}) has been reached, so connection was closed and not stored in this connection pool.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedUpgradeInitiator">
         <source>The StreamUpgradeInitiator specified ({0}) is not supported by this IStreamUpgradeChannelBindingProvider  implementation.  The most likely cause of this is passing a StreamUpgradeInitiator that was not created by the StreamUpgradeProvider associated with the current IStreamUpgradeChannelBindingProvider  implementation.</source>
-        <target state="translated">Le StreamUpgradeInitiator ({0}) spécifié n'est pas pris en charge par cette implémentation IStreamUpgradeChannelBindingProvider. La cause la plus probable est le passage d'un StreamUpgradeInitiator qui n'a pas été créé par le StreamUpgradeProvider associé à l'implémentation IStreamUpgradeChannelBindingProvider actuelle.</target>
+        <target state="new">The StreamUpgradeInitiator specified ({0}) is not supported by this IStreamUpgradeChannelBindingProvider  implementation.  The most likely cause of this is passing a StreamUpgradeInitiator that was not created by the StreamUpgradeProvider associated with the current IStreamUpgradeChannelBindingProvider  implementation.</target>
         <note />
       </trans-unit>
       <trans-unit id="UriGeneratorSchemeMustNotBeEmpty">
         <source>The scheme parameter must not be empty.</source>
-        <target state="translated">Le paramètre de schéma ne doit pas être vide.</target>
+        <target state="new">The scheme parameter must not be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="translated">La valeur de cet argument doit être comprise entre {0} et {1}.</target>
+        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="translated">La valeur de cet argument doit être non négative.</target>
+        <target state="new">The value of this argument must be non-negative.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBePositive">
         <source>The value of this argument must be positive.</source>
-        <target state="translated">La valeur de cet argument doit être positive.</target>
+        <target state="new">The value of this argument must be positive.</target>
         <note />
       </trans-unit>
       <trans-unit id="WaitForMessageTimedOut">
         <source>WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Expiration du délai de WaitForMessage après {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="new">WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
     </body>

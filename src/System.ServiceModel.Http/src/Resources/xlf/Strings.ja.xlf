@@ -4,412 +4,412 @@
     <body>
       <trans-unit id="BasicHttpMessageSecurityRequiresCertificate">
         <source>BasicHttp binding requires that BasicHttpBinding.Security.Message.ClientCredentialType be equivalent to the BasicHttpMessageCredentialType.Certificate credential type for secure messages. Select Transport or TransportWithMessageCredential security for UserName credentials.</source>
-        <target state="translated">BasicHttp のバインドでは、メッセージをセキュリティで保護するために BasicHttpBinding.Security.Message.ClientCredentialType が BasicHttpMessageCredentialType.Certificate 資格情報型と等しいことが要求されています。UserName 資格情報には、Transport または TransportWithMessageCredential セキュリティを選択してください。</target>
+        <target state="new">BasicHttp binding requires that BasicHttpBinding.Security.Message.ClientCredentialType be equivalent to the BasicHttpMessageCredentialType.Certificate credential type for secure messages. Select Transport or TransportWithMessageCredential security for UserName credentials.</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateUnsupportedForHttpTransportCredentialOnly">
         <source>Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</source>
-        <target state="translated">証明書ベースのクライアント認証は TransportCredentialOnly セキュリティ モードではサポートされません。Transport セキュリティ モードを選択してください。</target>
+        <target state="new">Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
-        <target state="translated">このチャネル マネージャーでは、指定されたチャネルの型 {0} をサポートしていません。</target>
+        <target state="new">The specified channel type {0} is not supported by this channel manager.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
         <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
-        <target state="translated">ClientCredentialType.None は、TransportWithMessageCredential セキュリティ モードでは無効です。メッセージ資格情報の種類を指定するか、別のセキュリティ モードを使用してください。</target>
+        <target state="new">ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientWebSocketFactory_CreateWebSocketFailed">
         <source>An error occurred when creating the WebSocket with the factory of type '{0}'. See the inner exception for details.</source>
-        <target state="translated">型 '{0}' のファクトリで WebSocket を作成しているときにエラーが発生しました。詳細については、内部例外を参照してください。</target>
+        <target state="new">An error occurred when creating the WebSocket with the factory of type '{0}'. See the inner exception for details.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientWebSocketFactory_InvalidSubProtocol">
         <source>The WebSocket returned by the factory of type '{0}' has the SubProtocol '{1}' that doesn't match the requested SubProtocol value '{2}'.</source>
-        <target state="translated">型 '{0}' のファクトリから返された WebSocket に、要求された SubProtocol 値 '{2}' と一致しない SubProtocol '{1}' があります。</target>
+        <target state="new">The WebSocket returned by the factory of type '{0}' has the SubProtocol '{1}' that doesn't match the requested SubProtocol value '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientWebSocketFactory_InvalidWebSocket">
         <source>WebSocket creation failed. The '{0}' returned a WebSocket that is either null or not opened.</source>
-        <target state="translated">WebSocket の作成に失敗しました。'{0}' から、null であるか開くことのできない WebSocket が返されました。</target>
+        <target state="new">WebSocket creation failed. The '{0}' returned a WebSocket that is either null or not opened.</target>
         <note />
       </trans-unit>
       <trans-unit id="CloseTimedOut">
         <source>Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Close 処理は {0} 後にタイムアウトしました。Close の呼び出しに渡されるタイムアウト値を増やすか、Binding の CloseTimeout 値を増やしてください。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <target state="new">Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyHttpHeaderFailed">
         <source>Failed to copy the HTTP header '{0}' with value '{1}' to '{2}'.</source>
-        <target state="translated">値 '{1}' を持つ HTTP ヘッダー '{0}' の '{2}' へのコピーに失敗しました。</target>
+        <target state="new">Failed to copy the HTTP header '{0}' with value '{1}' to '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CouldnTCreateChannelForChannelType2">
         <source>Channel type '{1}' was requested, but Binding '{0}' doesn't support it or isn't configured properly to support it.</source>
-        <target state="translated">チャネルの種類 '{1}' が要求されましたが、バインド '{0}' はそれをサポートしないか、サポートするように正しく構成されていません。</target>
+        <target state="new">Channel type '{1}' was requested, but Binding '{0}' doesn't support it or isn't configured properly to support it.</target>
         <note />
       </trans-unit>
       <trans-unit id="CredentialDisallowsNtlm">
         <source>The NTLM authentication scheme was specified, but the target credential does not allow NTLM.</source>
-        <target state="translated">NTLM 認証方式が指定されましたが、対象の資格情報では NTLM が許可されていません。</target>
+        <target state="new">The NTLM authentication scheme was specified, but the target credential does not allow NTLM.</target>
         <note />
       </trans-unit>
       <trans-unit id="DelegatingHandlerArrayFromFuncContainsNullItem">
         <source>The '{0}' list created by the Func '{1}' is invalid because it contains one or more null items.</source>
-        <target state="translated">Func '{1}' で作成された '{0}' リストは、null 項目が 1 つ以上含まれているため無効です。</target>
+        <target state="new">The '{0}' list created by the Func '{1}' is invalid because it contains one or more null items.</target>
         <note />
       </trans-unit>
       <trans-unit id="DelegatingHandlerArrayHasNonNullInnerHandler">
         <source>The '{0}' list is invalid because the property '{1}' of '{2}' is not null.</source>
-        <target state="translated">'{0}' リストは、'{2}' のプロパティ '{1}' が null でないため無効です。</target>
+        <target state="new">The '{0}' list is invalid because the property '{1}' of '{2}' is not null.</target>
         <note />
       </trans-unit>
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
-        <target state="translated">メッセージを受信できる {0} でリッスンしているエンドポイントがありませんでした。これは一般に、アドレスまたは SOAP アクションが正しくない場合に発生します。詳細については、InnerException を参照してください (もしあれば)。</target>
+        <target state="new">There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvelopeVersionUnknown">
         <source>Unrecognized envelope version: {0}.</source>
-        <target state="translated">不明なエンベロープのバージョン: {0}。</target>
+        <target state="new">Unrecognized envelope version: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">このプラットフォームでは拡張保護はサポートされません。適切な更新プログラムをインストールするか、Binding または BindingElement に対する ExtendedProtectionPolicy を、"Never" または "WhenSupported" の PolicyEnforcement 値を持つ値に変更してください。</target>
+        <target state="new">Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeMismatch">
         <source>Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</source>
-        <target state="translated">コンテンツ型 {0} はサービス {1} でサポートされていませんでした。クライアントとサービスのバインドが整合していない可能性があります。</target>
+        <target state="new">Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAddressingNoneHeaderOnWire">
         <source>The incoming message contains a SOAP header representing the WS-Addressing '{0}', yet the HTTP transport is configured with AddressingVersion.None.  As a result, the message is being dropped.  If this is not desired, then update your HTTP binding to support a different AddressingVersion.</source>
-        <target state="translated">受信メッセージには WS-Addressing '{0}' を表す SOAP ヘッダーが含まれていますが、HTTP トランスポートには AddressingVersion.None が設定されています。この結果、このメッセージはドロップされています。これを防ぐには、異なる AddressingVersion をサポートするように HTTP バインディングを更新してください。</target>
+        <target state="new">The incoming message contains a SOAP header representing the WS-Addressing '{0}', yet the HTTP transport is configured with AddressingVersion.None.  As a result, the message is being dropped.  If this is not desired, then update your HTTP binding to support a different AddressingVersion.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthDoesNotSupportRequestStreaming">
         <source>HTTP request streaming cannot be used in conjunction with HTTP authentication.  Either disable request streaming or specify anonymous HTTP authentication.</source>
-        <target state="translated">HTTP 要求ストリームは、HTTP 認証と組み合わせて使用できません。要求ストリームを無効にするか、匿名 HTTP 認証を指定してください。</target>
+        <target state="new">HTTP request streaming cannot be used in conjunction with HTTP authentication.  Either disable request streaming or specify anonymous HTTP authentication.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthSchemeCannotBeNone">
         <source>The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="translated">ChannelFactory の構築時、HttpTransportBindingElement ('{0}') の AuthenticationScheme プロパティに指定された値は許可されません。標準のバインドを使用した場合は、ClientCredentialType が、クライアントで無効な値である HttpClientCredentialType.InheritedFromHost に設定されていないことをご確認ください。HttpTransportBindingElement の '{0}' に値を直接設定する場合は、Digest、Negotiate、NTLM、Basic、IntegratedWindowsAuthentication、または Anonymous に設定してください。</target>
+        <target state="new">The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthorizationFailed">
         <source>The HTTP request is unauthorized with client authentication scheme '{0}'. The authentication header received from the server was '{1}'.</source>
-        <target state="translated">この HTTP 要求は、クライアントの認証方式 '{0}' では承認されません。サーバーから受信した認証ヘッダーは '{1}' でした。</target>
+        <target state="new">The HTTP request is unauthorized with client authentication scheme '{0}'. The authentication header received from the server was '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthorizationForbidden">
         <source>The HTTP request was forbidden with client authentication scheme '{0}'.</source>
-        <target state="translated">この HTTP 要求は、クライアントの認証方式 '{0}' で許可されませんでした。</target>
+        <target state="new">The HTTP request was forbidden with client authentication scheme '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpClientCredentialTypeInvalid">
         <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</source>
-        <target state="translated">ClientCredentialType '{0}' を使用できるのはサーバー側のみで、クライアント側では使用できません。'None'、'Basic'、'Client'、'Digest'、'Ntlm'、'Windows' のいずれかの値を代わりに使用してください。</target>
+        <target state="new">ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentLengthIncorrect">
         <source>The number of bytes available is inconsistent with the HTTP Content-Length header.  There may have been a network error or the client may be sending invalid requests.</source>
-        <target state="translated">使用可能なバイト数が HTTP の Content-Length ヘッダーと一致していません。ネットワーク エラーが発生しているか、クライアントが無効な要求を送信している可能性があります。</target>
+        <target state="new">The number of bytes available is inconsistent with the HTTP Content-Length header.  There may have been a network error or the client may be sending invalid requests.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentTypeFormatException">
         <source>An error ({0}) occurred while parsing the content type of the HTTP request. The content type was: {1}.</source>
-        <target state="translated">HTTP 要求のコンテンツ型の解析中にエラー ({0}) が発生しました。コンテンツ型: {1}。</target>
+        <target state="new">An error ({0}) occurred while parsing the content type of the HTTP request. The content type was: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentTypeHeaderRequired">
         <source>An HTTP Content-Type header is required for SOAP messaging and none was found.</source>
-        <target state="translated">SOAP メッセージングには HTTP Content-Type ヘッダーが必要ですが、見つかりませんでした。</target>
+        <target state="new">An HTTP Content-Type header is required for SOAP messaging and none was found.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpIfModifiedSinceParseError">
         <source>The value specified, '{0}', for the If-Modified-Since header does not parse into a valid date. Check the property value and ensure that it is of the proper format.</source>
-        <target state="translated">If-Modified-Since ヘッダーに対して指定された値 '{0}' は、有効な日付として解析されません。プロパティ値をチェックして、適切な形式であることを確認してください。</target>
+        <target state="new">The value specified, '{0}', for the If-Modified-Since header does not parse into a valid date. Check the property value and ensure that it is of the proper format.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpMaxPendingAcceptsTooLargeError">
         <source>The value of MaxPendingAccepts should not be larger than {0}.</source>
-        <target state="translated">MaxPendingAccepts の値を {0} より大きくすることはできません。</target>
+        <target state="new">The value of MaxPendingAccepts should not be larger than {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpMessageHandlerTypeNotSupported">
         <source>Invalid type: '{0}'. It must inherit from base type '{1}', cannot be abstract, and must expose a public default constructor.</source>
-        <target state="translated">無効な型: '{0}'。基本データ型 '{1}' を継承する必要があり、抽象型にすることはできません。さらに、パブリックの既定コンストラクターを公開する必要があります。</target>
+        <target state="new">Invalid type: '{0}'. It must inherit from base type '{1}', cannot be abstract, and must expose a public default constructor.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpPipelineNotSupportedOnClientSide">
         <source>The property '{0}' is not supported when building a ChannelFactory. The property value must be null when calling BuildChannelFactory.</source>
-        <target state="translated">プロパティ '{0}' は、ChannelFactory を作成するときにはサポートされません。BuildChannelFactory を呼び出すときにはこのプロパティの値を null にする必要があります。</target>
+        <target state="new">The property '{0}' is not supported when building a ChannelFactory. The property value must be null when calling BuildChannelFactory.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpProxyRequiresSingleAuthScheme">
         <source>The '{0}' authentication scheme has been specified for the proxy on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, or Anonymous.</source>
-        <target state="translated">'{0}' 認証方式が HTTP ファクトリのプロキシに対して指定されていますが、このファクトリは ExactlyOne 認証方式の指定しかサポートしていません。有効な認証方式は、ダイジェスト、ネゴシエート、NTLM、基本、または匿名です。</target>
+        <target state="new">The '{0}' authentication scheme has been specified for the proxy on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, or Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpReceiveFailure">
         <source>An error occurred while receiving the HTTP response to {0}. This could be due to the service endpoint binding not using the HTTP protocol. This could also be due to an HTTP request context being aborted by the server (possibly due to the service shutting down). See server logs for more details.</source>
-        <target state="translated">{0} に対する HTTP 応答の受信中にエラーが発生しました。この原因としては、サービス エンドポイント バインドが HTTP プロトコルを使用していないことが考えられます。また別の原因として、HTTP 要求コンテキストがサーバーによって中止された可能性もあります (サーバーがシャットダウンした場合など)。詳細についてはサーバー ログを参照してください。</target>
+        <target state="new">An error occurred while receiving the HTTP response to {0}. This could be due to the service endpoint binding not using the HTTP protocol. This could also be due to an HTTP request context being aborted by the server (possibly due to the service shutting down). See server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpRequestTimedOut">
         <source>The HTTP request to '{0}' has exceeded the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">'{0}' に対する HTTP 要求が、割り当てられたタイムアウト時間 {1} を超えました。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <target state="new">The HTTP request to '{0}' has exceeded the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpRequiresSingleAuthScheme">
         <source>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="translated">'{0}' 認証方式が HTTP ファクトリに指定されていますが、ファクトリは ExactlyOne 認証しかサポートしていません。有効な認証方式は、Digest、Negotiate、NTLM、Basic、IntegratedWindowsAuthentication、または Anonymous です。</target>
+        <target state="new">The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpResponseTimedOut">
         <source>The HTTP request to '{0}' has exceeded the allotted timeout of {1} while reading the response. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">応答を読み取っている間に、'{0}' に対する HTTP 要求が、割り当てられたタイムアウト時間 {1} を超えました。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <target state="new">The HTTP request to '{0}' has exceeded the allotted timeout of {1} while reading the response. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpServerTooBusy">
         <source>The HTTP service located at {0} is unavailable.  This could be because the service is too busy or because no endpoint was found listening at the specified address. Please ensure that the address is correct and try accessing the service again later.</source>
-        <target state="translated">{0} の HTTP サービスを使用できません。原因としては、サービスがビジー状態であることや、指定されたアドレスでリッスンするエンドポイントが見つからなかったことが考えられます。アドレスが正しいことを確認し、後でもう一度サービスにアクセスしてください。</target>
+        <target state="new">The HTTP service located at {0} is unavailable.  This could be because the service is too busy or because no endpoint was found listening at the specified address. Please ensure that the address is correct and try accessing the service again later.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpSoapActionMismatch">
         <source>The SOAP action specified on the message, '{0}', does not match the action specified on the HttpRequestMessageProperty, '{1}'.</source>
-        <target state="translated">メッセージで指定した SOAP アクション '{0}' が、HttpRequestMessageProperty で指定したアクション '{1}' と一致しません。</target>
+        <target state="new">The SOAP action specified on the message, '{0}', does not match the action specified on the HttpRequestMessageProperty, '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpSoapActionMismatchContentType">
         <source>The SOAP action specified on the message, '{0}', does not match the action specified in the content-type of the HttpRequestMessageProperty, '{1}'.</source>
-        <target state="translated">メッセージで指定した SOAP アクション '{0}' が、HttpRequestMessageProperty の content-type で指定したアクション '{1}' と一致しません。</target>
+        <target state="new">The SOAP action specified on the message, '{0}', does not match the action specified in the content-type of the HttpRequestMessageProperty, '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpToMustEqualVia">
         <source>The binding specified requires that the to and via URIs must match because the Addressing Version is set to None. The to URI specified was '{0}'. The via URI specified was '{1}'.</source>
-        <target state="translated">Addressing Version が None に設定されているため、指定したバインドでは、to URI と via URI が一致している必要があります。指定された to URI は '{0}' です。指定された via URI は '{1}' です。</target>
+        <target state="new">The binding specified requires that the to and via URIs must match because the Addressing Version is set to None. The to URI specified was '{0}'. The via URI specified was '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpsExplicitIdentity">
         <source>The HTTPS channel factory does not support explicit specification of an identity in the EndpointAddress unless the authentication scheme is NTLM or Negotiate.</source>
-        <target state="translated">認証スキームが NTLM またはネゴシエートでない場合、HTTPS チャネル ファクトリは、EndpointAddress での ID の明示的な指定をサポートしません。</target>
+        <target state="new">The HTTPS channel factory does not support explicit specification of an identity in the EndpointAddress unless the authentication scheme is NTLM or Negotiate.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpsIdentityMultipleCerts">
         <source>The endpoint identity specified when creating the HTTPS channel to '{0}' contains multiple server certificates.  However, the HTTPS transport only supports the specification of a single server certificate.  In order to create an HTTPS channel, please specify no more than one server certificate in the endpoint identity.</source>
-        <target state="translated">'{0}' への HTTPS チャネルを作成するときに指定したエンドポイント ID に複数のサーバー証明書が含まれていますが、HTTPS トランスポートは単一のサーバー証明書の指定しかサポートしていません。HTTPS チャネルを作成するためには、エンドポイント ID に複数のサーバー証明書を指定しないでください。</target>
+        <target state="new">The endpoint identity specified when creating the HTTPS channel to '{0}' contains multiple server certificates.  However, the HTTPS transport only supports the specification of a single server certificate.  In order to create an HTTPS channel, please specify no more than one server certificate in the endpoint identity.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpsServerCertThumbprintMismatch">
         <source>The server certificate with name '{0}' failed identity verification because its thumbprint ('{1}') does not match the one specified in the endpoint identity ('{2}').  As a result, the current HTTPS request has failed.  Please update the endpoint identity used on the client or the certificate used by the server.</source>
-        <target state="translated">'{0}' という名前のサーバー証明書の拇印 ('{1}') は、エンドポイント ID で指定された拇印 ('{2}') と一致しないため、このサーバー証明書は ID 確認で不適格と判断されました。この結果、現在の HTTPS 要求は失敗しました。クライアントで使用されるエンドポイント ID、またはサーバーによって使用される証明書を更新してください。</target>
+        <target state="new">The server certificate with name '{0}' failed identity verification because its thumbprint ('{1}') does not match the one specified in the endpoint identity ('{2}').  As a result, the current HTTPS request has failed.  Please update the endpoint identity used on the client or the certificate used by the server.</target>
         <note />
       </trans-unit>
       <trans-unit id="InputTypeListEmptyError">
         <source>The input handler list cannot be empty.</source>
-        <target state="translated">入力ハンドラーの一覧は空にできません。</target>
+        <target state="new">The input handler list cannot be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="ManualAddressingRequiresAddressedMessages">
         <source>Manual addressing is enabled on this factory, so all messages sent must be pre-addressed.</source>
-        <target state="translated">このファクトリでは手動によるアドレス指定が有効にされているため、メッセージの送信前にアドレスを指定する必要があります。</target>
+        <target state="new">Manual addressing is enabled on this factory, so all messages sent must be pre-addressed.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxBufferSizeMustMatchMaxReceivedMessageSize">
         <source>For TransferMode.Buffered, MaxReceivedMessageSize and MaxBufferSize must be the same value.</source>
-        <target state="translated">TransferMode.Buffered の場合は、MaxReceivedMessageSize と MaxBufferSize の値が同じである必要があります。</target>
+        <target state="new">For TransferMode.Buffered, MaxReceivedMessageSize and MaxBufferSize must be the same value.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxBufferSizeMustNotExceedMaxReceivedMessageSize">
         <source>MaxBufferSize must not exceed MaxReceivedMessageSize.</source>
-        <target state="translated">MaxBufferSize の値は、MaxReceivedMessageSize の値以下である必要があります。</target>
+        <target state="new">MaxBufferSize must not exceed MaxReceivedMessageSize.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeExceeded">
         <source>The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</source>
-        <target state="translated">受信メッセージの最大メッセージ サイズ クォータ ({0}) を超えました。このクォータを増やすには、適切なバインディング要素の MaxReceivedMessageSize プロパティを使用してください。</target>
+        <target state="new">The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeMustBeInIntegerRange">
         <source>This factory buffers messages, so the message sizes must be in the range of an integer value.</source>
-        <target state="translated">このファクトリはメッセージをバッファーするため、メッセージ サイズは整数値の範囲内である必要があります。</target>
+        <target state="new">This factory buffers messages, so the message sizes must be in the range of an integer value.</target>
         <note />
       </trans-unit>
       <trans-unit id="MessageXmlProtocolError">
         <source>There is a problem with the XML that was received from the network. See inner exception for more details.</source>
-        <target state="translated">ネットワークから受信した XML に問題があります。詳細については、内部例外を参照してください。</target>
+        <target state="new">There is a problem with the XML that was received from the network. See inner exception for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingContentType">
         <source>The receiver returned an error indicating that the content type was missing on the request to {0}.  See the inner exception for more information.</source>
-        <target state="translated">受信側は、{0} への要求でコンテンツ型が指定されていないことを示すエラーを返しました。詳細については、内部例外を参照してください。</target>
+        <target state="new">The receiver returned an error indicating that the content type was missing on the request to {0}.  See the inner exception for more information.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyDefaultSpnServiceSupported">
         <source>Only HOST and HTTP service principal names are supported .</source>
-        <target state="translated">ホストと HTTP サービス プリンシパル名のみがサポートされています。</target>
+        <target state="new">Only HOST and HTTP service principal names are supported .</target>
         <note />
       </trans-unit>
       <trans-unit id="ProxyAuthenticationLevelMismatch">
         <source>The HTTP proxy authentication credential specified an mutual authentication requirement ({0}) that is stricter than the requirement for target server authentication ({1}).</source>
-        <target state="translated">HTTP プロキシ認証の資格情報で、対象サーバーの認証要件 ({1}) より厳しい要件である、相互の認証 ({0}) が必要なことが指定されています。</target>
+        <target state="new">The HTTP proxy authentication credential specified an mutual authentication requirement ({0}) that is stricter than the requirement for target server authentication ({1}).</target>
         <note />
       </trans-unit>
       <trans-unit id="ProxyImpersonationLevelMismatch">
         <source>The HTTP proxy authentication credential specified an impersonation level restriction ({0}) that is stricter than the restriction for target server authentication ({1}).</source>
-        <target state="translated">HTTP プロキシ認証の資格情報で、対象サーバーの認証制限 ({1}) より厳しい制限である、偽装レベルの制限 ({0}) が指定されています。</target>
+        <target state="new">The HTTP proxy authentication credential specified an impersonation level restriction ({0}) that is stricter than the restriction for target server authentication ({1}).</target>
         <note />
       </trans-unit>
       <trans-unit id="ResponseContentTypeMismatch">
         <source>The content type {0} of the response message does not match the content type of the binding ({1}). If using a custom encoder, be sure that the IsContentTypeSupported method is implemented properly. The first {2} bytes of the response were: '{3}'.</source>
-        <target state="translated">応答メッセージのコンテンツ型 {0} が、バインディング ({1}) のコンテンツ型と一致しません。カスタム エンコーダーを使用している場合は、IsContentTypeSupported メソッドが正しく実装されていることを確認してください。応答の先頭の {2} バイトは '{3}' でした。</target>
+        <target state="new">The content type {0} of the response message does not match the content type of the binding ({1}). If using a custom encoder, be sure that the IsContentTypeSupported method is implemented properly. The first {2} bytes of the response were: '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">タイムアウトは TimeSpan.Zero 以上の値にする必要があります。タイムアウトを無効にするには、TimeSpan.MaxValue を指定してください。</target>
+        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">Int32.MaxValue TotalMilliseconds (約 24 日) よりも大きな値のタイムアウトは受け付けられません。タイムアウトを無効にするには、TimeSpan.MaxValue を指定してください。</target>
+        <target state="new">Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecureConversationRequiredByReliableSession">
         <source>Cannot establish a reliable session without secure conversation. Enable secure conversation.</source>
-        <target state="translated">セキュリティで保護された通信を使用せずに信頼できるセッションを確立することはできません。セキュリティで保護された通信を有効にしてください。</target>
+        <target state="new">Cannot establish a reliable session without secure conversation. Enable secure conversation.</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustFailure">
         <source>Could not establish trust relationship for the SSL/TLS secure channel with authority '{0}'.</source>
-        <target state="translated">機関 '{0}' との SSL/TLS のセキュリティで保護されているチャネルに対する信頼関係を確立できませんでした。</target>
+        <target state="new">Could not establish trust relationship for the SSL/TLS secure channel with authority '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnexpectedHttpResponseCode">
         <source>The remote server returned an unexpected response: ({0}) {1}.</source>
-        <target state="translated">リモート サーバーから予期しない応答が返されました: ({0}) {1}。</target>
+        <target state="new">The remote server returned an unexpected response: ({0}) {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSecuritySetting">
         <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
-        <target state="translated">値 '{1}' は、このコンテキストではバインド セキュリティ プロパティ '{0}' に対してサポートされていません。</target>
+        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UseDefaultWebProxyCantBeUsedWithExplicitProxyAddress">
         <source>You cannot specify an explicit Proxy Address as well as UseDefaultWebProxy=true in your HTTP Transport Binding Element.</source>
-        <target state="translated">HTTP トランスポート バインド要素では、明示的な Proxy Address だけでなく、UseDefaultWebProxy=true も指定できません。</target>
+        <target state="new">You cannot specify an explicit Proxy Address as well as UseDefaultWebProxy=true in your HTTP Transport Binding Element.</target>
         <note />
       </trans-unit>
       <trans-unit id="UserNameCannotBeEmpty">
         <source>The username cannot be empty.</source>
-        <target state="translated">ユーザー名を空にすることはできません。</target>
+        <target state="new">The username cannot be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="translated">この引数の値は、{0} から {1} の範囲内である必要があります。</target>
+        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="translated">この引数の値は、負ではない値である必要があります。</target>
+        <target state="new">The value of this argument must be non-negative.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBePositive">
         <source>The value of this argument must be positive.</source>
-        <target state="translated">この引数の値は、正の値である必要があります。</target>
+        <target state="new">The value of this argument must be positive.</target>
         <note />
       </trans-unit>
       <trans-unit id="WaitForMessageTimedOut">
         <source>WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">{0} 後に WaitForMessage がタイムアウトしました。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <target state="new">WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketCannotCreateRequestClientChannelWithCertainWebSocketTransportUsage">
         <source>HttpChannelFactory cannot create the channel with shape '{0}' when the {1} of {2} was set as '{3}'.</source>
-        <target state="translated">HttpChannelFactory では、{2} の {1} が '{3}' として設定されている場合、形状 '{0}' のチャネルを作成できません。</target>
+        <target state="new">HttpChannelFactory cannot create the channel with shape '{0}' when the {1} of {2} was set as '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolContainsMultipleSubProtocolString">
         <source>The value specified ('{0}') contains more than one subprotocol which is not supported.</source>
-        <target state="translated">指定された値 ('{0}') に複数のサブプロトコルが含まれています。これはサポートされていません。</target>
+        <target state="new">The value specified ('{0}') contains more than one subprotocol which is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">空の文字列は、有効な subprotocol 値ではありません。値を指定しない場合は、"null" を使用してください。</target>
+        <target state="new">Empty string is not a valid subprotocol value. Please use "null" to specify no value.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">
         <source>The subprotocol '{0}' is invalid because it contains the invalid character '{1}'.</source>
-        <target state="translated">サブプロトコル '{0}' は、無効な文字 '{1}' が含まれているため無効です。</target>
+        <target state="new">The subprotocol '{0}' is invalid because it contains the invalid character '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolNotInClientList">
         <source>The subprotocol '{0}' was not requested by the client. The client requested the following subprotocol(s): '{1}'.</source>
-        <target state="translated">サブプロトコル '{0}' はクライアントによって要求されていません。クライアントが要求したサブプロトコルは次のとおりです: '{1}'。</target>
+        <target state="new">The subprotocol '{0}' was not requested by the client. The client requested the following subprotocol(s): '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketOperationTimedOut">
         <source>The '{0}' operation timed out after '{1}'. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">'{0}' 操作が '{1}' 後にタイムアウトしました。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <target state="new">The '{0}' operation timed out after '{1}'. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketReceiveTimedOut">
         <source>The Receive operation timed out after '{0}'. For duplex sessionful channels, the receive timeout is also the idle timeout for the channel, so consider setting a suitably large value for the ReceiveTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">受信操作が '{0}' 後にタイムアウトしました。二重セッションフル チャネルでは、受信タイムアウトはチャネルのアイドル タイムアウトでもあるため、バインドの ReceiveTimeout 値に適切な大きさの値を設定することを検討します。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <target state="new">The Receive operation timed out after '{0}'. For duplex sessionful channels, the receive timeout is also the idle timeout for the channel, so consider setting a suitably large value for the ReceiveTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketSendTimedOut">
         <source>The Send operation timed out after '{0}'. Increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">送信操作が '{0}' 後にタイムアウトしました。バインドの SendTimeout 値を大きくしてください。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <target state="new">The Send operation timed out after '{0}'. Increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketStreamWriteCalledAfterEOMSent">
         <source>Cannot write to the stream because the end of the stream marker was already written.</source>
-        <target state="translated">ストリームの最後を示すマーカーが既に書き込まれているため、ストリームに書き込むことができません。</target>
+        <target state="new">Cannot write to the stream because the end of the stream marker was already written.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketSubProtocolMismatchFromServer">
         <source>The server didn't accept the connection request. It is possible that the WebSocket subprotocol sent by your client is not supported by the server. Protocol(s) supported by the server are '{0}'.</source>
-        <target state="translated">サーバーが接続要求を受け入れませんでした。クライアントによって送信された WebSocket サブプロトコルを、サーバーがサポートしていない可能性があります。サーバーがサポートしているプロトコルは '{0}' です。</target>
+        <target state="new">The server didn't accept the connection request. It is possible that the WebSocket subprotocol sent by your client is not supported by the server. Protocol(s) supported by the server are '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketTransportError">
         <source>A WebSocket error occurred.</source>
-        <target state="translated">WebSocket のエラーが発生しました。</target>
+        <target state="new">A WebSocket error occurred.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketUnexpectedCloseMessageError">
         <source>Unexpected WebSocket close message received when receiving a message.</source>
-        <target state="translated">メッセージの受信中に WebSocket の予期しない終了メッセージを受信しました。</target>
+        <target state="new">Unexpected WebSocket close message received when receiving a message.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketUpgradeFailedError">
         <source>WebSocket upgrade request failed. Received response status code '{0} ({1})', expected: '{2} ({3})'.</source>
-        <target state="translated">WebSocket のアップグレード要求が失敗しました。受信した応答のステータス コードは '{0} ({1})' ですが、必要なのは '{2} ({3})' です。</target>
+        <target state="new">WebSocket upgrade request failed. Received response status code '{0} ({1})', expected: '{2} ({3})'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketUpgradeFailedHeaderMissingError">
         <source>WebSocket upgrade request failed. The header '{0}' is missing in the response.</source>
-        <target state="translated">WebSocket のアップグレード要求が失敗しました。応答にヘッダー '{0}' が指定されていません。</target>
+        <target state="new">WebSocket upgrade request failed. The header '{0}' is missing in the response.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketUpgradeFailedWrongHeaderError">
         <source>WebSocket upgrade request failed. The value of header '{0}' is '{1}'. The expected value is '{2}'.</source>
-        <target state="translated">WebSocket のアップグレード要求が失敗しました。ヘッダー '{0}' の値は '{1}' ですが、必要な値は '{2}' です。</target>
+        <target state="new">WebSocket upgrade request failed. The value of header '{0}' is '{1}'. The expected value is '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketVersionMismatchFromServer">
         <source>The server didn't accept the connection request. It is possible that the WebSocket protocol version on your client doesn't match the one on the server('{0}').</source>
-        <target state="translated">サーバーが接続要求を受け入れませんでした。クライアントの WebSocket プロトコルのバージョンが、サーバー ('{0}') のものと一致していない可能性があります。</target>
+        <target state="new">The server didn't accept the connection request. It is possible that the WebSocket protocol version on your client doesn't match the one on the server('{0}').</target>
         <note />
       </trans-unit>
     </body>

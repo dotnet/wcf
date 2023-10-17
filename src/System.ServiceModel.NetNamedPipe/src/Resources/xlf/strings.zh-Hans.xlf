@@ -4,162 +4,162 @@
     <body>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
-        <target state="translated">此通道管理器不支持指定的通道类型 {0}。</target>
+        <target state="new">The specified channel type {0} is not supported by this channel manager.</target>
         <note />
       </trans-unit>
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
-        <target state="translated">没有终结点在侦听可以接受消息的 {0}。这通常是由于不正确的地址或者 SOAP 操作导致的。如果存在此情况，请参见 InnerException 以了解详细信息。</target>
+        <target state="new">There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
         <source>The pipe cannot be written to or read from because it is already in the process of being closed.</source>
-        <target state="translated">无法写入或读取管道，因为它已在正在被关闭的进程中。</target>
+        <target state="new">The pipe cannot be written to or read from because it is already in the process of being closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyShuttingDown">
         <source>The pipe cannot be written to because it is already in the process of shutting down.</source>
-        <target state="translated">无法写入管道，因为它已在关机进程中。</target>
+        <target state="new">The pipe cannot be written to because it is already in the process of shutting down.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeCantCloseWithPendingWrite">
         <source>The pipe cannot be closed while a write to the pipe is pending.</source>
-        <target state="translated">当管道的写入操作挂起时，无法关闭该管道。</target>
+        <target state="new">The pipe cannot be closed while a write to the pipe is pending.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeCloseFailed">
         <source>The pipe could not close gracefully.  This may be caused by the application on the other end of the pipe exiting.</source>
-        <target state="translated">无法正常关闭管道。这可能是因为管道另一端上的应用程序退出所导致的。</target>
+        <target state="new">The pipe could not close gracefully.  This may be caused by the application on the other end of the pipe exiting.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeClosed">
         <source>The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</source>
-        <target state="translated">无法完成操作，因为管道已关闭。这可能是因为管道另一端上的应用程序退出所导致的。</target>
+        <target state="new">The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectAddressFailed">
         <source>A pipe endpoint exists for '{0}', but the connect failed: {1}</source>
-        <target state="translated">“{0}”的管道终结点存在，但连接失败: {1}</target>
+        <target state="new">A pipe endpoint exists for '{0}', but the connect failed: {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectFailed">
         <source>Cannot connect to endpoint '{0}'.</source>
-        <target state="translated">无法连接到终结点“{0}”。</target>
+        <target state="new">Cannot connect to endpoint '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectTimedOut">
         <source>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">无法在分配的超时 {1} 内连接到终结点“{0}”。分配给此操作的时间可能比超时长。</target>
+        <target state="new">Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectTimedOutServerTooBusy">
         <source>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The server has likely reached the MaxConnections quota and is too busy to accept new connections. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">无法在分配的超时 {1} 内连接到终结点“{0}”。服务器可能已达到 MaxConnections 配额，因为太忙而不能接受新连接。分配给此操作的时间可能比超时长。</target>
+        <target state="new">Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The server has likely reached the MaxConnections quota and is too busy to accept new connections. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectionAbortedReadTimedOut">
         <source>The pipe connection was aborted because an asynchronous read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">管道连接被中止，因为在分配的超时 {0} 内管道的异步读取未完成。分配给此操作的时间可能比超时长。</target>
+        <target state="new">The pipe connection was aborted because an asynchronous read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectionAbortedWriteTimedOut">
         <source>The pipe connection was aborted because an asynchronous write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">管道连接被中止，因为在分配的超时 {0} 内管道的异步写入未完成。分配给此操作的时间可能比超时长。</target>
+        <target state="new">The pipe connection was aborted because an asynchronous write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeEndpointNotFound">
         <source>The pipe endpoint '{0}' could not be found on your local machine.</source>
-        <target state="translated">在本地计算机上找不到管道终结点“{0}”。</target>
+        <target state="new">The pipe endpoint '{0}' could not be found on your local machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeKnownWin32Error">
         <source>{0} ({1}, 0x{2})</source>
-        <target state="translated">{0} ({1}, 0x{2})</target>
+        <target state="new">{0} ({1}, 0x{2})</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeModeChangeFailed">
         <source>The pipe was not able to be set to message mode: {0}</source>
-        <target state="translated">不能将管道设置为消息模式: {0}</target>
+        <target state="new">The pipe was not able to be set to message mode: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeNameCanNotBeAccessed">
         <source>The pipe name could not be obtained for the pipe URI: {0}</source>
-        <target state="translated">无法获取管道 URI 的管道名称: {0}。</target>
+        <target state="new">The pipe name could not be obtained for the pipe URI: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeNameCanNotBeAccessed2">
         <source>The pipe name could not be obtained for {0}.</source>
-        <target state="translated">无法获取 {0} 的管道名称。</target>
+        <target state="new">The pipe name could not be obtained for {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeReadPending">
         <source>There is already a read in progress for the pipe.  Wait for the first operation to complete before attempting to read again.</source>
-        <target state="translated">已经存在一个正在进行的管道读取操作。再次尝试读取前，请等待第一个操作完成。</target>
+        <target state="new">There is already a read in progress for the pipe.  Wait for the first operation to complete before attempting to read again.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeShutdownReadError">
         <source>The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</source>
-        <target state="translated">没有从管道接收到关机指示符。位于管道另一端上的应用程序可能没有发送它。管道仍将被关闭。</target>
+        <target state="new">The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeShutdownWriteError">
         <source>The shutdown indicator could not be written to the pipe.  The application on the other end of the pipe may not be listening for it.  The pipe will still be closed.</source>
-        <target state="translated">无法将关闭指示器写入管道。管道另一端上的应用程序可能未对其进行侦听。管道仍将关闭。</target>
+        <target state="new">The shutdown indicator could not be written to the pipe.  The application on the other end of the pipe may not be listening for it.  The pipe will still be closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeSignalExpected">
         <source>The read from the pipe expected just a signal, but received actual data.</source>
-        <target state="translated">应仅从管道读取信号，但收到实际数据。</target>
+        <target state="new">The read from the pipe expected just a signal, but received actual data.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeUriSchemeWrong">
         <source>URIs used with pipes must use the scheme: 'net.pipe'.</source>
-        <target state="translated">与管道一起使用的 URI 必须使用方案: "net.pipe"。</target>
+        <target state="new">URIs used with pipes must use the scheme: 'net.pipe'.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeWritePending">
         <source>There is already a write in progress for the pipe.  Wait for the first operation to complete before attempting to write again.</source>
-        <target state="translated">已经正在对管道进行写入。尝试再次写入之前，请等待第一个操作完成。</target>
+        <target state="new">There is already a write in progress for the pipe.  Wait for the first operation to complete before attempting to write again.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeWriteTimedOut">
         <source>The write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">在分配的 {0} 超时内未完成对管道的写入。分配给此操作的时间可能已经是更长超时的一部分。</target>
+        <target state="new">The write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PlatformNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on this platform.</source>
-        <target state="translated">此平台不支持 NetNamedPipe。</target>
+        <target state="new">NetNamedPipe is not supported on this platform.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">超时必须大于或等于 TimeSpan.Zero。要禁用超时，请指定 TimeSpan.MaxValue。</target>
+        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">无法处理大于 Int32.MaxValue TotalMilliseconds (大约 24 天)的超时。要禁用超时，请指定 TimeSpan.MaxValue。</target>
+        <target state="new">Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
         <source>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</source>
-        <target state="translated">尝试连接到位于“{1}”的已命名管道终结点失败。总计超时剩余{0}时，将再次进行尝试。</target>
+        <target state="new">An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeInitiatingNamedPipeConnection">
         <source>Initiating Named Pipe connection.</source>
-        <target state="translated">正在初始化命名管道连接。</target>
+        <target state="new">Initiating Named Pipe connection.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodePipeConnectionAbort">
         <source>PipeConnection aborted</source>
-        <target state="translated">PipeConnection 已中止</target>
+        <target state="new">PipeConnection aborted</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="translated">此参数的值必须为非负。</target>
+        <target state="new">The value of this argument must be non-negative.</target>
         <note />
       </trans-unit>
     </body>

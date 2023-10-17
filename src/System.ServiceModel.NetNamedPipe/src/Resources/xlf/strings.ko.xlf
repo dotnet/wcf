@@ -4,162 +4,162 @@
     <body>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
-        <target state="translated">지정된 채널 형식 {0}이(가) 이 채널 관리자에서 지원되지 않습니다.</target>
+        <target state="new">The specified channel type {0} is not supported by this channel manager.</target>
         <note />
       </trans-unit>
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
-        <target state="translated">메시지를 수락할 수 있는 {0}에서 수신 대기 중인 엔드포인트가 없습니다. 이것은 흔히 잘못된 주소나 SOAP 동작으로 인해 발생합니다. 자세한 내용은 InnerException(있을 경우)을 참조하세요.</target>
+        <target state="new">There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
         <source>The pipe cannot be written to or read from because it is already in the process of being closed.</source>
-        <target state="translated">파이프를 이미 닫는 중이기 때문에 파이프에 쓰거나 파이프에서 읽을 수 없습니다.</target>
+        <target state="new">The pipe cannot be written to or read from because it is already in the process of being closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyShuttingDown">
         <source>The pipe cannot be written to because it is already in the process of shutting down.</source>
-        <target state="translated">파이프를 이미 종료하는 중이기 때문에 파이프에 쓸 수 없습니다.</target>
+        <target state="new">The pipe cannot be written to because it is already in the process of shutting down.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeCantCloseWithPendingWrite">
         <source>The pipe cannot be closed while a write to the pipe is pending.</source>
-        <target state="translated">파이프에 쓰기가 보류 중인 상태에서 파이프를 닫을 수 없습니다.</target>
+        <target state="new">The pipe cannot be closed while a write to the pipe is pending.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeCloseFailed">
         <source>The pipe could not close gracefully.  This may be caused by the application on the other end of the pipe exiting.</source>
-        <target state="translated">파이프를 적절하게 닫을 수 없습니다. 이것은 파이프의 다른 끝에 있는 응용 프로그램이 종료하는 중이기 때문일 수 있습니다.</target>
+        <target state="new">The pipe could not close gracefully.  This may be caused by the application on the other end of the pipe exiting.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeClosed">
         <source>The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</source>
-        <target state="translated">파이프가 닫혔기 때문에 작업을 완료할 수 없습니다. 이것은 파이프의 다른 끝에 있는 응용 프로그램이 종료하는 중이기 때문일 수 있습니다.</target>
+        <target state="new">The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectAddressFailed">
         <source>A pipe endpoint exists for '{0}', but the connect failed: {1}</source>
-        <target state="translated">'{0}'에 대한 파이프 끝점이 있지만 연결에 실패했습니다. {1}</target>
+        <target state="new">A pipe endpoint exists for '{0}', but the connect failed: {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectFailed">
         <source>Cannot connect to endpoint '{0}'.</source>
-        <target state="translated">엔드포인트 '{0}'에 연결할 수 없습니다.</target>
+        <target state="new">Cannot connect to endpoint '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectTimedOut">
         <source>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">할당된 시간 제한 {1} 이내에 끝점 '{0}'에 연결할 수 없습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectTimedOutServerTooBusy">
         <source>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The server has likely reached the MaxConnections quota and is too busy to accept new connections. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">할당된 시간 제한 {1} 이내에 끝점 '{0}'에 연결할 수 없습니다. 서버가 MaxConnections 할당량에 도달하여 새 연결을 수락하기에 사용량이 너무 많은 것 같습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The server has likely reached the MaxConnections quota and is too busy to accept new connections. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectionAbortedReadTimedOut">
         <source>The pipe connection was aborted because an asynchronous read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">할당된 시간 제한 {0} 이내에 파이프에서 비동기 읽기가 완료되지 않았기 때문에 파이프 연결이 중단되었습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">The pipe connection was aborted because an asynchronous read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectionAbortedWriteTimedOut">
         <source>The pipe connection was aborted because an asynchronous write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">할당된 시간 제한 {0} 이내에 파이프에 비동기 쓰기가 완료되지 않았기 때문에 파이프 연결이 중단되었습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">The pipe connection was aborted because an asynchronous write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeEndpointNotFound">
         <source>The pipe endpoint '{0}' could not be found on your local machine.</source>
-        <target state="translated">파이프 엔드포인트 '{0}'을(를) 로컬 컴퓨터에서 찾을 수 없습니다.</target>
+        <target state="new">The pipe endpoint '{0}' could not be found on your local machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeKnownWin32Error">
         <source>{0} ({1}, 0x{2})</source>
-        <target state="translated">{0}({1}, 0x{2})</target>
+        <target state="new">{0} ({1}, 0x{2})</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeModeChangeFailed">
         <source>The pipe was not able to be set to message mode: {0}</source>
-        <target state="translated">파이프를 메시지 모드로 설정할 수 없습니다. {0}</target>
+        <target state="new">The pipe was not able to be set to message mode: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeNameCanNotBeAccessed">
         <source>The pipe name could not be obtained for the pipe URI: {0}</source>
-        <target state="translated">파이프 URI에 대한 파이프 이름을 가져올 수 없습니다. {0}</target>
+        <target state="new">The pipe name could not be obtained for the pipe URI: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeNameCanNotBeAccessed2">
         <source>The pipe name could not be obtained for {0}.</source>
-        <target state="translated">{0}에 대한 파이프 이름을 가져올 수 없습니다.</target>
+        <target state="new">The pipe name could not be obtained for {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeReadPending">
         <source>There is already a read in progress for the pipe.  Wait for the first operation to complete before attempting to read again.</source>
-        <target state="translated">파이프에 대한 읽기가 이미 진행 중입니다. 읽기를 다시 시도하기 전에 첫 번째 작업이 완료할 때까지 기다리십시오.</target>
+        <target state="new">There is already a read in progress for the pipe.  Wait for the first operation to complete before attempting to read again.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeShutdownReadError">
         <source>The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</source>
-        <target state="translated">종료 표시기가 파이프에서 수신되지 않았습니다. 파이프의 다른 끝에 있는 응용 프로그램이 종료 표시기를 보내지 않았을 수 있습니다. 파이프가 계속 닫혀 있습니다.</target>
+        <target state="new">The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeShutdownWriteError">
         <source>The shutdown indicator could not be written to the pipe.  The application on the other end of the pipe may not be listening for it.  The pipe will still be closed.</source>
-        <target state="translated">종료 표시기를 파이프에 쓸 수 없습니다. 파이프의 다른 끝에 있는 응용 프로그램이 종료 표시기를 수신 대기하는 중이 아닐 수 있습니다. 파이프가 계속 닫혀 있습니다.</target>
+        <target state="new">The shutdown indicator could not be written to the pipe.  The application on the other end of the pipe may not be listening for it.  The pipe will still be closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeSignalExpected">
         <source>The read from the pipe expected just a signal, but received actual data.</source>
-        <target state="translated">파이프에서 읽기에 단지 신호가 필요하지만 실제 데이터를 수신했습니다.</target>
+        <target state="new">The read from the pipe expected just a signal, but received actual data.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeUriSchemeWrong">
         <source>URIs used with pipes must use the scheme: 'net.pipe'.</source>
-        <target state="translated">파이프와 함께 사용되는 URI는 'net.pipe' 구성표를 사용해야 합니다.</target>
+        <target state="new">URIs used with pipes must use the scheme: 'net.pipe'.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeWritePending">
         <source>There is already a write in progress for the pipe.  Wait for the first operation to complete before attempting to write again.</source>
-        <target state="translated">파이프에 대한 쓰기가 이미 진행 중입니다. 쓰기를 다시 시도하기 전에 첫 번째 작업이 완료될 때까지 기다리십시오.</target>
+        <target state="new">There is already a write in progress for the pipe.  Wait for the first operation to complete before attempting to write again.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeWriteTimedOut">
         <source>The write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">할당된 시간 제한 {0} 이내에 파이프에 쓰기가 완료되지 않았습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">The write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="PlatformNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on this platform.</source>
-        <target state="translated">이 플랫폼에서는 NetNamedPipe가 지원되지 않습니다.</target>
+        <target state="new">NetNamedPipe is not supported on this platform.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">제한 시간은 TimeSpan.Zero보다 크거나 같아야 합니다. 제한 시간을 사용하지 않도록 설정하려면 TimeSpan.MaxValue를 지정하세요.</target>
+        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">Int32.MaxValue TotalMilliseconds(약 24일)보다 큰 시간 제한은 허용되지 않습니다. 시간 제한을 사용하지 않으려면 TimeSpan.MaxValue를 지정하세요.</target>
+        <target state="new">Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
         <source>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</source>
-        <target state="translated">'{1}'의 명명된 파이프 끝점에 연결할 수 없습니다. 전체 시간 제한에서 남아 있는 {0} 동안 다시 시도됩니다.</target>
+        <target state="new">An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeInitiatingNamedPipeConnection">
         <source>Initiating Named Pipe connection.</source>
-        <target state="translated">명명된 파이프 연결을 시작하는 중입니다.</target>
+        <target state="new">Initiating Named Pipe connection.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodePipeConnectionAbort">
         <source>PipeConnection aborted</source>
-        <target state="translated">PipeConnection이 중단됨</target>
+        <target state="new">PipeConnection aborted</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="translated">이 인수의 값은 음수가 아니어야 합니다.</target>
+        <target state="new">The value of this argument must be non-negative.</target>
         <note />
       </trans-unit>
     </body>

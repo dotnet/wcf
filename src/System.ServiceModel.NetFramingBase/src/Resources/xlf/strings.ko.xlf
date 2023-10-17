@@ -4,437 +4,437 @@
     <body>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="translated">작업 경계</target>
+        <target state="new">Activity boundary</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityProcessAction">
         <source>Process action '{0}'.</source>
-        <target state="translated">동작 '{0}'을(를) 처리하세요.</target>
+        <target state="new">Process action '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityProcessingMessage">
         <source>Processing message {0}.</source>
-        <target state="translated">'{0}' 메시지를 처리하는 중입니다.</target>
+        <target state="new">Processing message {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">클라이언트가 SspiNegotiation/Kerberos 목적으로 대상 주소 '{0}'의 ID에 기초하여 서비스 사용자 이름을 확인할 수 없습니다. 대상 주소 ID는 UPN ID(예: acmedomain\alice) 또는 SPN ID(예: host/bobs-machine)여야 합니다.</target>
+        <target state="new">Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientCredentialsUnableToCreateLocalTokenProvider">
         <source>ClientCredentials cannot create a local token provider for token requirement {0}.</source>
-        <target state="translated">ClientCredentials가 토큰 요구 사항 {0}에 대한 로컬 토큰 공급자를 만들 수 없습니다.</target>
+        <target state="new">ClientCredentials cannot create a local token provider for token requirement {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="CloseTimedOut">
         <source>Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">{0} 이후에 Close의 시간이 초과되었습니다. Close의 호출에 전달되는 시간 제한 값을 늘리거나 바인딩에서 CloseTimeout 값을 늘리세요. 이 작업에 할당된 시간이 더 긴 시간 제한의 일부분일 수 있습니다.</target>
+        <target state="new">Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="translated">통신 개체 {0}이(가) {1} 상태입니다. 통신 개체는 열림 상태가 아닌 경우 통신에 사용할 수 없습니다.</target>
+        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">통신 개체 {0}은(는) Faulted 상태이기 때문에 통신에 사용할 수 없습니다.</target>
+        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
         <note />
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessage">
         <source>Identity check failed for outgoing message. The expected DNS identity of the remote endpoint was '{0}' but the remote endpoint provided DNS claim '{1}'. If this is a legitimate remote endpoint, you can fix the problem by explicitly specifying DNS identity '{1}' as the Identity property of EndpointAddress when creating channel proxy. </source>
-        <target state="translated">보내는 메시지의 ID를 검사하지 못했습니다. 원격 엔드포인트의 필요한 DNS ID가 '{0}'이지만 원격 엔드포인트가 DNS 클레임 '{1}'을(를) 제공했습니다. 이 엔드포인트가 올바른 원격 엔드포인트인 경우 채널 프록시를 만들 때 DNS ID '{1}'을(를) EndpointAddress의 Identity 속성으로 명시적으로 지정하여 이 문제를 해결할 수 있습니다. </target>
+        <target state="new">Identity check failed for outgoing message. The expected DNS identity of the remote endpoint was '{0}' but the remote endpoint provided DNS claim '{1}'. If this is a legitimate remote endpoint, you can fix the problem by explicitly specifying DNS identity '{1}' as the Identity property of EndpointAddress when creating channel proxy. </target>
         <note />
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessageLackOfDnsClaim">
         <source>The Identity check failed for the outgoing message. The remote endpoint did not provide a domain name system (DNS) claim and therefore did not satisfied DNS identity '{0}'. This may be caused by lack of DNS or CN name in the remote endpoint X.509 certificate's distinguished name.</source>
-        <target state="translated">보내는 메시지의 ID를 검사하지 못했습니다. 원격 엔드포인트가 DNS(Domain Name System) 클레임을 제공하지 않았으므로 DNS ID '{0}'을(를) 충족하지 못했습니다. 이것은 원격 엔드포인트 X.509 인증서의 고유 이름에 DNS 또는 CN 이름이 없을 경우 발생할 수 있습니다.</target>
+        <target state="new">The Identity check failed for the outgoing message. The remote endpoint did not provide a domain name system (DNS) claim and therefore did not satisfied DNS identity '{0}'. This may be caused by lack of DNS or CN name in the remote endpoint X.509 certificate's distinguished name.</target>
         <note />
       </trans-unit>
       <trans-unit id="DuplexChannelAbortedDuringOpen">
         <source>Duplex channel to {0} was aborted during the open process.</source>
-        <target state="translated">열기 프로세스 도중에 {0}에 대한 이중 채널이 중단되었습니다.</target>
+        <target state="new">Duplex channel to {0} was aborted during the open process.</target>
         <note />
       </trans-unit>
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
-        <target state="translated">메시지를 수락할 수 있는 {0}에서 수신 대기 중인 엔드포인트가 없습니다. 이것은 흔히 잘못된 주소나 SOAP 동작으로 인해 발생합니다. 자세한 내용은 InnerException(있을 경우)을 참조하세요.</target>
+        <target state="new">There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingAtEnd">
         <source>An attempt was made to decode a value after the framing stream was ended.</source>
-        <target state="translated">프레이밍 스트림이 끝난 후에 값을 디코딩하려고 했습니다.</target>
+        <target state="new">An attempt was made to decode a value after the framing stream was ended.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeMismatch">
         <source>Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</source>
-        <target state="translated">콘텐츠 형식 {0}이(가) 서비스 {1}에서 지원되지 않습니다. 클라이언트 및 서비스 바인딩이 일치하지 않을 수 있습니다.</target>
+        <target state="new">Content Type {0} was not supported by service {1}.  The client and service bindings may be mismatched.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeTooLong">
         <source>The framing content type size ({0}) exceeds the quota.</source>
-        <target state="translated">프레이밍 콘텐츠 형식 크기({0})가 할당량을 초과합니다.</target>
+        <target state="new">The framing content type size ({0}) exceeds the quota.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingContentTypeTooLongFault">
         <source>Content type '{0}' is too long to be processed by the remote host. See the server logs for more details.</source>
-        <target state="translated">콘텐츠 형식 '{0}'이(가) 너무 길어서 원격 호스트가 처리할 수 없습니다. 자세한 내용은 서버 로그를 참조하세요.</target>
+        <target state="new">Content type '{0}' is too long to be processed by the remote host. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingError">
         <source>Error while reading message framing format at position {0} of stream (state: {1})</source>
-        <target state="translated">스트림의 위치 {0}에서 메시지 프레이밍 형식을 읽는 동안 오류가 발생했습니다(상태: {1}).</target>
+        <target state="new">Error while reading message framing format at position {0} of stream (state: {1})</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingFaultTooLong">
         <source>The framing fault size ({0}) exceeds the quota.</source>
-        <target state="translated">프레이밍 오류 크기({0})가 할당량을 초과합니다.</target>
+        <target state="new">The framing fault size ({0}) exceeds the quota.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingFaultUnrecognized">
         <source>Server faulted with code '{0}'.</source>
-        <target state="translated">'{0}' 코드로 서버에 오류가 발생했습니다.</target>
+        <target state="new">Server faulted with code '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingMaxMessageSizeExceeded">
         <source>The maximum message size quota for incoming messages has been exceeded for the remote channel. See the server logs for more details.</source>
-        <target state="translated">원격 채널에 대해 들어오는 메시지의 최대 메시지 크기 할당량을 초과했습니다. 자세한 내용은 서버 로그를 참조하세요.</target>
+        <target state="new">The maximum message size quota for incoming messages has been exceeded for the remote channel. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingModeNotSupported">
         <source>Framing mode {0} is not supported.</source>
-        <target state="translated">{0} 프레이밍 모드는 지원되지 않습니다.</target>
+        <target state="new">Framing mode {0} is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingModeNotSupportedFault">
         <source>The .Net Framing mode being used is not supported by '{0}'. See the server logs for more details.</source>
-        <target state="translated">사용 중인 .NET 프레이밍 모드가 '{0}'에서 지원되지 않습니다. 자세한 내용은 서버 로그를 참조하세요.</target>
+        <target state="new">The .Net Framing mode being used is not supported by '{0}'. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingPrematureEOF">
         <source>More data was expected, but EOF was reached.</source>
-        <target state="translated">추가 데이터가 필요하지만 EOF에 도달했습니다.</target>
+        <target state="new">More data was expected, but EOF was reached.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingRecordTypeMismatch">
         <source>Expected record type '{0}', found '{1}'.</source>
-        <target state="translated">레코드 형식 '{0}'이 필요하지만 '{1}'을(를) 찾았습니다.</target>
+        <target state="new">Expected record type '{0}', found '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingSizeTooLarge">
         <source>Specified size is too large for this implementation.</source>
-        <target state="translated">지정한 크기가 너무 커서 이 구현에 맞지 않습니다.</target>
+        <target state="new">Specified size is too large for this implementation.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingUpgradeInvalid">
         <source>The requested upgrade is not supported by '{0}'. This could be due to mismatched bindings (for example security enabled on the client and not on the server).</source>
-        <target state="translated">요청한 업그레이드가 '{0}'에서 지원되지 않습니다. 이것은 일치하지 않는 바인딩 때문일 수 있습니다(예를 들어, 클라이언트에서 보안이 사용되지만 서버에서는 사용되지 않은 경우).</target>
+        <target state="new">The requested upgrade is not supported by '{0}'. This could be due to mismatched bindings (for example security enabled on the client and not on the server).</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingValueNotAvailable">
         <source>The value cannot be accessed because it has not yet been fully decoded.</source>
-        <target state="translated">아직 완전히 디코딩되지 않았기 때문에 값에 액세스할 수 없습니다.</target>
+        <target state="new">The value cannot be accessed because it has not yet been fully decoded.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingVersionNotSupported">
         <source>Framing major version {0} is not supported.</source>
-        <target state="translated">프레이밍 주 버전 {0}이(가) 지원되지 않습니다.</target>
+        <target state="new">Framing major version {0} is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingVersionNotSupportedFault">
         <source>The .Net Framing version being used is not supported by '{0}'. See the server logs for more details.</source>
-        <target state="translated">사용 중인 .NET 프레이밍 버전이 '{0}'에서 지원되지 않습니다. 자세한 내용은 서버 로그를 참조하세요.</target>
+        <target state="new">The .Net Framing version being used is not supported by '{0}'. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaNotUri">
         <source>The framing via ({0}) is not a valid URI.</source>
-        <target state="translated">프레이밍 via({0})가 유효한 URI가 아닙니다.</target>
+        <target state="new">The framing via ({0}) is not a valid URI.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaTooLong">
         <source>The framing via size ({0}) exceeds the quota.</source>
-        <target state="translated">프레이밍 via 크기({0})가 할당량을 초과합니다.</target>
+        <target state="new">The framing via size ({0}) exceeds the quota.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaTooLongFault">
         <source>Via '{0}' is too long to be processed by the remote host. See the server logs for more details.</source>
-        <target state="translated">Via '{0}'이(가)가 너무 길어서 원격 호스트가 처리할 수 없습니다. 자세한 내용은 서버 로그를 참조하세요.</target>
+        <target state="new">Via '{0}' is too long to be processed by the remote host. See the server logs for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
         <source>The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</source>
-        <target state="translated">요청된 서비스 '{0}'을(를) 활성화할 수 없습니다. 자세한 내용은 서버의 진단 추적 로그를 참조하세요.</target>
+        <target state="new">The requested service, '{0}' could not be activated. See the server's diagnostic trace logs for more information.</target>
         <note />
       </trans-unit>
       <trans-unit id="IdentityCheckFailedForOutgoingMessage">
         <source>The identity check failed for the outgoing message. The expected identity is '{0}' for the '{1}' target endpoint.</source>
-        <target state="translated">보내는 메시지에 대한 ID를 검사하지 못했습니다. '{1}' 대상 끝점에 대해 필요한 ID는 '{0}'입니다.</target>
+        <target state="new">The identity check failed for the outgoing message. The expected identity is '{0}' for the '{1}' target endpoint.</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
         <source>Insufficient memory avaliable to complete the operation.</source>
-        <target state="translated">작업을 완료하는 데 사용할 수 있는 메모리가 부족합니다.</target>
+        <target state="new">Insufficient memory avaliable to complete the operation.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDecoderStateMachine">
         <source>Invalid decoder state machine.</source>
-        <target state="translated">잘못된 디코더 상태 컴퓨터입니다.</target>
+        <target state="new">Invalid decoder state machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTokenProvided">
         <source>The token provider of type '{0}' did not return a token of type '{1}'. Check the credential configuration.</source>
-        <target state="translated">형식 '{0}'의 토큰 공급자가 형식 '{1}'의 토큰을 반환하지 않았습니다. 자격 증명 구성을 확인하세요.</target>
+        <target state="new">The token provider of type '{0}' did not return a token of type '{1}'. Check the credential configuration.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUriScheme">
         <source>The provided URI scheme '{0}' is invalid; expected '{1}'.</source>
-        <target state="translated">제공한 URI 구성표 '{0}'이(가) 잘못되었습니다. '{1}'이(가) 필요합니다.</target>
+        <target state="new">The provided URI scheme '{0}' is invalid; expected '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockTimeoutExceptionMessage">
         <source>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">할당된 시간 제한인 {0} 내에서 잠금을 클레임할 수 없습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeExceeded">
         <source>The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</source>
-        <target state="translated">들어오는 메시지의 최대 메시지 크기 할당량({0})을 초과했습니다. 할당량을 늘리려면 적합한 바인딩 요소에서 MaxReceivedMessageSize 속성을 사용하세요.</target>
+        <target state="new">The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeMustBeInIntegerRange">
         <source>This factory buffers messages, so the message sizes must be in the range of an integer value.</source>
-        <target state="translated">이 팩터리가 메시지를 버퍼링하므로 메시지 크기는 정수 값 범위에 있어야 합니다.</target>
+        <target state="new">This factory buffers messages, so the message sizes must be in the range of an integer value.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxSentMessageSizeExceeded">
         <source>The maximum message size quota for outgoing messages ({0}) has been exceeded.</source>
-        <target state="translated">보내는 메시지에 대한 최대 메시지 크기 할당량({0})을 초과했습니다.</target>
+        <target state="new">The maximum message size quota for outgoing messages ({0}) has been exceeded.</target>
         <note />
       </trans-unit>
       <trans-unit id="MessageXmlProtocolError">
         <source>There is a problem with the XML that was received from the network. See inner exception for more details.</source>
-        <target state="translated">네트워크에서 수신한 XML에 문제가 있습니다. 자세한 내용은 내부 예외를 참조하세요.</target>
+        <target state="new">There is a problem with the XML that was received from the network. See inner exception for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleMebesInParameters">
         <source>More than one MessageEncodingBindingElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple MessageEncodingBindingElements in a CustomBinding. Remove all but one of these elements.</source>
-        <target state="translated">둘 이상의 MessageEncodingBindingElement를 BindingContext의 BindingParameters에서 찾았습니다. 이것은 일반적으로 CustomBinding에 여러 MessageEncodingBindingElements가 있기 때문에 발생합니다. 이러한 요소를 하나만 제외하고 모두 제거하세요.</target>
+        <target state="new">More than one MessageEncodingBindingElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple MessageEncodingBindingElements in a CustomBinding. Remove all but one of these elements.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleStreamUpgradeProvidersInParameters">
         <source>More than one IStreamUpgradeProviderElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple IStreamUpgradeProviderElements in a CustomBinding. Remove all but one of these elements.</source>
-        <target state="translated">둘 이상의 IStreamUpgradeProviderElement를 BindingContext의 BindingParameters에서 찾았습니다. 이것은 일반적으로 CustomBinding에 여러 IStreamUpgradeProviderElements가 있기 때문에 발생합니다. 이러한 요소를 하나만 제외하고 모두 제거하세요.</target>
+        <target state="new">More than one IStreamUpgradeProviderElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple IStreamUpgradeProviderElements in a CustomBinding. Remove all but one of these elements.</target>
         <note />
       </trans-unit>
       <trans-unit id="NegotiationFailedIO">
         <source>Transport security negotiation failed due to an underlying IO error: {0}.</source>
-        <target state="translated">기본 IO 오류로 인해 전송 보안 협상에 실패했습니다. {0}.</target>
+        <target state="new">Transport security negotiation failed due to an underlying IO error: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="OpenTimedOutEstablishingTransportSession">
         <source>Open timed out after {0} while establishing a transport session to {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">{1}에 대한 전송 세션을 설정하는 동안 {0} 이후에 Open이 시간 초과되었습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">Open timed out after {0} while establishing a transport session to {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="OperationAbortedDuringConnectionEstablishment">
         <source>Operation was aborted while establishing a connection to {0}.</source>
-        <target state="translated">{0}에 대한 연결을 설정하는 동안 작업이 중단되었습니다.</target>
+        <target state="new">Operation was aborted while establishing a connection to {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="OperationInvalidBeforeSecurityNegotiation">
         <source>This operation is not valid until security negotiation is complete.</source>
-        <target state="translated">보안 협상이 완료될 때까지 이 작업이 유효하지 않습니다.</target>
+        <target state="new">This operation is not valid until security negotiation is complete.</target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrect">
         <source>You have tried to create a channel to a service that does not support .Net Framing. </source>
-        <target state="translated">.NET 프레이밍을 지원하지 않는 서비스에 대한 채널을 만들려고 했습니다. </target>
+        <target state="new">You have tried to create a channel to a service that does not support .Net Framing. </target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrectMaybeHttp">
         <source>You have tried to create a channel to a service that does not support .Net Framing. It is possible that you are encountering an HTTP endpoint.</source>
-        <target state="translated">.NET 프레이밍을 지원하지 않는 서비스에 대한 채널을 만들려고 했습니다. HTTP 엔드포인트에 도달했을 수 있습니다.</target>
+        <target state="new">You have tried to create a channel to a service that does not support .Net Framing. It is possible that you are encountering an HTTP endpoint.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedFault">
         <source>The channel received an unexpected fault input message while closing. The fault reason given is: '{0}'</source>
-        <target state="translated">채널이 닫히는 도중에 예기치 않은 오류 입력 메시지를 수신했습니다. 주어진 오류 원인은 '{0}'입니다.</target>
+        <target state="new">The channel received an unexpected fault input message while closing. The fault reason given is: '{0}'</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedLargeFault">
         <source>The channel received an unexpected fault input message with Action = '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</source>
-        <target state="translated">채널이 닫는 도중에 Action='{0}'이(가) 있는 예기치 않은 오류 입력 메시지를 수신했습니다. 입력 메시지가 더 이상 필요하지 않은 경우에만 채널을 닫아야 합니다.</target>
+        <target state="new">The channel received an unexpected fault input message with Action = '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedMessage">
         <source>The channel received an unexpected input message with Action '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</source>
-        <target state="translated">닫는 동안 채널이 '{0}' 동작을 가진 예기치 않은 입력 메시지를 수신했습니다. 입력 메시지가 더 이상 필요하지 않은 경우에만 채널을 닫아야 합니다.</target>
+        <target state="new">The channel received an unexpected input message with Action '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveTimedOut2">
         <source>Receive timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">{0} 이후에 수신이 시간 초과되었습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">Receive timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteIdentityFailedVerification">
         <source>The following remote identity failed verification: '{0}'.</source>
-        <target state="translated">다음 원격 ID를 확인하지 못했습니다. '{0}'.</target>
+        <target state="new">The following remote identity failed verification: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestChannelSendTimedOut">
         <source>The request channel timed out attempting to send after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">요청 채널이 보내기를 시도하는 동안 {0} 이후에 시간 초과되었습니다. Request의 호출에 전달되는 시간 제한 값을 늘리거나 바인딩에서 SendTimeout 값을 늘리세요. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">The request channel timed out attempting to send after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestChannelWaitForReplyTimedOut">
         <source>The request channel timed out while waiting for a reply after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">요청 채널이 회신을 기다리는 동안 {0} 이후에 시간 초과되었습니다. Request의 호출에 전달되는 시간 제한 값을 늘리거나 바인딩에서 SendTimeout 값을 늘리세요. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">The request channel timed out while waiting for a reply after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestTimedOutEstablishingTransportSession">
         <source>Request timed out after {0} while establishing a transport connection to {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">{1}에 대한 전송 연결을 설정하는 동안 {0} 이후에 요청이 시간 초과되었습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">Request timed out after {0} while establishing a transport connection to {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">제한 시간은 TimeSpan.Zero보다 크거나 같아야 합니다. 제한 시간을 사용하지 않도록 설정하려면 TimeSpan.MaxValue를 지정하세요.</target>
+        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SPS_SeekNotSupported">
         <source>Seek is not supported on this stream.</source>
-        <target state="translated">이 스트림에서 찾기가 지원되지 않습니다.</target>
+        <target state="new">Seek is not supported on this stream.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">종료하는 중이라는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 자세한 오류 내용은 내부 예외를 참조하십시오.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">사용 중이어서 요청을 처리할 수 없다는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 나중에 다시 시도하세요. 자세한 오류 내용은 내부 예외를 참조하세요.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SendCannotBeCalledAfterCloseOutputSession">
         <source>You cannot Send messages on a channel after CloseOutputSession has been called.</source>
-        <target state="translated">CloseOutputSession이 호출된 후에 채널에서 메시지를 보낼 수 없습니다.</target>
+        <target state="new">You cannot Send messages on a channel after CloseOutputSession has been called.</target>
         <note />
       </trans-unit>
       <trans-unit id="SendToViaTimedOut">
         <source>Sending to via {0} timed out after {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">via {0}에 보내기가 {1} 이후에 시간 초과되었습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">Sending to via {0} timed out after {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="ServerRejectedSessionPreamble">
         <source>The server at {0} rejected the session-establishment request.</source>
-        <target state="translated">{0}의 서버가 세션 연결 요청을 거부했습니다.</target>
+        <target state="new">The server at {0} rejected the session-establishment request.</target>
         <note />
       </trans-unit>
       <trans-unit id="ServerRejectedUpgradeRequest">
         <source>The server rejected the upgrade request.</source>
-        <target state="translated">서버가 업그레이드 요청을 거부했습니다.</target>
+        <target state="new">The server rejected the upgrade request.</target>
         <note />
       </trans-unit>
       <trans-unit id="ServerTooBusy">
         <source>Server '{0}' is too busy to process this request. Try again later.</source>
-        <target state="translated">'{0}' 서버의 사용량이 너무 많아서 이 요청을 처리할 수 없습니다. 나중에 다시 시도하세요.</target>
+        <target state="new">Server '{0}' is too busy to process this request. Try again later.</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_ConnectionDispatchFailed">
         <source>The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</source>
-        <target state="translated">'{0}' 주소의 서비스로 메시지를 발송할 수 없습니다. 자세한 내용은 서버 이벤트 로그를 참조하세요.</target>
+        <target state="new">The message could not be dispatched to the service at address '{0}'. Refer to the server Event Log for more details</target>
         <note />
       </trans-unit>
       <trans-unit id="Sharing_EndpointUnavailable">
         <source>The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</source>
-        <target state="translated">끝점 주소 '{0}'의 서비스는 해당 주소의 프로토콜에 사용할 수 없으므로 메시지를 발송할 수 없습니다.</target>
+        <target state="new">The message could not be dispatched because the service at the endpoint address '{0}' is unavailable for the protocol of the address.</target>
         <note />
       </trans-unit>
       <trans-unit id="SizeExceedsRemainingBufferSpace">
         <source>The specified size exceeds the remaining buffer space ({0} bytes).</source>
-        <target state="translated">지정된 크기가 여유 버퍼 공간({0}바이트)을 초과합니다.</target>
+        <target state="new">The specified size exceeds the remaining buffer space ({0} bytes).</target>
         <note />
       </trans-unit>
       <trans-unit id="SpaceNeededExceedsMessageFrameOffset">
         <source>The space needed for encoding ({0} bytes) exceeds the message frame offset.</source>
-        <target state="translated">인코딩에 필요한 공간({0}바이트)이 메시지 프레임 오프셋을 초과합니다.</target>
+        <target state="new">The space needed for encoding ({0} bytes) exceeds the message frame offset.</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamDoesNotSupportTimeout">
         <source>TimeoutStream requires an inner Stream that supports timeouts; its CanTimeout property must be true.</source>
-        <target state="translated">TimeoutStream에는 시간 제한을 지원하는 내부 스트림이 필요합니다. CanTimeout 속성은 true여야 합니다.</target>
+        <target state="new">TimeoutStream requires an inner Stream that supports timeouts; its CanTimeout property must be true.</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamError">
         <source>An error occurred while transmitting data.</source>
-        <target state="translated">데이터를 전송하는 동안 오류가 발생했습니다.</target>
+        <target state="new">An error occurred while transmitting data.</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamMutualAuthNotSatisfied">
         <source>The remote server did not satisfy the mutual authentication requirement.</source>
-        <target state="translated">원격 서버가 상호 인증 요구 사항을 충족하지 않습니다.</target>
+        <target state="new">The remote server did not satisfy the mutual authentication requirement.</target>
         <note />
       </trans-unit>
       <trans-unit id="StreamUpgradeUnsupportedChannelBindingKind">
         <source>The StreamUpgradeProvider {0} does not support the specified ChannelBindingKind ({1}). </source>
-        <target state="translated">StreamUpgradeProvider {0}이(가) 지정된 ChannelBindingKind({1})를 지원하지 않습니다. </target>
+        <target state="new">The StreamUpgradeProvider {0} does not support the specified ChannelBindingKind ({1}). </target>
         <note />
       </trans-unit>
       <trans-unit id="TimeoutOnOpen">
         <source>The open operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">할당된 시간 제한({0}) 내에 열기 작업이 완료되지 않았습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">The open operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="TimeoutOnRequest">
         <source>The request operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">할당된 시간 제한({0}) 내에 요청 작업이 완료되지 않았습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">The request operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeConnectionPoolIdleTimeoutReached">
         <source>A connection has exceeded the idle timeout of this connection pool ({0}) and been closed.</source>
-        <target state="translated">연결이 이 연결 풀({0})의 유휴 시간 제한을 초과했으므로 닫혔습니다.</target>
+        <target state="new">A connection has exceeded the idle timeout of this connection pool ({0}) and been closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeConnectionPoolLeaseTimeoutReached">
         <source>A connection has exceeded the connection lease timeout of this connection pool ({0}) and been closed.</source>
-        <target state="translated">연결이 이 연결 풀({0})의 연결 대여 시간 제한을 초과했으므로 닫혔습니다.</target>
+        <target state="new">A connection has exceeded the connection lease timeout of this connection pool ({0}) and been closed.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeConnectionPoolMaxOutboundConnectionsPerEndpointQuotaReached">
         <source>MaxOutboundConnectionsPerEndpoint quota ({0}) has been reached, so connection was closed and not stored in this connection pool.</source>
-        <target state="translated">MaxOutboundConnectionsPerEndpoint 할당량({0})에 도달했으므로 연결이 닫혔으며 이 연결 풀에 저장되지 않았습니다.</target>
+        <target state="new">MaxOutboundConnectionsPerEndpoint quota ({0}) has been reached, so connection was closed and not stored in this connection pool.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedUpgradeInitiator">
         <source>The StreamUpgradeInitiator specified ({0}) is not supported by this IStreamUpgradeChannelBindingProvider  implementation.  The most likely cause of this is passing a StreamUpgradeInitiator that was not created by the StreamUpgradeProvider associated with the current IStreamUpgradeChannelBindingProvider  implementation.</source>
-        <target state="translated">지정된 StreamUpgradeInitiator({0})는 이 IStreamUpgradeChannelBindingProvider 구현에서 지원되지 않습니다. 이 오류가 발생하는 원인 중 대부분은 현재 IStreamUpgradeChannelBindingProvider 구현과 관련된 StreamUpgradeProvider에서 생성되지 않은 StreamUpgradeInitiator를 전달했기 때문입니다.</target>
+        <target state="new">The StreamUpgradeInitiator specified ({0}) is not supported by this IStreamUpgradeChannelBindingProvider  implementation.  The most likely cause of this is passing a StreamUpgradeInitiator that was not created by the StreamUpgradeProvider associated with the current IStreamUpgradeChannelBindingProvider  implementation.</target>
         <note />
       </trans-unit>
       <trans-unit id="UriGeneratorSchemeMustNotBeEmpty">
         <source>The scheme parameter must not be empty.</source>
-        <target state="translated">스키마 매개 변수는 비어 있을 수 없습니다.</target>
+        <target state="new">The scheme parameter must not be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="translated">이 인수의 값은 {0} - {1} 범위에 속해야 합니다.</target>
+        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="translated">이 인수의 값은 음수가 아니어야 합니다.</target>
+        <target state="new">The value of this argument must be non-negative.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBePositive">
         <source>The value of this argument must be positive.</source>
-        <target state="translated">이 인수의 값은 양수여야 합니다.</target>
+        <target state="new">The value of this argument must be positive.</target>
         <note />
       </trans-unit>
       <trans-unit id="WaitForMessageTimedOut">
         <source>WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">WaitForMessage가 {0} 이후에 시간 제한을 초과했습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <target state="new">WaitForMessage timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
         <note />
       </trans-unit>
     </body>
