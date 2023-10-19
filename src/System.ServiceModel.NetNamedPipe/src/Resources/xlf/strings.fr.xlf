@@ -4,162 +4,162 @@
     <body>
       <trans-unit id="ChannelTypeNotSupported">
         <source>The specified channel type {0} is not supported by this channel manager.</source>
-        <target state="new">The specified channel type {0} is not supported by this channel manager.</target>
+        <target state="translated">Le type de canal {0} spécifié n'est pas pris en charge par ce gestionnaire de canaux.</target>
         <note />
       </trans-unit>
       <trans-unit id="EndpointNotFound">
         <source>There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</source>
-        <target state="new">There was no endpoint listening at {0} that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details.</target>
+        <target state="translated">Il n'existait pas de point de terminaison à l'écoute sur {0} pouvant accepter le message. Ceci est souvent dû à une adresse ou une action SOAP incorrecte. S'il est présent, consultez InnerException pour plus d'informations.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
         <source>The pipe cannot be written to or read from because it is already in the process of being closed.</source>
-        <target state="new">The pipe cannot be written to or read from because it is already in the process of being closed.</target>
+        <target state="translated">Le canal n'est pas accessible en lecture et en écriture car il est déjà en cours de fermeture.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyShuttingDown">
         <source>The pipe cannot be written to because it is already in the process of shutting down.</source>
-        <target state="new">The pipe cannot be written to because it is already in the process of shutting down.</target>
+        <target state="translated">Le canal n'est pas accessible en écriture car il est déjà en cours d'arrêt.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeCantCloseWithPendingWrite">
         <source>The pipe cannot be closed while a write to the pipe is pending.</source>
-        <target state="new">The pipe cannot be closed while a write to the pipe is pending.</target>
+        <target state="translated">Le canal ne peut pas être fermé alors qu'une écriture sur le canal est en attente.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeCloseFailed">
         <source>The pipe could not close gracefully.  This may be caused by the application on the other end of the pipe exiting.</source>
-        <target state="new">The pipe could not close gracefully.  This may be caused by the application on the other end of the pipe exiting.</target>
+        <target state="translated">Le canal ne peut pas être fermé normalement. La raison peut en être la fermeture de l'application à l'autre extrémité du canal.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeClosed">
         <source>The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</source>
-        <target state="new">The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</target>
+        <target state="translated">L'opération ne peut pas être terminée car le canal était fermé. La raison peut en être la fermeture de l'application à l'autre extrémité du canal.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectAddressFailed">
         <source>A pipe endpoint exists for '{0}', but the connect failed: {1}</source>
-        <target state="new">A pipe endpoint exists for '{0}', but the connect failed: {1}</target>
+        <target state="translated">Un point de terminaison de canal existe pour '{0}', mais la connexion a échoué : {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectFailed">
         <source>Cannot connect to endpoint '{0}'.</source>
-        <target state="new">Cannot connect to endpoint '{0}'.</target>
+        <target state="translated">Nous n’avons pas pu vous connecter au point de terminaison '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectTimedOut">
         <source>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Impossible de se connecter au point de terminaison '{0}' dans le délai d'attente alloué de {1}. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectTimedOutServerTooBusy">
         <source>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The server has likely reached the MaxConnections quota and is too busy to accept new connections. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The server has likely reached the MaxConnections quota and is too busy to accept new connections. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Impossible de se connecter au point de terminaison '{0}' dans le délai d'attente alloué de {1}. Le serveur a probablement atteint le quota MaxConnections et est trop occupé pour accepter de nouvelles connexions. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectionAbortedReadTimedOut">
         <source>The pipe connection was aborted because an asynchronous read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The pipe connection was aborted because an asynchronous read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">La connexion du canal a été abandonnée car une lecture asynchrone du canal ne s'est pas terminée dans le délai d'attente alloué de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeConnectionAbortedWriteTimedOut">
         <source>The pipe connection was aborted because an asynchronous write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The pipe connection was aborted because an asynchronous write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">La connexion du canal a été abandonnée car une écriture asynchrone sur le canal ne s'est pas terminée dans le délai d'attente alloué de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeEndpointNotFound">
         <source>The pipe endpoint '{0}' could not be found on your local machine.</source>
-        <target state="new">The pipe endpoint '{0}' could not be found on your local machine.</target>
+        <target state="translated">Le point de terminaison du canal '{0}' est introuvable sur la machine locale.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeKnownWin32Error">
         <source>{0} ({1}, 0x{2})</source>
-        <target state="new">{0} ({1}, 0x{2})</target>
+        <target state="translated">{0} ({1}, 0x{2})</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeModeChangeFailed">
         <source>The pipe was not able to be set to message mode: {0}</source>
-        <target state="new">The pipe was not able to be set to message mode: {0}</target>
+        <target state="translated">Le canal n'a pas pu être défini sur le mode de message : {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeNameCanNotBeAccessed">
         <source>The pipe name could not be obtained for the pipe URI: {0}</source>
-        <target state="new">The pipe name could not be obtained for the pipe URI: {0}</target>
+        <target state="translated">Impossible d'obtenir le nom du canal pour l'URI de canal : {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeNameCanNotBeAccessed2">
         <source>The pipe name could not be obtained for {0}.</source>
-        <target state="new">The pipe name could not be obtained for {0}.</target>
+        <target state="translated">Impossible d'obtenir le nom du canal pour {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeReadPending">
         <source>There is already a read in progress for the pipe.  Wait for the first operation to complete before attempting to read again.</source>
-        <target state="new">There is already a read in progress for the pipe.  Wait for the first operation to complete before attempting to read again.</target>
+        <target state="translated">Il existe déjà une lecture en cours pour le canal. Attendez que la première opération se termine avant de tenter à nouveau une lecture.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeShutdownReadError">
         <source>The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</source>
-        <target state="new">The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</target>
+        <target state="translated">L'indicateur d'arrêt n'a pas été reçu par le canal. L'application à l'autre extrémité du canal peut ne pas l'avoir envoyé. Le canal sera néanmoins fermé.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeShutdownWriteError">
         <source>The shutdown indicator could not be written to the pipe.  The application on the other end of the pipe may not be listening for it.  The pipe will still be closed.</source>
-        <target state="new">The shutdown indicator could not be written to the pipe.  The application on the other end of the pipe may not be listening for it.  The pipe will still be closed.</target>
+        <target state="translated">L'indicateur d'arrêt n'a pas pu être écrit sur le canal. L'application à l'autre extrémité du canal peut ne pas être à l'écoute de celui-ci. Le canal sera néanmoins fermé.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeSignalExpected">
         <source>The read from the pipe expected just a signal, but received actual data.</source>
-        <target state="new">The read from the pipe expected just a signal, but received actual data.</target>
+        <target state="translated">La lecture du canal attendait seulement un signal, mais elle reçu des données réelles.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeUriSchemeWrong">
         <source>URIs used with pipes must use the scheme: 'net.pipe'.</source>
-        <target state="new">URIs used with pipes must use the scheme: 'net.pipe'.</target>
+        <target state="translated">Les URI utilisés avec des canaux doivent utiliser le modèle 'net.pipe'.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeWritePending">
         <source>There is already a write in progress for the pipe.  Wait for the first operation to complete before attempting to write again.</source>
-        <target state="new">There is already a write in progress for the pipe.  Wait for the first operation to complete before attempting to write again.</target>
+        <target state="translated">Il existe déjà une écriture en cours pour le canal. Attendez que la première opération se termine avant de tenter à nouveau une écriture.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeWriteTimedOut">
         <source>The write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">L'écriture sur le canal ne s'est pas terminée dans le délai d'attente alloué de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="PlatformNotSupported_NetNamedPipe">
         <source>NetNamedPipe is not supported on this platform.</source>
-        <target state="new">NetNamedPipe is not supported on this platform.</target>
+        <target state="translated">NetNamedPipe n’est pas pris en charge sur cette plateforme</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
+        <target state="translated">Le délai d'expiration doit être supérieur ou égal à TimeSpan.Zero. Pour désactiver le délai d'expiration, spécifiez TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="new">Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</target>
+        <target state="translated">Les délais d'expiration supérieurs à Int32.MaxValue TotalMilliseconds (soit environ 24 jours) ne peuvent pas être appliqués. Pour désactiver le délai d'expiration, spécifiez TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
         <source>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</source>
-        <target state="new">An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</target>
+        <target state="translated">Une tentative de connexion au point de terminaison du canal nommé à '{1}' a échoué. Une autre tentative sera effectuée avec {0} restants dans le délai d'attente globale.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeInitiatingNamedPipeConnection">
         <source>Initiating Named Pipe connection.</source>
-        <target state="new">Initiating Named Pipe connection.</target>
+        <target state="translated">Lancement de la connexion de canal nommé.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodePipeConnectionAbort">
         <source>PipeConnection aborted</source>
-        <target state="new">PipeConnection aborted</target>
+        <target state="translated">PipeConnection abandonné</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="new">The value of this argument must be non-negative.</target>
+        <target state="translated">La valeur de cet argument doit être non négative.</target>
         <note />
       </trans-unit>
     </body>
