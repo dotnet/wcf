@@ -419,6 +419,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 if (referencedAssembliesArgs != null && referencedAssembliesArgs.Count > 0)
                 {
                     string smassembly = "";
+                    string smpassembly = "";
                     foreach (string path in referencedAssembliesArgs)
                     {
                         var file = new FileInfo(path);
@@ -427,8 +428,13 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         {
                             smassembly = path;
                         }
+
+                        if (file.Name.Equals("System.Private.ServiceModel.dll", StringComparison.OrdinalIgnoreCase))
+                        {
+                            smpassembly = path;
+                        }
                     }
-                    if ((string.IsNullOrEmpty(smassembly)))
+                    if (string.IsNullOrEmpty(smassembly))
                     {
                         ToolConsole.WriteError("Missing System.ServiceModel.Primitives");
                         throw new ArgumentException("Invalid smreference value");
@@ -444,6 +450,21 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                     {
                         ToolConsole.WriteError(string.Format("Fail to load the assembly {0} with the error {1}", smassembly, e.Message));
                         throw;
+                    }
+
+                    if (!string.IsNullOrEmpty(smpassembly))
+                    {
+                        try
+                        {
+                            ToolConsole.WriteLine("Load Assembly From " + smpassembly);
+                            Tool.SMAssembly = InputModule.LoadAssembly(smpassembly);
+                            ToolConsole.WriteLine($"Successfully Load {smpassembly}");
+                        }
+                        catch (Exception e)
+                        {
+                            ToolConsole.WriteError(string.Format("Fail to load the assembly {0} with the error {1}", smpassembly, e.Message));
+                            throw;
+                        }
                     }
                 }
                 else
