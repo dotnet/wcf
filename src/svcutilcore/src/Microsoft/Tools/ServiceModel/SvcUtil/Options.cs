@@ -428,27 +428,16 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         {
                             smassembly = path;
                         }
+
                         if (file.Name.Equals("System.Private.ServiceModel.dll", StringComparison.OrdinalIgnoreCase))
                         {
                             smpassembly = path;
                         }
                     }
-                    if ((string.IsNullOrEmpty(smassembly)) || (string.IsNullOrEmpty(smpassembly)))
+                    if (string.IsNullOrEmpty(smassembly))
                     {
-                        ToolConsole.WriteError("Missing one or both of the paths for System.ServiceModel.Primitives and System.Private.ServiceModel");
+                        ToolConsole.WriteError("Missing System.ServiceModel.Primitives");
                         throw new ArgumentException("Invalid smreference value");
-                    }
-
-                    try
-                    {
-                        ToolConsole.WriteLine("Load Assembly From " + smpassembly);
-                        InputModule.LoadAssembly(smpassembly);
-                        ToolConsole.WriteLine($"Successfully Load {smpassembly}");
-                    }
-                    catch (Exception e)
-                    {
-                        ToolConsole.WriteError(string.Format("Fail to load the assembly {0} with the error {1}", smpassembly, e.Message));
-                        throw;
                     }
 
                     try
@@ -462,11 +451,26 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         ToolConsole.WriteError(string.Format("Fail to load the assembly {0} with the error {1}", smassembly, e.Message));
                         throw;
                     }
+
+                    if (!string.IsNullOrEmpty(smpassembly))
+                    {
+                        try
+                        {
+                            ToolConsole.WriteLine("Load Assembly From " + smpassembly);
+                            Tool.SMAssembly = InputModule.LoadAssembly(smpassembly);
+                            ToolConsole.WriteLine($"Successfully Load {smpassembly}");
+                        }
+                        catch (Exception e)
+                        {
+                            ToolConsole.WriteError(string.Format("Fail to load the assembly {0} with the error {1}", smpassembly, e.Message));
+                            throw;
+                        }
+                    }
                 }
                 else
                 {
-                    ToolConsole.WriteError("Need to pass the System.ServiceModel.Primitives.dll and the System.Private.ServiceModel.dll paths through the 'smreference' parameter.");
-                    throw new ArgumentException("Need to pass the System.ServiceModel.Primitives.dll and the System.Private.ServiceModel.dll paths through the 'smreference' parameter.");
+                    ToolConsole.WriteError("Need to pass the System.ServiceModel.Primitives.dll path through the 'smreference' parameter.");
+                    throw new ArgumentException("Need to pass the System.ServiceModel.Primitives.dll path through the 'smreference' parameter.");
                 }
             }
 
