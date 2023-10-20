@@ -10,14 +10,16 @@ namespace System.ServiceModel
 {
     public sealed class UnixDomainSocketSecurity
     {
-        internal const UnixDomainSocketSecurityMode DefaultMode = UnixDomainSocketSecurityMode.Transport;
+        private static UnixDomainSocketSecurityMode s_defaultMode =
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
+                UnixDomainSocketSecurityMode.Transport : UnixDomainSocketSecurityMode.TransportCredentialOnly;
+            
 
         private UnixDomainSocketSecurityMode _mode;
 
         public UnixDomainSocketSecurity()
         {
-            _mode = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
-                UnixDomainSocketSecurityMode.Transport : UnixDomainSocketSecurityMode.TransportCredentialOnly;
+            _mode = s_defaultMode;
             Transport = new UnixDomainSocketTransportSecurity();
         }
 
@@ -27,14 +29,14 @@ namespace System.ServiceModel
                             string.Format("Invalid SecurityMode value: {0} = {1} (default is {2} = {3}).",
                                             (int)mode,
                                             mode.ToString(),
-                                            (int)SecurityMode.Transport,
-                                            SecurityMode.Transport.ToString()));
+                                            (int)s_defaultMode,
+                                            s_defaultMode.ToString()));
 
             _mode = mode;
             Transport = transportSecurity ?? new UnixDomainSocketTransportSecurity();
         }
 
-        [DefaultValue(DefaultMode)]
+       
         public UnixDomainSocketSecurityMode Mode
         {
             get { return _mode; }
@@ -54,7 +56,9 @@ namespace System.ServiceModel
         {
             if (_mode == UnixDomainSocketSecurityMode.Transport || _mode == UnixDomainSocketSecurityMode.TransportCredentialOnly)
             {
-                if(_mode == UnixDomainSocketSecurityMode.TransportCredentialOnly && Transport.ClientCredentialType != UnixDomainSocketClientCredentialType.PosixIdentity)
+                if((_mode == UnixDomainSocketSecurityMode.TransportCredentialOnly && Transport.ClientCredentialType != UnixDomainSocketClientCredentialType.PosixIdentity)
+                    ||
+                    (_mode == UnixDomainSocketSecurityMode.Transport && Transport.ClientCredentialType == UnixDomainSocketClientCredentialType.PosixIdentity))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedSecuritySetting, "Mode", _mode)));
                 }
