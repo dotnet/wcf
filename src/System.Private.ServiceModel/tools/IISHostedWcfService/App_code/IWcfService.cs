@@ -150,10 +150,10 @@ namespace WcfService
         XmlMessageContractTestResponse EchoMessageResponseWithMessageHeader(XmlMessageContractTestRequest request);
 
         [OperationContract(
-            Action = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMessageHeader",
-            ReplyAction = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMessageHeaderResponse")]
+            Action = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageRequestWithMessageHeader",
+            ReplyAction = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageRequestWithMessageHeaderResponse")]
         [XmlSerializerFormat(SupportFaults = true)]
-        XmlMessageContractTestResponse EchoMessageResquestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request);
+        XmlMessageContractTestResponse EchoMessageRequestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request);
 
         [OperationContract]
         bool IsHttpKeepAliveDisabled();
