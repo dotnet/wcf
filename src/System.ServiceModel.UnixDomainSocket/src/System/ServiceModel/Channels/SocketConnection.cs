@@ -155,9 +155,9 @@ namespace System.ServiceModel.Channels
 
         public ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout)
         {
-            if (buffer.Length <= 0)
+            if (buffer.Length < 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(buffer.Length), buffer.Length, SR.ValueMustBePositive));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(buffer.Length), buffer.Length, SR.ValueMustBeNonNegative));
             }
             ThrowIfNotOpen();
 
