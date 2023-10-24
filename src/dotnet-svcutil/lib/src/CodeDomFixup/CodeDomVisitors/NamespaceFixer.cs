@@ -12,11 +12,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     internal class NamespaceFixup : CodeDomVisitor
     {
         private static string s_microsoftXml = "Microsoft.Xml";
-        private static string s_systemXml = "System.Xml";
+        private static string s_systemXml = "global::System.Xml";
         private static string s_microsoftCodeDom = "Microsoft.CodeDom";
         private static string s_systemCodeDom = "System.CodeDom";
+        private static string s_runtimeSerialization = "System.Runtime.Serialization";
+        private static string s_serviceModelMessageContract = "System.ServiceModel.Message";
+        private static string s_globalRuntimeSerialization = "global::System.Runtime.Serialization";
+        private static string s_globalServiceModelMessageContract = "global::System.ServiceModel.Message";
         private Dictionary<string, Type> _xmlTypes = new Dictionary<string, Type>();
         private Dictionary<string, Type> _codeDomTypes = new Dictionary<string, Type>();
+        private Dictionary<string, Type> _runtimeSerializationTypes = new Dictionary<string, Type>();
+        private Dictionary<string, Type> _smMessageContractAttrTypes = new Dictionary<string, Type>();
 
         public NamespaceFixup()
         {
@@ -40,6 +46,27 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     _codeDomTypes[type.FullName] = type;
                 }
             }
+
+            //find types of System.Runtime.Serialization and prefix with global:: to allow "System" be used as member of a data class.
+            var runtimeSerTypes = TypeLoader.LoadTypes(typeof(System.Runtime.Serialization.DataMemberAttribute).GetTypeInfo().Assembly, Verbosity.Silent);
+
+            foreach (var type in runtimeSerTypes)
+            {
+                if (type.FullName.Contains(s_runtimeSerialization))
+                {
+                    _runtimeSerializationTypes[type.FullName] = type;
+                }
+            }
+
+            //find types of System.ServiceModel.MessageContractAttribute and prefix with global:: to allow "System" be used as member of a data class.
+            var smMessageContractTypes = TypeLoader.LoadTypes(typeof(System.ServiceModel.MessageContractAttribute).GetTypeInfo().Assembly, Verbosity.Silent);
+            foreach (var type in smMessageContractTypes)
+            {
+                if (type.FullName.Contains(s_serviceModelMessageContract))
+                {
+                    _smMessageContractAttrTypes[type.FullName] = type;
+                }
+            }
         }
 
         protected override void Visit(CodeAttributeDeclaration attr)
@@ -49,9 +76,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 attr.Name = attr.Name.Replace(s_microsoftXml, s_systemXml);
             }
-            if (attr.Name.Contains(s_microsoftCodeDom) && _codeDomTypes.ContainsKey(attr.Name))
+            else if (attr.Name.Contains(s_microsoftCodeDom) && _codeDomTypes.ContainsKey(attr.Name))
             {
                 attr.Name = attr.Name.Replace(s_microsoftCodeDom, s_systemCodeDom);
+            }
+            else if (attr.Name.Contains(s_runtimeSerialization) && _runtimeSerializationTypes.ContainsKey(attr.Name))
+            {
+                attr.Name = attr.Name.Replace(s_runtimeSerialization, s_globalRuntimeSerialization);
+            }
+            else if (attr.Name.Contains(s_serviceModelMessageContract) && _smMessageContractAttrTypes.ContainsKey(attr.Name))
+            {
+                attr.Name = attr.Name.Replace(s_serviceModelMessageContract, s_globalServiceModelMessageContract);
             }
         }
 
@@ -75,9 +110,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 typeref.BaseType = typeref.BaseType.Replace(s_microsoftXml, s_systemXml);
             }
-            if (typeref.BaseType.Contains(s_microsoftCodeDom) && _codeDomTypes.ContainsKey(typeref.BaseType))
+            else if (typeref.BaseType.Contains(s_microsoftCodeDom) && _codeDomTypes.ContainsKey(typeref.BaseType))
             {
                 typeref.BaseType = typeref.BaseType.Replace(s_microsoftCodeDom, s_systemCodeDom);
+            }
+            else if (typeref.BaseType.Contains(s_runtimeSerialization) && _runtimeSerializationTypes.ContainsKey(typeref.BaseType))
+            {
+                typeref.BaseType = typeref.BaseType.Replace(s_runtimeSerialization, s_globalRuntimeSerialization);
+            }
+            else if (typeref.BaseType.Contains(s_serviceModelMessageContract) && _smMessageContractAttrTypes.ContainsKey(typeref.BaseType))
+            {
+                typeref.BaseType = typeref.BaseType.Replace(s_serviceModelMessageContract, s_globalServiceModelMessageContract);
             }
         }
     }
