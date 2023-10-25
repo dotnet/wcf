@@ -94,7 +94,7 @@ namespace UpdateNetPipeServiceRefBootstrapping
             {
                 System.ServiceModel.NetNamedPipeBinding result = new System.ServiceModel.NetNamedPipeBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.TransferMode = System.ServiceModel.TransferMode.Streamed;
                 result.Security.Mode = System.ServiceModel.NetNamedPipeSecurityMode.None;

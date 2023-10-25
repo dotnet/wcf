@@ -46,14 +46,14 @@ namespace BasicHttpRpcEncSingleNs_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://contoso.com/calc/ICalculatorRpcEnc/CreateSet", ReplyAction="http://contoso.com/calc/ICalculatorRpcEnc/CreateSetResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        [return: System.Xml.Serialization.SoapElementAttribute(DataType="base64Binary")]
+        [return: global::System.Xml.Serialization.SoapElementAttribute(DataType="base64Binary")]
         System.Threading.Tasks.Task<byte[]> CreateSetAsync(BasicHttpRpcEncSingleNs_NS.ByteParams par);
     }
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.SoapTypeAttribute(Namespace="http://contoso.com/calc/encoded")]
+    [global::System.Xml.Serialization.SoapTypeAttribute(Namespace="http://contoso.com/calc/encoded")]
     public partial class IntParams
     {
         
@@ -91,7 +91,7 @@ namespace BasicHttpRpcEncSingleNs_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.SoapTypeAttribute(Namespace="http://contoso.com/calc/encoded")]
+    [global::System.Xml.Serialization.SoapTypeAttribute(Namespace="http://contoso.com/calc/encoded")]
     public partial class ByteParams
     {
         
@@ -129,7 +129,7 @@ namespace BasicHttpRpcEncSingleNs_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.SoapTypeAttribute(Namespace="http://contoso.com/calc/encoded")]
+    [global::System.Xml.Serialization.SoapTypeAttribute(Namespace="http://contoso.com/calc/encoded")]
     public partial class FloatParams
     {
         
@@ -265,7 +265,7 @@ namespace BasicHttpRpcEncSingleNs_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;

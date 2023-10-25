@@ -14,7 +14,7 @@ namespace mexParam_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://www.contoso.com/wcfnamespace")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class CompositeType : object
     {
         
@@ -22,7 +22,7 @@ namespace mexParam_NS
         
         private string StringValueField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
         {
             get
@@ -35,7 +35,7 @@ namespace mexParam_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string StringValue
         {
             get
@@ -132,7 +132,7 @@ namespace mexParam_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;

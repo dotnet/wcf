@@ -29,20 +29,20 @@ namespace BasicHttpSoap_NS
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ProcessCustomerData", ReplyAction="http://tempuri.org/IWcfSoapService/ProcessCustomerDataResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(AdditionalData))]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="ProcessCustomerDataReturn")]
+        [return: global::System.ServiceModel.MessageParameterAttribute(Name="ProcessCustomerDataReturn")]
         System.Threading.Tasks.Task<string> ProcessCustomerDataAsync(BasicHttpSoap_NS.CustomerObject CustomerData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/Ping", ReplyAction="http://tempuri.org/IWcfSoapService/PingResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(AdditionalData))]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="Return")]
+        [return: global::System.ServiceModel.MessageParameterAttribute(Name="Return")]
         System.Threading.Tasks.Task<int> PingAsync(string Pinginfo);
     }
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.SoapTypeAttribute(Namespace="http://tempuri.org/encoded")]
+    [global::System.Xml.Serialization.SoapTypeAttribute(Namespace="http://tempuri.org/encoded")]
     public partial class SoapComplexType
     {
         
@@ -80,7 +80,7 @@ namespace BasicHttpSoap_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.SoapTypeAttribute(Namespace="WcfService")]
+    [global::System.Xml.Serialization.SoapTypeAttribute(Namespace="WcfService")]
     public partial class AdditionalData
     {
         
@@ -103,7 +103,7 @@ namespace BasicHttpSoap_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.SoapTypeAttribute(Namespace="WcfService")]
+    [global::System.Xml.Serialization.SoapTypeAttribute(Namespace="WcfService")]
     public partial class CustomerObject
     {
         
@@ -219,7 +219,7 @@ namespace BasicHttpSoap_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;

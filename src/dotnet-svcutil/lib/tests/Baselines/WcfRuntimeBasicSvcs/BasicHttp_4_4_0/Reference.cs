@@ -29,33 +29,33 @@ namespace BasicHttp_4_4_0_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class RequestBankingData_4_4_0
     {
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string ArrayMultipleElement;
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public string[] MultipleElement;
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string SingleElement;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public decimal Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
         
         public RequestBankingData_4_4_0()
@@ -75,33 +75,33 @@ namespace BasicHttp_4_4_0_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class ReplyBankingData_4_4_0
     {
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string ArrayMultipleElement;
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public string[] MultipleElement;
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string SingleElement;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public decimal Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
         
         public ReplyBankingData_4_4_0()
@@ -122,14 +122,14 @@ namespace BasicHttp_4_4_0_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class XmlElementMessageHeader
     {
         
         private string headerValueField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public string HeaderValue
         {
             get
@@ -146,11 +146,11 @@ namespace BasicHttp_4_4_0_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SendRequestWithXmlElementMessageHeader", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="SendRequestWithXmlElementMessageHeader", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class XmlElementMessageHeaderRequest
     {
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
         public BasicHttp_4_4_0_NS.XmlElementMessageHeader TestHeader;
         
         public XmlElementMessageHeaderRequest()
@@ -166,11 +166,11 @@ namespace BasicHttp_4_4_0_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SendRequestWithXmlElementMessageHeaderResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="SendRequestWithXmlElementMessageHeaderResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class XmlElementMessageHeaderResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public string TestResult;
         
         public XmlElementMessageHeaderResponse()
@@ -262,7 +262,7 @@ namespace BasicHttp_4_4_0_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;

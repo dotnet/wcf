@@ -14,14 +14,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
     public partial class FaultDetail
     {
         
         private string messageField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string Message
         {
             get
@@ -38,7 +38,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     public partial class ComplexCompositeType
     {
         
@@ -107,7 +107,7 @@ namespace wrapped_NS
         private bool ushortValueFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public bool BoolValue
         {
             get
@@ -121,7 +121,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool BoolValueSpecified
         {
             get
@@ -135,7 +135,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary", IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary", IsNullable=true, Order=1)]
         public byte[] ByteArrayValue
         {
             get
@@ -149,8 +149,8 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=2)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("char", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=2)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute("char", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
         public int[] CharArrayValue
         {
             get
@@ -164,7 +164,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=3)]
         public int CharValue
         {
             get
@@ -178,7 +178,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool CharValueSpecified
         {
             get
@@ -192,7 +192,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=4)]
         public System.DateTime DateTimeValue
         {
             get
@@ -206,7 +206,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool DateTimeValueSpecified
         {
             get
@@ -220,7 +220,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=5)]
         public DayOfWeek DayOfWeekValue
         {
             get
@@ -234,7 +234,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool DayOfWeekValueSpecified
         {
             get
@@ -248,7 +248,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=6)]
         public double DoubleValue
         {
             get
@@ -262,7 +262,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool DoubleValueSpecified
         {
             get
@@ -276,7 +276,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=7)]
         public float FloatValue
         {
             get
@@ -290,7 +290,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool FloatValueSpecified
         {
             get
@@ -304,7 +304,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=8)]
         public string GuidValue
         {
             get
@@ -318,7 +318,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=9)]
         public int IntValue
         {
             get
@@ -332,7 +332,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool IntValueSpecified
         {
             get
@@ -346,7 +346,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=10)]
         public long LongValue
         {
             get
@@ -360,7 +360,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool LongValueSpecified
         {
             get
@@ -374,7 +374,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=11)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=11)]
         public string LongerStringValue
         {
             get
@@ -388,7 +388,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public sbyte SbyteValue
         {
             get
@@ -402,7 +402,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool SbyteValueSpecified
         {
             get
@@ -416,7 +416,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public short ShortValue
         {
             get
@@ -430,7 +430,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool ShortValueSpecified
         {
             get
@@ -444,7 +444,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=14)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=14)]
         public string StringValue
         {
             get
@@ -458,7 +458,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="duration", Order=15)]
+        [global::System.Xml.Serialization.XmlElementAttribute(DataType="duration", Order=15)]
         public string TimeSpanValue
         {
             get
@@ -472,7 +472,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=16)]
         public uint UintValue
         {
             get
@@ -486,7 +486,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool UintValueSpecified
         {
             get
@@ -500,7 +500,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=17)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=17)]
         public ulong UlongValue
         {
             get
@@ -514,7 +514,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool UlongValueSpecified
         {
             get
@@ -528,7 +528,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=18)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=18)]
         public ushort UshortValue
         {
             get
@@ -542,7 +542,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool UshortValueSpecified
         {
             get
@@ -558,7 +558,7 @@ namespace wrapped_NS
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System")]
     public enum DayOfWeek
     {
         
@@ -649,14 +649,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class EchoWithTimeout
     {
         
         private string messageField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string message
         {
             get
@@ -673,14 +673,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class EchoWithTimeoutResponse
     {
         
         private string echoWithTimeoutResultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string EchoWithTimeoutResult
         {
             get
@@ -697,11 +697,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class EchoWithTimeoutRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.EchoWithTimeout EchoWithTimeout;
         
         public EchoWithTimeoutRequest()
@@ -717,11 +717,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class EchoWithTimeoutResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.EchoWithTimeoutResponse EchoWithTimeoutResponse;
         
         public EchoWithTimeoutResponse1()
@@ -737,14 +737,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class Echo
     {
         
         private string messageField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string message
         {
             get
@@ -761,14 +761,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class EchoResponse
     {
         
         private string echoResultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string EchoResult
         {
             get
@@ -785,11 +785,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class EchoRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.Echo Echo;
         
         public EchoRequest()
@@ -805,11 +805,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class EchoResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.EchoResponse EchoResponse;
         
         public EchoResponse1()
@@ -825,14 +825,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class EchoComplex
     {
         
         private ComplexCompositeType messageField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public ComplexCompositeType message
         {
             get
@@ -849,14 +849,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class EchoComplexResponse
     {
         
         private ComplexCompositeType echoComplexResultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public ComplexCompositeType EchoComplexResult
         {
             get
@@ -873,11 +873,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class EchoComplexRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.EchoComplex EchoComplex;
         
         public EchoComplexRequest()
@@ -893,11 +893,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class EchoComplexResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.EchoComplexResponse EchoComplexResponse;
         
         public EchoComplexResponse1()
@@ -913,14 +913,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class TestFault
     {
         
         private string faultMsgField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string faultMsg
         {
             get
@@ -937,7 +937,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class TestFaultResponse
     {
     }
@@ -945,11 +945,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class TestFaultRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.TestFault TestFault;
         
         public TestFaultRequest()
@@ -965,11 +965,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class TestFaultResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.TestFaultResponse TestFaultResponse;
         
         public TestFaultResponse1()
@@ -985,14 +985,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class ThrowInvalidOperationException
     {
         
         private string messageField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string message
         {
             get
@@ -1009,7 +1009,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class ThrowInvalidOperationExceptionResponse
     {
     }
@@ -1017,11 +1017,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ThrowInvalidOperationExceptionRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.ThrowInvalidOperationException ThrowInvalidOperationException;
         
         public ThrowInvalidOperationExceptionRequest()
@@ -1037,11 +1037,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ThrowInvalidOperationExceptionResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.ThrowInvalidOperationExceptionResponse ThrowInvalidOperationExceptionResponse;
         
         public ThrowInvalidOperationExceptionResponse1()
@@ -1057,14 +1057,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class GetDataUsingDataContract
     {
         
         private CompositeType compositeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public CompositeType composite
         {
             get
@@ -1081,7 +1081,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     public partial class CompositeType
     {
         
@@ -1092,7 +1092,7 @@ namespace wrapped_NS
         private string stringValueField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public bool BoolValue
         {
             get
@@ -1106,7 +1106,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool BoolValueSpecified
         {
             get
@@ -1120,7 +1120,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string StringValue
         {
             get
@@ -1137,14 +1137,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class GetDataUsingDataContractResponse
     {
         
         private CompositeType getDataUsingDataContractResultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public CompositeType GetDataUsingDataContractResult
         {
             get
@@ -1161,11 +1161,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetDataUsingDataContractRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.GetDataUsingDataContract GetDataUsingDataContract;
         
         public GetDataUsingDataContractRequest()
@@ -1181,11 +1181,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetDataUsingDataContractResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.GetDataUsingDataContractResponse GetDataUsingDataContractResponse;
         
         public GetDataUsingDataContractResponse1()
@@ -1201,7 +1201,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class ValidateMessagePropertyHeaders
     {
     }
@@ -1209,15 +1209,15 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class ValidateMessagePropertyHeadersResponse
     {
         
         private ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] validateMessagePropertyHeadersResultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
         public ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult
         {
             get
@@ -1234,7 +1234,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
     public partial class ArrayOfKeyValueOfstringstringKeyValueOfstringstring
     {
         
@@ -1243,7 +1243,7 @@ namespace wrapped_NS
         private string valueField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string Key
         {
             get
@@ -1257,7 +1257,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string Value
         {
             get
@@ -1274,11 +1274,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ValidateMessagePropertyHeadersRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.ValidateMessagePropertyHeaders ValidateMessagePropertyHeaders;
         
         public ValidateMessagePropertyHeadersRequest()
@@ -1294,11 +1294,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ValidateMessagePropertyHeadersResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.ValidateMessagePropertyHeadersResponse ValidateMessagePropertyHeadersResponse;
         
         public ValidateMessagePropertyHeadersResponse1()
@@ -1314,14 +1314,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class UserGetAuthToken
     {
         
         private string liveIdField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string liveId
         {
             get
@@ -1338,14 +1338,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class UserGetAuthTokenResponse
     {
         
         private ResultOfstring userGetAuthTokenResultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public ResultOfstring UserGetAuthTokenResult
         {
             get
@@ -1362,7 +1362,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
     public partial class ResultOfstring
     {
         
@@ -1379,7 +1379,7 @@ namespace wrapped_NS
         private string resultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public int ErrorCode
         {
             get
@@ -1393,7 +1393,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool ErrorCodeSpecified
         {
             get
@@ -1407,7 +1407,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string ErrorMessage
         {
             get
@@ -1421,7 +1421,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=2)]
         public HttpStatusCode HttpStatusCode
         {
             get
@@ -1435,7 +1435,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool HttpStatusCodeSpecified
         {
             get
@@ -1449,7 +1449,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
         public string Result
         {
             get
@@ -1465,7 +1465,7 @@ namespace wrapped_NS
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System.Net")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System.Net")]
     public enum HttpStatusCode
     {
         
@@ -1614,11 +1614,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class UserGetAuthTokenRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.UserGetAuthToken UserGetAuthToken;
         
         public UserGetAuthTokenRequest()
@@ -1634,11 +1634,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class UserGetAuthTokenResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.UserGetAuthTokenResponse UserGetAuthTokenResponse;
         
         public UserGetAuthTokenResponse1()
@@ -1654,7 +1654,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class UserGamePlayGetList
     {
         
@@ -1663,7 +1663,7 @@ namespace wrapped_NS
         private string keysField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string gameKey
         {
             get
@@ -1677,7 +1677,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string keys
         {
             get
@@ -1694,14 +1694,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class UserGamePlayGetListResponse
     {
         
         private ResultOfArrayOfUserGamePlay userGamePlayGetListResultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public ResultOfArrayOfUserGamePlay UserGamePlayGetListResult
         {
             get
@@ -1718,7 +1718,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
     public partial class ResultOfArrayOfUserGamePlay
     {
         
@@ -1735,7 +1735,7 @@ namespace wrapped_NS
         private UserGamePlay[] resultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public int ErrorCode
         {
             get
@@ -1749,7 +1749,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool ErrorCodeSpecified
         {
             get
@@ -1763,7 +1763,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string ErrorMessage
         {
             get
@@ -1777,7 +1777,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=2)]
         public HttpStatusCode HttpStatusCode
         {
             get
@@ -1791,7 +1791,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool HttpStatusCodeSpecified
         {
             get
@@ -1805,8 +1805,8 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=3)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=3)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
         public UserGamePlay[] Result
         {
             get
@@ -1823,7 +1823,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     public partial class UserGamePlay
     {
         
@@ -1838,7 +1838,7 @@ namespace wrapped_NS
         private string valueField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string GameKey
         {
             get
@@ -1852,7 +1852,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string Key
         {
             get
@@ -1866,7 +1866,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
         public string TimeStamp
         {
             get
@@ -1880,7 +1880,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
         public string UserId
         {
             get
@@ -1894,7 +1894,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=4)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=4)]
         public string Value
         {
             get
@@ -1911,11 +1911,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class UserGamePlayGetListRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.UserGamePlayGetList UserGamePlayGetList;
         
         public UserGamePlayGetListRequest()
@@ -1931,11 +1931,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class UserGamePlayGetListResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.UserGamePlayGetListResponse UserGamePlayGetListResponse;
         
         public UserGamePlayGetListResponse1()
@@ -1951,7 +1951,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://mycustomwrappernamespace.com")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://mycustomwrappernamespace.com")]
     public partial class CustomWrapperName
     {
         
@@ -1966,7 +1966,7 @@ namespace wrapped_NS
         private string customer_NameField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.DateTime Date_of_Request
         {
             get
@@ -1980,7 +1980,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool Date_of_RequestSpecified
         {
             get
@@ -1994,7 +1994,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int Transaction_Amount
         {
             get
@@ -2008,7 +2008,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool Transaction_AmountSpecified
         {
             get
@@ -2022,7 +2022,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="CustomNamespace", IsNullable=true, Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="CustomNamespace", IsNullable=true, Order=2)]
         public string Customer_Name
         {
             get
@@ -2038,11 +2038,11 @@ namespace wrapped_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RequestBankingData
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://mycustomwrappernamespace.com", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://mycustomwrappernamespace.com", Order=0)]
         public wrapped_NS.CustomWrapperName CustomWrapperName;
         
         public RequestBankingData()
@@ -2057,11 +2057,11 @@ namespace wrapped_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ReplyBankingData
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://mycustomwrappernamespace.com", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://mycustomwrappernamespace.com", Order=0)]
         public wrapped_NS.CustomWrapperName CustomWrapperName;
         
         public ReplyBankingData()
@@ -2076,18 +2076,18 @@ namespace wrapped_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ReplyBankingDataNotWrapped
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://mycustomcustomernamespace.com", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://mycustomcustomernamespace.com", Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
         
         public ReplyBankingDataNotWrapped()
@@ -2105,7 +2105,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class EchoHttpRequestMessageProperty
     {
     }
@@ -2113,14 +2113,14 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://tempuri.org/")]
     public partial class EchoHttpRequestMessagePropertyResponse
     {
         
         private TestHttpRequestMessageProperty echoHttpRequestMessagePropertyResultField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult
         {
             get
@@ -2137,7 +2137,7 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     public partial class TestHttpRequestMessageProperty
     {
         
@@ -2152,8 +2152,8 @@ namespace wrapped_NS
         private bool suppressEntityBodyFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
         public ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] Headers
         {
             get
@@ -2167,7 +2167,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string Method
         {
             get
@@ -2181,7 +2181,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
         public string QueryString
         {
             get
@@ -2195,7 +2195,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=3)]
         public bool SuppressEntityBody
         {
             get
@@ -2209,7 +2209,7 @@ namespace wrapped_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool SuppressEntityBodySpecified
         {
             get
@@ -2226,11 +2226,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class EchoHttpRequestMessagePropertyRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.EchoHttpRequestMessageProperty EchoHttpRequestMessageProperty;
         
         public EchoHttpRequestMessagePropertyRequest()
@@ -2246,11 +2246,11 @@ namespace wrapped_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class EchoHttpRequestMessagePropertyResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public wrapped_NS.EchoHttpRequestMessagePropertyResponse EchoHttpRequestMessagePropertyResponse;
         
         public EchoHttpRequestMessagePropertyResponse1()
@@ -2466,7 +2466,7 @@ namespace wrapped_NS
             if ((endpointConfiguration == EndpointConfiguration.defaultEndpoint))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.SecurityMode.None;
@@ -2476,7 +2476,7 @@ namespace wrapped_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;
@@ -2485,7 +2485,7 @@ namespace wrapped_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;
@@ -2494,7 +2494,7 @@ namespace wrapped_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
@@ -2504,7 +2504,7 @@ namespace wrapped_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;
@@ -2512,7 +2512,7 @@ namespace wrapped_NS
             if ((endpointConfiguration == EndpointConfiguration.httpsoap12Endpoint))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.SecurityMode.None;
@@ -2533,7 +2533,7 @@ namespace wrapped_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
@@ -2542,7 +2542,7 @@ namespace wrapped_NS
             if ((endpointConfiguration == EndpointConfiguration.httpssoap12Endpoint))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.SecurityMode.Transport;
@@ -2553,7 +2553,7 @@ namespace wrapped_NS
             {
                 System.ServiceModel.NetTcpBinding result = new System.ServiceModel.NetTcpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 return result;
             }
@@ -2561,7 +2561,7 @@ namespace wrapped_NS
             {
                 System.ServiceModel.NetTcpBinding result = new System.ServiceModel.NetTcpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 return result;

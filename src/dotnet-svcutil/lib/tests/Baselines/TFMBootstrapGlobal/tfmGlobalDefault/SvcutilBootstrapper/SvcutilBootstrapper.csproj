@@ -3,12 +3,17 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>N.N</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="dotnet-svcutil-lib">
       <HintPath>$USERPROFILE$/.dotnet/tools/.store/dotnet-svcutil/99.99.99/dotnet-svcutil/99.99.99/tools/DOTNET_VERSION/any/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
+    <Content CopyToOutputDirectory="always" Include="$USERPROFILE$/.dotnet/tools/.store/dotnet-svcutil/99.99.99/dotnet-svcutil/99.99.99/tools/net7.0/any/internalAssets/**" Link="internalAssets/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="*" />
   </ItemGroup>
 </Project>

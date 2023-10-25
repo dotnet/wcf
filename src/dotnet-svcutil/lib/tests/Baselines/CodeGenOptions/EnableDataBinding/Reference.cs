@@ -14,7 +14,7 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ComplexCompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="ComplexCompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     public partial class ComplexCompositeType : object, System.ComponentModel.INotifyPropertyChanged
     {
         
@@ -56,7 +56,7 @@ namespace EnableDataBinding_NS
         
         private ushort UshortValueField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
         {
             get
@@ -73,7 +73,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] ByteArrayValue
         {
             get
@@ -90,7 +90,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public char[] CharArrayValue
         {
             get
@@ -107,7 +107,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public char CharValue
         {
             get
@@ -124,7 +124,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime DateTimeValue
         {
             get
@@ -141,7 +141,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public System.DayOfWeek DayOfWeekValue
         {
             get
@@ -158,7 +158,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public double DoubleValue
         {
             get
@@ -175,7 +175,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public float FloatValue
         {
             get
@@ -192,7 +192,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public System.Guid GuidValue
         {
             get
@@ -209,7 +209,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public int IntValue
         {
             get
@@ -226,7 +226,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public long LongValue
         {
             get
@@ -243,7 +243,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string LongerStringValue
         {
             get
@@ -260,7 +260,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public sbyte SbyteValue
         {
             get
@@ -277,7 +277,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public short ShortValue
         {
             get
@@ -294,7 +294,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string StringValue
         {
             get
@@ -311,7 +311,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public System.TimeSpan TimeSpanValue
         {
             get
@@ -328,7 +328,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public uint UintValue
         {
             get
@@ -345,7 +345,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public ulong UlongValue
         {
             get
@@ -362,7 +362,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public ushort UshortValue
         {
             get
@@ -393,13 +393,13 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="FaultDetail", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="FaultDetail", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
     public partial class FaultDetail : object, System.ComponentModel.INotifyPropertyChanged
     {
         
         private string MessageField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Message
         {
             get
@@ -430,7 +430,7 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     public partial class CompositeType : object, System.ComponentModel.INotifyPropertyChanged
     {
         
@@ -438,7 +438,7 @@ namespace EnableDataBinding_NS
         
         private string StringValueField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
         {
             get
@@ -455,7 +455,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string StringValue
         {
             get
@@ -486,7 +486,7 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ResultOfstring", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="ResultOfstring", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
     public partial class ResultOfstring : object, System.ComponentModel.INotifyPropertyChanged
     {
         
@@ -498,7 +498,7 @@ namespace EnableDataBinding_NS
         
         private string ResultField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public int ErrorCode
         {
             get
@@ -515,7 +515,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string ErrorMessage
         {
             get
@@ -532,7 +532,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public System.Net.HttpStatusCode HttpStatusCode
         {
             get
@@ -549,7 +549,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Result
         {
             get
@@ -580,7 +580,7 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ResultOfArrayOfUserGamePlay", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="ResultOfArrayOfUserGamePlay", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
     public partial class ResultOfArrayOfUserGamePlay : object, System.ComponentModel.INotifyPropertyChanged
     {
         
@@ -592,7 +592,7 @@ namespace EnableDataBinding_NS
         
         private EnableDataBinding_NS.UserGamePlay[] ResultField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public int ErrorCode
         {
             get
@@ -609,7 +609,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string ErrorMessage
         {
             get
@@ -626,7 +626,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public System.Net.HttpStatusCode HttpStatusCode
         {
             get
@@ -643,7 +643,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public EnableDataBinding_NS.UserGamePlay[] Result
         {
             get
@@ -674,7 +674,7 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserGamePlay", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="UserGamePlay", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     public partial class UserGamePlay : object, System.ComponentModel.INotifyPropertyChanged
     {
         
@@ -688,7 +688,7 @@ namespace EnableDataBinding_NS
         
         private string ValueField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string GameKey
         {
             get
@@ -705,7 +705,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Key
         {
             get
@@ -722,7 +722,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string TimeStamp
         {
             get
@@ -739,7 +739,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string UserId
         {
             get
@@ -756,7 +756,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Value
         {
             get
@@ -787,7 +787,7 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TestHttpRequestMessageProperty", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="TestHttpRequestMessageProperty", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     public partial class TestHttpRequestMessageProperty : object, System.ComponentModel.INotifyPropertyChanged
     {
         
@@ -799,7 +799,7 @@ namespace EnableDataBinding_NS
         
         private bool SuppressEntityBodyField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.Generic.Dictionary<string, string> Headers
         {
             get
@@ -816,7 +816,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Method
         {
             get
@@ -833,7 +833,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string QueryString
         {
             get
@@ -850,7 +850,7 @@ namespace EnableDataBinding_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
         public bool SuppressEntityBody
         {
             get
@@ -930,17 +930,17 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://mycustomwrappernamespace.com", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://mycustomwrappernamespace.com", IsWrapped=true)]
     public partial class RequestBankingData
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="CustomNamespace", Order=2)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="CustomNamespace", Order=2)]
         public string Customer_Name;
         
         public RequestBankingData()
@@ -957,17 +957,17 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://mycustomwrappernamespace.com", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://mycustomwrappernamespace.com", IsWrapped=true)]
     public partial class ReplyBankingData
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="CustomNamespace", Order=2)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="CustomNamespace", Order=2)]
         public string Customer_Name;
         
         public ReplyBankingData()
@@ -984,17 +984,17 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ReplyBankingDataNotWrapped
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://mycustomcustomernamespace.com", Order=2)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://mycustomcustomernamespace.com", Order=2)]
         public string Customer_Name;
         
         public ReplyBankingDataNotWrapped()
@@ -1132,7 +1132,7 @@ namespace EnableDataBinding_NS
             if ((endpointConfiguration == EndpointConfiguration.defaultEndpoint))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.SecurityMode.None;
@@ -1142,7 +1142,7 @@ namespace EnableDataBinding_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;
@@ -1151,7 +1151,7 @@ namespace EnableDataBinding_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;
@@ -1160,7 +1160,7 @@ namespace EnableDataBinding_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
@@ -1170,7 +1170,7 @@ namespace EnableDataBinding_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;
@@ -1178,7 +1178,7 @@ namespace EnableDataBinding_NS
             if ((endpointConfiguration == EndpointConfiguration.httpsoap12Endpoint))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.SecurityMode.None;
@@ -1199,7 +1199,7 @@ namespace EnableDataBinding_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
@@ -1208,7 +1208,7 @@ namespace EnableDataBinding_NS
             if ((endpointConfiguration == EndpointConfiguration.httpssoap12Endpoint))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.SecurityMode.Transport;
@@ -1219,7 +1219,7 @@ namespace EnableDataBinding_NS
             {
                 System.ServiceModel.NetTcpBinding result = new System.ServiceModel.NetTcpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 return result;
             }
@@ -1227,7 +1227,7 @@ namespace EnableDataBinding_NS
             {
                 System.ServiceModel.NetTcpBinding result = new System.ServiceModel.NetTcpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 return result;

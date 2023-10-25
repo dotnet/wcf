@@ -14,14 +14,14 @@ namespace NetHttps_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class FaultDetail
     {
         
         private string messageField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string Message
         {
             get
@@ -38,7 +38,7 @@ namespace NetHttps_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class ComplexCompositeType
     {
         
@@ -107,7 +107,7 @@ namespace NetHttps_NS
         private bool ushortValueFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public bool BoolValue
         {
             get
@@ -121,7 +121,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool BoolValueSpecified
         {
             get
@@ -135,7 +135,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary", IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary", IsNullable=true, Order=1)]
         public byte[] ByteArrayValue
         {
             get
@@ -149,8 +149,8 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=2)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("char", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=2)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute("char", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
         public int[] CharArrayValue
         {
             get
@@ -164,7 +164,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=3)]
         public int CharValue
         {
             get
@@ -178,7 +178,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool CharValueSpecified
         {
             get
@@ -192,7 +192,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=4)]
         public System.DateTime DateTimeValue
         {
             get
@@ -206,7 +206,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool DateTimeValueSpecified
         {
             get
@@ -220,7 +220,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=5)]
         public DayOfWeek DayOfWeekValue
         {
             get
@@ -234,7 +234,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool DayOfWeekValueSpecified
         {
             get
@@ -248,7 +248,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=6)]
         public double DoubleValue
         {
             get
@@ -262,7 +262,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool DoubleValueSpecified
         {
             get
@@ -276,7 +276,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=7)]
         public float FloatValue
         {
             get
@@ -290,7 +290,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool FloatValueSpecified
         {
             get
@@ -304,7 +304,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=8)]
         public string GuidValue
         {
             get
@@ -318,7 +318,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=9)]
         public int IntValue
         {
             get
@@ -332,7 +332,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool IntValueSpecified
         {
             get
@@ -346,7 +346,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=10)]
         public long LongValue
         {
             get
@@ -360,7 +360,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool LongValueSpecified
         {
             get
@@ -374,7 +374,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=11)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=11)]
         public string LongerStringValue
         {
             get
@@ -388,7 +388,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public sbyte SbyteValue
         {
             get
@@ -402,7 +402,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool SbyteValueSpecified
         {
             get
@@ -416,7 +416,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public short ShortValue
         {
             get
@@ -430,7 +430,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool ShortValueSpecified
         {
             get
@@ -444,7 +444,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=14)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=14)]
         public string StringValue
         {
             get
@@ -458,7 +458,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="duration", Order=15)]
+        [global::System.Xml.Serialization.XmlElementAttribute(DataType="duration", Order=15)]
         public string TimeSpanValue
         {
             get
@@ -472,7 +472,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=16)]
         public uint UintValue
         {
             get
@@ -486,7 +486,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool UintValueSpecified
         {
             get
@@ -500,7 +500,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=17)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=17)]
         public ulong UlongValue
         {
             get
@@ -514,7 +514,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool UlongValueSpecified
         {
             get
@@ -528,7 +528,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=18)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=18)]
         public ushort UshortValue
         {
             get
@@ -542,7 +542,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool UshortValueSpecified
         {
             get
@@ -558,7 +558,7 @@ namespace NetHttps_NS
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System")]
     public enum DayOfWeek
     {
         
@@ -757,16 +757,16 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoWithTimeout", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoWithTimeout", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoWithTimeoutRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string message;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(DataType="duration")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(DataType="duration")]
         public string serviceOperationTimeout;
         
         public EchoWithTimeoutRequest()
@@ -783,12 +783,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoWithTimeoutResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoWithTimeoutResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoWithTimeoutResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string EchoWithTimeoutResult;
         
         public EchoWithTimeoutResponse()
@@ -804,12 +804,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="Echo", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="Echo", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string message;
         
         public EchoRequest()
@@ -825,12 +825,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string EchoResult;
         
         public EchoResponse()
@@ -846,12 +846,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoComplex", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoComplex", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoComplexRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public NetHttps_NS.ComplexCompositeType message;
         
         public EchoComplexRequest()
@@ -867,12 +867,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoComplexResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoComplexResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoComplexResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public NetHttps_NS.ComplexCompositeType EchoComplexResult;
         
         public EchoComplexResponse()
@@ -888,12 +888,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TestFault", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="TestFault", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string faultMsg;
         
         public TestFaultRequest()
@@ -909,7 +909,7 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultResponse
     {
         
@@ -921,15 +921,15 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaults", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="TestFaults", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultsRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string faultMsg;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public bool throwFaultDetail;
         
         public TestFaultsRequest()
@@ -946,7 +946,7 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultsResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultsResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultsResponse
     {
         
@@ -958,17 +958,17 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultWithKnownType", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultWithKnownType", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultWithKnownTypeRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string faultMsg;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public object[] objects;
         
         public TestFaultWithKnownTypeRequest()
@@ -985,13 +985,13 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultWithKnownTypeResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultWithKnownTypeResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultWithKnownTypeResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public object[] TestFaultWithKnownTypeResult;
         
         public TestFaultWithKnownTypeResponse()
@@ -1007,12 +1007,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ThrowInvalidOperationException", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="ThrowInvalidOperationException", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ThrowInvalidOperationExceptionRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string message;
         
         public ThrowInvalidOperationExceptionRequest()
@@ -1028,7 +1028,7 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ThrowInvalidOperationExceptionResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="ThrowInvalidOperationExceptionResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ThrowInvalidOperationExceptionResponse
     {
         
@@ -1040,7 +1040,7 @@ namespace NetHttps_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class CompositeType
     {
         
@@ -1051,7 +1051,7 @@ namespace NetHttps_NS
         private string stringValueField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public bool BoolValue
         {
             get
@@ -1065,7 +1065,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool BoolValueSpecified
         {
             get
@@ -1079,7 +1079,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string StringValue
         {
             get
@@ -1096,12 +1096,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetDataUsingDataContract", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetDataUsingDataContract", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetDataUsingDataContractRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public NetHttps_NS.CompositeType composite;
         
         public GetDataUsingDataContractRequest()
@@ -1117,12 +1117,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetDataUsingDataContractResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetDataUsingDataContractResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetDataUsingDataContractResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public NetHttps_NS.CompositeType GetDataUsingDataContractResult;
         
         public GetDataUsingDataContractResponse()
@@ -1138,7 +1138,7 @@ namespace NetHttps_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
     public partial class ArrayOfKeyValueOfstringstringKeyValueOfstringstring
     {
         
@@ -1147,7 +1147,7 @@ namespace NetHttps_NS
         private string valueField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string Key
         {
             get
@@ -1161,7 +1161,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string Value
         {
             get
@@ -1178,7 +1178,7 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ValidateMessagePropertyHeaders", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="ValidateMessagePropertyHeaders", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ValidateMessagePropertyHeadersRequest
     {
         
@@ -1190,13 +1190,13 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ValidateMessagePropertyHeadersResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="ValidateMessagePropertyHeadersResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ValidateMessagePropertyHeadersResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
         public NetHttps_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult;
         
         public ValidateMessagePropertyHeadersResponse()
@@ -1212,7 +1212,7 @@ namespace NetHttps_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class ResultOfstring
     {
         
@@ -1229,7 +1229,7 @@ namespace NetHttps_NS
         private string resultMessageField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public int ErrorCode
         {
             get
@@ -1243,7 +1243,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool ErrorCodeSpecified
         {
             get
@@ -1257,7 +1257,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=1)]
         public HttpStatusCode HttpStatusCode
         {
             get
@@ -1271,7 +1271,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool HttpStatusCodeSpecified
         {
             get
@@ -1285,7 +1285,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
         public string Result
         {
             get
@@ -1299,7 +1299,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
         public string ResultMessage
         {
             get
@@ -1315,7 +1315,7 @@ namespace NetHttps_NS
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System.Net")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System.Net")]
     public enum HttpStatusCode
     {
         
@@ -1464,7 +1464,7 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UserGetAuthToken", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="UserGetAuthToken", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class UserGetAuthTokenRequest
     {
         
@@ -1476,12 +1476,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UserGetAuthTokenResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="UserGetAuthTokenResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class UserGetAuthTokenResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public NetHttps_NS.ResultOfstring UserGetAuthTokenResult;
         
         public UserGetAuthTokenResponse()
@@ -1496,20 +1496,20 @@ namespace NetHttps_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="RequestBankingDataWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="RequestBankingDataWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class RequestBankingData
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public int Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="CustomNamespace", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="CustomNamespace", IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="CustomNamespace", Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="CustomNamespace", IsNullable=true)]
         public string Customer_Name;
         
         public RequestBankingData()
@@ -1526,20 +1526,20 @@ namespace NetHttps_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ReplyBankingDataWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="ReplyBankingDataWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class ReplyBankingData
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public int Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
         
         public ReplyBankingData()
@@ -1556,18 +1556,18 @@ namespace NetHttps_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ReplyBankingDataNotWrapped
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
         
         public ReplyBankingDataNotWrapped()
@@ -1584,24 +1584,24 @@ namespace NetHttps_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ReplyBankingDataWithMessageHeaderWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="ReplyBankingDataWithMessageHeaderWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class ReplyBankingDataWithMessageHeader
     {
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string ReplyBankingDataWithMessageHeaderExtraValues;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public int Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
         
         public ReplyBankingDataWithMessageHeader()
@@ -1619,24 +1619,24 @@ namespace NetHttps_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood
     {
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodExtraValue;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public int Transaction_Amount;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
         
         public ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood()
@@ -1655,7 +1655,7 @@ namespace NetHttps_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class TestHttpRequestMessageProperty
     {
         
@@ -1670,8 +1670,8 @@ namespace NetHttps_NS
         private bool suppressEntityBodyFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=0)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
         public ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] Headers
         {
             get
@@ -1685,7 +1685,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string Method
         {
             get
@@ -1699,7 +1699,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
         public string QueryString
         {
             get
@@ -1713,7 +1713,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=3)]
         public bool SuppressEntityBody
         {
             get
@@ -1727,7 +1727,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool SuppressEntityBodySpecified
         {
             get
@@ -1744,7 +1744,7 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoHttpRequestMessageProperty", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoHttpRequestMessageProperty", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoHttpRequestMessagePropertyRequest
     {
         
@@ -1756,12 +1756,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoHttpRequestMessagePropertyResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoHttpRequestMessagePropertyResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoHttpRequestMessagePropertyResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public NetHttps_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult;
         
         public EchoHttpRequestMessagePropertyResponse()
@@ -1777,7 +1777,7 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetRestartServiceEndpoint", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetRestartServiceEndpoint", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetRestartServiceEndpointRequest
     {
         
@@ -1789,12 +1789,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetRestartServiceEndpointResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetRestartServiceEndpointResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetRestartServiceEndpointResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string GetRestartServiceEndpointResult;
         
         public GetRestartServiceEndpointResponse()
@@ -1810,7 +1810,7 @@ namespace NetHttps_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class XmlCompositeType
     {
         
@@ -1819,7 +1819,7 @@ namespace NetHttps_NS
         private string stringValueField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public bool BoolValue
         {
             get
@@ -1833,7 +1833,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=1)]
         public string StringValue
         {
             get
@@ -1850,20 +1850,20 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="login", WrapperNamespace="http://www.contoso.com/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="login", WrapperNamespace="http://www.contoso.com/", IsWrapped=true)]
     public partial class LoginRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Form=global::System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string clientId;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Form=global::System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string user;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=2)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Form=global::System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string pwd;
         
         public LoginRequest()
@@ -1881,12 +1881,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="loginResponse", WrapperNamespace="http://www.contoso.com/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="loginResponse", WrapperNamespace="http://www.contoso.com/", IsWrapped=true)]
     public partial class LoginResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Form=global::System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string @return;
         
         public LoginResponse()
@@ -1902,12 +1902,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetStreamFromString", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetStreamFromString", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetStreamFromStringRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string data;
         
         public GetStreamFromStringRequest()
@@ -1923,11 +1923,11 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetStreamFromStringResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetStreamFromStringResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetStreamFromStringResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.IO.Stream GetStreamFromStringResult;
         
         public GetStreamFromStringResponse()
@@ -1943,11 +1943,11 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetStringFromStream", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetStringFromStream", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetStringFromStreamRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.IO.Stream stream;
         
         public GetStringFromStreamRequest()
@@ -1963,12 +1963,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetStringFromStreamResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetStringFromStreamResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetStringFromStreamResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string GetStringFromStreamResult;
         
         public GetStringFromStreamResponse()
@@ -1984,12 +1984,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoMessageParameter", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoMessageParameter", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoMessageParameterRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string name;
         
         public EchoMessageParameterRequest()
@@ -2005,12 +2005,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoMessageParameterResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoMessageParameterResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoMessageParameterResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string result;
         
         public EchoMessageParameterResponse()
@@ -2026,13 +2026,13 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoItems", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoItems", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoItemsRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public object[] objects;
         
         public EchoItemsRequest()
@@ -2048,13 +2048,13 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EchoItemsResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="EchoItemsResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoItemsResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public object[] EchoItemsResult;
         
         public EchoItemsResponse()
@@ -2070,7 +2070,7 @@ namespace NetHttps_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class XmlVeryComplexType
     {
         
@@ -2079,7 +2079,7 @@ namespace NetHttps_NS
         private int idField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public NonInstantiatedType NonInstantiatedField
         {
             get
@@ -2093,7 +2093,7 @@ namespace NetHttps_NS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        [global::System.Xml.Serialization.XmlElementAttribute(Order=1)]
         public int Id
         {
             get
@@ -2110,7 +2110,7 @@ namespace NetHttps_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    [global::System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class NonInstantiatedType
     {
     }
@@ -2118,12 +2118,12 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ReturnContentType", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="ReturnContentType", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ReturnContentTypeRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string contentType;
         
         public ReturnContentTypeRequest()
@@ -2139,7 +2139,7 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ReturnContentTypeResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="ReturnContentTypeResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ReturnContentTypeResponse
     {
         
@@ -2151,11 +2151,11 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="XmlMessageContractTestRequest", WrapperNamespace="http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="XmlMessageContractTestRequest", WrapperNamespace="http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped=true)]
     public partial class XmlMessageContractTestRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/XmlMessageContarctTestMessages", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/XmlMessageContarctTestMessages", Order=0)]
         public string Message;
         
         public XmlMessageContractTestRequest()
@@ -2171,14 +2171,14 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="XmlMessageContractTestResponse", WrapperNamespace="http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="XmlMessageContractTestResponse", WrapperNamespace="http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped=true)]
     public partial class XmlMessageContractTestResponse
     {
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
         public string OutOfBandData;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/XmlMessageContarctTestMessages", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/XmlMessageContarctTestMessages", Order=0)]
         public string _message;
         
         public XmlMessageContractTestResponse()
@@ -2195,11 +2195,11 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="XmlMessageContractTestRequestWithMessageHeader", WrapperNamespace="http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="XmlMessageContractTestRequestWithMessageHeader", WrapperNamespace="http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped=true)]
     public partial class XmlMessageContractTestRequestWithMessageHeader
     {
         
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
+        [global::System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
         public string XmlMessageContractTestRequestWithMessageHeaderMessage;
         
         public XmlMessageContractTestRequestWithMessageHeader()
@@ -2215,7 +2215,7 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetRequestHttpHeaders", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetRequestHttpHeaders", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetRequestHttpHeadersRequest
     {
         
@@ -2227,13 +2227,13 @@ namespace NetHttps_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetRequestHttpHeadersResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [global::System.ServiceModel.MessageContractAttribute(WrapperName="GetRequestHttpHeadersResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetRequestHttpHeadersResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [global::System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [global::System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
         public NetHttps_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult;
         
         public GetRequestHttpHeadersResponse()
@@ -2663,7 +2663,7 @@ namespace NetHttps_NS
             if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.SecurityMode.Transport;
@@ -2673,7 +2673,7 @@ namespace NetHttps_NS
             if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.MessageEncoding = System.ServiceModel.WSMessageEncoding.Mtom;

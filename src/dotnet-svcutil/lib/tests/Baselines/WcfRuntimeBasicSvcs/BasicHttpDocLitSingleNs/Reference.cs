@@ -14,7 +14,7 @@ namespace BasicHttpDocLitSingleNs_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="IntParams", Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="IntParams", Namespace="http://contoso.com/calc")]
     public partial class IntParams : object
     {
         
@@ -22,7 +22,7 @@ namespace BasicHttpDocLitSingleNs_NS
         
         private int P2Field;
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public int P1
         {
             get
@@ -35,7 +35,7 @@ namespace BasicHttpDocLitSingleNs_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public int P2
         {
             get
@@ -51,7 +51,7 @@ namespace BasicHttpDocLitSingleNs_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="FloatParams", Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="FloatParams", Namespace="http://contoso.com/calc")]
     public partial class FloatParams : object
     {
         
@@ -59,7 +59,7 @@ namespace BasicHttpDocLitSingleNs_NS
         
         private float P2Field;
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public float P1
         {
             get
@@ -72,7 +72,7 @@ namespace BasicHttpDocLitSingleNs_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public float P2
         {
             get
@@ -88,7 +88,7 @@ namespace BasicHttpDocLitSingleNs_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ByteParams", Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="ByteParams", Namespace="http://contoso.com/calc")]
     public partial class ByteParams : object
     {
         
@@ -96,7 +96,7 @@ namespace BasicHttpDocLitSingleNs_NS
         
         private byte P2Field;
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public byte P1
         {
             get
@@ -109,7 +109,7 @@ namespace BasicHttpDocLitSingleNs_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public byte P2
         {
             get
@@ -156,11 +156,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class SumRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="Sum", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="Sum", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.SumRequestBody Body;
         
         public SumRequest()
@@ -176,11 +176,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class SumRequestBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public BasicHttpDocLitSingleNs_NS.IntParams par;
         
         public SumRequestBody()
@@ -196,11 +196,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class SumResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="SumResponse", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="SumResponse", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.SumResponseBody Body;
         
         public SumResponse()
@@ -216,11 +216,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class SumResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(Order=0)]
         public int SumResult;
         
         public SumResponseBody()
@@ -236,11 +236,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class DivideRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="Divide", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="Divide", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.DivideRequestBody Body;
         
         public DivideRequest()
@@ -256,11 +256,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class DivideRequestBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public BasicHttpDocLitSingleNs_NS.FloatParams par;
         
         public DivideRequestBody()
@@ -276,11 +276,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class DivideResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="DivideResponse", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="DivideResponse", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.DivideResponseBody Body;
         
         public DivideResponse()
@@ -296,11 +296,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class DivideResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(Order=0)]
         public float DivideResult;
         
         public DivideResponseBody()
@@ -316,11 +316,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ConcatenateRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="Concatenate", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="Concatenate", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.ConcatenateRequestBody Body;
         
         public ConcatenateRequest()
@@ -336,11 +336,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class ConcatenateRequestBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public BasicHttpDocLitSingleNs_NS.IntParams par;
         
         public ConcatenateRequestBody()
@@ -356,11 +356,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ConcatenateResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConcatenateResponse", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="ConcatenateResponse", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.ConcatenateResponseBody Body;
         
         public ConcatenateResponse()
@@ -376,11 +376,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class ConcatenateResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public string ConcatenateResult;
         
         public ConcatenateResponseBody()
@@ -396,11 +396,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class AddIntParamsRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="AddIntParams", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="AddIntParams", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.AddIntParamsRequestBody Body;
         
         public AddIntParamsRequest()
@@ -416,14 +416,14 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class AddIntParamsRequestBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public string guid;
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public BasicHttpDocLitSingleNs_NS.IntParams par;
         
         public AddIntParamsRequestBody()
@@ -440,11 +440,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class AddIntParamsResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="AddIntParamsResponse", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="AddIntParamsResponse", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.AddIntParamsResponseBody Body;
         
         public AddIntParamsResponse()
@@ -460,7 +460,7 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute()]
+    [global::System.Runtime.Serialization.DataContractAttribute()]
     public partial class AddIntParamsResponseBody
     {
         
@@ -472,11 +472,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetAndRemoveIntParamsRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetAndRemoveIntParams", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="GetAndRemoveIntParams", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.GetAndRemoveIntParamsRequestBody Body;
         
         public GetAndRemoveIntParamsRequest()
@@ -492,11 +492,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class GetAndRemoveIntParamsRequestBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public string guid;
         
         public GetAndRemoveIntParamsRequestBody()
@@ -512,11 +512,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetAndRemoveIntParamsResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetAndRemoveIntParamsResponse", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="GetAndRemoveIntParamsResponse", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.GetAndRemoveIntParamsResponseBody Body;
         
         public GetAndRemoveIntParamsResponse()
@@ -532,11 +532,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class GetAndRemoveIntParamsResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public BasicHttpDocLitSingleNs_NS.IntParams GetAndRemoveIntParamsResult;
         
         public GetAndRemoveIntParamsResponseBody()
@@ -552,11 +552,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class CreateSetRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="CreateSet", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="CreateSet", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.CreateSetRequestBody Body;
         
         public CreateSetRequest()
@@ -572,11 +572,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class CreateSetRequestBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public BasicHttpDocLitSingleNs_NS.ByteParams par;
         
         public CreateSetRequestBody()
@@ -592,11 +592,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [global::System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class CreateSetResponse
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="CreateSetResponse", Namespace="http://contoso.com/calc", Order=0)]
+        [global::System.ServiceModel.MessageBodyMemberAttribute(Name="CreateSetResponse", Namespace="http://contoso.com/calc", Order=0)]
         public BasicHttpDocLitSingleNs_NS.CreateSetResponseBody Body;
         
         public CreateSetResponse()
@@ -612,11 +612,11 @@ namespace BasicHttpDocLitSingleNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Namespace="http://contoso.com/calc")]
     public partial class CreateSetResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public byte[] CreateSetResult;
         
         public CreateSetResponseBody()
@@ -785,7 +785,7 @@ namespace BasicHttpDocLitSingleNs_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;

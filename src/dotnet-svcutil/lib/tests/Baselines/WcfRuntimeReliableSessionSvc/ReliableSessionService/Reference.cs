@@ -169,7 +169,7 @@ namespace ReliableSessionService_NS
             {
                 System.ServiceModel.NetTcpBinding result = new System.ServiceModel.NetTcpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 result.ReliableSession.Enabled = true;
@@ -179,7 +179,7 @@ namespace ReliableSessionService_NS
             {
                 System.ServiceModel.NetTcpBinding result = new System.ServiceModel.NetTcpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 result.ReliableSession.Enabled = true;
@@ -188,7 +188,7 @@ namespace ReliableSessionService_NS
             if ((endpointConfiguration == EndpointConfiguration.WSHttpOrdered_WSReliableMessaging11_IWcfReliableService))
             {
                 System.ServiceModel.WS2007HttpBinding result = new System.ServiceModel.WS2007HttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.ReliableSession.Enabled = true;
@@ -200,7 +200,7 @@ namespace ReliableSessionService_NS
             if ((endpointConfiguration == EndpointConfiguration.WSHttpUnordered_WSReliableMessaging11_IWcfReliableService))
             {
                 System.ServiceModel.WS2007HttpBinding result = new System.ServiceModel.WS2007HttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.ReliableSession.Enabled = true;
@@ -212,7 +212,7 @@ namespace ReliableSessionService_NS
             if ((endpointConfiguration == EndpointConfiguration.WSHttpOrdered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.ReliableSession.Enabled = true;
@@ -224,7 +224,7 @@ namespace ReliableSessionService_NS
             if ((endpointConfiguration == EndpointConfiguration.WSHttpUnordered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
                 System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.ReliableSession.Enabled = true;

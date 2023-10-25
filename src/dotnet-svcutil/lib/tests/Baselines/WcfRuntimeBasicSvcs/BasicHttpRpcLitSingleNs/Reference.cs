@@ -14,7 +14,7 @@ namespace BasicHttpRpcLitSingleNs_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="IntParams", Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="IntParams", Namespace="http://contoso.com/calc")]
     public partial class IntParams : object
     {
         
@@ -22,7 +22,7 @@ namespace BasicHttpRpcLitSingleNs_NS
         
         private int P2Field;
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public int P1
         {
             get
@@ -35,7 +35,7 @@ namespace BasicHttpRpcLitSingleNs_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public int P2
         {
             get
@@ -51,7 +51,7 @@ namespace BasicHttpRpcLitSingleNs_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="FloatParams", Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="FloatParams", Namespace="http://contoso.com/calc")]
     public partial class FloatParams : object
     {
         
@@ -59,7 +59,7 @@ namespace BasicHttpRpcLitSingleNs_NS
         
         private float P2Field;
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public float P1
         {
             get
@@ -72,7 +72,7 @@ namespace BasicHttpRpcLitSingleNs_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public float P2
         {
             get
@@ -88,7 +88,7 @@ namespace BasicHttpRpcLitSingleNs_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ByteParams", Namespace="http://contoso.com/calc")]
+    [global::System.Runtime.Serialization.DataContractAttribute(Name="ByteParams", Namespace="http://contoso.com/calc")]
     public partial class ByteParams : object
     {
         
@@ -96,7 +96,7 @@ namespace BasicHttpRpcLitSingleNs_NS
         
         private byte P2Field;
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public byte P1
         {
             get
@@ -109,7 +109,7 @@ namespace BasicHttpRpcLitSingleNs_NS
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [global::System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public byte P2
         {
             get
@@ -262,7 +262,7 @@ namespace BasicHttpRpcLitSingleNs_NS
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.ReaderQuotas = global::System.Xml.XmlDictionaryReaderQuotas.Max;
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 return result;
