@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">La protection étendue n'est pas prise en charge sur cette plateforme. Installez le correctif approprié ou remplacez le ExtendedProtectionPolicy sur Binding ou BindingElement en par une valeur PolicyEnforcement de "Never" ou "WhenSupported".</target>
+        <target state="translated">La protection étendue n’est pas prise en charge sur cette plateforme. Installez le correctif approprié ou remplacez le ExtendedProtectionPolicy sur Binding ou BindingElement en par une valeur PolicyEnforcement de « Never » ou « WhenSupported ».</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
@@ -89,52 +89,52 @@
       </trans-unit>
       <trans-unit id="UDSConnectError">
         <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. UDS error code {1}: {2}. </target>
+        <target state="translated">Connexion impossible à {0}. Code d’erreur UDS {1} : {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectErrorWithTimeSpan">
         <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </target>
+        <target state="translated">Connexion impossible à {0}. La tentative de connexion a duré pendant une intervalle de temps de{3}. Code d’erreur UDS {1} : {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectNoBufs">
         <source>Insufficient winsock resources available to complete socket connection initiation.</source>
-        <target state="new">Insufficient winsock resources available to complete socket connection initiation.</target>
+        <target state="translated">Les ressources winsock disponibles sont insuffisantes pour effectuer l'initialisation de la connexion de socket.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectingToViaTimedOut">
         <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">La connexion via {0} a dépassé le délai imparti après {1}. Des tentatives de connexion ont été effectuées à {2} adresses disponibles parmi {3} ({4}). Vérifiez RemoteAddress sur votre canal et vérifiez que les enregistrements DNS de ce point de terminaison correspondent à des adresses IP valide. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionResetError">
         <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
-        <target state="new">The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</target>
+        <target state="translated">La connexion de socket a été abandonnée. Ceci peut être causé par une erreur durant le traitement de votre message, par le dépassement du délai d'expiration de réception par l'hôte distant ou par un problème de ressource réseau sous-jacent. Le délai d'expiration de socket local était '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionTimedOut">
         <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Le transfert de socket a dépassé le délai imparti après {0}. Le délai d'expiration défini sur votre liaison a été dépassé. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSLocalConnectionAborted">
         <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
-        <target state="new">The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</target>
+        <target state="translated">La connexion du socket a été abandonnée par votre machine locale. Ceci peut être causé par un Abort() de canal ou par une erreur de transmission à partir d'un autre thread utilisant ce socket.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSTransferError">
         <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
-        <target state="new">A UDS error ({0}: {1}) occurred while transmitting data.</target>
+        <target state="translated">Une erreur UDS ({0} : {1}) s’est produite durant la transmission des données.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
         <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
-        <target state="translated">Impossible de résoudre le nom d'hôte de l'URI '{0}' à l'aide de DNS.</target>
+        <target state="translated">Impossible de résoudre le nom d’hôte de l’URI « {0} » à l’aide de DNS.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSecuritySetting">
         <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
-        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <target state="translated">La valeur '{1}' n'est pas prise en charge dans ce contexte pour la propriété de sécurité de liaison '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
