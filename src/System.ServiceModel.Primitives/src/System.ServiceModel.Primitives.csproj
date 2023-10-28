@@ -49,6 +49,22 @@
     </Compile>
   </ItemGroup>
 
+  <!-- Include BuildTools assemblies -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.BuildTools\src\System.ServiceModel.BuildTools.Roslyn4.0.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\..\System.ServiceModel.BuildTools\src\System.ServiceModel.BuildTools.Roslyn3.11.csproj" PrivateAssets="All" />
+    <Content Include="$(OutputPath)\System.ServiceModel.BuildTools.Roslyn4.0.dll">
+      <Pack>true</Pack>
+      <PackagePath>analyzers/dotnet/roslyn4.0/cs</PackagePath>
+      <Visible>false</Visible>
+    </Content>
+    <Content Include="$(OutputPath)\System.ServiceModel.BuildTools.Roslyn3.11.dll">
+      <Pack>true</Pack>
+      <PackagePath>analyzers/dotnet/roslyn3.11/cs</PackagePath>
+      <Visible>false</Visible>
+    </Content>
+  </ItemGroup>
+
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
   <ItemGroup>
     <EmbeddedResource Update="Resources\Strings.resx">
