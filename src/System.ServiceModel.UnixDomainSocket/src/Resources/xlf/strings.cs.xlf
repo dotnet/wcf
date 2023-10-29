@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">Rozšířená ochrana není na této platformě podporována. Instalujte odpovídající opravu nebo změňte vlastnost ExtendedProtectionPolicy objektu Binding nebo BindingElement na hodnotu s nastavením PolicyEnforcement Never nebo WhenSupported.</target>
+        <target state="translated">Rozšířená ochrana se na této platformě nepodporuje. Instalujte odpovídající opravu nebo změňte vlastnost ExtendedProtectionPolicy objektu Binding nebo BindingElement na hodnotu s nastavením PolicyEnforcement Never nebo WhenSupported.</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
@@ -89,42 +89,42 @@
       </trans-unit>
       <trans-unit id="UDSConnectError">
         <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. UDS error code {1}: {2}. </target>
+        <target state="translated">Nelze připojit k {0}. Kód chyby UDS {1}: {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectErrorWithTimeSpan">
         <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </target>
+        <target state="translated">Nelze připojit k {0}. Pokus o připojení trval {3}. Kód chyby UDS {1}: {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectNoBufs">
         <source>Insufficient winsock resources available to complete socket connection initiation.</source>
-        <target state="new">Insufficient winsock resources available to complete socket connection initiation.</target>
+        <target state="translated">Nejsou k dispozici dostatečné prostředky rozhraní winsock pro dokončení inicializace připojení.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectingToViaTimedOut">
         <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Časový limit připojení přes {0} vypršel po {1}. Pokus o připojení byl proveden u {2} z {3} dostupných adres ({4}). Zkontrolujte adresu RemoteAddress kanálu a ověřte, jestli záznamy DNS pro tento koncový bod odpovídají platným IP adresám. Čas přidělený této operaci byl pravděpodobně částí delšího časového limitu.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionResetError">
         <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
-        <target state="new">The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</target>
+        <target state="translated">Připojení k soketu bylo přerušeno. Může to být způsobeno chybou při zpracování zprávy nebo překročením časového limitu příjmu vzdáleným hostitelem nebo problémem se síťovými prostředky. Časový limit místního soketu byl {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionTimedOut">
         <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Vypršel časový limit přenosu soketu po {0}. Překročili jste časový limit nastavený na vazbě. Čas přidělený této operaci byl pravděpodobně částí delšího časového limitu.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSLocalConnectionAborted">
         <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
-        <target state="new">The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</target>
+        <target state="translated">Připojení soketu bylo přerušeno místním počítačem. Může to být způsobeno funkcí Abort() kanálu nebo chybou ve vysílání z jiného vlákna používajícího tento soket.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSTransferError">
         <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
-        <target state="new">A UDS error ({0}: {1}) occurred while transmitting data.</target>
+        <target state="translated">Při vysílání dat došlo k chybě UDS ({0}: {1}).</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
@@ -134,7 +134,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedSecuritySetting">
         <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
-        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <target state="translated">Hodnota {1} není v tomto kontextu pro vlastnost zabezpečení vazby {0} podporována.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">

@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">Genişletilmiş koruma bu platformda desteklenmez. Lütfen uygun düzeltme ekini yükleyin veya Binding veya BindingElement üzerindeki ExtendedProtectionPolicy öğesini, PolicyEnforcement değeri "Never" veya "WhenSupported" olan bir değere değiştirin.</target>
+        <target state="translated">Genişletilmiş koruma bu platformda desteklenmiyor. Lütfen uygun düzeltme ekini yükleyin veya Binding veya BindingElement üzerindeki ExtendedProtectionPolicy öğesini, PolicyEnforcement değeri "Never" veya "WhenSupported" olan bir değere değiştirin.</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
@@ -89,52 +89,52 @@
       </trans-unit>
       <trans-unit id="UDSConnectError">
         <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. UDS error code {1}: {2}. </target>
+        <target state="translated">{0} bağlantısı yapılamıyor. UDS hata kodu {1}: {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectErrorWithTimeSpan">
         <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </target>
+        <target state="translated">{0} bağlantısı yapılamıyor. Bağlanma denemesi {3} uzunluğunda bir süre boyunca yapıldı. UDS hata kodu {1}: {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectNoBufs">
         <source>Insufficient winsock resources available to complete socket connection initiation.</source>
-        <target state="new">Insufficient winsock resources available to complete socket connection initiation.</target>
+        <target state="translated">Yuva bağlantısını başlatmak için kullanılabilir winsock kaynakları yetersiz.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectingToViaTimedOut">
         <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">{0} ile bağlanma {1} sonra zaman aşımına uğradı. Bağlantı denemeleri kullanılabilir {2} / {3} adrese yapıldı ({4}). Kanalınızın RemoteAddress değerini denetleyin ve bu uç nokta için DNS kayıtlarının geçerli IP Adreslerine karşılık geldiğini doğrulayın. Bu işlem için ayrılan süre daha uzun bir zaman aşımı değerinin bir bölümü olabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionResetError">
         <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
-        <target state="new">The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</target>
+        <target state="translated">Yuva bağlantısı iptal edildi. Bu, iletinizin işlenmesinde oluşan bir hata ya da bir alma zaman aşımı değerinin uzak konak tarafından aşılması veya arka plandaki bir ağ kaynağı sorunu nedeniyle olabilir. Yerel yuva zaman aşımı değeri: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionTimedOut">
         <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Yuva aktarımı {0} sonra zaman aşımına uğradı. Bağlamanızda ayarlanan zaman aşımı değerini aştınız. Bu işlem için ayrılan süre daha uzun bir zaman aşımı değerinin bir bölümü olabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSLocalConnectionAborted">
         <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
-        <target state="new">The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</target>
+        <target state="translated">Yuva bağlantısı, yerel makineniz tarafından iptal edildi. Bu, bir kanal Abort() işlemi ya da bu yuvayı kullanan başka bir iş parçacığında oluşan bir aktarım hatası nedeniyle oluşmuş olabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSTransferError">
         <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
-        <target state="new">A UDS error ({0}: {1}) occurred while transmitting data.</target>
+        <target state="translated">Veri aktarımı sırasında bir UDS hatası ({0}: {1}) oluştu.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
         <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
-        <target state="translated">DNS kullanılarak URI "{0}" ana bilgisayar adı çözümlenemiyor.</target>
+        <target state="translated">DNS kullanılarak "{0}" URI konak adı çözümlenemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSecuritySetting">
         <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
-        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <target state="translated">'{1}' değeri, bu bağlamda '{0}' bağlama güvenlik özelliği için desteklenmiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">

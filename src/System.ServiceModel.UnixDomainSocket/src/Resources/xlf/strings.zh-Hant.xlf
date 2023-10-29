@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">這個平台不支援延伸的保護。請安裝適當的修補程式，或者將 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 值變更為 "Never" 或 "WhenSupported" 的 PolicyEnforcement 值。</target>
+        <target state="translated">此平台上不支援延伸的保護。請安裝適當的修補程式，或者將 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 變更為 PolicyEnforcement 值為 "Never" 或 "WhenSupported" 的值。</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
@@ -89,42 +89,42 @@
       </trans-unit>
       <trans-unit id="UDSConnectError">
         <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. UDS error code {1}: {2}. </target>
+        <target state="translated">無法連線到 {0}。UDS 錯誤碼 {1}：{2}。 </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectErrorWithTimeSpan">
         <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </target>
+        <target state="translated">無法連線到 {0}。連線嘗試持續了 {3} 時間範圍。UDS 錯誤碼 {1}：{2}。 </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectNoBufs">
         <source>Insufficient winsock resources available to complete socket connection initiation.</source>
-        <target state="new">Insufficient winsock resources available to complete socket connection initiation.</target>
+        <target state="translated">用以完成通訊端連線初始化的 Winsock 資源不足。</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectingToViaTimedOut">
         <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">透過 {0} 進行連線已在 {1} 之後逾時。嘗試連線到 {3} 個可用位址的其中 {2} 個 ({4})。請檢查通道的 RemoteAddress，並確定此端點的 DNS 對應到正確的 IP 位址。分配給此作業的時間可能是較長逾時的一部分。</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionResetError">
         <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
-        <target state="new">The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</target>
+        <target state="translated">通訊端連線已中止。這可能是因為處理訊息時發生錯誤、或是遠端主機超過接收逾時，或是基礎網路資源問題所導致。本機通訊端逾時是 '{0}'。</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionTimedOut">
         <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">通訊端傳輸在 {0} 之後逾時。已超過為繫結所設定的逾時。分配給此作業的時間可能是較長逾時的一部分。</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSLocalConnectionAborted">
         <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
-        <target state="new">The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</target>
+        <target state="translated">本機電腦已中止通訊端連線。這可能是因為通道 Abort()，或是使用此通訊端的另一個執行緒傳輸錯誤所導致。</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSTransferError">
         <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
-        <target state="new">A UDS error ({0}: {1}) occurred while transmitting data.</target>
+        <target state="translated">傳輸資料時發生 UDS 錯誤 ({0}: {1}) 錯誤。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
@@ -134,7 +134,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedSecuritySetting">
         <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
-        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <target state="translated">此繫結安全性屬性 '{0}' 的內容中不支援值 '{1}'。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
