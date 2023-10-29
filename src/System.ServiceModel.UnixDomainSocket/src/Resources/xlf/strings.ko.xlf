@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">이 플랫폼에서는 확장된 보호가 지원되지 않습니다. 적합한 패치를 설치하거나 Binding 또는 BindingElement의 ExtendedProtectionPolicy를 PolicyEnforcement 값이 "Never" 또는 "WhenSupported"인 값으로 변경하십시오.</target>
+        <target state="translated">이 플랫폼에서는 확장된 보호가 지원되지 않습니다. 적합한 패치를 설치하거나 Binding 또는 BindingElement의 ExtendedProtectionPolicy를 PolicyEnforcement 값이 "Never" 또는 "WhenSupported"인 값이 되도록 변경하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
@@ -89,42 +89,42 @@
       </trans-unit>
       <trans-unit id="UDSConnectError">
         <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. UDS error code {1}: {2}. </target>
+        <target state="translated">{0}에 연결할 수 없습니다. UDS 오류 코드 {1}: {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectErrorWithTimeSpan">
         <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </target>
+        <target state="translated">{0}에 연결할 수 없습니다. {3} 시간 동안 연결 시도가 지속되었습니다. UDS 오류 코드 {1}: {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectNoBufs">
         <source>Insufficient winsock resources available to complete socket connection initiation.</source>
-        <target state="new">Insufficient winsock resources available to complete socket connection initiation.</target>
+        <target state="translated">소켓 연결 시작을 완료하는 데 사용할 수 있는 winsock 리소스가 충분하지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectingToViaTimedOut">
         <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">{0}을(를) 통한 연결이 {1} 이후에 시간 제한을 초과했습니다. {3} 사용 가능 주소({4})의 {2}(으)로 연결하려고 했습니다. 채널의 RemoteAddress를 확인하고, 이 엔드포인트의 DNS 레코드가 유효한 IP 주소와 상응하는지 확인하세요. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionResetError">
         <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
-        <target state="new">The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</target>
+        <target state="translated">소켓 연결이 중단되었습니다. 메시지 처리 오류 또는 원격 호스트에 의한 수신 시간 제한 초과 또는 기본 네트워크 리소스 문제 때문일 수 있습니다. 로컬 소켓 시간 제한은 '{0}'입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionTimedOut">
         <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">{0} 이후에 소켓 전송 시간 제한을 초과했습니다. 바인딩에 설정된 시간 제한을 초과했습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSLocalConnectionAborted">
         <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
-        <target state="new">The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</target>
+        <target state="translated">로컬 컴퓨터가 소켓 연결을 중단했습니다. 채널 Abort() 또는 이 소켓을 사용하는 다른 스레드에서의 전송 오류 때문일 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSTransferError">
         <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
-        <target state="new">A UDS error ({0}: {1}) occurred while transmitting data.</target>
+        <target state="translated">데이터를 전송하는 동안 UDS 오류({0}: {1})가 발생했습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
@@ -134,7 +134,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedSecuritySetting">
         <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
-        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <target state="translated">'{1}' 값은 이 컨텍스트에서 바인딩 보안 속성 '{0}'에 지원되지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">

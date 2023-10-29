@@ -89,52 +89,52 @@
       </trans-unit>
       <trans-unit id="UDSConnectError">
         <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. UDS error code {1}: {2}. </target>
+        <target state="translated">Non è stato possibile connettersi a {0}. Codice di errore UDS {1}: {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectErrorWithTimeSpan">
         <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
-        <target state="new">Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </target>
+        <target state="translated">Non è stato possibile connettersi a {0}. Il tentativo di connessione è durato per un periodo di tempo pari a{3}. Codice di errore UDS {1}: {2}. </target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectNoBufs">
         <source>Insufficient winsock resources available to complete socket connection initiation.</source>
-        <target state="new">Insufficient winsock resources available to complete socket connection initiation.</target>
+        <target state="translated">Le risorse Winsock non sono sufficienti per completare l'avvio della connessione socket.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectingToViaTimedOut">
         <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Timeout della connessione tramite {0} dopo {1}. Sono stati effettuati tentativi di connessione a {2} su {3} indirizzi disponibili ({4}). Controllare l'elemento RemoteAddress del canale e verificare che i record DNS per l'endpoint corrispondano a indirizzi IP validi. È possibile che il tempo allocato a questa operazione fosse incluso in un timeout più lungo.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionResetError">
         <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
-        <target state="new">The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</target>
+        <target state="translated">La connessione socket è stata interrotta. Il problema potrebbe essere causato da un errore nell'elaborazione del messaggio, un timeout di ricezione superato dall'host remoto o da problemi con le risorse di rete sottostanti. Timeout del socket locale: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionTimedOut">
         <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="new">The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <target state="translated">Timeout del trasferimento socket dopo {0}. Il timeout impostato per il binding è stato superato. È possibile che il tempo allocato a questa operazione fosse incluso in un timeout più lungo.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSLocalConnectionAborted">
         <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
-        <target state="new">The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</target>
+        <target state="translated">La connessione socket è stata interrotta dal computer locale. Il problema potrebbe essere causato da un metodo Abort() del canale o da un errore di trasmissione generato da un altro thread che usa questo socket.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSTransferError">
         <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
-        <target state="new">A UDS error ({0}: {1}) occurred while transmitting data.</target>
+        <target state="translated">Si è verificato un errore UDS ({0}: {1}) durante la trasmissione dei dati.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
         <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
-        <target state="translated">Impossibile risolvere il nome host dell'URI "{0}" tramite DNS.</target>
+        <target state="translated">Non è possibile risolvere il nome host dell'URI "{0}" con il servizio DNS.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSecuritySetting">
         <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
-        <target state="new">The value '{1}' is not supported in this context for the binding security property '{0}'.</target>
+        <target state="translated">Il valore '{1}' non è supportato in questo contesto per la proprietà di sicurezza di binding '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
