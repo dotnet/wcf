@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -15,11 +16,7 @@ public static class CSharpGeneratorVerifier<TSourceGenerator>
     where TSourceGenerator : ISourceGenerator, new()
 #endif
 {
-#if ROSLYN4_0_OR_GREATER
-    public class Test : CSharpIncrementalGeneratorTest<TSourceGenerator, DefaultVerifier>
-#else
-    public class Test : CSharpSourceGeneratorTest<TSourceGenerator, DefaultVerifier>
-#endif
+    public class Test : CSharpSourceGeneratorTest<EmptySourceGeneratorProvider, DefaultVerifier>
     {
         public Test()
         {
@@ -47,6 +44,18 @@ public static class CSharpGeneratorVerifier<TSourceGenerator>
 
         protected override ParseOptions CreateParseOptions()
             => ((CSharpParseOptions)base.CreateParseOptions()).WithLanguageVersion(LanguageVersion);
+
+#if ROSLYN4_0_OR_GREATER
+        protected override IEnumerable<ISourceGenerator> GetSourceGenerators()
+        {
+            yield return new TSourceGenerator().AsSourceGenerator();
+        }
+#else
+        protected override IEnumerable<ISourceGenerator> GetSourceGenerators()
+        {
+            yield return new TSourceGenerator();
+        }
+#endif
 
         protected override bool IsCompilerDiagnosticIncluded(Diagnostic diagnostic, CompilerDiagnostics compilerDiagnostics) => false;
     }
