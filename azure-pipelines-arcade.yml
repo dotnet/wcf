@@ -80,16 +80,12 @@ stages:
         # Internal/Official Build Variables
         - ${{ if eq(variables._RunAsInternal, True) }}:
             # Only enable publishing in non-public, non PR scenarios.
-            # DotNet-Blob-Feed provides: dotnetfeed-storage-access-key-1
             # Publish-Build-Assets provides: MaestroAccessToken, BotAccount-dotnet-maestro-bot-PAT
             # DotNet-HelixApi-Access provides: HelixApiAccessToken
-            - group: DotNet-Blob-Feed
             - group: Publish-Build-Assets
             - group: DotNet-HelixApi-Access
             - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
             - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName)
-                /p:DotNetPublishBlobFeedKey=$(dotnetfeed-storage-access-key-1)
-                /p:DotNetPublishBlobFeedUrl=$(_PublishBlobFeedUrl)
                 /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed)
                 /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines)
                 /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)

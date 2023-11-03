@@ -20,7 +20,11 @@ namespace System.ServiceModel.Channels
     {
         private static readonly Action<object> _continuationCompleted = _ => { };
 
-        private Action<object> _continuation;
+        // There are places where we read the _continuation field and then read some other state which we assume to be consistent
+        // with the value we read in _continuation. Without a fence, those secondary reads could be reordered with respect to the first.
+        // https://github.com/dotnet/runtime/pull/84432
+        // https://github.com/dotnet/aspnetcore/issues/50623
+        private volatile Action<object> _continuation;
 
         public SocketAwaitableEventArgs() : base(unsafeSuppressExecutionContextFlow: true) { }
 
