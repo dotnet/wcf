@@ -15,16 +15,15 @@ namespace System.ServiceModel.BuildTools
         {
             private readonly Compilation _compilation;
             private readonly OperationInvokerSourceGenerationContext _context;
-            private readonly INamedTypeSymbol? _sSMOperationContractSymbol;
-            private readonly INamedTypeSymbol? _sSMServiceContractSymbol;
+            private readonly INamedTypeSymbol _sSMOperationContractSymbol;
+            private readonly INamedTypeSymbol _sSMServiceContractSymbol;
 
             public Parser(Compilation compilation, in OperationInvokerSourceGenerationContext context)
             {
                 _compilation = compilation;
                 _context = context;
-
-                _sSMOperationContractSymbol = _compilation.GetTypeByMetadataName("System.ServiceModel.OperationContractAttribute");
-                _sSMServiceContractSymbol = _compilation.GetTypeByMetadataName("System.ServiceModel.ServiceContractAttribute");
+                _sSMOperationContractSymbol = _compilation.GetTypeByMetadataName("System.ServiceModel.OperationContractAttribute")!;
+                _sSMServiceContractSymbol = _compilation.GetTypeByMetadataName("System.ServiceModel.ServiceContractAttribute")!;
             }
 
             public SourceGenerationSpec GetGenerationSpec(ImmutableArray<MethodDeclarationSyntax> methodDeclarationSyntaxes)
@@ -37,9 +36,9 @@ namespace System.ServiceModel.BuildTools
                     select methodSymbol).ToImmutableArray();
 
                 var methods = (from method in methodSymbols
-                    where method.GetOneAttributeOf(_sSMOperationContractSymbol) is not null
+                    where method.HasAttribute(_sSMOperationContractSymbol) is not null
                     let @interface = method.ContainingSymbol
-                    where @interface.GetOneAttributeOf(_sSMServiceContractSymbol) is not null
+                    where @interface.HasAttribute(_sSMServiceContractSymbol) is not null
                     select method).ToImmutableArray();
 
                 var builder = ImmutableArray.CreateBuilder<OperationContractSpec>();
