@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="AmbiguousToolUseage">
         <source>The intended output for the tool could not be inferred from the inputs and the options.</source>
-        <target state="new">The intended output for the tool could not be inferred from the inputs and the options.</target>
+        <target state="translated">Giriş ve seçeneklerden araç için hedeflenen çıkış çıkarsanamadı.</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightForCmdLine">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="new">Copyright (c) Microsoft Corporation.  All rights reserved.</target>
+        <target state="translated">Teklif Hakkı (c) Microsoft Corporation. Tüm hakları saklıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrAmbiguityInAssemblyNames">
@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="ErrCannotCreateDirectory">
         <source>Cannot create directory: {0}</source>
-        <target state="new">Cannot create directory: {0}</target>
+        <target state="translated">Dizin oluşturulamıyor: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateFile">
         <source>Cannot create output file: {0}</source>
-        <target state="new">Cannot create output file: {0}</target>
+        <target state="translated">Çıkış dosyası oluşturulamıyor: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotDeleteExistingConfig">
@@ -44,22 +44,22 @@
       </trans-unit>
       <trans-unit id="ErrCannotDisambiguateSpecifiedTypes">
         <source>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</source>
-        <target state="new">More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</target>
+        <target state="translated">Başvurulan bütünleştirilmiş kod kümesinde aynı ada sahip birden çok tür var. '{1}' ve '{2}' şeklindeki --{0} türlerini birbirinden ayırmak için bütünleştirilmiş kodla nitelenen adlar kullanın</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotLoadSpecifiedType">
         <source>No type could be loaded for the value {1} passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</source>
-        <target state="new">No type could be loaded for the value {1} passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</target>
+        <target state="translated">--{0} seçeneğine geçirilen {1} değeri için tür yüklenemedi. Bu türün ait olduğu bütünleştirilmiş kodun --{2} seçeneği aracılığıyla belirtildiğinden emin olun.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotSpecifyMultipleMappingsForNamespace">
         <source>Invalid value passed to the --{0} option. Target namespace '{1}' cannot be mapped to multiple CLR namespaces '{2}' and '{3}'</source>
-        <target state="new">Invalid value passed to the --{0} option. Target namespace '{1}' cannot be mapped to multiple CLR namespaces '{2}' and '{3}'</target>
+        <target state="translated">--{0} seçeneğine geçersiz değer geçirildi. '{1}' hedef ad alanı birden çok CLR ad alanıyla ('{2}' ve '{3}') eşlenemiyor</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotWriteFile">
         <source>Cannot write to output file</source>
-        <target state="new">Cannot write to output file</target>
+        <target state="translated">Çıkış dosyasına yazılamıyor</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrConflictingInputs">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProvider">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} argument. Verify that the code provider is properly installed and configured.</source>
-        <target state="new">A code provider could not be created for the value: '{0}' passed to the --{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <target state="translated">--{1} bağımsız değişkenine geçirilen '{0}' değeri için bir kod sağlayıcısı oluşturulamadı. Kod sağlayıcısının düzgün bir biçimde yüklenip yapılandırıldığından emin olun.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateInstance">
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAt">
         <source>Cannot load any types in assembly '{0}'.</source>
-        <target state="new">Cannot load any types in assembly '{0}'.</target>
+        <target state="translated">'{0}' bütünleştirilmiş kodundaki türler yüklenemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryContainsInvalidCharacters">
@@ -99,22 +99,22 @@
       </trans-unit>
       <trans-unit id="ErrDirectoryNotFound">
         <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
-        <target state="new">The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</target>
+        <target state="translated">'{0}' dizini bulunamadı. Dizinin mevcut olduğunu ve dizini okumak için uygun izinlere sahip olduğunuzu doğrulayın.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryPointsToAFile">
         <source>Invalid value '{1}' passed to the --{0} option. '{1}' is a path to a file.</source>
-        <target state="new">Invalid value '{1}' passed to the --{0} option. '{1}' is a path to a file.</target>
+        <target state="translated">--{0} seçeneğine '{1}' geçersiz değeri geçirildi. '{1}' bir dosyanın yoludur.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateReferenceValues">
         <source>The assembly {1} was loaded twice through the --{0} option. You may reference each assembly only once.</source>
-        <target state="new">The assembly {1} was loaded twice through the --{0} option. You may reference each assembly only once.</target>
+        <target state="translated">{1} bütünleştirilmiş kodu --{0} seçeneği aracılığıyla iki kere yüklendi. Her bütünleştirilmiş koda yalnızca bir kere başvurabilirsiniz.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateValuePassedToTypeArg">
         <source>The value {1} was passed to the --{0} option multiple times. Each type may be specified only once.</source>
-        <target state="new">The value {1} was passed to the --{0} option multiple times. Each type may be specified only once.</target>
+        <target state="translated">{1} değeri --{0} seçeneğine birden çok kez geçirildi. Her tür yalnızca bir kere belirtilebilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrExclusiveOptionsSpecified">
@@ -124,12 +124,12 @@
       </trans-unit>
       <trans-unit id="ErrExpectedValue">
         <source>The {0} option requires that a value be specified.</source>
-        <target state="new">The {0} option requires that a value be specified.</target>
+        <target state="translated">{0} seçeneği değer belirtilmesini gerektirir.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputConflictsWithMode">
         <source>The input read from '{0}' is inconsistent with other options.</source>
-        <target state="new">The input read from '{0}' is inconsistent with other options.</target>
+        <target state="translated">'{0}' öğesinden okunan giriş diğer seçeneklerle tutarsız.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputConflictsWithOption">
@@ -149,7 +149,7 @@
       </trans-unit>
       <trans-unit id="ErrInvalidInputPath">
         <source>The input path '{0}' doesn't appear to refer to any existing files and does not appear to be a valid URI.</source>
-        <target state="new">The input path '{0}' doesn't appear to refer to any existing files and does not appear to be a valid URI.</target>
+        <target state="translated">'{0}' giriş yolu herhangi bir mevcut dosyaya başvurmuyor ve geçerli bir URI değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidNamespaceArgument">
@@ -194,7 +194,7 @@
       </trans-unit>
       <trans-unit id="ErrNoFilesFound">
         <source>The input path '{0}' doesn't appear to refer to any existing files</source>
-        <target state="new">The input path '{0}' doesn't appear to refer to any existing files</target>
+        <target state="translated">'{0}' giriş yolu mevcut bir dosyaya başvurmuyor</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoValidInputFilesSpecified">
@@ -204,12 +204,12 @@
       </trans-unit>
       <trans-unit id="ErrNotCodeDomType">
         <source>The type '{0}' passed to the --{1} argument is not a subclass of {2}.</source>
-        <target state="new">The type '{0}' passed to the --{1} argument is not a subclass of {2}.</target>
+        <target state="translated">--{1} bağımsız değişkenine geçirilen '{0}' türü, {2} sınıfının bir alt sınıfı değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotLanguageOrCodeDomType">
         <source>The value '{0}' passed to the --{1} argument does not represent a defined language and it could not be loaded as a fully qualified CLR type.</source>
-        <target state="new">The value '{0}' passed to the --{1} argument does not represent a defined language and it could not be loaded as a fully qualified CLR type.</target>
+        <target state="translated">--{1} bağımsız değişkenine geçirilen '{0}' değeri tanımlı bir dili temsil etmiyor ve tam bir CLR türü olarak yüklenemedi.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOptionConflictsWithTarget">
@@ -245,7 +245,7 @@
       </trans-unit>
       <trans-unit id="ErrSingleUseSwitch">
         <source>The {0} option cannot be specified multiple times.</source>
-        <target state="new">The {0} option cannot be specified multiple times.</target>
+        <target state="translated">{0} seçeneği birkaç kez belirtilemez.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSwitchMissing">
@@ -260,7 +260,7 @@
       </trans-unit>
       <trans-unit id="ErrUnableToLoadExtensions">
         <source>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</source>
-        <target state="new">There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</target>
+        <target state="translated">İçeri aktarma uzantıları yüklenirken bir hata oluştu. --{0} seçeneğini kullanarak bu uzantıları içeren bütünleştirilmiş kodları başvuru bütünleştirilmiş kodları olarak sağladığınızdan emin olun.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadFile">
@@ -282,17 +282,17 @@
       </trans-unit>
       <trans-unit id="ErrUnableToUniquifyFilename">
         <source>Cannot create output filename. Too many files are being created with the prefix '{0}'.</source>
-        <target state="new">Cannot create output filename. Too many files are being created with the prefix '{0}'.</target>
+        <target state="translated">Çıkış dosyası adı oluşturulamıyor. '{0}' ön ekine sahip çok fazla dosya oluşturuluyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedDelimiter">
         <source>Invalid argument: delimiter (':' or '=') cannot start option.</source>
-        <target state="new">Invalid argument: delimiter (':' or '=') cannot start option.</target>
+        <target state="translated">Geçersiz bağımsız değişken: ayırıcı (':' veya '=') seçenek başlangıcı olamaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedError">
         <source>An error occurred in the tool.</source>
-        <target state="new">An error occurred in the tool.</target>
+        <target state="translated">Araçta bir hata oluştu.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedValue">
@@ -302,7 +302,7 @@
       </trans-unit>
       <trans-unit id="ErrUnknownSwitch">
         <source>Unrecognized option '{0}' specified.</source>
-        <target state="new">Unrecognized option '{0}' specified.</target>
+        <target state="translated">Tanınmayan seçenek '{0}' belirtildi.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrValidateInvalidUse">
@@ -317,7 +317,7 @@
       </trans-unit>
       <trans-unit id="Error">
         <source>Error: </source>
-        <target state="new">Error: </target>
+        <target state="translated">Hata</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateSerializerNotFound">
@@ -327,7 +327,7 @@
       </trans-unit>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
-        <target state="new">Generating files...</target>
+        <target state="translated">Dosyalar oluşturuluyor...</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratingSerializer">
@@ -342,7 +342,7 @@
       </trans-unit>
       <trans-unit id="HelpCodeGenerationCategory">
         <source>-= CODE GENERATION =-</source>
-        <target state="new">-= CODE GENERATION =-</target>
+        <target state="translated">- KOD OLUŞTURMA -</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationDescription">
@@ -357,7 +357,7 @@
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput1">
         <source>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</source>
-        <target state="new">The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</target>
+        <target state="translated">Bir meta veri belgesinin (wsdl veya xsd) yolu. Dosya yolunda standart komut satırı joker parçacıkları kullanılabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput2">
@@ -372,22 +372,22 @@
       </trans-unit>
       <trans-unit id="HelpCollectionType">
         <source>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</source>
-        <target state="new">A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</target>
+        <target state="translated">Şemalardan kod üretilirken bir koleksiyon veri türü olarak kullanılacak türün tam veya bütünleştirilmiş kodla nitelenen adı. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCommonOptionsCategory">
         <source>-= COMMON OPTIONS =-</source>
-        <target state="new">-= COMMON OPTIONS =-</target>
+        <target state="translated">-= ORTAK SEÇENEKLER =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpDirectory">
         <source>Directory to create files in (default: current directory) (Short Form: -{0})</source>
-        <target state="new">Directory to create files in (default: current directory) (Short Form: -{0})</target>
+        <target state="translated">Dosyaların oluşturulacağı dizin (varsayılan: geçerli dizin) (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples">
         <source>-= EXAMPLES =-</source>
-        <target state="new">-= EXAMPLES =-</target>
+        <target state="translated">-= ÖRNEKLER =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples1">
@@ -402,7 +402,7 @@
       </trans-unit>
       <trans-unit id="HelpExcludeTypeCodeGeneration">
         <source>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</source>
-        <target state="new">A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</target>
+        <target state="translated">Başvurulan anlaşma türlerinin dışında tutulacak bir tam veya bütünleştirilmiş kodla nitelenen tür adı. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExcludeTypeExport">
@@ -412,7 +412,7 @@
       </trans-unit>
       <trans-unit id="HelpHelp">
         <source>Display command syntax and options for the tool. (Short Form: -{0})</source>
-        <target state="new">Display command syntax and options for the tool. (Short Form: -{0})</target>
+        <target state="translated">Araç için komut söz dizimini ve seçenekleri görüntüleme. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputAssemblyPath">
@@ -422,17 +422,17 @@
       </trans-unit>
       <trans-unit id="HelpInputEpr">
         <source>&lt;epr&gt;</source>
-        <target state="new">&lt;epr&gt;</target>
+        <target state="translated">&lt;epr&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadataDocumentPath&gt;</source>
-        <target state="new">&lt;metadataDocumentPath&gt;</target>
+        <target state="translated">&lt;metadataDocumentPath&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
         <source>&lt;url&gt;</source>
-        <target state="new">&lt;url&gt;</target>
+        <target state="translated">&lt;url&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMetadataDownloadCategory">
@@ -457,7 +457,7 @@
       </trans-unit>
       <trans-unit id="HelpMetadataDownloadSyntaxInput2">
         <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</source>
-        <target state="new">The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</target>
+        <target state="translated">WS-Metadata Exchange'i destekleyen bir hizmet uç noktası için WS-Addressing EndpointReference içeren bir XML dosyasının yolu.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMetadataExportCategory">
@@ -482,12 +482,12 @@
       </trans-unit>
       <trans-unit id="HelpNamespace">
         <source>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</source>
-        <target state="new">A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</target>
+        <target state="translated">Bir WSDL veya XML Schema targetNamespace'ten CLR ad alanına eşleme. targetNamespace için '*' kullanılırsa, ilgili CLR ad alanına açık bir eşleme olmaksızın tüm targetNamespace'ler eşlenir. Varsayılan: Veri Anlaşmaları için şema belgesinin hedef ad alanından türetilir. Diğer tüm oluşturulan türler için varsayılan ad alanı kullanılır. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNologo">
         <source>Suppress the copyright and banner message.</source>
-        <target state="new">Suppress the copyright and banner message.</target>
+        <target state="translated">Telif hakkı ve başlık iletisini gösterme.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNostdlib">
@@ -497,7 +497,7 @@
       </trans-unit>
       <trans-unit id="HelpOptions">
         <source>Options:</source>
-        <target state="new">Options:</target>
+        <target state="translated">Seçenekler:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOut">
@@ -522,7 +522,7 @@
       </trans-unit>
       <trans-unit id="HelpUsage1">
         <source>USES:</source>
-        <target state="new">USES:</target>
+        <target state="translated">ŞUNU KULLANIR:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage2">
@@ -587,7 +587,7 @@
       </trans-unit>
       <trans-unit id="HelpWrapped">
         <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</source>
-        <target state="new">Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</target>
+        <target state="translated">Oluşturulan kod, belgede sarmalanmış sabit değer iletilerinin "parameters" üyesini sarmalamadan çıkarmaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationCategory">
@@ -643,16 +643,16 @@
       </trans-unit>
       <trans-unit id="MoreHelp">
         <source>If you would like more help, type "svcutil -{0}"</source>
-        <target state="new">If you would like more help, type "svcutil -{0}"</target>
+        <target state="translated">Daha fazla yardım almak istiyorsanız "svcutil -{0}" yazın</target>
         <note />
       </trans-unit>
       <trans-unit id="NoCodeWasGenerated">
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="new">No code was generated.
-If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
-or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</target>
+        <target state="translated">Kod oluşturulmadı.
+İstemci oluşturmaya çalışıyorsanız bunun nedeni meta veri belgelerinin geçerli anlaşma veya hizmetler içermemesi
+ya da bulunan tüm anlaşma ve hizmetlerin /reference bütünleştirilmiş kodlarında yer alması olabilir. Araca tüm meta veri belgelerini geçirdiğinizi doğrulayın.</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
@@ -662,7 +662,7 @@ or because all contracts/services were discovered to exist in /reference assembl
       </trans-unit>
       <trans-unit id="ParametersDirectory">
         <source>&lt;directory&gt;</source>
-        <target state="new">&lt;directory&gt;</target>
+        <target state="translated">&lt;directory&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
@@ -672,17 +672,17 @@ or because all contracts/services were discovered to exist in /reference assembl
       </trans-unit>
       <trans-unit id="ParametersLanguage">
         <source>&lt;language&gt;</source>
-        <target state="new">&lt;language&gt;</target>
+        <target state="translated">&lt;language&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersNamespace">
         <source>&lt;string,string&gt;</source>
-        <target state="new">&lt;string,string&gt;</target>
+        <target state="translated">&lt;string,string&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersOut">
         <source>&lt;file&gt;</source>
-        <target state="new">&lt;file&gt;</target>
+        <target state="translated">&lt;file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersOutputType">
@@ -692,7 +692,7 @@ or because all contracts/services were discovered to exist in /reference assembl
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;file path&gt;</source>
-        <target state="new">&lt;file path&gt;</target>
+        <target state="translated">&lt;file path&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTarget">
@@ -712,7 +712,7 @@ or because all contracts/services were discovered to exist in /reference assembl
       </trans-unit>
       <trans-unit id="Warning">
         <source>Warning: </source>
-        <target state="new">Warning: </target>
+        <target state="translated">Uyarı: </target>
         <note />
       </trans-unit>
       <trans-unit id="WcfTrademarkForCmdLine">
