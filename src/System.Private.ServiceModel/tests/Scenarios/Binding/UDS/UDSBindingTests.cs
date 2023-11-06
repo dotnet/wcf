@@ -193,7 +193,7 @@ public partial class Binding_UDSBindingTests : ConditionalWcfTest
 
         public void Configure(IHost host)
         {
-            CoreWCF.UnixDomainSocketBinding serverBinding = new CoreWCF.UnixDomainSocketBinding(CoreWCF.SecurityMode.None);
+            CoreWCF.UnixDomainSocketBinding serverBinding = new CoreWCF.UnixDomainSocketBinding(CoreWCF.UnixDomainSocketSecurityMode.None);
             host.UseServiceModel(builder =>
             {
                 builder.AddService<EchoService>();
@@ -218,7 +218,7 @@ public partial class Binding_UDSBindingTests : ConditionalWcfTest
                 {
                     Security = new CoreWCF.UnixDomainSocketSecurity
                     {
-                        Mode = CoreWCF.SecurityMode.Transport,
+                        Mode = CoreWCF.UnixDomainSocketSecurityMode.Transport,
                         Transport = new CoreWCF.UnixDomainSocketTransportSecurity
                         {
                             ClientCredentialType = CoreWCF.UnixDomainSocketClientCredentialType.Windows,
@@ -247,7 +247,7 @@ public partial class Binding_UDSBindingTests : ConditionalWcfTest
                 {
                     Security = new CoreWCF.UnixDomainSocketSecurity
                     {
-                        Mode = CoreWCF.SecurityMode.Transport,
+                        Mode = CoreWCF.UnixDomainSocketSecurityMode.Transport,
                         Transport = new CoreWCF.UnixDomainSocketTransportSecurity
                         {
                             ClientCredentialType = CoreWCF.UnixDomainSocketClientCredentialType.Certificate,
@@ -286,10 +286,10 @@ public partial class Binding_UDSBindingTests : ConditionalWcfTest
                 {
                     Security = new CoreWCF.UnixDomainSocketSecurity
                     {
-                        Mode = CoreWCF.SecurityMode.Transport,
+                        Mode = CoreWCF.UnixDomainSocketSecurityMode.TransportCredentialOnly,
                         Transport = new CoreWCF.UnixDomainSocketTransportSecurity
                         {
-                            ClientCredentialType = CoreWCF.UnixDomainSocketClientCredentialType.IdentityOnly,
+                            ClientCredentialType = CoreWCF.UnixDomainSocketClientCredentialType.PosixIdentity,
                         },
                     },
                 };
