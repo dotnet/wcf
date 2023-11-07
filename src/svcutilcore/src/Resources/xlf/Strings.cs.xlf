@@ -502,22 +502,22 @@
       </trans-unit>
       <trans-unit id="HelpOut">
         <source> The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</source>
-        <target state="new"> The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</target>
+        <target state="translated"> Název souboru pro vygenerovaný kód. Výchozí: odvozeno z názvu definice WSDL, názvu služby WSDL nebo targetNamespace jednoho ze schémat. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpReferenceCodeGeneration">
         <source>Reference types in the specified assembly. When generating clients, use this option to specify assemblies that might contain types representing the metadata being imported.  (Short Form: -{0})</source>
-        <target state="new">Reference types in the specified assembly. When generating clients, use this option to specify assemblies that might contain types representing the metadata being imported.  (Short Form: -{0})</target>
+        <target state="translated">Odkazové typy v zadaném sestavení. Při generování klientů pomocí tohoto parametru zadejte sestavení, která mohou obsahovat typy představující importovaná metadata.  (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpReferenceOther">
         <source>Add the specified assembly to the set of assemblies used for resolving type references. If you are exporting or validating a service that uses 3rd-party extensions (Behaviors, Bindings and BindingElements) registered in config use this option to locate extension assemblies that are not in the GAC.  (Short Form: -{0})</source>
-        <target state="new">Add the specified assembly to the set of assemblies used for resolving type references. If you are exporting or validating a service that uses 3rd-party extensions (Behaviors, Bindings and BindingElements) registered in config use this option to locate extension assemblies that are not in the GAC.  (Short Form: -{0})</target>
+        <target state="translated">Přidejte zadané sestavení do sady sestavení, která se používají k překladu odkazů na typy. Pokud exportujete nebo ověřujete službu, která používá rozšíření třetích stran (Behaviors, Bindings a BindingElements) zaregistrovaná v konfiguraci, použijte tento parametr k vyhledání sestavení rozšíření, která nejsou v globální mezipaměti sestavení (GAC).  (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetOutputType">
         <source>The target output for the tool: {0}, {1} or {2}.</source>
-        <target state="new">The target output for the tool: {0}, {1} or {2}.</target>
+        <target state="translated">Cílový výstup nástroje: {0}, {1} nebo {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage1">
@@ -527,62 +527,62 @@
       </trans-unit>
       <trans-unit id="HelpUsage2">
         <source>  - Generate code from running services or static metadata documents. </source>
-        <target state="new">  - Generate code from running services or static metadata documents. </target>
+        <target state="translated">  - Vygeneruje kód ze spuštěných služeb nebo dokumentů statických metadat. </target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage3">
         <source>  - Export metadata documents from compiled code.</source>
-        <target state="new">  - Export metadata documents from compiled code.</target>
+        <target state="translated">  - Exportuje dokumenty metadat z kompilovaného kódu.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage4">
         <source>  - Validate compiled service code.</source>
-        <target state="new">  - Validate compiled service code.</target>
+        <target state="translated">  - Ověřte zkompilovaný kód služby.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage5">
         <source>  - Download metadata documents from running services.</source>
-        <target state="new">  - Download metadata documents from running services.</target>
+        <target state="translated">  - Umožňuje stáhnout dokumenty metadat ze spuštěných služeb.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage6">
         <source>  - Pre-generate serialization code.</source>
-        <target state="new">  - Pre-generate serialization code.</target>
+        <target state="translated">  - Předběžně vygenerujte serializační kód.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpValidationCategory">
         <source>-= SERVICE VALIDATION =-</source>
-        <target state="new">-= SERVICE VALIDATION =-</target>
+        <target state="translated">-= OVĚŘENÍ SLUŽBY =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpValidationDescription">
         <source>Description: Validation is useful to detect errors in service implementations without hosting the service. You must use the --{0} option to indicate the service you would like to validate.</source>
-        <target state="new">Description: Validation is useful to detect errors in service implementations without hosting the service. You must use the --{0} option to indicate the service you would like to validate.</target>
+        <target state="translated">Popis: Ověření je užitečné k detekci chyb v implementacích služby bez hostování služby. Pokud chcete označit službu, kterou chcete ověřit, musíte použít parametr --{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpValidationExcludeTypeExport">
         <source>The fully-qualified or assembly-qualified name of a service type to exclude from validation. (Short Form: -{0})</source>
-        <target state="new">The fully-qualified or assembly-qualified name of a service type to exclude from validation. (Short Form: -{0})</target>
+        <target state="translated">Plně kvalifikovaný název nebo název kvalifikovaný pro sestavení typu služby, který se má vyloučit z ověřování. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpValidationSyntax">
         <source>Syntax: {0} --{1} --{2}:{3}  {4}*</source>
-        <target state="new">Syntax: {0} --{1} --{2}:{3}  {4}*</target>
+        <target state="translated">Syntaxe: {0} --{1} --{2}:{3}  {4}*</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpValidationSyntaxInput1">
         <source>The path to an assembly containing service types to be validated. The assembly must have an associated config file to provide service configuration. Standard command-line wildcards can be used to provide multiple assemblies.</source>
-        <target state="new">The path to an assembly containing service types to be validated. The assembly must have an associated config file to provide service configuration. Standard command-line wildcards can be used to provide multiple assemblies.</target>
+        <target state="translated">Cesta k sestavení obsahujícímu typy služeb, které se mají ověřit. Sestavení musí mít přidružený konfigurační soubor pro zajištění konfigurace služby. K zadání více sestavení lze použít standardní zástupné znaky příkazového řádku.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpVersion30TargetClientVersion">
         <source>Generate code that references functionality in .NET Framework assemblies 3.0 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.0.(Short Form: -{0})</source>
-        <target state="new">Generate code that references functionality in .NET Framework assemblies 3.0 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.0.(Short Form: -{0})</target>
+        <target state="translated">Vygenerování kódu, který odkazuje na funkce v sestaveních využívajících .NET Framework 3.0 a dřívější verze. Tento přepínač použijte, pokud generujete kód pro klienty, kteří používají .NET Framework verze 3.0. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpVersion35TargetClientVersion">
         <source>Generate code that references functionality in .NET Framework assemblies 3.5 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.5.(Short Form: -{0})</source>
-        <target state="new">Generate code that references functionality in .NET Framework assemblies 3.5 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.5.(Short Form: -{0})</target>
+        <target state="translated">Vygenerování kódu, který odkazuje na funkce v sestaveních využívajících .NET Framework 3.5 a dřívější verze. Tento přepínač použijte, pokud generujete kód pro klienty, kteří používají .NET Framework verze 3.5. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpWrapped">
@@ -592,42 +592,42 @@
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationCategory">
         <source>-= XMLSERIALIZER TYPE GENERATION =-</source>
-        <target state="new">-= XMLSERIALIZER TYPE GENERATION =-</target>
+        <target state="translated">-= GENEROVÁNÍ TYPU XMLSERIALIZER =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationDescription">
         <source>Description: {0} can pre-generate C# serialization code that is required for types that can be serialized using the XmlSerializer. {0} will only generate code for types used by Service Contracts found in the input assemblies.</source>
-        <target state="new">Description: {0} can pre-generate C# serialization code that is required for types that can be serialized using the XmlSerializer. {0} will only generate code for types used by Service Contracts found in the input assemblies.</target>
+        <target state="translated">Popis: {0} může předem vygenerovat serializační kód jazyka C#, který je vyžadován pro typy, které lze serializovat pomocí typu XmlSerializer. {0} vygeneruje kód pouze pro typy používané kontrakty služeb nalezené ve vstupních sestaveních.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationSyntax">
         <source>Syntax: {0} {1}*</source>
-        <target state="new">Syntax: {0} {1}*</target>
+        <target state="translated">Syntaxe: {0} {1}*</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput1">
         <source>The path to an assembly containing Service Contract types. Serialization types will be generated for all Xml Serializable types in each contract</source>
-        <target state="new">The path to an assembly containing Service Contract types. Serialization types will be generated for all Xml Serializable types in each contract</target>
+        <target state="translated">Cesta k sestavení s typy kontraktů služby. Typy serializace se vygenerují pro všechny serializovatelné typy XML v každém kontraktu.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput2">
         <source>Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: -{0})</source>
-        <target state="new">Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: -{0})</target>
+        <target state="translated">Přidejte zadané sestavení do sady sestavení, která se používají k překladu odkazů na typy. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput3">
         <source>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: -{0})</source>
-        <target state="new">Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: -{0})</target>
+        <target state="translated">Plně kvalifikovaný název typu nebo název typu kvalifikovaný pro sestavení, který bude vyloučen z exportu nebo ověřování. Tento parametr lze použít při exportu metadat pro kontrakty služby nebo sadu kontraktů služeb k vyloučení typů z exportu. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput4">
         <source>Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: -{0})</source>
-        <target state="new">Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: -{0})</target>
+        <target state="translated">Název souboru pro vygenerovaný kód. Tento parametr bude ignorován, pokud je nástroji ve vstupu předáno více sestavení. Výchozí: odvozeno z názvu sestavení. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HintConsiderUseXmlSerializer">
         <source>If you are using the --{0} option to import data contract types and are getting this error message, consider using xsd.exe instead. Types generated by xsd.exe may be used in the Windows Communication Foundation after applying the XmlSerializerFormatAttribute attribute on your service contract. Alternatively, consider using the --{1} option to import these types as XML types to use with DataContractFormatAttribute attribute on your service contract.</source>
-        <target state="new">If you are using the --{0} option to import data contract types and are getting this error message, consider using xsd.exe instead. Types generated by xsd.exe may be used in the Windows Communication Foundation after applying the XmlSerializerFormatAttribute attribute on your service contract. Alternatively, consider using the --{1} option to import these types as XML types to use with DataContractFormatAttribute attribute on your service contract.</target>
+        <target state="translated">Pokud k importu typů kontraktů dat používáte parametr --{0} a zobrazuje se tato chybová zpráva, zvažte možnost použít místo toho soubor xsd.exe. Typy generované souborem xsd.exe mohou být použity v rámci Windows Communication Foundation po použití atributu XmlSerializerFormatAttribute u kontraktu služby. Případně zvažte možnost importovat tyto typy jako typy XML pomocí parametru --{1} a použít je s atributem DataContractFormatAttribute v kontraktu služby.</target>
         <note />
       </trans-unit>
       <trans-unit id="Logo">
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="new">Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.
+        <target state="translated">Nástroj Microsoft (R) dotnet-svcutil.xmlserializer, verze {0}.
 [{1}]
 {2}
 </target>
@@ -657,7 +657,7 @@ nebo bylo zjištěno, že všechny kontrakty nebo služby existují v sestavení
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;typ&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -667,7 +667,7 @@ nebo bylo zjištěno, že všechny kontrakty nebo služby existují v sestavení
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;typ&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
@@ -687,7 +687,7 @@ nebo bylo zjištěno, že všechny kontrakty nebo služby existují v sestavení
       </trans-unit>
       <trans-unit id="ParametersOutputType">
         <source>&lt;output type&gt;</source>
-        <target state="new">&lt;output type&gt;</target>
+        <target state="translated">&lt;typ výstupu&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
@@ -697,17 +697,17 @@ nebo bylo zjištěno, že všechny kontrakty nebo služby existují v sestavení
       </trans-unit>
       <trans-unit id="ParametersTarget">
         <source>&lt;enum&gt;</source>
-        <target state="new">&lt;enum&gt;</target>
+        <target state="translated">&lt;výčet&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ValidationError">
         <source>Validation Error:</source>
-        <target state="new">Validation Error:</target>
+        <target state="translated">Chyba ověření:</target>
         <note />
       </trans-unit>
       <trans-unit id="ValidationWasSuccessful">
         <source>The Service '{0}' was validated with no errors</source>
-        <target state="new">The Service '{0}' was validated with no errors</target>
+        <target state="translated">Služba {0} byla ověřena bez chyb.</target>
         <note />
       </trans-unit>
       <trans-unit id="Warning">
@@ -717,46 +717,46 @@ nebo bylo zjištěno, že všechny kontrakty nebo služby existují v sestavení
       </trans-unit>
       <trans-unit id="WcfTrademarkForCmdLine">
         <source>Microsoft (R) Windows (R) Communication Foundation</source>
-        <target state="new">Microsoft (R) Windows (R) Communication Foundation</target>
+        <target state="translated">Microsoft (R) Windows (R) Communication Foundation</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnCouldNotLoadTypesFromReferenceAssemblyAt">
         <source>There were errors loading types in an assembly loaded from '{0}' some types in the assembly could not be loaded and will not be available to the tool.</source>
-        <target state="new">There were errors loading types in an assembly loaded from '{0}' some types in the assembly could not be loaded and will not be available to the tool.</target>
+        <target state="translated">V sestavení načteném z {0} došlo k chybám při načítání typů. Některé typy v sestavení nebylo možné načíst a nástroj je nebude mít k dispozici.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnNoServiceContractTypes">
         <source>Cannot generate XmlSerializer types for assembly: {0}. No service contract types were found.</source>
-        <target state="new">Cannot generate XmlSerializer types for assembly: {0}. No service contract types were found.</target>
+        <target state="translated">Nelze generovat typy XmlSerializer pro sestavení: {0}{ 0}. Nenašly se žádné typy kontraktů služeb.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnNoXmlSerializerOperationBehavior">
         <source>Cannot generate XmlSerializer for assembly: {0}. No service contract in the assembly has an operation with XmlSerializerOperationBehavior.</source>
-        <target state="new">Cannot generate XmlSerializer for assembly: {0}. No service contract in the assembly has an operation with XmlSerializerOperationBehavior.</target>
+        <target state="translated">Nelze generovat XmlSerializer pro sestavení: {0}. Žádný kontrakt služby v sestavení nemá operaci s XmlSerializerOperationBehavior.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOptionConflictsWithInput">
         <source>Option --{0} cannot be used with multiple input assemblies. Ignoring {0} option. </source>
-        <target state="new">Option --{0} cannot be used with multiple input assemblies. Ignoring {0} option. </target>
+        <target state="translated">Parametr --{0} nelze použít s více vstupními sestaveními. Ignoruje se parametr {0}. </target>
         <note />
       </trans-unit>
       <trans-unit id="WrnToolIsUsedDirectly">
         <source>This tool is not intended to be used directly. </source>
-        <target state="new">This tool is not intended to be used directly. </target>
+        <target state="translated">Tento nástroj není určen k přímému použití. </target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnableToLoadContractForSGen">
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="new">There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
-    Type: {0}
-    Details:{1}</target>
+        <target state="translated">Při načítání typu kontraktu došlo k chybě. Nelze generovat typy XmlSerializer pro tento kontrakt.
+    Typ: {0}
+    Podrobnosti: {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnVJSharpNamespace">
         <source>When using the '--{0}:{1}' argument, only one namespace mapping is supported. Use '--{2}:*,&lt;string&gt;' to set the namespace.</source>
-        <target state="new">When using the '--{0}:{1}' argument, only one namespace mapping is supported. Use '--{2}:*,&lt;string&gt;' to set the namespace.</target>
+        <target state="translated">Při použití argumentu --{0}:{1} se podporuje jenom jedno mapování oboru názvů. K nastavení oboru názvů použijte --{2}:*,&lt;string&gt;.</target>
         <note />
       </trans-unit>
     </body>
