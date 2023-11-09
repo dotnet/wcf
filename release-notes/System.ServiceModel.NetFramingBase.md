@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 6.2.0
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetFramingBase/6.2.0)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v6.2.0-rtm)
+
 ### 6.1.0
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetFramingBase/6.1.0)
