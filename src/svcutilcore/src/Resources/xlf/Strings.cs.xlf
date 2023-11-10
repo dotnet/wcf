@@ -14,17 +14,17 @@
       </trans-unit>
       <trans-unit id="ErrAmbiguityInAssemblyNames">
         <source>Could not load assembly '{0}'. 2  reference assemblies ('{1}' and '{2}') were found that match the string '{0}'. This is usually caused by an insufficient type reference in a config file. Resolve this issue by passing only the reference assembly needed or by adding more information like a version number or a public key to the reference.</source>
-        <target state="new">Could not load assembly '{0}'. 2  reference assemblies ('{1}' and '{2}') were found that match the string '{0}'. This is usually caused by an insufficient type reference in a config file. Resolve this issue by passing only the reference assembly needed or by adding more information like a version number or a public key to the reference.</target>
+        <target state="translated">Nepodařilo se načíst sestavení {0}. Našly se 2 referenční sestavení ({1} a {2}), která odpovídají řetězci {0}. To je obvykle způsobeno nedostatečným odkazem na typ v konfiguračním souboru. Tento problém vyřešte předáním pouze potřebného referenčního sestavení nebo přidáním dalších informací, jako je číslo verze nebo veřejný klíč, do odkazu.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrAmbiguousOptionModeConflict">
         <source>The --{0} option conflicts with other options. Review your use of the tool.</source>
-        <target state="new">The --{0} option conflicts with other options. Review your use of the tool.</target>
+        <target state="translated">Parametr --{0} je v konfliktu s jinými parametry. Zkontrolujte způsob použití nástroje.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrAssemblyLoadFailed">
         <source>Cannot load file {0} as an Assembly. Check the FusionLogs for more Information.</source>
-        <target state="new">Cannot load file {0} as an Assembly. Check the FusionLogs for more Information.</target>
+        <target state="translated">Nelze načíst soubor {0} jako sestavení. Další informace viz FusionLogs.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateDirectory">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="ErrCannotDeleteExistingConfig">
         <source>There is an existing config file that cannot be overwritten. Either fix the problem or provide a different config file name using the --{0} option.</source>
-        <target state="new">There is an existing config file that cannot be overwritten. Either fix the problem or provide a different config file name using the --{0} option.</target>
+        <target state="translated">Existuje konfigurační soubor, který nelze přepsat. Buď problém opravte, nebo zadejte jiný název konfiguračního souboru pomocí parametru --{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotDisambiguateSpecifiedTypes">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="ErrConflictingInputs">
         <source>The '{0}' input argument conflicts with '{1}' because they imply different modes of tool operation</source>
-        <target state="new">The '{0}' input argument conflicts with '{1}' because they imply different modes of tool operation</target>
+        <target state="translated">Vstupní argument {0} je v konfliktu s {1}, protože implikují různé režimy funkce nástroje.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProvider">
@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateInstance">
         <source>Could not create instance of the type '{0}' passed to the --{1} argument.</source>
-        <target state="new">Could not create instance of the type '{0}' passed to the --{1} argument.</target>
+        <target state="translated">Nepovedlo se vytvořit instanci typu {0} předanou argumentu --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotLoadReferenceAssemblyAt">
         <source>Cannot load reference assembly '{0}'</source>
-        <target state="new">Cannot load reference assembly '{0}'</target>
+        <target state="translated">Nelze načíst referenční sestavení {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAt">
@@ -89,12 +89,12 @@
       </trans-unit>
       <trans-unit id="ErrDirectoryContainsInvalidCharacters">
         <source>Invalid value '{1}' passed to the --{0} option. The {2} character is not permitted in a path</source>
-        <target state="new">Invalid value '{1}' passed to the --{0} option. The {2} character is not permitted in a path</target>
+        <target state="translated">Parametru --{0} byla předána neplatná hodnota {1}. Znak {2} není v cestě povolen.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryInsteadOfFile">
         <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths</source>
-        <target state="new">The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths</target>
+        <target state="translated">Zdá se, že vstupní cesta {0} představuje adresář. Vstupy musí být buď adresy URL, nebo cesty k souborům.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryNotFound">
@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="ErrExclusiveOptionsSpecified">
         <source>The --{0} option cannot be used when the --{1} option has been specified.</source>
-        <target state="new">The --{0} option cannot be used when the --{1} option has been specified.</target>
+        <target state="translated">Parametr --{0} nelze použít, pokud byl zadán parametr --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrExpectedValue">
@@ -134,17 +134,17 @@
       </trans-unit>
       <trans-unit id="ErrInputConflictsWithOption">
         <source>The input read from '{1}' cannot be used with the --{0} option because they imply different modes of tool operation.</source>
-        <target state="new">The input read from '{1}' cannot be used with the --{0} option because they imply different modes of tool operation.</target>
+        <target state="translated">Vstup přečtený z {1} nelze použít s parametrem --{0}, protože vstup a parametr implikují různé režimy fungování nástroje.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputConflictsWithTarget">
         <source>The type of input read from '{2}' is not supported with the --{0} option set to '{1}'.</source>
-        <target state="new">The type of input read from '{2}' is not supported with the --{0} option set to '{1}'.</target>
+        <target state="translated">Typ vstupu přečtený z {2} není podporovaný s parametrem --{0} nastaveným na hodnotu {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputFileNotAssemblyOrMetadata">
         <source>The file at: '{0}' read via input argument'{1}' does not appear to be an XML metadata file or a valid assembly.</source>
-        <target state="new">The file at: '{0}' read via input argument'{1}' does not appear to be an XML metadata file or a valid assembly.</target>
+        <target state="translated">Soubor v {0} přečtený pomocí argumentu vstupu {1} pravděpodobně není soubor metadat XML nebo platné sestavení.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidInputPath">
@@ -154,42 +154,42 @@
       </trans-unit>
       <trans-unit id="ErrInvalidNamespaceArgument">
         <source> Invalid value {1} passed to the --{0} option. Specify a comma-separated target namespace and CLR namespace pair.</source>
-        <target state="new"> Invalid value {1} passed to the --{0} option. Specify a comma-separated target namespace and CLR namespace pair.</target>
+        <target state="translated"> Parametru --{0} byla předána neplatná hodnota {1}. Zadejte čárkou oddělený pár oboru názvů cíle a CLR.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidPath">
         <source>Invalid path {0}. Check the --{1} argument</source>
-        <target state="new">Invalid path {0}. Check the --{1} argument</target>
+        <target state="translated">Neplatná cesta {0}. Zkontrolujte argument --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidSerializer">
         <source>Invalid serializer value passed to the --{0} option. The supported serializers are: {2}</source>
-        <target state="new">Invalid serializer value passed to the --{0} option. The supported serializers are: {2}</target>
+        <target state="translated">Parametru --{0} byla předána neplatná hodnota serializátoru. Podporované jsou tyto serializátory: {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidTarget">
         <source>Invalid target '{1}' specified via the --{0} option. The supported Targets are: {2}</source>
-        <target state="new">Invalid target '{1}' specified via the --{0} option. The supported Targets are: {2}</target>
+        <target state="translated">Prostřednictvím parametru --{0} byl zadán neplatný cíl {1}. Podporované jsou tyto cíle: {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidTargetClientVersion">
         <source>Invalid targetClientVersion value passed to the --{0} option. The supported targetClientVersions are: {2}</source>
-        <target state="new">Invalid targetClientVersion value passed to the --{0} option. The supported targetClientVersions are: {2}</target>
+        <target state="translated">Parametru --{0} byla předána neplatná hodnota targetClientVersion. Podporované hodnoty targetClientVersion jsou: {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrIsNotAnAssembly">
         <source>Could not load '{0}' as an assembly verify that this file is a .NET Assembly.</source>
-        <target state="new">Could not load '{0}' as an assembly verify that this file is a .NET Assembly.</target>
+        <target state="translated">Nelze načíst {0} jako sestavení. Ověřte, že je tento soubor sestavením .NET.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMergeConfigUsedWhenConfigDoesNotExist">
         <source>Cannot merge config file. The file '{1}' does not exist.</source>
-        <target state="new">Cannot merge config file. The file '{1}' does not exist.</target>
+        <target state="translated">Nelze sloučit konfigurační soubor. Soubor {1} neexistuje.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMergeConfigUsedWithoutConfig">
         <source>Cannot use the --{0} option without specifying the --{1} option.</source>
-        <target state="new">Cannot use the --{0} option without specifying the --{1} option.</target>
+        <target state="translated">Parametr --{0} nelze použít bez zadání parametru --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoFilesFound">
@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="ErrNoValidInputFilesSpecified">
         <source>No valid input files specified. Specify either metadata documents or assembly files</source>
-        <target state="new">No valid input files specified. Specify either metadata documents or assembly files</target>
+        <target state="translated">Nebyly zadány žádné platné vstupní soubory. Zadejte dokumenty metadat nebo soubory sestavení.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotCodeDomType">
@@ -214,22 +214,22 @@
       </trans-unit>
       <trans-unit id="ErrOptionConflictsWithTarget">
         <source> The use of the --{2} option is not supported with the --{0} option set to '{1}'.</source>
-        <target state="new"> The use of the --{2} option is not supported with the --{0} option set to '{1}'.</target>
+        <target state="translated"> Použití parametru --{2} není podporováno, pokud je parametr --{0} nastavený na hodnotu {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOptionModeConflict">
         <source>The --{1} option cannot be used with the --{0} option because they imply different output types.</source>
-        <target state="new">The --{1} option cannot be used with the --{0} option because they imply different output types.</target>
+        <target state="translated">Parametr --{1} nelze použít spolu s parametrem --{0}, protože implikují různé typy výstupu.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLong">
         <source>The resultant path '{0}' is too long. Review the --{1} and --{2} arguments</source>
-        <target state="new">The resultant path '{0}' is too long. Review the --{1} and --{2} arguments</target>
+        <target state="translated">Výsledná cesta {0} je moc dlouhá. Zkontrolujte argumenty --{1} a --{2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLongDirOnly">
         <source>The resultant path '{0}' is too long. Review the --{1} argument</source>
-        <target state="new">The resultant path '{0}' is too long. Review the --{1} argument</target>
+        <target state="translated">Výsledná cesta {0} je moc dlouhá. Zkontrolujte argument --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSchemaValidationForExport">
@@ -237,10 +237,10 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="new">There was a validation error on a schema generated during export:
-    Source: {0}
-    Line: {1} Column: {2}
-   Validation Error: {3}</target>
+        <target state="translated">Došlo k chybě ověření schématu vygenerovaného během exportu: 
+    Zdroj: {0}
+    Řádek: {1}, sloupec: {2}
+   Chyba ověření: {3}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSingleUseSwitch">
@@ -250,12 +250,12 @@
       </trans-unit>
       <trans-unit id="ErrSwitchMissing">
         <source>Invalid argument: '{0}'.</source>
-        <target state="new">Invalid argument: '{0}'.</target>
+        <target state="translated">Neplatný argument: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrToolConfigDoesNotExist">
         <source>The config File {0} specified for the --{1} option does not exist.</source>
-        <target state="new">The config File {0} specified for the --{1} option does not exist.</target>
+        <target state="translated">Konfigurační soubor {0} zadaný pro parametr --{1} neexistuje.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadExtensions">
@@ -265,19 +265,19 @@
       </trans-unit>
       <trans-unit id="ErrUnableToLoadFile">
         <source>Cannot read {0}.</source>
-        <target state="new">Cannot read {0}.</target>
+        <target state="translated">Nelze přečíst {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadInputConfig">
         <source>Cannot load the config file {0}</source>
-        <target state="new">Cannot load the config file {0}</target>
+        <target state="translated">Nelze načíst konfigurační soubor {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="new">There was an error loading a referenced contract type. This type will be ignored.
-    Type: {0}</target>
+        <target state="translated">Při načítání odkazovaného typu kontraktu došlo k chybě. Tento typ bude ignorován.
+    Typ: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToUniquifyFilename">
@@ -297,7 +297,7 @@
       </trans-unit>
       <trans-unit id="ErrUnexpectedValue">
         <source>The {0} option does not support any values</source>
-        <target state="new">The {0} option does not support any values</target>
+        <target state="translated">Parametr {0} nepodporuje žádné hodnoty.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnknownSwitch">
@@ -307,12 +307,12 @@
       </trans-unit>
       <trans-unit id="ErrValidateInvalidUse">
         <source>The {0} option cannot be used with the {1} option.</source>
-        <target state="new">The {0} option cannot be used with the {1} option.</target>
+        <target state="translated">Parametr {0} nelze použít s parametrem {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrValidateRequiresServiceName">
         <source>To validate a service, the --{0} option must be used to specify the service to validate.</source>
-        <target state="new">To validate a service, the --{0} option must be used to specify the service to validate.</target>
+        <target state="translated">Pokud chcete ověřit službu, musí se k určení služby, která se má ověřit, použít parametr --{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="Error">
@@ -322,7 +322,7 @@
       </trans-unit>
       <trans-unit id="GenerateSerializerNotFound">
         <source>Svcutil does not work with the framework of the version being used. 'System.Xml.Serialization.XmlSerializer' does not have a method named 'GenerateSerializer'.</source>
-        <target state="new">Svcutil does not work with the framework of the version being used. 'System.Xml.Serialization.XmlSerializer' does not have a method named 'GenerateSerializer'.</target>
+        <target state="translated">Svcutil nefunguje s architekturou používané verze. System.Xml.Serialization.XmlSerializer nemá metodu s názvem GenerateSerializer.</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratingFiles">
@@ -332,12 +332,12 @@
       </trans-unit>
       <trans-unit id="GeneratingSerializer">
         <source>Generating XML serializers...</source>
-        <target state="new">Generating XML serializers...</target>
+        <target state="translated">Generování serializátorů XML...</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationAbbreviationSyntax">
         <source>Syntax: {0} [-{1}:{2}]  {3}* | {4}* | {5}</source>
-        <target state="new">Syntax: {0} [-{1}:{2}]  {3}* | {4}* | {5}</target>
+        <target state="translated">Syntaxe: {0} [-{1}:{2}]  {3}* | {4}* | {5}</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationCategory">
@@ -347,12 +347,12 @@
       </trans-unit>
       <trans-unit id="HelpCodeGenerationDescription">
         <source>Description: {0} can generate code for service contracts, clients and data types from metadata documents. These metadata documents can be on disk or retrieved online. Online retrieval follows either the WS-Metadata Exchange protocol or the DISCO protocol.</source>
-        <target state="new">Description: {0} can generate code for service contracts, clients and data types from metadata documents. These metadata documents can be on disk or retrieved online. Online retrieval follows either the WS-Metadata Exchange protocol or the DISCO protocol.</target>
+        <target state="translated">Popis: {0} může generovat kód pro kontrakty služeb, klienty a datové typy z dokumentů metadat. Tyto dokumenty metadat mohou být na disku nebo načteny online. Online načtení se řídí buď protokolem WS-Metadata Exchange, nebo protokolem DISCO.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationServiceContract">
         <source>Generate code for Service Contracts. Client class and configuration will not be generated. (Short Form: -{0})</source>
-        <target state="new">Generate code for Service Contracts. Client class and configuration will not be generated. (Short Form: -{0})</target>
+        <target state="translated">Vygenerovat kód pro kontrakty služeb Třída a konfigurace klienta se nevygenerují. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput1">
@@ -362,12 +362,12 @@
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput2">
         <source>The URL to a service endpoint that provides metadata or to a metadata document hosted online. For more information on how these documents are retrieved see the Metadata Download section.</source>
-        <target state="new">The URL to a service endpoint that provides metadata or to a metadata document hosted online. For more information on how these documents are retrieved see the Metadata Download section.</target>
+        <target state="translated">Adresa URL ke koncovému bodu služby, který poskytuje metadata, nebo k dokumentu metadat hostovanému online. Další informace o tom, jak se tyto dokumenty načítají, najdete v části Stažení metadat.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput3">
         <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange. For more information see the Metadata Download section.</source>
-        <target state="new">The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange. For more information see the Metadata Download section.</target>
+        <target state="translated">Cesta k souboru XML, který obsahuje WS-Addressing EndpointReference pro koncový bod služby podporující WS-Metadata Exchange. Další informace najdete v části Stažení metadat.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCollectionType">
@@ -392,12 +392,12 @@
       </trans-unit>
       <trans-unit id="HelpExamples1">
         <source>svcutil myContractLibrary.exe</source>
-        <target state="new">svcutil myContractLibrary.exe</target>
+        <target state="translated">svcutil myContractLibrary.exe</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples2">
         <source>- Generate serialization types for XmlSerializer types used by any Service Contracts in the assembly</source>
-        <target state="new">- Generate serialization types for XmlSerializer types used by any Service Contracts in the assembly</target>
+        <target state="translated">- Generovat typy serializace pro typy XmlSerializer používané libovolnými kontrakty služby v sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExcludeTypeCodeGeneration">
@@ -407,7 +407,7 @@
       </trans-unit>
       <trans-unit id="HelpExcludeTypeExport">
         <source>The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the --{1} option. (Short Form: -{0})</source>
-        <target state="new">The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the --{1} option. (Short Form: -{0})</target>
+        <target state="translated">Plně kvalifikovaný název nebo název kvalifikovaný pro sestavení typu, který se má vyloučit z exportu. Tento parametr lze použít při exportu metadat pro kontrakty služby nebo sadu kontraktů služeb k vyloučení typů z exportu. Tento parametr nelze použít s parametrem --{1}. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpHelp">
@@ -417,7 +417,7 @@
       </trans-unit>
       <trans-unit id="HelpInputAssemblyPath">
         <source>&lt;assemblyPath&gt;</source>
-        <target state="new">&lt;assemblyPath&gt;</target>
+        <target state="translated">&lt;assemblyPath&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputEpr">
@@ -437,22 +437,22 @@
       </trans-unit>
       <trans-unit id="HelpMetadataDownloadCategory">
         <source>-= METADATA DOWNLOAD =-</source>
-        <target state="new">-= METADATA DOWNLOAD =-</target>
+        <target state="translated">-= STAŽENÍ METADAT =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMetadataDownloadDescription">
         <source>Description: {0} can be used to download metadata from running services and save the metadata to local files. To download metadata, you must explicitly specify the --{1}:{2} option. Otherwise, client code will be generated. For http and https URL schemes svcutil.exe will try to retrieve metadata using WS-Metadata Exchange and DISCO. For all other URL schemes {0} will only try WS-Metadata Exchange. By default, {0} uses the bindings defined in the System.ServiceModel.Description.MetadataExchangeBindings class. To configure the binding used for WS-Metadata Exchange you must define a client endpoint in config that uses the IMetadataExchange contract. This can be defined either in {0}'s config file or in another config file specified using the --{3} option.</source>
-        <target state="new">Description: {0} can be used to download metadata from running services and save the metadata to local files. To download metadata, you must explicitly specify the --{1}:{2} option. Otherwise, client code will be generated. For http and https URL schemes svcutil.exe will try to retrieve metadata using WS-Metadata Exchange and DISCO. For all other URL schemes {0} will only try WS-Metadata Exchange. By default, {0} uses the bindings defined in the System.ServiceModel.Description.MetadataExchangeBindings class. To configure the binding used for WS-Metadata Exchange you must define a client endpoint in config that uses the IMetadataExchange contract. This can be defined either in {0}'s config file or in another config file specified using the --{3} option.</target>
+        <target state="translated">Popis: {0} lze použít ke stažení metadat ze spuštěných služeb a uložení metadat do místních souborů. Pokud chcete stáhnout metadata, musíte explicitně zadat parametr --{1}:{2}. Jinak se vygeneruje kód klienta. V případě schémat adres URL http a https se svcutil.exe pokusí načíst metadata pomocí protokolu WS-Metadata Exchange a DISCO. U všech ostatních schémat adres URL provede {0} pokus pouze pomocí protokolu WS-Metadata Exchange. Ve výchozím nastavení používá {0} vazby definované ve třídě System.ServiceModel.Description.MetadataExchangeBindings. Pokud chcete nakonfigurovat vazbu používanou pro WS-Metadata Exchange, musíte v konfiguraci definovat koncový bod klienta, který používá kontrakt IMetadataExchange. Dá se definovat buď v konfiguračním souboru {0}, nebo v jiném konfiguračním souboru zadaném pomocí parametru --{3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMetadataDownloadSyntax">
         <source>Syntax: {0} --{1}:{2}  {3}* | {4}</source>
-        <target state="new">Syntax: {0} --{1}:{2}  {3}* | {4}</target>
+        <target state="translated">Syntaxe: {0} --{1}:{2}  {3}* | {4}</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMetadataDownloadSyntaxInput1">
         <source>The URL to a service endpoint that provides metadata or an URL that points to a metadata document hosted online. </source>
-        <target state="new">The URL to a service endpoint that provides metadata or an URL that points to a metadata document hosted online. </target>
+        <target state="translated">Adresa URL ke koncovému bodu služby, který poskytuje metadata, nebo adresa URL odkazující na dokument metadat hostovaný online. </target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMetadataDownloadSyntaxInput2">
@@ -462,22 +462,22 @@
       </trans-unit>
       <trans-unit id="HelpMetadataExportCategory">
         <source>-= METADATA EXPORT =-</source>
-        <target state="new">-= METADATA EXPORT =-</target>
+        <target state="translated">-= EXPORT METADAT =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMetadataExportDescription">
         <source>Description: {0} can export metadata for services, contracts and data types in compiled assemblies. To export metadata for a service, you must use the --{1} option to indicate the service you would like to export. To export all Data Contract types within an assembly use the --{2} option. By default metadata is exported for all Service Contracts in the input assemblies.</source>
-        <target state="new">Description: {0} can export metadata for services, contracts and data types in compiled assemblies. To export metadata for a service, you must use the --{1} option to indicate the service you would like to export. To export all Data Contract types within an assembly use the --{2} option. By default metadata is exported for all Service Contracts in the input assemblies.</target>
+        <target state="translated">Popis: {0} může exportovat metadata pro služby, kontrakty a datové typy ve zkompilovaných sestaveních. Pokud chcete exportovat metadata pro službu, musíte k označení služby, kterou chcete exportovat, použít parametr --{1}. Pokud chcete exportovat všechny typy kontraktů dat v rámci sestavení, použijte parametr --{2}. Ve výchozím nastavení se metadata exportují pro všechny kontrakty služeb ve vstupních sestaveních.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMetadataExportSyntax">
         <source>Syntax: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</source>
-        <target state="new">Syntax: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</target>
+        <target state="translated">Syntaxe: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMetadataExportSyntaxInput1">
         <source>The path to an assembly that contains services, contracts or Data Contract types to be exported. Standard command-line wildcards can be used to provide multiple files as input.</source>
-        <target state="new">The path to an assembly that contains services, contracts or Data Contract types to be exported. Standard command-line wildcards can be used to provide multiple files as input.</target>
+        <target state="translated">Cesta k sestavení, které obsahuje služby, kontrakty nebo typy kontraktů dat, které se mají exportovat. K zadání více souborů na vstupu lze použít standardní zástupné znaky příkazového řádku.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNamespace">
@@ -492,7 +492,7 @@
       </trans-unit>
       <trans-unit id="HelpNostdlib">
         <source>Do not reference standard libraries. By default mscorlib.dll and system.servicemodel.dll are referenced.</source>
-        <target state="new">Do not reference standard libraries. By default mscorlib.dll and system.servicemodel.dll are referenced.</target>
+        <target state="translated">Neodkazovat na standardní knihovny. Ve výchozím nastavení se odkazuje na knihovny mscorlib.dll a system.servicemodel.dll.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOptions">
