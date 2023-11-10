@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">Validierungsfehler bei einem Schema, das während des Exports generiert wurde: 
+        <target state="needs-review-translation">Validierungsfehler bei einem Schema, das während des Exports generiert wurde: 
     Quelle: {0}
     Zeile: {1} Spalte: {2}
    Validierungsfehler: {3}</target>
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Fehler beim Laden eines referenzierten Vertragstyps. Dieser Typ wird ignoriert.
+        <target state="needs-review-translation">Fehler beim Laden eines referenzierten Vertragstyps. Dieser Typ wird ignoriert.
     Typ: {0}</target>
         <note />
       </trans-unit>
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Microsoft (R) dotnet-svcutil.xmlserializer-Tool, Version {0}.
+        <target state="needs-review-translation">Microsoft (R) dotnet-svcutil.xmlserializer-Tool, Version {0}.
 [{1}]
 {2}
 </target>
@@ -650,7 +650,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">Es wurde kein Code generiert.
+        <target state="needs-review-translation">Es wurde kein Code generiert.
 Wenn Sie versucht haben, einen Client zu generieren, könnte die Ursache hierfür sein, dass die Metadatendokumente keine gültigen Verträge oder Dienste enthielten
 oder dass erkannt wurde, dass sich alle Verträge/Dienste in /reference-Assemblys befinden. Stellen Sie sicher, dass alle Metadatendokumente an das Tool übergeben wurden.</target>
         <note />
@@ -749,7 +749,7 @@ oder dass erkannt wurde, dass sich alle Verträge/Dienste in /reference-Assembly
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">Fehler beim Laden eines Vertragstyps. XmlSerializer-Typen für diesen Vertrag können nicht generiert werden.
+        <target state="needs-review-translation">Fehler beim Laden eines Vertragstyps. XmlSerializer-Typen für diesen Vertrag können nicht generiert werden.
     Typ: {0}
     Details: {1}</target>
         <note />

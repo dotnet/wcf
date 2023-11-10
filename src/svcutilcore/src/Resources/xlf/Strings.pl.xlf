@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">Wystąpił błąd weryfikacji schematu wygenerowanego podczas eksportowania:
+        <target state="needs-review-translation">Wystąpił błąd weryfikacji schematu wygenerowanego podczas eksportowania:
     Źródło: {0}
     Wiersz: {1}, kolumna: {2}
    Błąd walidacji: {3}</target>
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Wystąpił błąd podczas ładowania przywoływanego typu kontraktu. Ten typ zostanie zignorowany.
+        <target state="needs-review-translation">Wystąpił błąd podczas ładowania przywoływanego typu kontraktu. Ten typ zostanie zignorowany.
     Typ: {0}</target>
         <note />
       </trans-unit>
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Narzędzie Microsoft (R) dotnet-svcutil.xmlserializer, wersja {0}.
+        <target state="needs-review-translation">Narzędzie Microsoft (R) dotnet-svcutil.xmlserializer, wersja {0}.
 [{1}]
 {2}
 </target>
@@ -650,7 +650,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">Nie wygenerowano żadnego kodu.
+        <target state="needs-review-translation">Nie wygenerowano żadnego kodu.
 Jeśli próbowano wygenerować klienta, może być to spowodowane przez dokumenty metadanych, które nie zawierały żadnych prawidłowych kontraktów lub usług,
 albo przez to, że wszystkie kontrakty/usługi zostały odnalezione jako istniejące w zestawach /reference. Upewnij się, że do narzędzia przekazano wszystkie dokumenty metadanych.</target>
         <note />
@@ -749,7 +749,7 @@ albo przez to, że wszystkie kontrakty/usługi zostały odnalezione jako istniej
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">Wystąpił błąd podczas ładowania typu kontraktu. Nie można wygenerować typów XmlSerializer dla tego kontraktu.
+        <target state="needs-review-translation">Wystąpił błąd podczas ładowania typu kontraktu. Nie można wygenerować typów XmlSerializer dla tego kontraktu.
     Typ: {0}
     Szczegóły: {1}</target>
         <note />

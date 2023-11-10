@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">내보내는 동안 생성된 스키마에 유효성 검사 오류가 발생: 
+        <target state="needs-review-translation">내보내는 동안 생성된 스키마에 유효성 검사 오류가 발생: 
     원본: {0}
     줄: {1} 열: {2}
    유효성 검사 오류: {3}</target>
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">참조된 계약 형식을 로드하는 동안 오류가 발생했습니다. 이 형식은 무시됩니다.
+        <target state="needs-review-translation">참조된 계약 형식을 로드하는 동안 오류가 발생했습니다. 이 형식은 무시됩니다.
     형식: {0}</target>
         <note />
       </trans-unit>
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Microsoft (R) dotnet-svcutil.xmlserializer 도구, 버전 {0}.
+        <target state="needs-review-translation">Microsoft (R) dotnet-svcutil.xmlserializer 도구, 버전 {0}.
 [{1}]
 {2}
 </target>
@@ -650,7 +650,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">코드가 생성되지 않았습니다.
+        <target state="needs-review-translation">코드가 생성되지 않았습니다.
 클라이언트를 생성하려고 하는 경우 메타데이터 문서에 올바른 계약 또는 서비스가 포함되지 않았거나
 모든 계약/서비스가 /reference assemblies에 있기 때문일 수 있습니다. 모든 메타데이터 문서를 도구에 전달했는지 확인하십시오.</target>
         <note />
@@ -749,7 +749,7 @@ or because all contracts/services were discovered to exist in /reference assembl
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">계약 형식을 로드하는 동안 오류가 발생했습니다. 이 계약에 대한 XmlSerializer 형식을 생성할 수 없습니다.
+        <target state="needs-review-translation">계약 형식을 로드하는 동안 오류가 발생했습니다. 이 계약에 대한 XmlSerializer 형식을 생성할 수 없습니다.
     형식: {0}
     세부 정보:{1}</target>
         <note />

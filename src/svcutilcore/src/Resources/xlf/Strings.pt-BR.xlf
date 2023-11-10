@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">Ocorreu um erro de validação em um esquema gerado durante a exportação:
+        <target state="needs-review-translation">Ocorreu um erro de validação em um esquema gerado durante a exportação:
     Origem: {0}
     Linha: {1} Coluna: {2}
    Erro de Validação: {3}</target>
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Ocorreu um erro ao carregar um tipo de contrato referenciado. Esse tipo será ignorado.
+        <target state="needs-review-translation">Ocorreu um erro ao carregar um tipo de contrato referenciado. Esse tipo será ignorado.
     Tipo: {0}</target>
         <note />
       </trans-unit>
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Ferramenta Microsoft (R) dotnet-svcutil.xmlserializer, Versão {0}.
+        <target state="needs-review-translation">Ferramenta Microsoft (R) dotnet-svcutil.xmlserializer, Versão {0}.
 [{1}]
 {2}
 </target>
@@ -650,7 +650,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">Nenhum código foi gerado.
+        <target state="needs-review-translation">Nenhum código foi gerado.
 Se você estivesse tentando gerar um cliente, isso poderia ocorrer porque os documentos de metadados não continham nenhum contrato nem serviço válido
 ou porque descobriu-se que todos os contratos/serviços existiam em assemblies /reference. Verifique se você passou todos os documentos de metadados à ferramenta.</target>
         <note />
@@ -749,7 +749,7 @@ ou porque descobriu-se que todos os contratos/serviços existiam em assemblies /
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">Erro ao carregar um tipo de contrato. Não é possível gerar tipos XmlSerializer para este contrato.
+        <target state="needs-review-translation">Erro ao carregar um tipo de contrato. Não é possível gerar tipos XmlSerializer para este contrato.
     Tipo: {0}
     Detalhes:{1}</target>
         <note />

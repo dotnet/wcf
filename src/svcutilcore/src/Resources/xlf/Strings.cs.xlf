@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">Došlo k chybě ověření schématu vygenerovaného během exportu: 
+        <target state="needs-review-translation">Došlo k chybě ověření schématu vygenerovaného během exportu: 
     Zdroj: {0}
     Řádek: {1}, sloupec: {2}
    Chyba ověření: {3}</target>
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Při načítání odkazovaného typu kontraktu došlo k chybě. Tento typ bude ignorován.
+        <target state="needs-review-translation">Při načítání odkazovaného typu kontraktu došlo k chybě. Tento typ bude ignorován.
     Typ: {0}</target>
         <note />
       </trans-unit>
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Nástroj Microsoft (R) dotnet-svcutil.xmlserializer, verze {0}.
+        <target state="needs-review-translation">Nástroj Microsoft (R) dotnet-svcutil.xmlserializer, verze {0}.
 [{1}]
 {2}
 </target>
@@ -650,7 +650,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">Nebyl vygenerován žádný kód.
+        <target state="needs-review-translation">Nebyl vygenerován žádný kód.
 Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případě, že dokumenty metadat neobsahovaly žádné platné kontrakty ani služby,
 nebo bylo zjištěno, že všechny kontrakty nebo služby existují v sestaveních /reference. Ověřte, že jste nástroji předali všechny dokumenty metadat.</target>
         <note />
@@ -749,7 +749,7 @@ nebo bylo zjištěno, že všechny kontrakty nebo služby existují v sestavení
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">Při načítání typu kontraktu došlo k chybě. Nelze generovat typy XmlSerializer pro tento kontrakt.
+        <target state="needs-review-translation">Při načítání typu kontraktu došlo k chybě. Nelze generovat typy XmlSerializer pro tento kontrakt.
     Typ: {0}
     Podrobnosti: {1}</target>
         <note />

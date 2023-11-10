@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">
+        <target state="needs-review-translation">
  のエクスポート中に生成されたスキーマで検証エラーが発生しました。
    ソース: {0}
    行: {1} 列: {2}
@@ -277,7 +277,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">参照されたコントラクト型の読み込み中にエラーが発生しました。この種類は無視されます。
+        <target state="needs-review-translation">参照されたコントラクト型の読み込み中にエラーが発生しました。この種類は無視されます。
    種類: {0}</target>
         <note />
       </trans-unit>
@@ -636,7 +636,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Microsoft (R) dotnet-svcutil.xmlserializer ツール、バージョン {0}.
+        <target state="needs-review-translation">Microsoft (R) dotnet-svcutil.xmlserializer ツール、バージョン {0}.
 [{1}]
 {2}
 </target>
@@ -651,7 +651,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">コードは生成されませんでした。
+        <target state="needs-review-translation">コードは生成されませんでした。
 クライアントを生成しようとしていた場合は、メタデータ ドキュメントに有効なコントラクトまたはサービスが含まれていなかったか、
 すべてのコントラクト/サービスが /reference アセンブリ内に存在することが検出された可能性があります。すべてのメタデータ ドキュメントをツールに渡したことを確認してください。</target>
         <note />
@@ -750,7 +750,7 @@ or because all contracts/services were discovered to exist in /reference assembl
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">コントラクト型の読み込み中にエラーが発生しました。このコントラクトの XmlSerializer 型を生成できません。
+        <target state="needs-review-translation">コントラクト型の読み込み中にエラーが発生しました。このコントラクトの XmlSerializer 型を生成できません。
    型: {0}
    詳細: {1}</target>
         <note />

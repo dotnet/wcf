@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">Dışarı aktarma sırasında oluşturulan şemada doğrulama hatası oluştu:
+        <target state="needs-review-translation">Dışarı aktarma sırasında oluşturulan şemada doğrulama hatası oluştu:
     Kaynak: {0}
     Satır: {1} Sütun: {2}
    Doğrulama Hatası: {3}</target>
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Başvurulan anlaşma türü yüklenirken bir hata oluştu. Bu tür yoksayılır.
+        <target state="needs-review-translation">Başvurulan anlaşma türü yüklenirken bir hata oluştu. Bu tür yoksayılır.
     Tür: {0}</target>
         <note />
       </trans-unit>
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Microsoft (R) dotnet-svcutil.xmlserializer aracı, Sürüm {0}.
+        <target state="needs-review-translation">Microsoft (R) dotnet-svcutil.xmlserializer aracı, Sürüm {0}.
 [{1}]
 {2}
 </target>
@@ -650,7 +650,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">Kod oluşturulmadı.
+        <target state="needs-review-translation">Kod oluşturulmadı.
 İstemci oluşturmaya çalışıyorsanız bunun nedeni meta veri belgelerinin geçerli anlaşma veya hizmetler içermemesi
 ya da bulunan tüm anlaşma ve hizmetlerin /reference bütünleştirilmiş kodlarında yer alması olabilir. Araca tüm meta veri belgelerini geçirdiğinizi doğrulayın.</target>
         <note />
@@ -749,7 +749,7 @@ ya da bulunan tüm anlaşma ve hizmetlerin /reference bütünleştirilmiş kodla
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">Anlaşma türü yüklenirken bir hata oluştu. Bu anlaşma için XmlSerializer türleri oluşturulamıyor.
+        <target state="needs-review-translation">Anlaşma türü yüklenirken bir hata oluştu. Bu anlaşma için XmlSerializer türleri oluşturulamıyor.
     Tür: {0}
     Ayrıntılar:{1}</target>
         <note />

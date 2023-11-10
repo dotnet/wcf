@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">Une erreur de validation s’est produite sur un schéma généré lors de l’exportation :
+        <target state="needs-review-translation">Une erreur de validation s’est produite sur un schéma généré lors de l’exportation :
     Source : {0}
     Ligne {1} Colonne : {2}
    Erreur de validation : {3}</target>
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Une erreur s’est produite lors du chargement d’un type de contrat référencé. Ce type sera ignoré.
+        <target state="needs-review-translation">Une erreur s’est produite lors du chargement d’un type de contrat référencé. Ce type sera ignoré.
     Type : {0}</target>
         <note />
       </trans-unit>
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.
+        <target state="needs-review-translation">Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.
 [{1}]
 {2}
 </target>
@@ -650,7 +650,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">Aucun code n'a été généré.
+        <target state="needs-review-translation">Aucun code n'a été généré.
 Si vous essayiez de générer un client, cela peut être dû au fait que les documents de métadonnées ne contenaient aucun service ou contrat valide
 ou que les contrats/services existaient déjà dans des assemblys de référence. Vérifiez que vous avez indiqué tous les documents de métadonnées à l'outil.</target>
         <note />
@@ -749,7 +749,7 @@ ou que les contrats/services existaient déjà dans des assemblys de référence
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">Une erreur s’est produite lors du chargement d’un type de contrat. Impossible de générer des types XmlSerializer pour ce contrat.
+        <target state="needs-review-translation">Une erreur s’est produite lors du chargement d’un type de contrat. Impossible de générer des types XmlSerializer pour ce contrat.
     Type : {0}
     Détails : {1}</target>
         <note />

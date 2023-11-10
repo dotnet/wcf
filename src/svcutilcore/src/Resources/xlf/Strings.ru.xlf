@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">Произошла ошибка проверки схемы, созданной во время экспорта:
+        <target state="needs-review-translation">Произошла ошибка проверки схемы, созданной во время экспорта:
     Источник: {0}
     Строка: {1} столбец: {2}
    Ошибка проверки: {3}</target>
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Произошла ошибка при загрузке указанного типа контракта. Этот тип будет пропущен.
+        <target state="needs-review-translation">Произошла ошибка при загрузке указанного типа контракта. Этот тип будет пропущен.
     Тип: {0}</target>
         <note />
       </trans-unit>
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Средство Microsoft (R) dotnet-svcutil.xmlserializer, версия{0}.
+        <target state="needs-review-translation">Средство Microsoft (R) dotnet-svcutil.xmlserializer, версия{0}.
 [{1}]
 {2}
 </target>
@@ -650,7 +650,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">Код не сгенерирован.
+        <target state="needs-review-translation">Код не сгенерирован.
 Если вы пытались сгенерировать клиент, причиной этого может быть то, что документы метаданных не содержат допустимых контрактов или служб,
 или все контракты и службы были обнаружены в сборках, указанных в параметре /reference. Убедитесь, что в программное средство переданы все документы метаданных.</target>
         <note />
@@ -749,7 +749,7 @@ or because all contracts/services were discovered to exist in /reference assembl
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">Произошла ошибка при загрузке типа контракта. Не удается сформировать типы XmlSerializer для этого контракта.
+        <target state="needs-review-translation">Произошла ошибка при загрузке типа контракта. Не удается сформировать типы XmlSerializer для этого контракта.
     Тип: {0}
     Сведения:{1}</target>
         <note />

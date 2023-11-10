@@ -237,7 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">导出期间生成的架构出现验证错误:
+        <target state="needs-review-translation">导出期间生成的架构出现验证错误:
    源:{0}
    行: {1} 列: {2}
   验证错误: {3}</target>
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">加载引用的协定类型时出错。将忽略此类型。
+        <target state="needs-review-translation">加载引用的协定类型时出错。将忽略此类型。
    类型: {0}</target>
         <note />
       </trans-unit>
@@ -635,7 +635,7 @@
 [{1}]
 {2}
 </source>
-        <target state="translated">Microsoft (R) dotnet-svcutil.xmlserializer 工具，版本 {0}。
+        <target state="needs-review-translation">Microsoft (R) dotnet-svcutil.xmlserializer 工具，版本 {0}。
 [{1}]
 {2}
 </target>
@@ -650,7 +650,7 @@
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
 or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="translated">未生成任何代码。
+        <target state="needs-review-translation">未生成任何代码。
 如果尝试生成客户端，此问题可能是由于元数据文档中未包含任何有效的约定或服务所致，
 或者由于发现所有约定/服务均存在于 /reference 程序集中所致。请验证是否已将所有元数据文档传递给工具。</target>
         <note />
@@ -749,7 +749,7 @@ or because all contracts/services were discovered to exist in /reference assembl
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">加载合约类型时出错。无法为此合约生成 XmlSerializer 类型。
+        <target state="needs-review-translation">加载合约类型时出错。无法为此合约生成 XmlSerializer 类型。
    类型: {0}
    详细信息:{1}</target>
         <note />
