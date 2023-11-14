@@ -125,7 +125,7 @@ namespace SvcutilTest
             Directory.CreateDirectory(this_TestCaseOutputDir);
             File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, "Program.cs"), Path.Combine(this_TestCaseOutputDir, "Program.cs"), true);
             File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, $"{testCaseName}.csproj"), Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), true);
-            this_TestCaseProject = MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), null, CancellationToken.None).Result;
+            this_TestCaseProject = MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), null, CancellationToken.None).GetAwaiter().GetResult();
             
             this_FixupUtil = new FixupUtil();
             this_FixupUtil.Init(g_TestResultsDir, g_TestCasesDir, this_TestCaseOutputDir, g_ServiceUrl, g_ServiceId, g_RepositoryRoot);
@@ -147,7 +147,7 @@ namespace SvcutilTest
             var testCaseName = $"TF{targetFramework}".Replace(".", "_");
             InitializeGlobal(testCaseName, targetFramework: "net6.0", g_SdkVersion);
             this_TestCaseProject.TargetFramework = targetFramework;
-            this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None).Wait();
+            this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None).GetAwaiter().GetResult();
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
             var ns = testCaseName.Replace(".", "_") + "_NS";

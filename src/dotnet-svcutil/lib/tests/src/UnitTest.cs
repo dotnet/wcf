@@ -291,8 +291,8 @@ namespace SvcutilTest
             var args = options.Split(' ');
             var cmdOptions = CommandParser.ParseCommand(args);
 
-            cmdOptions.ProcessBasicOptionsAsync(this_TestCaseLogger, CancellationToken.None).Wait();
-            cmdOptions.ResolveAsync(CancellationToken.None).Wait();
+            cmdOptions.ProcessBasicOptionsAsync(this_TestCaseLogger, CancellationToken.None).GetAwaiter().GetResult();
+            cmdOptions.ResolveAsync(CancellationToken.None).GetAwaiter().GetResult();
 
             var cmderrors = cmdOptions.Errors.Count() == 0 ? string.Empty :
                     Environment.NewLine + cmdOptions.Errors.Select(e => e.Message).Aggregate((errors, e) => $"{errors}{Environment.NewLine}{e}");
