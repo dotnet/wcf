@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">Genişletilmiş koruma bu platformda desteklenmez. Lütfen uygun düzeltme ekini yükleyin veya Binding veya BindingElement üzerindeki ExtendedProtectionPolicy öğesini, PolicyEnforcement değeri "Never" veya "WhenSupported" olan bir değere değiştirin.</target>
+        <target state="translated">Genişletilmiş koruma bu platformda desteklenmiyor. Lütfen uygun düzeltme ekini yükleyin veya Binding veya BindingElement üzerindeki ExtendedProtectionPolicy öğesini, PolicyEnforcement değeri "Never" veya "WhenSupported" olan bir değere değiştirin.</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
         <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
-        <target state="translated">DNS kullanılarak URI "{0}" ana bilgisayar adı çözümlenemiyor.</target>
+        <target state="translated">DNS kullanılarak "{0}" URI konak adı çözümlenemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
