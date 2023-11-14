@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="../strings.resx">
+    <body>
+      <trans-unit id="ActivityProcessAction">
+        <source>Process action '{0}'.</source>
+        <target state="translated">'{0}' eylemini işleyin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelTypeNotSupported">
+        <source>The specified channel type {0} is not supported by this channel manager.</source>
+        <target state="translated">Belirtilen kanal türü {0}, bu kanal yöneticisi tarafından desteklenmiyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
+        <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
+        <target state="translated">ClientCredentialType.None, TransportWithMessageCredential güvenlik modu için geçerli değil. Bir ileti kimlik bilgisi türü belirtin ya da farklı bir güvenlik modu kullanın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DnsResolveFailed">
+        <source>No DNS entries exist for host {0}.</source>
+        <target state="translated">{0} konağı için DNS girdisi yok.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExtendedProtectionNotSupported">
+        <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
+        <target state="translated">Genişletilmiş koruma bu platformda desteklenmiyor. Lütfen uygun düzeltme ekini yükleyin veya Binding veya BindingElement üzerindeki ExtendedProtectionPolicy öğesini, PolicyEnforcement değeri "Never" veya "WhenSupported" olan bir değere değiştirin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InsufficentMemory">
+        <source>Insufficient memory avaliable to complete the operation.</source>
+        <target state="translated">İşlemi tamamlamak için yetersiz kullanılabilir bellek.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoIPEndpointsFoundForHost">
+        <source>No IPEndpoints were found for host {0}.</source>
+        <target state="translated">{0} konağı için IPEndpoints bulunamadı.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRange0">
+        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Zaman aşımı değeri, TimeSpan.Zero değerinden büyük ya da ona eşit olmalıdır. Zaman aşımını devre dışı bırakmak için TimeSpan.MaxValue değeri belirtin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRangeTooBig">
+        <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Int32.MaxValue TotalMilliseconds (yaklaşık 24 gün) değerinden büyük zaman aşımı değerleri dikkate alınmaz. Zaman aşımını devre dışı bırakmak için TimeSpan.MaxValue değeri belirtin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityEndpointNotFound">
+        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
+        <target state="translated">'{0}' sunucusu, kapanmakta olduğunu belirten bir hata gönderdi. Hata ayrıntıları için iç özel duruma bakın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityServerTooBusy">
+        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
+        <target state="translated">'{0}' sunucusu bir hata geri göndererek, isteği işleyemeyecek kadar meşgul olduğunu belirtti. Lütfen daha sonra yeniden deneyin. Hata ayrıntıları için iç özel duruma bakın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedReceiveTimedOut">
+        <source>The socket was aborted because an asynchronous receive from the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Asenkron bir yuvadan alma işlemi ayrılan {0} zaman aşımı süresi içinde tamamlanamadığından, yuva iptal edildi. Bu işlem için ayrılan süre daha uzun bir zaman aşımı değerinin bir bölümü olabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedSendTimedOut">
+        <source>The socket connection was aborted because an asynchronous send to the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Asenkron bir yuvaya gönderme işlemi ayrılan zaman aşımı süresi {0} içinde tamamlanamadığından, yuva bağlantısı iptal edildi. Bu işlem için ayrılan süre daha uzun bir zaman aşımı değerinin bir bölümü olabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadReceivedData">
+        <source>A graceful close was attempted on the socket, but the other side ({0}) is still sending data.</source>
+        <target state="translated">Yuva normal biçimde kapatılmaya çalışıldı, ancak diğer taraf ({0}) hala veri gönderiyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadTimeout">
+        <source>The remote endpoint of the socket ({0}) did not respond to a close request within the allotted timeout ({1}). It is likely that the remote endpoint is not calling Close after receiving the EOF signal (null) from Receive. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Yuvanın uzak uç noktası ({0}), ayrılan zaman aşımı süresi ({1}) bir kapatma isteğini yanıtlamadı. Büyük olasılıkla, uzak uç nokta Receive işlevinden EOF sinyalini (null) aldıktan sonra Close çağrısı yapmıyor. Bu işlem için ayrılan süre daha uzun bir zaman aşımı değerinin bir bölümü olabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketConnectionDisposed">
+        <source>The socket connection has been disposed.</source>
+        <target state="translated">Yuva bağlantısı atıldı.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransferModeNotSupported">
+        <source>Transfer mode {0} is not supported by {1}.</source>
+        <target state="translated">{0} aktarma modu, {1} tarafından desteklenmiyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectError">
+        <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
+        <target state="translated">{0} bağlantısı yapılamıyor. UDS hata kodu {1}: {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectErrorWithTimeSpan">
+        <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
+        <target state="translated">{0} bağlantısı yapılamıyor. Bağlanma denemesi {3} uzunluğunda bir süre boyunca yapıldı. UDS hata kodu {1}: {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectNoBufs">
+        <source>Insufficient winsock resources available to complete socket connection initiation.</source>
+        <target state="translated">Yuva bağlantısını başlatmak için kullanılabilir winsock kaynakları yetersiz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectingToViaTimedOut">
+        <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">{0} ile bağlanma {1} sonra zaman aşımına uğradı. Bağlantı denemeleri kullanılabilir {2} / {3} adrese yapıldı ({4}). Kanalınızın RemoteAddress değerini denetleyin ve bu uç nokta için DNS kayıtlarının geçerli IP Adreslerine karşılık geldiğini doğrulayın. Bu işlem için ayrılan süre daha uzun bir zaman aşımı değerinin bir bölümü olabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionResetError">
+        <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
+        <target state="translated">Yuva bağlantısı iptal edildi. Bu, iletinizin işlenmesinde oluşan bir hata ya da bir alma zaman aşımı değerinin uzak konak tarafından aşılması veya arka plandaki bir ağ kaynağı sorunu nedeniyle olabilir. Yerel yuva zaman aşımı değeri: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionTimedOut">
+        <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Yuva aktarımı {0} sonra zaman aşımına uğradı. Bağlamanızda ayarlanan zaman aşımı değerini aştınız. Bu işlem için ayrılan süre daha uzun bir zaman aşımı değerinin bir bölümü olabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSLocalConnectionAborted">
+        <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
+        <target state="translated">Yuva bağlantısı, yerel makineniz tarafından iptal edildi. Bu, bir kanal Abort() işlemi ya da bu yuvayı kullanan başka bir iş parçacığında oluşan bir aktarım hatası nedeniyle oluşmuş olabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSTransferError">
+        <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
+        <target state="translated">Veri aktarımı sırasında bir UDS hatası ({0}: {1}) oluştu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveHost">
+        <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
+        <target state="translated">DNS kullanılarak "{0}" URI konak adı çözümlenemiyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="translated">'{1}' değeri, bu bağlamda '{0}' bağlama güvenlik özelliği için desteklenmiyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSslProtectionLevel">
+        <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
+        <target state="translated">SSL aktarım güvenliği yalnızca EncryptAndSign özelliğini desteklese de, '{0}' koruma düzeyi belirtildi.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeNonNegative">
+        <source>The value of this argument must be non-negative.</source>
+        <target state="translated">Bu bağımsız değişkenin değeri negatif olmamalıdır.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBePositive">
+        <source>The value of this argument must be positive.</source>
+        <target state="translated">Bu bağımsız değişkenin değeri pozitif olmalıdır.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -4,8 +4,12 @@
 
 
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.ServiceModel.Description;
+using System.Text;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -13,6 +17,14 @@ namespace System.ServiceModel.Dispatcher
 
     internal sealed class InvokerUtil
     {
+        private static readonly string s_useLegacyInvokeDelegateAppContextSwitchKey = "System.ServiceModel.Dispatcher.UseLegacyInvokeDelegate";
+
+        private static readonly Lazy<bool> s_useLegacyInvokeDelegate = new Lazy<bool>(() =>
+            AppContext.TryGetSwitch(s_useLegacyInvokeDelegateAppContextSwitchKey, out bool useLegacyInvokeDelegate)
+                ? useLegacyInvokeDelegate
+                : false
+        );
+
         private readonly CriticalHelper _helper;
 
         public InvokerUtil()
@@ -23,6 +35,11 @@ namespace System.ServiceModel.Dispatcher
         internal InvokeDelegate GenerateInvokeDelegate(MethodInfo method, out int inputParameterCount,
             out int outputParameterCount)
         {
+            if (!s_useLegacyInvokeDelegate.Value && RuntimeFeature.IsDynamicCodeSupported)
+            {
+                return _helper.GenerateInvokeDelegateInternalWithExpressions(method, out inputParameterCount, out outputParameterCount);
+            }
+
             return _helper.GenerateInvokeDelegate(method, out inputParameterCount, out outputParameterCount);
         }
 
@@ -84,6 +101,99 @@ namespace System.ServiceModel.Dispatcher
                 };
 
                 return lambda;
+            }
+
+            internal InvokeDelegate GenerateInvokeDelegateInternalWithExpressions(MethodInfo method, out int inputParameterCount, out int outputParameterCount)
+            {
+                inputParameterCount = 0;
+                outputParameterCount = 0;
+                ParameterInfo[] parameters = method.GetParameters();
+                bool returnsValue = method.ReturnType != typeof(void);
+                bool returnsValueType = method.ReturnType.IsValueType;
+
+                var targetParam = Expression.Parameter(typeof(object), "target");
+                var inputsParam = Expression.Parameter(typeof(object[]), "inputs");
+                var outputsParam = Expression.Parameter(typeof(object[]), "outputs");
+
+                List<ParameterExpression> variables = new();
+                var result = Expression.Variable(typeof(object), "result");
+                variables.Add(result);
+
+                List<(Type ParameterType, ParameterExpression OutputExpression)> outputVariables = new();
+                List<ParameterExpression> invocationParameters = new();
+                List<Expression> expressions = new();
+
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    Type variableType = parameters[i].ParameterType.IsByRef
+                        ? parameters[i].ParameterType.GetElementType()
+                        : parameters[i].ParameterType;
+                    ParameterExpression variable = Expression.Variable(variableType, $"p{i}");
+
+                    if (ServiceReflector.FlowsIn(parameters[i]))
+                    {
+                        expressions.Add(Expression.Assign(variable, Expression.Convert(Expression.ArrayIndex(inputsParam, Expression.Constant(inputParameterCount)), variableType)));
+                        inputParameterCount++;
+                    }
+
+                    if (ServiceReflector.FlowsOut(parameters[i]))
+                    {
+                        outputParameterCount++;
+                        outputVariables.Add((variableType, variable));
+                    }
+
+                    variables.Add(variable);
+                    invocationParameters.Add(variable);
+                }
+
+                var castTargetParam = Expression.Convert(targetParam, method.DeclaringType);
+
+                if (returnsValue)
+                {
+                    if (returnsValueType)
+                    {
+                        expressions.Add(Expression.Assign(result, Expression.Convert(Expression.Call(castTargetParam, method, invocationParameters), typeof(object))));
+                    }
+                    else
+                    {
+                        expressions.Add(Expression.Assign(result, Expression.Call(castTargetParam, method, invocationParameters)));
+                    }
+                }
+                else
+                {
+                    expressions.Add(Expression.Call(castTargetParam, method, invocationParameters));
+                    expressions.Add(Expression.Assign(result, Expression.Constant(null, typeof(object))));
+                }
+
+                int j = 0;
+                foreach (var outputVariable in outputVariables)
+                {
+                    if (outputVariable.ParameterType.IsValueType)
+                    {
+                        expressions.Add(Expression.Assign(
+                            Expression.ArrayAccess(outputsParam, Expression.Constant(j)),
+                            Expression.Convert(outputVariable.OutputExpression, typeof(object))));
+                    }
+                    else
+                    {
+                        expressions.Add(Expression.Assign(
+                            Expression.ArrayAccess(outputsParam, Expression.Constant(j)),
+                            outputVariable.OutputExpression));
+                    }
+                    j++;
+                }
+
+                expressions.Add(result);
+
+                BlockExpression finalBlock = Expression.Block(variables: variables, expressions: expressions);
+
+                Expression<InvokeDelegate> lambda = Expression.Lambda<InvokeDelegate>(
+                    finalBlock,
+                    targetParam,
+                    inputsParam,
+                    outputsParam);
+
+                return lambda.Compile();
             }
         }
     }
