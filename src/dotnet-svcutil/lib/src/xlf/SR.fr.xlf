@@ -534,7 +534,7 @@ Identificateur de document : '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="translated">&lt;chemin du document de métadonnées&gt;</target>
+        <target state="translated">&lt;metadata document path&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
@@ -717,7 +717,7 @@ Si vous avez tenté de générer un client, cela peut être dû au fait que les 
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="translated">&lt;fichier projet&gt;</target>
+        <target state="translated">&lt;project file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
@@ -727,7 +727,7 @@ Si vous avez tenté de générer un client, cela peut être dû au fait que les 
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="translated">&lt;identificateur de runtime&gt;</target>
+        <target state="translated">&lt;runtime identifier&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
@@ -737,12 +737,12 @@ Si vous avez tenté de générer un client, cela peut être dû au fait que les 
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="translated">&lt;niveau de verbosité&gt;</target>
+        <target state="translated">&lt;verbosity level&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="translated">&lt;référence de services web&gt;</target>
+        <target state="translated">&lt;web service reference&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
