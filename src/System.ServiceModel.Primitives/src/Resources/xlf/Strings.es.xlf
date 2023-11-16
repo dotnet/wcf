@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Error de análisis de Soap, xsd:tipo '{0}' no válido {1}</target>
+        <target state="translated">Error de análisis de SOAP, xsd:tipo '{0}' no válido {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -3029,7 +3029,7 @@
       </trans-unit>
       <trans-unit id="SFxInvalidSoapAttribute">
         <source>XmlSerializer attribute {0} is not valid in {1}. Only SoapElement attribute is supported.</source>
-        <target state="translated">El atributo XmlSerializer {0} no es válido en {1}. Solo se admite el atributo SoapElement.</target>
+        <target state="translated">El atributo XmlSerializer {0} no es válido en {1}. Sólo se admite el atributo SoapElement.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxInvalidStaticOverloadCalledForDuplexChannelFactory1">
@@ -3154,7 +3154,7 @@
       </trans-unit>
       <trans-unit id="SFxMultiplePartsNotAllowedInEncoded">
         <source>Part {1}:{0} is repeating and is not supported in Soap Encoding.</source>
-        <target state="translated">Parte {1}:{0} se repite y no se admite en la codificación SOAP.</target>
+        <target state="translated">La parte {1}:{0} se repite y no se admite en la codificación SOAP.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMultipleUnknownHeaders">
@@ -3399,7 +3399,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">No se pudo cargar la operación '{0}' porque especifica "rpc-style" en modo "literal", pero usa tipos de contrato de mensaje o System.ServiceModel.Channels.Message. Esta combinación no se permite. Especifique un valor diferente para el estilo o use parámetros que no sean tipos de contrato de mensaje o System.ServiceModel.Channels.Message.</target>
+        <target state="translated">No se pudo cargar la operación "{0}" porque especifica "rpc-style" en modo "literal", pero usa tipos de contrato de mensaje o System.ServiceModel.Channels.Message. Esta combinación no se permite. Especifique un valor diferente para el estilo o use parámetros que no sean tipos de contrato de mensaje o System.ServiceModel.Channels.Message.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
@@ -3939,7 +3939,7 @@
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Parameters5">
         <source>The task-based asynchronous OperationContract method '{0}' in type '{1}' was matched with the asynchronous OperationContract methods '{2}' and '{3}' because they have the same operation name '{4}'. When a task-based asynchronous OperationContract method is matched to a pair of asynchronous OperationContract methods, the two OperationContracts must define the same number and types of parameters. In this case, some of the arguments are different. To fix it, ensure that the OperationContracts define the same number and types of arguments, in the same order. Alternatively, changing the name of one of the methods will prevent matching.</source>
-        <target state="translated">El método "{0}" OperationContract asincrónico basado en tareas en el tipo "{1}" coincide con los métodos "{2}" y "{3}" OperationContract asincrónicos porque tiene el mismo nombre de operación "{4}". Cuando un método OperationContract asincrónico basado en tareas coincide con un par de métodos OperationContract asincrónicos, los dos métodos OperationContracts deben definir el mismo número y tipos de parámetros. En este caso, algunos de los argumentos son diferentes. Para solucionarlo, asegúrese de que OperationContracts define el mismo número y tipos de argumentos y en el mismo orden. También puede cambiar el nombre de uno de los métodos para evitar que coincidan.</target>
+        <target state="translated">El método '{0}' OperationContract asincrónico basado en tareas en el tipo '{1}' coincide con los métodos '{2}' y '{3}' OperationContract asincrónicos porque tiene el mismo nombre de operación '{4}'. Cuando un método OperationContract asincrónico basado en tareas coincide con un par de métodos OperationContract asincrónicos, los dos métodos OperationContracts deben definir el mismo número y tipos de parámetros. En este caso, algunos de los argumentos son diferentes. Para solucionarlo, asegúrese de que OperationContracts define el mismo número y tipos de argumentos y en el mismo orden. También puede cambiar el nombre de uno de los métodos para evitar que coincidan.</target>
         <note />
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Property6">
@@ -4434,7 +4434,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedTokenImpersonationLevel">
         <source>The value '{1}' for the '{0}' property is not supported in Windows Store apps.</source>
-        <target state="translated">El valor "{1}" de la propiedad "{0}" no se admite en las aplicaciones de la Tienda Windows.</target>
+        <target state="translated">El valor '{1}' de la propiedad '{0}' no se admite en las aplicaciones de la Tienda Windows.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedTokenInclusionMode">

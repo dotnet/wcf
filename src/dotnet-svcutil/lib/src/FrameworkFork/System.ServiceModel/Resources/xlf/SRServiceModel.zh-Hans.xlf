@@ -4024,7 +4024,7 @@
       </trans-unit>
       <trans-unit id="UnrecognizedPolicyDocumentNamespace">
         <source>The \"{0}\" namespace is not a recognized WS-Policy namespace.</source>
-        <target state="translated">\“{0}\”命名空间不是可识别的 WS-Policy 命名空间。</target>
+        <target state="translated">\"{0}\" 命名空间不是可识别的 WS-Policy 命名空间。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnrecognizedPolicyElementInNamespace">
@@ -4074,7 +4074,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedPolicyDocumentRoot">
         <source>\"{0}\" is not a supported WS-Policy document root element.</source>
-        <target state="translated">\“{0}\”不是支持的 WS-Policy 文档根元素。</target>
+        <target state="translated">\"{0}\" 不是支持的 WS-Policy 文档根元素。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSecureConversationBootstrapProtectionRequirements">
@@ -4324,7 +4324,7 @@
       </trans-unit>
       <trans-unit id="XPathUnavailable">
         <source>\"XPath Unavailable\"</source>
-        <target state="translated">\“XPath 不可用\”</target>
+        <target state="translated">\"XPath 不可用\"</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferInInvalidState">

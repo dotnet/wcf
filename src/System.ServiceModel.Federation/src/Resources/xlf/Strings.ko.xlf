@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">클라이언트가 SspiNegotiation/Kerberos 목적을 위해 대상 주소 '{0}'의 ID에 기초하여 서비스 사용자 이름을 확인할 수 없습니다. 대상 주소 ID는 UPN ID(예: acmedomain\alice) 또는 SPN ID(예: host/bobs-machine)여야 합니다.</target>
+        <target state="translated">클라이언트가 SspiNegotiation/Kerberos 목적으로 대상 주소 '{0}'의 ID에 기초하여 서비스 사용자 이름을 확인할 수 없습니다. 대상 주소 ID는 UPN ID(예: acmedomain\alice) 또는 SPN ID(예: host/bobs-machine)여야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">

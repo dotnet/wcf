@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">Rozšířená ochrana není na této platformě podporována. Instalujte odpovídající opravu nebo změňte vlastnost ExtendedProtectionPolicy objektu Binding nebo BindingElement na hodnotu s nastavením PolicyEnforcement Never nebo WhenSupported.</target>
+        <target state="translated">Rozšířená ochrana se na této platformě nepodporuje. Instalujte odpovídající opravu nebo změňte vlastnost ExtendedProtectionPolicy objektu Binding nebo BindingElement na hodnotu s nastavením PolicyEnforcement Never nebo WhenSupported.</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
