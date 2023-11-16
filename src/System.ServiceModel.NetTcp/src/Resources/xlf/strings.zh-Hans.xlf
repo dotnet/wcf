@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">此平台上不支持扩展保护。请安装适当的修补程序，或者将 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 更改为 PolicyEnforcement 值为 "Never" 或 "WhenSupported" 的某个值。</target>
+        <target state="translated">此平台上不支持扩展保护。请安装适当的修补程序，或者将 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 更改为 PolicyEnforcement 值为“Never”或“WhenSupported”的某个值。</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
         <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
-        <target state="translated">无法使用 DNS 解析 URI "{0}" 的主机名。</target>
+        <target state="translated">无法使用 DNS 解析 URI“{0}”的主机名。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">

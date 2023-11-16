@@ -159,7 +159,7 @@
       </trans-unit>
       <trans-unit id="BadSecurityNegotiationContext">
         <source>Security negotiation failure because an incorrect Context attribute specified in RequestSecurityToken/RequestSecurityTokenResponse from the other party.</source>
-        <target state="translated">安全性交涉失敗，因為從另一方在 RequestSecurityToken/RequestSecurityTokenResponse 中指定了不正確的 Context 屬性。</target>
+        <target state="translated">安全性交涉失敗，因為另一方的 RequestSecurityToken/RequestSecurityTokenResponse 中指定了不正確的 Context 屬性。</target>
         <note />
       </trans-unit>
       <trans-unit id="BaseAddressCannotHaveFragment">
@@ -964,7 +964,7 @@
       </trans-unit>
       <trans-unit id="FailToReceiveReplyFromNegotiation">
         <source>Security negotiation failed because the remote party did not send back a reply in a timely manner. This may be because the underlying transport connection was aborted.</source>
-        <target state="translated">安全性交涉失敗，因為遠端方無法及時傳回回覆。這可能是因為基礎傳輸連線已中止。</target>
+        <target state="translated">安全性交涉失敗，因為遠端的一方無法及時傳回回覆。這可能是因為基礎傳輸連線已中止所造成。</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToCreateTypedProxy">
@@ -1344,7 +1344,7 @@
       </trans-unit>
       <trans-unit id="InvalidActionForNegotiationMessage">
         <source>Security negotiation message has incorrect action '{0}'.</source>
-        <target state="translated">安全性交涉訊息有不正確的動作 '{0}'。</target>
+        <target state="translated">安全性交涉訊息包含不正確的動作 '{0}'。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidAsyncBeginMethodSignatureForMethod2">
@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">SOAP 剖析錯誤，xsd:type '{0}' 無效的 {1}</target>
+        <target state="translated">Soap 剖析錯誤，xsd:type '{0}' 無效的 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -3149,7 +3149,7 @@
       </trans-unit>
       <trans-unit id="SFxMultipleContractStarOperations0">
         <source>A ServiceContract has more the one operation with an Action of "*".  A ServiceContract can have at most one operation an Action = "*".</source>
-        <target state="translated">ServiceContract 有一個以上的作業具有 "*" 的 Action。ServiceContract 最多只能有一個作業具有 Action = "*"。</target>
+        <target state="translated">ServiceContract 有一個以上具有 "*" 的 Action 作業。ServiceContract 最多只能有一個具有 Action = "*" 的作業。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMultiplePartsNotAllowedInEncoded">
@@ -3214,7 +3214,7 @@
       </trans-unit>
       <trans-unit id="SFxNone2004">
         <source>The WS-Addressing "none" value is not valid for the August 2004 version of WS-Addressing.</source>
-        <target state="translated">WS-Addressing "none" 值對於 WS-Addressing 2004 年 8 月版本無效。</target>
+        <target state="translated">WS-Addressing "none" 值對於 WS-Addressing August 2004 版本無效。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxNullReplyFromExtension2">
@@ -3304,7 +3304,7 @@
       </trans-unit>
       <trans-unit id="SFxRequestReplyNone">
         <source>A message was received with a WS-Addressing ReplyTo or FaultTo header targeted at the "None" address.  These values are not valid for request-reply operations.  Please consider using a one-way operation or enabling ManualAddressing if you need to support ReplyTo or FaultTo values of "None."</source>
-        <target state="translated">收到以 "None" 位址為目標、具有 WS-Addressing ReplyTo 或 FaultTo 標頭的訊息。這些值對於要求回覆作業無效。請考慮使用單向作業，或如果需要支援 "None" 的 ReplyTo 或 FaultTo 值，請啟用 ManualAddressing。</target>
+        <target state="translated">收到具有 WS-Addressing ReplyTo 或 FaultTo 標頭，目標為 "None" 位址的訊息。這些值對於要求回覆作業無效。請考慮使用單向作業。若需要支援 "None" 的 ReplyTo 或 FaultTo 值，請啟用 ManualAddressing。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxRequestTimedOut1">
@@ -3399,7 +3399,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">因為作業 '{0}' 在 "literal" 模式下指定 "rpc-style"，但使用了訊息合約類型或 System.ServiceModel.Channels.Message，無法載入作業。不允許此組合 -- 請為樣式指定不同的值，或使用訊息合約類型或 System.ServiceModel.Channels.Message 以外的參數。</target>
+        <target state="translated">無法載入作業 '{0}'，因為它在 "literal" 模式中指定 "rpc-style"，但是使用訊息合約類型或 System.ServiceModel.Channels.Message。不允許此種組合。請為樣式指定不同值，或使用有別於訊息合約類型或 System.ServiceModel.Channels.Message 的參數。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
@@ -3509,7 +3509,7 @@
       </trans-unit>
       <trans-unit id="SecurityNegotiationCannotProtectConfidentialEndpointHeader">
         <source>The security negotiation with '{0}' cannot be initiated because the confidential endpoint address header ('{1}', '{2}') cannot be encrypted during the course of the negotiation.</source>
-        <target state="translated">無法初始化與 '{0}' 的安全性交涉，因為機密端點位址標頭 ('{1}'、'{2}') 無法在交涉期間加密。</target>
+        <target state="translated">無法初始化具有 '{0}' 的安全性交涉，因為機密端點位址標頭 ('{1}'、'{2}') 無法在交涉期間加密。</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityProtocolCannotDoReplayDetection">
@@ -3819,7 +3819,7 @@
       </trans-unit>
       <trans-unit id="SoapSecurityNegotiationFailedForIssuerAndTarget">
         <source>SOAP security negotiation with '{0}' for target '{1}' failed. See inner exception for more details.</source>
-        <target state="translated">與目標 '{0}' 的 '{1}' 的 SOAP 安全性交涉失敗。如需詳細資訊，請參閱內部例外狀況。</target>
+        <target state="translated">與目標 '{1}' 的 '{0}' 進行 SOAP 安全性交涉失敗。如需詳細資訊，請參閱內部例外狀況。</target>
         <note />
       </trans-unit>
       <trans-unit id="SpaceNeededExceedsMessageFrameOffset">
@@ -4709,7 +4709,7 @@
       </trans-unit>
       <trans-unit id="ssl_io_cert_validation">
         <source>The remote certificate is invalid according to the validation procedure.</source>
-        <target state="translated">根據驗證程序，遠端憑證無效。</target>
+        <target state="translated">根據驗證程序，遠端憑證是無效的。</target>
         <note />
       </trans-unit>
       <trans-unit id="tooManyAttributesOfTypeOn2">

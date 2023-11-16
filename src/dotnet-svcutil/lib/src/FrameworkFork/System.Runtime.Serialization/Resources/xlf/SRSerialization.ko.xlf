@@ -1764,7 +1764,7 @@
       </trans-unit>
       <trans-unit id="XmlForObjectCannotHaveContent">
         <source>Element {0} from namespace {1} cannot have child contents to be deserialized as an object. Please use XmlNode[] to deserialize this pattern of XML.</source>
-        <target state="translated">네임스페이스 {1}의 {0} 요소는 자식 콘텐츠를 개체로 역직렬화할 수 없습니다. XmlNode[]를 사용하여 이 XML 패턴을 역직렬화하세요.</target>
+        <target state="translated">네임스페이스 {1}의 {0} 요소는 deserialize할 자식 콘텐츠를 개체로 가질 수 없습니다. XmlNode[]를 사용하여 이 XML 패턴을 deserialize하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlFoundCData">

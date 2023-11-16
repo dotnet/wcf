@@ -229,7 +229,7 @@
       </trans-unit>
       <trans-unit id="NegotiationFailedIO">
         <source>Transport security negotiation failed due to an underlying IO error: {0}.</source>
-        <target state="translated">傳輸安全性交涉失敗，因為其下的 IO 錯誤: {0}。</target>
+        <target state="translated">由於基礎 IO 錯誤，傳輸安全性交涉失敗: {0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="OpenTimedOutEstablishingTransportSession">
