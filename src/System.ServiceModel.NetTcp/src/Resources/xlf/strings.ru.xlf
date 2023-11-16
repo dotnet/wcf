@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">Расширенная защита на этой платформе не поддерживается. Установите соответствующее обновление или измените политику ExtendedProtectionPolicy на привязке либо элемент BindingElement на значение PolicyEnforcement "Never" или "WhenSupported".</target>
+        <target state="translated">Расширенная защита на этой платформе не поддерживается.  Установите соответствующее обновление или измените политику ExtendedProtectionPolicy на привязке либо элемент BindingElement на значение PolicyEnforcement "Never" или "WhenSupported".</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="TcpConnectionTimedOut">
         <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">После {0} истекло время ожидания передачи через сокет. Превышен период ожидания, установленный в привязке. Время, назначенное для выполнения этой операции, может быть составной частью более длинного тайм-аута.</target>
+        <target state="translated">После {0} истекло время ожидания передачи через сокет. Превышен период ожидания, установленный в привязке. Время, выделенное для выполнения этой операции, может быть составной частью более длительного времени ожидания.</target>
         <note />
       </trans-unit>
       <trans-unit id="TcpLocalConnectionAborted">

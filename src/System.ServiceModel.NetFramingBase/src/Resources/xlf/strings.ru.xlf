@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="CloseTimedOut">
         <source>Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Истекло время ожидания закрытия после {0}. Увеличьте значение тайм-аута, передаваемое вызову для закрытия или увеличьте значение CloseTimeout привязки. Время, выделенное для выполнения этой операции, может быть частью более длительного тайм-аута.</target>
+        <target state="translated">Истекло время ожидания закрытия после {0}. Увеличьте значение времени ожидания, передаваемое вызову для закрытия, или увеличьте значение CloseTimeout привязки. Время, выделенное для выполнения этой операции, может быть частью более длительного времени ожидания.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectCannotBeUsed">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessage">
         <source>Identity check failed for outgoing message. The expected DNS identity of the remote endpoint was '{0}' but the remote endpoint provided DNS claim '{1}'. If this is a legitimate remote endpoint, you can fix the problem by explicitly specifying DNS identity '{1}' as the Identity property of EndpointAddress when creating channel proxy. </source>
-        <target state="translated">Ошибка идентификации входящего сообщения. Ожидаемая идентификация удаленной стороны в DNS ({0}) не соответствует указанному удаленной стороной DNS-имени ({1}). Если это надежная удаленная сторона, то проблему можно устранить, явно указав идентификацию в DNS "{1}" в свойстве Identity элемента EndpointAddress при создании прокси для канала. </target>
+        <target state="translated">Ошибка идентификации входящего сообщения. Ожидаемое удостоверение удаленной конечной точки в DNS ({0}) не соответствует указанному удаленной конечной точкой требованию DNS ({1}). Если это надежная удаленная конечная точка, то проблему можно устранить, явно указав удостоверение в DNS "{1}" в свойстве Identity элемента EndpointAddress при создании прокси для канала. </target>
         <note />
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessageLackOfDnsClaim">
@@ -144,7 +144,7 @@
       </trans-unit>
       <trans-unit id="FramingVersionNotSupportedFault">
         <source>The .Net Framing version being used is not supported by '{0}'. See the server logs for more details.</source>
-        <target state="translated">"{0}" не поддерживает используемую версию .Net Framing. См. дополнительную информацию в журналах сервера.</target>
+        <target state="translated">"{0}" не поддерживает используемую версию .Net Framing. Подробнее см. в журналах сервера.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaNotUri">
@@ -159,7 +159,7 @@
       </trans-unit>
       <trans-unit id="FramingViaTooLongFault">
         <source>Via '{0}' is too long to be processed by the remote host. See the server logs for more details.</source>
-        <target state="translated">Размер прыжка "{0}" слишком велик для обработки удаленным узлом. См. дополнительную информацию в журналах сервера.</target>
+        <target state="translated">Размер прыжка "{0}" слишком велик для обработки удаленным узлом. Подробнее см. в журналах сервера.</target>
         <note />
       </trans-unit>
       <trans-unit id="Hosting_ServiceActivationFailed">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="PreambleAckIncorrect">
         <source>You have tried to create a channel to a service that does not support .Net Framing. </source>
-        <target state="translated">Сделана попытка создания канала к службе, не поддерживающей режим .Net Framing. </target>
+        <target state="translated">Сделана попытка создать канал к службе, не поддерживающей .Net Framing. </target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrectMaybeHttp">

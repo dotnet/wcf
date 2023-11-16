@@ -39,12 +39,12 @@
       </trans-unit>
       <trans-unit id="CloseTimedOut">
         <source>Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Истекло время ожидания закрытия после {0}. Увеличьте значение тайм-аута, передаваемое вызову для закрытия или увеличьте значение CloseTimeout привязки. Время, выделенное для выполнения этой операции, может быть частью более длительного тайм-аута.</target>
+        <target state="translated">Истекло время ожидания закрытия после {0}. Увеличьте значение времени ожидания, передаваемое вызову для закрытия, или увеличьте значение CloseTimeout привязки. Время, выделенное для выполнения этой операции, может быть частью более длительного времени ожидания.</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyHttpHeaderFailed">
         <source>Failed to copy the HTTP header '{0}' with value '{1}' to '{2}'.</source>
-        <target state="translated">Не удалось скопировать заголовок "{0}" протокола HTTP со значением "{1}" в "{2}".</target>
+        <target state="translated">Не удалось скопировать заголовок HTTP "{0}" со значением "{1}" в "{2}".</target>
         <note />
       </trans-unit>
       <trans-unit id="CouldnTCreateChannelForChannelType2">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="HttpContentTypeFormatException">
         <source>An error ({0}) occurred while parsing the content type of the HTTP request. The content type was: {1}.</source>
-        <target state="translated">Произошла ошибка ({0}) при разборе типа содержания запроса HTTP. Тип содержания: {1}.</target>
+        <target state="translated">Произошла ошибка ({0}) при разборе типа содержимого запроса HTTP. Тип содержимого: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentTypeHeaderRequired">
@@ -339,12 +339,12 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolContainsMultipleSubProtocolString">
         <source>The value specified ('{0}') contains more than one subprotocol which is not supported.</source>
-        <target state="translated">Указанное значение ("{0}") содержит более одного протокола, что не поддерживается.</target>
+        <target state="translated">Указанное значение ("{0}") содержит более одного подпротокола, что не поддерживается.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">Пустая строка не является допустимым значением подпротокола. Используйте NULL, чтобы указать, что значение отсутствует.</target>
+        <target state="translated">Пустая строка не является допустимым значением подпротокола. Используйте NULL для задания значения.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">

@@ -344,7 +344,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
         <source>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</source>
-        <target state="translated">La stringa vuota non è un valore di protocollo secondario valido. Utilizzare "null" per non specificare un valore.</target>
+        <target state="translated">La stringa vuota non è un valore di sottoprotocollo valido. Utilizzare "null" per non specificare un valore.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolInvalidCharInProtocolString">
