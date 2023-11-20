@@ -32,15 +32,6 @@ namespace System.ServiceModel
             ReliableSession.Enabled = reliableSessionEnabled;
         }
 
-        public NetTcpBinding(string configurationName)
-            : this()
-        {
-            if (!string.IsNullOrEmpty(configurationName))
-            {
-                throw new PlatformNotSupportedException();
-            }
-        }
-
         [DefaultValue(ConnectionOrientedTransportDefaults.TransferMode)]
         public TransferMode TransferMode
         {

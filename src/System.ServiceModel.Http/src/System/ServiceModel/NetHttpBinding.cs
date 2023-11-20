@@ -32,12 +32,6 @@ namespace System.ServiceModel
             ReliableSession.Enabled = reliableSessionEnabled;
         }
 
-        public NetHttpBinding(string configurationName)
-            : base()
-        {
-            Initialize();
-        }
-
         private NetHttpBinding(BasicHttpSecurity security)
             : base()
         {
