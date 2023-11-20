@@ -86,6 +86,6 @@ There are many .NET related projects on GitHub.
 
 With the introduction of Windows 8, Microsoft made some of the client-oriented functionality available in the [Windows Store](https://msdn.microsoft.com/en-us/library/hh556233(v=vs.110).aspx). This allowed mobile devices to interact with WCF services that were built with the .NET framework version.
 
-This new WCF project differs from these other products in 2 ways. First, it is built on .NET Core so that it can be used on a wider range of devices and operating system. Second, it is open-source and managed by the [.NET Foundation](http://www.dotnetfoundation.org/projects). Microsoft builds and publishes NuGet packages from the code in this repository. UWP and ASP.NET 5 applications use those packages.
+This new WCF project differs from these other products in 2 ways. First, it is built on .NET so that it can be used on a wider range of devices and operating system. Second, it is open-source and managed by the [.NET Foundation](http://www.dotnetfoundation.org/projects). Microsoft builds and publishes NuGet packages from the code in this repository.
 
-WCF *service* applications should still be created with the full .NET Framework version.
+WCF *service* applications can be created for .NET with [the CoreWCF project](https://github.com/CoreWCF/CoreWCF).
