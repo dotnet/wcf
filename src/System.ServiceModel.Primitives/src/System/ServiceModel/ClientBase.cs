@@ -55,21 +55,6 @@ namespace System.ServiceModel
             throw new PlatformNotSupportedException(SRP.ConfigurationFilesNotSupported);
         }
 
-        protected ClientBase(string endpointConfigurationName)
-        {
-            throw new PlatformNotSupportedException(SRP.ConfigurationFilesNotSupported);
-        }
-
-        protected ClientBase(string endpointConfigurationName, string remoteAddress)
-        {
-            throw new PlatformNotSupportedException(SRP.ConfigurationFilesNotSupported);
-        }
-
-        protected ClientBase(string endpointConfigurationName, EndpointAddress remoteAddress)
-        {
-            throw new PlatformNotSupportedException(SRP.ConfigurationFilesNotSupported);
-        }
-
         protected ClientBase(Binding binding, EndpointAddress remoteAddress)
         {
             if (binding == null)

@@ -14,7 +14,6 @@ namespace System.ServiceModel
 {
     public abstract class ChannelFactory : CommunicationObject, IChannelFactory, IDisposable, IAsyncDisposable
     {
-        private string _configurationName;
         private ClientCredentials _readOnlyClientCredentials;
         private object _openLock = new object();
 
@@ -111,19 +110,6 @@ namespace System.ServiceModel
             }
         }
 
-        // configurationName can be:
-        // 1. null: don't bind any per-endpoint config (load common behaviors only)
-        // 2. "*" (wildcard): match any endpoint config provided there's exactly 1
-        // 3. anything else (including ""): match the endpoint config with the same name
-        protected virtual void ApplyConfiguration(string configurationName)
-        {
-            // This method is in the public contract but is not supported on CORECLR or NETNATIVE
-            if (!String.IsNullOrEmpty(configurationName))
-            {
-                throw ExceptionHelper.PlatformNotSupported();
-            }
-        }
-
         protected abstract ServiceEndpoint CreateDescription();
 
         internal EndpointAddress CreateEndpointAddress(ServiceEndpoint endpoint)
@@ -145,14 +131,7 @@ namespace System.ServiceModel
 
             if (Endpoint.Binding == null)
             {
-                if (_configurationName != null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.Format(SRP.SFxChannelFactoryNoBindingFoundInConfig1, _configurationName)));
-                }
-                else
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.SFxChannelFactoryNoBindingFoundInConfigOrCode));
-                }
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.SFxChannelFactoryNoBindingFoundInConfigOrCode));
             }
 
             return ServiceChannelFactory.BuildChannelFactory(Endpoint, UseActiveAutoClose);
@@ -236,42 +215,20 @@ namespace System.ServiceModel
             return false;
         }
 
-        protected void InitializeEndpoint(string configurationName, EndpointAddress address)
+        protected void InitializeEndpoint(EndpointAddress address)
         {
             Endpoint = CreateDescription();
-
-            ServiceEndpoint serviceEndpointFromConfig = null;
-
-            // Project N and K do not support System.Configuration, but this method is part of Windows Store contract.
-            // The configurationName==null path occurs in normal use.
-            if (configurationName != null)
+            if (address != null)
             {
-                throw ExceptionHelper.PlatformNotSupported();
-                // serviceEndpointFromConfig = ConfigLoader.LookupEndpoint(configurationName, address, this.serviceEndpoint.Contract);
+                Endpoint.Address = address;
             }
 
-            if (serviceEndpointFromConfig != null)
-            {
-                Endpoint = serviceEndpointFromConfig;
-            }
-            else
-            {
-                if (address != null)
-                {
-                    Endpoint.Address = address;
-                }
-
-                ApplyConfiguration(configurationName);
-            }
-            _configurationName = configurationName;
             EnsureSecurityCredentialsManager(Endpoint);
         }
 
         protected void InitializeEndpoint(ServiceEndpoint endpoint)
         {
             Endpoint = endpoint ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(endpoint));
-
-            ApplyConfiguration(null);
             EnsureSecurityCredentialsManager(Endpoint);
         }
 
@@ -288,7 +245,6 @@ namespace System.ServiceModel
                 Endpoint.Address = address;
             }
 
-            ApplyConfiguration(null);
             EnsureSecurityCredentialsManager(Endpoint);
         }
 
@@ -416,32 +372,7 @@ namespace System.ServiceModel
                 {
                     ServiceModelActivity.Start(activity, SRP.Format(SRP.ActivityConstructChannelFactory, typeof(TChannel).FullName), ActivityType.Construct);
                 }
-                InitializeEndpoint((string)null, null);
-            }
-        }
-
-        // TChannel provides ContractDescription, attr/config [TChannel,name] provides Address,Binding
-        public ChannelFactory(string endpointConfigurationName)
-            : this(endpointConfigurationName, null)
-        {
-        }
-
-        // TChannel provides ContractDescription, attr/config [TChannel,name] provides Binding, provide Address explicitly
-        public ChannelFactory(string endpointConfigurationName, EndpointAddress remoteAddress)
-            : this(typeof(TChannel))
-        {
-            using (ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ? ServiceModelActivity.CreateBoundedActivity() : null)
-            {
-                if (DiagnosticUtility.ShouldUseActivity)
-                {
-                    ServiceModelActivity.Start(activity, SRP.Format(SRP.ActivityConstructChannelFactory, typeof(TChannel).FullName), ActivityType.Construct);
-                }
-                if (endpointConfigurationName == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(endpointConfigurationName));
-                }
-
-                InitializeEndpoint(endpointConfigurationName, remoteAddress);
+                InitializeEndpoint((EndpointAddress)null);
             }
         }
 
@@ -613,21 +544,6 @@ namespace System.ServiceModel
                     endpoint.Contract.Behaviors.Add(contractBehavior);
                 }
             }
-        }
-
-        //Static funtions to create channels
-        protected static TChannel CreateChannel(String endpointConfigurationName)
-        {
-            ChannelFactory<TChannel> channelFactory = new ChannelFactory<TChannel>(endpointConfigurationName);
-
-            if (channelFactory.HasDuplexOperations())
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.Format(SRP.SFxInvalidStaticOverloadCalledForDuplexChannelFactory1, channelFactory._channelType.Name)));
-            }
-
-            TChannel channel = channelFactory.CreateChannel();
-            SetFactoryToAutoClose(channel);
-            return channel;
         }
 
         public static TChannel CreateChannel(Binding binding, EndpointAddress endpointAddress)
