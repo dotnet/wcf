@@ -4,25 +4,25 @@
   <ProductDependencies>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.23572.2">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.23577.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>c5e5051496efbcc9046b25628666377d6b97a670</Sha>
+      <Sha>0b786af5e4da6164ac878842bd449d4d58ce865e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.SignTool" Version="9.0.0-beta.23572.2">
+    <Dependency Name="Microsoft.DotNet.SignTool" Version="9.0.0-beta.23577.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>c5e5051496efbcc9046b25628666377d6b97a670</Sha>
+      <Sha>0b786af5e4da6164ac878842bd449d4d58ce865e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="9.0.0-beta.23572.2">
+    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="9.0.0-beta.23577.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>c5e5051496efbcc9046b25628666377d6b97a670</Sha>
+      <Sha>0b786af5e4da6164ac878842bd449d4d58ce865e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.GenFacades" Version="9.0.0-beta.23572.2">
+    <Dependency Name="Microsoft.DotNet.GenFacades" Version="9.0.0-beta.23577.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>c5e5051496efbcc9046b25628666377d6b97a670</Sha>
+      <Sha>0b786af5e4da6164ac878842bd449d4d58ce865e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="9.0.0-beta.23572.2">
+    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="9.0.0-beta.23577.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>c5e5051496efbcc9046b25628666377d6b97a670</Sha>
+      <Sha>0b786af5e4da6164ac878842bd449d4d58ce865e</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
