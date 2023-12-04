@@ -12,6 +12,7 @@ namespace System.ServiceModel
         public CommunicationObjectAbortedException() { }
         public CommunicationObjectAbortedException(string message) : base(message) { }
         public CommunicationObjectAbortedException(string message, Exception innerException) : base(message, innerException) { }
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected CommunicationObjectAbortedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

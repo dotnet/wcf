@@ -18,6 +18,7 @@ namespace System.ServiceModel
             SoapActionHeader = soapActionHeader;
         }
 
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected ActionMismatchAddressingException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         public string HttpActionHeader { get; }

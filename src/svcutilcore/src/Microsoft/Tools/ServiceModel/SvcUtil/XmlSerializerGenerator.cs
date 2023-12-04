@@ -47,6 +47,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             List<XmlMapping> mappings = new List<XmlMapping>();
             List<Type> types = CollectXmlSerializerTypes(assembly, mappings);
 
+#pragma warning disable SYSLIB0044
             if (types.Count == 0)
             {
                 ToolConsole.WriteWarning(SR.Format(SR.WrnNoServiceContractTypes, assembly.GetName().CodeBase));
@@ -57,6 +58,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 ToolConsole.WriteWarning(SR.Format(SR.WrnNoXmlSerializerOperationBehavior, assembly.GetName().CodeBase));
                 return;
             }
+#pragma warning restore SYSLIB0044
 
             bool success = false;
             bool toDeleteFile = true;

@@ -11,6 +11,7 @@ namespace System.ServiceModel
         public AddressAccessDeniedException() { }
         public AddressAccessDeniedException(string message) : base(message) { }
         public AddressAccessDeniedException(string message, Exception innerException) : base(message, innerException) { }
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected AddressAccessDeniedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

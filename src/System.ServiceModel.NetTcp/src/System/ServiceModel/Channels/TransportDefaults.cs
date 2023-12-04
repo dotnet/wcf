@@ -18,11 +18,13 @@ namespace System.ServiceModel.Channels
         public const long MaxReceivedMessageSize = 65536;
         public const long MaxBufferPoolSize = 512 * 1024;
         public const int MaxBufferSize = (int)MaxReceivedMessageSize;
+#pragma warning disable SYSLIB0039
         public const SslProtocols SslProtocols =
                                            // SSL3 is not supported in CoreFx.
                                            SSAuth.SslProtocols.Tls |
                                            SSAuth.SslProtocols.Tls11 |
                                            SSAuth.SslProtocols.Tls12;
+ #pragma warning restore SYSLIB0039
         public static TimeSpan ConnectionLeaseTimeout => TimeSpan.FromMinutes(5);
         public const bool PortSharingEnabled = false;
         public const bool TeredoEnabled = false;
