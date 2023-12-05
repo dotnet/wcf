@@ -63,7 +63,7 @@ public class OSAndFrameworkTests
         OSID id = OSHelper.OSIDfromRuntimeEnvironment();
         string runtimeOSDescription = RuntimeInformation.OSDescription;
 
-        Assert.True(false, string.Format("Detected the current Runtime Identifier as: '{0}'\n" + 
+        Assert.Fail(string.Format("Detected the current Runtime Identifier as: '{0}'\n" + 
                                          "Which maps to OSID: '{1}'\n" +
                                            "Detected the current runtimeOSDescription as: '{2}'", testRuntime, id.Name(), runtimeOSDescription));
     }

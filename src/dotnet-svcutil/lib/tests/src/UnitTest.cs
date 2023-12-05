@@ -280,7 +280,7 @@ namespace SvcutilTest
         [InlineData("safeTelemetry", "-nl -v verbose -cn ES -ntr -tf netcoreapp2.1")]
         [InlineData("gdprSensitive", "http://www.myhost.com/myGdprensitiveUrl -d myGdrpSensitiveOutputDir -o myGdprSensitiveFileName -n \"*,myGdprSenstiveNS\" -bd myTempDir")]
         [InlineData("gdprFiltered", "-r assemblyRef -r {packageRef,*} -ct mycollectionType -et myexludetype")]
-        public void CommandOptionsTelemetryString(string testCaseName, string options)
+        public async void CommandOptionsTelemetryString(string testCaseName, string options)
         {
             this_TestCaseName = "CommandOptionsTelemetryString";
             TestFixture();
@@ -291,8 +291,8 @@ namespace SvcutilTest
             var args = options.Split(' ');
             var cmdOptions = CommandParser.ParseCommand(args);
 
-            cmdOptions.ProcessBasicOptionsAsync(this_TestCaseLogger, CancellationToken.None).Wait();
-            cmdOptions.ResolveAsync(CancellationToken.None).Wait();
+            await cmdOptions.ProcessBasicOptionsAsync(this_TestCaseLogger, CancellationToken.None);
+            await cmdOptions.ResolveAsync(CancellationToken.None);
 
             var cmderrors = cmdOptions.Errors.Count() == 0 ? string.Empty :
                     Environment.NewLine + cmdOptions.Errors.Select(e => e.Message).Aggregate((errors, e) => $"{errors}{Environment.NewLine}{e}");
