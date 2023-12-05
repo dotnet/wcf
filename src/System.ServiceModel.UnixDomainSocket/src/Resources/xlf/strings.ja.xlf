@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../strings.resx">
+    <body>
+      <trans-unit id="ActivityProcessAction">
+        <source>Process action '{0}'.</source>
+        <target state="translated">アクション '{0}' を処理します。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelTypeNotSupported">
+        <source>The specified channel type {0} is not supported by this channel manager.</source>
+        <target state="translated">このチャネル マネージャーでは、指定されたチャネルの型 {0} をサポートしていません。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
+        <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
+        <target state="translated">ClientCredentialType.None は、TransportWithMessageCredential セキュリティ モードでは無効です。メッセージ資格情報の種類を指定するか、別のセキュリティ モードを使用してください。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DnsResolveFailed">
+        <source>No DNS entries exist for host {0}.</source>
+        <target state="translated">ホスト {0} に対する DNS エントリが存在しません。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExtendedProtectionNotSupported">
+        <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
+        <target state="translated">このプラットフォームでは拡張保護はサポートされません。適切な更新プログラムをインストールするか、Binding または BindingElement に対する ExtendedProtectionPolicy を、"Never" または "WhenSupported" の PolicyEnforcement 値を持つ値に変更してください。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InsufficentMemory">
+        <source>Insufficient memory avaliable to complete the operation.</source>
+        <target state="translated">利用可能なメモリが不足しているため、この操作を完了できません。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoIPEndpointsFoundForHost">
+        <source>No IPEndpoints were found for host {0}.</source>
+        <target state="translated">ホスト {0} の IPEndpoint がありませんでした。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRange0">
+        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">タイムアウトは TimeSpan.Zero 以上の値にする必要があります。タイムアウトを無効にするには、TimeSpan.MaxValue を指定してください。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRangeTooBig">
+        <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Int32.MaxValue TotalMilliseconds (約 24 日) よりも大きな値のタイムアウトは受け付けられません。タイムアウトを無効にするには、TimeSpan.MaxValue を指定してください。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityEndpointNotFound">
+        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
+        <target state="translated">サーバー '{0}' は、シャットダウンの処理中であることを示すフォールトを返信しました。詳細については、内部例外を参照してください。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityServerTooBusy">
+        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
+        <target state="translated">サーバー '{0}' は、ビジー状態のため要求を処理できないことを示すフォールトを送り返しました。後で再試行してください。フォールトの詳細については、内部例外を参照してください。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedReceiveTimedOut">
+        <source>The socket was aborted because an asynchronous receive from the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">割り当てられたタイムアウト時間 {0} 内にソケットからの非同期受信が完了しなかったため、ソケットは中止されました。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedSendTimedOut">
+        <source>The socket connection was aborted because an asynchronous send to the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">割り当てられたタイムアウト時間 {0} 内にソケットへの非同期送信が完了しなかったため、ソケット接続は中止されました。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadReceivedData">
+        <source>A graceful close was attempted on the socket, but the other side ({0}) is still sending data.</source>
+        <target state="translated">ソケットを正常に閉じようとしましたが、相手側 ({0}) がまだデータを送信しています。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadTimeout">
+        <source>The remote endpoint of the socket ({0}) did not respond to a close request within the allotted timeout ({1}). It is likely that the remote endpoint is not calling Close after receiving the EOF signal (null) from Receive. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">ソケット ({0}) のリモート エンドポイントは、割り当てられたタイムアウト時間内 ({1}) に終了要求に応答しませんでした。この原因としては、リモート エンドポイントが Receive から EOF 信号 (null) を受信した後に Close を呼び出していないことが考えられます。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketConnectionDisposed">
+        <source>The socket connection has been disposed.</source>
+        <target state="translated">ソケット接続は破棄されています。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransferModeNotSupported">
+        <source>Transfer mode {0} is not supported by {1}.</source>
+        <target state="translated">転送モード {0} は {1} でサポートされていません。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectError">
+        <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
+        <target state="translated">{0} に接続できませんでした。UDS エラー コード {1}: {2}。 </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectErrorWithTimeSpan">
+        <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
+        <target state="translated">{0} に接続できませんでした。接続試行の継続時間は {3} でした。UDS エラー コード {1}: {2}。 </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectNoBufs">
+        <source>Insufficient winsock resources available to complete socket connection initiation.</source>
+        <target state="translated">使用可能な Winsock リソースが不足しているため、ソケット接続を開始できません。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectingToViaTimedOut">
+        <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">VIA{0} への接続は {1} 後にタイムアウトしました。接続試行は、利用可能な {3} 個のアドレスのうち {2} 個に対して行われました ({4})。チャネルの RemoteAddress をチェックして、このエンドポイントの DNS レコードが有効な IP アドレスに対応していることを確認してください。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionResetError">
+        <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
+        <target state="translated">ソケット接続が中止されました。これは、メッセージ処理時のエラー、リモート ホストでの受信タイムアウトの超過、基になるネットワーク リソースの問題が原因で発生する可能性があります。ローカル ソケットのタイムアウトは '{0}' でした。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionTimedOut">
+        <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">ソケット転送が {0} 後にタイムアウトしました。バインドに設定されているタイムアウトを超えました。この操作に割り当てられた時間は、より長いタイムアウト時間の一部であった可能性があります。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSLocalConnectionAborted">
+        <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
+        <target state="translated">ローカル マシンによってソケット接続が中止されました。これは、チャネル Abort()、またはこのソケットを使用する別のスレッドからの伝送エラーが原因で発生する可能性があります。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSTransferError">
+        <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
+        <target state="translated">データの転送中に USD エラー ({0}: {1}) が発生しました。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveHost">
+        <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
+        <target state="translated">DNS を使用して URI "{0}" のホスト名を解決できません。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="translated">値 '{1}' は、このコンテキストではバインド セキュリティ プロパティ '{0}' に対してサポートされていません。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSslProtectionLevel">
+        <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
+        <target state="translated">保護レベル '{0}' が指定されましたが、SSL トランスポート セキュリティでサポートされるのは EncryptAndSign のみです。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeNonNegative">
+        <source>The value of this argument must be non-negative.</source>
+        <target state="translated">この引数の値は、負ではない値である必要があります。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBePositive">
+        <source>The value of this argument must be positive.</source>
+        <target state="translated">この引数の値は、正の値である必要があります。</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

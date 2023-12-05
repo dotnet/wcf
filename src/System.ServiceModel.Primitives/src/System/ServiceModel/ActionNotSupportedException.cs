@@ -14,6 +14,7 @@ namespace System.ServiceModel
         public ActionNotSupportedException() { }
         public ActionNotSupportedException(string message) : base(message) { }
         public ActionNotSupportedException(string message, Exception innerException) : base(message, innerException) { }
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected ActionNotSupportedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         internal Message ProvideFault(MessageVersion messageVersion)

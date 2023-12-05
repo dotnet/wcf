@@ -2,7 +2,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CLSCompliant>false</CLSCompliant>
@@ -22,13 +22,6 @@
     <GeneratorCliPath>$(DOTNET_INSTALL_DIR)/</GeneratorCliPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' != 'net6.0">
-    <!-- We're building some non-netcoreapp target, run on the Tools CLI.
-         Reuse the same runtimeconfig used by CSC. -->
-    <GeneratorRuntimeConfig>$(ToolsDir)csc.runtimeconfig.json</GeneratorRuntimeConfig>
-    <GeneratorCliPath>$(ToolsDir)dotnetcli/</GeneratorCliPath>
-  </PropertyGroup>
-
   <ItemGroup Condition=" '$(SkipTestsOnPlatform)' != 'true' ">
     <Compile Include="**\*.cs" />
     <Compile Include="$(XmlSerializerTestSource)**\*.cs" />
@@ -46,7 +39,7 @@
   
   <ItemGroup>
     <ProjectReference Include="$(SvcUtilCoreProj)" />
-    <ProjectReference Include="$(WcfPrivateServiceModelProj)" />
+    <ProjectReference Include="$(WcfServiceModelHttpProj)" />
     <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
   </ItemGroup>
 
@@ -64,27 +57,21 @@
     </FindInList>
     
     <PropertyGroup>
-      <ServiceModelPrivateOutputPath>$(ArtifactsBinDir)System.Private.ServiceModel/$(Configuration)/netstandard2.0/</ServiceModelPrivateOutputPath>
-      <ServiceModelPrivateAssemblyName>System.Private.ServiceModel.dll</ServiceModelPrivateAssemblyName>
-      <ServiceModelPrimitivesOutputPath>$(ArtifactsBinDir)System.ServiceModel.Primitives.Facade/$(Configuration)/netstandard2.0/</ServiceModelPrimitivesOutputPath>
+      <ServiceModelPrimitivesOutputPath>$(ArtifactsBinDir)System.ServiceModel.Primitives/$(Configuration)/$(TargetFramework)/</ServiceModelPrimitivesOutputPath>
       <ServiceModelPrimitivesAssemblyName>System.ServiceModel.Primitives.dll</ServiceModelPrimitivesAssemblyName>
       <DotNetExe>$(GeneratorCliPath)dotnet</DotNetExe>
       <DotnetSvcutilXmlSerializerAssembly>$(OutputPath)dotnet-svcutil.xmlserializer.dll</DotnetSvcutilXmlSerializerAssembly>
       <InputTestAssembly>$(OutputPath)ScenarioTests.Common.Tests.dll</InputTestAssembly>
       <OutputGeneratedSource>$(OutputPath)ScenarioTests.Common.Tests.XmlSerializers.cs</OutputGeneratedSource>
       <CscOutputAssembly>$(OutputPath)ScenarioTests.Common.Tests.XmlSerializers.dll</CscOutputAssembly>
-      <ServiceModelPrivateAssembly>$(ServiceModelPrivateOutputPath)$(ServiceModelPrivateAssemblyName)</ServiceModelPrivateAssembly>
       <ServiceModelPrimitivesAssembly>$(ServiceModelPrimitivesOutputPath)$(ServiceModelPrimitivesAssemblyName)</ServiceModelPrimitivesAssembly>
       
     </PropertyGroup>
     <Message Text="Running Serialization Tool" Importance="normal" />
-    
-    <Message Text="Run XmlSerializer: $(DotNetExe) $(DotnetSvcutilXmlSerializerAssembly) $(InputTestAssembly) --quiet --out:$(OutputGeneratedSource) --smreference:$(ServiceModelPrimitivesAssembly);$(ServiceModelPrivateAssembly) --reference=$(depRef)" Importance="high" />
-    <Message Text="$(ServiceModelPrivateAssemblyName) exists in $(ServiceModelPrivateOutputPath)" Condition="Exists('$(ServiceModelPrivateOutputPath)$(ServiceModelPrivateAssemblyName)') == 'true'" Importance="high" />
+    <Message Text="Run XmlSerializer: $(DotNetExe) $(DotnetSvcutilXmlSerializerAssembly) $(InputTestAssembly) --quiet --out:$(OutputGeneratedSource) --smreference:$(ServiceModelPrimitivesAssembly) --reference=$(depRef)" Importance="high" />
     <Message Text="$(ServiceModelPrimitivesAssemblyName) exists in $(ServiceModelPrimitivesOutputPath)" Condition="Exists('$(ServiceModelPrimitivesOutputPath)$(ServiceModelPrimitivesAssemblyName)') == 'true'" Importance="high" />
-    <Error Text="$(ServiceModelPrivateAssemblyName) does not exist in $(ServiceModelPrivateOutputPath)" Condition="Exists('$(ServiceModelPrivateOutputPath)$(ServiceModelPrivateAssemblyName)') != 'true'" />
     <Error Text="$(ServiceModelPrimitivesAssemblyName) does not exist in $(ServiceModelPrimitivesOutputPath)" Condition="Exists('$(ServiceModelPrimitivesOutputPath)$(ServiceModelPrimitivesAssemblyName)') != 'true'" />
-    <Exec Command="$(DotNetExe) $(DotnetSvcutilXmlSerializerAssembly) $(InputTestAssembly) --quiet --out:$(OutputGeneratedSource) --smreference:&quot;$(ServiceModelPrimitivesAssembly);$(ServiceModelPrivateAssembly)&quot; --reference=$(depRef)" />
+    <Exec Command="$(DotNetExe) $(DotnetSvcutilXmlSerializerAssembly) $(InputTestAssembly) --quiet --out:$(OutputGeneratedSource) --smreference:&quot;$(ServiceModelPrimitivesAssembly)&quot; --reference=$(depRef)" />
     <Warning Condition="Exists('$(OutputGeneratedSource)') != 'true'" Text="Failed to generate $(OutputGeneratedSource)"/>
     <Csc Condition="Exists('$(OutputGeneratedSource)') == 'true'"
          OutputAssembly="$(CscOutputAssembly)"

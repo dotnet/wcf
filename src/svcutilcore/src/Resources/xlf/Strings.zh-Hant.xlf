@@ -1,0 +1,764 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../Strings.resx">
+    <body>
+      <trans-unit id="AmbiguousToolUseage">
+        <source>The intended output for the tool could not be inferred from the inputs and the options.</source>
+        <target state="translated">無法從輸入與選項推斷工具應會有的輸出。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CopyrightForCmdLine">
+        <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
+        <target state="translated">Copyright (c) Microsoft Corporation.  著作權所有，並保留一切權利。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAmbiguityInAssemblyNames">
+        <source>Could not load assembly '{0}'. 2  reference assemblies ('{1}' and '{2}') were found that match the string '{0}'. This is usually caused by an insufficient type reference in a config file. Resolve this issue by passing only the reference assembly needed or by adding more information like a version number or a public key to the reference.</source>
+        <target state="translated">無法載入組件 '{0}'。找到符合字串 '{0}' 的 2 個參考組件 ('{1}' 和 '{2}')。這通常是因為設定檔中的類型參考不足導致。只傳遞所需的參考組件，或新增版本號碼或公開金鑰等更多資訊至參考，以解決此問題。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAmbiguousOptionModeConflict">
+        <source>The --{0} option conflicts with other options. Review your use of the tool.</source>
+        <target state="translated">--{0} 選項與其他選項衝突。檢閱工具使用方式。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAssemblyLoadFailed">
+        <source>Cannot load file {0} as an Assembly. Check the FusionLogs for more Information.</source>
+        <target state="translated">無法將檔案 {0} 載入為組件。如需詳細資訊，請查看 FusionLogs。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotCreateDirectory">
+        <source>Cannot create directory: {0}</source>
+        <target state="translated">無法建立目錄: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotCreateFile">
+        <source>Cannot create output file: {0}</source>
+        <target state="translated">無法建立輸出檔: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotDeleteExistingConfig">
+        <source>There is an existing config file that cannot be overwritten. Either fix the problem or provide a different config file name using the --{0} option.</source>
+        <target state="translated">有一個無法被覆寫的現有設定檔。請修正問題，或使用 --{0} 選項提供不同的設定檔名稱。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotDisambiguateSpecifiedTypes">
+        <source>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</source>
+        <target state="translated">在參考的組件集合中，存在多種類型具有相同的名稱。請使用組件限定名稱來區分 --{0} 類型 '{1}' 與 '{2}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotLoadSpecifiedType">
+        <source>No type could be loaded for the value {1} passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</source>
+        <target state="translated">無法為傳遞到 --{0} 選項的值 {1}，載入任何類型。請確定已透過 --{2} 選項，指定此類型所屬的組件。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotSpecifyMultipleMappingsForNamespace">
+        <source>Invalid value passed to the --{0} option. Target namespace '{1}' cannot be mapped to multiple CLR namespaces '{2}' and '{3}'</source>
+        <target state="translated">傳遞到 --{0} 選項的值無效。目標命名空間 '{1}' 無法對應到多個 CLR 命名空間 '{2}' 與 '{3}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotWriteFile">
+        <source>Cannot write to output file</source>
+        <target state="translated">無法寫入輸出檔</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrConflictingInputs">
+        <source>The '{0}' input argument conflicts with '{1}' because they imply different modes of tool operation</source>
+        <target state="translated">'{0}' 輸入引數與 '{1}' 相衝突，因為它們表示不同的工具作業模式</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the --{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">無法為傳遞到 --{1} 引數的值 '{0}'，建立程式碼提供者。請確認已正確安裝程式碼提供者，並加以設定。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotCreateInstance">
+        <source>Could not create instance of the type '{0}' passed to the --{1} argument.</source>
+        <target state="translated">無法建立傳遞至 --{1} 引數的類型 '{0}' 的執行個體。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotLoadReferenceAssemblyAt">
+        <source>Cannot load reference assembly '{0}'</source>
+        <target state="translated">無法載入參考組件 '{0}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAt">
+        <source>Cannot load any types in assembly '{0}'.</source>
+        <target state="translated">無法載入組件 '{0}' 中的任何類型。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryContainsInvalidCharacters">
+        <source>Invalid value '{1}' passed to the --{0} option. The {2} character is not permitted in a path</source>
+        <target state="translated">傳遞到 --{0} 選項的值 '{1}' 無效。路徑中不允許 {2} 字元</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryInsteadOfFile">
+        <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths</source>
+        <target state="translated">輸入路徑 '{0}' 似乎是目錄。輸入必須是 URL 或檔案路徑</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryNotFound">
+        <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
+        <target state="translated">找不到目錄 '{0}'。請確認該目錄存在，且您有適當的權限可讀取該目錄。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryPointsToAFile">
+        <source>Invalid value '{1}' passed to the --{0} option. '{1}' is a path to a file.</source>
+        <target state="translated">傳遞到 --{0} 選項的值 '{1}' 無效。'{1}' 是到達檔案的路徑。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDuplicateReferenceValues">
+        <source>The assembly {1} was loaded twice through the --{0} option. You may reference each assembly only once.</source>
+        <target state="translated">組件 {1} 透過 --{0} 選項載入了兩次。每個組件只可參考一次。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDuplicateValuePassedToTypeArg">
+        <source>The value {1} was passed to the --{0} option multiple times. Each type may be specified only once.</source>
+        <target state="translated">多次傳遞值 {1} 到 --{0} 選項。每個類型只能指定一次。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrExclusiveOptionsSpecified">
+        <source>The --{0} option cannot be used when the --{1} option has been specified.</source>
+        <target state="translated">指定 --{1} 選項時，無法使用 --{0} 選項。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrExpectedValue">
+        <source>The {0} option requires that a value be specified.</source>
+        <target state="translated">{0} 選項需要指定一個值。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithMode">
+        <source>The input read from '{0}' is inconsistent with other options.</source>
+        <target state="translated">從 '{0}' 讀取的輸入與其他選項不一致。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithOption">
+        <source>The input read from '{1}' cannot be used with the --{0} option because they imply different modes of tool operation.</source>
+        <target state="translated">無法使用從 '{1}' 讀取的輸入搭配 --{0} 選項使用，因為它們表示不同的工具作業模式。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithTarget">
+        <source>The type of input read from '{2}' is not supported with the --{0} option set to '{1}'.</source>
+        <target state="translated">當 --{0} 選項設定為 '{1}' 時，不支援從 '{2}' 讀取的輸入類型。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputFileNotAssemblyOrMetadata">
+        <source>The file at: '{0}' read via input argument'{1}' does not appear to be an XML metadata file or a valid assembly.</source>
+        <target state="translated">透過輸入引數 '{1}' 讀取的檔案 (位於 '{0}') 似乎不是 XML 中繼資料檔案或有效的組件。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidInputPath">
+        <source>The input path '{0}' doesn't appear to refer to any existing files and does not appear to be a valid URI.</source>
+        <target state="translated">輸入路徑 '{0}' 似乎未參考任何現有的檔案，而且似乎不是有效的 URI。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidNamespaceArgument">
+        <source> Invalid value {1} passed to the --{0} option. Specify a comma-separated target namespace and CLR namespace pair.</source>
+        <target state="translated"> 傳遞到 --{0} 選項的值 {1} 無效。指定以逗點分隔的成對目標命名空間與 CLR 命名空間。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidPath">
+        <source>Invalid path {0}. Check the --{1} argument</source>
+        <target state="translated">路徑 {0} 無效。檢查 --{1} 引數</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidSerializer">
+        <source>Invalid serializer value passed to the --{0} option. The supported serializers are: {2}</source>
+        <target state="translated">傳遞到 --{0} 選項的序列化程式值無效。支援的序列化程式為: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidTarget">
+        <source>Invalid target '{1}' specified via the --{0} option. The supported Targets are: {2}</source>
+        <target state="translated">透過 --{0} 選項指定的目標 '{1}' 無效。支援的目標為: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidTargetClientVersion">
+        <source>Invalid targetClientVersion value passed to the --{0} option. The supported targetClientVersions are: {2}</source>
+        <target state="translated">傳遞給 --{0} 選項的 targetClientVersion 值無效。支援的 targetClientVersions 為: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrIsNotAnAssembly">
+        <source>Could not load '{0}' as an assembly verify that this file is a .NET Assembly.</source>
+        <target state="translated">無法將 '{0}' 載入為組件，請驗證此檔案是 .NET 組件。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrMergeConfigUsedWhenConfigDoesNotExist">
+        <source>Cannot merge config file. The file '{1}' does not exist.</source>
+        <target state="translated">無法合併設定檔。檔案 '{1}' 不存在。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrMergeConfigUsedWithoutConfig">
+        <source>Cannot use the --{0} option without specifying the --{1} option.</source>
+        <target state="translated">未指定 --{1} 選項時，無法使用 --{0} 選項。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNoFilesFound">
+        <source>The input path '{0}' doesn't appear to refer to any existing files</source>
+        <target state="translated">輸入路徑 '{0}' 似乎未參考任何現有的檔案</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNoValidInputFilesSpecified">
+        <source>No valid input files specified. Specify either metadata documents or assembly files</source>
+        <target state="translated">未指定有效的輸入檔案。指定中繼資料文件或組件檔案</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNotCodeDomType">
+        <source>The type '{0}' passed to the --{1} argument is not a subclass of {2}.</source>
+        <target state="translated">傳遞到 --{1} 引數的類型 '{0}'，並非 {2} 的子類別。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNotLanguageOrCodeDomType">
+        <source>The value '{0}' passed to the --{1} argument does not represent a defined language and it could not be loaded as a fully qualified CLR type.</source>
+        <target state="translated">傳遞到 --{1} 引數的值 '{0}'，並不代表定義的語言，因此無法將其載入為完整的 CLR 類型。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrOptionConflictsWithTarget">
+        <source> The use of the --{2} option is not supported with the --{0} option set to '{1}'.</source>
+        <target state="translated"> 當 --{0} 選項設定為 '{1}' 時，不支援使用 --{2} 選項。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrOptionModeConflict">
+        <source>The --{1} option cannot be used with the --{0} option because they imply different output types.</source>
+        <target state="translated">--{1} 選項無法搭配 --{0} 選項使用，因為它們表示不同的輸出類型。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrPathTooLong">
+        <source>The resultant path '{0}' is too long. Review the --{1} and --{2} arguments</source>
+        <target state="translated">結果路徑 '{0}' 太長。檢閱 --{1} 與 --{2} 引數</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrPathTooLongDirOnly">
+        <source>The resultant path '{0}' is too long. Review the --{1} argument</source>
+        <target state="translated">結果路徑 '{0}' 太長。檢閱 --{1} 引數</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSchemaValidationForExport">
+        <source>There was a validation error on a schema generated during export:
+    Source: {0}
+    Line: {1} Column: {2}
+   Validation Error: {3}</source>
+        <target state="translated">匯出期間產生的結構描述上發生驗證錯誤:
+   來源: {0}
+   行: {1} 資料行: {2}
+  驗證錯誤: {3}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSingleUseSwitch">
+        <source>The {0} option cannot be specified multiple times.</source>
+        <target state="translated">不可指定多次 {0} 選項。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSwitchMissing">
+        <source>Invalid argument: '{0}'.</source>
+        <target state="translated">引數無效: '{0}'。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrToolConfigDoesNotExist">
+        <source>The config File {0} specified for the --{1} option does not exist.</source>
+        <target state="translated">為 --{1} 選項指定的設定檔 {0} 不存在。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadExtensions">
+        <source>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</source>
+        <target state="translated">載入匯入延伸模組時發生錯誤。請確定您已使用 --{0} 選項，提供包含這些延伸模組作為參考組件的組件。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadFile">
+        <source>Cannot read {0}.</source>
+        <target state="translated">無法讀取 {0}。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadInputConfig">
+        <source>Cannot load the config file {0}</source>
+        <target state="translated">無法載入設定檔 {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadReferenceType">
+        <source>There was an error loading a referenced contract type. This type will be ignored.
+    Type: {0}</source>
+        <target state="translated">載入參考的合約類型時發生錯誤。將忽略此類型。
+   類型: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToUniquifyFilename">
+        <source>Cannot create output filename. Too many files are being created with the prefix '{0}'.</source>
+        <target state="translated">無法建立輸出檔名。已使用前置詞 '{0}' 建立太多檔案。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedDelimiter">
+        <source>Invalid argument: delimiter (':' or '=') cannot start option.</source>
+        <target state="translated">引數無效: 選項開頭不可為分隔符號 (':' 或 '=')。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedError">
+        <source>An error occurred in the tool.</source>
+        <target state="translated">工具中發生錯誤。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedValue">
+        <source>The {0} option does not support any values</source>
+        <target state="translated">{0} 選項不支援任何值</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnknownSwitch">
+        <source>Unrecognized option '{0}' specified.</source>
+        <target state="translated">無法辨識指定的選項 '{0}'。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrValidateInvalidUse">
+        <source>The {0} option cannot be used with the {1} option.</source>
+        <target state="translated">{0} 選項無法搭配 {1} 選項使用。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrValidateRequiresServiceName">
+        <source>To validate a service, the --{0} option must be used to specify the service to validate.</source>
+        <target state="translated">若要驗證服務，必須使用 --{0} 選項指定要驗證的服務。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Error">
+        <source>Error: </source>
+        <target state="translated">錯誤: </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateSerializerNotFound">
+        <source>Svcutil does not work with the framework of the version being used. 'System.Xml.Serialization.XmlSerializer' does not have a method named 'GenerateSerializer'.</source>
+        <target state="translated">Svcutil 無法搭配要使用的版本架構使用。'System.Xml.Serialization.XmlSerializer' 沒有名為 'GenerateSerializer' 的方法。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GeneratingFiles">
+        <source>Generating files...</source>
+        <target state="translated">正在產生檔案...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GeneratingSerializer">
+        <source>Generating XML serializers...</source>
+        <target state="translated">正在產生 XML 序列化程式...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationAbbreviationSyntax">
+        <source>Syntax: {0} [-{1}:{2}]  {3}* | {4}* | {5}</source>
+        <target state="translated">語法: {0} [-{1}:{2}]  {3}* | {4}* | {5}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationCategory">
+        <source>-= CODE GENERATION =-</source>
+        <target state="translated">-= 程式碼產生 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationDescription">
+        <source>Description: {0} can generate code for service contracts, clients and data types from metadata documents. These metadata documents can be on disk or retrieved online. Online retrieval follows either the WS-Metadata Exchange protocol or the DISCO protocol.</source>
+        <target state="translated">描述: {0} 可以從中繼資料文件產生服務合約、用戶端和資料類型的程式碼。這些中繼資料文件可以在磁碟上或在線上擷取。線上擷取會遵循 WS-Metadata Exchange 通訊協定或 DISCO 通訊協定。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationServiceContract">
+        <source>Generate code for Service Contracts. Client class and configuration will not be generated. (Short Form: -{0})</source>
+        <target state="translated">產生服務合約的程式碼。將不會產生用戶端類別和設定。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput1">
+        <source>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</source>
+        <target state="translated">中繼資料文件 (wsdl 或 xsd) 的路徑。您可以在檔案路徑中使用標準命令列萬用字元。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput2">
+        <source>The URL to a service endpoint that provides metadata or to a metadata document hosted online. For more information on how these documents are retrieved see the Metadata Download section.</source>
+        <target state="translated">提供中繼資料服務端點的 URL，或指向線上裝載的中繼資料文件的 URL。如需如何擷取這些文件的詳細資訊，請參閱中繼資料下載一節。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput3">
+        <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange. For more information see the Metadata Download section.</source>
+        <target state="translated">XML 檔案的路徑包含支援 WS-Metadata Exchange 之服務端點的 WS-Addressing EndpointReference。如需詳細資訊，請參閱中繼資料下載一節。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCollectionType">
+        <source>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</source>
+        <target state="translated">從結構描述產生程式碼時，要用作為集合資料類型之類型的完整名稱或符合組件要求的名稱。(簡短形式: /{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCommonOptionsCategory">
+        <source>-= COMMON OPTIONS =-</source>
+        <target state="translated">-= 常用選項 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpDirectory">
+        <source>Directory to create files in (default: current directory) (Short Form: -{0})</source>
+        <target state="translated">要在其中建立檔案的目錄 (預設: 目前目錄) (簡短形式: /{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples">
+        <source>-= EXAMPLES =-</source>
+        <target state="translated">-= 範例 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples1">
+        <source>svcutil myContractLibrary.exe</source>
+        <target state="translated">svcutil myContractLibrary.exe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples2">
+        <source>- Generate serialization types for XmlSerializer types used by any Service Contracts in the assembly</source>
+        <target state="translated">- 針對組件中任何服務合約使用的 XmlSerializer 類型產生序列化類型</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExcludeTypeCodeGeneration">
+        <source>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</source>
+        <target state="translated">要從參考的合約類型排除之完整類型名稱或符合組件規格的類型名稱。 (簡短形式: /{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExcludeTypeExport">
+        <source>The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the --{1} option. (Short Form: -{0})</source>
+        <target state="translated">要從匯出中排除的類型的完整名稱或組件限定名稱。匯出服務的中繼資料或一組服務合約以排除匯出的類型時可使用此選項。此選項無法搭配 --{1} 選項使用。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpHelp">
+        <source>Display command syntax and options for the tool. (Short Form: -{0})</source>
+        <target state="translated">顯示工具的命令語法與選項。(簡短形式: /{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputAssemblyPath">
+        <source>&lt;assemblyPath&gt;</source>
+        <target state="translated">&lt;assemblyPath&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputEpr">
+        <source>&lt;epr&gt;</source>
+        <target state="translated">&lt;epr&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputMetadataDocumentPath">
+        <source>&lt;metadataDocumentPath&gt;</source>
+        <target state="translated">&lt;metadataDocumentPath&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputUrl">
+        <source>&lt;url&gt;</source>
+        <target state="translated">&lt;url&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadCategory">
+        <source>-= METADATA DOWNLOAD =-</source>
+        <target state="translated">-= 中繼資料下載 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadDescription">
+        <source>Description: {0} can be used to download metadata from running services and save the metadata to local files. To download metadata, you must explicitly specify the --{1}:{2} option. Otherwise, client code will be generated. For http and https URL schemes svcutil.exe will try to retrieve metadata using WS-Metadata Exchange and DISCO. For all other URL schemes {0} will only try WS-Metadata Exchange. By default, {0} uses the bindings defined in the System.ServiceModel.Description.MetadataExchangeBindings class. To configure the binding used for WS-Metadata Exchange you must define a client endpoint in config that uses the IMetadataExchange contract. This can be defined either in {0}'s config file or in another config file specified using the --{3} option.</source>
+        <target state="translated">描述: {0} 可用來從執行中服務下載中繼資料，以及將中繼資料儲存到本機檔案。若要下載中繼資料，您必須明確指定 --{1}:{2} 選項。否則，將產生用戶端程式碼。對於 http 和 https URL 配置，svcutil.exe 會嘗試使用 WS-Metadata Exchange 和 DISCO 來擷取中繼資料。針對所有其他 URL 配置，{0} 將只會嘗試 WS-Metadata Exchange。依預設，{0} 會使用 System.ServiceModel.Description.MetadataExchangeBindings 類別中定義的繫結。若要設定用於 WS-Metadata Exchange 的繫結，您必須在使用 IMetadataExchange 合約的設定中定義用戶端端點。這可以在 {0} 的設定檔中或在指定的另一個設定檔中使用 --{3} 選項定義。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntax">
+        <source>Syntax: {0} --{1}:{2}  {3}* | {4}</source>
+        <target state="translated">語法: {0} --{1}:{2}  {3}* | {4}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntaxInput1">
+        <source>The URL to a service endpoint that provides metadata or an URL that points to a metadata document hosted online. </source>
+        <target state="translated">提供中繼資料服務端點的 URL，或指向線上裝載的中繼資料文件的 URL。 </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntaxInput2">
+        <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</source>
+        <target state="translated">XML 檔案的路徑包含支援 WS-Metadata Exchange 之服務端點的 WS-Addressing EndpointReference。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportCategory">
+        <source>-= METADATA EXPORT =-</source>
+        <target state="translated">-= 中繼資料匯出 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportDescription">
+        <source>Description: {0} can export metadata for services, contracts and data types in compiled assemblies. To export metadata for a service, you must use the --{1} option to indicate the service you would like to export. To export all Data Contract types within an assembly use the --{2} option. By default metadata is exported for all Service Contracts in the input assemblies.</source>
+        <target state="translated">描述: {0} 可以匯出編譯的組件中的服務、合約和資料類型的中繼資料。若要匯出服務的中繼資料，您必須使用 --{1} 選項來指出要匯出的服務。若要匯出組件內的所有資料合約類型，請使用 --{2} 選項。依預設，會匯出輸入組件中所有服務合約的中繼資料。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportSyntax">
+        <source>Syntax: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</source>
+        <target state="translated">語法: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportSyntaxInput1">
+        <source>The path to an assembly that contains services, contracts or Data Contract types to be exported. Standard command-line wildcards can be used to provide multiple files as input.</source>
+        <target state="translated">包含要匯出的服務、合約或資料合約類型的組件路徑。標準命令列萬用字元可用來提供多個檔案做為輸入。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNamespace">
+        <source>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</source>
+        <target state="translated">從 WSDL 或 XML 結構描述 targetNamespace 到 CLR 命名空間的對應。請將對應所有未明確對應到該 CLR 命名空間的 targetNamespaces 之 targetNamespace，使用 '*'。預設: 從資料合約之結構描述文件的目標命名空間衍生。會為所有其他產生的類型使用預設命名空間。(簡短形式: /{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNologo">
+        <source>Suppress the copyright and banner message.</source>
+        <target state="translated">不顯示版權與橫幅訊息。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNostdlib">
+        <source>Do not reference standard libraries. By default mscorlib.dll and system.servicemodel.dll are referenced.</source>
+        <target state="translated">不參考標準程式庫。預設會參考 mscorlib.dll 和 system.servicemodel.dll。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpOptions">
+        <source>Options:</source>
+        <target state="translated">選項:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpOut">
+        <source> The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</source>
+        <target state="translated"> 產生的程式碼的檔案名稱。預設: 從其中一個結構描述的 WSDL 定義名稱、WSDL 服務名稱或 targetNamespace 衍生。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpReferenceCodeGeneration">
+        <source>Reference types in the specified assembly. When generating clients, use this option to specify assemblies that might contain types representing the metadata being imported.  (Short Form: -{0})</source>
+        <target state="translated">指定組件中的參考類型。產生用戶端時，請使用此選項來指定可能包含代表要匯入的中繼資料的類型的組件。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpReferenceOther">
+        <source>Add the specified assembly to the set of assemblies used for resolving type references. If you are exporting or validating a service that uses 3rd-party extensions (Behaviors, Bindings and BindingElements) registered in config use this option to locate extension assemblies that are not in the GAC.  (Short Form: -{0})</source>
+        <target state="translated">將指定的組件新增到用來解析類型參考的一組組件。如果您要匯出或驗證使用在設定中登錄的第三方延伸模組 (Behaviors、Bindings 和 BindingElements) 的服務，請使用此選項來尋找不在 GAC 中的延伸模組組件。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpTargetOutputType">
+        <source>The target output for the tool: {0}, {1} or {2}.</source>
+        <target state="translated">工具的目標輸出: {0}、{1} 或 {2}。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage1">
+        <source>USES:</source>
+        <target state="translated">使用:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage2">
+        <source>  - Generate code from running services or static metadata documents. </source>
+        <target state="translated">  - 從執行中服務或靜態中繼資料文件產生程式碼。 </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage3">
+        <source>  - Export metadata documents from compiled code.</source>
+        <target state="translated">  - 從已編譯的程式碼匯出中繼資料文件。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage4">
+        <source>  - Validate compiled service code.</source>
+        <target state="translated">  - 驗證已編譯的服務程式碼。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage5">
+        <source>  - Download metadata documents from running services.</source>
+        <target state="translated">  - 從執行中服務下載中繼資料文件。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage6">
+        <source>  - Pre-generate serialization code.</source>
+        <target state="translated">  - 預先產生序列化程式碼。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationCategory">
+        <source>-= SERVICE VALIDATION =-</source>
+        <target state="translated">-= 服務驗證 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationDescription">
+        <source>Description: Validation is useful to detect errors in service implementations without hosting the service. You must use the --{0} option to indicate the service you would like to validate.</source>
+        <target state="translated">描述: 驗證很實用，可以偵測服務實作中的錯誤，而不需要裝載服務。您必須使用 --{0} 選項來指出要驗證的服務。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationExcludeTypeExport">
+        <source>The fully-qualified or assembly-qualified name of a service type to exclude from validation. (Short Form: -{0})</source>
+        <target state="translated">要從驗證排除的完整服務型別名稱或符合組件規格的服務型別名稱。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationSyntax">
+        <source>Syntax: {0} --{1} --{2}:{3}  {4}*</source>
+        <target state="translated">語法: {0} --{1} --{2}:{3}  {4}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationSyntaxInput1">
+        <source>The path to an assembly containing service types to be validated. The assembly must have an associated config file to provide service configuration. Standard command-line wildcards can be used to provide multiple assemblies.</source>
+        <target state="translated">包含要驗證的服務類型的組件路徑。組件必須有相關聯的設定檔，才能提供服務設定。標準命令列萬用字元可用來提供多個組件。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpVersion30TargetClientVersion">
+        <source>Generate code that references functionality in .NET Framework assemblies 3.0 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.0.(Short Form: -{0})</source>
+        <target state="translated">產生參考 .NET Framework 組件 3.0 及更早版本中功能的程式碼。如果您要為使用 .NET Framework 3.0 版本的用戶端產生程式碼，請使用此參數。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpVersion35TargetClientVersion">
+        <source>Generate code that references functionality in .NET Framework assemblies 3.5 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.5.(Short Form: -{0})</source>
+        <target state="translated">產生參考 .NET Framework 組件 3.5 及更早版本中功能的程式碼。如果您要為使用 .NET Framework 3.5 版本的用戶端產生程式碼，請使用此參數。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpWrapped">
+        <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</source>
+        <target state="translated">產生的程式碼不會解除包裝 document-wrapped-literal 訊息的 "parameters" 成員。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationCategory">
+        <source>-= XMLSERIALIZER TYPE GENERATION =-</source>
+        <target state="translated">-= XMLSERIALIZER 類型產生 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationDescription">
+        <source>Description: {0} can pre-generate C# serialization code that is required for types that can be serialized using the XmlSerializer. {0} will only generate code for types used by Service Contracts found in the input assemblies.</source>
+        <target state="translated">描述: {0} 可以預先產生可使用 XmlSerializer 序列化的類型所需的 C# 序列化程式碼。{0} 將只會為服務合約所使用、在輸入組件中找到的類型產生程式碼。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntax">
+        <source>Syntax: {0} {1}*</source>
+        <target state="translated">語法: {0} {1}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput1">
+        <source>The path to an assembly containing Service Contract types. Serialization types will be generated for all Xml Serializable types in each contract</source>
+        <target state="translated">包含服務合約類型的組件路徑。將針對每個合約中的所有 XML 可序列化類型產生序列化類型</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput2">
+        <source>Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: -{0})</source>
+        <target state="translated">將指定的組件新增到用來解析類型參考的一組組件。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput3">
+        <source>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: -{0})</source>
+        <target state="translated">要從匯出或驗證排除的完整或組件合格的類型名稱。匯出服務的中繼資料或一組服務合約以排除匯出的類型時可使用此選項。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput4">
+        <source>Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: -{0})</source>
+        <target state="translated">產生的程式碼的檔案名稱。當將多個組件傳遞為工具的輸入時，將會忽略此選項。預設值: 衍生自組件名稱。(簡短形式: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HintConsiderUseXmlSerializer">
+        <source>If you are using the --{0} option to import data contract types and are getting this error message, consider using xsd.exe instead. Types generated by xsd.exe may be used in the Windows Communication Foundation after applying the XmlSerializerFormatAttribute attribute on your service contract. Alternatively, consider using the --{1} option to import these types as XML types to use with DataContractFormatAttribute attribute on your service contract.</source>
+        <target state="translated">如果您使用 --{0} 選項來匯入資料合約類型，且遇到錯誤訊息，請考慮改用 xsd.exe。在服務合約上套用 XmlSerializerFormatAttribute 屬性之後，xsd.exe 產生的類型可能會用於 Windows Communication Foundation。或者，請考慮使用 --{1} 選項，將這些類型匯入為 XML 類型，以在您的服務合約上搭配 DataContractFormatAttribute 屬性使用。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Logo">
+        <source>Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.
+[{1}]
+{2}
+</source>
+        <target state="translated">Microsoft (R) dotnet-svcutil.xmlserializer 工具，版本 {0}。
+[{1}]
+{2}
+</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MoreHelp">
+        <source>If you would like more help, type "svcutil -{0}"</source>
+        <target state="translated">如需其他說明，請輸入 "svcutil /{0}"</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoCodeWasGenerated">
+        <source>No code was generated.
+If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
+or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
+        <target state="translated">未產生任何程式碼。
+若嘗試產生用戶端，這可能是因為中繼資料文件未包含任何有效的合約或服務，或因為所有
+合約/服務被發現存在於 /reference 組件中。請確認您已將所有中繼資料文件傳遞給工具。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersCollectionType">
+        <source>&lt;type&gt;</source>
+        <target state="translated">&lt;type&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersDirectory">
+        <source>&lt;directory&gt;</source>
+        <target state="translated">&lt;directory&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersExcludeType">
+        <source>&lt;type&gt;</source>
+        <target state="translated">&lt;type&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersLanguage">
+        <source>&lt;language&gt;</source>
+        <target state="translated">&lt;language&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersNamespace">
+        <source>&lt;string,string&gt;</source>
+        <target state="translated">&lt;string,string&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersOut">
+        <source>&lt;file&gt;</source>
+        <target state="translated">&lt;file&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersOutputType">
+        <source>&lt;output type&gt;</source>
+        <target state="translated">&lt;output type&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersReference">
+        <source>&lt;file path&gt;</source>
+        <target state="translated">&lt;file path&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersTarget">
+        <source>&lt;enum&gt;</source>
+        <target state="translated">&lt;enum&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValidationError">
+        <source>Validation Error:</source>
+        <target state="translated">驗證錯誤:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValidationWasSuccessful">
+        <source>The Service '{0}' was validated with no errors</source>
+        <target state="translated">已驗證服務 '{0}'，未發生任何錯誤</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Warning">
+        <source>Warning: </source>
+        <target state="translated">警告</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WcfTrademarkForCmdLine">
+        <source>Microsoft (R) Windows (R) Communication Foundation</source>
+        <target state="translated">Microsoft (R) Windows (R) Communication Foundation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnCouldNotLoadTypesFromReferenceAssemblyAt">
+        <source>There were errors loading types in an assembly loaded from '{0}' some types in the assembly could not be loaded and will not be available to the tool.</source>
+        <target state="translated">載入從 '{0}' 載入的組件中的類型時發生錯誤，組件中的某些類型無法載入，因此無法供工具使用。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnNoServiceContractTypes">
+        <source>Cannot generate XmlSerializer types for assembly: {0}. No service contract types were found.</source>
+        <target state="translated">無法產生組件的 XmlSerializer 類型: {0}。找不到服務合約類型。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnNoXmlSerializerOperationBehavior">
+        <source>Cannot generate XmlSerializer for assembly: {0}. No service contract in the assembly has an operation with XmlSerializerOperationBehavior.</source>
+        <target state="translated">無法產生組件的 XmlSerializer: {0}。組件中沒有任何服務合約具有 XmlSerializerOperationBehavior 的作業。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnOptionConflictsWithInput">
+        <source>Option --{0} cannot be used with multiple input assemblies. Ignoring {0} option. </source>
+        <target state="translated">選項 --{0} 無法與多個輸入組件一起使用。正在忽略 {0} 選項。 </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnToolIsUsedDirectly">
+        <source>This tool is not intended to be used directly. </source>
+        <target state="translated">此工具並非意欲直接使用。 </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnUnableToLoadContractForSGen">
+        <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
+    Type: {0}
+    Details:{1}</source>
+        <target state="translated">載入合約類型時發生錯誤。無法產生此合約的 XmlSerializer 類型。
+   類型: {0}
+   詳細資料: {1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnVJSharpNamespace">
+        <source>When using the '--{0}:{1}' argument, only one namespace mapping is supported. Use '--{2}:*,&lt;string&gt;' to set the namespace.</source>
+        <target state="translated">使用 '--{0}:{1}' 引數時，只支援一個命名空間對應。使用 '--{2}:*,&lt;string&gt;' 來設定命名空間。</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

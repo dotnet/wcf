@@ -1,0 +1,764 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="it" original="../Strings.resx">
+    <body>
+      <trans-unit id="AmbiguousToolUseage">
+        <source>The intended output for the tool could not be inferred from the inputs and the options.</source>
+        <target state="translated">Non è stato possibile derivare l'output designato dagli input e dalle opzioni.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CopyrightForCmdLine">
+        <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
+        <target state="translated">Copyright (c) Microsoft Corporation. Tutti i diritti sono riservati.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAmbiguityInAssemblyNames">
+        <source>Could not load assembly '{0}'. 2  reference assemblies ('{1}' and '{2}') were found that match the string '{0}'. This is usually caused by an insufficient type reference in a config file. Resolve this issue by passing only the reference assembly needed or by adding more information like a version number or a public key to the reference.</source>
+        <target state="translated">Non è stato possibile caricare l'assembly '{0}'. Sono stati trovati 2 assembly di riferimento ('{1}' e '{2}') corrispondenti alla stringa '{0}'. Questo problema è in genere causato da un riferimento al tipo insufficiente in un file di configurazione. Risolvere il problema passando solo l'assembly di riferimento necessario o aggiungendo ulteriori informazioni come un numero di versione o una chiave pubblica al riferimento.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAmbiguousOptionModeConflict">
+        <source>The --{0} option conflicts with other options. Review your use of the tool.</source>
+        <target state="translated">L'opzione --{0} è in conflitto con altre opzioni. Rivedere l'utilizzo dello strumento.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAssemblyLoadFailed">
+        <source>Cannot load file {0} as an Assembly. Check the FusionLogs for more Information.</source>
+        <target state="translated">Non è possibile caricare il file {0} come assembly. Per altre informazioni, vedere FusionLogs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotCreateDirectory">
+        <source>Cannot create directory: {0}</source>
+        <target state="translated">Non è possibile creare la directory: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotCreateFile">
+        <source>Cannot create output file: {0}</source>
+        <target state="translated">Non è possibile creare il file di output: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotDeleteExistingConfig">
+        <source>There is an existing config file that cannot be overwritten. Either fix the problem or provide a different config file name using the --{0} option.</source>
+        <target state="translated">È presente un file di configurazione esistente che non può essere sovrascritto. Risolvere il problema o specificare un nome di file di configurazione diverso utilizzando l'opzione --{0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotDisambiguateSpecifiedTypes">
+        <source>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</source>
+        <target state="translated">Nel set di assembly di riferimento esistono più tipi con lo stesso nome. Usare nomi completi di assembly per evitare ambiguità tra i tipi '{1}' e '{2}' di --{0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotLoadSpecifiedType">
+        <source>No type could be loaded for the value {1} passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</source>
+        <target state="translated">Non è stato possibile caricare alcun tipo per il valore {1} passato all'opzione --{0}. Assicurarsi che l'assembly a cui appartiene questo tipo sia specificato tramite l'opzione --{2}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotSpecifyMultipleMappingsForNamespace">
+        <source>Invalid value passed to the --{0} option. Target namespace '{1}' cannot be mapped to multiple CLR namespaces '{2}' and '{3}'</source>
+        <target state="translated">Il valore passato all'opzione --{0} non è valido. Non è possibile eseguire il mapping dello spazio dei nomi di destinazione '{1}' a più spazi dei nomi CLR '{2}' e '{3}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotWriteFile">
+        <source>Cannot write to output file</source>
+        <target state="translated">Non è possibile scrivere nel file di output</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrConflictingInputs">
+        <source>The '{0}' input argument conflicts with '{1}' because they imply different modes of tool operation</source>
+        <target state="translated">L'argomento di input '{0}' è in conflitto con '{1}' perché implicano modalità diverse di funzionamento dello strumento</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the --{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">Non è stato possibile creare un provider di codice per il valore '{0}' passato all'argomento --{1}. Verificare che il provider di codice sia installato e configurato correttamente.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotCreateInstance">
+        <source>Could not create instance of the type '{0}' passed to the --{1} argument.</source>
+        <target state="translated">Non è stato possibile creare un'istanza del tipo '{0}' passato all'argomento --{1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotLoadReferenceAssemblyAt">
+        <source>Cannot load reference assembly '{0}'</source>
+        <target state="translated">Non è possibile caricare l'assembly di riferimento '{0}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAt">
+        <source>Cannot load any types in assembly '{0}'.</source>
+        <target state="translated">Non è possibile caricare tipi nell'assembly '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryContainsInvalidCharacters">
+        <source>Invalid value '{1}' passed to the --{0} option. The {2} character is not permitted in a path</source>
+        <target state="translated">Il valore '{1}' passato all'opzione --{0} non è valido. Il carattere {2} non è consentito in un percorso</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryInsteadOfFile">
+        <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths</source>
+        <target state="translated">Il percorso di input '{0}' sembra essere una directory. Gli input devono essere URL o percorsi di file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryNotFound">
+        <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
+        <target state="translated">Non è stato possibile trovare la directory '{0}'. Verificare che la directory esista e che siano disponibili le autorizzazioni necessarie per leggerla.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryPointsToAFile">
+        <source>Invalid value '{1}' passed to the --{0} option. '{1}' is a path to a file.</source>
+        <target state="translated">Il valore '{1}' passato all'opzione --{0} non è valido. '{1}' è il percorso di un file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDuplicateReferenceValues">
+        <source>The assembly {1} was loaded twice through the --{0} option. You may reference each assembly only once.</source>
+        <target state="translated">L'assembly {1} è stato caricato due volte tramite l'opzione --{0}. È possibile fare riferimento a ciascun assembly solo una volta.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDuplicateValuePassedToTypeArg">
+        <source>The value {1} was passed to the --{0} option multiple times. Each type may be specified only once.</source>
+        <target state="translated">Il valore {1} è stato passato più volte all'opzione --{0}. È possibile specificare ogni tipo solo una volta.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrExclusiveOptionsSpecified">
+        <source>The --{0} option cannot be used when the --{1} option has been specified.</source>
+        <target state="translated">Non è possibile usare l'opzione --{0} quando è stata specificata l'opzione --{1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrExpectedValue">
+        <source>The {0} option requires that a value be specified.</source>
+        <target state="translated">Con l'opzione {0} è necessario specificare un valore.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithMode">
+        <source>The input read from '{0}' is inconsistent with other options.</source>
+        <target state="translated">L'input letto da '{0}' non è coerente con altre opzioni.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithOption">
+        <source>The input read from '{1}' cannot be used with the --{0} option because they imply different modes of tool operation.</source>
+        <target state="translated">Non è possibile usare l'input letto da '{1}' con l'opzione --{0}, perché implicano modalità diverse di funzionamento dello strumento.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithTarget">
+        <source>The type of input read from '{2}' is not supported with the --{0} option set to '{1}'.</source>
+        <target state="translated">Il tipo di input letto da '{2}' non è supportato con l'opzione --{0} impostata su '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputFileNotAssemblyOrMetadata">
+        <source>The file at: '{0}' read via input argument'{1}' does not appear to be an XML metadata file or a valid assembly.</source>
+        <target state="translated">Il file in: '{0}' letto tramite l'argomento di input '{1}' non sembra essere un file di metadati XML o un assembly valido.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidInputPath">
+        <source>The input path '{0}' doesn't appear to refer to any existing files and does not appear to be a valid URI.</source>
+        <target state="translated">Il percorso di input '{0}' non sembra fare riferimento ad alcun file esistente e non sembra essere un URI valido.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidNamespaceArgument">
+        <source> Invalid value {1} passed to the --{0} option. Specify a comma-separated target namespace and CLR namespace pair.</source>
+        <target state="translated"> Il valore {1} passato all'opzione --{0}non è valido. Specificare una coppia di spazio dei nomi di destinazione e spazio dei nomi CLR delimitata da virgole.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidPath">
+        <source>Invalid path {0}. Check the --{1} argument</source>
+        <target state="translated">Il percorso {0} non è valido. Controllare l'argomento --{1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidSerializer">
+        <source>Invalid serializer value passed to the --{0} option. The supported serializers are: {2}</source>
+        <target state="translated">Il valore del serializzatore passato all'opzione --{0} non è valido. I serializzatori supportati sono: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidTarget">
+        <source>Invalid target '{1}' specified via the --{0} option. The supported Targets are: {2}</source>
+        <target state="translated">La destinazione '{1}' specificata tramite l'opzione --{0} non è valida. Le destinazioni supportate sono: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidTargetClientVersion">
+        <source>Invalid targetClientVersion value passed to the --{0} option. The supported targetClientVersions are: {2}</source>
+        <target state="translated">Il valore targetClientVersion passato all'opzione --{0} non è valido. I valori targetClientVersions supportati sono: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrIsNotAnAssembly">
+        <source>Could not load '{0}' as an assembly verify that this file is a .NET Assembly.</source>
+        <target state="translated">Non è stato possibile caricare '{0}' come assembly. Verificare che il file sia un assembly .NET.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrMergeConfigUsedWhenConfigDoesNotExist">
+        <source>Cannot merge config file. The file '{1}' does not exist.</source>
+        <target state="translated">Non è possibile unire il file di configurazione. Il file '{1}' non esiste.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrMergeConfigUsedWithoutConfig">
+        <source>Cannot use the --{0} option without specifying the --{1} option.</source>
+        <target state="translated">Non è possibile usare l'opzione --{0} senza specificare l'opzione --{1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNoFilesFound">
+        <source>The input path '{0}' doesn't appear to refer to any existing files</source>
+        <target state="translated">Il percorso di input '{0}' non sembra fare riferimento ad alcun file esistente</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNoValidInputFilesSpecified">
+        <source>No valid input files specified. Specify either metadata documents or assembly files</source>
+        <target state="translated">Nessun file di input valido specificato. Specificare i documenti di metadati o i file di assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNotCodeDomType">
+        <source>The type '{0}' passed to the --{1} argument is not a subclass of {2}.</source>
+        <target state="translated">Il tipo '{0}' passato all'argomento --{1} non è una sottoclasse di {2}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNotLanguageOrCodeDomType">
+        <source>The value '{0}' passed to the --{1} argument does not represent a defined language and it could not be loaded as a fully qualified CLR type.</source>
+        <target state="translated">Il valore '{0}' passato all'argomento --{1} non rappresenta un linguaggio definito e non può essere caricato come tipo CLR completo.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrOptionConflictsWithTarget">
+        <source> The use of the --{2} option is not supported with the --{0} option set to '{1}'.</source>
+        <target state="translated"> L'utilizzo dell'opzione --{2} non è supportato con l'opzione --{0} impostata su '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrOptionModeConflict">
+        <source>The --{1} option cannot be used with the --{0} option because they imply different output types.</source>
+        <target state="translated">Non è possibile usare l'opzione --{1} con l'opzione --{0}, perché implicano tipi di output diversi.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrPathTooLong">
+        <source>The resultant path '{0}' is too long. Review the --{1} and --{2} arguments</source>
+        <target state="translated">Il percorso risultante '{0}' è troppo lungo. Controllare gli argomenti --{1} e --{2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrPathTooLongDirOnly">
+        <source>The resultant path '{0}' is too long. Review the --{1} argument</source>
+        <target state="translated">Il percorso risultante '{0}' è troppo lungo. Controllare l'argomento --{1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSchemaValidationForExport">
+        <source>There was a validation error on a schema generated during export:
+    Source: {0}
+    Line: {1} Column: {2}
+   Validation Error: {3}</source>
+        <target state="translated">Errore di convalida in uno schema generato durante l'esportazione:
+    Origine: {0}
+    Riga: {1} Colonna: {2}
+   Errore di convalida: {3}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSingleUseSwitch">
+        <source>The {0} option cannot be specified multiple times.</source>
+        <target state="translated">Non è possibile specificare più volte l'opzione {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSwitchMissing">
+        <source>Invalid argument: '{0}'.</source>
+        <target state="translated">Argomento non valido: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrToolConfigDoesNotExist">
+        <source>The config File {0} specified for the --{1} option does not exist.</source>
+        <target state="translated">Il file di configurazione {0} specificato per l'opzione --{1} non esiste.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadExtensions">
+        <source>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</source>
+        <target state="translated">Si è verificato un errore durante il caricamento delle estensioni di importazione. Assicurarsi di specificare gli assembly contenenti queste estensioni come assembly di riferimento usando l'opzione --{0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadFile">
+        <source>Cannot read {0}.</source>
+        <target state="translated">Non è possibile leggere {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadInputConfig">
+        <source>Cannot load the config file {0}</source>
+        <target state="translated">Non è possibile caricare il file di configurazione {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadReferenceType">
+        <source>There was an error loading a referenced contract type. This type will be ignored.
+    Type: {0}</source>
+        <target state="translated">Si è verificato un errore durante il caricamento di un tipo di contratto di riferimento. Questo tipo verrà ignorato.
+    Tipo: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToUniquifyFilename">
+        <source>Cannot create output filename. Too many files are being created with the prefix '{0}'.</source>
+        <target state="translated">Non è possibile creare il nome file di output. Ci sono troppi file creati con il prefisso '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedDelimiter">
+        <source>Invalid argument: delimiter (':' or '=') cannot start option.</source>
+        <target state="translated">Argomento non valido: il delimitatore (':' o '=') non può avviare l'opzione.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedError">
+        <source>An error occurred in the tool.</source>
+        <target state="translated">Si è verificato un errore nello strumento.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedValue">
+        <source>The {0} option does not support any values</source>
+        <target state="translated">L'opzione {0} non supporta alcun valore</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnknownSwitch">
+        <source>Unrecognized option '{0}' specified.</source>
+        <target state="translated">L'opzione specificata '{0}' non è riconosciuta.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrValidateInvalidUse">
+        <source>The {0} option cannot be used with the {1} option.</source>
+        <target state="translated">Non è possibile usare l'opzione {0} con l'opzione {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrValidateRequiresServiceName">
+        <source>To validate a service, the --{0} option must be used to specify the service to validate.</source>
+        <target state="translated">Per convalidare un servizio, è necessario usare l'opzione --{0} per specificare il servizio da convalidare.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Error">
+        <source>Error: </source>
+        <target state="translated">Errore: </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateSerializerNotFound">
+        <source>Svcutil does not work with the framework of the version being used. 'System.Xml.Serialization.XmlSerializer' does not have a method named 'GenerateSerializer'.</source>
+        <target state="translated">Svcutil non funziona con il framework della versione in uso. 'System.Xml.Serialization.XmlSerializer' non dispone di un metodo denominato 'GenerateSerializer'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GeneratingFiles">
+        <source>Generating files...</source>
+        <target state="translated">Generazione dei file...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GeneratingSerializer">
+        <source>Generating XML serializers...</source>
+        <target state="translated">Generazione serializzatori XML...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationAbbreviationSyntax">
+        <source>Syntax: {0} [-{1}:{2}]  {3}* | {4}* | {5}</source>
+        <target state="translated">Sintassi: {0} [-{1}:{2}]  {3}* | {4}* | {5}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationCategory">
+        <source>-= CODE GENERATION =-</source>
+        <target state="translated">-= GENERAZIONE DEL CODICE =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationDescription">
+        <source>Description: {0} can generate code for service contracts, clients and data types from metadata documents. These metadata documents can be on disk or retrieved online. Online retrieval follows either the WS-Metadata Exchange protocol or the DISCO protocol.</source>
+        <target state="translated">Descrizione: {0} può generare codice per contratti di servizio, client e tipi di dati da documenti di metadati. Questi documenti di metadati possono risiedere su disco o essere recuperati online. Il recupero online segue il protocollo WS-Metadata Exchange o il protocollo DISCO.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationServiceContract">
+        <source>Generate code for Service Contracts. Client class and configuration will not be generated. (Short Form: -{0})</source>
+        <target state="translated">Generare il codice per i contratti di servizio. La classe e la configurazione del client non verranno generate. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput1">
+        <source>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</source>
+        <target state="translated">Percorso di un documento dei metadati (wsdl o xsd). Nel percorso del file è possibile usare caratteri jolly della riga di comando standard.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput2">
+        <source>The URL to a service endpoint that provides metadata or to a metadata document hosted online. For more information on how these documents are retrieved see the Metadata Download section.</source>
+        <target state="translated">URL di un endpoint servizio che fornisce metadati o di un documento di metadati ospitato online. Per altre informazioni su come recuperare questi documenti, vedere la sezione Download metadati.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput3">
+        <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange. For more information see the Metadata Download section.</source>
+        <target state="translated">Percorso di un file XML contenente un elemento WS-Addressing EndpointReference per un endpoint servizio che supporta WS-Metadata Exchange. Per altre informazioni, vedere la sezione Download metadati.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCollectionType">
+        <source>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</source>
+        <target state="translated">Nome completo o nome qualificato dall'assembly del tipo da usare come tipo di dati delle raccolte quando il codice viene generato da schemi. Forma breve: -{0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCommonOptionsCategory">
+        <source>-= COMMON OPTIONS =-</source>
+        <target state="translated">-= OPZIONI COMUNI =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpDirectory">
+        <source>Directory to create files in (default: current directory) (Short Form: -{0})</source>
+        <target state="translated">Directory per la creazione dei file (impostazione predefinita: directory corrente). Forma breve: -{0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples">
+        <source>-= EXAMPLES =-</source>
+        <target state="translated">-= ESEMPI =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples1">
+        <source>svcutil myContractLibrary.exe</source>
+        <target state="translated">svcutil myContractLibrary.exe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples2">
+        <source>- Generate serialization types for XmlSerializer types used by any Service Contracts in the assembly</source>
+        <target state="translated">- Genera i tipi di serializzazione per i tipi XmlSerializer usati da qualsiasi contratto di servizio nell'assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExcludeTypeCodeGeneration">
+        <source>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</source>
+        <target state="translated">Nome di tipo completo o qualificato dall'assembly da escludere dai tipi di contratto di riferimento. Forma breve: -{0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExcludeTypeExport">
+        <source>The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the --{1} option. (Short Form: -{0})</source>
+        <target state="translated">Nome completo o qualificato dall'assembly di un tipo da escludere dall'esportazione. Questa opzione può essere usata quando si esportano i metadati di un servizio o di un set di contratti di servizio per escludere i tipi dall'esportazione. Non è possibile usare questa opzione con l'opzione --{1}. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpHelp">
+        <source>Display command syntax and options for the tool. (Short Form: -{0})</source>
+        <target state="translated">Visualizza la sintassi e le opzioni del comando per lo strumento. Forma breve: -{0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputAssemblyPath">
+        <source>&lt;assemblyPath&gt;</source>
+        <target state="translated">&lt;assemblyPath&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputEpr">
+        <source>&lt;epr&gt;</source>
+        <target state="translated">&lt;epr&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputMetadataDocumentPath">
+        <source>&lt;metadataDocumentPath&gt;</source>
+        <target state="translated">&lt;metadataDocumentPath&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputUrl">
+        <source>&lt;url&gt;</source>
+        <target state="translated">&lt;url&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadCategory">
+        <source>-= METADATA DOWNLOAD =-</source>
+        <target state="translated">-= DOWNLOAD METADATI =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadDescription">
+        <source>Description: {0} can be used to download metadata from running services and save the metadata to local files. To download metadata, you must explicitly specify the --{1}:{2} option. Otherwise, client code will be generated. For http and https URL schemes svcutil.exe will try to retrieve metadata using WS-Metadata Exchange and DISCO. For all other URL schemes {0} will only try WS-Metadata Exchange. By default, {0} uses the bindings defined in the System.ServiceModel.Description.MetadataExchangeBindings class. To configure the binding used for WS-Metadata Exchange you must define a client endpoint in config that uses the IMetadataExchange contract. This can be defined either in {0}'s config file or in another config file specified using the --{3} option.</source>
+        <target state="translated">Descrizione: {0} può essere usato per scaricare i metadati dai servizi in esecuzione e salvare i metadati nei file locali. Per scaricare i metadati, è necessario specificare in modo esplicito l'opzione --{1}:{2}. In caso contrario, verrà generato il codice client. Per gli schemi URL HTTP e HTTPS svcutil.exe proverà a recuperare i metadati tramite WS-Metadata Exchange e DISCO. Per tutti gli altri schemi URL {0} proverà solo WS-Metadata Exchange. Per impostazione predefinita, {0} usa le associazioni definite nella classe System.ServiceModel.Description.MetadataExchangeBindings. Per configurare l'associazione usata per WS-Metadata Exchange, è necessario definire un endpoint client nella configurazione che usa il contratto IMetadataExchange. Può essere definito nel file di configurazione di {0} o in un altro file di configurazione specificato tramite l'opzione --{3}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntax">
+        <source>Syntax: {0} --{1}:{2}  {3}* | {4}</source>
+        <target state="translated">Sintassi: {0} --{1}:{2}  {3}* | {4}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntaxInput1">
+        <source>The URL to a service endpoint that provides metadata or an URL that points to a metadata document hosted online. </source>
+        <target state="translated">URL di un endpoint servizio che fornisce metadati o URL che punta a un documento di metadati ospitato online. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntaxInput2">
+        <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</source>
+        <target state="translated">Percorso di un file XML contenente un elemento WS-Addressing EndpointReference per un endpoint servizio che supporta WS-Metadata Exchange.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportCategory">
+        <source>-= METADATA EXPORT =-</source>
+        <target state="translated">-= ESPORTAZIONE METADATI =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportDescription">
+        <source>Description: {0} can export metadata for services, contracts and data types in compiled assemblies. To export metadata for a service, you must use the --{1} option to indicate the service you would like to export. To export all Data Contract types within an assembly use the --{2} option. By default metadata is exported for all Service Contracts in the input assemblies.</source>
+        <target state="translated">Descrizione: {0} può esportare metadati per servizi, contratti e tipi di dati negli assembly compilati. Per esportare i metadati per un servizio, è necessario usare l'opzione --{1} per indicare il servizio da esportare. Per esportare tutti i tipi di contratti di dati all'interno di un assembly, usare l'opzione --{2}. Per impostazione predefinita, i metadati vengono esportati per tutti i contratti di servizio negli assembly di input.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportSyntax">
+        <source>Syntax: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</source>
+        <target state="translated">Sintassi: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportSyntaxInput1">
+        <source>The path to an assembly that contains services, contracts or Data Contract types to be exported. Standard command-line wildcards can be used to provide multiple files as input.</source>
+        <target state="translated">Percorso di un assembly che contiene servizi, contratti o tipi di contratti di dati da esportare. I caratteri jolly standard della riga di comando possono essere usati per fornire più file come input.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNamespace">
+        <source>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</source>
+        <target state="translated">Mapping da un elemento targetNamespace di WSDL o XML Schema a uno spazio dei nomi CLR. Se si usa l'asterisco '*' per targetNamespace, verrà eseguito il mapping di tutti gli elementi targetNamespace senza mapping esplicito allo spazio dei nomi CLR. Impostazione predefinita: derivato dallo spazio dei nomi del documento di schema per i contratti di dati. Per tutti gli altri tipi generati viene usato lo spazio dei nomi predefinito. Forma breve: -{0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNologo">
+        <source>Suppress the copyright and banner message.</source>
+        <target state="translated">Non visualizza le informazioni di copyright e il banner.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNostdlib">
+        <source>Do not reference standard libraries. By default mscorlib.dll and system.servicemodel.dll are referenced.</source>
+        <target state="translated">Non fa riferimento alle librerie standard. Per impostazione predefinita, viene fatto riferimento a mscorlib.dll e system.servicemodel.dll.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpOptions">
+        <source>Options:</source>
+        <target state="translated">Opzioni:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpOut">
+        <source> The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</source>
+        <target state="translated"> Il nome del file per il codice generato. Impostazione predefinita: derivata dal nome della definizione WSDL, dal nome del servizio WSDL o dall'elemento targetNamespace di uno degli schemi. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpReferenceCodeGeneration">
+        <source>Reference types in the specified assembly. When generating clients, use this option to specify assemblies that might contain types representing the metadata being imported.  (Short Form: -{0})</source>
+        <target state="translated">Tipi di riferimento nell'assembly specificato. Quando si generano i client, usare questa opzione per specificare gli assembly che potrebbero contenere tipi che rappresentano i metadati da importare.  (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpReferenceOther">
+        <source>Add the specified assembly to the set of assemblies used for resolving type references. If you are exporting or validating a service that uses 3rd-party extensions (Behaviors, Bindings and BindingElements) registered in config use this option to locate extension assemblies that are not in the GAC.  (Short Form: -{0})</source>
+        <target state="translated">Aggiunge l'assembly specificato al set di assembly usato per risolvere i riferimenti di tipo. Se si esporta o si convalida un servizio che usa estensioni di terze parti (Behaviors, Bindings e BindingElements) registrate nella configurazione, usare questa opzione per individuare gli assembly delle estensioni che non sono incluse nel GAC.  (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpTargetOutputType">
+        <source>The target output for the tool: {0}, {1} or {2}.</source>
+        <target state="translated">Output di destinazione per lo strumento: {0}, {1} o {2}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage1">
+        <source>USES:</source>
+        <target state="translated">UTILIZZI:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage2">
+        <source>  - Generate code from running services or static metadata documents. </source>
+        <target state="translated">  - Genera il codice da servizi in esecuzione o documenti dei metadati statici. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage3">
+        <source>  - Export metadata documents from compiled code.</source>
+        <target state="translated">  - Esporta documenti dei metadati da codice compilato.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage4">
+        <source>  - Validate compiled service code.</source>
+        <target state="translated">  - Convalida il codice del servizio compilato.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage5">
+        <source>  - Download metadata documents from running services.</source>
+        <target state="translated">  - Scarica i documenti dei metadati dai servizi in esecuzione.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage6">
+        <source>  - Pre-generate serialization code.</source>
+        <target state="translated">  - Pregenera il codice di serializzazione.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationCategory">
+        <source>-= SERVICE VALIDATION =-</source>
+        <target state="translated">-= CONVALIDA DEL SERVIZIO =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationDescription">
+        <source>Description: Validation is useful to detect errors in service implementations without hosting the service. You must use the --{0} option to indicate the service you would like to validate.</source>
+        <target state="translated">Descrizione: la convalida è utile per rilevare gli errori nelle implementazioni dei servizi senza ospitare il servizio. È necessario usare l'opzione --{0} per indicare il servizio da convalidare.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationExcludeTypeExport">
+        <source>The fully-qualified or assembly-qualified name of a service type to exclude from validation. (Short Form: -{0})</source>
+        <target state="translated">Nome di tipo completamente qualificato o qualificato dall'assembly di un tipo di servizio da escludere dalla convalida. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationSyntax">
+        <source>Syntax: {0} --{1} --{2}:{3}  {4}*</source>
+        <target state="translated">Sintassi: {0} --{1} --{2}:{3} {4}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationSyntaxInput1">
+        <source>The path to an assembly containing service types to be validated. The assembly must have an associated config file to provide service configuration. Standard command-line wildcards can be used to provide multiple assemblies.</source>
+        <target state="translated">Il percorso di un assembly contenente i tipi di servizio da convalidare. L'assembly deve avere un file di configurazione associato per fornire la configurazione del servizio. I caratteri jolly standard della riga di comando possono essere usati per fornire più assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpVersion30TargetClientVersion">
+        <source>Generate code that references functionality in .NET Framework assemblies 3.0 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.0.(Short Form: -{0})</source>
+        <target state="translated">Genera codice che fa riferimento a funzionalità presenti negli assembly di .NET Framework 3.0 e precedenti. Usare questa opzione se si genera codice per i client che usano .NET Framework versione 3.0. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpVersion35TargetClientVersion">
+        <source>Generate code that references functionality in .NET Framework assemblies 3.5 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.5.(Short Form: -{0})</source>
+        <target state="translated">Genera codice che fa riferimento a funzionalità presenti negli assembly di .NET Framework 3.5 e precedenti. Usare questa opzione se si genera codice per i client che usano .NET Framework versione 3.5. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpWrapped">
+        <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</source>
+        <target state="translated">Il codice generato non annullerà il wrapping del membro "parameters" dei messaggi document-wrapped-literal.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationCategory">
+        <source>-= XMLSERIALIZER TYPE GENERATION =-</source>
+        <target state="translated">-= GENERAZIONE TIPO XMLSERIALIZER =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationDescription">
+        <source>Description: {0} can pre-generate C# serialization code that is required for types that can be serialized using the XmlSerializer. {0} will only generate code for types used by Service Contracts found in the input assemblies.</source>
+        <target state="translated">Descrizione: {0} può pregenerare il codice di serializzazione C# necessario per i tipi che possono essere serializzati tramite XmlSerializer. {0} genera solo il codice per i tipi usati dai contratti di servizio trovati negli assembly di input.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntax">
+        <source>Syntax: {0} {1}*</source>
+        <target state="translated">Sintassi: {0} {1}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput1">
+        <source>The path to an assembly containing Service Contract types. Serialization types will be generated for all Xml Serializable types in each contract</source>
+        <target state="translated">Percorso di un assembly contenente i tipi di contratto di servizio. I tipi di serializzazione verranno generati per tutti i tipi xml serializzabili in ogni contratto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput2">
+        <source>Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: -{0})</source>
+        <target state="translated">Aggiunge l'assembly specificato al set di assembly usato per risolvere i riferimenti di tipo. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput3">
+        <source>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: -{0})</source>
+        <target state="translated">Nome di tipo completamente qualificato o qualificato dall'assembly da escludere dall'esportazione o dalla convalida. Questa opzione può essere usata quando si esportano i metadati di un servizio o di un set di contratti di servizio per escludere i tipi dall'esportazione. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput4">
+        <source>Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: -{0})</source>
+        <target state="translated">Nome del file per il codice generato. Questa opzione viene ignorata quando più assembly vengono passati come input allo strumento. Impostazione predefinita: derivata dal nome dell'assembly. (Forma breve: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HintConsiderUseXmlSerializer">
+        <source>If you are using the --{0} option to import data contract types and are getting this error message, consider using xsd.exe instead. Types generated by xsd.exe may be used in the Windows Communication Foundation after applying the XmlSerializerFormatAttribute attribute on your service contract. Alternatively, consider using the --{1} option to import these types as XML types to use with DataContractFormatAttribute attribute on your service contract.</source>
+        <target state="translated">Se si usa l'opzione --{0} per importare i tipi di contratto di dati e si riceve questo messaggio di errore, provare a usare xsd.exe. I tipi generati da xsd.exe possono essere usati in Windows Communication Foundation dopo l’applicazione dell'attributo XmlSerializerFormatAttribute nel contratto di servizio. In alternativa, provare a usare l'opzione --{1} per importare questi tipi come tipi XML da usare con l'attributo DataContractFormatAttribute nel contratto di servizio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Logo">
+        <source>Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.
+[{1}]
+{2}
+</source>
+        <target state="translated">Strumento Microsoft (R) dotnet-svcutil.xmlserializer, versione {0}.
+[{1}]
+{2}
+</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MoreHelp">
+        <source>If you would like more help, type "svcutil -{0}"</source>
+        <target state="translated">Per altre informazioni, digitare "svcutil -{0}"</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoCodeWasGenerated">
+        <source>No code was generated.
+If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
+or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
+        <target state="translated">Nessun codice generato.
+Se si sta tentando di creare un client, ciò può essere dovuto al fatto che i documenti dei metadati non contengono contratti o servizi validi
+oppure tutti i contratti/servizi sono presenti negli assembly /reference. Verificare di aver passato tutti i documenti dei metadati allo strumento.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersCollectionType">
+        <source>&lt;type&gt;</source>
+        <target state="translated">&lt;type&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersDirectory">
+        <source>&lt;directory&gt;</source>
+        <target state="translated">&lt;directory&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersExcludeType">
+        <source>&lt;type&gt;</source>
+        <target state="translated">&lt;type&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersLanguage">
+        <source>&lt;language&gt;</source>
+        <target state="translated">&lt;language&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersNamespace">
+        <source>&lt;string,string&gt;</source>
+        <target state="translated">&lt;string,string&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersOut">
+        <source>&lt;file&gt;</source>
+        <target state="translated">&lt;file&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersOutputType">
+        <source>&lt;output type&gt;</source>
+        <target state="translated">&lt;output type&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersReference">
+        <source>&lt;file path&gt;</source>
+        <target state="translated">&lt;file path&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersTarget">
+        <source>&lt;enum&gt;</source>
+        <target state="translated">&lt;enum&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValidationError">
+        <source>Validation Error:</source>
+        <target state="translated">Errore di convalida:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValidationWasSuccessful">
+        <source>The Service '{0}' was validated with no errors</source>
+        <target state="translated">Il servizio '{0}' è stato convalidato senza errori</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Warning">
+        <source>Warning: </source>
+        <target state="translated">Avviso: </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WcfTrademarkForCmdLine">
+        <source>Microsoft (R) Windows (R) Communication Foundation</source>
+        <target state="translated">Microsoft (R) Windows (R) Communication Foundation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnCouldNotLoadTypesFromReferenceAssemblyAt">
+        <source>There were errors loading types in an assembly loaded from '{0}' some types in the assembly could not be loaded and will not be available to the tool.</source>
+        <target state="translated">Si sono verificati errori durante il caricamento dei tipi in un assembly caricato da '{0}'. Non è stato possibile caricare nell'assembly alcuni tipi che non saranno disponibili per lo strumento.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnNoServiceContractTypes">
+        <source>Cannot generate XmlSerializer types for assembly: {0}. No service contract types were found.</source>
+        <target state="translated">Non è possibile generare tipi XmlSerializer per l'assembly: {0}. Non sono stati trovati tipi di contratto di servizio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnNoXmlSerializerOperationBehavior">
+        <source>Cannot generate XmlSerializer for assembly: {0}. No service contract in the assembly has an operation with XmlSerializerOperationBehavior.</source>
+        <target state="translated">Non è possibile generare XmlSerializer per l'assembly {0}. Nessun contratto di servizio nell'assembly ha un'operazione con XmlSerializerOperationBehavior.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnOptionConflictsWithInput">
+        <source>Option --{0} cannot be used with multiple input assemblies. Ignoring {0} option. </source>
+        <target state="translated">Opzione --{0} non può essere usato con più assembly di input. L'opzione{0} verrà ignorata. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnToolIsUsedDirectly">
+        <source>This tool is not intended to be used directly. </source>
+        <target state="translated">Questo strumento non è destinato a essere usato direttamente. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnUnableToLoadContractForSGen">
+        <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
+    Type: {0}
+    Details:{1}</source>
+        <target state="translated">Si è verificato un errore durante il caricamento di un tipo di contratto. Non è possibile generare tipi XmlSerializer per questo contratto.
+    Tipo: {0}
+    Dettagli:{1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnVJSharpNamespace">
+        <source>When using the '--{0}:{1}' argument, only one namespace mapping is supported. Use '--{2}:*,&lt;string&gt;' to set the namespace.</source>
+        <target state="translated">Quando si usa l'argomento '--{0}:{1}', è supportato un solo mapping dello spazio dei nomi. Usare '--{2}:*,&lt;string&gt;' per impostare lo spazio dei nomi.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

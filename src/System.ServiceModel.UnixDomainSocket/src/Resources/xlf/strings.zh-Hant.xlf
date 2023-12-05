@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../strings.resx">
+    <body>
+      <trans-unit id="ActivityProcessAction">
+        <source>Process action '{0}'.</source>
+        <target state="translated">處理動作 '{0}'。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelTypeNotSupported">
+        <source>The specified channel type {0} is not supported by this channel manager.</source>
+        <target state="translated">此通道管理員不支援指定的通道類型 {0}。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
+        <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
+        <target state="translated">ClientCredentialType.None 對於 TransportWithMessageCredential 安全性模式無效。請指定訊息認證類型，或使用不同的安全性模式。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DnsResolveFailed">
+        <source>No DNS entries exist for host {0}.</source>
+        <target state="translated">沒有主機 {0} 的 DNS 項目。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExtendedProtectionNotSupported">
+        <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
+        <target state="translated">此平台上不支援延伸的保護。請安裝適當的修補程式，或者將 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 變更為 PolicyEnforcement 值為 "Never" 或 "WhenSupported" 的值。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InsufficentMemory">
+        <source>Insufficient memory avaliable to complete the operation.</source>
+        <target state="translated">記憶體不足，無法完成作業。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoIPEndpointsFoundForHost">
+        <source>No IPEndpoints were found for host {0}.</source>
+        <target state="translated">找不到主機 {0} 的 IPEndpoints。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRange0">
+        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Timeout 必須大於或等於 TimeSpan.Zero。若要停用逾時，請指定 TimeSpan.MaxValue。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRangeTooBig">
+        <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">無法遵循大於 Int32.MaxValue TotalMilliseconds (大約等於 24 天) 的逾時。若要停用逾時，請指定 TimeSpan.MaxValue。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityEndpointNotFound">
+        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
+        <target state="translated">伺服器 '{0}' 傳回錯誤，指出正在進行關機。如需錯誤詳細資訊，請參閱內部例外狀況。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityServerTooBusy">
+        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
+        <target state="translated">伺服器 '{0}' 傳回錯誤，指出因過於忙碌，無法處理要求。請稍後重試。請參考內部例外狀況，以取得錯誤詳細資料。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedReceiveTimedOut">
+        <source>The socket was aborted because an asynchronous receive from the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">通訊端中止，因為來自通訊端的非同步接收未在分配的逾時 {0} 內完成。分配給此作業的時間可能是較長逾時的一部分。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedSendTimedOut">
+        <source>The socket connection was aborted because an asynchronous send to the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">通訊端連線中止，因為目標為通訊端的非同步傳送未在分配的逾時 {0} 內完成。分配給此作業的時間可能是較長逾時的一部分。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadReceivedData">
+        <source>A graceful close was attempted on the socket, but the other side ({0}) is still sending data.</source>
+        <target state="translated">嘗試在通訊端上正常關閉，但另一端 ({0}) 仍在傳送資料。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadTimeout">
+        <source>The remote endpoint of the socket ({0}) did not respond to a close request within the allotted timeout ({1}). It is likely that the remote endpoint is not calling Close after receiving the EOF signal (null) from Receive. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">通訊端的遠端端點 ({0}) 未在分配的逾時 ({1}) 內回應關閉要求。這有可能是因為遠端端點從 Receive 接收 EOF 信號 (Null) 之後未呼叫 Close。分配給此作業的時間可能是較長逾時的一部分。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketConnectionDisposed">
+        <source>The socket connection has been disposed.</source>
+        <target state="translated">已處置通訊端連線。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransferModeNotSupported">
+        <source>Transfer mode {0} is not supported by {1}.</source>
+        <target state="translated">{1} 不支援傳輸模式 {0}。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectError">
+        <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
+        <target state="translated">無法連線到 {0}。UDS 錯誤碼 {1}：{2}。 </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectErrorWithTimeSpan">
+        <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
+        <target state="translated">無法連線到 {0}。連線嘗試持續了 {3} 時間範圍。UDS 錯誤碼 {1}：{2}。 </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectNoBufs">
+        <source>Insufficient winsock resources available to complete socket connection initiation.</source>
+        <target state="translated">用以完成通訊端連線初始化的 Winsock 資源不足。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectingToViaTimedOut">
+        <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">透過 {0} 進行連線已在 {1} 之後逾時。嘗試連線到 {3} 個可用位址的其中 {2} 個 ({4})。請檢查通道的 RemoteAddress，並確定此端點的 DNS 對應到正確的 IP 位址。分配給此作業的時間可能是較長逾時的一部分。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionResetError">
+        <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
+        <target state="translated">通訊端連線已中止。這可能是因為處理訊息時發生錯誤、或是遠端主機超過接收逾時，或是基礎網路資源問題所導致。本機通訊端逾時是 '{0}'。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionTimedOut">
+        <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">通訊端傳輸在 {0} 之後逾時。已超過為繫結所設定的逾時。分配給此作業的時間可能是較長逾時的一部分。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSLocalConnectionAborted">
+        <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
+        <target state="translated">本機電腦已中止通訊端連線。這可能是因為通道 Abort()，或是使用此通訊端的另一個執行緒傳輸錯誤所導致。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSTransferError">
+        <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
+        <target state="translated">傳輸資料時發生 UDS 錯誤 ({0}: {1}) 錯誤。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveHost">
+        <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
+        <target state="translated">無法使用 DNS 解析 URI "{0}" 的主機名稱。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="translated">此繫結安全性屬性 '{0}' 的內容中不支援值 '{1}'。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSslProtectionLevel">
+        <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
+        <target state="translated">已指定保護層級 '{0}'，但是 SSL 傳輸安全性只支援 EncryptAndSign。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeNonNegative">
+        <source>The value of this argument must be non-negative.</source>
+        <target state="translated">此引數的值必須是非負數。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBePositive">
+        <source>The value of this argument must be positive.</source>
+        <target state="translated">此引數值必須是正數。</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

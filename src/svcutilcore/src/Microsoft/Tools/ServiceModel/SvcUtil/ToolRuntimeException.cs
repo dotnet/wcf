@@ -30,6 +30,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         {
         }
 
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected ToolRuntimeException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

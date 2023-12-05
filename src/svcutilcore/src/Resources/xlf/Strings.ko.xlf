@@ -1,0 +1,764 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../Strings.resx">
+    <body>
+      <trans-unit id="AmbiguousToolUseage">
+        <source>The intended output for the tool could not be inferred from the inputs and the options.</source>
+        <target state="translated">입력 및 옵션에서 도구에 대해 원하는 출력을 유추할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CopyrightForCmdLine">
+        <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
+        <target state="translated">Copyright (c) Microsoft Corporation.  All rights reserved.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAmbiguityInAssemblyNames">
+        <source>Could not load assembly '{0}'. 2  reference assemblies ('{1}' and '{2}') were found that match the string '{0}'. This is usually caused by an insufficient type reference in a config file. Resolve this issue by passing only the reference assembly needed or by adding more information like a version number or a public key to the reference.</source>
+        <target state="translated">어셈블리 '{0}'을(를) 로드할 수 없습니다. 문자열 '{0}'과(와) 일치하는 참조 어셈블리 2개('{1}' 및 '{2}')를 찾았습니다. 이는 일반적으로 구성 파일의 형식 참조가 부족하기 때문에 발생합니다. 필요한 참조 어셈블리만 전달하거나 버전 번호 또는 공개 키와 같은 추가 정보를 참조에 추가하여 이 문제를 해결합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAmbiguousOptionModeConflict">
+        <source>The --{0} option conflicts with other options. Review your use of the tool.</source>
+        <target state="translated">--{0} 옵션이 다른 옵션과 충돌합니다. 도구 사용을 검토하십시오.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAssemblyLoadFailed">
+        <source>Cannot load file {0} as an Assembly. Check the FusionLogs for more Information.</source>
+        <target state="translated">파일 {0}을(를) 어셈블리로 로드할 수 없습니다. 자세한 내용은 FusionLogs를 확인하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotCreateDirectory">
+        <source>Cannot create directory: {0}</source>
+        <target state="translated">디렉터리를 만들 수 없습니다. {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotCreateFile">
+        <source>Cannot create output file: {0}</source>
+        <target state="translated">출력 파일을 만들 수 없습니다. {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotDeleteExistingConfig">
+        <source>There is an existing config file that cannot be overwritten. Either fix the problem or provide a different config file name using the --{0} option.</source>
+        <target state="translated">덮어쓸 수 없는 기존 구성 파일이 있습니다. --{0} 옵션을 사용하여 문제를 해결하거나 다른 구성 파일 이름을 제공합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotDisambiguateSpecifiedTypes">
+        <source>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</source>
+        <target state="translated">참조된 어셈블리 집합에 동일한 이름을 가진 둘 이상의 형식이 있습니다. 정규화된 어셈블리 이름을 사용하여 --{0} 형식 '{1}'과(와) '{2}'을(를) 구분하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotLoadSpecifiedType">
+        <source>No type could be loaded for the value {1} passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</source>
+        <target state="translated">--{0} 옵션에 전달된 {1} 값에 대한 형식을 로드할 수 없습니다. 이 형식이 속해 있는 어셈블리가 --{2} 옵션을 통해 지정되었는지 확인하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotSpecifyMultipleMappingsForNamespace">
+        <source>Invalid value passed to the --{0} option. Target namespace '{1}' cannot be mapped to multiple CLR namespaces '{2}' and '{3}'</source>
+        <target state="translated">잘못된 값이 --{0} 옵션에 전달되었습니다. 대상 네임스페이스 '{1}'을(를) 여러 CLR 네임스페이스 '{2}' 및 '{3}'에 매핑할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotWriteFile">
+        <source>Cannot write to output file</source>
+        <target state="translated">출력 파일에 쓸 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrConflictingInputs">
+        <source>The '{0}' input argument conflicts with '{1}' because they imply different modes of tool operation</source>
+        <target state="translated">'{0}' 입력 인수와 '{1}'은(는) 서로 다른 도구 작업 모드를 나타내므로 충돌합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the --{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">--{1} 인수에 전달된 '{0}' 값에 대해 코드 공급자를 만들 수 없습니다. 코드 공급자가 제대로 설치되고 구성되었는지 확인하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotCreateInstance">
+        <source>Could not create instance of the type '{0}' passed to the --{1} argument.</source>
+        <target state="translated">--{1} 인수에 전달된 '{0}' 형식의 인스턴스를 만들 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotLoadReferenceAssemblyAt">
+        <source>Cannot load reference assembly '{0}'</source>
+        <target state="translated">참조 어셈블리 '{0}'을(를) 로드할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAt">
+        <source>Cannot load any types in assembly '{0}'.</source>
+        <target state="translated">'{0}' 어셈블리에 있는 형식을 로드할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryContainsInvalidCharacters">
+        <source>Invalid value '{1}' passed to the --{0} option. The {2} character is not permitted in a path</source>
+        <target state="translated">잘못된 값 '{1}'이(가) --{0}옵션에 전달되었습니다. 경로에 {2} 문자를 사용할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryInsteadOfFile">
+        <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths</source>
+        <target state="translated">입력 경로 '{0}'이(가) 디렉터리입니다. 입력은 URL 또는 파일 경로여야 합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryNotFound">
+        <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
+        <target state="translated">'{0}' 디렉터리를 찾을 수 없습니다. 디렉터리가 있는지 확인하고 해당 디렉터리를 읽을 수 있는 권한이 있는지 확인하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryPointsToAFile">
+        <source>Invalid value '{1}' passed to the --{0} option. '{1}' is a path to a file.</source>
+        <target state="translated">잘못된 값 '{1}'이(가) --{0} 옵션에 전달되었습니다. '{1}'은(는) 파일 경로입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDuplicateReferenceValues">
+        <source>The assembly {1} was loaded twice through the --{0} option. You may reference each assembly only once.</source>
+        <target state="translated">{1} 어셈블리가 --{0} 옵션을 통해 두 번 로드되었습니다. 각 어셈블리는 한 번만 참조할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDuplicateValuePassedToTypeArg">
+        <source>The value {1} was passed to the --{0} option multiple times. Each type may be specified only once.</source>
+        <target state="translated">{1} 값이 --{0} 옵션에 여러 번 전달되었습니다. 각 형식은 한 번만 지정할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrExclusiveOptionsSpecified">
+        <source>The --{0} option cannot be used when the --{1} option has been specified.</source>
+        <target state="translated">--{1} 옵션을 지정한 경우 --{0} 옵션을 사용할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrExpectedValue">
+        <source>The {0} option requires that a value be specified.</source>
+        <target state="translated">{0} 옵션에서는 값을 지정해야 합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithMode">
+        <source>The input read from '{0}' is inconsistent with other options.</source>
+        <target state="translated">'{0}'에서 읽은 입력이 다른 옵션과 일관되지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithOption">
+        <source>The input read from '{1}' cannot be used with the --{0} option because they imply different modes of tool operation.</source>
+        <target state="translated">'{1}'에서 읽은 입력과 --{0} 옵션은 서로 다른 도구 작업 모드를 나타내므로 함께 사용할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithTarget">
+        <source>The type of input read from '{2}' is not supported with the --{0} option set to '{1}'.</source>
+        <target state="translated">--{0} 옵션을 '{1}'(으)로 설정하면 '{2}'에서 읽은 입력 형식을 사용할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputFileNotAssemblyOrMetadata">
+        <source>The file at: '{0}' read via input argument'{1}' does not appear to be an XML metadata file or a valid assembly.</source>
+        <target state="translated">입력 인수 '{1}'을(를) 통해 읽은 '{0}'의 파일이 XML 메타데이터 파일 또는 올바른 어셈블리가 아닙니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidInputPath">
+        <source>The input path '{0}' doesn't appear to refer to any existing files and does not appear to be a valid URI.</source>
+        <target state="translated">입력 경로 '{0}'이(가) 기존 파일을 참조하지 않으며 유효한 URI가 아닙니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidNamespaceArgument">
+        <source> Invalid value {1} passed to the --{0} option. Specify a comma-separated target namespace and CLR namespace pair.</source>
+        <target state="translated"> 잘못된 값 {1}이(가) --{0} 옵션에 전달되었습니다. 쉼표로 구분된 대상 네임스페이스 및 CLR 네임스페이스 쌍을 지정하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidPath">
+        <source>Invalid path {0}. Check the --{1} argument</source>
+        <target state="translated">잘못된 경로 {0}. --{1} 인수 확인</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidSerializer">
+        <source>Invalid serializer value passed to the --{0} option. The supported serializers are: {2}</source>
+        <target state="translated">잘못된 직렬 변환기 값이 --{0} 옵션에 전달되었습니다. 지원되는 직렬 변환기는 {2}입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidTarget">
+        <source>Invalid target '{1}' specified via the --{0} option. The supported Targets are: {2}</source>
+        <target state="translated">--{0} 옵션을 통해 잘못된 대상 '{1}'이(가) 지정되었습니다. 지원되는 대상은 {2}입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidTargetClientVersion">
+        <source>Invalid targetClientVersion value passed to the --{0} option. The supported targetClientVersions are: {2}</source>
+        <target state="translated">--{0} 옵션에 전달된 targetClientVersion 값이 잘못되었습니다. 지원되는 targetClientVersions는 {2}입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrIsNotAnAssembly">
+        <source>Could not load '{0}' as an assembly verify that this file is a .NET Assembly.</source>
+        <target state="translated">'{0}'을(를) 어셈블리로 로드할 수 없습니다. 이 파일이 .NET 어셈블리인지 확인하십시오.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrMergeConfigUsedWhenConfigDoesNotExist">
+        <source>Cannot merge config file. The file '{1}' does not exist.</source>
+        <target state="translated">구성 파일을 병합할 수 없습니다. '{1}' 파일이 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrMergeConfigUsedWithoutConfig">
+        <source>Cannot use the --{0} option without specifying the --{1} option.</source>
+        <target state="translated">--{1} 옵션을 지정하지 않으면 --{0} 옵션을 사용할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNoFilesFound">
+        <source>The input path '{0}' doesn't appear to refer to any existing files</source>
+        <target state="translated">입력 경로 '{0}'이(가) 기존 파일을 참조하지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNoValidInputFilesSpecified">
+        <source>No valid input files specified. Specify either metadata documents or assembly files</source>
+        <target state="translated">올바른 입력 파일이 지정되지 않았습니다. 메타데이터 문서 또는 어셈블리 파일 지정</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNotCodeDomType">
+        <source>The type '{0}' passed to the --{1} argument is not a subclass of {2}.</source>
+        <target state="translated">--{1} 인수에 전달된 '{0}' 형식이 {2}의 서브클래스가 아닙니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNotLanguageOrCodeDomType">
+        <source>The value '{0}' passed to the --{1} argument does not represent a defined language and it could not be loaded as a fully qualified CLR type.</source>
+        <target state="translated">--{1} 인수에 전달된 '{0}' 값이 정의된 언어를 나타내지 않으므로 정규화된 CLR 형식으로 로드할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrOptionConflictsWithTarget">
+        <source> The use of the --{2} option is not supported with the --{0} option set to '{1}'.</source>
+        <target state="translated"> --{0} 옵션을 '{1}'(으)로 설정하면 --{2} 옵션을 사용할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrOptionModeConflict">
+        <source>The --{1} option cannot be used with the --{0} option because they imply different output types.</source>
+        <target state="translated">--{1} 옵션과 --{0} 옵션은 서로 다른 출력 형식을 나타내므로 함께 사용할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrPathTooLong">
+        <source>The resultant path '{0}' is too long. Review the --{1} and --{2} arguments</source>
+        <target state="translated">결과 경로 '{0}'이(가) 너무 깁니다. --{1} 및 --{2} 인수 검토</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrPathTooLongDirOnly">
+        <source>The resultant path '{0}' is too long. Review the --{1} argument</source>
+        <target state="translated">결과 경로 '{0}'이(가) 너무 깁니다. --{1} 인수 검토</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSchemaValidationForExport">
+        <source>There was a validation error on a schema generated during export:
+    Source: {0}
+    Line: {1} Column: {2}
+   Validation Error: {3}</source>
+        <target state="translated">내보내는 동안 생성된 스키마에 유효성 검사 오류가 발생: 
+    원본: {0}
+    줄: {1} 열: {2}
+   유효성 검사 오류: {3}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSingleUseSwitch">
+        <source>The {0} option cannot be specified multiple times.</source>
+        <target state="translated">{0} 옵션은 여러 번 지정할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSwitchMissing">
+        <source>Invalid argument: '{0}'.</source>
+        <target state="translated">잘못된 인수: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrToolConfigDoesNotExist">
+        <source>The config File {0} specified for the --{1} option does not exist.</source>
+        <target state="translated">--{1} 옵션에 대해 지정한 구성 파일 {0}이(가) 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadExtensions">
+        <source>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</source>
+        <target state="translated">가져오기 확장을 로드하는 동안 오류가 발생했습니다. --{0} 옵션을 사용하여 이 확장이 포함된 어셈블리를 참조 어셈블리로 제공하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadFile">
+        <source>Cannot read {0}.</source>
+        <target state="translated">{0}을(를) 읽을 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadInputConfig">
+        <source>Cannot load the config file {0}</source>
+        <target state="translated">구성 파일 {0}을(를) 로드할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadReferenceType">
+        <source>There was an error loading a referenced contract type. This type will be ignored.
+    Type: {0}</source>
+        <target state="translated">참조된 계약 형식을 로드하는 동안 오류가 발생했습니다. 이 형식은 무시됩니다.
+    형식: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToUniquifyFilename">
+        <source>Cannot create output filename. Too many files are being created with the prefix '{0}'.</source>
+        <target state="translated">출력 파일 이름을 만들 수 없습니다. '{0}' 접두사를 사용하여 너무 많은 파일을 만들고 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedDelimiter">
+        <source>Invalid argument: delimiter (':' or '=') cannot start option.</source>
+        <target state="translated">잘못된 인수: 구분 기호(':' 또는 '=')로 옵션을 시작할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedError">
+        <source>An error occurred in the tool.</source>
+        <target state="translated">도구에서 오류가 발생했습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedValue">
+        <source>The {0} option does not support any values</source>
+        <target state="translated">{0} 옵션은 값을 지원하지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnknownSwitch">
+        <source>Unrecognized option '{0}' specified.</source>
+        <target state="translated">인식할 수 없는 옵션 '{0}'이(가) 지정되었습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrValidateInvalidUse">
+        <source>The {0} option cannot be used with the {1} option.</source>
+        <target state="translated">{1} 옵션과 함께 {0} 옵션을 사용할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrValidateRequiresServiceName">
+        <source>To validate a service, the --{0} option must be used to specify the service to validate.</source>
+        <target state="translated">서비스의 유효성을 검사하려면 --{0} 옵션을 사용하여 유효성을 검사할 서비스를 지정해야 합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Error">
+        <source>Error: </source>
+        <target state="translated">오류: </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateSerializerNotFound">
+        <source>Svcutil does not work with the framework of the version being used. 'System.Xml.Serialization.XmlSerializer' does not have a method named 'GenerateSerializer'.</source>
+        <target state="translated">Svcutil은 사용 중인 버전의 프레임워크에서 작동하지 않습니다. 'System.Xml.Serialization.XmlSerializer'에는 'GenerateSerializer'라는 메서드가 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GeneratingFiles">
+        <source>Generating files...</source>
+        <target state="translated">파일 생성 중...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GeneratingSerializer">
+        <source>Generating XML serializers...</source>
+        <target state="translated">XML 직렬화기 생성 중...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationAbbreviationSyntax">
+        <source>Syntax: {0} [-{1}:{2}]  {3}* | {4}* | {5}</source>
+        <target state="translated">구문: {0} [-{1}:{2}]  {3}* | {4}* | {5}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationCategory">
+        <source>-= CODE GENERATION =-</source>
+        <target state="translated">-= 코드 생성 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationDescription">
+        <source>Description: {0} can generate code for service contracts, clients and data types from metadata documents. These metadata documents can be on disk or retrieved online. Online retrieval follows either the WS-Metadata Exchange protocol or the DISCO protocol.</source>
+        <target state="translated">설명: {0}은(는) 메타데이터 문서에서 서비스 계약, 클라이언트 및 데이터 형식에 대한 코드를 생성할 수 있습니다. 이러한 메타데이터 문서는 디스크에 있거나 온라인으로 검색할 수 있습니다. 온라인 검색은 WS-Metadata Exchange 프로토콜 또는 DISCO 프로토콜을 따릅니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationServiceContract">
+        <source>Generate code for Service Contracts. Client class and configuration will not be generated. (Short Form: -{0})</source>
+        <target state="translated">서비스 계약에 대한 코드를 생성합니다. 클라이언트 클래스 및 구성이 생성되지 않습니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput1">
+        <source>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</source>
+        <target state="translated">메타데이터 문서(wsdl 또는 xsd)의 경로입니다. 파일 경로에 표준 명령줄 와일드카드를 사용할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput2">
+        <source>The URL to a service endpoint that provides metadata or to a metadata document hosted online. For more information on how these documents are retrieved see the Metadata Download section.</source>
+        <target state="translated">메타데이터를 제공하는 서비스 엔드포인트의 URL 또는 온라인에 호스트된 메타데이터 문서의 URL입니다. 이러한 문서를 검색하는 방법에 대한 자세한 내용은 메타데이터 다운로드 섹션을 참조하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput3">
+        <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange. For more information see the Metadata Download section.</source>
+        <target state="translated">WS-Metadata Exchange를 지원하는 서비스 엔드포인트에 대한 WS-Addressing EndpointReference가 포함된 XML 파일의 경로입니다. 자세한 내용은 메타데이터 다운로드 섹션을 참조하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCollectionType">
+        <source>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</source>
+        <target state="translated">스키마에서 코드를 생성할 때 컬렉션 데이터 형식으로 사용할 형식의 정규화된 이름 또는 정규화된 어셈블리 이름입니다(약식: -{0}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCommonOptionsCategory">
+        <source>-= COMMON OPTIONS =-</source>
+        <target state="translated">-= 일반 옵션 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpDirectory">
+        <source>Directory to create files in (default: current directory) (Short Form: -{0})</source>
+        <target state="translated">파일을 만들 디렉터리(기본값: 현재 디렉터리)(약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples">
+        <source>-= EXAMPLES =-</source>
+        <target state="translated">-= 예 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples1">
+        <source>svcutil myContractLibrary.exe</source>
+        <target state="translated">svcutil myContractLibrary.exe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples2">
+        <source>- Generate serialization types for XmlSerializer types used by any Service Contracts in the assembly</source>
+        <target state="translated">- 어셈블리의 모든 서비스 계약에 사용되는 XmlSerializer 형식의 serialization 형식을 생성합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExcludeTypeCodeGeneration">
+        <source>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</source>
+        <target state="translated">참조된 계약 형식에서 제외할 정규화된 형식 이름 또는 정규화된 어셈블리 형식 이름입니다(약식: -{0}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExcludeTypeExport">
+        <source>The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the --{1} option. (Short Form: -{0})</source>
+        <target state="translated">내보내기에서 제외할 형식의 정규화된 이름 또는 정규화된 어셈블리 이름입니다. 이 옵션은 서비스 또는 서비스 계약 집합에 대한 메타데이터를 내보낼 때 형식을 내보낼 수 없도록 제외하는 데 사용할 수 있습니다. 이 옵션은 --{1} 옵션과 함께 사용할 수 없습니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpHelp">
+        <source>Display command syntax and options for the tool. (Short Form: -{0})</source>
+        <target state="translated">명령 구문 및 도구의 옵션을 표시합니다(약식: -{0}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputAssemblyPath">
+        <source>&lt;assemblyPath&gt;</source>
+        <target state="translated">&lt;assemblyPath&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputEpr">
+        <source>&lt;epr&gt;</source>
+        <target state="translated">&lt;epr&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputMetadataDocumentPath">
+        <source>&lt;metadataDocumentPath&gt;</source>
+        <target state="translated">&lt;metadataDocumentPath&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputUrl">
+        <source>&lt;url&gt;</source>
+        <target state="translated">&lt;url&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadCategory">
+        <source>-= METADATA DOWNLOAD =-</source>
+        <target state="translated">-= 메타데이터 다운로드 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadDescription">
+        <source>Description: {0} can be used to download metadata from running services and save the metadata to local files. To download metadata, you must explicitly specify the --{1}:{2} option. Otherwise, client code will be generated. For http and https URL schemes svcutil.exe will try to retrieve metadata using WS-Metadata Exchange and DISCO. For all other URL schemes {0} will only try WS-Metadata Exchange. By default, {0} uses the bindings defined in the System.ServiceModel.Description.MetadataExchangeBindings class. To configure the binding used for WS-Metadata Exchange you must define a client endpoint in config that uses the IMetadataExchange contract. This can be defined either in {0}'s config file or in another config file specified using the --{3} option.</source>
+        <target state="translated">설명: {0}은(는) 실행 중인 서비스에서 메타데이터를 다운로드하고 메타데이터를 로컬 파일에 저장하는 데 사용할 수 있습니다. 메타데이터를 다운로드하려면 --{1}:{2} 옵션을 명시적으로 지정해야 합니다. 그렇지 않으면 클라이언트 코드가 생성됩니다. http 및 https URL 체계의 경우 svcutil.exe는 WS-Metadata Exchange 및 DISCO를 사용하여 메타데이터를 검색하려고 합니다. 다른 모든 URL 체계의 경우 {0}은(는) WS-Metadata Exchange만 시도합니다. 기본적으로 {0}은(는) System.ServiceModel.Description.MetadataExchangeBindings 클래스에 정의된 바인딩을 사용합니다. WS-Metadata Exchange에 사용되는 바인딩을 구성하려면 구성에서 IMetadataExchange 계약을 사용하는 클라이언트 엔드포인트를 정의해야 합니다. {0}의 구성 파일 또는 -- {3} 옵션을 사용하여 지정된 다른 구성 파일에서 정의할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntax">
+        <source>Syntax: {0} --{1}:{2}  {3}* | {4}</source>
+        <target state="translated">구문: {0} --{1}:{2}  {3}* | {4}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntaxInput1">
+        <source>The URL to a service endpoint that provides metadata or an URL that points to a metadata document hosted online. </source>
+        <target state="translated">메타데이터를 제공하는 서비스 끝점의 URL 또는 온라인으로 호스팅되는 메타데이터 문서를 가리키는 URL입니다. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntaxInput2">
+        <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</source>
+        <target state="translated">WS-Metadata Exchange를 지원하는 서비스 엔드포인트에 대한 WS-Addressing EndpointReference가 포함된 XML 파일의 경로입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportCategory">
+        <source>-= METADATA EXPORT =-</source>
+        <target state="translated">-= 메타데이터 내보내기 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportDescription">
+        <source>Description: {0} can export metadata for services, contracts and data types in compiled assemblies. To export metadata for a service, you must use the --{1} option to indicate the service you would like to export. To export all Data Contract types within an assembly use the --{2} option. By default metadata is exported for all Service Contracts in the input assemblies.</source>
+        <target state="translated">설명: {0}은(는) 컴파일된 어셈블리에서 서비스, 계약 및 데이터 형식에 대한 메타데이터를 내보낼 수 있습니다. 서비스에 대한 메타데이터를 내보내려면 --{1} 옵션을 사용하여 내보낼 서비스를 나타내야 합니다. 어셈블리 내의 모든 데이터 계약 형식을 내보내려면 --{2} 옵션을 사용합니다. 기본적으로 메타데이터는 입력 어셈블리의 모든 서비스 계약에 대해 내보내집니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportSyntax">
+        <source>Syntax: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</source>
+        <target state="translated">구문: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportSyntaxInput1">
+        <source>The path to an assembly that contains services, contracts or Data Contract types to be exported. Standard command-line wildcards can be used to provide multiple files as input.</source>
+        <target state="translated">내보낼 서비스, 계약 또는 데이터 계약 형식이 포함된 어셈블리의 경로입니다. 표준 명령줄 와일드카드를 사용하여 여러 파일을 입력으로 제공할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNamespace">
+        <source>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</source>
+        <target state="translated">WSDL 또는 XML 스키마 targetNamespace에서 CLR 네임스페이스로의 매핑입니다. targetNamespace에 '*'를 사용하여 해당 CLR 네임스페이스에 명시적으로 매핑하지 않고 모든 targetNamespaces를 매핑합니다. 기본값: 데이터 계약에 대한 스키마 문서의 대상 네임스페이스에서 파생됩니다. 생성된 다른 모든 형식에는 기본 네임스페이스가 사용됩니다(약식: -{0}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNologo">
+        <source>Suppress the copyright and banner message.</source>
+        <target state="translated">저작권 및 배너 메시지를 표시하지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNostdlib">
+        <source>Do not reference standard libraries. By default mscorlib.dll and system.servicemodel.dll are referenced.</source>
+        <target state="translated">표준 라이브러리를 참조하지 마세요. 기본적으로 mscorlib.dll 및 system.servicemodel.dll이 참조됩니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpOptions">
+        <source>Options:</source>
+        <target state="translated">옵션:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpOut">
+        <source> The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</source>
+        <target state="translated"> 생성된 코드의 파일 이름입니다. 기본값: WSDL 정의 이름, WSDL 서비스 이름 또는 스키마 중 하나의 targetNamespace에서 파생됩니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpReferenceCodeGeneration">
+        <source>Reference types in the specified assembly. When generating clients, use this option to specify assemblies that might contain types representing the metadata being imported.  (Short Form: -{0})</source>
+        <target state="translated">지정된 어셈블리의 참조 형식입니다. 클라이언트를 생성할 때 이 옵션을 사용하여 가져오는 메타데이터를 나타내는 형식이 포함되었을 수 있는 어셈블리를 지정하세요.  (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpReferenceOther">
+        <source>Add the specified assembly to the set of assemblies used for resolving type references. If you are exporting or validating a service that uses 3rd-party extensions (Behaviors, Bindings and BindingElements) registered in config use this option to locate extension assemblies that are not in the GAC.  (Short Form: -{0})</source>
+        <target state="translated">형식 참조를 확인하는 데 사용되는 어셈블리 집합에 지정된 어셈블리를 추가합니다. 구성에 등록된 제3자 확장(Behaviors, Bindings 및 BindingElements)을 사용하는 서비스를 내보내거나 유효성을 검사하는 경우 이 옵션을 사용하여 GAC에 없는 확장 어셈블리를 찾습니다.  (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpTargetOutputType">
+        <source>The target output for the tool: {0}, {1} or {2}.</source>
+        <target state="translated">도구에 대한 대상 출력: {0}, {1} 또는 {2}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage1">
+        <source>USES:</source>
+        <target state="translated">용도:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage2">
+        <source>  - Generate code from running services or static metadata documents. </source>
+        <target state="translated">  - 실행 중인 서비스 또는 정적 메타데이터 문서에서 코드를 생성합니다. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage3">
+        <source>  - Export metadata documents from compiled code.</source>
+        <target state="translated">  - 컴파일된 코드에서 메타데이터 문서를 내보냅니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage4">
+        <source>  - Validate compiled service code.</source>
+        <target state="translated">  - 컴파일된 서비스 코드의 유효성을 검사합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage5">
+        <source>  - Download metadata documents from running services.</source>
+        <target state="translated">  - 실행 중인 서비스에서 메타데이터 문서를 다운로드합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage6">
+        <source>  - Pre-generate serialization code.</source>
+        <target state="translated">  - serialization 코드를 미리 생성합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationCategory">
+        <source>-= SERVICE VALIDATION =-</source>
+        <target state="translated">-= 서비스 유효성 검사 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationDescription">
+        <source>Description: Validation is useful to detect errors in service implementations without hosting the service. You must use the --{0} option to indicate the service you would like to validate.</source>
+        <target state="translated">설명: 유효성 검사는 서비스를 호스트하지 않고 서비스 구현에서 오류를 검색하는 데 유용합니다. --{0} 옵션을 사용하여 유효성을 검사할 서비스를 나타내야 합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationExcludeTypeExport">
+        <source>The fully-qualified or assembly-qualified name of a service type to exclude from validation. (Short Form: -{0})</source>
+        <target state="translated">유효성 검사에서 제외할 서비스 유형의 정규화된 이름 또는 정규화된 어셈블리 이름입니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationSyntax">
+        <source>Syntax: {0} --{1} --{2}:{3}  {4}*</source>
+        <target state="translated">구문: {0} --{1} --{2}:{3}  {4}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationSyntaxInput1">
+        <source>The path to an assembly containing service types to be validated. The assembly must have an associated config file to provide service configuration. Standard command-line wildcards can be used to provide multiple assemblies.</source>
+        <target state="translated">유효성을 검사할 서비스 유형을 포함하는 어셈블리의 경로입니다. 서비스 구성을 제공하려면 어셈블리에 연결된 구성 파일이 있어야 합니다. 표준 명령줄 와일드카드를 사용하여 여러 어셈블리를 제공할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpVersion30TargetClientVersion">
+        <source>Generate code that references functionality in .NET Framework assemblies 3.0 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.0.(Short Form: -{0})</source>
+        <target state="translated">.NET Framework 어셈블리 3.0 이전의 기능을 참조하는 코드를 생성합니다. .NET Framework 버전 3.0을 사용하는 클라이언트에 대한 코드를 생성하는 경우 이 스위치를 사용합니다(약식: -{0}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpVersion35TargetClientVersion">
+        <source>Generate code that references functionality in .NET Framework assemblies 3.5 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.5.(Short Form: -{0})</source>
+        <target state="translated">.NET Framework 어셈블리 3.5 이전의 기능을 참조하는 코드를 생성합니다. .NET Framework 버전 3.5를 사용하는 클라이언트에 대한 코드를 생성하는 경우 이 스위치를 사용합니다(약식: -{0}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpWrapped">
+        <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</source>
+        <target state="translated">생성된 코드는 문서 래핑 리터럴 메시지의 "매개 변수" 멤버 래핑을 해제하지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationCategory">
+        <source>-= XMLSERIALIZER TYPE GENERATION =-</source>
+        <target state="translated">-= XmlSerializer 형식 생성 =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationDescription">
+        <source>Description: {0} can pre-generate C# serialization code that is required for types that can be serialized using the XmlSerializer. {0} will only generate code for types used by Service Contracts found in the input assemblies.</source>
+        <target state="translated">설명: {0}은(는) XmlSerializer를 사용하여 serialization할 수 있는 형식에 필요한 C# serialization 코드를 미리 생성할 수 있습니다. {0}은(는) 입력 어셈블리에서 찾은 서비스 계약에 사용되는 형식에 대한 코드만 생성합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntax">
+        <source>Syntax: {0} {1}*</source>
+        <target state="translated">구문: {0} {1}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput1">
+        <source>The path to an assembly containing Service Contract types. Serialization types will be generated for all Xml Serializable types in each contract</source>
+        <target state="translated">서비스 계약 형식을 포함하는 어셈블리의 경로입니다. serialization 형식은 각 계약의 모든 Xml 직렬화 가능 형식에 대해 생성됩니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput2">
+        <source>Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: -{0})</source>
+        <target state="translated">형식 참조를 확인하는 데 사용되는 어셈블리 집합에 지정된 어셈블리를 추가합니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput3">
+        <source>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: -{0})</source>
+        <target state="translated">내보내기 또는 유효성 검사에서 제외할 정규화된 형식 또는 어셈블리 정규화된 형식 이름입니다. 이 옵션은 서비스 또는 서비스 계약 집합에 대한 메타데이터를 내보낼 때 형식을 내보낼 수 없도록 제외하는 데 사용할 수 있습니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput4">
+        <source>Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: -{0})</source>
+        <target state="translated">생성된 코드의 파일 이름입니다. 이 옵션은 여러 어셈블리가 도구에 입력으로 전달될 때 무시됩니다. 기본값: 어셈블리 이름에서 파생됩니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HintConsiderUseXmlSerializer">
+        <source>If you are using the --{0} option to import data contract types and are getting this error message, consider using xsd.exe instead. Types generated by xsd.exe may be used in the Windows Communication Foundation after applying the XmlSerializerFormatAttribute attribute on your service contract. Alternatively, consider using the --{1} option to import these types as XML types to use with DataContractFormatAttribute attribute on your service contract.</source>
+        <target state="translated">--{0} 옵션을 사용하여 데이터 계약 형식을 가져오고 이 오류 메시지가 표시되는 경우 대신 xsd.exe를 사용하는 것이 좋습니다. xsd.exe에서 생성된 형식은 서비스 계약에 XmlSerializerFormatAttribute 특성을 적용한 후 Windows Communication Foundation에서 사용할 수 있습니다. 또는 --{1} 옵션을 사용하여 이러한 형식을 XML 형식으로 가져와서 서비스 계약에서 DataContractFormatAttribute 특성과 함께 사용하는 것이 좋습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Logo">
+        <source>Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.
+[{1}]
+{2}
+</source>
+        <target state="translated">Microsoft (R) dotnet-svcutil.xmlserializer 도구, 버전 {0}.
+[{1}]
+{2}
+</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MoreHelp">
+        <source>If you would like more help, type "svcutil -{0}"</source>
+        <target state="translated">자세한 정보를 보려면 "svcutil -{0}"을(를) 입력하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoCodeWasGenerated">
+        <source>No code was generated.
+If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
+or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
+        <target state="translated">코드가 생성되지 않았습니다.
+클라이언트를 생성하려고 하는 경우 메타데이터 문서에 올바른 계약 또는 서비스가 포함되지 않았거나
+모든 계약/서비스가 /reference assemblies에 있기 때문일 수 있습니다. 모든 메타데이터 문서를 도구에 전달했는지 확인하십시오.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersCollectionType">
+        <source>&lt;type&gt;</source>
+        <target state="translated">&lt;형식&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersDirectory">
+        <source>&lt;directory&gt;</source>
+        <target state="translated">&lt;directory&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersExcludeType">
+        <source>&lt;type&gt;</source>
+        <target state="translated">&lt;형식&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersLanguage">
+        <source>&lt;language&gt;</source>
+        <target state="translated">&lt;language&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersNamespace">
+        <source>&lt;string,string&gt;</source>
+        <target state="translated">&lt;string,string&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersOut">
+        <source>&lt;file&gt;</source>
+        <target state="translated">&lt;file&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersOutputType">
+        <source>&lt;output type&gt;</source>
+        <target state="translated">&lt;출력 형식&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersReference">
+        <source>&lt;file path&gt;</source>
+        <target state="translated">&lt;file path&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersTarget">
+        <source>&lt;enum&gt;</source>
+        <target state="translated">&lt;열거&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValidationError">
+        <source>Validation Error:</source>
+        <target state="translated">유효성 검사 오류:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValidationWasSuccessful">
+        <source>The Service '{0}' was validated with no errors</source>
+        <target state="translated">오류 없이 '{0}' 서비스의 유효성이 검사되었습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Warning">
+        <source>Warning: </source>
+        <target state="translated">경고: </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WcfTrademarkForCmdLine">
+        <source>Microsoft (R) Windows (R) Communication Foundation</source>
+        <target state="translated">Microsoft (R) Windows (R) Communication Foundation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnCouldNotLoadTypesFromReferenceAssemblyAt">
+        <source>There were errors loading types in an assembly loaded from '{0}' some types in the assembly could not be loaded and will not be available to the tool.</source>
+        <target state="translated">'{0}'에서 로드된 어셈블리에 있는 형식을 로드하는 동안 오류가 발생했습니다. 어셈블리에 있는 일부 형식을 로드할 수 없으므로 도구에서 해당 형식을 사용할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnNoServiceContractTypes">
+        <source>Cannot generate XmlSerializer types for assembly: {0}. No service contract types were found.</source>
+        <target state="translated">어셈블리 {0}에 대한 XmlSerializer 형식을 생성할 수 없습니다. 서비스 계약 유형을 찾을 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnNoXmlSerializerOperationBehavior">
+        <source>Cannot generate XmlSerializer for assembly: {0}. No service contract in the assembly has an operation with XmlSerializerOperationBehavior.</source>
+        <target state="translated">어셈블리 {0}에 대한 XmlSerializer를 생성할 수 없습니다. 어셈블리에 XmlSerializerOperationBehavior를 사용하는 작업이 있는 서비스 계약이 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnOptionConflictsWithInput">
+        <source>Option --{0} cannot be used with multiple input assemblies. Ignoring {0} option. </source>
+        <target state="translated">옵션 --{0}은(는) 여러 입력 어셈블리와 함께 사용할 수 없습니다. {0} 옵션을 무시합니다. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnToolIsUsedDirectly">
+        <source>This tool is not intended to be used directly. </source>
+        <target state="translated">이 도구는 직접 사용할 수 없습니다. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnUnableToLoadContractForSGen">
+        <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
+    Type: {0}
+    Details:{1}</source>
+        <target state="translated">계약 형식을 로드하는 동안 오류가 발생했습니다. 이 계약에 대한 XmlSerializer 형식을 생성할 수 없습니다.
+    형식: {0}
+    세부 정보:{1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnVJSharpNamespace">
+        <source>When using the '--{0}:{1}' argument, only one namespace mapping is supported. Use '--{2}:*,&lt;string&gt;' to set the namespace.</source>
+        <target state="translated">'--{0}:{1}' 인수를 사용하는 경우 하나의 네임스페이스 매핑만 지원됩니다. '--{2}:*,&lt;string&gt;'을 사용하여 네임스페이스를 설정합니다.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

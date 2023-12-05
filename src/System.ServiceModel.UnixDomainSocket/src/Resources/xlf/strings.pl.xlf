@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="../strings.resx">
+    <body>
+      <trans-unit id="ActivityProcessAction">
+        <source>Process action '{0}'.</source>
+        <target state="translated">Przetwarzaj akcję „{0}”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelTypeNotSupported">
+        <source>The specified channel type {0} is not supported by this channel manager.</source>
+        <target state="translated">Określony typ kanału {0} jest nieobsługiwany przez tego menedżera kanałów.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
+        <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
+        <target state="translated">Wartość ClientCredentialType.None jest niepoprawna dla trybu zabezpieczeń TransportWithMessageCredential. Określ typ poświadczeń komunikatu lub użyj innego trybu zabezpieczeń.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DnsResolveFailed">
+        <source>No DNS entries exist for host {0}.</source>
+        <target state="translated">Brak wpisów DNS dla hosta {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExtendedProtectionNotSupported">
+        <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
+        <target state="translated">Ochrona rozszerzona jest nieobsługiwana na tej platformie. Zainstaluj odpowiednią poprawkę lub zmień wartość właściwości ExtendedProtectionPolicy obiektu Binding lub BindingElement na właściwość PolicyEnforcement o wartości „Never” lub „WhenSupported”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InsufficentMemory">
+        <source>Insufficient memory avaliable to complete the operation.</source>
+        <target state="translated">Brak wystarczającej ilości pamięci, aby ukończyć operację.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoIPEndpointsFoundForHost">
+        <source>No IPEndpoints were found for host {0}.</source>
+        <target state="translated">Nie znaleziono elementów IPEndpoints dla hosta {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRange0">
+        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Limit czasu musi być większy lub równy wartości TimeSpan.Zero. Aby wyłączyć limit czasu, określ wartość TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRangeTooBig">
+        <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Limity czasu większe niż Int32.MaxValue TotalMilliseconds (około 24 dni) nie mogą być uwzględniane. Aby wyłączyć limit czasu, określ wartość TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityEndpointNotFound">
+        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
+        <target state="translated">Serwer „{0}” zwrócił błąd wskazujący, że właśnie trwa jego zamykanie. Szczegółowe informacje o błędzie można znaleźć w wewnętrznym wyjątku.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityServerTooBusy">
+        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
+        <target state="translated">Serwer „{0}” zwrócił błąd wskazujący, że jest zbyt obciążony, aby obsłużyć żądanie. Spróbuj ponownie później. Szczegółowe informacje o błędzie można znaleźć w wewnętrznym wyjątku.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedReceiveTimedOut">
+        <source>The socket was aborted because an asynchronous receive from the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Gniazdo zostało anulowane, ponieważ operacja asynchronicznego odbioru z gniazda nie zakończyła się w ciągu przydzielonego limitu czasu {0}. Czas przydzielony na tę operację mógł być częścią dłuższego limitu czasu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedSendTimedOut">
+        <source>The socket connection was aborted because an asynchronous send to the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Połączenie gniazda zostało anulowane, ponieważ operacja asynchronicznego wysyłania do gniazda nie zakończyła się w ciągu przydzielonego limitu czasu {0}. Czas przydzielony na tę operację mógł być częścią dłuższego limitu czasu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadReceivedData">
+        <source>A graceful close was attempted on the socket, but the other side ({0}) is still sending data.</source>
+        <target state="translated">Na gnieździe wykonano operację prawidłowego zamknięcia, ale druga strona ({0}) nadal wysyła dane.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadTimeout">
+        <source>The remote endpoint of the socket ({0}) did not respond to a close request within the allotted timeout ({1}). It is likely that the remote endpoint is not calling Close after receiving the EOF signal (null) from Receive. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Zdalny punkt końcowy gniazda ({0}) nie odpowiedział na żądanie zamknięcia w ciągu przydzielonego limitu czasu ({1}). Zdalny punkt końcowy prawdopodobnie nie wywołuje metody Close po odebraniu sygnału EOF (null) z metody Receive. Czas przydzielony na tę operację mógł być częścią dłuższego limitu czasu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketConnectionDisposed">
+        <source>The socket connection has been disposed.</source>
+        <target state="translated">Połączenie gniazda zostało usunięte.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransferModeNotSupported">
+        <source>Transfer mode {0} is not supported by {1}.</source>
+        <target state="translated">Tryb transferu {0} nie jest obsługiwany przez element {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectError">
+        <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
+        <target state="translated">Nie można się połączyć z {0}. Kod błędu układu UDS {1}: {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectErrorWithTimeSpan">
+        <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
+        <target state="translated">Nie można się połączyć z {0}. Próba połączenia trwała przez okres {3}. Kod błędu układu UDS {1}: {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectNoBufs">
+        <source>Insufficient winsock resources available to complete socket connection initiation.</source>
+        <target state="translated">Dostępne są niewystarczające zasoby Winsock do zainicjowania połączenia gniazda.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectingToViaTimedOut">
+        <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Po {1} upłynął limit czasu połączenia przez {0}. Podejmowano próby połączenia z {2} z {3} dostępnych adresów ({4}). Sprawdź obiekt RemoteAddress swojego kanału i upewnij się, że rekordy DNS dla tego punktu końcowego odpowiadają poprawnym adresom IP. Czas przydzielony na tę operację mógł być częścią dłuższego limitu czasu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionResetError">
+        <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
+        <target state="translated">Połączenie gniazda zostało przerwane. Mogło to być spowodowane błędnym przetwarzaniem komunikatu, przekroczeniem limitu czasu odbioru przez zdalny host lub problemem z zasobami sieciowymi podległej sieci. Limit czasu lokalnego gniazda wynosi „{0}”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionTimedOut">
+        <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Po {0} upłynął limit czasu transmisji gniazda. Został przekroczony limit czasu ustawiony dla powiązania. Czas przydzielony na tę operację mógł być częścią dłuższego limitu czasu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSLocalConnectionAborted">
+        <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
+        <target state="translated">Połączenie gniazda zostało przerwane przez komputer lokalny. Mogło to być spowodowane przez metodę Abort() kanału albo błąd transmisji z innego wątku korzystającego z tego gniazda.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSTransferError">
+        <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
+        <target state="translated">Podczas przesyłania danych wystąpił błąd UDS ({0}: {1}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveHost">
+        <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
+        <target state="translated">Nie można rozpoznać nazwy hosta o identyfikatorze URI „{0}” za pomocą usługi DNS.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="translated">Wartość „{1}” jest nieobsługiwana w tym kontekście dla właściwości zabezpieczeń powiązania „{0}”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSslProtectionLevel">
+        <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
+        <target state="translated">Określono poziom zabezpieczeń „{0}”, jednak zabezpieczenia transportowe protokołu SSL obsługują tylko metodę EncryptAndSign.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeNonNegative">
+        <source>The value of this argument must be non-negative.</source>
+        <target state="translated">Wartość tego argumentu nie może być ujemna.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBePositive">
+        <source>The value of this argument must be positive.</source>
+        <target state="translated">Wartość tego argumentu musi być dodatnia.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

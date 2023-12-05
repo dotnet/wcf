@@ -19,6 +19,7 @@ namespace System.Runtime
             Fx.Assert(innerException == null || !Fx.IsFatal(innerException), "FatalException can't be used to wrap fatal exceptions.");
         }
 
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected FatalException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

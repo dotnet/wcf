@@ -11,6 +11,7 @@ namespace System.ServiceModel.Security
     {
         public SecurityAccessDeniedException(string message) : base(message) { }
         public SecurityAccessDeniedException(string message, Exception innerException) : base(message, innerException) { }
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected SecurityAccessDeniedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

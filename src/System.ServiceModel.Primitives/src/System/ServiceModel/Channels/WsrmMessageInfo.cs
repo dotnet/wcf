@@ -584,6 +584,7 @@ namespace System.ServiceModel.Channels
                 this.faultReply = faultReply;
             }
 
+            [Obsolete(DiagnosticId = "SYSLIB0051")]
             protected InternalFaultException(SerializationInfo info, StreamingContext context)
                 : base(info, context)
             {

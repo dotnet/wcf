@@ -632,9 +632,13 @@ namespace System.ServiceModel.Channels
             item.Abort();
         }
 
-        protected override ValueTask CloseItemAsync(IConnection item, TimeSpan timeout)
+        protected override async ValueTask CloseItemAsync(IConnection item, TimeSpan timeout)
         {
-            return item.CloseAsync(timeout);
+            try
+            {
+                await item.CloseAsync(timeout);
+            }
+            catch (Exception) { }
         }
 
         public virtual bool IsCompatible(IConnectionOrientedTransportChannelFactorySettings settings)

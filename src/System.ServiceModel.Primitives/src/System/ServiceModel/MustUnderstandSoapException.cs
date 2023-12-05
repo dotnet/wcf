@@ -15,6 +15,7 @@ namespace System.ServiceModel
     {
         // for serialization
         public MustUnderstandSoapException() { }
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected MustUnderstandSoapException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         private EnvelopeVersion _envelopeVersion;

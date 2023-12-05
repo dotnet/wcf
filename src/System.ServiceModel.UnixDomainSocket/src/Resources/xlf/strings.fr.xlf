@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../strings.resx">
+    <body>
+      <trans-unit id="ActivityProcessAction">
+        <source>Process action '{0}'.</source>
+        <target state="translated">Traiter l'action '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelTypeNotSupported">
+        <source>The specified channel type {0} is not supported by this channel manager.</source>
+        <target state="translated">Le type de canal {0} spécifié n'est pas pris en charge par ce gestionnaire de canaux.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
+        <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
+        <target state="translated">ClientCredentialType.None est non valide pour le mode de sécurité TransportWithMessageCredential. Indiquez un type pour les informations d'identification de message ou utilisez un autre mode de sécurité.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DnsResolveFailed">
+        <source>No DNS entries exist for host {0}.</source>
+        <target state="translated">Aucune entrée DNS n'existe pour l'hôte {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExtendedProtectionNotSupported">
+        <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
+        <target state="translated">La protection étendue n’est pas prise en charge sur cette plateforme. Installez le correctif approprié ou remplacez le ExtendedProtectionPolicy sur Binding ou BindingElement en par une valeur PolicyEnforcement de « Never » ou « WhenSupported ».</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InsufficentMemory">
+        <source>Insufficient memory avaliable to complete the operation.</source>
+        <target state="translated">Mémoire disponible insuffisante pour effectuer l'opération.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoIPEndpointsFoundForHost">
+        <source>No IPEndpoints were found for host {0}.</source>
+        <target state="translated">IPEndpoints introuvables pour l'hôte {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRange0">
+        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Le délai d'expiration doit être supérieur ou égal à TimeSpan.Zero. Pour désactiver le délai d'expiration, spécifiez TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRangeTooBig">
+        <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Les délais d'expiration supérieurs à Int32.MaxValue TotalMilliseconds (soit environ 24 jours) ne peuvent pas être appliqués. Pour désactiver le délai d'expiration, spécifiez TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityEndpointNotFound">
+        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
+        <target state="translated">Le serveur '{0}' a renvoyé une erreur indiquant qu'il est en cours d'arrêt. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityServerTooBusy">
+        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
+        <target state="translated">Le serveur '{0}' a envoyé une erreur indiquant qu'il est trop occupé pour traiter la requête. Réessayez plus tard. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedReceiveTimedOut">
+        <source>The socket was aborted because an asynchronous receive from the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Le socket a été abandonné, car une réception asynchrone du socket ne s'est pas effectuée dans le délai imparti de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedSendTimedOut">
+        <source>The socket connection was aborted because an asynchronous send to the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">La connexion au socket a été abandonnée, car un envoi asynchrone au socket ne s'est pas effectué dans le délai imparti de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadReceivedData">
+        <source>A graceful close was attempted on the socket, but the other side ({0}) is still sending data.</source>
+        <target state="translated">Une fermeture normale a été tentée sur le socket, mais l'autre côté ({0}) envoie toujours des données.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadTimeout">
+        <source>The remote endpoint of the socket ({0}) did not respond to a close request within the allotted timeout ({1}). It is likely that the remote endpoint is not calling Close after receiving the EOF signal (null) from Receive. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Le point de terminaison distant du socket ({0}) n'a pas répondu à une demande de fermeture dans le délai imparti ({1}). Il est probable que le point de terminaison distant n'appelle pas Close après avoir reçu le signal EOF (null) de la part de Receive. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketConnectionDisposed">
+        <source>The socket connection has been disposed.</source>
+        <target state="translated">La connexion au socket a été supprimée.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransferModeNotSupported">
+        <source>Transfer mode {0} is not supported by {1}.</source>
+        <target state="translated">Le mode de transfert {0} n'est pas pris en charge par {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectError">
+        <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
+        <target state="translated">Connexion impossible à {0}. Code d’erreur UDS {1} : {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectErrorWithTimeSpan">
+        <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
+        <target state="translated">Connexion impossible à {0}. La tentative de connexion a duré pendant une intervalle de temps de{3}. Code d’erreur UDS {1} : {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectNoBufs">
+        <source>Insufficient winsock resources available to complete socket connection initiation.</source>
+        <target state="translated">Les ressources winsock disponibles sont insuffisantes pour effectuer l'initialisation de la connexion de socket.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectingToViaTimedOut">
+        <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">La connexion via {0} a dépassé le délai imparti après {1}. Des tentatives de connexion ont été effectuées à {2} adresses disponibles parmi {3} ({4}). Vérifiez RemoteAddress sur votre canal et vérifiez que les enregistrements DNS de ce point de terminaison correspondent à des adresses IP valide. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionResetError">
+        <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
+        <target state="translated">La connexion de socket a été abandonnée. Ceci peut être causé par une erreur durant le traitement de votre message, par le dépassement du délai d'expiration de réception par l'hôte distant ou par un problème de ressource réseau sous-jacent. Le délai d'expiration de socket local était '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionTimedOut">
+        <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Le transfert de socket a dépassé le délai imparti après {0}. Le délai d'expiration défini sur votre liaison a été dépassé. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSLocalConnectionAborted">
+        <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
+        <target state="translated">La connexion du socket a été abandonnée par votre machine locale. Ceci peut être causé par un Abort() de canal ou par une erreur de transmission à partir d'un autre thread utilisant ce socket.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSTransferError">
+        <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
+        <target state="translated">Une erreur UDS ({0} : {1}) s’est produite durant la transmission des données.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveHost">
+        <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
+        <target state="translated">Impossible de résoudre le nom d’hôte de l’URI « {0} » à l’aide de DNS.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="translated">La valeur '{1}' n'est pas prise en charge dans ce contexte pour la propriété de sécurité de liaison '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSslProtectionLevel">
+        <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
+        <target state="translated">Le niveau de protection '{0}' a été spécifié, mais la sécurité du transport SSL prend uniquement en charge EncryptAndSign.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeNonNegative">
+        <source>The value of this argument must be non-negative.</source>
+        <target state="translated">La valeur de cet argument doit être non négative.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBePositive">
+        <source>The value of this argument must be positive.</source>
+        <target state="translated">La valeur de cet argument doit être positive.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -12,6 +12,7 @@ namespace System.ServiceModel.Security
         public SecurityNegotiationException() : base() { }
         public SecurityNegotiationException(string message) : base(message) { }
         public SecurityNegotiationException(String message, Exception innerException) : base(message, innerException) { }
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected SecurityNegotiationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

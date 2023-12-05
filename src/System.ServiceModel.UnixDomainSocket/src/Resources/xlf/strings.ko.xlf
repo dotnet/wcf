@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../strings.resx">
+    <body>
+      <trans-unit id="ActivityProcessAction">
+        <source>Process action '{0}'.</source>
+        <target state="translated">동작 '{0}'을(를) 처리하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelTypeNotSupported">
+        <source>The specified channel type {0} is not supported by this channel manager.</source>
+        <target state="translated">지정된 채널 형식 {0}이(가) 이 채널 관리자에서 지원되지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
+        <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
+        <target state="translated">ClientCredentialType.None은 TransportWithMessageCredential 보안 모드에 사용할 수 없습니다. 메시지 자격 증명 형식을 지정하거나 다른 보안 모드를 사용하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DnsResolveFailed">
+        <source>No DNS entries exist for host {0}.</source>
+        <target state="translated">호스트 {0}에 대한 DNS 항목이 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExtendedProtectionNotSupported">
+        <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
+        <target state="translated">이 플랫폼에서는 확장된 보호가 지원되지 않습니다. 적합한 패치를 설치하거나 Binding 또는 BindingElement의 ExtendedProtectionPolicy를 PolicyEnforcement 값이 "Never" 또는 "WhenSupported"인 값이 되도록 변경하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InsufficentMemory">
+        <source>Insufficient memory avaliable to complete the operation.</source>
+        <target state="translated">작업을 완료하는 데 사용할 수 있는 메모리가 부족합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoIPEndpointsFoundForHost">
+        <source>No IPEndpoints were found for host {0}.</source>
+        <target state="translated">호스트 {0}에 대한 IPEndpoints를 찾을 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRange0">
+        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">제한 시간은 TimeSpan.Zero보다 크거나 같아야 합니다. 제한 시간을 사용하지 않도록 설정하려면 TimeSpan.MaxValue를 지정하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRangeTooBig">
+        <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Int32.MaxValue TotalMilliseconds(약 24일)보다 큰 시간 제한은 허용되지 않습니다. 시간 제한을 사용하지 않으려면 TimeSpan.MaxValue를 지정하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityEndpointNotFound">
+        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
+        <target state="translated">종료하는 중이라는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 자세한 오류 내용은 내부 예외를 참조하십시오.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityServerTooBusy">
+        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
+        <target state="translated">사용 중이어서 요청을 처리할 수 없다는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 나중에 다시 시도하세요. 자세한 오류 내용은 내부 예외를 참조하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedReceiveTimedOut">
+        <source>The socket was aborted because an asynchronous receive from the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">소켓에서의 비동기 수신이 할당된 시간 제한({0}) 내에 완료되지 않았으므로 소켓이 중단되었습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedSendTimedOut">
+        <source>The socket connection was aborted because an asynchronous send to the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">소켓으로의 비동기 발신이 할당된 시간 제한({0}) 내에 완료되지 않았으므로 소켓 연결이 중단되었습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadReceivedData">
+        <source>A graceful close was attempted on the socket, but the other side ({0}) is still sending data.</source>
+        <target state="translated">소켓에서 정상적인 닫기를 시도했지만, 다른 쪽({0})에서 아직 데이터를 보내고 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadTimeout">
+        <source>The remote endpoint of the socket ({0}) did not respond to a close request within the allotted timeout ({1}). It is likely that the remote endpoint is not calling Close after receiving the EOF signal (null) from Receive. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">소켓({0})의 원격 끝점이 할당된 시간 제한({1}) 내에 닫기 요청에 응답하지 않았습니다. Receive에서 EOF 신호(null)를 받은 후에 원격 끝점이 Close를 호출하지 않는 것으로 보입니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketConnectionDisposed">
+        <source>The socket connection has been disposed.</source>
+        <target state="translated">소켓 연결이 삭제되었습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransferModeNotSupported">
+        <source>Transfer mode {0} is not supported by {1}.</source>
+        <target state="translated">전송 모드 {0}을(를) {1}에서 지원하지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectError">
+        <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
+        <target state="translated">{0}에 연결할 수 없습니다. UDS 오류 코드 {1}: {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectErrorWithTimeSpan">
+        <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
+        <target state="translated">{0}에 연결할 수 없습니다. {3} 시간 동안 연결 시도가 지속되었습니다. UDS 오류 코드 {1}: {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectNoBufs">
+        <source>Insufficient winsock resources available to complete socket connection initiation.</source>
+        <target state="translated">소켓 연결 시작을 완료하는 데 사용할 수 있는 winsock 리소스가 충분하지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectingToViaTimedOut">
+        <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">{0}을(를) 통한 연결이 {1} 이후에 시간 제한을 초과했습니다. {3} 사용 가능 주소({4})의 {2}(으)로 연결하려고 했습니다. 채널의 RemoteAddress를 확인하고, 이 엔드포인트의 DNS 레코드가 유효한 IP 주소와 상응하는지 확인하세요. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionResetError">
+        <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
+        <target state="translated">소켓 연결이 중단되었습니다. 메시지 처리 오류 또는 원격 호스트에 의한 수신 시간 제한 초과 또는 기본 네트워크 리소스 문제 때문일 수 있습니다. 로컬 소켓 시간 제한은 '{0}'입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionTimedOut">
+        <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">{0} 이후에 소켓 전송 시간 제한을 초과했습니다. 바인딩에 설정된 시간 제한을 초과했습니다. 이 작업에 할당된 시간이 보다 긴 시간 제한의 일부일 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSLocalConnectionAborted">
+        <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
+        <target state="translated">로컬 컴퓨터가 소켓 연결을 중단했습니다. 채널 Abort() 또는 이 소켓을 사용하는 다른 스레드에서의 전송 오류 때문일 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSTransferError">
+        <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
+        <target state="translated">데이터를 전송하는 동안 UDS 오류({0}: {1})가 발생했습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveHost">
+        <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
+        <target state="translated">DNS를 사용하여 URI "{0}"의 호스트 이름을 확인할 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="translated">'{1}' 값은 이 컨텍스트에서 바인딩 보안 속성 '{0}'에 지원되지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSslProtectionLevel">
+        <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
+        <target state="translated">보호 수준 '{0}'이(가) 지정되었지만, SSL 전송 보안은 EncryptAndSign만 지원합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeNonNegative">
+        <source>The value of this argument must be non-negative.</source>
+        <target state="translated">이 인수의 값은 음수가 아니어야 합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBePositive">
+        <source>The value of this argument must be positive.</source>
+        <target state="translated">이 인수의 값은 양수여야 합니다.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

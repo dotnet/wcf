@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <AssemblyName>System.ServiceModel.UnixDomainSocket</AssemblyName>
+    <CLSCompliant>true</CLSCompliant>
+    <IsPackable>true</IsPackable>
+    <NoWarn>$(NoWarn);NU5131</NoWarn>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <PackageDescription>Provides the types that permit SOAP messages to be exchanged using Unix domain socket.</PackageDescription>
+  </PropertyGroup>
+   <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <GenerateSource>true</GenerateSource>
+      <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>System.SR</ClassName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Common\src\System\ServiceModel\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\..\Common\src\System\IdentityModel\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\System\IdentityModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\..\Common\src\Internals\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+        <Compile Include="..\..\Common\src\System\SR.cs">
+      <Link>Common\System\SR.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\src\System.ServiceModel.NetFramingBase.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+  </ItemGroup>
+</Project>

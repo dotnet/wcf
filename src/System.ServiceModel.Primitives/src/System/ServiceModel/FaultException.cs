@@ -114,6 +114,7 @@ namespace System.ServiceModel
             Action = action;
         }
 
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected FaultException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -193,6 +194,7 @@ namespace System.ServiceModel
             return (reason != null) ? new FaultReason(reason) : DefaultReason;
         }
 
+        [System.Obsolete]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -395,6 +397,7 @@ namespace System.ServiceModel
             Detail = detail;
         }
 
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected FaultException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -408,6 +411,7 @@ namespace System.ServiceModel
             return MessageFault.CreateFault(Code, Reason, Detail);
         }
 
+        [System.Obsolete]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

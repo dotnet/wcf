@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="../strings.resx">
+    <body>
+      <trans-unit id="ActivityProcessAction">
+        <source>Process action '{0}'.</source>
+        <target state="translated">Zpracujte akci {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelTypeNotSupported">
+        <source>The specified channel type {0} is not supported by this channel manager.</source>
+        <target state="translated">Určený typ kanálu {0} není tímto správcem kanálů podporován.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
+        <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
+        <target state="translated">Třída ClientCredentialType.None není pro režim zabezpečení TransportWithMessageCredential platný. Určete typ přihlašovacích údajů zprávy nebo použijte jiný režim zabezpečení.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DnsResolveFailed">
+        <source>No DNS entries exist for host {0}.</source>
+        <target state="translated">Neexistují položky DNS hostitele {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExtendedProtectionNotSupported">
+        <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
+        <target state="translated">Rozšířená ochrana se na této platformě nepodporuje. Instalujte odpovídající opravu nebo změňte vlastnost ExtendedProtectionPolicy objektu Binding nebo BindingElement na hodnotu s nastavením PolicyEnforcement Never nebo WhenSupported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InsufficentMemory">
+        <source>Insufficient memory avaliable to complete the operation.</source>
+        <target state="translated">K dokončení operace není dostatek paměti.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoIPEndpointsFoundForHost">
+        <source>No IPEndpoints were found for host {0}.</source>
+        <target state="translated">Pro hostitele {0} nebyly nalezeny žádné třídy IPEndpoints.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRange0">
+        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Časový limit musí být větší než nula nebo se rovnat hodnotě TimeSpan.Zero. Pokud chcete časový limit zakázat, zadejte hodnotu TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRangeTooBig">
+        <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="translated">Časový limit větší než hodnota Int32.MaxValue TotalMilliseconds (přibližně 24 dní) nelze akceptovat. Pokud chcete časový limit zakázat, zadejte hodnotu TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityEndpointNotFound">
+        <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
+        <target state="translated">Server {0} odeslal zpět chybu, která udává, že probíhá jeho vypínání. Podrobné informace o chybě naleznete v popisu vnitřní výjimky.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SecurityServerTooBusy">
+        <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
+        <target state="translated">Server {0} odeslal zpět chybu, která udává, že je příliš zaneprázdněn a nemůže zpracovat požadavek. Podrobné informace o chybě naleznete v popisu vnitřní výjimky.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedReceiveTimedOut">
+        <source>The socket was aborted because an asynchronous receive from the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Soket byl přerušen, protože se asynchronní příjem ze soketu nedokončil v rámci přiděleného časového limitu {0}. Čas přidělený této operaci byl pravděpodobně částí delšího časového limitu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketAbortedSendTimedOut">
+        <source>The socket connection was aborted because an asynchronous send to the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Připojení soketu bylo přerušeno, protože se asynchronní odeslání do soketu nedokončilo v rámci přiděleného časového limitu {0}. Čas přidělený této operaci byl pravděpodobně částí delšího časového limitu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadReceivedData">
+        <source>A graceful close was attempted on the socket, but the other side ({0}) is still sending data.</source>
+        <target state="translated">U soketu byl proveden pokus o řádné zavření, ale druhá strana ({0}) stále odesílá data.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketCloseReadTimeout">
+        <source>The remote endpoint of the socket ({0}) did not respond to a close request within the allotted timeout ({1}). It is likely that the remote endpoint is not calling Close after receiving the EOF signal (null) from Receive. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Vzdálený koncový bod soketu ({0}) neodpověděl na požadavek zavření v rámci přiděleného časového limitu ({1}). Je pravděpodobné, že vzdálený koncový bod nevolá zavření po přijetí signálu EOF (null) z parametru Receive. Čas přidělený této operaci byl pravděpodobně částí delšího časového limitu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SocketConnectionDisposed">
+        <source>The socket connection has been disposed.</source>
+        <target state="translated">Připojení soketu bylo zrušeno.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransferModeNotSupported">
+        <source>Transfer mode {0} is not supported by {1}.</source>
+        <target state="translated">{1} nepodporuje režim přenosu {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectError">
+        <source>Could not connect to {0}. UDS error code {1}: {2}. </source>
+        <target state="translated">Nelze připojit k {0}. Kód chyby UDS {1}: {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectErrorWithTimeSpan">
+        <source>Could not connect to {0}. The connection attempt lasted for a time span of {3}. UDS error code {1}: {2}. </source>
+        <target state="translated">Nelze připojit k {0}. Pokus o připojení trval {3}. Kód chyby UDS {1}: {2}. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectNoBufs">
+        <source>Insufficient winsock resources available to complete socket connection initiation.</source>
+        <target state="translated">Nejsou k dispozici dostatečné prostředky rozhraní winsock pro dokončení inicializace připojení.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectingToViaTimedOut">
+        <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Časový limit připojení přes {0} vypršel po {1}. Pokus o připojení byl proveden u {2} z {3} dostupných adres ({4}). Zkontrolujte adresu RemoteAddress kanálu a ověřte, jestli záznamy DNS pro tento koncový bod odpovídají platným IP adresám. Čas přidělený této operaci byl pravděpodobně částí delšího časového limitu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionResetError">
+        <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
+        <target state="translated">Připojení k soketu bylo přerušeno. Může to být způsobeno chybou při zpracování zprávy nebo překročením časového limitu příjmu vzdáleným hostitelem nebo problémem se síťovými prostředky. Časový limit místního soketu byl {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSConnectionTimedOut">
+        <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="translated">Vypršel časový limit přenosu soketu po {0}. Překročili jste časový limit nastavený na vazbě. Čas přidělený této operaci byl pravděpodobně částí delšího časového limitu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSLocalConnectionAborted">
+        <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
+        <target state="translated">Připojení soketu bylo přerušeno místním počítačem. Může to být způsobeno funkcí Abort() kanálu nebo chybou ve vysílání z jiného vlákna používajícího tento soket.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UDSTransferError">
+        <source>A UDS error ({0}: {1}) occurred while transmitting data.</source>
+        <target state="translated">Při vysílání dat došlo k chybě UDS ({0}: {1}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveHost">
+        <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
+        <target state="translated">Nelze vyřešit název hostitele identifikátoru URI {0} pomocí služby DNS.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSecuritySetting">
+        <source>The value '{1}' is not supported in this context for the binding security property '{0}'.</source>
+        <target state="translated">Hodnota {1} není v tomto kontextu pro vlastnost zabezpečení vazby {0} podporována.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnsupportedSslProtectionLevel">
+        <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
+        <target state="translated">Byla zadána úroveň zabezpečení {0}, ale zabezpečení přenosu SSL podporuje pouze EncryptAndSign.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeNonNegative">
+        <source>The value of this argument must be non-negative.</source>
+        <target state="translated">Hodnota tohoto argumentu nesmí být záporná.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBePositive">
+        <source>The value of this argument must be positive.</source>
+        <target state="translated">Hodnota tohoto argumentu musí být kladná.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -12,6 +12,7 @@ namespace System.IdentityModel.Tokens
         public SecurityTokenValidationException() : base() { }
         public SecurityTokenValidationException(string message) : base(message) { }
         public SecurityTokenValidationException(string message, Exception innerException) : base(message, innerException) { }
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected SecurityTokenValidationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

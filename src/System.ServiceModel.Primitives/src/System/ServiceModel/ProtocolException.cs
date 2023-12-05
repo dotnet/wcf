@@ -14,6 +14,7 @@ namespace System.ServiceModel
         public ProtocolException() { }
         public ProtocolException(string message) : base(message) { }
         public ProtocolException(string message, Exception innerException) : base(message, innerException) { }
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected ProtocolException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         internal static ProtocolException ReceiveShutdownReturnedNonNull(Message message)

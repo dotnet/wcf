@@ -28,6 +28,7 @@ namespace System.IO
         {
         }
 
+        [Obsolete(DiagnosticId = "SYSLIB0051")]
         protected PipeException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

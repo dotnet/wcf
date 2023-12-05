@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(ScenarioTestTargetFrameworks)</TargetFrameworks>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoreWCF.UnixDomainSocket" Version="1.5.0" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+    <ProjectReference Include="$(WcfScenarioTestCommonProj)" />
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.UnixDomainSocket\src\System.ServiceModel.UnixDomainSocket.csproj" />
+  </ItemGroup>
+</Project>

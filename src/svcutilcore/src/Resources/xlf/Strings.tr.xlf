@@ -1,0 +1,764 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="../Strings.resx">
+    <body>
+      <trans-unit id="AmbiguousToolUseage">
+        <source>The intended output for the tool could not be inferred from the inputs and the options.</source>
+        <target state="translated">Giriş ve seçeneklerden araç için hedeflenen çıkış çıkarsanamadı.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CopyrightForCmdLine">
+        <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
+        <target state="translated">Teklif Hakkı (c) Microsoft Corporation. Tüm hakları saklıdır.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAmbiguityInAssemblyNames">
+        <source>Could not load assembly '{0}'. 2  reference assemblies ('{1}' and '{2}') were found that match the string '{0}'. This is usually caused by an insufficient type reference in a config file. Resolve this issue by passing only the reference assembly needed or by adding more information like a version number or a public key to the reference.</source>
+        <target state="translated">'{0}' bütünleştirilmiş kodu yüklenemedi. '{0}' dizesiyle eşleşen 2 başvuru bütünleştirilmiş kodu ('{1}' ve '{2}') bulundu. Bu, genellikle bir yapılandırma dosyasındaki yetersiz tür başvurusundan kaynaklanır. Yalnızca gereken başvuru bütünleştirilmiş kodunu geçirerek veya başvuruya sürüm numarası veya ortak anahtar gibi daha fazla bilgi ekleyerek bu sorunu çözün.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAmbiguousOptionModeConflict">
+        <source>The --{0} option conflicts with other options. Review your use of the tool.</source>
+        <target state="translated">--{0} seçeneği diğer seçeneklerle çakışıyor. Araç kullanımınızı gözden geçirin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrAssemblyLoadFailed">
+        <source>Cannot load file {0} as an Assembly. Check the FusionLogs for more Information.</source>
+        <target state="translated">{0} dosyası Bütünleştirilmiş Kod olarak yüklenemiyor. Daha fazla Bilgi için FusionLogs'a bakın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotCreateDirectory">
+        <source>Cannot create directory: {0}</source>
+        <target state="translated">Dizin oluşturulamıyor: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotCreateFile">
+        <source>Cannot create output file: {0}</source>
+        <target state="translated">Çıkış dosyası oluşturulamıyor: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotDeleteExistingConfig">
+        <source>There is an existing config file that cannot be overwritten. Either fix the problem or provide a different config file name using the --{0} option.</source>
+        <target state="translated">Üzerine yazılamaz bir yapılandırma dosyası var. Ya sorunu düzeltin ya da --{0} seçeneğini kullanarak farklı bir yapılandırma dosyası adı sağlayın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotDisambiguateSpecifiedTypes">
+        <source>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</source>
+        <target state="translated">Başvurulan bütünleştirilmiş kod kümesinde aynı ada sahip birden çok tür var. '{1}' ve '{2}' şeklindeki --{0} türlerini birbirinden ayırmak için bütünleştirilmiş kodla nitelenen adlar kullanın</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotLoadSpecifiedType">
+        <source>No type could be loaded for the value {1} passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</source>
+        <target state="translated">--{0} seçeneğine geçirilen {1} değeri için tür yüklenemedi. Bu türün ait olduğu bütünleştirilmiş kodun --{2} seçeneği aracılığıyla belirtildiğinden emin olun.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotSpecifyMultipleMappingsForNamespace">
+        <source>Invalid value passed to the --{0} option. Target namespace '{1}' cannot be mapped to multiple CLR namespaces '{2}' and '{3}'</source>
+        <target state="translated">--{0} seçeneğine geçersiz değer geçirildi. '{1}' hedef ad alanı birden çok CLR ad alanıyla ('{2}' ve '{3}') eşlenemiyor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCannotWriteFile">
+        <source>Cannot write to output file</source>
+        <target state="translated">Çıkış dosyasına yazılamıyor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrConflictingInputs">
+        <source>The '{0}' input argument conflicts with '{1}' because they imply different modes of tool operation</source>
+        <target state="translated">'{0}' giriş bağımsız değişkeni, '{1}' ile farklı araç çalıştırma modlarını gerektirdiğinden çakışıyor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the --{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">--{1} bağımsız değişkenine geçirilen '{0}' değeri için bir kod sağlayıcısı oluşturulamadı. Kod sağlayıcısının düzgün bir biçimde yüklenip yapılandırıldığından emin olun.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotCreateInstance">
+        <source>Could not create instance of the type '{0}' passed to the --{1} argument.</source>
+        <target state="translated">--{0} bağımsız değişkenine geçirilen '{1}' türündeki örnek oluşturulamadı.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotLoadReferenceAssemblyAt">
+        <source>Cannot load reference assembly '{0}'</source>
+        <target state="translated">'{0}' başvuru bütünleştirilmiş kodu yüklenemiyor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAt">
+        <source>Cannot load any types in assembly '{0}'.</source>
+        <target state="translated">'{0}' bütünleştirilmiş kodundaki türler yüklenemiyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryContainsInvalidCharacters">
+        <source>Invalid value '{1}' passed to the --{0} option. The {2} character is not permitted in a path</source>
+        <target state="translated">'{1}' seçeneğine geçersiz --{0}değeri geçirildi. Bir yolda {2} karakterinin kullanılmasına izin verilmez.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryInsteadOfFile">
+        <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths</source>
+        <target state="translated">'{0}' giriş yolu bir dizin gibi görünüyor. Girişlerin URL veya dosya yolu olması gerekir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryNotFound">
+        <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
+        <target state="translated">'{0}' dizini bulunamadı. Dizinin mevcut olduğunu ve dizini okumak için uygun izinlere sahip olduğunuzu doğrulayın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDirectoryPointsToAFile">
+        <source>Invalid value '{1}' passed to the --{0} option. '{1}' is a path to a file.</source>
+        <target state="translated">--{0} seçeneğine '{1}' geçersiz değeri geçirildi. '{1}' bir dosyanın yoludur.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDuplicateReferenceValues">
+        <source>The assembly {1} was loaded twice through the --{0} option. You may reference each assembly only once.</source>
+        <target state="translated">{1} bütünleştirilmiş kodu --{0} seçeneği aracılığıyla iki kere yüklendi. Her bütünleştirilmiş koda yalnızca bir kere başvurabilirsiniz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrDuplicateValuePassedToTypeArg">
+        <source>The value {1} was passed to the --{0} option multiple times. Each type may be specified only once.</source>
+        <target state="translated">{1} değeri --{0} seçeneğine birden çok kez geçirildi. Her tür yalnızca bir kere belirtilebilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrExclusiveOptionsSpecified">
+        <source>The --{0} option cannot be used when the --{1} option has been specified.</source>
+        <target state="translated">--{0} seçeneği belirtildiğinde --{1} seçeneği kullanılamaz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrExpectedValue">
+        <source>The {0} option requires that a value be specified.</source>
+        <target state="translated">{0} seçeneği değer belirtilmesini gerektirir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithMode">
+        <source>The input read from '{0}' is inconsistent with other options.</source>
+        <target state="translated">'{0}' öğesinden okunan giriş diğer seçeneklerle tutarsız.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithOption">
+        <source>The input read from '{1}' cannot be used with the --{0} option because they imply different modes of tool operation.</source>
+        <target state="translated">'{1}' öğesinden okunan giriş ile --{0} seçeneği farklı araç çalıştırma modları gerektirdiğinden birlikte kullanılamaz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputConflictsWithTarget">
+        <source>The type of input read from '{2}' is not supported with the --{0} option set to '{1}'.</source>
+        <target state="translated">'{2}' öğesinden okunan giriş türü {0}-- seçeneği '{1}' olarak ayarlandığında desteklenmiyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInputFileNotAssemblyOrMetadata">
+        <source>The file at: '{0}' read via input argument'{1}' does not appear to be an XML metadata file or a valid assembly.</source>
+        <target state="translated">'{1}' giriş bağımsız değişkeni aracılığıyla okunan '{0}' konumundaki dosya bir XML meta veri dosyası geçerli bir bütünleştirilmiş kod gibi görünmüyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidInputPath">
+        <source>The input path '{0}' doesn't appear to refer to any existing files and does not appear to be a valid URI.</source>
+        <target state="translated">'{0}' giriş yolu herhangi bir mevcut dosyaya başvurmuyor ve geçerli bir URI değil.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidNamespaceArgument">
+        <source> Invalid value {1} passed to the --{0} option. Specify a comma-separated target namespace and CLR namespace pair.</source>
+        <target state="translated"> --{0} seçeneğine geçersiz {1} değeri geçirildi. Virgülle ayrılmış hedef ad alanı ve CLR ad alanı çifti belirtin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidPath">
+        <source>Invalid path {0}. Check the --{1} argument</source>
+        <target state="translated">Geçersiz yol {0}. --{1} bağımsız değişkenini denetleyin</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidSerializer">
+        <source>Invalid serializer value passed to the --{0} option. The supported serializers are: {2}</source>
+        <target state="translated">--{0} seçeneğine geçersiz serileştirici değeri geçirildi. Desteklenen serileştiriciler: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidTarget">
+        <source>Invalid target '{1}' specified via the --{0} option. The supported Targets are: {2}</source>
+        <target state="translated">--{0} seçeneği aracılığıyla geçersiz hedef ('{1}') belirtildi. Desteklenen Hedefler: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrInvalidTargetClientVersion">
+        <source>Invalid targetClientVersion value passed to the --{0} option. The supported targetClientVersions are: {2}</source>
+        <target state="translated">--{0} seçeneğine geçersiz targetClientVersion değeri geçirildi. Desteklenen targetClientVersions: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrIsNotAnAssembly">
+        <source>Could not load '{0}' as an assembly verify that this file is a .NET Assembly.</source>
+        <target state="translated">'{0}' bütünleştirilmiş kod olarak yüklenemedi, bu dosyanın bir .NET Bütünleştirilmiş Kodu olduğunu doğrulayın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrMergeConfigUsedWhenConfigDoesNotExist">
+        <source>Cannot merge config file. The file '{1}' does not exist.</source>
+        <target state="translated">Yapılandırma dosyası birleştirilemedi. '{1}' dosyası yok.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrMergeConfigUsedWithoutConfig">
+        <source>Cannot use the --{0} option without specifying the --{1} option.</source>
+        <target state="translated">--{1} seçeneği belirtilmeden --{0} seçeneği kullanılamaz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNoFilesFound">
+        <source>The input path '{0}' doesn't appear to refer to any existing files</source>
+        <target state="translated">'{0}' giriş yolu mevcut bir dosyaya başvurmuyor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNoValidInputFilesSpecified">
+        <source>No valid input files specified. Specify either metadata documents or assembly files</source>
+        <target state="translated">Geçerli giriş dosyası belirtilmedi. Meta veri belgelerini veya derleme dosyalarını belirtin</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNotCodeDomType">
+        <source>The type '{0}' passed to the --{1} argument is not a subclass of {2}.</source>
+        <target state="translated">--{1} bağımsız değişkenine geçirilen '{0}' türü, {2} sınıfının bir alt sınıfı değil.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrNotLanguageOrCodeDomType">
+        <source>The value '{0}' passed to the --{1} argument does not represent a defined language and it could not be loaded as a fully qualified CLR type.</source>
+        <target state="translated">--{1} bağımsız değişkenine geçirilen '{0}' değeri tanımlı bir dili temsil etmiyor ve tam bir CLR türü olarak yüklenemedi.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrOptionConflictsWithTarget">
+        <source> The use of the --{2} option is not supported with the --{0} option set to '{1}'.</source>
+        <target state="translated"> --{2} seçeneğinin kullanımı, --{0} seçeneği '{1}' olarak ayarlandığında desteklenmez.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrOptionModeConflict">
+        <source>The --{1} option cannot be used with the --{0} option because they imply different output types.</source>
+        <target state="translated">--{1} seçeneği ile --{0} seçeneği farklı çıkış türleri gerektirdiğinden birlikte kullanılamaz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrPathTooLong">
+        <source>The resultant path '{0}' is too long. Review the --{1} and --{2} arguments</source>
+        <target state="translated">Sonuçta elde edilen '{0}' yolu çok uzun. --{1} ve --{2} bağımsız değişkenlerini gözden geçirin</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrPathTooLongDirOnly">
+        <source>The resultant path '{0}' is too long. Review the --{1} argument</source>
+        <target state="translated">Sonuçta elde edilen '{0}' yolu çok uzun. --{1} bağımsız değişkenini gözden geçirin</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSchemaValidationForExport">
+        <source>There was a validation error on a schema generated during export:
+    Source: {0}
+    Line: {1} Column: {2}
+   Validation Error: {3}</source>
+        <target state="translated">Dışarı aktarma sırasında oluşturulan şemada doğrulama hatası oluştu:
+    Kaynak: {0}
+    Satır: {1} Sütun: {2}
+   Doğrulama Hatası: {3}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSingleUseSwitch">
+        <source>The {0} option cannot be specified multiple times.</source>
+        <target state="translated">{0} seçeneği birkaç kez belirtilemez.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrSwitchMissing">
+        <source>Invalid argument: '{0}'.</source>
+        <target state="translated">Geçersiz bağımsız değişken: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrToolConfigDoesNotExist">
+        <source>The config File {0} specified for the --{1} option does not exist.</source>
+        <target state="translated">--{1} seçeneği için belirtilen {0} yapılandırma dosyası yok.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadExtensions">
+        <source>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</source>
+        <target state="translated">İçeri aktarma uzantıları yüklenirken bir hata oluştu. --{0} seçeneğini kullanarak bu uzantıları içeren bütünleştirilmiş kodları başvuru bütünleştirilmiş kodları olarak sağladığınızdan emin olun.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadFile">
+        <source>Cannot read {0}.</source>
+        <target state="translated">{0} okunamıyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadInputConfig">
+        <source>Cannot load the config file {0}</source>
+        <target state="translated">{0} yapılandırma dosyası yüklenemiyor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToLoadReferenceType">
+        <source>There was an error loading a referenced contract type. This type will be ignored.
+    Type: {0}</source>
+        <target state="translated">Başvurulan anlaşma türü yüklenirken bir hata oluştu. Bu tür yoksayılır.
+    Tür: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnableToUniquifyFilename">
+        <source>Cannot create output filename. Too many files are being created with the prefix '{0}'.</source>
+        <target state="translated">Çıkış dosyası adı oluşturulamıyor. '{0}' ön ekine sahip çok fazla dosya oluşturuluyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedDelimiter">
+        <source>Invalid argument: delimiter (':' or '=') cannot start option.</source>
+        <target state="translated">Geçersiz bağımsız değişken: ayırıcı (':' veya '=') seçenek başlangıcı olamaz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedError">
+        <source>An error occurred in the tool.</source>
+        <target state="translated">Araçta bir hata oluştu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnexpectedValue">
+        <source>The {0} option does not support any values</source>
+        <target state="translated">{0} seçeneği hiçbir değeri desteklemiyor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrUnknownSwitch">
+        <source>Unrecognized option '{0}' specified.</source>
+        <target state="translated">Tanınmayan seçenek '{0}' belirtildi.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrValidateInvalidUse">
+        <source>The {0} option cannot be used with the {1} option.</source>
+        <target state="translated">{0} seçeneği, {1} seçeneğiyle kullanılamaz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrValidateRequiresServiceName">
+        <source>To validate a service, the --{0} option must be used to specify the service to validate.</source>
+        <target state="translated">Bir hizmeti doğrulamak için, doğrulanacak hizmeti belirtmek üzere --{0} seçeneği kullanılmalıdır.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Error">
+        <source>Error: </source>
+        <target state="translated">Hata</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateSerializerNotFound">
+        <source>Svcutil does not work with the framework of the version being used. 'System.Xml.Serialization.XmlSerializer' does not have a method named 'GenerateSerializer'.</source>
+        <target state="translated">Svcutil, kullanılan sürümün çerçevesiyle çalışmaz. 'System.Xml.Serialization.XmlSerializer', 'GenerateSerializer' adlı bir yönteme sahip değil.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GeneratingFiles">
+        <source>Generating files...</source>
+        <target state="translated">Dosyalar oluşturuluyor...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GeneratingSerializer">
+        <source>Generating XML serializers...</source>
+        <target state="translated">XML serileştiricileri oluşturuluyor...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationAbbreviationSyntax">
+        <source>Syntax: {0} [-{1}:{2}]  {3}* | {4}* | {5}</source>
+        <target state="translated">Söz dizimi: {0} [-{1}:{2}]  {3}* | {4}* | {5}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationCategory">
+        <source>-= CODE GENERATION =-</source>
+        <target state="translated">- KOD OLUŞTURMA -</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationDescription">
+        <source>Description: {0} can generate code for service contracts, clients and data types from metadata documents. These metadata documents can be on disk or retrieved online. Online retrieval follows either the WS-Metadata Exchange protocol or the DISCO protocol.</source>
+        <target state="translated">Açıklama: {0}, meta veri belgelerinden hizmet anlaşmaları, müşteriler ve veri türleri için kod oluşturabilir. Bu meta veri belgeleri diskte olabilir veya çevrimiçi olarak alınabilir. Çevrimiçi alma, WS-Metadata Exchange protokolünü veya DISCO protokolünü izler.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationServiceContract">
+        <source>Generate code for Service Contracts. Client class and configuration will not be generated. (Short Form: -{0})</source>
+        <target state="translated">Hizmet Anlaşmaları için kod oluşturun. İstemci sınıfı ve yapılandırması oluşturulmayacak. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput1">
+        <source>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</source>
+        <target state="translated">Bir meta veri belgesinin (wsdl veya xsd) yolu. Dosya yolunda standart komut satırı joker parçacıkları kullanılabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput2">
+        <source>The URL to a service endpoint that provides metadata or to a metadata document hosted online. For more information on how these documents are retrieved see the Metadata Download section.</source>
+        <target state="translated">Meta verileri ya da çevrimiçi barındırılan bir meta veri belgesini sağlayan bir servis uç noktasının URL'si. Bu belgelerin alınma durumu hakkında daha fazla bilgi için Meta Veri İndirme bölümüne bakın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCodeGenerationSyntaxInput3">
+        <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange. For more information see the Metadata Download section.</source>
+        <target state="translated">WS-Metadata Exchange'i destekleyen bir servis uç noktası için WS-Addressing EndpointReference içeren bir XML dosyasının yolu. Daha fazla bilgi için Meta Veri İndirme bölümüne bakın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCollectionType">
+        <source>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</source>
+        <target state="translated">Şemalardan kod üretilirken bir koleksiyon veri türü olarak kullanılacak türün tam veya bütünleştirilmiş kodla nitelenen adı. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpCommonOptionsCategory">
+        <source>-= COMMON OPTIONS =-</source>
+        <target state="translated">-= ORTAK SEÇENEKLER =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpDirectory">
+        <source>Directory to create files in (default: current directory) (Short Form: -{0})</source>
+        <target state="translated">Dosyaların oluşturulacağı dizin (varsayılan: geçerli dizin) (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples">
+        <source>-= EXAMPLES =-</source>
+        <target state="translated">-= ÖRNEKLER =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples1">
+        <source>svcutil myContractLibrary.exe</source>
+        <target state="translated">svcutil myContractLibrary.exe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExamples2">
+        <source>- Generate serialization types for XmlSerializer types used by any Service Contracts in the assembly</source>
+        <target state="translated">- Bütünleştirilmiş koddaki herhangi bir Hizmet Anlaşması tarafından kullanılan XmlSerializer türleri için serileştirme türleri oluşturun</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExcludeTypeCodeGeneration">
+        <source>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</source>
+        <target state="translated">Başvurulan anlaşma türlerinin dışında tutulacak bir tam veya bütünleştirilmiş kodla nitelenen tür adı. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpExcludeTypeExport">
+        <source>The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the --{1} option. (Short Form: -{0})</source>
+        <target state="translated">Dışarı aktarmadan dışlanacak bir türün tam veya bütünleştirilmiş kodla nitelenmiş adı. Bu seçenek, bir hizmete veya bir dizi hizmet sözleşmesine ilişkin meta verileri dışa aktarırken türlerin dışa aktarılmasını dışlamak için kullanılabilir. Bu seçenek, --{1} seçeneğiyle kullanılamaz. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpHelp">
+        <source>Display command syntax and options for the tool. (Short Form: -{0})</source>
+        <target state="translated">Araç için komut söz dizimini ve seçenekleri görüntüleme. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputAssemblyPath">
+        <source>&lt;assemblyPath&gt;</source>
+        <target state="translated">&lt;assemblyPath&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputEpr">
+        <source>&lt;epr&gt;</source>
+        <target state="translated">&lt;epr&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputMetadataDocumentPath">
+        <source>&lt;metadataDocumentPath&gt;</source>
+        <target state="translated">&lt;metadataDocumentPath&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpInputUrl">
+        <source>&lt;url&gt;</source>
+        <target state="translated">&lt;url&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadCategory">
+        <source>-= METADATA DOWNLOAD =-</source>
+        <target state="translated">-= META VERİLERİ İNDİRME =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadDescription">
+        <source>Description: {0} can be used to download metadata from running services and save the metadata to local files. To download metadata, you must explicitly specify the --{1}:{2} option. Otherwise, client code will be generated. For http and https URL schemes svcutil.exe will try to retrieve metadata using WS-Metadata Exchange and DISCO. For all other URL schemes {0} will only try WS-Metadata Exchange. By default, {0} uses the bindings defined in the System.ServiceModel.Description.MetadataExchangeBindings class. To configure the binding used for WS-Metadata Exchange you must define a client endpoint in config that uses the IMetadataExchange contract. This can be defined either in {0}'s config file or in another config file specified using the --{3} option.</source>
+        <target state="translated">Açıklama: {0}, çalışan hizmetlerden meta verileri indirmek ve meta verileri yerel dosyalara kaydetmek için kullanılabilir. Meta verileri indirmek için --{1}:{2} seçeneğini belirtmelisiniz. Aksi takdirde, istemci kodu oluşturulur. http ve https URL şemaları için svcutil.exe, WS-Metadata Exchange ve DISCO'yu kullanarak meta verileri almaya çalışır. Diğer tüm URL şemaları için {0} yalnızca WS-Metadata Exchange'i dener. Varsayılan olarak {0}, System.ServiceModel.Description.MetadataExchangeBindings sınıfında tanımlanan bağlamaları kullanır. WS-Metadata Exchange için kullanılan bağlamayı yapılandırmak için, IMetadataExchange anlaşmasını kullanan yapılandırmada bir istemci uç noktası tanımlamanız gerekir. Bu, {0} yapılandırma dosyasında veya --{3} seçeneği kullanılarak belirtilen başka bir yapılandırma dosyasında tanımlanabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntax">
+        <source>Syntax: {0} --{1}:{2}  {3}* | {4}</source>
+        <target state="translated">Söz dizimi: {0} --{1}:{2} {3}* | {4}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntaxInput1">
+        <source>The URL to a service endpoint that provides metadata or an URL that points to a metadata document hosted online. </source>
+        <target state="translated">Meta verileri sağlayan bir servis uç noktasının URL'si veya çevrimiçi olarak barındırılan bir meta veri belgesini gösteren bir URL. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataDownloadSyntaxInput2">
+        <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</source>
+        <target state="translated">WS-Metadata Exchange'i destekleyen bir hizmet uç noktası için WS-Addressing EndpointReference içeren bir XML dosyasının yolu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportCategory">
+        <source>-= METADATA EXPORT =-</source>
+        <target state="translated">-= META VERİLERİ DIŞARI AKTARMA =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportDescription">
+        <source>Description: {0} can export metadata for services, contracts and data types in compiled assemblies. To export metadata for a service, you must use the --{1} option to indicate the service you would like to export. To export all Data Contract types within an assembly use the --{2} option. By default metadata is exported for all Service Contracts in the input assemblies.</source>
+        <target state="translated">Açıklama: {0}, derlenmiş bütünleşik kodlarda hizmetler, anlaşmalar ve veri türleri için meta verileri dışarı aktarabilir. Bir hizmete ilişkin meta verileri dışa aktarmak için dışarı aktarmak istediğiniz hizmeti belirtmek üzere --{1} seçeneğini kullanmanız gerekir. Bütünleştirilmiş koddaki tüm Veri Anlaşması türlerini dışarı aktarmak için --{2} seçeneğini kullanın. Varsayılan olarak meta veriler, giriş bütünleştirilmiş kodlarındaki tüm Hizmet Anlaşmaları için dışarı aktarılır.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportSyntax">
+        <source>Syntax: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</source>
+        <target state="translated">Sözdizimi: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpMetadataExportSyntaxInput1">
+        <source>The path to an assembly that contains services, contracts or Data Contract types to be exported. Standard command-line wildcards can be used to provide multiple files as input.</source>
+        <target state="translated">Dışarı aktarılacak hizmetleri, anlaşmaları veya Veri Anlaşması türlerini içeren bir bütünleştirilmiş kod yolu. Standart komut satırı joker karakterleri giriş olarak birden çok dosya sağlamak için kullanılabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNamespace">
+        <source>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</source>
+        <target state="translated">Bir WSDL veya XML Schema targetNamespace'ten CLR ad alanına eşleme. targetNamespace için '*' kullanılırsa, ilgili CLR ad alanına açık bir eşleme olmaksızın tüm targetNamespace'ler eşlenir. Varsayılan: Veri Anlaşmaları için şema belgesinin hedef ad alanından türetilir. Diğer tüm oluşturulan türler için varsayılan ad alanı kullanılır. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNologo">
+        <source>Suppress the copyright and banner message.</source>
+        <target state="translated">Telif hakkı ve başlık iletisini gösterme.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpNostdlib">
+        <source>Do not reference standard libraries. By default mscorlib.dll and system.servicemodel.dll are referenced.</source>
+        <target state="translated">Standart kitaplıklara başvurmayın. Varsayılan olarak mscorlib.dll ve system.servicemodel.dll'ye başvurulur.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpOptions">
+        <source>Options:</source>
+        <target state="translated">Seçenekler:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpOut">
+        <source> The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</source>
+        <target state="translated"> Oluşturulan kodun dosya adı. Varsayılan: WSDL tanım adı, WSDL hizmet adı veya şemalardan birinin targetNamespace değerinden türetilir. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpReferenceCodeGeneration">
+        <source>Reference types in the specified assembly. When generating clients, use this option to specify assemblies that might contain types representing the metadata being imported.  (Short Form: -{0})</source>
+        <target state="translated">Belirtilen bütünleştirilmiş koddaki başvuru türleri. İstemci oluştururken, içeri aktarılmakta olan meta verileri temsil eden türleri içerebilecek bütünleştirilmiş kodlar belirtmek için bu seçeneği kullanın.  (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpReferenceOther">
+        <source>Add the specified assembly to the set of assemblies used for resolving type references. If you are exporting or validating a service that uses 3rd-party extensions (Behaviors, Bindings and BindingElements) registered in config use this option to locate extension assemblies that are not in the GAC.  (Short Form: -{0})</source>
+        <target state="translated">Belirtilen bütünleştirilmiş kodu tür başvurularını çözümlemek için kullanılan bütünleştirilmiş kodlar kümesine ekleyin. Yapılandırmada kayıtlı 3. taraf uzantıları (Behaviors, Bindings ve BindingElements) kullanan bir hizmeti dışarı aktarıyor veya doğruluyorsanız GAC'de olmayan uzantı bütünleştirilmiş kodlarını bulmak için bu seçeneği kullanın.  (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpTargetOutputType">
+        <source>The target output for the tool: {0}, {1} or {2}.</source>
+        <target state="translated">Aracın hedef çıkışı: {0}, {1} veya {2}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage1">
+        <source>USES:</source>
+        <target state="translated">ŞUNU KULLANIR:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage2">
+        <source>  - Generate code from running services or static metadata documents. </source>
+        <target state="translated">  - Çalışmakta olan hizmetlerden veya statik meta veri belgelerinden kod oluşturun. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage3">
+        <source>  - Export metadata documents from compiled code.</source>
+        <target state="translated">  - Derlenmiş koddaki meta veri belgelerini dışarı aktarın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage4">
+        <source>  - Validate compiled service code.</source>
+        <target state="translated">  - Derlenmiş hizmet kodunu doğrulayın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage5">
+        <source>  - Download metadata documents from running services.</source>
+        <target state="translated">  - Çalışan hizmetlerden meta veri belgelerini indirin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpUsage6">
+        <source>  - Pre-generate serialization code.</source>
+        <target state="translated">  - Serileştirme kodunu önceden oluşturun.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationCategory">
+        <source>-= SERVICE VALIDATION =-</source>
+        <target state="translated">-= HIZMET DOĞRULAMA =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationDescription">
+        <source>Description: Validation is useful to detect errors in service implementations without hosting the service. You must use the --{0} option to indicate the service you would like to validate.</source>
+        <target state="translated">Açıklama: Doğrulama, hizmeti barındırmadan hizmet uygulamalarındaki hataları algılamak için faydalıdır. Doğrulamak istediğiniz hizmeti belirtmek için --{0} seçeneğini kullanabilirsiniz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationExcludeTypeExport">
+        <source>The fully-qualified or assembly-qualified name of a service type to exclude from validation. (Short Form: -{0})</source>
+        <target state="translated">Doğrulamadan dışlanacak bir hizmet türünün tam veya bütünleştirilmiş kodla nitelenmiş adı. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationSyntax">
+        <source>Syntax: {0} --{1} --{2}:{3}  {4}*</source>
+        <target state="translated">Söz Dizimi: {0} --{1} --{2}:{3}  {4}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpValidationSyntaxInput1">
+        <source>The path to an assembly containing service types to be validated. The assembly must have an associated config file to provide service configuration. Standard command-line wildcards can be used to provide multiple assemblies.</source>
+        <target state="translated">Doğrulanacak hizmet türlerini içeren bir bütünleştirilmiş kodun yolu. Hizmet yapılandırması sağlamak için bütünleştirilmiş kodun ilişkili bir yapılandırma dosyası olması gerekir. Standart komut satırı joker karakterleri birden çok bütünleştirilmiş kod sağlamak için kullanılabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpVersion30TargetClientVersion">
+        <source>Generate code that references functionality in .NET Framework assemblies 3.0 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.0.(Short Form: -{0})</source>
+        <target state="translated">.NET Framework bütünleştirilmiş kodları 3.0 ve öncesindeki işlevselliğe başvuran kod oluşturun. .NET Framework sürüm 3.0'ı kullanan istemciler için kod oluşturuyorsanız bu geçişi kullanın.(Kısa Form: -{0} )</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpVersion35TargetClientVersion">
+        <source>Generate code that references functionality in .NET Framework assemblies 3.5 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.5.(Short Form: -{0})</source>
+        <target state="translated">.NET Framework bütünleştirilmiş kodları 3.5 ve öncesindeki işlevselliğe başvuran kod oluşturun. .NET Framework sürüm 3.5'i kullanan istemciler için kod oluşturuyorsanız bu anahtarı kullanın.(Kısa Form: -{0} )</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpWrapped">
+        <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</source>
+        <target state="translated">Oluşturulan kod, belgede sarmalanmış sabit değer iletilerinin "parameters" üyesini sarmalamadan çıkarmaz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationCategory">
+        <source>-= XMLSERIALIZER TYPE GENERATION =-</source>
+        <target state="translated">-= XMLSERIALIZER TÜRÜ OLUŞTURMA =-</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationDescription">
+        <source>Description: {0} can pre-generate C# serialization code that is required for types that can be serialized using the XmlSerializer. {0} will only generate code for types used by Service Contracts found in the input assemblies.</source>
+        <target state="translated">Açıklama: {0}, XmlSerializer kullanılarak seri hale getirilebilir türler için gereken C# serileştirme kodunu önceden üretebilir. {0}, yalnızca giriş bütünleştirilmiş kodlarında bulunan Hizmet Anlaşmaları tarafından kullanılan türler için kod üretir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntax">
+        <source>Syntax: {0} {1}*</source>
+        <target state="translated">Söz dizimi: {0} {1}*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput1">
+        <source>The path to an assembly containing Service Contract types. Serialization types will be generated for all Xml Serializable types in each contract</source>
+        <target state="translated">Hizmet Anlaşması türlerini içeren bir bütünleştirilmiş kodun yolu. Serileştirme türleri, her anlaşmadaki tüm Xml Serileştirilebilir türleri için oluşturulur</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput2">
+        <source>Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: -{0})</source>
+        <target state="translated">Belirtilen bütünleştirilmiş kodu tür başvurularını çözümlemek için kullanılan bütünleştirilmiş kodlar kümesine ekleyin. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput3">
+        <source>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: -{0})</source>
+        <target state="translated">Dışarı aktarma veya doğrulamadan dışlanacak tam veya bütünleştirilmiş kodla nitelenen tür adı. Bu seçenek, bir hizmete veya bir dizi hizmet sözleşmesine ilişkin meta verileri dışa aktarırken türlerin dışa aktarılmasını dışlamak için kullanılabilir. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpXmlSerializerTypeGenerationSyntaxInput4">
+        <source>Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: -{0})</source>
+        <target state="translated">Oluşturulan kodun dosya adı. Araca giriş olarak birden çok bütünleştirilmiş kod geçirildiğinde bu seçenek yoksayılır. Varsayılan: bütünleştirilmiş kod adından türetildi. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HintConsiderUseXmlSerializer">
+        <source>If you are using the --{0} option to import data contract types and are getting this error message, consider using xsd.exe instead. Types generated by xsd.exe may be used in the Windows Communication Foundation after applying the XmlSerializerFormatAttribute attribute on your service contract. Alternatively, consider using the --{1} option to import these types as XML types to use with DataContractFormatAttribute attribute on your service contract.</source>
+        <target state="translated">Veri anlaşması türlerini içe aktarmak için --{0} seçeneğini kullanıyorsanız ve bu hata iletisini alıyorsanız bunun yerine xsd.exe'yi kullanmayı düşünün. xsd.exe tarafından oluşturulan türler, hizmet anlaşmanıza XmlSerializerFormatAttribute özniteliği uygulandıktan sonra Windows Communication Foundation'da kullanılabilir. Alternatif olarak, hizmet anlaşmanızdaki DataContractFormatAttribute özniteliğiyle birlikte kullanmak üzere bu türleri XML türleri olarak içe aktarmak için --{1} seçeneğini kullanmayı düşünün.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Logo">
+        <source>Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.
+[{1}]
+{2}
+</source>
+        <target state="translated">Microsoft (R) dotnet-svcutil.xmlserializer aracı, Sürüm {0}.
+[{1}]
+{2}
+</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MoreHelp">
+        <source>If you would like more help, type "svcutil -{0}"</source>
+        <target state="translated">Daha fazla yardım almak istiyorsanız "svcutil -{0}" yazın</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoCodeWasGenerated">
+        <source>No code was generated.
+If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
+or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
+        <target state="translated">Kod oluşturulmadı.
+İstemci oluşturmaya çalışıyorsanız bunun nedeni meta veri belgelerinin geçerli anlaşma veya hizmetler içermemesi
+ya da bulunan tüm anlaşma ve hizmetlerin /reference bütünleştirilmiş kodlarında yer alması olabilir. Araca tüm meta veri belgelerini geçirdiğinizi doğrulayın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersCollectionType">
+        <source>&lt;type&gt;</source>
+        <target state="translated">&lt;tür&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersDirectory">
+        <source>&lt;directory&gt;</source>
+        <target state="translated">&lt;directory&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersExcludeType">
+        <source>&lt;type&gt;</source>
+        <target state="translated">&lt;tür&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersLanguage">
+        <source>&lt;language&gt;</source>
+        <target state="translated">&lt;language&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersNamespace">
+        <source>&lt;string,string&gt;</source>
+        <target state="translated">&lt;string,string&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersOut">
+        <source>&lt;file&gt;</source>
+        <target state="translated">&lt;file&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersOutputType">
+        <source>&lt;output type&gt;</source>
+        <target state="translated">&lt;çıkış türü&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersReference">
+        <source>&lt;file path&gt;</source>
+        <target state="translated">&lt;file path&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParametersTarget">
+        <source>&lt;enum&gt;</source>
+        <target state="translated">&lt;sabit listesi&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValidationError">
+        <source>Validation Error:</source>
+        <target state="translated">Doğrulama Hatası:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValidationWasSuccessful">
+        <source>The Service '{0}' was validated with no errors</source>
+        <target state="translated">'{0}' Hizmeti hatasız doğrulandı</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Warning">
+        <source>Warning: </source>
+        <target state="translated">Uyarı: </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WcfTrademarkForCmdLine">
+        <source>Microsoft (R) Windows (R) Communication Foundation</source>
+        <target state="translated">Microsoft (R) Windows (R) Communication Foundation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnCouldNotLoadTypesFromReferenceAssemblyAt">
+        <source>There were errors loading types in an assembly loaded from '{0}' some types in the assembly could not be loaded and will not be available to the tool.</source>
+        <target state="translated">'{0}' öğesinden yüklenen bir bütünleştirilmiş koddaki türler yüklenirken hatalar oluştu. Bütünleştirilmiş koddaki bazı türler yüklenemedi ve araç tarafından kullanılamayacak.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnNoServiceContractTypes">
+        <source>Cannot generate XmlSerializer types for assembly: {0}. No service contract types were found.</source>
+        <target state="translated">Bütünleştirilmiş kod için XmlSerializer türleri oluşturulamıyor: {0}. Hizmet anlaşması türü bulunamadı.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnNoXmlSerializerOperationBehavior">
+        <source>Cannot generate XmlSerializer for assembly: {0}. No service contract in the assembly has an operation with XmlSerializerOperationBehavior.</source>
+        <target state="translated">Bütünleştirilmiş kod için XmlSerializer oluşturulamıyor: {0}. Bütünleştirilmiş koddaki hiçbir hizmet anlaşmasının XmlSerializerOperationBehavior ile bir işlemi yok.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnOptionConflictsWithInput">
+        <source>Option --{0} cannot be used with multiple input assemblies. Ignoring {0} option. </source>
+        <target state="translated">--{0} seçeneği birden çok giriş bütünleştirilmiş koduyla kullanılamaz. {0} seçeneği yoksayılıyor. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnToolIsUsedDirectly">
+        <source>This tool is not intended to be used directly. </source>
+        <target state="translated">Bu aracın doğrudan kullanılması amaçlanmamıştır. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnUnableToLoadContractForSGen">
+        <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
+    Type: {0}
+    Details:{1}</source>
+        <target state="translated">Anlaşma türü yüklenirken bir hata oluştu. Bu anlaşma için XmlSerializer türleri oluşturulamıyor.
+    Tür: {0}
+    Ayrıntılar:{1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnVJSharpNamespace">
+        <source>When using the '--{0}:{1}' argument, only one namespace mapping is supported. Use '--{2}:*,&lt;string&gt;' to set the namespace.</source>
+        <target state="translated">'--{0}:{1}' bağımsız değişkeni kullanılırken yalnızca bir ad alanı eşlemesi desteklenir. Ad alanını ayarlamak için '--{2}:*,&lt;string&gt;' kullanın.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
