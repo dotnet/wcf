@@ -6,7 +6,7 @@
     <HelixBuild>$(BUILD_BUILDNUMBER)</HelixBuild>
     <HelixBuild Condition="'$(HelixBuild)' == ''">123460.01</HelixBuild>
 	<DotNetCliPackageType>sdk</DotNetCliPackageType>
-    <DotNetCliVersion>6.0.404</DotNetCliVersion>
+    <DotNetCliVersion>8.0.100</DotNetCliVersion>
     <IncludeDotNetCli>true</IncludeDotNetCli>
 
     <EnableAzurePipelinesReporter>true</EnableAzurePipelinesReporter>
