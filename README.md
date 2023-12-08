@@ -1,4 +1,7 @@
 # WCF -- Windows Communication Foundation Client Libraries
+Test CLA ignore
+Test CLA ignore
+
 
 [![Build Status](https://dev.azure.com/dnceng/internal/_apis/build/status/dotnet/wcf/dotnet.wcf?branchName=master)](https://dev.azure.com/dnceng/internal/_build/latest?definitionId=318&branchName=master)
 
