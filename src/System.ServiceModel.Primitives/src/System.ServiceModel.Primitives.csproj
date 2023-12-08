@@ -8,7 +8,8 @@
     <IsPackable>true</IsPackable>
     <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
     <NoWarn>$(NoWarn);NU5131</NoWarn>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the common types used by all of the WCF libraries.</PackageDescription>
     <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>

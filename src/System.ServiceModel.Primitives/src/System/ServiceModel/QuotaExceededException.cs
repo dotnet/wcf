@@ -12,7 +12,9 @@ namespace System.ServiceModel
         public QuotaExceededException() : base() { }
         public QuotaExceededException(string message) : base(message) { }
         public QuotaExceededException(string message, Exception innerException) : base(message, innerException) { }
+#pragma warning disable SYSLIB0051
         protected QuotaExceededException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }
 

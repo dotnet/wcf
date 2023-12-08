@@ -12,6 +12,8 @@ namespace System.IdentityModel.Tokens
         public SecurityTokenException() : base() { }
         public SecurityTokenException(string message) : base(message) { }
         public SecurityTokenException(string message, Exception innerException) : base(message, innerException) { }
+#pragma warning disable SYSLIB0051
         protected SecurityTokenException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

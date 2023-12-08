@@ -333,7 +333,7 @@ public static class BasicHttpBindingTest
     public static void ExtendedProtectionPolicy_Propagates_To_TransportBindingElement()
     {
         var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-        var epp = new ExtendedProtectionPolicy(PolicyEnforcement.Always);
+        var epp = new ExtendedProtectionPolicy(PolicyEnforcement.WhenSupported);
         binding.Security.Transport.ExtendedProtectionPolicy = epp;
         var be = binding.CreateBindingElements();
         var htbe = be.Find<HttpTransportBindingElement>();

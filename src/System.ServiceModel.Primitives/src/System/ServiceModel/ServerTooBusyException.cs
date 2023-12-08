@@ -13,6 +13,8 @@ namespace System.ServiceModel
         public ServerTooBusyException() { }
         public ServerTooBusyException(string message) : base(message) { }
         public ServerTooBusyException(string message, Exception innerException) : base(message, innerException) { }
+#pragma warning disable SYSLIB0051
         protected ServerTooBusyException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

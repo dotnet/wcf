@@ -42,6 +42,8 @@ namespace System.ServiceModel
 
         // for serialization
         public MessageHeaderException() { }
+#pragma warning disable SYSLIB0051
         protected MessageHeaderException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

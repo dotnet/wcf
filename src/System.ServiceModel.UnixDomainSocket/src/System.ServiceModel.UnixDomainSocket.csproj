@@ -6,7 +6,7 @@
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
     <NoWarn>$(NoWarn);NU5131</NoWarn>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the types that permit SOAP messages to be exchanged using Unix domain socket.</PackageDescription>
   </PropertyGroup>

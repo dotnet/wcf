@@ -12,6 +12,8 @@ namespace System.ServiceModel
         public ServiceActivationException() { }
         public ServiceActivationException(string message) : base(message) { }
         public ServiceActivationException(string message, Exception innerException) : base(message, innerException) { }
+#pragma warning disable SYSLIB0051
         protected ServiceActivationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

@@ -165,11 +165,13 @@ namespace System.ServiceModel.Channels
         public const bool RequireClientCertificate = false;
         public const int MaxFaultSize = MaxBufferSize;
         public const int MaxSecurityFaultSize = 16384;
+#pragma warning disable SYSLIB0039
         public const SslProtocols SslProtocols =
                                            // SSL3 is not supported in CoreFx.
                                            System.Security.Authentication.SslProtocols.Tls |
                                            System.Security.Authentication.SslProtocols.Tls11 |
                                            System.Security.Authentication.SslProtocols.Tls12;
+#pragma warning restore SYSLIB0039
 
         // Calling CreateFault on an incoming message can expose some DoS-related security 
         // vulnerabilities when a service is in streaming mode.  See MB 47592 for more details. 

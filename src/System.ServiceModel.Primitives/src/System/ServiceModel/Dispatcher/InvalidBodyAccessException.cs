@@ -11,6 +11,8 @@ namespace System.ServiceModel.Dispatcher
     {
         protected InvalidBodyAccessException(string message) : this(message, null) { }
         protected InvalidBodyAccessException(string message, Exception innerException) : base(message, innerException) { }
+#pragma warning disable SYSLIB0051
         protected InvalidBodyAccessException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

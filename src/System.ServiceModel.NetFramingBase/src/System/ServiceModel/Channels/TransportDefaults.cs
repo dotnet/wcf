@@ -12,12 +12,13 @@ namespace System.ServiceModel.Channels
         public const long MaxReceivedMessageSize = 65536;
         public const int MaxBufferSize = (int)MaxReceivedMessageSize;
         public const bool RequireClientCertificate = false;
+#pragma warning disable SYSLIB0039
         public const SSAuth.SslProtocols SslProtocols =
-                                           // SSL3 is not supported in CoreFx.
-                                           SSAuth.SslProtocols.Tls |
+        // SSL3 is not supported in CoreFx.
+        SSAuth.SslProtocols.Tls |
                                            SSAuth.SslProtocols.Tls11 |
                                            SSAuth.SslProtocols.Tls12;
-
+#pragma warning restore SYSLIB0039
         public static MessageEncoderFactory GetDefaultMessageEncoderFactory()
         {
             return new BinaryMessageEncodingBindingElement().CreateMessageEncoderFactory();
