@@ -42,7 +42,8 @@ namespace System.ServiceModel
 
         // for serialization
         public MessageHeaderException() { }
-        [Obsolete(DiagnosticId = "SYSLIB0051")]
+#pragma warning disable SYSLIB0051
         protected MessageHeaderException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

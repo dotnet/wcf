@@ -7,6 +7,7 @@ using System.IO;
 using Microsoft.Tools.ServiceModel.Svcutil;
 using System.Threading;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace SvcutilTest
 {
@@ -111,7 +112,7 @@ namespace SvcutilTest
         [InlineData("netstd20")] //WCF package older than V4.10 get referened and CloseAsync() is generated
         [InlineData("net60")] //WCF package newer than V4.10 get referened and CloseAsync() is not generated
         [InlineData("net60net48")] //WCF package newer than V4.10 and System.ServiceModel.dll are referenced conditionally by target and CloseAsync() be generarted with conditional compilation mark
-        public async void MultiTargetCloseAsyncGeneration(string testCaseName)
+        public async Task MultiTargetCloseAsyncGeneration(string testCaseName)
         {
             this_TestCaseName = "MultiTargetCloseAsyncGeneration";
             TestFixture();

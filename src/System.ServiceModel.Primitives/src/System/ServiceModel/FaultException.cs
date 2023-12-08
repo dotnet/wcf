@@ -114,7 +114,7 @@ namespace System.ServiceModel
             Action = action;
         }
 
-        [Obsolete(DiagnosticId = "SYSLIB0051")]
+#pragma warning disable SYSLIB0051
         protected FaultException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -123,6 +123,7 @@ namespace System.ServiceModel
             Fault = (MessageFault)info.GetValue("messageFault", typeof(MessageFault));
             Action = info.GetString("action");
         }
+#pragma warning restore SYSLIB0051
 
         public string Action { get; }
 
@@ -397,12 +398,13 @@ namespace System.ServiceModel
             Detail = detail;
         }
 
-        [Obsolete(DiagnosticId = "SYSLIB0051")]
+#pragma warning disable SYSLIB0051
         protected FaultException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Detail = (TDetail)info.GetValue("detail", typeof(TDetail));
         }
+#pragma warning restore SYSLIB0051
 
         public TDetail Detail { get; }
 

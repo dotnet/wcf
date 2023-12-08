@@ -12,8 +12,9 @@ namespace System.ServiceModel
         public InvalidMessageContractException() : base() { }
         public InvalidMessageContractException(string message) : base(message) { }
         public InvalidMessageContractException(String message, Exception innerException) : base(message, innerException) { }
-        [Obsolete(DiagnosticId = "SYSLIB0051")]
+#pragma warning disable SYSLIB0051
         protected InvalidMessageContractException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }
 

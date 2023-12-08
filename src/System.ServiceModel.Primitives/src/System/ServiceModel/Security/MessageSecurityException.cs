@@ -12,7 +12,8 @@ namespace System.ServiceModel.Security
         public MessageSecurityException() : base() { }
         public MessageSecurityException(string message) : base(message) { }
         public MessageSecurityException(string message, Exception innerException) : base(message, innerException) { }
-        [Obsolete(DiagnosticId = "SYSLIB0051")]
+#pragma warning disable SYSLIB0051
         protected MessageSecurityException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

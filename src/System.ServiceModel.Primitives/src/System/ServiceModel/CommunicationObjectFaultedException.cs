@@ -12,7 +12,8 @@ namespace System.ServiceModel
         public CommunicationObjectFaultedException() { }
         public CommunicationObjectFaultedException(string message) : base(message) { }
         public CommunicationObjectFaultedException(string message, Exception innerException) : base(message, innerException) { }
-        [Obsolete(DiagnosticId = "SYSLIB0051")]
+#pragma warning disable SYSLIB0051
         protected CommunicationObjectFaultedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

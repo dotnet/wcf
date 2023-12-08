@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Tools.ServiceModel.Svcutil;
 using Xunit;
 
@@ -280,7 +281,7 @@ namespace SvcutilTest
         [InlineData("safeTelemetry", "-nl -v verbose -cn ES -ntr -tf netcoreapp2.1")]
         [InlineData("gdprSensitive", "http://www.myhost.com/myGdprensitiveUrl -d myGdrpSensitiveOutputDir -o myGdprSensitiveFileName -n \"*,myGdprSenstiveNS\" -bd myTempDir")]
         [InlineData("gdprFiltered", "-r assemblyRef -r {packageRef,*} -ct mycollectionType -et myexludetype")]
-        public async void CommandOptionsTelemetryString(string testCaseName, string options)
+        public async Task CommandOptionsTelemetryString(string testCaseName, string options)
         {
             this_TestCaseName = "CommandOptionsTelemetryString";
             TestFixture();

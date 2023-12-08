@@ -12,7 +12,8 @@ namespace System.ServiceModel
         public ChannelTerminatedException() { }
         public ChannelTerminatedException(string message) : base(message) { }
         public ChannelTerminatedException(string message, Exception innerException) : base(message, innerException) { }
-        [Obsolete(DiagnosticId = "SYSLIB0051")]
+#pragma warning disable SYSLIB0051
         protected ChannelTerminatedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

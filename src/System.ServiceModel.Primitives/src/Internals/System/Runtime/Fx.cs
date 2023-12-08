@@ -990,16 +990,18 @@ namespace System.Runtime
         internal class InternalException : SystemException
         {
             public InternalException(string description) : base(InternalSR.ShipAssertExceptionMessage(description)) { }
-            [Obsolete(DiagnosticId = "SYSLIB0051")]
+#pragma warning disable SYSLIB0051
             protected InternalException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
         }
 
         [Serializable]
         internal class FatalInternalException : InternalException
         {
             public FatalInternalException(string description) : base(description) { }
-            [Obsolete(DiagnosticId = "SYSLIB0051")]
+#pragma warning disable SYSLIB0051
             protected FatalInternalException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
         }
     }
 }
