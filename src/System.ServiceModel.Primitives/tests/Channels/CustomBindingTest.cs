@@ -32,7 +32,7 @@ public static class CustomBindingTest
         }
         catch (Exception ex)
         {
-            Assert.True(false, String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            Assert.Fail(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
         }
     }
 

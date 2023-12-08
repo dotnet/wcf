@@ -98,7 +98,7 @@ public static class MessageInspectorTests
             }
             else
             {
-                Assert.True(false, String.Format("One or both of the expected headers were not found.\nHeader: \"authType\" had value: {0}\nHeader: \"HttpRequestHeader.Authorization\" had value: {1}", authorizationHeaderValue, authTypeHeaderValue));
+                Assert.Fail(String.Format("One or both of the expected headers were not found.\nHeader: \"authType\" had value: {0}\nHeader: \"HttpRequestHeader.Authorization\" had value: {1}", authorizationHeaderValue, authTypeHeaderValue));
             }
 
             // *** CLEANUP *** \\

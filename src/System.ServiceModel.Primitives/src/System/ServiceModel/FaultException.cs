@@ -114,6 +114,7 @@ namespace System.ServiceModel
             Action = action;
         }
 
+#pragma warning disable SYSLIB0051
         protected FaultException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -122,6 +123,7 @@ namespace System.ServiceModel
             Fault = (MessageFault)info.GetValue("messageFault", typeof(MessageFault));
             Action = info.GetString("action");
         }
+#pragma warning restore SYSLIB0051
 
         public string Action { get; }
 
@@ -193,6 +195,7 @@ namespace System.ServiceModel
             return (reason != null) ? new FaultReason(reason) : DefaultReason;
         }
 
+        [System.Obsolete]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -395,11 +398,13 @@ namespace System.ServiceModel
             Detail = detail;
         }
 
+#pragma warning disable SYSLIB0051
         protected FaultException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Detail = (TDetail)info.GetValue("detail", typeof(TDetail));
         }
+#pragma warning restore SYSLIB0051
 
         public TDetail Detail { get; }
 
@@ -408,6 +413,7 @@ namespace System.ServiceModel
             return MessageFault.CreateFault(Code, Reason, Detail);
         }
 
+        [System.Obsolete]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

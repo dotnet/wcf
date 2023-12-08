@@ -12,6 +12,8 @@ namespace System.ServiceModel.Security
         public SecurityNegotiationException() : base() { }
         public SecurityNegotiationException(string message) : base(message) { }
         public SecurityNegotiationException(String message, Exception innerException) : base(message, innerException) { }
+#pragma warning disable SYSLIB0051
         protected SecurityNegotiationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
     }
 }

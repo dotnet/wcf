@@ -14,7 +14,9 @@ namespace System.ServiceModel
         public ProtocolException() { }
         public ProtocolException(string message) : base(message) { }
         public ProtocolException(string message, Exception innerException) : base(message, innerException) { }
+#pragma warning disable SYSLIB0051
         protected ProtocolException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#pragma warning restore SYSLIB0051
 
         internal static ProtocolException ReceiveShutdownReturnedNonNull(Message message)
         {

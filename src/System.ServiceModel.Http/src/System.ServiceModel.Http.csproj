@@ -7,7 +7,7 @@
     <IsPackable>true</IsPackable>
     <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
     <NoWarn>$(NoWarn);NU5131</NoWarn>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).</PackageDescription>
   </PropertyGroup>

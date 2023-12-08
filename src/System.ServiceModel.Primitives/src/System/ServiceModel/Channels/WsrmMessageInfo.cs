@@ -584,10 +584,12 @@ namespace System.ServiceModel.Channels
                 this.faultReply = faultReply;
             }
 
+#pragma warning disable SYSLIB0051
             protected InternalFaultException(SerializationInfo info, StreamingContext context)
                 : base(info, context)
             {
             }
+#pragma warning restore SYSLIB0051
 
             public Message FaultReply
             {

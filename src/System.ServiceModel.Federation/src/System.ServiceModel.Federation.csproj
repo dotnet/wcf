@@ -6,7 +6,7 @@
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackageDescription>Provides the types that allow security communications with SOAP messages using WS-Federation.</PackageDescription>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>

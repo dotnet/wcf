@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CLSCompliant>false</CLSCompliant>
