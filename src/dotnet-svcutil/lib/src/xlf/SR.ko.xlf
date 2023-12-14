@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 이 언어에서 생성 중인 코드 요소 중 일부만 지원하기 때문일 수 있습니다. 다른 언어를 사용해 보세요.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">--{1} 옵션에 전달된 '{0}' 값에 대해 코드 공급자를 만들 수 없습니다. 코드 공급자가 제대로 설치되고 구성되었는지 확인하세요.</target>
@@ -545,6 +550,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
         <target state="translated">내부로 표시된 클래스를 생성합니다. 기본값: 공용 클래스를 생성합니다(약식: -{0}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: /{0})</source>
+        <target state="new">The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
