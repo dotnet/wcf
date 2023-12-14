@@ -630,5 +630,10 @@ Your credentials will be sent to the server in clear text.</value>
   </data>
   <data name="HelpSyncOnlyFormat" xml:space="preserve">
     <value>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</value>
+  <data name="ErrCouldNotCreateCodeProvider" xml:space="preserve">
+    <value>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</value>
+  </data>
+  <data name="HelpLanguage" xml:space="preserve">
+    <value>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: /{0})</value>
   </data>
 </root>

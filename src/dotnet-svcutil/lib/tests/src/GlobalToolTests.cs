@@ -45,6 +45,20 @@ namespace SvcutilTest
 
         [Theory]
         [Trait("Category", "BVT")]
+        [InlineData("CS")]
+        [InlineData("VB")]
+        public void LanguageOption(string lang)
+        {
+            this_TestCaseName = "LanguageOption";
+            TestFixture();
+            InitializeGlobal(lang);
+            var wsdlFile = Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl");
+            var options = $"-l {lang} {wsdlFile}";
+            TestGlobalSvcutil(options);
+        }
+
+        [Theory]
+        [Trait("Category", "BVT")]
         [InlineData("Project", "--toolContext Project -ntr -tf netcoreapp2.0 -nb")]
         [InlineData("Global", "--toolcontext Global -ntr -tf netcoreapp2.0 -nb")]
         [InlineData("Infrastructure", "-tc Infrastructure -ntr -tf netcoreapp2.0 -nb")]

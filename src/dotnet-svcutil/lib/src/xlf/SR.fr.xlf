@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 Le langage ne prend peut-être pas en charge tous les éléments de code générés. Utilisez un autre langage.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">Impossible de créer un fournisseur de code pour la valeur '{0}' passée à l'option --{1}. Vérifiez que le fournisseur de code est installé et configuré correctement.</target>
@@ -545,6 +550,11 @@ Identificateur de document : '{0}'.</target>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
         <target state="translated">Générer des classes marquées comme internes. Valeur par défaut : générer des classes publiques. (Forme abrégée : /{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: /{0})</source>
+        <target state="new">The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
