@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    public class ServiceChannelProxy : DispatchProxy, ICommunicationObject, IChannel, IClientChannel, IOutputChannel, IRequestChannel, IServiceChannel, IDuplexContextChannel
+    public class ServiceChannelProxy : DispatchProxy, ICommunicationObject, IChannel, IClientChannel, IOutputChannel, IRequestChannel, IServiceChannel, IDuplexContextChannel, IAsyncDisposable
     {
         private const String activityIdSlotName = "E2ETrace.ActivityID";
         private Type _proxiedType;
@@ -671,6 +671,11 @@ namespace System.ServiceModel.Channels
         void IDisposable.Dispose()
         {
             ((IClientChannel)_serviceChannel).Dispose();
+        }
+
+        ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            return ((IAsyncDisposable)_serviceChannel).DisposeAsync();
         }
 
         bool IContextChannel.AllowOutputBatching
