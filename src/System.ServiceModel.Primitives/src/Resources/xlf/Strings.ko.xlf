@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">클라이언트가 SspiNegotiation/Kerberos 목적으로 대상 주소 '{0}'의 ID에 기초하여 서비스 사용자 이름을 확인할 수 없습니다. 대상 주소 ID는 UPN ID(예: acmedomain\alice) 또는 SPN ID(예: host/bobs-machine)여야 합니다.</target>
+        <target state="translated">클라이언트가 SspiNegotiation/Kerberos 목적을 위해 대상 주소 '{0}'의 ID에 기초하여 서비스 사용자 이름을 확인할 수 없습니다. 대상 주소 ID는 UPN ID(예: acmedomain\alice) 또는 SPN ID(예: host/bobs-machine)여야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -949,7 +949,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">이 플랫폼에서는 확장된 보호가 지원되지 않습니다. 적합한 패치를 설치하거나 Binding 또는 BindingElement의 ExtendedProtectionPolicy를 PolicyEnforcement 값이 "Never" 또는 "WhenSupported"인 값이 되도록 변경하세요.</target>
+        <target state="translated">이 플랫폼에서는 확장된 보호가 지원되지 않습니다. 적합한 패치를 설치하거나 Binding 또는 BindingElement의 ExtendedProtectionPolicy를 PolicyEnforcement 값이 "Never" 또는 "WhenSupported"인 값으로 변경하십시오.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Soap 구문 분석 오류, xsd:type '{0}' 유효하지 않음{1}</target>
+        <target state="translated">SOAP 구문 분석 오류입니다. xsd:type '{0}'이(가) 올바르지 않습니다. {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -3304,7 +3304,7 @@
       </trans-unit>
       <trans-unit id="SFxRequestReplyNone">
         <source>A message was received with a WS-Addressing ReplyTo or FaultTo header targeted at the "None" address.  These values are not valid for request-reply operations.  Please consider using a one-way operation or enabling ManualAddressing if you need to support ReplyTo or FaultTo values of "None."</source>
-        <target state="translated">"None" 주소를 대상으로 하는 WS-Addressing ReplyTo 또는 FaultTo 헤더가 있는 메시지를 받았습니다. 이 값은 요청-회신 작업에 대해 올바르지 않습니다. "None"인 ReplyTo 또는 FaultTo 값을 지원하려면 단방향 작업을 사용하거나 ManualAddressing을 사용해 보세요.</target>
+        <target state="translated">"None" 주소를 대상으로 하는 WS-Addressing ReplyTo 또는 FaultTo 헤더가 있는 메시지를 받았습니다. 이 값은 요청-회신 작업에 대해 올바르지 않습니다. "None"인 ReplyTo 또는 FaultTo 값을 지원하려면 단방향 작업을 사용하거나 ManualAddressing을 사용해 보십시오.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxRequestTimedOut1">
@@ -3399,7 +3399,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">"literal" 모드에서 "rpc-style"을 지정하지만 메시지 계약 형식 또는 System.ServiceModel.Channels.Message를 사용하므로 '{0}' 작업을 로드할 수 없습니다. 이 조합은 허용되지 않습니다. 스타일에 대해 다른 값을 지정하거나, 메시지 계약 형식 또는 System.ServiceModel.Channels.Message 이외의 매개 변수를 사용하세요.</target>
+        <target state="translated">"literal" 모드에서 "rpc-style"을 지정하지만 메시지 계약 유형 또는 System.ServiceModel.Channels.Message를 사용하므로 '{0}' 작업을 로드할 수 없습니다. 이 조합은 허용되지 않습니다. 스타일에 대해 다른 값을 지정하거나, 메시지 계약 유형 또는 System.ServiceModel.Channels.Message 이외의 매개 변수를 사용하십시오.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
@@ -4279,7 +4279,7 @@
       </trans-unit>
       <trans-unit id="UnexpectedXmlChildNode">
         <source>XML child node {0} of type {1} is unexpected for element {2}.</source>
-        <target state="translated">{1} 형식의 XML 자식 노드 {0}은(는) {2} 요소에 필요하지 않은 자식 노드입니다.</target>
+        <target state="translated">{1} 형식의 XML 자식 노드 {0}은(는) 요소 {2}에 대해 예기치 않은 자식 노드입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnknownComputedKeyAlgorithm">

@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="translated">Limite attività</target>
+        <target state="translated">Limite dell'attività</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityCallback">
@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Errore di analisi Soap, xsd:type '{0}' {1}non valido</target>
+        <target state="translated">Errore di analisi di Soap, xsd:type '{0}' non valido {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -3399,7 +3399,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">Non è stato possibile caricare l'operazione '{0}' perché specifica "rpc-style" in modalità "literal", ma usa tipi di contratto di messaggio o l'elemento System.ServiceModel.Channels.Message. Questa combinazione non è consentita. Specificare un valore diverso per lo stile o usare parametri diversi dai tipi di contratto di messaggio o System.ServiceModel.Channels.Message.</target>
+        <target state="translated">Impossibile caricare l'operazione '{0}' perché specifica "rpc-style" in modalità "literal", ma utilizza tipi di contratto messaggio o System.ServiceModel.Channels.Message. Tale combinazione non è consentita. Specificare un valore diverso per lo stile o utilizzare parametri diversi da tipi di contratto messaggi o System.ServiceModel.Channels.Message.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
