@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
 
   <PropertyGroup>
@@ -15,7 +15,7 @@
     <XmlSerializerTestSource>..\..\System.Private.ServiceModel\tests\Scenarios\Contract\XmlSerializer\</XmlSerializerTestSource>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
     <!-- We're building netcoreap, run on the test CLI
          Reuse the same runtimeconfig that the tests use. -->
     <GeneratorRuntimeConfig>$(ArtifactsBinDir)\dotnet-svcutil.xmlserializer\$(Configuration)\$(TargetFramework)\dotnet-svcutil.xmlserializer.runtimeconfig.json</GeneratorRuntimeConfig>
