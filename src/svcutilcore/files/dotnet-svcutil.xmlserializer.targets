@@ -2,7 +2,6 @@
   <PropertyGroup>
     <MyProperty>$(IntermediateOutputPath)</MyProperty>
     <_IsNet5Compatible Condition="'$(MSBuildVersion)' != '' AND '$(MSBuildVersion)' >= '16.8.0'">true</_IsNet5Compatible>
-    <_IsSdkGreaterThan60 Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '7.0'))">true</_IsSdkGreaterThan60>
     <_SerializationAssemblyName>$(AssemblyName).XmlSerializers</_SerializationAssemblyName>
     <_SerializerDllIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).dll</_SerializerDllIntermediateFolder>
     <_SerializerPdbIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).pdb</_SerializerPdbIntermediateFolder>
@@ -26,22 +25,9 @@
           TaskParameter="RuntimeAssemblies"
           ItemName="WCFRuntimeAssembly"/>
     </ResolvePackageAssets>
-    
-    <ResolvePackageAssets
-      Condition="'$(_IsNet5Compatible)' == 'true' And  '$(_IsSdkGreaterThan60)' == 'true'"
-      DefaultImplicitPackages="Microsoft.NETCore.App;NETStandard.Library"
-      ProjectAssetsFile="$(ProjectAssetsFile)"
-      ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
-      ProjectPath="$(MSBuildProjectFullPath)"
-      TargetFramework="$(TargetFramework)"
-      DotNetAppHostExecutableNameWithoutExtension="$(_DotNetAppHostExecutableNameWithoutExtension)">
-      <Output
-          TaskParameter="RuntimeAssemblies"
-          ItemName="WCFRuntimeAssembly"/>
-    </ResolvePackageAssets>
 
     <ResolvePackageAssets
-      Condition="'$(_IsNet5Compatible)' == 'true' And  '$(_IsSdkGreaterThan60)' != 'true'"
+      Condition="'$(_IsNet5Compatible)' == 'true'"
       ProjectAssetsFile="$(ProjectAssetsFile)"
       ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
       ProjectPath="$(MSBuildProjectFullPath)"

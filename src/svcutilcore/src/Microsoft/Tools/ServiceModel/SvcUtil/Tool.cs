@@ -69,9 +69,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             System.Environment.Exit((int)ToolExitCodes.Unknown);
         }
 
-#pragma warning disable SYSLIB0004 // Type or member is obsolete
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-#pragma warning restore SYSLIB0004 // Type or member is obsolete
         internal static bool IsFatal(Exception exception)
         {
             return exception != null && (
