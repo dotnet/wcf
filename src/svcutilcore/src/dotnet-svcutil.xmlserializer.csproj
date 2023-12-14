@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>1.1.1.0</AssemblyVersion>
     <AssemblyName>dotnet-svcutil.xmlserializer</AssemblyName>
@@ -20,7 +20,6 @@
     <IsPackable>true</IsPackable>
     <MajorVersion>1</MajorVersion>
     <MinorVersion>2</MinorVersion>
-    <PatchVersion>1</PatchVersion>
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
     <PackageReleaseNotes>https://github.com/dotnet/wcf/blob/master/release-notes/dotnet-svcutil.xmlserializer-notes.md</PackageReleaseNotes>
     <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
