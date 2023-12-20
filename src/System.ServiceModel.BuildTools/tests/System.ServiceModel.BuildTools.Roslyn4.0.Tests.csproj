@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>System.ServiceModel.BuildTools.Tests</RootNamespace>
+    <LangVersion>11.0</LangVersion>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <DefineConstants>$(DefineConstants);ROSLYN4_0_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\src\AnalyzerReleases.Shipped.md" />
+    <AdditionalFiles Include="..\src\AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(WcfUnitTestCommonProj)" />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit 1.1.1 is not available from the feeds of this repo. Instead 1.1.2-beta1.22109.1 is.
+      With 1.1.2-beta1.22109.1 there's an issue with XUnit version. The workaround is to pull the packages which are not suffixed with `XUnit`
+      Please see https://github.com/dotnet/roslyn-sdk/issues/1099#issuecomment-1723487931 -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.2-beta1.22109.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2-beta1.22109.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="..\src\System.ServiceModel.BuildTools.Roslyn4.0.csproj" />
+  </ItemGroup>
+</Project>

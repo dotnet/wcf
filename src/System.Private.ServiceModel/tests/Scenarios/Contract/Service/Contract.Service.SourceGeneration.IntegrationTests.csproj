@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="./Contract.Service.IntegrationTests.csproj" />
+
+  <PropertyGroup>
+    <LangVersion>11.0</LangVersion>
+    <EnableSystemServiceModelOperationInvokerGenerator>true</EnableSystemServiceModelOperationInvokerGenerator>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.BuildTools\src\System.ServiceModel.BuildTools.Roslyn4.0.csproj" OutputItemType="Analyzer" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Exposes EnableSystemServiceModelOperationInvokerGenerator at runtime -->
+    <AssemblyAttribute Include="System.ServiceModel.EnableSystemServiceModelOperationInvokerGenerator">
+      <_Parameter1>$(EnableSystemServiceModelOperationInvokerGenerator)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Exposes EnableSystemServiceModelOperationInvokerGenerator at build time -->
+    <CompilerVisibleProperty Include="EnableSystemServiceModelOperationInvokerGenerator" />
+  </ItemGroup>
+
+</Project>

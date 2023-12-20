@@ -222,9 +222,10 @@ stages:
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: MacOS
           timeoutInMinutes: 90
+          container: ubuntu_2004_20211215          
           pool:
             name: NetCore-Public
-            demands: ImageOverride -equals windows.vs2022.amd64.open
+            demands: ImageOverride -equals build.Ubuntu.1804.amd64.open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
@@ -253,13 +254,13 @@ stages:
           - template: /eng/UpdatePRService.yml
             parameters:
               wcfPRServiceId: $(_WcfPRServiceId)
-          - script: eng\common\cibuild.cmd
+          - script: eng/common/cibuild.sh
               -configuration $(_BuildConfig)
               -preparemachine
               $(_TestArgs)
               /p:Test=false
             displayName: MacOS Build
-          - powershell: eng\common\build.ps1
+          - powershell: eng/common/build.sh
               -configuration $(_BuildConfig)
               -prepareMachine
               -ci
