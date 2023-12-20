@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">İstemci, SspiNegotiation/Kerberos amacıyla, '{0}' hedef adresindeki kimliğe dayanan Hizmet Asıl Adı (SPN) öğesini belirleyemiyor. Hedef adres kimliği, bir UPN kimliği (örneketkialanı\ayse gibi) veya SPN kimliği (konak/ebrunun-makinesi gibi) olmalıdır.</target>
+        <target state="translated">İstemci, SspiNegotiation/Kerberos amacıyla, '{0}' hedef adresindeki varlığa dayanan Hizmet Asıl Adı (SPN) öğesini belirleyemiyor. Hedef adres varlığı, bir UPN varlığı (örneketkialanı\ayse gibi) ya da SPN varlığı (konak/ebrunun-makinesi gibi) olmalıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Soap Ayrıştırma hatası, xsd:type '{0}' geçersiz {1}</target>
+        <target state="translated">Soap ayrıştırma hatası, xsd:type '{0}' geçersiz {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -3214,7 +3214,7 @@
       </trans-unit>
       <trans-unit id="SFxNone2004">
         <source>The WS-Addressing "none" value is not valid for the August 2004 version of WS-Addressing.</source>
-        <target state="translated">WS-Addressing "none" değeri, WS-Addressing Ağustos 2004 sürümü için geçerli değildir.</target>
+        <target state="translated">WS-Addressing "none" değeri, WS-Addressing Ağustos 2004 sürümü için geçerli değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxNullReplyFromExtension2">
@@ -3304,7 +3304,7 @@
       </trans-unit>
       <trans-unit id="SFxRequestReplyNone">
         <source>A message was received with a WS-Addressing ReplyTo or FaultTo header targeted at the "None" address.  These values are not valid for request-reply operations.  Please consider using a one-way operation or enabling ManualAddressing if you need to support ReplyTo or FaultTo values of "None."</source>
-        <target state="translated">WS-Addressing ReplyTo ya da FaultTo üst bilgisine sahip, "None" adrese hedeflenen bir ileti alındı. Bu değerler, istek-yanıt işlemlerinde geçerli değildir. "None" öğesinin ReplyTo ya da FaultTo değerlerini desteklemeniz gerektiğinde, yeni bir tek yönlü işlem kullanabilir veya ManualAddressing işlevini etkinleştirebilirsiniz.</target>
+        <target state="translated">WS-Addressing ReplyTo ya da FaultTo üst bilgisine sahip, "None" adrese hedeflenen bir ileti alındı. Bu değerler, istek yanıt işlemlerinde geçerli değildir. "None" öğesinin ReplyTo ya da FaultTo değerlerini desteklemeniz gerektiğinde, yeni bir tek yönlü işlem kullanmayı ya da ManualAddressing işlevini etkinleştirmeyi düşünün.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxRequestTimedOut1">
@@ -3399,7 +3399,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">"literal" modunda "rpc-style" belirtildiği halde ileti anlaşması türlerini ya da System.ServiceModel.Channels.Message öğesini kullandığından '{0}' işlemi yüklenemedi. Bu bileşime izin verilmez, stil için farklı bir değer belirtin veya ileti anlaşması türlerinden veya System.ServiceModel.Channels.Message öğesinden farklı parametreler kullanın.</target>
+        <target state="translated">"literal" modunda "rpc-style" belirtildiği halde ileti sözleşme türlerini ya da System.ServiceModel.Channels.Message öğesini kullandığından '{0}' işlemi yüklenemedi. Bu birleşime izin verilmez, stil için farklı bir değer belirtin ya da ileti sözleşme türlerinden veya System.ServiceModel.Channels.Message öğesinden farklı parametreler kullanın.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
