@@ -2,15 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+using CoreWCF.Web;
+#else
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
+#endif
+using System.Net;
+using System.Security.Principal;
 using System.Text;
 
 namespace WcfService
