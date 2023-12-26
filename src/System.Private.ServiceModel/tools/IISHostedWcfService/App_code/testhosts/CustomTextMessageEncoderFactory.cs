@@ -12,7 +12,7 @@ namespace WcfService
 {
     internal class CustomTextMessageEncoderFactory : MessageEncoderFactory
     {
-        private System.ServiceModel.Channels.MessageEncoder _encoder;
+        private MessageEncoder _encoder;
         private MessageVersion _version;
         private string _mediaType;
         private string _charSet;
@@ -25,7 +25,7 @@ namespace WcfService
             _encoder = new CustomTextMessageEncoder(this);
         }
 
-        public override System.ServiceModel.Channels.MessageEncoder Encoder
+        public override MessageEncoder Encoder
         {
             get
             {
