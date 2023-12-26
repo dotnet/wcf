@@ -553,8 +553,8 @@ Identificador do Documento: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguage">
-        <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: /{0})</source>
-        <target state="new">The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: /{0})</target>
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="new">The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
