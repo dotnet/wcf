@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">Klient nie może określić jednostki usługi na podstawie tożsamości z adresu docelowego „{0}” na potrzeby SspiNegotiation/Kerberos. Tożsamość adresu docelowego musi być tożsamością UPN (jak acmedomain\alice) lub tożsamością SPN (jak host/bobs-machine).</target>
+        <target state="translated">Klient nie może określić głównej nazwy usługi na podstawie tożsamości z adresu docelowego „{0}” na potrzeby SspiNegotiation/Kerberos. Tożsamość adresu docelowego musi być tożsamością UPN (jak domena_abc\alicja) lub tożsamością SPN (jak host/komputer1).</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
