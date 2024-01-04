@@ -343,7 +343,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 {
                     try
                     {
+#pragma warning disable CA1416 // Validate platform compatibility
                         bool junk = Console.CursorVisible;
+#pragma warning restore CA1416 // Validate platform compatibility
                         if (Console.WindowWidth > 75)
                             s_nameMidpoint = Console.WindowWidth / 3;
                         else
@@ -626,7 +628,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             {
                 try
                 {
+#pragma warning disable CA1416 // Validate platform compatibility
                     bool junk = Console.CursorVisible;
+#pragma warning restore CA1416 // Validate platform compatibility
                     return Console.BufferWidth;
                 }
                 catch
