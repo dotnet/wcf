@@ -13,6 +13,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{EAB2959D-0A16-4F60-A453-765491E1C069}</ProjectGuid>
     <IsShipping>$(Ship_SvcUtilXmlSerPackages)</IsShipping>
+    <EnableXlfLocalization>true</EnableXlfLocalization>
   </PropertyGroup>
 
   <!--Package Properties-->
