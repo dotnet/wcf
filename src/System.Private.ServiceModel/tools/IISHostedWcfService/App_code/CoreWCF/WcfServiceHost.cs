@@ -3,9 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 #if NET
-
 using CoreWCF;
 using CoreWCF.Channels;
+using CoreWCF.Description;
 
 namespace WcfService
 {
@@ -42,6 +42,15 @@ namespace WcfService
             public Type ContractType { get; set; }
             public Binding Binding { get; set; }
             public string Address { get; set; }
+        }
+
+        // dummy class for service credentials
+        public ServiceCredentials Credentials
+        {
+            get
+            {
+                return new ServiceCredentials();
+            }
         }
     }
 }
