@@ -76,8 +76,10 @@ namespace WcfService
         [OperationContract(Action = "http://tempuri.org/IWcfService/EchoHttpMessageProperty")]
         TestHttpRequestMessageProperty EchoHttpRequestMessageProperty();
 
+#if !NET
         [OperationContract(Action = "http://tempuri.org/IWcfService/GetRestartServiceEndpoint")]
         string GetRestartServiceEndpoint();
+#endif
 
         [OperationContract(Action = "http://tempuri.org/IWcfService/GetRequestCustomHeader", ReplyAction = "*")]
         string GetRequestCustomHeader(string customHeaderName, string customHeaderNamespace);

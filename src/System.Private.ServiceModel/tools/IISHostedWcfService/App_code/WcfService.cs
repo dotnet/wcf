@@ -244,6 +244,7 @@ namespace WcfService
             return null;
         }
 
+#if !NET
         public string GetRestartServiceEndpoint()
         {
             BasicHttpBinding binding = new BasicHttpBinding();
@@ -262,6 +263,7 @@ namespace WcfService
             // Return the unique endpoint for this ServiceHost instance of the WcfRestartService
             return "http://[HOST]" + path;
         }
+#endif 
 
         public string GetRequestCustomHeader(string customHeaderName, string customHeaderNamespace)
         {
