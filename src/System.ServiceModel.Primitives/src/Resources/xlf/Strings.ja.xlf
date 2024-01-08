@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">SOAP 解析エラーです。xsd:type '{0}' 無効な {1}</target>
+        <target state="translated">SOAP 解析エラー、xsd:type '{0}' 無効な {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
