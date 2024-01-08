@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Logo" xml:space="preserve">
-    <value>Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.&#13;&#10;[{1}]&#13;&#10;{2}&#13;&#10;</value>
+    <value>Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.
+[{1}]
+{2}
+</value>
   </data>
   <data name="HelpUsage1" xml:space="preserve">
     <value>USES:</value>
@@ -487,13 +490,17 @@
     <value>The '{0}' input argument conflicts with '{1}' because they imply different modes of tool operation</value>
   </data>
   <data name="ErrSchemaValidationForExport" xml:space="preserve">
-    <value>There was a validation error on a schema generated during export:&#13;&#10;    Source: {0}&#13;&#10;    Line: {1} Column: {2}&#13;&#10;   Validation Error: {3}</value>
+    <value>There was a validation error on a schema generated during export:
+    Source: {0}
+    Line: {1} Column: {2}
+   Validation Error: {3}</value>
   </data>
   <data name="ErrUnableToLoadExtensions" xml:space="preserve">
     <value>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</value>
   </data>
   <data name="ErrUnableToLoadReferenceType" xml:space="preserve">
-    <value>There was an error loading a referenced contract type. This type will be ignored.&#13;&#10;    Type: {0}</value>
+    <value>There was an error loading a referenced contract type. This type will be ignored.
+    Type: {0}</value>
   </data>
   <data name="ErrUnableToUniquifyFilename" xml:space="preserve">
     <value>Cannot create output filename. Too many files are being created with the prefix '{0}'.</value>
@@ -517,7 +524,9 @@
     <value>Cannot write to output file</value>
   </data>
   <data name="WrnUnableToLoadContractForSGen" xml:space="preserve">
-    <value>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.&#13;&#10;    Type: {0}&#13;&#10;    Details:{1}</value>
+    <value>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
+    Type: {0}
+    Details:{1}</value>
   </data>
   <data name="WrnNoServiceContractTypes" xml:space="preserve">
     <value>Cannot generate XmlSerializer types for assembly: {0}. No service contract types were found.</value>
@@ -538,7 +547,9 @@
     <value>Generating XML serializers...</value>
   </data>
   <data name="NoCodeWasGenerated" xml:space="preserve">
-    <value>No code was generated.&#13;&#10;If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services&#13;&#10;or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</value>
+    <value>No code was generated.
+If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services
+or because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</value>
   </data>
   <data name="ValidationWasSuccessful" xml:space="preserve">
     <value>The Service '{0}' was validated with no errors</value>
