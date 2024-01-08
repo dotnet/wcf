@@ -237,15 +237,15 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">匯出期間產生的結構描述上發生驗證錯誤:
+        <target state="translated">匯出期間產生的結構描述上發生驗證錯誤: 
    來源: {0}
-   行: {1} 資料行: {2}
+   行: {1} 欄: {2}
   驗證錯誤: {3}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSingleUseSwitch">
         <source>The {0} option cannot be specified multiple times.</source>
-        <target state="translated">不可指定多次 {0} 選項。</target>
+        <target state="translated">不可以指定 {0} 選項多次。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSwitchMissing">
@@ -287,7 +287,7 @@
       </trans-unit>
       <trans-unit id="ErrUnexpectedDelimiter">
         <source>Invalid argument: delimiter (':' or '=') cannot start option.</source>
-        <target state="translated">引數無效: 選項開頭不可為分隔符號 (':' 或 '=')。</target>
+        <target state="translated">無效的引數: 選項開頭不能是分隔符號 (':' 或 '=')。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedError">
@@ -487,7 +487,7 @@
       </trans-unit>
       <trans-unit id="HelpNologo">
         <source>Suppress the copyright and banner message.</source>
-        <target state="translated">不顯示版權與橫幅訊息。</target>
+        <target state="translated">不顯示版權和橫幅訊息。</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNostdlib">
@@ -587,7 +587,7 @@
       </trans-unit>
       <trans-unit id="HelpWrapped">
         <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</source>
-        <target state="translated">產生的程式碼不會解除包裝 document-wrapped-literal 訊息的 "parameters" 成員。</target>
+        <target state="translated">產生的程式碼不會解除包裝文件包裝常值訊息的 "parameters" 成員。</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationCategory">
