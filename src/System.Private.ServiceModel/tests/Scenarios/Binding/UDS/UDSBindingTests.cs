@@ -60,7 +60,7 @@ public partial class Binding_UDSBindingTests : ConditionalWcfTest
     [WcfFact]
     [OuterLoop]
     [Condition(nameof(Windows_Authentication_Available),
-              nameof(WindowsOrSelfHosted))]
+              nameof(Is_Windows))]
     public void WindowsAuth()
     {
         string testString = new string('a', 3000);
