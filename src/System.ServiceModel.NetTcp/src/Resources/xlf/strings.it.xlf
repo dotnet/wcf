@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="UnableToResolveHost">
         <source>Cannot resolve the host name of URI "{0}" using DNS.</source>
-        <target state="translated">Non è possibile risolvere il nome host dell'URI "{0}" con il servizio DNS.</target>
+        <target state="translated">Impossibile risolvere il nome host dell'URI "{0}" tramite DNS.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">

@@ -184,7 +184,7 @@
       </trans-unit>
       <trans-unit id="BaseAddressMustBeAbsolute">
         <source>Only an absolute Uri can be used as a base address.</source>
-        <target state="translated">Только абсолютный Uri можно использовать в качестве базового адреса.</target>
+        <target state="translated">Только абсолютный URI можно использовать в качестве базового адреса.</target>
         <note />
       </trans-unit>
       <trans-unit id="BasicHttpMessageSecurityRequiresCertificate">
@@ -244,7 +244,7 @@
       </trans-unit>
       <trans-unit id="BindingDoesnTSupportTwoWayButContractRequires1">
         <source>Contract requires TwoWay (either request-reply or duplex), but Binding '{0}' doesn't support it or isn't configured properly to support it.</source>
-        <target state="translated">Контракту требуется свойство TwoWay (либо типа запрос-ответ, либо дуплексное), однако привязка "{0}" его не поддерживает или этого не позволяет неправильная настройка.</target>
+        <target state="translated">Контракту требуется свойство TwoWay (типа "запрос-ответ" либо дуплексное), однако привязка "{0}" его не поддерживает или этого не позволяет неправильная настройка.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingDoesntSupportDatagramButContractRequires">
@@ -399,7 +399,7 @@
       </trans-unit>
       <trans-unit id="CannotInheritTwoOperationsWithTheSameName3">
         <source>Cannot inherit two different operations with the same name, operation '{0}' from contracts '{1}' and '{2}' violate this rule. You can change the name of one of the operations by changing the method name or by using the Name property of OperationContractAttribute.</source>
-        <target state="translated">Невозможно наследовать две различные операции с одинаковым именем. Операция "{0}" из контрактов "{1}" и "{2}" нарушает это правило. Можно изменить имя одной из операций путем изменения имени метода или с помощью свойства Name атрибута OperationContractAttribute.</target>
+        <target state="translated">Невозможно наследовать две разные операции с одинаковым именем. Операция "{0}" из контрактов "{1}" и "{2}" нарушает это правило. Можно изменить имя одной из операций путем изменения имени метода или с помощью свойства Name атрибута OperationContractAttribute.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotObtainIssuedTokenKeySize">
@@ -544,7 +544,7 @@
       </trans-unit>
       <trans-unit id="CloseTimedOut">
         <source>Close timed out after {0}.  Increase the timeout value passed to the call to Close or increase the CloseTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Истекло время ожидания закрытия после {0}. Увеличьте значение тайм-аута, передаваемое вызову для закрытия или увеличьте значение CloseTimeout привязки. Время, выделенное для выполнения этой операции, может быть частью более длительного тайм-аута.</target>
+        <target state="translated">Истекло время ожидания закрытия после {0}. Увеличьте значение времени ожидания, передаваемое вызову для закрытия, или увеличьте значение CloseTimeout привязки. Время, выделенное для выполнения этой операции, может быть частью более длительного времени ожидания.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectAborted1">
@@ -599,7 +599,7 @@
       </trans-unit>
       <trans-unit id="CopyHttpHeaderFailed">
         <source>Failed to copy the HTTP header '{0}' with value '{1}' to '{2}'.</source>
-        <target state="translated">Не удалось скопировать заголовок "{0}" протокола HTTP со значением "{1}" в "{2}".</target>
+        <target state="translated">Не удалось скопировать заголовок HTTP "{0}" со значением "{1}" в "{2}".</target>
         <note />
       </trans-unit>
       <trans-unit id="CouldNotFindNamespaceForPrefix">
@@ -739,7 +739,7 @@
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForIncomingMessage">
         <source>Identity check failed for incoming message. The expected DNS identity of the remote endpoint was '{0}' but the remote endpoint provided DNS claim '{1}'. If this is a legitimate remote endpoint, you can fix the problem by explicitly specifying DNS identity '{1}' as the Identity property of EndpointAddress when creating channel proxy. </source>
-        <target state="translated">Ошибка идентификации входящего сообщения. Ожидаемая идентификация удаленной стороны в DNS ({0}) не соответствует указанному удаленной стороной DNS-имени ({1}). Если это надежная удаленная сторона, то проблему можно устранить, явно указав идентификацию в DNS "{1}" в свойстве Identity элемента EndpointAddress при создании прокси для канала. </target>
+        <target state="translated">Ошибка идентификации входящего сообщения. Ожидаемое удостоверение удаленной конечной точки в DNS ({0}) не соответствует указанному удаленной конечной точкой требованию DNS({1}). Если это надежная удаленная конечная точка, то проблему можно устранить, явно указав удостоверение DNS "{1}" в свойстве Identity элемента EndpointAddress при создании прокси для канала. </target>
         <note />
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForIncomingMessageLackOfDnsClaim">
@@ -749,7 +749,7 @@
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessage">
         <source>Identity check failed for outgoing message. The expected DNS identity of the remote endpoint was '{0}' but the remote endpoint provided DNS claim '{1}'. If this is a legitimate remote endpoint, you can fix the problem by explicitly specifying DNS identity '{1}' as the Identity property of EndpointAddress when creating channel proxy. </source>
-        <target state="translated">Ошибка идентификации входящего сообщения. Ожидаемая идентификация удаленной стороны в DNS ({0}) не соответствует указанному удаленной стороной DNS-имени ({1}). Если это надежная удаленная сторона, то проблему можно устранить, явно указав идентификацию в DNS "{1}" в свойстве Identity элемента EndpointAddress при создании прокси для канала. </target>
+        <target state="translated">Ошибка идентификации входящего сообщения. Ожидаемое удостоверение удаленной конечной точки в DNS ({0}) не соответствует указанному удаленной конечной точкой требованию DNS ({1}). Если это надежная удаленная конечная точка, то проблему можно устранить, явно указав удостоверение в DNS "{1}" в свойстве Identity элемента EndpointAddress при создании прокси для канала. </target>
         <note />
       </trans-unit>
       <trans-unit id="DnsIdentityCheckFailedForOutgoingMessageLackOfDnsClaim">
@@ -829,7 +829,7 @@
       </trans-unit>
       <trans-unit id="EncoderEnvelopeVersionMismatch">
         <source>The envelope version of the incoming message ({0}) does not match that of the encoder ({1}). Make sure the binding is configured with the same version as the expected messages.</source>
-        <target state="translated">Версия конверта входящего сообщения ({0}) не совпадает с версией кодировщика ({1}). Убедитесь, что привязка сконфигурирована с использованием той же версии, что и ожидаемые сообщения.</target>
+        <target state="translated">Версия конверта входящего сообщения ({0}) не совпадает с версией кодировщика ({1}). Убедитесь, что привязка настроена с использованием той же версии, что и ожидаемые сообщения.</target>
         <note />
       </trans-unit>
       <trans-unit id="EncoderMessageVersionMismatch">
@@ -839,7 +839,7 @@
       </trans-unit>
       <trans-unit id="EncoderUnrecognizedCharSet">
         <source>Unrecognized charSet '{0}' in contentType.</source>
-        <target state="translated">Неопознанный набор charSet "{0}" в contentType.</target>
+        <target state="translated">Неопознанный набор символов "{0}" в contentType.</target>
         <note />
       </trans-unit>
       <trans-unit id="EncoderUnrecognizedContentType">
@@ -1089,7 +1089,7 @@
       </trans-unit>
       <trans-unit id="FramingVersionNotSupportedFault">
         <source>The .Net Framing version being used is not supported by '{0}'. See the server logs for more details.</source>
-        <target state="translated">"{0}" не поддерживает используемую версию .Net Framing. См. дополнительную информацию в журналах сервера.</target>
+        <target state="translated">"{0}" не поддерживает используемую версию .Net Framing. Подробнее см. в журналах сервера.</target>
         <note />
       </trans-unit>
       <trans-unit id="FramingViaNotUri">
@@ -1104,7 +1104,7 @@
       </trans-unit>
       <trans-unit id="FramingViaTooLongFault">
         <source>Via '{0}' is too long to be processed by the remote host. See the server logs for more details.</source>
-        <target state="translated">Размер прыжка "{0}" слишком велик для обработки удаленным узлом. См. дополнительную информацию в журналах сервера.</target>
+        <target state="translated">Размер прыжка "{0}" слишком велик для обработки удаленным узлом. Подробнее см. в журналах сервера.</target>
         <note />
       </trans-unit>
       <trans-unit id="GenericCallbackException">
@@ -1174,7 +1174,7 @@
       </trans-unit>
       <trans-unit id="HttpContentTypeFormatException">
         <source>An error ({0}) occurred while parsing the content type of the HTTP request. The content type was: {1}.</source>
-        <target state="translated">Произошла ошибка ({0}) при разборе типа содержания запроса HTTP. Тип содержания: {1}.</target>
+        <target state="translated">Произошла ошибка ({0}) при разборе типа содержимого запроса HTTP. Тип содержимого: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentTypeHeaderRequired">
@@ -2234,7 +2234,7 @@
       </trans-unit>
       <trans-unit id="OnlyBodyReturnValuesSupported">
         <source>Only body return values are supported currently for protection, MessagePartDescription was specified.</source>
-        <target state="translated">В текущий момент поддерживается защита только для возвращенных значений тела, для которых было указано описание MessagePartDescription.</target>
+        <target state="translated">В текущий момент поддерживается защита только для возвращенных значений текста, для которых было указано описание MessagePartDescription.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyDefaultSpnServiceSupported">
@@ -2274,7 +2274,7 @@
       </trans-unit>
       <trans-unit id="PreambleAckIncorrect">
         <source>You have tried to create a channel to a service that does not support .Net Framing. </source>
-        <target state="translated">Сделана попытка создания канала к службе, не поддерживающей режим .Net Framing. </target>
+        <target state="translated">Сделана попытка создать канал к службе, не поддерживающей .Net Framing. </target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrectMaybeHttp">
@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Ошибка анализа SOAP, xsd:тип "{0}" является недопустимым {1}</target>
+        <target state="translated">Ошибка разбора SOAP, xsd:тип "{0}" является недопустимым {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -2629,7 +2629,7 @@
       </trans-unit>
       <trans-unit id="SFxChannelFactoryNoBindingFoundInConfigOrCode">
         <source>The underlying channel factory could not be created because no Binding was passed to the ChannelFactory. Please supply a valid Binding instance via the ChannelFactory constructor.</source>
-        <target state="translated">Не удалось создать производство выделенного канала, так как не был передан Binding в ChannelFactory. Передайте допустимый экземпляр Binding через конструктор ChannelFactory.</target>
+        <target state="translated">Не удалось создать фабрику выделенного канала, так как не был передан Binding в ChannelFactory. Передайте допустимый экземпляр Binding через конструктор ChannelFactory.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxChannelFactoryTypeMustBeInterface">
@@ -2799,7 +2799,7 @@
       </trans-unit>
       <trans-unit id="SFxErrorDeserializingReplyBodyMore">
         <source>Error in deserializing body of reply message for operation '{0}'. {1}</source>
-        <target state="translated">Ошибка десериализации тела ответного сообщения для операции "{0}". {1}</target>
+        <target state="translated">Ошибка десериализации текста ответного сообщения для операции "{0}". {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxErrorDeserializingRequestBody">
@@ -2829,7 +2829,7 @@
       </trans-unit>
       <trans-unit id="SFxErrorReflectionOnUnknown1">
         <source>An error occurred while loading attribute '{0}'.  Please see InnerException for more details.</source>
-        <target state="translated">Ошибка загрузки атрибута "{0}".  Подробнее см. InnerException.</target>
+        <target state="translated">Ошибка загрузки атрибута "{0}".  Дополнительные сведения см. в описании внутреннего исключения.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxErrorSerializingBody">
@@ -2904,7 +2904,7 @@
       </trans-unit>
       <trans-unit id="SFxHeadersAreNotSupportedInEncoded">
         <source>Message {0} must not have headers to be used in RPC encoded style.</source>
-        <target state="translated">Чтобы использоваться в кодированном стиле RPC, сообщение {0} не должно иметь заголовков.</target>
+        <target state="translated">Сообщение {0} не должно иметь заголовков, чтобы его можно было использовать в кодированном стиле RPC.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxImmutableChannelFactoryBehavior0">
@@ -2999,7 +2999,7 @@
       </trans-unit>
       <trans-unit id="SFxInvalidMessageBodyErrorDeserializingParameterMore">
         <source>There was an error while trying to deserialize parameter {0}:{1}. The InnerException message was '{2}'.  Please see InnerException for more details.</source>
-        <target state="translated">Ошибка десериализации параметра {0}:{1}. Сообщение InnerException было "{2}".  Подробнее см. InnerException.</target>
+        <target state="translated">Ошибка десериализации параметра {0}:{1}. Сообщение исключения InnerException: "{2}". Дополнительные сведения см. в описании исключения InnerException.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxInvalidMessageBodyErrorSerializingParameter">
@@ -3014,7 +3014,7 @@
       </trans-unit>
       <trans-unit id="SFxInvalidMessageHeaderArrayType">
         <source>MessageHeaderArrayAttribute found on member {0} is not a single dimensional array.</source>
-        <target state="translated">MessageHeaderArrayAttribute, найденный в члене {0}, не является одномерным массивом.</target>
+        <target state="translated">Атрибут MessageHeaderArrayAttribute, найденный в элементе {0}, не является одномерным массивом.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxInvalidReplyAction">
@@ -3034,7 +3034,7 @@
       </trans-unit>
       <trans-unit id="SFxInvalidStaticOverloadCalledForDuplexChannelFactory1">
         <source>The static CreateChannel method cannot be used with the contract {0} because that contract defines a callback contract.  Please try using one of the static CreateChannel overloads on DuplexChannelFactory&lt;TChannel&gt;.</source>
-        <target state="translated">Нельзя использовать статический метод CreateChannel с контрактом {0}, так как контракт определяет контракт обратного вызова.  Воспользуйтесь одним из статических перегрузок CreateChannel на производстве DuplexChannelFactory&lt;TChannel&gt;.</target>
+        <target state="translated">Нельзя использовать статический метод CreateChannel с контрактом {0}, так как контракт определяет контракт обратного вызова. Воспользуйтесь одной из статических перегрузок CreateChannel для DuplexChannelFactory&lt;TChannel&gt;.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxInvalidStreamInRequest">
@@ -3324,12 +3324,12 @@
       </trans-unit>
       <trans-unit id="SFxRpcMessageBodyPartNameInvalid">
         <source>RPC Message {1} in operation {0} has an invalid body name {2}. It must be {3}</source>
-        <target state="translated">Сообщение RPC {1} в операции {0} имеет недопустимое имя тела {2}. Оно должно быть {3}.</target>
+        <target state="translated">Сообщение RPC {1} в операции {0} имеет недопустимое имя текста {2}. Оно должно быть {3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxRpcMessageMustHaveASingleBody">
         <source>RPC Message {1} in operation {0} must have a single MessageBodyMember.</source>
-        <target state="translated">Сообщение RPC {1} в операции {0} должно иметь один MessageBodyMember.</target>
+        <target state="translated">Сообщение RPC {1} в операции {0} должно иметь один элемент MessageBodyMember.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxServerDidNotReply">
@@ -3399,7 +3399,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">Не удалось загрузить операцию "{0}", так как в ней указан режим "literal" для "rpc-style", но используются типы контрактов сообщений или System.ServiceModel.Channels.Message. Такая комбинация запрещена — укажите другое значение для стиля или используйте параметры, отличные от типов контрактов сообщений или System.ServiceModel.Channels.Message.</target>
+        <target state="translated">Не удалось загрузить операцию "{0}", так как в ней указан режим "literal" для "rpc-style", но используются типы контрактов сообщений или System.ServiceModel.Channels.Message. Такая комбинация запрещена -- укажите другое значение для стиля или используйте параметры, отличные от типов контрактов сообщений или System.ServiceModel.Channels.Message.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
@@ -3474,7 +3474,7 @@
       </trans-unit>
       <trans-unit id="SecureConversationSecurityTokenParametersRequireBootstrapBinding">
         <source>Security channel or listener factory creation failed. Secure conversation security token parameters do not specify the bootstrap security binding element.</source>
-        <target state="translated">Сбой создания защищенного канала или производства прослушивателя. В параметрах токена безопасности защищенного диалога не указан элемент привязки безопасности загрузки.</target>
+        <target state="translated">Сбой создания защищенного канала или фабрики прослушивателя. В параметрах маркера безопасности защищенного диалога не указан элемент привязки безопасности загрузки.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityAlgorithmSuiteNotSet">
@@ -4504,7 +4504,7 @@
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolContainsMultipleSubProtocolString">
         <source>The value specified ('{0}') contains more than one subprotocol which is not supported.</source>
-        <target state="translated">Указанное значение ("{0}") содержит более одного протокола, что не поддерживается.</target>
+        <target state="translated">Указанное значение ("{0}") содержит более одного подпротокола, что не поддерживается.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSocketInvalidProtocolEmptySubprotocolString">
