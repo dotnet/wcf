@@ -19,9 +19,9 @@
   <!--Package Properties-->
   <PropertyGroup>
     <IsPackable>true</IsPackable>
-    <MajorVersion>1</MajorVersion>
-    <MinorVersion>2</MinorVersion>
-    <PatchVersion>1</PatchVersion>
+    <MajorVersion>6</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>0</PatchVersion>
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
     <PackageReleaseNotes>https://github.com/dotnet/wcf/blob/master/release-notes/dotnet-svcutil.xmlserializer-notes.md</PackageReleaseNotes>
     <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
