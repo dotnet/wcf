@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="CopyrightForCmdLine">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="translated">Copyright (c) Microsoft Corporation. Todos los derechos reservados.</target>
+        <target state="translated">(c) Microsoft Corporation. Todos los derechos reservados.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrAmbiguityInAssemblyNames">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="ErrInputConflictsWithMode">
         <source>The input read from '{0}' is inconsistent with other options.</source>
-        <target state="translated">La lectura de entrada de "{0}" no es coherente con las restantes opciones.</target>
+        <target state="translated">La lectura de entrada de '{0}' no es coherente con las restantes opciones.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputConflictsWithOption">
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Error al cargar un tipo de contrato al que se hace referencia. Este tipo se omitirá.
+        <target state="translated">Ha ocurrido un error al cargar un tipo de contrato al que se hace referencia. Este tipo se omitirá.
     Tipo: {0}</target>
         <note />
       </trans-unit>
@@ -287,7 +287,7 @@
       </trans-unit>
       <trans-unit id="ErrUnexpectedDelimiter">
         <source>Invalid argument: delimiter (':' or '=') cannot start option.</source>
-        <target state="translated">Argumento no válido: el delimitador (":" o "=") no puede iniciar la opción.</target>
+        <target state="translated">Argumento no válido: el delimitador (':' o '=') no puede iniciar la opción.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedError">
@@ -587,7 +587,7 @@
       </trans-unit>
       <trans-unit id="HelpWrapped">
         <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</source>
-        <target state="translated">El código generado no desencapsulará el miembro "parameters" de los mensajes de literal encapsulados en un documento.</target>
+        <target state="translated">El código generado no desencapsulará el miembro "parameters" de los mensajes de literal encapsulado en un documento.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationCategory">

@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="CopyrightForCmdLine">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="translated">Copyright (c) Microsoft Corporation. Tutti i diritti sono riservati.</target>
+        <target state="translated">Copyright (c) Microsoft Corporation. Tutti i diritti riservati.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrAmbiguityInAssemblyNames">
@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="ErrCannotCreateDirectory">
         <source>Cannot create directory: {0}</source>
-        <target state="translated">Non è possibile creare la directory: {0}</target>
+        <target state="translated">Impossibile creare la directory: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateFile">
         <source>Cannot create output file: {0}</source>
-        <target state="translated">Non è possibile creare il file di output: {0}</target>
+        <target state="translated">Impossibile creare il file di output: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotDeleteExistingConfig">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="ErrCannotWriteFile">
         <source>Cannot write to output file</source>
-        <target state="translated">Non è possibile scrivere nel file di output</target>
+        <target state="translated">Impossibile scrivere nel file di output</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrConflictingInputs">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="ErrExpectedValue">
         <source>The {0} option requires that a value be specified.</source>
-        <target state="translated">Con l'opzione {0} è necessario specificare un valore.</target>
+        <target state="translated">Per l'opzione {0} è necessario specificare un valore.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputConflictsWithMode">
@@ -245,7 +245,7 @@
       </trans-unit>
       <trans-unit id="ErrSingleUseSwitch">
         <source>The {0} option cannot be specified multiple times.</source>
-        <target state="translated">Non è possibile specificare più volte l'opzione {0}.</target>
+        <target state="translated">Impossibile specificare più volte l'opzione {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSwitchMissing">
@@ -342,7 +342,7 @@
       </trans-unit>
       <trans-unit id="HelpCodeGenerationCategory">
         <source>-= CODE GENERATION =-</source>
-        <target state="translated">-= GENERAZIONE DEL CODICE =-</target>
+        <target state="translated">-= GENERAZIONE CODICE =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationDescription">
