@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="WebUnknownElement1">
         <source>An unexpected element was encountered: {0}. No elements were expected in this scope.</source>
-        <target state="translated">필요하지 않은 요소 {0}가 있습니다. 이 범위에서 필요한 요소는 없습니다.</target>
+        <target state="translated">필요하지 않은 요소가 있습니다({0}). 이 범위에서 필요한 요소는 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebUnknownElement2">
