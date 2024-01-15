@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="ActivityBoundary">
         <source>Activity boundary</source>
-        <target state="translated">Limite dell'attività</target>
+        <target state="translated">Limite attività</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivityProcessAction">
