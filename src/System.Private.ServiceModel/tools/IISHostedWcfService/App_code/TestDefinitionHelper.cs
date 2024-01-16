@@ -56,6 +56,7 @@ namespace WcfService
                 return s_baseAddresses;
             }
         }
+
 #if NET
         internal static void StartHosts()
         {
@@ -73,6 +74,7 @@ namespace WcfService
                         foreach (var serviceTestHost in GetAttributedServiceHostTypes())
                         {
                             var serviceBaseAddresses = new List<Uri>();
+                            var endpointBasePath = new Dictionary<string, string>();
                             foreach (TestServiceDefinitionAttribute attr in serviceTestHost.GetCustomAttributes(typeof(TestServiceDefinitionAttribute), false))
                             {
                                 Uri serviceBaseAddress = null;
@@ -82,7 +84,8 @@ namespace WcfService
                                     {
                                         if (attr.Schema.HasFlag(schema))
                                         {
-                                            serviceBaseAddress = new Uri(string.Format("{0}/{1}", BaseAddresses[(ServiceSchema)schema], attr.BasePath));
+                                            endpointBasePath.Add(schema.ToString().ToLower(), attr.BasePath);
+                                            serviceBaseAddress = new Uri(BaseAddresses[(ServiceSchema)schema]);
                                             serviceBaseAddresses.Add(serviceBaseAddress);
                                         }
                                     }
@@ -109,15 +112,18 @@ namespace WcfService
                                     var serviceHost = (ServiceHost)Activator.CreateInstance(serviceTestHost, serviceBaseAddresses.ToArray());
                                     serviceBuilder.AddService(serviceHost.ServiceType, options =>
                                     {
-                                        options.BaseAddresses.Clear();
                                         foreach (var baseAddress in serviceBaseAddresses)
                                         {
+                                            if (!options.BaseAddresses.Contains(baseAddress))
                                             options.BaseAddresses.Add(baseAddress);
                                         }
                                     });
                                     foreach (var endpoint in serviceHost.Endpoints)
                                     {
-                                        serviceBuilder.AddServiceEndpoint(serviceHost.ServiceType, endpoint.ContractType, endpoint.Binding, new Uri(endpoint.Address, UriKind.RelativeOrAbsolute), null);
+                                        string scheme = endpoint.Binding.Scheme;
+                                        string basePath = endpointBasePath[scheme];
+                                        string endpointAddress = string.Format("{0}/{1}", basePath, endpoint.Address);
+                                        serviceBuilder.AddServiceEndpoint(serviceHost.ServiceType, endpoint.ContractType, endpoint.Binding, new Uri(endpointAddress, UriKind.RelativeOrAbsolute), null);
                                     }
                                     serviceBuilder.ConfigureServiceHostBase(serviceHost.ServiceType, serviceHostBase =>
                                     {
