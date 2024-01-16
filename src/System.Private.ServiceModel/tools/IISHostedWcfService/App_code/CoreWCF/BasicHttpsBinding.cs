@@ -22,7 +22,7 @@ namespace WcfService
     //}
 
     // Cast BasicHttpsSecurityMode (WCF) to BasicHttpSecurityMode (CoreWCF)
-    public enum BasicHttpsSecurityMode
+    internal enum BasicHttpsSecurityMode
     {
         None,
         Transport,
@@ -31,7 +31,7 @@ namespace WcfService
         TransportCredentialOnly
     }
 
-    public class BasicHttpsBinding : BasicHttpBinding
+    internal class BasicHttpsBinding : BasicHttpBinding
     {
         public BasicHttpsBinding() : base((BasicHttpSecurityMode)BasicHttpsSecurityMode.Transport)
         {
