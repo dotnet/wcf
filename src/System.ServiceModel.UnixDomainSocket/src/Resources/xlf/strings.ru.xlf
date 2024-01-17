@@ -114,7 +114,7 @@
       </trans-unit>
       <trans-unit id="UDSConnectionTimedOut">
         <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">После {0} истекло время ожидания передачи через сокет. Превышен период ожидания, установленный в привязке. Время, назначенное для выполнения этой операции, может быть составной частью более длинного тайм-аута.</target>
+        <target state="translated">После {0} истекло время ожидания передачи через сокет. Превышен период ожидания, установленный в привязке. Время, выделенное для выполнения этой операции, может быть составной частью более длительного времени ожидания.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSLocalConnectionAborted">

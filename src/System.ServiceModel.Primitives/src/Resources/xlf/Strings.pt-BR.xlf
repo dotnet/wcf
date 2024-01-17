@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Erro de Soap Parse, xsd:type '{0}' inválido {1}</target>
+        <target state="translated">Erro de análise de SOAP, xsd:type '{0}' inválido {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -3149,7 +3149,7 @@
       </trans-unit>
       <trans-unit id="SFxMultipleContractStarOperations0">
         <source>A ServiceContract has more the one operation with an Action of "*".  A ServiceContract can have at most one operation an Action = "*".</source>
-        <target state="translated">Um ServiceContract tem mais uma operação com uma Action de "*". Um ServiceContract pode ter no máximo uma operação uma Ação = "*".</target>
+        <target state="translated">Um ServiceContract tem mais de uma operação com uma Ação de "*". Um ServiceContract pode ter no máximo uma operação Action = "*".</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMultiplePartsNotAllowedInEncoded">
@@ -3304,7 +3304,7 @@
       </trans-unit>
       <trans-unit id="SFxRequestReplyNone">
         <source>A message was received with a WS-Addressing ReplyTo or FaultTo header targeted at the "None" address.  These values are not valid for request-reply operations.  Please consider using a one-way operation or enabling ManualAddressing if you need to support ReplyTo or FaultTo values of "None."</source>
-        <target state="translated">Uma mensagem foi recebida com um cabeçalho WS-Addressing ReplyTo ou FaultTo destinado ao endereço "None".  Esses valores não são válidos para operações de solicitação-resposta.  Considere usar uma operação unidirecional ou ativar o ManualAddressing se precisar oferecer suporte aos valores ReplyTo ou FaultTo de "None".</target>
+        <target state="translated">Uma mensagem foi recebida com um cabeçalho WS-Addressing ReplyTo ou FaultTo destinado ao endereço "Nenhum". Esses valores não são válidos para as operações de solicitação-resposta. Considere usar uma operação unidirecional ou habilitar ManualAddressing se você precisar fornecer suporte aos valores "Nenhum" para ReplyTo ou FaultTo.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxRequestTimedOut1">
@@ -3399,7 +3399,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">A operação '{0}' não pôde ser carregada porque especifica "rpc-style" no modo "literal", mas usa tipos de contrato de mensagem ou o System.ServiceModel.Channels.Message. Esta combinação não é permitida -- especifique um valor diferente para estilo ou use parâmetros diferentes dos tipos de contrato de mensagem ou System.ServiceModel.Channels.Message.</target>
+        <target state="translated">A operação '{0}' não pôde ser carregada porque ela especifica "rpc-style" no modo "literal", mas usa os tipos de contrato de mensagem ou a System.ServiceModel.Channels.Message. Essa combinação não é permitida -- especifique um valor diferente para o estilo ou use parâmetros diferentes dos tipos de contrato de mensagem ou System.ServiceModel.Channels.Message.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
@@ -3784,7 +3784,7 @@
       </trans-unit>
       <trans-unit id="SigningTokenHasNoKeysSupportingTheAlgorithmSuite">
         <source>The signing token {0} has no key that supports the algorithm suite {1}.</source>
-        <target state="translated">O token de assinatura {0} não tem uma chave que ofereça suporte ao pacote de algoritmos {1}.</target>
+        <target state="translated">O token de assinatura {0} não tem nenhuma chave que dê suporte ao pacote de algoritmos {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SigningWithoutPrimarySignatureRequiresTimestamp">
@@ -3939,7 +3939,7 @@
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Parameters5">
         <source>The task-based asynchronous OperationContract method '{0}' in type '{1}' was matched with the asynchronous OperationContract methods '{2}' and '{3}' because they have the same operation name '{4}'. When a task-based asynchronous OperationContract method is matched to a pair of asynchronous OperationContract methods, the two OperationContracts must define the same number and types of parameters. In this case, some of the arguments are different. To fix it, ensure that the OperationContracts define the same number and types of arguments, in the same order. Alternatively, changing the name of one of the methods will prevent matching.</source>
-        <target state="translated">O método OperationContract assíncrono baseado em tarefa '{0}' no tipo '{1}' coincidiu com os métodos OperationContract assíncronos '{2}' e '{3}' porque eles têm o mesmo nome da operação '{4}'. Quando um método OperationContract assíncrono baseado em tarefa coincide com um par de métodos OperationContract assíncronos, os dois OperationContracts devem definir os mesmos números e tipos de parâmetros. Nesse caso, alguns argumentos são diferentes. Para corrigir isso, verifique se os OperationContracts definem os mesmos números e tipos de argumentos, na mesma ordem. Alternativamente, a alteração do nome de um dos métodos impedirá a correspondência.</target>
+        <target state="translated">O método assíncrono OperationContract baseado em tarefa '{0}' no tipo '{1}' coincidiu com os métodos assíncronos OperationContract '{2}' e '{3}' porque eles têm o mesmo nome de operação '{4}'. Quando um método assíncrono OperationContract baseado em tarefa coincide com um par de métodos assíncronos OperationContract, os dois OperationContracts devem definir o mesmo número e tipos de parâmetros. Nesse caso, alguns dos argumentos são diferentes. Para corrigir isso, verifique se os OperationContracts definem o mesmo número e tipos de argumentos, na mesma ordem. Como alternativa, altere o nome de um dos métodos para evitar a correspondência. </target>
         <note />
       </trans-unit>
       <trans-unit id="TaskAsyncMatchConsistency_Property6">
@@ -4434,7 +4434,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedTokenImpersonationLevel">
         <source>The value '{1}' for the '{0}' property is not supported in Windows Store apps.</source>
-        <target state="translated">O valor '{1}' da propriedade '{0}' não tem suporte nos aplicativos da Windows Store.</target>
+        <target state="translated">O valor '{1}' da propriedade '{0}' não tem suporte nos Aplicativos da Windows Store.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedTokenInclusionMode">
@@ -4709,7 +4709,7 @@
       </trans-unit>
       <trans-unit id="ssl_io_cert_validation">
         <source>The remote certificate is invalid according to the validation procedure.</source>
-        <target state="translated">O certificado remoto é inválido de acordo com o procedimento de validação.</target>
+        <target state="translated">O certificado remoto é inválido, de acordo com o procedimento de validação.</target>
         <note />
       </trans-unit>
       <trans-unit id="tooManyAttributesOfTypeOn2">
