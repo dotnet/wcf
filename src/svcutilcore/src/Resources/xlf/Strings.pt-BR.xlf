@@ -238,7 +238,7 @@
     Line: {1} Column: {2}
    Validation Error: {3}</source>
         <target state="translated">Ocorreu um erro de validação em um esquema gerado durante a exportação:
-    Origem: {0}
+    Fonte: {0}
     Linha: {1} Coluna: {2}
    Erro de Validação: {3}</target>
         <note />
@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Ocorreu um erro ao carregar um tipo de contrato referenciado. Esse tipo será ignorado.
+        <target state="translated">Houve um erro ao carregar um tipo de contrato referenciado. Esse tipo será ignorado.
     Tipo: {0}</target>
         <note />
       </trans-unit>
@@ -749,7 +749,7 @@ ou porque descobriu-se que todos os contratos/serviços existiam em assemblies /
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">Erro ao carregar um tipo de contrato. Não é possível gerar tipos XmlSerializer para este contrato.
+        <target state="translated">Houve um erro ao carregar um tipo de contrato. Não é possível gerar tipos XmlSerializer para este contrato.
     Tipo: {0}
     Detalhes:{1}</target>
         <note />
