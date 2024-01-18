@@ -1789,7 +1789,7 @@
       </trans-unit>
       <trans-unit id="MimeReaderResetCalledBeforeEOF">
         <source>Reset called on MIME header reader before end of file.</source>
-        <target state="translated">Wywołano zresetowanie czytnika nagłówka MIME przed końcem pliku.</target>
+        <target state="translated">Wywołano zresetowanie modułu odczytującego nagłówek MIME przed końcem pliku.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeReaderTruncated">
@@ -1899,7 +1899,7 @@
       </trans-unit>
       <trans-unit id="MtomContentTransferEncodingNotSupported">
         <source>'{0}' Content-Transfer-Encoding not supported for infoset. Must be one of '{1}', '{2}', or '{3}'.</source>
-        <target state="translated">Element Content-Transfer-Encoding o wartości „{0}” nie jest obsługiwany w przypadku obiektów typu infoset. Wymagana jest jedna z następujących wartości: „{1}”, „{2}” lub „{3}”.</target>
+        <target state="translated">Element Content-Transfer-Encoding o wartości „{0}” nie jest obsługiwany w przypadku obiektów typu infoset. Wymagana jest jedna z wartości „{1}”, „{2}” lub „{3}”.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomContentTypeInvalid">
@@ -1979,7 +1979,7 @@
       </trans-unit>
       <trans-unit id="MtomMimePartReferencedMoreThanOnce">
         <source>MTOM message not valid. Infoset references MIME part with Content-ID '{0}' more than once.</source>
-        <target state="translated">Komunikat mechanizmu MTOM jest nieprawidłowy. Obiekt typu infoset zawiera więcej niż jedno odwołanie do części MIME o nagłówku Content-ID „{0}”.</target>
+        <target state="translated">Komunikat mechanizmu MTOM jest nieprawidłowy. Zestaw informacji zawiera co najmniej jedno odniesienie do elementu Content-ID „{0}”.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomPartNotFound">
@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Błąd analizy Soap, xsd:typ '{0}' nieprawidłowy {1}</target>
+        <target state="translated">Błąd analizy SOAP, xsd:type „{0}” nieprawidłowy {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -2564,12 +2564,12 @@
       </trans-unit>
       <trans-unit id="SFxBodyObjectTypeCannotBeInherited">
         <source>Type {0} cannot inherit from any class other than object to be used as body object in RPC style.</source>
-        <target state="translated">Typ {0} nie może dziedziczyć po żadnej klasie innej niż obiekt używany jako obiekt treści w stylu wywołania RPC.</target>
+        <target state="translated">Typ {0} nie może dziedziczyć z żadnej klasy poza klasą użytą jako obiekt treści w stylu wywołania RPC.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBodyObjectTypeCannotBeInterface">
         <source>Type {0} implements interface {1} which is not supported for body object in RPC style.</source>
-        <target state="translated">Typ {0} zawiera implementację interfejsu {1}, który nie jest obsługiwany w przypadku obiektu treści w stylu wywołania RPC.</target>
+        <target state="translated">Typ {0} implementuje interfejs {1}, który nie jest obsługiwany dla obiektu treści w stylu wywołania RPC.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxCallbackBehaviorAttributeOnlyOnDuplex">
@@ -2904,7 +2904,7 @@
       </trans-unit>
       <trans-unit id="SFxHeadersAreNotSupportedInEncoded">
         <source>Message {0} must not have headers to be used in RPC encoded style.</source>
-        <target state="translated">Komunikat {0} nie może mieć nagłówków, aby mógł zostać użyty w stylu wywołania RPC z kodowaniem.</target>
+        <target state="translated">Komunikat {0} nie może mieć nagłówków, aby mógł być użyty w stylu RPC z kodowaniem.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxImmutableChannelFactoryBehavior0">
@@ -3014,7 +3014,7 @@
       </trans-unit>
       <trans-unit id="SFxInvalidMessageHeaderArrayType">
         <source>MessageHeaderArrayAttribute found on member {0} is not a single dimensional array.</source>
-        <target state="translated">Atrybut MessageHeaderArrayAttribute znaleziony w składowej {0} nie jest tablicą jednowymiarową.</target>
+        <target state="translated">Atrybut MessageHeaderArrayAttribute znaleziony dla członka {0} nie jest tablicą jednowymiarową.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxInvalidReplyAction">
@@ -3149,12 +3149,12 @@
       </trans-unit>
       <trans-unit id="SFxMultipleContractStarOperations0">
         <source>A ServiceContract has more the one operation with an Action of "*".  A ServiceContract can have at most one operation an Action = "*".</source>
-        <target state="translated">Kontrakt ServiceContract ma więcej niż jedną operację z czynnością "*". Obiekt ServiceContract może mieć najwyżej jeden parametr Action = "*".</target>
+        <target state="translated">Kontrakt ServiceContract ma więcej niż jedną operację z Action „*”. Obiekt ServiceContract może mieć najwyżej jedną operację Action = „*”.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMultiplePartsNotAllowedInEncoded">
         <source>Part {1}:{0} is repeating and is not supported in Soap Encoding.</source>
-        <target state="translated">Część {1}:{0} powtarza się i nie jest obsługiwana w kodowaniu protokołu SOAP.</target>
+        <target state="translated">Część {1}:{0} powtarza się i nie jest obsługiwana w Soap Encoding.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMultipleUnknownHeaders">
@@ -3329,7 +3329,7 @@
       </trans-unit>
       <trans-unit id="SFxRpcMessageMustHaveASingleBody">
         <source>RPC Message {1} in operation {0} must have a single MessageBodyMember.</source>
-        <target state="translated">Komunikat RPC {1} w operacji {0} musi mieć jeden element MessageBodyMember.</target>
+        <target state="translated">Komunikat RPC {1} w operacji {0} musi mieć pojedynczy MessageBodyMember.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxServerDidNotReply">
