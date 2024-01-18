@@ -317,7 +317,7 @@
       </trans-unit>
       <trans-unit id="Error">
         <source>Error: </source>
-        <target state="translated">Erreur : </target>
+        <target state="translated">Erreur : </target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateSerializerNotFound">
@@ -342,7 +342,7 @@
       </trans-unit>
       <trans-unit id="HelpCodeGenerationCategory">
         <source>-= CODE GENERATION =-</source>
-        <target state="translated">-= GÉNÉRATION DE CODE =-</target>
+        <target state="translated">-= GÉNÉRATION DE CODE  =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationDescription">
@@ -487,7 +487,7 @@
       </trans-unit>
       <trans-unit id="HelpNologo">
         <source>Suppress the copyright and banner message.</source>
-        <target state="translated">Supprimer le message de copyright et de bannière.</target>
+        <target state="translated">Supprimer le message de Copyright et de bannière.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNostdlib">
@@ -587,7 +587,7 @@
       </trans-unit>
       <trans-unit id="HelpWrapped">
         <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</source>
-        <target state="translated">Le code généré ne va pas annuler l'inclusion dans un wrapper des membres "parameters" des messages document-wrapped-literal.</target>
+        <target state="translated">Le code généré ne désencapsulera pas les membres "parameters" des messages document-wrapped-literal.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializerTypeGenerationCategory">
@@ -687,7 +687,7 @@ ou que les contrats/services existaient déjà dans des assemblys de référence
       </trans-unit>
       <trans-unit id="ParametersOutputType">
         <source>&lt;output type&gt;</source>
-        <target state="translated">&lt;type de sortie&gt;</target>
+        <target state="translated">&lt;output type&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
