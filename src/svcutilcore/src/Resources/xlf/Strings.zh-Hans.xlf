@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="CopyrightForCmdLine">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="translated">版权所有(C) Microsoft Corporation。  保留所有权利。</target>
+        <target state="translated">版权所有(C) Microsoft Corporation。保留所有权利。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrAmbiguityInAssemblyNames">
@@ -238,7 +238,7 @@
     Line: {1} Column: {2}
    Validation Error: {3}</source>
         <target state="translated">导出期间生成的架构出现验证错误:
-   源: {0}
+   源:{0}
    行: {1} 列: {2}
   验证错误: {3}</target>
         <note />
@@ -287,7 +287,7 @@
       </trans-unit>
       <trans-unit id="ErrUnexpectedDelimiter">
         <source>Invalid argument: delimiter (':' or '=') cannot start option.</source>
-        <target state="translated">参数无效: 分隔符(“:”或“=”)不能作为起始选项。</target>
+        <target state="translated">参数无效: 分隔符(":" 或 "=")不能作为起始选项。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedError">
@@ -749,7 +749,7 @@ or because all contracts/services were discovered to exist in /reference assembl
         <source>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.
     Type: {0}
     Details:{1}</source>
-        <target state="translated">加载协定类型时出错。无法为此协定生成 XmlSerializer 类型。
+        <target state="translated">加载合约类型时出错。无法为此合约生成 XmlSerializer 类型。
    类型: {0}
    详细信息:{1}</target>
         <note />
