@@ -8,6 +8,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="dotnet-svcutil-lib" Version="99.99.99" />
+    <Content CopyToOutputDirectory="always" Include="$(NuGetPackageRoot)dotnet-svcutil-lib/99.99.99/content/internalAssets/**" Link="internalAssets/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="BinLib">
       <HintPath>$resultPath$/TestResults/TypeReuse/BinLib/bin/Debug/netstandard1.3/BinLib.dll</HintPath>
     </Reference>
