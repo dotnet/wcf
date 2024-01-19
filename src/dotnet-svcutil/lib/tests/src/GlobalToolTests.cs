@@ -171,7 +171,7 @@ namespace SvcutilTest
         [Trait("Category", "BVT")]
         [Theory]
         [InlineData("-elm")]
-        public void ParamsFiles(string extraOptions)
+        public async void ParamsFiles(string extraOptions)
         {
             this_TestCaseName = "ParamsFiles";
             TestFixture();
