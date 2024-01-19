@@ -11,12 +11,15 @@
     <Reference Include="dotnet-svcutil-lib">
       <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
+    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/DOTNET_VERSION/internalAssets/**" Link="internalAssets/%(RecursiveDir)%(Filename)%(Extension)" />
     <Reference Include="BinLib">
-      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/net8.0/BinLib.dll</HintPath>
+      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/DOTNET_VERSION/BinLib.dll</HintPath>
     </Reference>
     <Reference Include="TypesLib">
-      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/net8.0/TypesLib.dll</HintPath>
+      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/DOTNET_VERSION/TypesLib.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="dotnet-svcutil-lib" Version="99.99.99" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="99.99.99" />
     <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="99.99.99" />
