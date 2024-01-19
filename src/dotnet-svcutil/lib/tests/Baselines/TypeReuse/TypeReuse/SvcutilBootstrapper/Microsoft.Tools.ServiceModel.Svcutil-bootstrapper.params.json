@@ -17,8 +17,8 @@
     "projectFile": "$resultPath$/TestResults/TypeReuse/TypeReuse/TypeReuse.csproj",
     "references": [
       "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
-      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//net8.0//BinLib.dll",
-      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//net8.0//TypesLib.dll",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//DOTNET_VERSION//BinLib.dll",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//DOTNET_VERSION//TypesLib.dll",
       "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
       "Microsoft.DotNet.InternalAbstractions, {Microsoft.DotNet.InternalAbstractions, 99.99.99}",
       "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",

@@ -88,6 +88,18 @@ namespace SvcutilTest
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+\\dotnet-svcutil-lib.dll", "DOTNET_VERSION\\dotnet-svcutil-lib.dll") { UseRegex = true }); //for windows
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+/any/dotnet-svcutil-lib.dll", "DOTNET_VERSION/any/dotnet-svcutil-lib.dll") { UseRegex = true }); //for linux
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+\\any\\dotnet-svcutil-lib.dll", "DOTNET_VERSION\\any\\dotnet-svcutil-lib.dll") { UseRegex = true }); //for windows
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+/any/internalAssets", "DOTNET_VERSION/any/internalAssets") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+\\any\\internalAssets", "DOTNET_VERSION\\any\\internalAssets") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+/internalAssets", "DOTNET_VERSION/internalAssets") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+\\internalAssets", "DOTNET_VERSION\\internalAssets") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+//BinLib.dll", "DOTNET_VERSION//BinLib.dll") { UseRegex = true }); 
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+//TypesLib.dll", "DOTNET_VERSION//TypesLib.dll") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+\\\\BinLib.dll", "DOTNET_VERSION\\\\BinLib.dll") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+\\\\TypesLib.dll", "DOTNET_VERSION\\\\TypesLib.dll") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+/BinLib.dll", "DOTNET_VERSION/BinLib.dll") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+/TypesLib.dll", "DOTNET_VERSION/TypesLib.dll") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+\\BinLib.dll", "DOTNET_VERSION\\BinLib.dll") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+\\TypesLib.dll", "DOTNET_VERSION\\TypesLib.dll") { UseRegex = true });
             _replacements.Add(new ReplaceInfo(@"Release\Shipping", @"RelType/ShipType"));
             _replacements.Add(new ReplaceInfo(@"Release\NonShipping", @"RelType/ShipType"));
             _replacements.Add(new ReplaceInfo(@"Debug\Shipping", @"RelType/ShipType"));
