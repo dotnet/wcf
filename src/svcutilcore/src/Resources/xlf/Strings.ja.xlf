@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="CopyrightForCmdLine">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="translated">Copyright (c) Microsoft Corporation.  All rights reserved.</target>
+        <target state="translated">Copyright (C) Microsoft Corporation.  All rights reserved.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrAmbiguityInAssemblyNames">
@@ -237,8 +237,7 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">
- のエクスポート中に生成されたスキーマで検証エラーが発生しました。
+        <target state="translated">エクスポート中に生成されたスキーマで検証エラーが発生しました:
    ソース: {0}
    行: {1} 列: {2}
   検証エラー: {3}</target>
@@ -277,8 +276,8 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">参照されたコントラクト型の読み込み中にエラーが発生しました。この種類は無視されます。
-   種類: {0}</target>
+        <target state="translated">参照されたコントラクト型の読み込み中にエラーが発生しました。この型は無視されます。
+   型: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToUniquifyFilename">

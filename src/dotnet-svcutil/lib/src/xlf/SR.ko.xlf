@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="CertificateIndexPrompt">
         <source>Please enter the index of the certificate to use or ESC to cancel:</source>
-        <target state="translated">사용할 인증서의 인덱스를 입력하거나, 취소하려면 &lt;Esc&gt; 키를 누릅니다.</target>
+        <target state="translated">사용할 인증서의 인덱스를 입력하거나 &lt;Esc&gt; 키를 눌러 취소합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateSelectionMessageFormat">
@@ -154,7 +154,7 @@
       </trans-unit>
       <trans-unit id="EnterOrEscapeMessage">
         <source>Press the ENTER to accept or ESC to cancel:</source>
-        <target state="translated">수락하려면 &lt;Enter&gt; 키를 누르거나, 취소하려면 &lt;Esc&gt; 키를 누릅니다.</target>
+        <target state="translated">&lt;Enter&gt; 키를 눌러 수락하거나 &lt;Esc&gt; 키를 눌러 취소합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterYesOrNoMessage">
@@ -747,7 +747,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="PasswordPrompt">
         <source>Enter password (ESC to cancel):</source>
-        <target state="translated">암호 입력(취소하려면 &lt;Esc&gt; 키):</target>
+        <target state="translated">암호 입력(취소는 &lt;Esc&gt; 키):</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadingMetadataMessageFormat">
@@ -784,7 +784,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="UsernamePrompt">
         <source>Enter username (ESC to cancel):</source>
-        <target state="translated">사용자 이름 입력(취소하려면 &lt;Esc&gt; 키):</target>
+        <target state="translated">사용자 이름 입력(취소는 &lt;Esc&gt; 키):</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningPrefix">
