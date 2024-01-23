@@ -664,7 +664,7 @@
       </trans-unit>
       <trans-unit id="DerivedKeyCannotDeriveFromSecret">
         <source>Derived Key Token cannot derive key from the secret.</source>
-        <target state="translated">DerivedKey-Token kann keinen Schlüssel aus dem Geheimnis ableiten.</target>
+        <target state="translated">Das abgeleitete Schlüsseltoken kann keinen Schlüssel aus dem Geheimnis ableiten.</target>
         <note />
       </trans-unit>
       <trans-unit id="DerivedKeyInvalidGenerationSpecified">
@@ -1894,12 +1894,12 @@
       </trans-unit>
       <trans-unit id="MtomContentTransferEncodingNotPresent">
         <source>Content-Transfer-Encoding header with value '{0}' must be present for binary part.</source>
-        <target state="translated">Für einen Abschnitt mit Binärdaten muss ein Content-Transfer-Encoding-Header mit dem Wert "{0}" vorhanden sein.</target>
+        <target state="translated">Für einen Abschnitt mit Binärdaten muss ein Content-Transfer-Codierungsheader mit dem Wert "{0}" vorhanden sein.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomContentTransferEncodingNotSupported">
         <source>'{0}' Content-Transfer-Encoding not supported for infoset. Must be one of '{1}', '{2}', or '{3}'.</source>
-        <target state="translated">Der Content-Transfer-Encoding-Wert "{0}" wird für das Infoset nicht unterstützt. Gültige Werte sind "{1}", "{2}" oder "{3}".</target>
+        <target state="translated">Der Content-Transfer-Codierungswert "{0}" wird für das Infoset nicht unterstützt. Gültige Werte sind "{1}", "{2}" oder "{3}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomContentTypeInvalid">
@@ -1939,7 +1939,7 @@
       </trans-unit>
       <trans-unit id="MtomInvalidTransferEncodingForMimePart">
         <source>Content-Transfer-Encoding '{0}' not supported for binary part. Must be '{1}'.</source>
-        <target state="translated">Der Content-Transfer-Encoding-Wert "{0}" wird für Abschnitte mit Binärdaten nicht unterstützt. Erforderlich ist der Wert "{1}".</target>
+        <target state="translated">Der Content-Transfer-Codierungswert "{0}" wird für Abschnitte mit Binärdaten nicht unterstützt. Erforderlich ist der Wert "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageContentTypeNotFound">
@@ -1974,7 +1974,7 @@
       </trans-unit>
       <trans-unit id="MtomMessageRequiredParamNotSpecified">
         <source>MTOM messages must have non-zero length '{0}' parameter in Content-Type header.</source>
-        <target state="translated">MTOM-Nachrichten erfordern einen {0}-Parameter mit einer Länge ungleich NULL im Content-Type-Header.</target>
+        <target state="translated">MTOM-Nachrichten erfordern einen  {0}-Parameter mit einer Länge ungleich NULL im Content-Type-Header.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMimePartReferencedMoreThanOnce">
@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Soap-Verarbeitungsfehler, xsd:type "{0}" ungültig {1}.</target>
+        <target state="translated">SOAP-Analysefehler, xsd:type „{0}“ ungültig {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -3149,7 +3149,7 @@
       </trans-unit>
       <trans-unit id="SFxMultipleContractStarOperations0">
         <source>A ServiceContract has more the one operation with an Action of "*".  A ServiceContract can have at most one operation an Action = "*".</source>
-        <target state="translated">Ein ServiceContract verfügt über mehr als einen Vorgang mit Action = "*". Ein ServiceContract kann maximal einen Vorgang mit Action = "*" enthalten.</target>
+        <target state="translated">Ein „ServiceContract“ verfügt über mehr als einen Vorgang mit Action = „*“. Ein „ServiceContract“ kann maximal einen Vorgang mit Action = „*“ enthalten.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMultiplePartsNotAllowedInEncoded">
@@ -3214,7 +3214,7 @@
       </trans-unit>
       <trans-unit id="SFxNone2004">
         <source>The WS-Addressing "none" value is not valid for the August 2004 version of WS-Addressing.</source>
-        <target state="translated">Der Wert "none" der WS-Adressierung ist für die August 2004-Version der WS-Adressierung nicht gültig.</target>
+        <target state="translated">Der WS-Addressing-Wert „None“ ist für die August 2004-Version von WS-Addressing nicht gültig.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxNullReplyFromExtension2">
@@ -3304,7 +3304,7 @@
       </trans-unit>
       <trans-unit id="SFxRequestReplyNone">
         <source>A message was received with a WS-Addressing ReplyTo or FaultTo header targeted at the "None" address.  These values are not valid for request-reply operations.  Please consider using a one-way operation or enabling ManualAddressing if you need to support ReplyTo or FaultTo values of "None."</source>
-        <target state="translated">Es wurde eine Nachricht mit einem ReplyTo- oder FaultTo-Header der WS-Adressierung empfangen, die an die Adresse "None" gerichtet ist. Diese Werte sind für Anforderung-Antwort-Vorgänge nicht gültig. Erwägen Sie, einen unidirektionalen Vorgang zu verwenden oder ManualAddressing zu aktivieren, wenn Sie die ReplyTo- oder FaultTo-Werte von "None" unterstützen müssen.</target>
+        <target state="translated">Es wurde eine Nachricht mit einem „ReplyTo“- oder „FaultTo“-Header von WS-Adressing empfangen, die an die Adresse „None“ gerichtet ist. Diese Werte sind für Anforderung-Antwort-Vorgänge nicht gültig. Erwägen Sie, einen unidirektionalen Vorgang zu verwenden oder „ManualAddressing“ zu aktivieren, wenn Sie die „ReplyTo“- oder „FaultTo“-Werte von „None“ unterstützen müssen.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxRequestTimedOut1">
@@ -3399,7 +3399,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">Der Vorgang "{0}" konnte nicht geladen werden, da er "rpc-style" im Modus "literal" angibt, jedoch Nachrichtenvertragstypen oder die System.ServiceModel.Channels.Message verwendet. Diese Kombination ist nicht zulässig. Geben Sie für die Style- oder Use-Parameter einen anderen Wert als Nachrichtenvertragstypen oder System.ServiceModel.Channels.Message an.</target>
+        <target state="translated">Der Vorgang „{0}“ konnte nicht geladen werden, da er „rpc-style“ im Modus „literal“ angibt, jedoch Nachrichtenvertragstypen oder „System.ServiceModel.Channels.Message“ verwendet. Diese Kombination ist nicht zulässig. Geben Sie für die „Style“- oder „Use“-Parameter einen anderen Wert als Nachrichtenvertragstypen oder „System.ServiceModel.Channels.Message“ an.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
@@ -4709,7 +4709,7 @@
       </trans-unit>
       <trans-unit id="ssl_io_cert_validation">
         <source>The remote certificate is invalid according to the validation procedure.</source>
-        <target state="translated">Das Remotezertifikat ist laut Validierungsverfahren ungültig.</target>
+        <target state="translated">Das Remote-Zertifikat ist laut Validierungsverfahren ungültig.</target>
         <note />
       </trans-unit>
       <trans-unit id="tooManyAttributesOfTypeOn2">
