@@ -2099,7 +2099,7 @@
       </trans-unit>
       <trans-unit id="SFxBadMetadataDialect">
         <source>There was a problem reading the MetadataSet argument: a MetadataSection instance with identifier '{0}' and dialect '{1}' has a Metadata property whose type does not match the dialect. The expected Metadata type for this dialect is '{2}' but was found to be '{3}'.</source>
-        <target state="translated">Si è verificato un problema durante la lettura dell'argomento MetadataSet. Un'istanza MetadataSection con identificatore '{0}' e dialetto '{1}' contiene una proprietà Metadata il cui tipo non corrisponde al dialetto. Il tipo Metadata previsto per questo dialetto è '{2}', ma quello trovato è '{3}'.</target>
+        <target state="translated">Si è verificato un problema durante la lettura dell'argomento MetadataSet: un'istanza MetadataSection con identificatore '{0}' e dialetto '{1}' contiene una proprietà Metadata il cui tipo non corrisponde al dialetto. Il tipo Metadata previsto per questo dialetto è '{2}', ma quello trovato è '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBadMetadataLocationNoAppropriateBaseAddress">
@@ -2914,7 +2914,7 @@
       </trans-unit>
       <trans-unit id="SFxMetadataExchangeClientCouldNotCreateChannelFactory">
         <source>The MetadataExchangeClient could not create an IChannelFactory for: address='{0}', dialect='{1}', and  identifier='{2}'. </source>
-        <target state="translated">L'elemento MetadataExchangeClient non è riuscito a creare un elemento IChannelFactory per indirizzo '{0}', dialetto '{1}' e identificatore '{2}'. </target>
+        <target state="translated">L'elemento MetadataExchangeClient non è riuscito a creare un elemento IChannelFactory per: indirizzo='{0}', dialetto='{1}' e identificatore='{2}'. </target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMetadataExchangeClientCouldNotCreateChannelFactoryBadScheme">
@@ -2924,7 +2924,7 @@
       </trans-unit>
       <trans-unit id="SFxMetadataExchangeClientCouldNotCreateWebRequest">
         <source>The MetadataExchangeClient could not create an HttpWebRequest for: address='{0}', dialect='{1}', and  identifier='{2}'. </source>
-        <target state="translated">L'elemento MetadataExchangeClient non è riuscito a creare un elemento HttpWebRequest per indirizzo '{0}', dialetto '{1}' e identificatore '{2}'. </target>
+        <target state="translated">L'elemento MetadataExchangeClient non è riuscito a creare un elemento HttpWebRequest per: indirizzo='{0}', dialetto='{1}' e identificatore='{2}'. </target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMetadataExchangeClientNoMetadataAddress">
