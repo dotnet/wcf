@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">이 플랫폼에서는 확장된 보호가 지원되지 않습니다. 적합한 패치를 설치하거나 Binding 또는 BindingElement의 ExtendedProtectionPolicy를 PolicyEnforcement 값이 "Never" 또는 "WhenSupported"인 값이 되도록 변경하세요.</target>
+        <target state="translated">이 플랫폼에서는 확장된 보호가 지원되지 않습니다. 적합한 패치를 설치하거나 Binding 또는 BindingElement의 ExtendedProtectionPolicy를 PolicyEnforcement 값이 "Never" 또는 "WhenSupported"인 값으로 변경하십시오.</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">
