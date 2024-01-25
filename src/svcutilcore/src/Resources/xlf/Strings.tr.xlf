@@ -276,7 +276,7 @@
       <trans-unit id="ErrUnableToLoadReferenceType">
         <source>There was an error loading a referenced contract type. This type will be ignored.
     Type: {0}</source>
-        <target state="translated">Başvurulan anlaşma türü yüklenirken bir hata oluştu. Bu tür yok sayılır.
+        <target state="translated">Başvurulan anlaşma türü yüklenirken bir hata oluştu. Bu tür yoksayılır.
     Tür: {0}</target>
         <note />
       </trans-unit>
