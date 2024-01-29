@@ -140,7 +140,7 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Fact]
-        public void MultiTargetTypeReuse()
+        public async Task MultiTargetTypeReuse()
         {
             this_TestCaseName = "MultiTargetTypeReuse";
             TestFixture();
@@ -154,8 +154,8 @@ namespace SvcutilTest
             FileUtil.TryDeleteDirectory(this_TestCaseOutputDir);
             Directory.CreateDirectory(this_TestCaseOutputDir);
             FileUtil.CopyDirectory(Path.Combine(g_TestCasesDir, this_TestCaseName), this_TestGroupOutputDir, true);
-            this_TestCaseProject = MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testClientFolder}.csproj"), null, CancellationToken.None).Result;
-            ProcessRunner.ProcessResult ret = this_TestCaseProject.BuildAsync(true, this_TestCaseLogger, CancellationToken.None).Result;
+            this_TestCaseProject = await MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testClientFolder}.csproj"), null, CancellationToken.None);
+            ProcessRunner.ProcessResult ret = await this_TestCaseProject.BuildAsync(true, this_TestCaseLogger, CancellationToken.None);
             Assert.True(ret.ExitCode == 0, ret.OutputText);
 
             this_FixupUtil = new FixupUtil();
