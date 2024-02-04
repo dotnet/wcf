@@ -591,6 +591,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return addDependency;
         }
 
+        public void SetEnableMsixTooling()
+        {
+            // workaround for https://github.com/microsoft/WindowsAppSDK/issues/3548: dotnet build fails when WindowsAppSDK is referenced in console application.
+            // affects MAUI project targeting net7.0-windows10.0xxx, not reproduce in net8.0-window10.0xxx
+            // ref: https://github.com/dotnet/maui/issues/5886
+            SetPropertyValue("EnableMsixTooling", "true");
+        }
+
         // Sets the property value in a PropertyGroup. Returns true if the value was changed, and false if it was already set to that value.
         private bool SetPropertyValue(string propertyName, string value)
         {

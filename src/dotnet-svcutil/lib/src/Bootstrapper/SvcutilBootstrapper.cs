@@ -127,6 +127,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (isSupportedTFM && frameworkInfo.Name != FrameworkInfo.Netstandard && frameworkInfo.Version.CompareTo(new Version(6, 0)) >= 0)
                 {
                     this.MSBuildProj.TargetFramework = targetFramework;
+                    if(targetFramework.ToLowerInvariant().Contains("net7.0-windows10"))
+                    {
+                        this.MSBuildProj.SetEnableMsixTooling();
+                    }
                 }
                 // else
                 // The TFM is Netstandard or version lower than 6.0 or unknown: either, it was not provided or it is a version not yet known to the tool,

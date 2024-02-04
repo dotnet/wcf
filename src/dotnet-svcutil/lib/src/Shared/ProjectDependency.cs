@@ -435,8 +435,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             for (int idx = dependencies.Count - 1; idx >= 0; idx--)
             {
                 var dependency = dependencies[idx];
-                if (dependency.IsFramework || TargetFrameworkHelper.ServiceModelPackages.Any(s => s.Name == dependency.Name)
-                    || TargetFrameworkHelper.s_mauiAppWindowsPackages.Any(s => s.Name == dependency.Name))
+                if (dependency.IsFramework || TargetFrameworkHelper.ServiceModelPackages.Any(s => s.Name == dependency.Name))
                 {
                     dependencies.RemoveAt(idx);
                 }
