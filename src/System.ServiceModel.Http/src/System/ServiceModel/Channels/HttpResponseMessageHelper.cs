@@ -133,6 +133,23 @@ namespace System.ServiceModel.Channels
             if (content != null)
             {
                 var mediaValueContentType = content.Headers.ContentType;
+
+                // If the content type header is null because the response contains 
+                // content-type header with a multiple values, like this: 
+                // Content-Type: text/xml; charset=UTF-8, text/xml; charset=ISO-8051-1
+                // tries to get the "Content-Type" header from HttpResponseMesage.Content.Headers.TryGetValues approach.
+                if (
+                    mediaValueContentType == null
+                    && content.Headers.TryGetValues("Content-Type", out var values)
+                    && values?.Count() > 0)
+                {
+                    values = values.First().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                    if (values?.Count() > 0)
+                    {
+                        mediaValueContentType = MediaTypeHeaderValue.Parse(values.First());
+                    }
+                }
+
                 _contentType = mediaValueContentType == null ? string.Empty : mediaValueContentType.ToString();
                 _contentLength = content.Headers.ContentLength.HasValue ? content.Headers.ContentLength.Value : -1;
             }
