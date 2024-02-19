@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
+#if !NET
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
+#endif
     public class WcfWebSocketService : IWcfDuplexService
     {
         public static IWcfDuplexServiceCallback callback;
@@ -25,7 +27,9 @@ namespace WcfService
         }
     }
 
+#if !NET
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
+#endif
     public class WcfWebSocketTransportUsageAlwaysService : IWcfDuplexService
     {
         public static IWcfDuplexServiceCallback callback;
