@@ -6,9 +6,6 @@
 using CoreWCF.Configuration;
 using CoreWCF.Description;
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 #else
 using System;
 using System.Collections.Generic;
