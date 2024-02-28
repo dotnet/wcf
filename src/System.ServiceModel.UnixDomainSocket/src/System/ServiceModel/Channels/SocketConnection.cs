@@ -854,12 +854,11 @@ namespace System.ServiceModel.Channels
             try
             {
                 socketConnection = await CreateConnectionAsync(uri);
-                lastException = null;
             }
             catch (SocketException socketException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    SocketConnectionInitiator.ConvertConnectException(lastException, uri,
+                    SocketConnectionInitiator.ConvertConnectException(socketException, uri,
                     timeoutHelper.ElapsedTime(), socketException));
             }
 
