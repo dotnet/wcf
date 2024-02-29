@@ -5,7 +5,6 @@
 #if !NET
 using System.Configuration;
 using System.ServiceModel.Configuration;
-#endif
 
 namespace WcfService
 {
