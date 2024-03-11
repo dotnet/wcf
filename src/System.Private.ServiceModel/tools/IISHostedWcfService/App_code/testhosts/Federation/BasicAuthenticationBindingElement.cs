@@ -2,15 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-#if NET
-using CoreWCF;
-using CoreWCF.Channels;
-using CoreWCF.Description;
-using CoreWCF.IdentityModel.Policy;
-using CoreWCF.IdentityModel.Selectors;
-using CoreWCF.IdentityModel.Tokens;
-using CoreWCF.Security;
-#else
+#if !NET
 using System;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
@@ -21,7 +13,6 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.Threading;
 using System.Threading.Tasks;
-#endif
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net;
@@ -617,3 +608,4 @@ namespace WcfService
         }
     }
 }
+#endif

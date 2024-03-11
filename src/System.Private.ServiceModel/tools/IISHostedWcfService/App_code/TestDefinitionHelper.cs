@@ -3,8 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 #if NET
+using System.Security.Claims;
 using CoreWCF.Configuration;
 using CoreWCF.Description;
+using idunno.Authentication.Basic;
 using Microsoft.AspNetCore;
 #else
 using System;
@@ -34,7 +36,7 @@ namespace WcfService
                     var httpPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("httpPort")) ? DefaultHttpPort : int.Parse(Environment.GetEnvironmentVariable("httpPort"));
                     dict[ServiceSchema.HTTP] = string.Format(@"http://localhost:{0}", httpPort);
                     var httpsPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("httpsPort")) ? DefaultHttpsPort : int.Parse(Environment.GetEnvironmentVariable("httpsPort"));
-                    dict[ServiceSchema.HTTPS]= string.Format(@"https://localhost:{0}", httpsPort);
+                    dict[ServiceSchema.HTTPS] = string.Format(@"https://localhost:{0}", httpsPort);
                     var tcpPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("tcpPort")) ? DefaultTcpPort : int.Parse(Environment.GetEnvironmentVariable("tcpPort"));
                     dict[ServiceSchema.NETTCP] = string.Format(@"net.tcp://localhost:{0}", tcpPort);
                     var websocketPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("websocketPort")) ? DefaultWebSocketPort : int.Parse(Environment.GetEnvironmentVariable("websocketPort"));
@@ -44,7 +46,7 @@ namespace WcfService
                     s_baseAddresses = dict;
                     dict[ServiceSchema.NETPIPE] = @"net.pipe://localhost";
                     Console.WriteLine("Using base addresses:");
-                    foreach(var ba in dict.Values)
+                    foreach (var ba in dict.Values)
                     {
                         Console.WriteLine("\t" + ba);
                     }
@@ -61,11 +63,37 @@ namespace WcfService
             var webHost = WebHost.CreateDefaultBuilder()
                 .ConfigureServices(services =>
                 {
+                    services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
+                        .AddBasic(options =>
+                        {
+                            options.Realm = "Basic Authentication";
+                            options.Events = new BasicAuthenticationEvents
+                            {
+                                OnValidateCredentials = context =>
+                                {
+                                    if (context.Username == context.Password)
+                                    {
+                                        var claims = new[]
+                                            {
+                                            new Claim(ClaimTypes.NameIdentifier, context.Username, ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                                            new Claim(ClaimTypes.Name, context.Username, ClaimValueTypes.String, context.Options.ClaimsIssuer)
+                                            };
+
+                                        context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
+                                        context.Success();
+                                    }
+
+                                    return Task.CompletedTask;
+                                }
+                            };
+                        });
                     services.AddServiceModelServices()
                     .AddServiceModelMetadata();
                 })
                 .Configure(app =>
                 {
+                    app.UseAuthentication();
+                    app.UseAuthorization();
                     app.UseServiceModel(serviceBuilder =>
                     {
                         foreach (var serviceTestHost in GetAttributedServiceHostTypes())
@@ -112,7 +140,7 @@ namespace WcfService
                                         foreach (var baseAddress in serviceBaseAddresses)
                                         {
                                             if (!options.BaseAddresses.Contains(baseAddress))
-                                            options.BaseAddresses.Add(baseAddress);
+                                                options.BaseAddresses.Add(baseAddress);
                                         }
                                     });
                                     foreach (var endpoint in serviceHost.Endpoints)
