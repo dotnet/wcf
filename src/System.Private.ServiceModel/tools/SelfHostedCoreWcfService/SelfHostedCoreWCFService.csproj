@@ -15,6 +15,7 @@
     <PackageReference Include="CoreWCF.NetTcp" Version="1.5.0-wsrs.1.g14d7d00798" />
     <PackageReference Include="CoreWCF.Primitives" Version="1.5.0-wsrs.1.g14d7d00798" />
     <PackageReference Include="CoreWCF.WebHttp" Version="1.5.0-wsrs.1.g14d7d00798" />
+    <PackageReference Include="idunno.Authentication.Basic" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\IISHostedWcfService\**\*.cs">
@@ -25,7 +26,6 @@
   <ItemGroup>
     <Compile Remove="..\IISHostedWcfService\App_code\ISessionTests.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\IVerifyWebSockets.cs" />
-    <Compile Remove="..\IISHostedWcfService\App_code\ServiceActivationsBuilder.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\SessionTestsService.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\AuthenticationResourceHelper.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\BasicAuthTestServiceHost.cs" />
@@ -34,7 +34,6 @@
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\DataContractResolverTestServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\DuplexTestServiceHosts.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\AcceptAnyUsernameSecurityTokenHandler.cs" />
-    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\BasicAuthenticationBindingElement.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\FederationSTSServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\ReturnX509SubjectNameOrRSAIssuerNameRegistry.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\SelfHostSecurityTokenService.cs" />
@@ -79,7 +78,6 @@
     <Compile Remove="..\IISHostedWcfService\App_code\WcfRestartService.cs" />
     <None Include="..\IISHostedWcfService\App_code\ISessionTests.cs" />
     <None Include="..\IISHostedWcfService\App_code\IVerifyWebSockets.cs" />
-    <None Include="..\IISHostedWcfService\App_code\ServiceActivationsBuilder.cs" />
     <None Include="..\IISHostedWcfService\App_code\SessionTestsService.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\AuthenticationResourceHelper.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\BasicAuthTestServiceHost.cs" />
@@ -88,7 +86,6 @@
     <None Include="..\IISHostedWcfService\App_code\testhosts\DataContractResolverTestServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\DuplexTestServiceHosts.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\AcceptAnyUsernameSecurityTokenHandler.cs" />
-    <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\BasicAuthenticationBindingElement.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\FederationSTSServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\ReturnX509SubjectNameOrRSAIssuerNameRegistry.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\SelfHostSecurityTokenService.cs" />
