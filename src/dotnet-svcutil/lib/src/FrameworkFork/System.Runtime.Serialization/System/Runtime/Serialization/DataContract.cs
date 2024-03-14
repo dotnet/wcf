@@ -754,7 +754,7 @@ namespace System.Runtime.Serialization
             //Serializable types from Orcas needs to be supported in Silverlight 
             private static bool IsTypeSerializable(Type type)
             {
-                return (type == Globals.TypeOfDBNull);
+                return type == Globals.TypeOfDBNull || type.IsSerializable;
             }
 
             private static DataContract CreateGetOnlyCollectionDataContract(int id, RuntimeTypeHandle typeHandle, Type type)
