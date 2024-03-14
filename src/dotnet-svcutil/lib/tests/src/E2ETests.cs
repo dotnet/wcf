@@ -490,6 +490,17 @@ namespace SvcutilTest
             WcfRuntimeSvcs(serviceName, expectSuccess);
         }
 
+        [Trait("Category", "Test")]
+        [Fact]
+        public void ContractMemberNamedSystem()
+        {
+            this_TestCaseName = "ContractMemberNamedSystem";
+            TestFixture();
+            InitializeE2E(this_TestCaseName);
+            string wsdlFile = Path.Combine(g_TestCasesDir, "wsdl", "memberNamedSystem.wsdl");
+            TestSvcutil(AppendCommonOptions(wsdlFile));
+        }
+
         private void WcfRuntimeSvcs(string serviceName, bool expectSuccess)
         {
             var testCaseName = serviceName.Replace(".svc", "").Replace("/", "_");
