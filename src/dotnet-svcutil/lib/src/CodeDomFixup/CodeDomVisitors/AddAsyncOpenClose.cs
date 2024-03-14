@@ -38,7 +38,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         string[] vers = version.Split('.');
                         if (vers.Length > 1)
                         {
-                            Version v = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
+                            Version v = new Version(int.Parse(vers[0]), int.TryParse(vers[1], out int minor) ? minor : 0);
                             // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
                             if (v.CompareTo(new Version(4, 10)) < 0)
                             {
