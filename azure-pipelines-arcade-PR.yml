@@ -31,6 +31,13 @@ variables:
     value: true
   - name: _RunAsInternal
     value: false
+  
+  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+    - name: _RunAsPublic
+      value: false
+    - name: _RunAsInternal
+      value: true
+    - group: DotNet-Wcf-SDLValidation-Params
 
 resources:
   containers:
