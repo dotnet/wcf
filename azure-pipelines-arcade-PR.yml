@@ -32,14 +32,6 @@ variables:
   - name: _RunAsInternal
     value: false
 
-  # TOD delete after testing
-  #- ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-  #   - name: _RunAsPublic
-  #     value: false
-  #   - name: _RunAsInternal
-  #     value: true
-  #   - group: DotNet-Wcf-SDLValidation-Params
-
 resources:
   containers:
   - container: ubuntu_2004_20211215
@@ -70,30 +62,10 @@ stages:
           ${{ if eq(variables._RunAsPublic, True) }}:
             name: NetCore-Public
             demands: ImageOverride -equals windows.vs2022.amd64.open
-          ${{ if eq(variables._RunAsInternal, True) }}:
-            name: NetCore1ESPool-Internal
-            demands: ImageOverride -equals windows.vs2022.amd64
         variables:
         - _InternalBuildArgs: ''
         - HelixApiAccessToken: ''
         - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-
-        # TODO delete after testing
-        # # Internal/Official Build Variables
-        # - ${{ if eq(variables._RunAsInternal, True) }}:
-        #     # Only enable publishing in non-public, non PR scenarios.
-        #     # Publish-Build-Assets provides: MaestroAccessToken, BotAccount-dotnet-maestro-bot-PAT
-        #     # DotNet-HelixApi-Access provides: HelixApiAccessToken
-        #     - group: Publish-Build-Assets
-        #     - group: DotNet-HelixApi-Access
-        #     - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
-        #     - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName)
-        #         /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed)
-        #         /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines)
-        #         /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
-        #         /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
-        #     # Service uri needed for integration tests in official builds
-        #     - _serviceUri: wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1
 
         # Public/PR & CI Build Variables
         - ${{ if eq(variables._RunAsPublic, True) }}:
@@ -116,10 +88,6 @@ stages:
                 _SignType: test
                 _DotNetPublishToBlobFeed : false
                 _WcfPRServiceId: 1
-              # TODO delete after testing
-              # ${{ if eq(variables._RunAsInternal, True) }}:
-              #   _SignType: real
-              #   _DotNetPublishToBlobFeed : true
             ${{ if eq(variables._RunAsPublic, True) }}:
               Debug:
                 _BuildConfig: Debug
@@ -279,30 +247,3 @@ stages:
               RunAsPublic: $(_RunAsPublic)
               RunAsInternal: $(_RunAsInternal)
               IsWindowsBuild: false
-
-# - TODO delete after testing
-# - ${{ if eq(variables._RunAsInternal, True) }}:
-#   - template: eng\common\templates\post-build\post-build.yml
-#     parameters:
-#       validateDependsOn:
-#       - Build
-#       publishingInfraVersion: 3
-#       # Symbol validation isn't being very reliable lately. This should be enabled back
-#       # once this issue is resolved: https://github.com/dotnet/arcade/issues/2871
-#       enableSymbolValidation: false
-#       # Sourcelink validation isn't passing for Arcade due to some regressions. This should be
-#       # enabled back once this issue is resolved: https://github.com/dotnet/arcade/issues/2912
-#       enableSourceLinkValidation: false
-#       # This is to enable SDL runs part of Post-Build Validation Stage
-#       SDLValidationParameters:
-#         enable: true
-#         params: ' -SourceToolsList @("policheck","credscan")
-#         -TsaInstanceURL $(_TsaInstanceURL)
-#         -TsaProjectName $(_TsaProjectName)
-#         -TsaNotificationEmail $(_TsaNotificationEmail)
-#         -TsaCodebaseAdmin $(_TsaCodebaseAdmin)
-#         -TsaBugAreaPath $(_TsaBugAreaPath)
-#         -TsaIterationPath $(_TsaIterationPath)
-#         -TsaRepositoryName "WCF"
-#         -TsaCodebaseName "WCF"
-#         -TsaPublish $True'
