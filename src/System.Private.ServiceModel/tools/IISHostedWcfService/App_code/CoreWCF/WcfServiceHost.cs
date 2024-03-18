@@ -41,8 +41,6 @@ namespace WcfService
 
         public List<Endpoint> Endpoints => _endpoints;
 
-        public Type ServiceType => _serviceType;
-
         public class Endpoint
         {
             public Type ContractType { get; set; }

@@ -33,12 +33,8 @@
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\ReturnX509SubjectNameOrRSAIssuerNameRegistry.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\SelfHostSecurityTokenService.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpsClientCertificateTestServiceHost.cs" />
-    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpsDigestTestServiceHost.cs" />
-    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpsNtlmTestServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsCertTestServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsUsernameTestServiceHost.cs" />
-    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpsWindowsTestServiceHost.cs" />
-    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpWindowsTestServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\NetHttpsTestServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\NetHttpTestServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\ReliableSessionDuplexTestServiceHost.cs" />
@@ -60,12 +56,8 @@
     <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\ReturnX509SubjectNameOrRSAIssuerNameRegistry.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\SelfHostSecurityTokenService.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\HttpsClientCertificateTestServiceHost.cs" />
-    <None Include="..\IISHostedWcfService\App_code\testhosts\HttpsDigestTestServiceHost.cs" />
-    <None Include="..\IISHostedWcfService\App_code\testhosts\HttpsNtlmTestServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsCertTestServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsUsernameTestServiceHost.cs" />
-    <None Include="..\IISHostedWcfService\App_code\testhosts\HttpsWindowsTestServiceHost.cs" />
-    <None Include="..\IISHostedWcfService\App_code\testhosts\HttpWindowsTestServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\NetHttpsTestServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\NetHttpTestServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\ReliableSessionDuplexTestServiceHost.cs" />
