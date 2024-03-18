@@ -461,6 +461,51 @@ namespace System.Runtime.Serialization
     }
 
 #if NET_NATIVE
+    public class IntegerDataContract : LongDataContract
+#else
+    internal class IntegerDataContract : LongDataContract
+#endif
+    {
+        internal IntegerDataContract() : base(DictionaryGlobals.IntegerLocalName, DictionaryGlobals.SchemaNamespace) { }
+    }
+
+#if NET_NATIVE
+    public class PositiveIntegerDataContract  : LongDataContract
+#else
+    internal class PositiveIntegerDataContract : LongDataContract
+#endif
+    {
+        internal PositiveIntegerDataContract() : base(DictionaryGlobals.PositiveIntegerLocalName, DictionaryGlobals.SchemaNamespace) { }
+    }
+
+#if NET_NATIVE
+    public class NegativeIntegerDataContract  : LongDataContract
+#else
+    internal class NegativeIntegerDataContract : LongDataContract
+#endif
+    {
+        internal NegativeIntegerDataContract() : base(DictionaryGlobals.NegativeIntegerLocalName, DictionaryGlobals.SchemaNamespace) { }
+    }
+
+#if NET_NATIVE
+    public class NonPositiveIntegerDataContract : LongDataContract
+#else
+    internal class NonPositiveIntegerDataContract : LongDataContract
+#endif
+    {
+        internal NonPositiveIntegerDataContract() : base(DictionaryGlobals.NonPositiveIntegerLocalName, DictionaryGlobals.SchemaNamespace) { }
+    }
+
+#if NET_NATIVE
+    public class NonNegativeIntegerDataContract : LongDataContract
+#else
+    internal class NonNegativeIntegerDataContract : LongDataContract
+#endif
+    {
+        internal NonNegativeIntegerDataContract() : base(DictionaryGlobals.NonNegativeIntegerLocalName, DictionaryGlobals.SchemaNamespace) { }
+    }
+
+#if NET_NATIVE
     public class FloatDataContract : PrimitiveDataContract
 #else
     internal class FloatDataContract : PrimitiveDataContract
