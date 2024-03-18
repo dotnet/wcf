@@ -32,7 +32,7 @@ namespace WcfService
 
         private Binding GetNetTcpBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false , Name = "tcp-nosecurity" };
+            return new NetTcpBinding(SecurityMode.None) { Name = "tcp-nosecurity" };
         }
 
         private Binding GetNetNamedPipeBinding()

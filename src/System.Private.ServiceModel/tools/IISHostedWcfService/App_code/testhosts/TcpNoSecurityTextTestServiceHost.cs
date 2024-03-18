@@ -18,7 +18,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new CustomBinding(new TextMessageEncodingBindingElement(), new TcpTransportBindingElement() { PortSharingEnabled = false });
+            return new CustomBinding(new TextMessageEncodingBindingElement(), new TcpTransportBindingElement());
         }
 
         public TcpNoSecurityTextTestServiceHost(params Uri[] baseAddresses)
