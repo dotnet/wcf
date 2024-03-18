@@ -19,7 +19,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11WSAddressing10, Encoding.UTF8), new TcpTransportBindingElement() { PortSharingEnabled = false });
+            return new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11WSAddressing10, Encoding.UTF8), new TcpTransportBindingElement());
         }
 
         public TcpSoap11WSA10TestServiceHost(params Uri[] baseAddresses)

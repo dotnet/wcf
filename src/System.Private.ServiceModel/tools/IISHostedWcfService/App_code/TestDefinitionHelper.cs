@@ -89,6 +89,7 @@ namespace WcfService
                         });
                     services.AddServiceModelServices()
                     .AddServiceModelMetadata();
+                    services.AddAuthorization();
                 })
                 .Configure(app =>
                 {
