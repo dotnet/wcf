@@ -11,6 +11,7 @@ namespace WcfService
 {
     public class ServiceHost
     {
+        private ServiceHostBase _serviceHostBase = null;
         private readonly Type _serviceType;
         private readonly List<Endpoint> _endpoints = new List<Endpoint>();
 
@@ -31,11 +32,14 @@ namespace WcfService
 
         protected virtual void ApplyConfiguration() { }
 
-        public void ApplyConfig(ServiceHostBase serviceHostBase) { ApplyConfiguration(); }
+        public void ApplyConfig(ServiceHostBase serviceHostBase)
+        {
+            _serviceHostBase = serviceHostBase;
+            ApplyConfiguration();
+            _serviceHostBase = null;
+        }
 
         public List<Endpoint> Endpoints => _endpoints;
-
-        public Type ServiceType => _serviceType;
 
         public class Endpoint
         {
@@ -44,14 +48,11 @@ namespace WcfService
             public string Address { get; set; }
         }
 
-        // dummy class for service credentials
-        public ServiceCredentials Credentials
-        {
-            get
-            {
-                return new ServiceCredentials();
-            }
-        }
+        public Type ServiceType => _serviceHostBase != null ? _serviceHostBase.Description.ServiceType : _serviceType;
+
+        public ServiceCredentials Credentials => _serviceHostBase != null ? _serviceHostBase.Credentials : new ServiceCredentials();
+
+        public ServiceDescription Description => _serviceHostBase != null ? _serviceHostBase.Description : new ServiceDescription();
     }
 }
 #endif

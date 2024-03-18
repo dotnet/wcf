@@ -22,7 +22,6 @@ namespace WcfService
         {
             return new NetTcpBinding(SecurityMode.Transport)
             {
-                PortSharingEnabled = false,
                 TransferMode = TransferMode.Streamed
             };
         }

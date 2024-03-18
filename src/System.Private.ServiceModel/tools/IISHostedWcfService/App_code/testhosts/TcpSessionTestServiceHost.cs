@@ -21,7 +21,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public TcpSessionTestServiceHost(params Uri[] baseAddresses)
@@ -36,7 +36,7 @@ namespace WcfService
         protected override string Address { get { return ""; } }
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false, ReceiveTimeout = TimeSpan.FromSeconds(5)};
+            return new NetTcpBinding(SecurityMode.None) { ReceiveTimeout = TimeSpan.FromSeconds(5) };
         }
 
         public TcpSessionShortTimeoutTestServiceHost(params Uri[] baseAddresses)
@@ -51,7 +51,7 @@ namespace WcfService
         protected override string Address { get { return ""; } }
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false};
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public TcpSessionDuplexTestServiceHost(params Uri[] baseAddresses)

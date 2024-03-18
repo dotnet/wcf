@@ -20,7 +20,7 @@ namespace WcfService
         protected override string Address { get { return "tcp-VerifyDNS"; } }
         protected override Binding GetBinding()
         {
-            NetTcpBinding binding = new NetTcpBinding() { PortSharingEnabled = false };
+            NetTcpBinding binding = new NetTcpBinding();
             binding.Security.Mode = SecurityMode.Transport;
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
 
