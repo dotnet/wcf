@@ -1092,8 +1092,9 @@ namespace System.ServiceModel.Channels
             {
                 if (headerKind != HeaderKind.Unknown && headerKind != HeaderKind.Action && headerKind != HeaderKind.To)
                 {
+                    string message = SRP.Format(SRP.AddressingHeadersCannotBeAddedToAddressingVersion, MessageVersion.Addressing);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new InvalidOperationException(SRP.Format(SRP.AddressingHeadersCannotBeAddedToAddressingVersion, MessageVersion.Addressing)));
+                        new InvalidOperationException(message, new ProtocolException(message)));
                 }
             }
         }
@@ -1467,8 +1468,9 @@ namespace System.ServiceModel.Channels
 
             if (MessageVersion.Addressing == AddressingVersion.None && reader.NamespaceURI == AddressingVersion.None.Namespace)
             {
+                string message = SRP.Format(SRP.AddressingHeadersCannotBeAddedToAddressingVersion, MessageVersion.Addressing);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(SRP.Format(SRP.AddressingHeadersCannotBeAddedToAddressingVersion, MessageVersion.Addressing)));
+                    new InvalidOperationException(message, new ProtocolException(message)));
             }
 
             MessageHeader.GetHeaderAttributes(reader, MessageVersion, out actor, out mustUnderstand, out relay, out isRefParam);
