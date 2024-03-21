@@ -221,14 +221,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     if (targetFrameworksElements.Count() > 0)
                     {
                         var targetFrameworks = targetFrameworksElements.Last().Value;
-                        if (targetFrameworks.ToString().StartsWith("$"))
-                        {
-                            targetFrameworks = GetValueFromDirBuildProps(targetFrameworks, msbuildProj.DirectoryPath);
-                        }
-
                         foreach (var targetFx in targetFrameworks.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()))
                         {
-                            if (!string.IsNullOrWhiteSpace(targetFx))
+                            if (!string.IsNullOrEmpty(targetFx) && !targetFx.ToString().StartsWith("$"))
                             {
                                 msbuildProj._targetFrameworks.Add(targetFx);
                             }
