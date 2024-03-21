@@ -5,7 +5,9 @@
 #if NET
 using CoreWCF;
 using CoreWCF.Channels;
+using CoreWCF.Configuration;
 using CoreWCF.Web;
+using Microsoft.AspNetCore;
 #else
 using System;
 using System.Collections.Generic;
@@ -244,7 +246,49 @@ namespace WcfService
             return null;
         }
 
-#if !NET
+#if NET
+        public string GetRestartServiceEndpoint()
+        {
+           IWebHost host = WebHost.CreateDefaultBuilder().UseStartup<BasicHttpBindingStartup>().Build();
+
+            host.Run();
+
+            BasicHttpBindingStartup startupService = new BasicHttpBindingStartup();
+            string endpointAddress = startupService.GetEndpointAddress();
+            Guid guid = startupService.GetServiceGuid();
+
+            // Add the WebHost instance to a static dictionary so that it can be used by restart service operation to close the WebHost
+            WcfRestartService.webHostDictionary.Add(guid, host);
+
+            // Return the unique endpoint for this WebHost instance of the WcfRestartService
+            return "http://[HOST]" + endpointAddress;
+        }
+
+        public class BasicHttpBindingStartup
+        {
+            private readonly Guid _guid = Guid.NewGuid();
+            private readonly string _localHost = "http://localhost:0";
+            private readonly string _path = "WindowsCommunicationFoundationTest/" + WindowsIdentity.GetCurrent().Name.Split('\\').Last();
+
+            public void ConfigureServices(IServiceCollection services)
+            {
+                services.AddServiceModelServices();
+            }
+
+            public void Configure(IApplicationBuilder app)
+            {
+                string endpointAddress = $"{_localHost}/{_path}/{_guid}";
+                app.UseServiceModel(builder =>
+                    {
+                        builder.AddService<WcfRestartService>()
+                        .AddServiceEndpoint<WcfRestartService, IWcfRestartService>(new BasicHttpBinding(BasicHttpSecurityMode.None), endpointAddress);
+                    });
+            }
+
+            public string GetEndpointAddress() => $"/{_path}/{_guid}";
+            public Guid GetServiceGuid() => _guid;
+        }
+#else
         public string GetRestartServiceEndpoint()
         {
             BasicHttpBinding binding = new BasicHttpBinding();
@@ -263,7 +307,7 @@ namespace WcfService
             // Return the unique endpoint for this ServiceHost instance of the WcfRestartService
             return "http://[HOST]" + path;
         }
-#endif 
+#endif
 
         public string GetRequestCustomHeader(string customHeaderName, string customHeaderNamespace)
         {

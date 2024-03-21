@@ -146,7 +146,7 @@ namespace WcfService
                                     });
                                     foreach (var endpoint in serviceHost.Endpoints)
                                     {
-                                        string scheme = endpoint.Binding.Scheme;
+                                        string scheme = endpoint.Binding.Scheme.Replace("net.tcp", "nettcp");
                                         string basePath = endpointBasePath[scheme];
                                         string endpointAddress = string.Format("{0}/{1}", basePath, endpoint.Address);
                                         serviceBuilder.AddServiceEndpoint(serviceHost.ServiceType, endpoint.ContractType, endpoint.Binding, new Uri(endpointAddress, UriKind.RelativeOrAbsolute), null);
