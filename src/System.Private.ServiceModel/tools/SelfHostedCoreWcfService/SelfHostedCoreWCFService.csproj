@@ -47,7 +47,6 @@
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\TestHostWebServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\WebSocketTestServiceHosts.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\VerifyWebSockets.cs" />
-    <Compile Remove="..\IISHostedWcfService\App_code\WcfRestartService.cs" />
     <None Include="..\IISHostedWcfService\App_code\ISessionTests.cs" />
     <None Include="..\IISHostedWcfService\App_code\IVerifyWebSockets.cs" />
     <None Include="..\IISHostedWcfService\App_code\SessionTestsService.cs" />
@@ -71,7 +70,6 @@
     <None Include="..\IISHostedWcfService\App_code\testhosts\TestHostWebServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\WebSocketTestServiceHosts.cs" />
     <None Include="..\IISHostedWcfService\App_code\VerifyWebSockets.cs" />
-    <None Include="..\IISHostedWcfService\App_code\WcfRestartService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\IISHostedWcfService\Web.config">
