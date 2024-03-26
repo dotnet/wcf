@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using WcfService;
 
 namespace SelfHostedWCFService
@@ -11,6 +10,10 @@ namespace SelfHostedWCFService
     {
         private static void Main()
         {
+            // Setup certificates
+            Console.WriteLine("Installing certificates...");
+            CertGenLib.SetupCerts();
+
             Console.WriteLine("Starting all service hosts...");
             TestDefinitionHelper.StartHosts();
 
