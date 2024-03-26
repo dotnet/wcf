@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.32916.344
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfHostedCoreWCFService", "SelfHostedCoreWCFService.csproj", "{19D41124-E785-44E4-9B7A-F75B6D21A7CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelfHostedCoreWCFService", "SelfHostedCoreWCFService.csproj", "{19D41124-E785-44E4-9B7A-F75B6D21A7CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertGenLib", "..\CertGenLib\CertGenLib.csproj", "{99F408E1-5DC2-4748-BC90-E71FCA05B082}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{19D41124-E785-44E4-9B7A-F75B6D21A7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19D41124-E785-44E4-9B7A-F75B6D21A7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19D41124-E785-44E4-9B7A-F75B6D21A7CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99F408E1-5DC2-4748-BC90-E71FCA05B082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99F408E1-5DC2-4748-BC90-E71FCA05B082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99F408E1-5DC2-4748-BC90-E71FCA05B082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99F408E1-5DC2-4748-BC90-E71FCA05B082}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

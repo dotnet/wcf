@@ -76,4 +76,7 @@
       <Link>Web.config</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CertGenLib\CertGenLib.csproj" />
+  </ItemGroup>
 </Project>
