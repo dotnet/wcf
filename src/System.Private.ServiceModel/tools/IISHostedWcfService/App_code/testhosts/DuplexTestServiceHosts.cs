@@ -2,11 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+using CoreWCF.Security;
+#else
 using System;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
+#endif
+using System.Security.Cryptography.X509Certificates;
 
 namespace WcfService
 {
@@ -17,7 +23,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public DuplexTestServiceHost(params Uri[] baseAddresses)
@@ -33,7 +39,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public DuplexCallbackTestServiceHost(params Uri[] baseAddresses)
@@ -49,7 +55,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public DuplexChannelCallbackReturnTestServiceHost(params Uri[] baseAddresses)
@@ -65,7 +71,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public DuplexCallbackDataContractComplexTypeTestServiceHost(params Uri[] baseAddresses)
@@ -81,7 +87,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public DuplexCallbackXmlComplexTypeTestServiceHost(params Uri[] baseAddresses)
@@ -128,7 +134,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public DuplexCallbackConcurrencyModeServiceHost(params Uri[] baseAddresses)
@@ -144,7 +150,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public DuplexCallbackDebugBahaviorServiceHost(params Uri[] baseAddresses)
