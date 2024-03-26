@@ -9,17 +9,17 @@
 
 namespace TcpTransSecMessCredsUserName_NS
 {
-    
-    
+
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class FaultDetail
     {
-        
+
         private string messageField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string Message
@@ -34,78 +34,78 @@ namespace TcpTransSecMessCredsUserName_NS
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class ComplexCompositeType
     {
-        
+
         private bool boolValueField;
-        
+
         private bool boolValueFieldSpecified;
-        
+
         private byte[] byteArrayValueField;
-        
+
         private int[] charArrayValueField;
-        
+
         private int charValueField;
-        
+
         private bool charValueFieldSpecified;
-        
+
         private System.DateTime dateTimeValueField;
-        
+
         private bool dateTimeValueFieldSpecified;
-        
+
         private DayOfWeek dayOfWeekValueField;
-        
+
         private bool dayOfWeekValueFieldSpecified;
-        
+
         private double doubleValueField;
-        
+
         private bool doubleValueFieldSpecified;
-        
+
         private float floatValueField;
-        
+
         private bool floatValueFieldSpecified;
-        
+
         private string guidValueField;
-        
+
         private int intValueField;
-        
+
         private bool intValueFieldSpecified;
-        
+
         private long longValueField;
-        
+
         private bool longValueFieldSpecified;
-        
+
         private string longerStringValueField;
-        
+
         private sbyte sbyteValueField;
-        
+
         private bool sbyteValueFieldSpecified;
-        
+
         private short shortValueField;
-        
+
         private bool shortValueFieldSpecified;
-        
+
         private string stringValueField;
-        
+
         private string timeSpanValueField;
-        
+
         private uint uintValueField;
-        
+
         private bool uintValueFieldSpecified;
-        
+
         private ulong ulongValueField;
-        
+
         private bool ulongValueFieldSpecified;
-        
+
         private ushort ushortValueField;
-        
+
         private bool ushortValueFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public bool BoolValue
@@ -119,7 +119,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.boolValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool BoolValueSpecified
@@ -133,7 +133,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.boolValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary", IsNullable=true, Order=1)]
         public byte[] ByteArrayValue
@@ -147,7 +147,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.byteArrayValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=2)]
         [System.Xml.Serialization.XmlArrayItemAttribute("char", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
@@ -162,7 +162,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.charArrayValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=3)]
         public int CharValue
@@ -176,7 +176,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.charValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool CharValueSpecified
@@ -190,7 +190,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.charValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=4)]
         public System.DateTime DateTimeValue
@@ -204,7 +204,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.dateTimeValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool DateTimeValueSpecified
@@ -218,7 +218,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.dateTimeValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=5)]
         public DayOfWeek DayOfWeekValue
@@ -232,7 +232,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.dayOfWeekValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool DayOfWeekValueSpecified
@@ -246,7 +246,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.dayOfWeekValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=6)]
         public double DoubleValue
@@ -260,7 +260,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.doubleValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool DoubleValueSpecified
@@ -274,7 +274,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.doubleValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=7)]
         public float FloatValue
@@ -288,7 +288,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.floatValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool FloatValueSpecified
@@ -302,7 +302,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.floatValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=8)]
         public string GuidValue
@@ -316,7 +316,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.guidValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=9)]
         public int IntValue
@@ -330,7 +330,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.intValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool IntValueSpecified
@@ -344,7 +344,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.intValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=10)]
         public long LongValue
@@ -358,7 +358,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.longValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool LongValueSpecified
@@ -372,7 +372,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.longValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=11)]
         public string LongerStringValue
@@ -386,7 +386,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.longerStringValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public sbyte SbyteValue
@@ -400,7 +400,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.sbyteValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool SbyteValueSpecified
@@ -414,7 +414,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.sbyteValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public short ShortValue
@@ -428,7 +428,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.shortValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool ShortValueSpecified
@@ -442,7 +442,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.shortValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=14)]
         public string StringValue
@@ -456,7 +456,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.stringValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="duration", Order=15)]
         public string TimeSpanValue
@@ -470,7 +470,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.timeSpanValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=16)]
         public uint UintValue
@@ -484,7 +484,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.uintValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool UintValueSpecified
@@ -498,7 +498,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.uintValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=17)]
         public ulong UlongValue
@@ -512,7 +512,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.ulongValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool UlongValueSpecified
@@ -526,7 +526,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.ulongValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=18)]
         public ushort UshortValue
@@ -540,7 +540,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.ushortValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool UshortValueSpecified
@@ -555,501 +555,501 @@ namespace TcpTransSecMessCredsUserName_NS
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System")]
     public enum DayOfWeek
     {
-        
+
         /// <remarks/>
         Sunday,
-        
+
         /// <remarks/>
         Monday,
-        
+
         /// <remarks/>
         Tuesday,
-        
+
         /// <remarks/>
         Wednesday,
-        
+
         /// <remarks/>
         Thursday,
-        
+
         /// <remarks/>
         Friday,
-        
+
         /// <remarks/>
         Saturday,
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TcpTransSecMessCredsUserName_NS.IWcfService")]
     public interface IWcfService
     {
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoWithTimeout", ReplyAction="http://tempuri.org/IWcfService/EchoWithTimeoutResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(TcpTransSecMessCredsUserName_NS.EchoWithTimeoutRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageRequestReply", ReplyAction="http://tempuri.org/IWcfService/MessageRequestReplyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/Echo", ReplyAction="http://tempuri.org/IWcfService/EchoResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoResponse> EchoAsync(TcpTransSecMessCredsUserName_NS.EchoRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoComplex", ReplyAction="http://tempuri.org/IWcfService/EchoComplexResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoComplexResponse> EchoComplexAsync(TcpTransSecMessCredsUserName_NS.EchoComplexRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFault", ReplyAction="http://tempuri.org/IWcfService/TestFaultResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(TcpTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.TestFaultResponse> TestFaultAsync(TcpTransSecMessCredsUserName_NS.TestFaultRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaultInt", ReplyAction="http://tempuri.org/IWcfService/TestFaultIntResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(int), Action="http://tempuri.org/IWcfService/TestFaultIntFault", Name="IntFault", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(TcpTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(TcpTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.TestFaultsResponse> TestFaultsAsync(TcpTransSecMessCredsUserName_NS.TestFaultsRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaultWithKnownType", ReplyAction="http://tempuri.org/IWcfService/TestFaultWithKnownTypeResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(TcpTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(TcpTransSecMessCredsUserName_NS.TestFaultWithKnownTypeRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ThrowInvalidOperationException", ReplyAction="http://tempuri.org/IWcfService/ThrowInvalidOperationExceptionResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(TcpTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IWcfService/GetDataUsingDataContractResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(TcpTransSecMessCredsUserName_NS.GetDataUsingDataContractRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ValidateMessagePropertyHeaders", ReplyAction="http://tempuri.org/IWcfService/ValidateMessagePropertyHeadersResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync(TcpTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/UserGetAuthToken", ReplyAction="http://tempuri.org/IWcfService/UserGetAuthTokenResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync(TcpTransSecMessCredsUserName_NS.UserGetAuthTokenRequest request);
-        
+
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReply", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReplyBankingData> MessageContractRequestReplyAsync(TcpTransSecMessCredsUserName_NS.RequestBankingData request);
-        
+
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReplyNotWrapped", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyNotWrappedResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(TcpTransSecMessCredsUserName_NS.RequestBankingData request);
-        
+
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeader", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.RequestBankingData request);
-        
+
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderNotNec" +
             "essaryUnderstood", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderNotNec" +
             "essaryUnderstoodResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(TcpTransSecMessCredsUserName_NS.RequestBankingData request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoHttpMessageProperty", ReplyAction="http://tempuri.org/IWcfService/EchoHttpRequestMessagePropertyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync(TcpTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetRestartServiceEndpoint", ReplyAction="http://tempuri.org/IWcfService/GetRestartServiceEndpointResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync(TcpTransSecMessCredsUserName_NS.GetRestartServiceEndpointRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoXmlSerializerFormat", ReplyAction="http://tempuri.org/IWcfService/EchoXmlSerializerFormatResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<string> EchoXmlSerializerFormatAsync(string message);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoXmlSerializerFormatSupportFaults", ReplyAction="http://tempuri.org/IWcfService/EchoXmlSerializerFormatSupportFaultsResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<string> EchoXmlSerializerFormatSupportFaultsAsync(string message, bool pleaseThrowException);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoXmlSerializerFormatUsingRpc", ReplyAction="http://tempuri.org/IWcfService/EchoXmlSerializerFormatUsingRpcResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true)]
         System.Threading.Tasks.Task<string> EchoXmlSerializerFormatUsingRpcAsync(string message);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetDataUsingXmlSerializer", ReplyAction="http://tempuri.org/IWcfService/GetDataUsingXmlSerializerResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(TcpTransSecMessCredsUserName_NS.XmlCompositeType composite);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/MtcRequest/loginRequest", ReplyAction="http://www.contoso.com/MtcRequest/loginResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.LoginResponse> LoginAsync(TcpTransSecMessCredsUserName_NS.LoginRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessage", ReplyAction="http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessageResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<string> GetIncomingMessageHeadersMessageAsync(string customHeaderName, string customHeaderNS);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetStreamFromString", ReplyAction="http://tempuri.org/IWcfService/GetStreamFromStringResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(TcpTransSecMessCredsUserName_NS.GetStreamFromStringRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetStringFromStream", ReplyAction="http://tempuri.org/IWcfService/GetStringFromStreamResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(TcpTransSecMessCredsUserName_NS.GetStringFromStreamRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoStream", ReplyAction="http://tempuri.org/IWcfService/EchoStreamResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<System.IO.Stream> EchoStreamAsync(System.IO.Stream stream);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoMessageParameter", ReplyAction="http://tempuri.org/IWcfService/EchoMessageParameterResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(TcpTransSecMessCredsUserName_NS.EchoMessageParameterRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoItems", ReplyAction="http://tempuri.org/IWcfService/EchoItemsResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoItemsResponse> EchoItemsAsync(TcpTransSecMessCredsUserName_NS.EchoItemsRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoItemsXml", ReplyAction="http://tempuri.org/IWcfService/EchoItems_XmlResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<object[]> EchoItems_XmlAsync(object[] objects);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoItemsXml1", ReplyAction="http://tempuri.org/IWcfService/EchoItems_Xml1Response")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<object[]> EchoItems_Xml1Async(object[] objects);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoXmlVeryComplexType", ReplyAction="http://tempuri.org/IWcfService/EchoXmlVeryComplexTypeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(TcpTransSecMessCredsUserName_NS.XmlVeryComplexType complex);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ReturnContentType", ReplyAction="http://tempuri.org/IWcfService/ReturnContentTypeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(TcpTransSecMessCredsUserName_NS.ReturnContentTypeRequest request);
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResponseWithMess" +
             "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResponseWithMess" +
             "ageHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
-            "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
+
+        [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageRequestWithMess" +
+            "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageRequestWithMess" +
             "ageHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader request);
-        
+        System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageRequestWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader request);
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabled", ReplyAction="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabledResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<bool> IsHttpKeepAliveDisabledAsync();
-        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetRequestHttpHeaders", ReplyAction="http://tempuri.org/IWcfService/GetRequestHttpHeadersResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync(TcpTransSecMessCredsUserName_NS.GetRequestHttpHeadersRequest request);
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoWithTimeout", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoWithTimeoutRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string message;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(DataType="duration")]
         public string serviceOperationTimeout;
-        
+
         public EchoWithTimeoutRequest()
         {
         }
-        
+
         public EchoWithTimeoutRequest(string message, string serviceOperationTimeout)
         {
             this.message = message;
             this.serviceOperationTimeout = serviceOperationTimeout;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoWithTimeoutResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoWithTimeoutResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string EchoWithTimeoutResult;
-        
+
         public EchoWithTimeoutResponse()
         {
         }
-        
+
         public EchoWithTimeoutResponse(string EchoWithTimeoutResult)
         {
             this.EchoWithTimeoutResult = EchoWithTimeoutResult;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="Echo", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string message;
-        
+
         public EchoRequest()
         {
         }
-        
+
         public EchoRequest(string message)
         {
             this.message = message;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string EchoResult;
-        
+
         public EchoResponse()
         {
         }
-        
+
         public EchoResponse(string EchoResult)
         {
             this.EchoResult = EchoResult;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoComplex", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoComplexRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public TcpTransSecMessCredsUserName_NS.ComplexCompositeType message;
-        
+
         public EchoComplexRequest()
         {
         }
-        
+
         public EchoComplexRequest(TcpTransSecMessCredsUserName_NS.ComplexCompositeType message)
         {
             this.message = message;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoComplexResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoComplexResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public TcpTransSecMessCredsUserName_NS.ComplexCompositeType EchoComplexResult;
-        
+
         public EchoComplexResponse()
         {
         }
-        
+
         public EchoComplexResponse(TcpTransSecMessCredsUserName_NS.ComplexCompositeType EchoComplexResult)
         {
             this.EchoComplexResult = EchoComplexResult;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="TestFault", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string faultMsg;
-        
+
         public TestFaultRequest()
         {
         }
-        
+
         public TestFaultRequest(string faultMsg)
         {
             this.faultMsg = faultMsg;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultResponse
     {
-        
+
         public TestFaultResponse()
         {
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaults", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultsRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string faultMsg;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public bool throwFaultDetail;
-        
+
         public TestFaultsRequest()
         {
         }
-        
+
         public TestFaultsRequest(string faultMsg, bool throwFaultDetail)
         {
             this.faultMsg = faultMsg;
             this.throwFaultDetail = throwFaultDetail;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultsResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultsResponse
     {
-        
+
         public TestFaultsResponse()
         {
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultWithKnownType", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultWithKnownTypeRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string faultMsg;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public object[] objects;
-        
+
         public TestFaultWithKnownTypeRequest()
         {
         }
-        
+
         public TestFaultWithKnownTypeRequest(string faultMsg, object[] objects)
         {
             this.faultMsg = faultMsg;
             this.objects = objects;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="TestFaultWithKnownTypeResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class TestFaultWithKnownTypeResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public object[] TestFaultWithKnownTypeResult;
-        
+
         public TestFaultWithKnownTypeResponse()
         {
         }
-        
+
         public TestFaultWithKnownTypeResponse(object[] TestFaultWithKnownTypeResult)
         {
             this.TestFaultWithKnownTypeResult = TestFaultWithKnownTypeResult;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ThrowInvalidOperationException", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ThrowInvalidOperationExceptionRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string message;
-        
+
         public ThrowInvalidOperationExceptionRequest()
         {
         }
-        
+
         public ThrowInvalidOperationExceptionRequest(string message)
         {
             this.message = message;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ThrowInvalidOperationExceptionResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ThrowInvalidOperationExceptionResponse
     {
-        
+
         public ThrowInvalidOperationExceptionResponse()
         {
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class CompositeType
     {
-        
+
         private bool boolValueField;
-        
+
         private bool boolValueFieldSpecified;
-        
+
         private string stringValueField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public bool BoolValue
@@ -1063,7 +1063,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.boolValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool BoolValueSpecified
@@ -1077,7 +1077,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.boolValueFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string StringValue
@@ -1092,60 +1092,60 @@ namespace TcpTransSecMessCredsUserName_NS
             }
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetDataUsingDataContract", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetDataUsingDataContractRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public TcpTransSecMessCredsUserName_NS.CompositeType composite;
-        
+
         public GetDataUsingDataContractRequest()
         {
         }
-        
+
         public GetDataUsingDataContractRequest(TcpTransSecMessCredsUserName_NS.CompositeType composite)
         {
             this.composite = composite;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetDataUsingDataContractResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetDataUsingDataContractResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public TcpTransSecMessCredsUserName_NS.CompositeType GetDataUsingDataContractResult;
-        
+
         public GetDataUsingDataContractResponse()
         {
         }
-        
+
         public GetDataUsingDataContractResponse(TcpTransSecMessCredsUserName_NS.CompositeType GetDataUsingDataContractResult)
         {
             this.GetDataUsingDataContractResult = GetDataUsingDataContractResult;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
     public partial class ArrayOfKeyValueOfstringstringKeyValueOfstringstring
     {
-        
+
         private string keyField;
-        
+
         private string valueField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=0)]
         public string Key
@@ -1159,7 +1159,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.keyField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string Value
@@ -1174,60 +1174,60 @@ namespace TcpTransSecMessCredsUserName_NS
             }
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ValidateMessagePropertyHeaders", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ValidateMessagePropertyHeadersRequest
     {
-        
+
         public ValidateMessagePropertyHeadersRequest()
         {
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ValidateMessagePropertyHeadersResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ValidateMessagePropertyHeadersResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
         public TcpTransSecMessCredsUserName_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult;
-        
+
         public ValidateMessagePropertyHeadersResponse()
         {
         }
-        
+
         public ValidateMessagePropertyHeadersResponse(TcpTransSecMessCredsUserName_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult)
         {
             this.ValidateMessagePropertyHeadersResult = ValidateMessagePropertyHeadersResult;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class ResultOfstring
     {
-        
+
         private int errorCodeField;
-        
+
         private bool errorCodeFieldSpecified;
-        
+
         private HttpStatusCode httpStatusCodeField;
-        
+
         private bool httpStatusCodeFieldSpecified;
-        
+
         private string resultField;
-        
+
         private string resultMessageField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public int ErrorCode
@@ -1241,7 +1241,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.errorCodeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool ErrorCodeSpecified
@@ -1255,7 +1255,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.errorCodeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=1)]
         public HttpStatusCode HttpStatusCode
@@ -1269,7 +1269,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.httpStatusCodeField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool HttpStatusCodeSpecified
@@ -1283,7 +1283,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.httpStatusCodeFieldSpecified = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
         public string Result
@@ -1297,7 +1297,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.resultField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=3)]
         public string ResultMessage
@@ -1312,210 +1312,210 @@ namespace TcpTransSecMessCredsUserName_NS
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System.Net")]
     public enum HttpStatusCode
     {
-        
+
         /// <remarks/>
         Continue,
-        
+
         /// <remarks/>
         SwitchingProtocols,
-        
+
         /// <remarks/>
         OK,
-        
+
         /// <remarks/>
         Created,
-        
+
         /// <remarks/>
         Accepted,
-        
+
         /// <remarks/>
         NonAuthoritativeInformation,
-        
+
         /// <remarks/>
         NoContent,
-        
+
         /// <remarks/>
         ResetContent,
-        
+
         /// <remarks/>
         PartialContent,
-        
+
         /// <remarks/>
         MultipleChoices,
-        
+
         /// <remarks/>
         Ambiguous,
-        
+
         /// <remarks/>
         MovedPermanently,
-        
+
         /// <remarks/>
         Moved,
-        
+
         /// <remarks/>
         Found,
-        
+
         /// <remarks/>
         Redirect,
-        
+
         /// <remarks/>
         SeeOther,
-        
+
         /// <remarks/>
         RedirectMethod,
-        
+
         /// <remarks/>
         NotModified,
-        
+
         /// <remarks/>
         UseProxy,
-        
+
         /// <remarks/>
         Unused,
-        
+
         /// <remarks/>
         TemporaryRedirect,
-        
+
         /// <remarks/>
         RedirectKeepVerb,
-        
+
         /// <remarks/>
         BadRequest,
-        
+
         /// <remarks/>
         Unauthorized,
-        
+
         /// <remarks/>
         PaymentRequired,
-        
+
         /// <remarks/>
         Forbidden,
-        
+
         /// <remarks/>
         NotFound,
-        
+
         /// <remarks/>
         MethodNotAllowed,
-        
+
         /// <remarks/>
         NotAcceptable,
-        
+
         /// <remarks/>
         ProxyAuthenticationRequired,
-        
+
         /// <remarks/>
         RequestTimeout,
-        
+
         /// <remarks/>
         Conflict,
-        
+
         /// <remarks/>
         Gone,
-        
+
         /// <remarks/>
         LengthRequired,
-        
+
         /// <remarks/>
         PreconditionFailed,
-        
+
         /// <remarks/>
         RequestEntityTooLarge,
-        
+
         /// <remarks/>
         RequestUriTooLong,
-        
+
         /// <remarks/>
         UnsupportedMediaType,
-        
+
         /// <remarks/>
         RequestedRangeNotSatisfiable,
-        
+
         /// <remarks/>
         ExpectationFailed,
-        
+
         /// <remarks/>
         UpgradeRequired,
-        
+
         /// <remarks/>
         InternalServerError,
-        
+
         /// <remarks/>
         NotImplemented,
-        
+
         /// <remarks/>
         BadGateway,
-        
+
         /// <remarks/>
         ServiceUnavailable,
-        
+
         /// <remarks/>
         GatewayTimeout,
-        
+
         /// <remarks/>
         HttpVersionNotSupported,
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UserGetAuthToken", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class UserGetAuthTokenRequest
     {
-        
+
         public UserGetAuthTokenRequest()
         {
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UserGetAuthTokenResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class UserGetAuthTokenResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public TcpTransSecMessCredsUserName_NS.ResultOfstring UserGetAuthTokenResult;
-        
+
         public UserGetAuthTokenResponse()
         {
         }
-        
+
         public UserGetAuthTokenResponse(TcpTransSecMessCredsUserName_NS.ResultOfstring UserGetAuthTokenResult)
         {
             this.UserGetAuthTokenResult = UserGetAuthTokenResult;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RequestBankingDataWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class RequestBankingData
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public int Transaction_Amount;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="CustomNamespace", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(Namespace="CustomNamespace", IsNullable=true)]
         public string Customer_Name;
-        
+
         public RequestBankingData()
         {
         }
-        
+
         public RequestBankingData(System.DateTime Date_of_Request, int Transaction_Amount, string Customer_Name)
         {
             this.Date_of_Request = Date_of_Request;
@@ -1523,29 +1523,29 @@ namespace TcpTransSecMessCredsUserName_NS
             this.Customer_Name = Customer_Name;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ReplyBankingDataWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class ReplyBankingData
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public int Transaction_Amount;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
-        
+
         public ReplyBankingData()
         {
         }
-        
+
         public ReplyBankingData(System.DateTime Date_of_Request, int Transaction_Amount, string Customer_Name)
         {
             this.Date_of_Request = Date_of_Request;
@@ -1553,27 +1553,27 @@ namespace TcpTransSecMessCredsUserName_NS
             this.Customer_Name = Customer_Name;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class ReplyBankingDataNotWrapped
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.DateTime Date_of_Request;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int Transaction_Amount;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
-        
+
         public ReplyBankingDataNotWrapped()
         {
         }
-        
+
         public ReplyBankingDataNotWrapped(System.DateTime Date_of_Request, int Transaction_Amount, string Customer_Name)
         {
             this.Date_of_Request = Date_of_Request;
@@ -1581,33 +1581,33 @@ namespace TcpTransSecMessCredsUserName_NS
             this.Customer_Name = Customer_Name;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ReplyBankingDataWithMessageHeaderWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class ReplyBankingDataWithMessageHeader
     {
-        
+
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string ReplyBankingDataWithMessageHeaderExtraValues;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public int Transaction_Amount;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
-        
+
         public ReplyBankingDataWithMessageHeader()
         {
         }
-        
+
         public ReplyBankingDataWithMessageHeader(string ReplyBankingDataWithMessageHeaderExtraValues, System.DateTime Date_of_Request, int Transaction_Amount, string Customer_Name)
         {
             this.ReplyBankingDataWithMessageHeaderExtraValues = ReplyBankingDataWithMessageHeaderExtraValues;
@@ -1616,33 +1616,33 @@ namespace TcpTransSecMessCredsUserName_NS
             this.Customer_Name = Customer_Name;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodWrapper", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
     public partial class ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood
     {
-        
+
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodExtraValue;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public System.DateTime Date_of_Request;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Namespace="http://tempuri.org/")]
         public int Transaction_Amount;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string Customer_Name;
-        
+
         public ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood()
         {
         }
-        
+
         public ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood(string ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodExtraValue, System.DateTime Date_of_Request, int Transaction_Amount, string Customer_Name)
         {
             this.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodExtraValue = ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodExtraValue;
@@ -1651,24 +1651,24 @@ namespace TcpTransSecMessCredsUserName_NS
             this.Customer_Name = Customer_Name;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class TestHttpRequestMessageProperty
     {
-        
+
         private ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] headersField;
-        
+
         private string methodField;
-        
+
         private string queryStringField;
-        
+
         private bool suppressEntityBodyField;
-        
+
         private bool suppressEntityBodyFieldSpecified;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Order=0)]
         [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
@@ -1683,7 +1683,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.headersField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
         public string Method
@@ -1697,7 +1697,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.methodField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
         public string QueryString
@@ -1711,7 +1711,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.queryStringField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=3)]
         public bool SuppressEntityBody
@@ -1725,7 +1725,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.suppressEntityBodyField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool SuppressEntityBodySpecified
@@ -1740,84 +1740,84 @@ namespace TcpTransSecMessCredsUserName_NS
             }
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoHttpRequestMessageProperty", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoHttpRequestMessagePropertyRequest
     {
-        
+
         public EchoHttpRequestMessagePropertyRequest()
         {
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoHttpRequestMessagePropertyResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoHttpRequestMessagePropertyResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public TcpTransSecMessCredsUserName_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult;
-        
+
         public EchoHttpRequestMessagePropertyResponse()
         {
         }
-        
+
         public EchoHttpRequestMessagePropertyResponse(TcpTransSecMessCredsUserName_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult)
         {
             this.EchoHttpRequestMessagePropertyResult = EchoHttpRequestMessagePropertyResult;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRestartServiceEndpoint", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetRestartServiceEndpointRequest
     {
-        
+
         public GetRestartServiceEndpointRequest()
         {
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRestartServiceEndpointResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetRestartServiceEndpointResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string GetRestartServiceEndpointResult;
-        
+
         public GetRestartServiceEndpointResponse()
         {
         }
-        
+
         public GetRestartServiceEndpointResponse(string GetRestartServiceEndpointResult)
         {
             this.GetRestartServiceEndpointResult = GetRestartServiceEndpointResult;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class XmlCompositeType
     {
-        
+
         private bool boolValueField;
-        
+
         private string stringValueField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public bool BoolValue
@@ -1831,7 +1831,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.boolValueField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=1)]
         public string StringValue
@@ -1846,30 +1846,30 @@ namespace TcpTransSecMessCredsUserName_NS
             }
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="login", WrapperNamespace="http://www.contoso.com/", IsWrapped=true)]
     public partial class LoginRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string clientId;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string user;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string pwd;
-        
+
         public LoginRequest()
         {
         }
-        
+
         public LoginRequest(string clientId, string user, string pwd)
         {
             this.clientId = clientId;
@@ -1877,207 +1877,207 @@ namespace TcpTransSecMessCredsUserName_NS
             this.pwd = pwd;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="loginResponse", WrapperNamespace="http://www.contoso.com/", IsWrapped=true)]
     public partial class LoginResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string @return;
-        
+
         public LoginResponse()
         {
         }
-        
+
         public LoginResponse(string @return)
         {
             this.@return = @return;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetStreamFromString", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetStreamFromStringRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string data;
-        
+
         public GetStreamFromStringRequest()
         {
         }
-        
+
         public GetStreamFromStringRequest(string data)
         {
             this.data = data;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetStreamFromStringResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetStreamFromStringResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.IO.Stream GetStreamFromStringResult;
-        
+
         public GetStreamFromStringResponse()
         {
         }
-        
+
         public GetStreamFromStringResponse(System.IO.Stream GetStreamFromStringResult)
         {
             this.GetStreamFromStringResult = GetStreamFromStringResult;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetStringFromStream", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetStringFromStreamRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public System.IO.Stream stream;
-        
+
         public GetStringFromStreamRequest()
         {
         }
-        
+
         public GetStringFromStreamRequest(System.IO.Stream stream)
         {
             this.stream = stream;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetStringFromStreamResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetStringFromStreamResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string GetStringFromStreamResult;
-        
+
         public GetStringFromStreamResponse()
         {
         }
-        
+
         public GetStringFromStreamResponse(string GetStringFromStreamResult)
         {
             this.GetStringFromStreamResult = GetStringFromStreamResult;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoMessageParameter", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoMessageParameterRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string name;
-        
+
         public EchoMessageParameterRequest()
         {
         }
-        
+
         public EchoMessageParameterRequest(string name)
         {
             this.name = name;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoMessageParameterResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoMessageParameterResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string result;
-        
+
         public EchoMessageParameterResponse()
         {
         }
-        
+
         public EchoMessageParameterResponse(string result)
         {
             this.result = result;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoItems", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoItemsRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public object[] objects;
-        
+
         public EchoItemsRequest()
         {
         }
-        
+
         public EchoItemsRequest(object[] objects)
         {
             this.objects = objects;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="EchoItemsResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class EchoItemsResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
         public object[] EchoItemsResult;
-        
+
         public EchoItemsResponse()
         {
         }
-        
+
         public EchoItemsResponse(object[] EchoItemsResult)
         {
             this.EchoItemsResult = EchoItemsResult;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class XmlVeryComplexType
     {
-        
+
         private NonInstantiatedType nonInstantiatedFieldField;
-        
+
         private int idField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public NonInstantiatedType NonInstantiatedField
@@ -2091,7 +2091,7 @@ namespace TcpTransSecMessCredsUserName_NS
                 this.nonInstantiatedFieldField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=1)]
         public int Id
@@ -2106,7 +2106,7 @@ namespace TcpTransSecMessCredsUserName_NS
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -2114,194 +2114,194 @@ namespace TcpTransSecMessCredsUserName_NS
     public partial class NonInstantiatedType
     {
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ReturnContentType", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ReturnContentTypeRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string contentType;
-        
+
         public ReturnContentTypeRequest()
         {
         }
-        
+
         public ReturnContentTypeRequest(string contentType)
         {
             this.contentType = contentType;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ReturnContentTypeResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ReturnContentTypeResponse
     {
-        
+
         public ReturnContentTypeResponse()
         {
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="XmlMessageContractTestRequest", WrapperNamespace="http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped=true)]
     public partial class XmlMessageContractTestRequest
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/XmlMessageContarctTestMessages", Order=0)]
         public string Message;
-        
+
         public XmlMessageContractTestRequest()
         {
         }
-        
+
         public XmlMessageContractTestRequest(string Message)
         {
             this.Message = Message;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="XmlMessageContractTestResponse", WrapperNamespace="http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped=true)]
     public partial class XmlMessageContractTestResponse
     {
-        
+
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
         public string OutOfBandData;
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.contoso.com/XmlMessageContarctTestMessages", Order=0)]
         public string _message;
-        
+
         public XmlMessageContractTestResponse()
         {
         }
-        
+
         public XmlMessageContractTestResponse(string OutOfBandData, string _message)
         {
             this.OutOfBandData = OutOfBandData;
             this._message = _message;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="XmlMessageContractTestRequestWithMessageHeader", WrapperNamespace="http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped=true)]
     public partial class XmlMessageContractTestRequestWithMessageHeader
     {
-        
+
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.contoso.com")]
         public string XmlMessageContractTestRequestWithMessageHeaderMessage;
-        
+
         public XmlMessageContractTestRequestWithMessageHeader()
         {
         }
-        
+
         public XmlMessageContractTestRequestWithMessageHeader(string XmlMessageContractTestRequestWithMessageHeaderMessage)
         {
             this.XmlMessageContractTestRequestWithMessageHeaderMessage = XmlMessageContractTestRequestWithMessageHeaderMessage;
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRequestHttpHeaders", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetRequestHttpHeadersRequest
     {
-        
+
         public GetRequestHttpHeadersRequest()
         {
         }
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRequestHttpHeadersResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetRequestHttpHeadersResponse
     {
-        
+
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
         public TcpTransSecMessCredsUserName_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult;
-        
+
         public GetRequestHttpHeadersResponse()
         {
         }
-        
+
         public GetRequestHttpHeadersResponse(TcpTransSecMessCredsUserName_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult)
         {
             this.GetRequestHttpHeadersResult = GetRequestHttpHeadersResult;
         }
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     public interface IWcfServiceChannel : TcpTransSecMessCredsUserName_NS.IWcfService, System.ServiceModel.IClientChannel
     {
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     public partial class WcfServiceClient : System.ServiceModel.ClientBase<TcpTransSecMessCredsUserName_NS.IWcfService>, TcpTransSecMessCredsUserName_NS.IWcfService
     {
-        
+
         /// <summary>
         /// Implement this partial method to configure the service endpoint.
         /// </summary>
         /// <param name="serviceEndpoint">The endpoint to configure</param>
         /// <param name="clientCredentials">The client credentials</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
-        
-        public WcfServiceClient() : 
+
+        public WcfServiceClient() :
                 base(WcfServiceClient.GetDefaultBinding(), WcfServiceClient.GetDefaultEndpointAddress())
         {
             this.Endpoint.Name = EndpointConfiguration.Tcp_message_credentials_username_IWcfService.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public WcfServiceClient(EndpointConfiguration endpointConfiguration) : 
+
+        public WcfServiceClient(EndpointConfiguration endpointConfiguration) :
                 base(WcfServiceClient.GetBindingForEndpoint(endpointConfiguration), WcfServiceClient.GetEndpointAddress(endpointConfiguration))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public WcfServiceClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
+
+        public WcfServiceClient(EndpointConfiguration endpointConfiguration, string remoteAddress) :
                 base(WcfServiceClient.GetBindingForEndpoint(endpointConfiguration), new System.ServiceModel.EndpointAddress(remoteAddress))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public WcfServiceClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) : 
+
+        public WcfServiceClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(WcfServiceClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public WcfServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+
+        public WcfServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(binding, remoteAddress)
         {
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoWithTimeoutResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoWithTimeoutAsync(TcpTransSecMessCredsUserName_NS.EchoWithTimeoutRequest request)
         {
             return base.Channel.EchoWithTimeoutAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
         {
             TcpTransSecMessCredsUserName_NS.EchoWithTimeoutRequest inValue = new TcpTransSecMessCredsUserName_NS.EchoWithTimeoutRequest();
@@ -2309,62 +2309,62 @@ namespace TcpTransSecMessCredsUserName_NS
             inValue.serviceOperationTimeout = serviceOperationTimeout;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue);
         }
-        
+
         public System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request)
         {
             return base.Channel.MessageRequestReplyAsync(request);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoAsync(TcpTransSecMessCredsUserName_NS.EchoRequest request)
         {
             return base.Channel.EchoAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoResponse> EchoAsync(string message)
         {
             TcpTransSecMessCredsUserName_NS.EchoRequest inValue = new TcpTransSecMessCredsUserName_NS.EchoRequest();
             inValue.message = message;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoComplexResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoComplexAsync(TcpTransSecMessCredsUserName_NS.EchoComplexRequest request)
         {
             return base.Channel.EchoComplexAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoComplexResponse> EchoComplexAsync(TcpTransSecMessCredsUserName_NS.ComplexCompositeType message)
         {
             TcpTransSecMessCredsUserName_NS.EchoComplexRequest inValue = new TcpTransSecMessCredsUserName_NS.EchoComplexRequest();
             inValue.message = message;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoComplexAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.TestFaultResponse> TcpTransSecMessCredsUserName_NS.IWcfService.TestFaultAsync(TcpTransSecMessCredsUserName_NS.TestFaultRequest request)
         {
             return base.Channel.TestFaultAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.TestFaultResponse> TestFaultAsync(string faultMsg)
         {
             TcpTransSecMessCredsUserName_NS.TestFaultRequest inValue = new TcpTransSecMessCredsUserName_NS.TestFaultRequest();
             inValue.faultMsg = faultMsg;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).TestFaultAsync(inValue);
         }
-        
+
         public System.Threading.Tasks.Task TestFaultIntAsync(int faultCode)
         {
             return base.Channel.TestFaultIntAsync(faultCode);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.TestFaultsResponse> TcpTransSecMessCredsUserName_NS.IWcfService.TestFaultsAsync(TcpTransSecMessCredsUserName_NS.TestFaultsRequest request)
         {
             return base.Channel.TestFaultsAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.TestFaultsResponse> TestFaultsAsync(string faultMsg, bool throwFaultDetail)
         {
             TcpTransSecMessCredsUserName_NS.TestFaultsRequest inValue = new TcpTransSecMessCredsUserName_NS.TestFaultsRequest();
@@ -2372,13 +2372,13 @@ namespace TcpTransSecMessCredsUserName_NS
             inValue.throwFaultDetail = throwFaultDetail;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).TestFaultsAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.TestFaultWithKnownTypeResponse> TcpTransSecMessCredsUserName_NS.IWcfService.TestFaultWithKnownTypeAsync(TcpTransSecMessCredsUserName_NS.TestFaultWithKnownTypeRequest request)
         {
             return base.Channel.TestFaultWithKnownTypeAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
         {
             TcpTransSecMessCredsUserName_NS.TestFaultWithKnownTypeRequest inValue = new TcpTransSecMessCredsUserName_NS.TestFaultWithKnownTypeRequest();
@@ -2386,127 +2386,127 @@ namespace TcpTransSecMessCredsUserName_NS
             inValue.objects = objects;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionResponse> TcpTransSecMessCredsUserName_NS.IWcfService.ThrowInvalidOperationExceptionAsync(TcpTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionRequest request)
         {
             return base.Channel.ThrowInvalidOperationExceptionAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(string message)
         {
             TcpTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionRequest inValue = new TcpTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionRequest();
             inValue.message = message;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetDataUsingDataContractResponse> TcpTransSecMessCredsUserName_NS.IWcfService.GetDataUsingDataContractAsync(TcpTransSecMessCredsUserName_NS.GetDataUsingDataContractRequest request)
         {
             return base.Channel.GetDataUsingDataContractAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(TcpTransSecMessCredsUserName_NS.CompositeType composite)
         {
             TcpTransSecMessCredsUserName_NS.GetDataUsingDataContractRequest inValue = new TcpTransSecMessCredsUserName_NS.GetDataUsingDataContractRequest();
             inValue.composite = composite;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersResponse> TcpTransSecMessCredsUserName_NS.IWcfService.ValidateMessagePropertyHeadersAsync(TcpTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersRequest request)
         {
             return base.Channel.ValidateMessagePropertyHeadersAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync()
         {
             TcpTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersRequest inValue = new TcpTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersRequest();
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.UserGetAuthTokenResponse> TcpTransSecMessCredsUserName_NS.IWcfService.UserGetAuthTokenAsync(TcpTransSecMessCredsUserName_NS.UserGetAuthTokenRequest request)
         {
             return base.Channel.UserGetAuthTokenAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync()
         {
             TcpTransSecMessCredsUserName_NS.UserGetAuthTokenRequest inValue = new TcpTransSecMessCredsUserName_NS.UserGetAuthTokenRequest();
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReplyBankingData> MessageContractRequestReplyAsync(TcpTransSecMessCredsUserName_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(TcpTransSecMessCredsUserName_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyNotWrappedAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyWithMessageHeaderAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(TcpTransSecMessCredsUserName_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(request);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoHttpRequestMessagePropertyAsync(TcpTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyRequest request)
         {
             return base.Channel.EchoHttpRequestMessagePropertyAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync()
         {
             TcpTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyRequest inValue = new TcpTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyRequest();
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetRestartServiceEndpointResponse> TcpTransSecMessCredsUserName_NS.IWcfService.GetRestartServiceEndpointAsync(TcpTransSecMessCredsUserName_NS.GetRestartServiceEndpointRequest request)
         {
             return base.Channel.GetRestartServiceEndpointAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync()
         {
             TcpTransSecMessCredsUserName_NS.GetRestartServiceEndpointRequest inValue = new TcpTransSecMessCredsUserName_NS.GetRestartServiceEndpointRequest();
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue);
         }
-        
+
         public System.Threading.Tasks.Task<string> EchoXmlSerializerFormatAsync(string message)
         {
             return base.Channel.EchoXmlSerializerFormatAsync(message);
         }
-        
+
         public System.Threading.Tasks.Task<string> EchoXmlSerializerFormatSupportFaultsAsync(string message, bool pleaseThrowException)
         {
             return base.Channel.EchoXmlSerializerFormatSupportFaultsAsync(message, pleaseThrowException);
         }
-        
+
         public System.Threading.Tasks.Task<string> EchoXmlSerializerFormatUsingRpcAsync(string message)
         {
             return base.Channel.EchoXmlSerializerFormatUsingRpcAsync(message);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(TcpTransSecMessCredsUserName_NS.XmlCompositeType composite)
         {
             return base.Channel.GetDataUsingXmlSerializerAsync(composite);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.LoginResponse> TcpTransSecMessCredsUserName_NS.IWcfService.LoginAsync(TcpTransSecMessCredsUserName_NS.LoginRequest request)
         {
             return base.Channel.LoginAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.LoginResponse> LoginAsync(string clientId, string user, string pwd)
         {
             TcpTransSecMessCredsUserName_NS.LoginRequest inValue = new TcpTransSecMessCredsUserName_NS.LoginRequest();
@@ -2515,145 +2515,145 @@ namespace TcpTransSecMessCredsUserName_NS
             inValue.pwd = pwd;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).LoginAsync(inValue);
         }
-        
+
         public System.Threading.Tasks.Task<string> GetIncomingMessageHeadersMessageAsync(string customHeaderName, string customHeaderNS)
         {
             return base.Channel.GetIncomingMessageHeadersMessageAsync(customHeaderName, customHeaderNS);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetStreamFromStringResponse> TcpTransSecMessCredsUserName_NS.IWcfService.GetStreamFromStringAsync(TcpTransSecMessCredsUserName_NS.GetStreamFromStringRequest request)
         {
             return base.Channel.GetStreamFromStringAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(string data)
         {
             TcpTransSecMessCredsUserName_NS.GetStreamFromStringRequest inValue = new TcpTransSecMessCredsUserName_NS.GetStreamFromStringRequest();
             inValue.data = data;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetStringFromStreamResponse> TcpTransSecMessCredsUserName_NS.IWcfService.GetStringFromStreamAsync(TcpTransSecMessCredsUserName_NS.GetStringFromStreamRequest request)
         {
             return base.Channel.GetStringFromStreamAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(System.IO.Stream stream)
         {
             TcpTransSecMessCredsUserName_NS.GetStringFromStreamRequest inValue = new TcpTransSecMessCredsUserName_NS.GetStringFromStreamRequest();
             inValue.stream = stream;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue);
         }
-        
+
         public System.Threading.Tasks.Task<System.IO.Stream> EchoStreamAsync(System.IO.Stream stream)
         {
             return base.Channel.EchoStreamAsync(stream);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoMessageParameterResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoMessageParameterAsync(TcpTransSecMessCredsUserName_NS.EchoMessageParameterRequest request)
         {
             return base.Channel.EchoMessageParameterAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(string name)
         {
             TcpTransSecMessCredsUserName_NS.EchoMessageParameterRequest inValue = new TcpTransSecMessCredsUserName_NS.EchoMessageParameterRequest();
             inValue.name = name;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoItemsResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoItemsAsync(TcpTransSecMessCredsUserName_NS.EchoItemsRequest request)
         {
             return base.Channel.EchoItemsAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.EchoItemsResponse> EchoItemsAsync(object[] objects)
         {
             TcpTransSecMessCredsUserName_NS.EchoItemsRequest inValue = new TcpTransSecMessCredsUserName_NS.EchoItemsRequest();
             inValue.objects = objects;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoItemsAsync(inValue);
         }
-        
+
         public System.Threading.Tasks.Task<object[]> EchoItems_XmlAsync(object[] objects)
         {
             return base.Channel.EchoItems_XmlAsync(objects);
         }
-        
+
         public System.Threading.Tasks.Task<object[]> EchoItems_Xml1Async(object[] objects)
         {
             return base.Channel.EchoItems_Xml1Async(objects);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(TcpTransSecMessCredsUserName_NS.XmlVeryComplexType complex)
         {
             return base.Channel.EchoXmlVeryComplexTypeAsync(complex);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReturnContentTypeResponse> TcpTransSecMessCredsUserName_NS.IWcfService.ReturnContentTypeAsync(TcpTransSecMessCredsUserName_NS.ReturnContentTypeRequest request)
         {
             return base.Channel.ReturnContentTypeAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(string contentType)
         {
             TcpTransSecMessCredsUserName_NS.ReturnContentTypeRequest inValue = new TcpTransSecMessCredsUserName_NS.ReturnContentTypeRequest();
             inValue.contentType = contentType;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoMessageResponseWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequest request)
         {
             return base.Channel.EchoMessageResponseWithMessageHeaderAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(string Message)
         {
             TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequest inValue = new TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequest();
             inValue.Message = Message;
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoMessageResponseWithMessageHeaderAsync(inValue);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoMessageResquestWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader request)
+        System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoMessageRequestWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader request)
         {
-            return base.Channel.EchoMessageResquestWithMessageHeaderAsync(request);
+            return base.Channel.EchoMessageRequestWithMessageHeaderAsync(request);
         }
-        
-        public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
+
+        public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageRequestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
         {
             TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader inValue = new TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader();
             inValue.XmlMessageContractTestRequestWithMessageHeaderMessage = XmlMessageContractTestRequestWithMessageHeaderMessage;
-            return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoMessageResquestWithMessageHeaderAsync(inValue);
+            return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoMessageRequestWithMessageHeaderAsync(inValue);
         }
-        
+
         public System.Threading.Tasks.Task<bool> IsHttpKeepAliveDisabledAsync()
         {
             return base.Channel.IsHttpKeepAliveDisabledAsync();
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetRequestHttpHeadersResponse> TcpTransSecMessCredsUserName_NS.IWcfService.GetRequestHttpHeadersAsync(TcpTransSecMessCredsUserName_NS.GetRequestHttpHeadersRequest request)
         {
             return base.Channel.GetRequestHttpHeadersAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync()
         {
             TcpTransSecMessCredsUserName_NS.GetRequestHttpHeadersRequest inValue = new TcpTransSecMessCredsUserName_NS.GetRequestHttpHeadersRequest();
             return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue);
         }
-        
+
         public virtual System.Threading.Tasks.Task OpenAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
-        
+
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.Tcp_message_credentials_username_IWcfService))
@@ -2668,7 +2668,7 @@ namespace TcpTransSecMessCredsUserName_NS
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
-        
+
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.Tcp_message_credentials_username_IWcfService))
@@ -2678,20 +2678,20 @@ namespace TcpTransSecMessCredsUserName_NS
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
-        
+
         private static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
             return WcfServiceClient.GetBindingForEndpoint(EndpointConfiguration.Tcp_message_credentials_username_IWcfService);
         }
-        
+
         private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
             return WcfServiceClient.GetEndpointAddress(EndpointConfiguration.Tcp_message_credentials_username_IWcfService);
         }
-        
+
         public enum EndpointConfiguration
         {
-            
+
             Tcp_message_credentials_username_IWcfService,
         }
     }
