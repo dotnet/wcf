@@ -273,7 +273,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
                     // is wrong other than what we are testing, so just fail early.
                     if ((endOfOpeningStall - startOfOpeningStall).TotalMilliseconds > timeoutMs)
                     {
-                        Assert.True(false, "The Opening event timed out waiting for operations to queue, which was not expected for this test.");
+                        Assert.Fail("The Opening event timed out waiting for operations to queue, which was not expected for this test.");
                     }
 
                     // As soon as we have all our Tasks at least running, wait a little
