@@ -46,7 +46,7 @@ namespace SvcutilTest
                 new ReplaceInfo(@"targetFramework:\[netcoreapp\d+\.\d+\]", "targetFramework:[N.N]") { UseRegex = true },
                 new ReplaceInfo(@"""targetFramework"": ""netcoreapp\d+\.\d+""", "\"targetFramework\": \"N.N\"") { UseRegex = true }, //new    
                 new ReplaceInfo(@"<TargetFramework>netcoreapp\d+\.\d+</TargetFramework>", "<TargetFramework>N.N</TargetFramework>") { UseRegex = true }, //new    
-                new ReplaceInfo(@"""targetFramework"": ""net\d+\.\d+""", "\"targetFramework\": \"N.N\"") { UseRegex = true }, //new    
+                new ReplaceInfo(@"""targetFramework"": ""net\d+\.\d+(-?)\w*""", "\"targetFramework\": \"N.N\"") { UseRegex = true }, //new    
                 new ReplaceInfo(@"<TargetFramework>net\d+\.\d+</TargetFramework>", "<TargetFramework>N.N</TargetFramework>") { UseRegex = true }, //new    
                 new ReplaceInfo(@"<PackageReference Include=""System\.ServiceModel\.\w+"" Version="".+"" />", @"<PackageReference Include=""System.ServiceModel.*"", Version=""N.N.N"">") { UseRegex = true } //new
             };
