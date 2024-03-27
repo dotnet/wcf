@@ -188,7 +188,7 @@ public static class SessionTests
                 try
                 {
                     channel.MethodCTerminating();
-                    Assert.True(false, "channel.MethodCTerminating() should throw, but it didn't.");
+                    Assert.Fail("channel.MethodCTerminating() should throw, but it didn't.");
                 }
                 catch(CommunicationException)
                 {
@@ -200,7 +200,7 @@ public static class SessionTests
                 }
                 catch (Exception e)
                 {
-                    Assert.True(false, $"channel.MethodCTerminating() threw unexpected exception: {e}");
+                    Assert.Fail($"channel.MethodCTerminating() threw unexpected exception: {e}");
                 }
             }
             finally

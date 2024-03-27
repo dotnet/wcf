@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SvcutilTest
@@ -85,7 +86,7 @@ namespace SvcutilTest
         [Trait("Category", "BVT")]
         [Theory]
         [InlineData("FullFramework")]
-        public void FullFramework(string testCaseName)
+        public async Task FullFrameworkAsync(string testCaseName)
         {
             if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux))
             {
@@ -101,7 +102,7 @@ namespace SvcutilTest
             var options = $"{uri} -nl -d {outDir} -tf netcoreapp1.0";
 
             this_TestCaseProject.AddDependency(Microsoft.Tools.ServiceModel.Svcutil.ProjectDependency.FromAssembly("System.ServiceModel"));
-            this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None).Wait();
+            await this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None);
 
             TestGlobalSvcutil(options, expectSuccess: true);
         }
