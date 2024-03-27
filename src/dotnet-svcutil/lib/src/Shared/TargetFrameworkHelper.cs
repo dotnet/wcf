@@ -160,11 +160,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
             }
 
-            if (fxInfo != null)
-            {
-                return fxInfo.FullName;
-            }
-
             return targetFramework;
         }
 
@@ -221,12 +216,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public static bool IsSupportedFramework(string fullFrameworkName, out FrameworkInfo frameworkInfo)
         {
             bool isSupported = false;
-
-            var tfx = fullFrameworkName.Split('-');
-            if (tfx.Length > 1)
-            {
-                fullFrameworkName = tfx[0];
-            }
 
             if (FrameworkInfo.TryParse(fullFrameworkName, out frameworkInfo))
             {

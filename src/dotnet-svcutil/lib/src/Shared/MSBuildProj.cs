@@ -221,14 +221,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     if (targetFrameworksElements.Count() > 0)
                     {
                         var targetFrameworks = targetFrameworksElements.Last().Value;
-                        if (targetFrameworks.ToString().StartsWith("$"))
-                        {
-                            targetFrameworks = GetValueFromDirBuildProps(targetFrameworks, msbuildProj.DirectoryPath);
-                        }
-
                         foreach (var targetFx in targetFrameworks.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()))
                         {
-                            if (!string.IsNullOrWhiteSpace(targetFx))
+                            if (!string.IsNullOrEmpty(targetFx) && !targetFx.ToString().StartsWith("$"))
                             {
                                 msbuildProj._targetFrameworks.Add(targetFx);
                             }
@@ -591,6 +586,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return addDependency;
         }
 
+        public void SetEnableMsixTooling()
+        {
+            // workaround for https://github.com/microsoft/WindowsAppSDK/issues/3548: dotnet build fails when WindowsAppSDK is referenced in console application.
+            // affects MAUI project targeting net7.0-windows10.0xxx, not reproduce in net8.0-window10.0xxx
+            // ref: https://github.com/dotnet/maui/issues/5886
+            SetPropertyValue("EnableMsixTooling", "true");
+        }
+
         // Sets the property value in a PropertyGroup. Returns true if the value was changed, and false if it was already set to that value.
         private bool SetPropertyValue(string propertyName, string value)
         {
@@ -759,7 +762,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, "Resolving project references ...").ConfigureAwait(false))
             {
-                if (_targetFrameworks.Count == 1 && TargetFrameworkHelper.IsSupportedFramework(this.TargetFramework, out var frameworkInfo) && frameworkInfo.IsDnx)
+                if (_targetFrameworks.Count >= 1 && TargetFrameworkHelper.IsSupportedFramework(this.TargetFramework, out var frameworkInfo) && frameworkInfo.IsDnx)
                 {
                     await this.RestoreAsync(logger, cancellationToken).ConfigureAwait(false);
 
@@ -794,15 +797,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     try
                     {
                         var assetsFile = new FileInfo(Path.Combine(this.DirectoryPath, "obj", "project.assets.json")).FullName;
-                        if (File.Exists(assetsFile))
+                        if (File.Exists(assetsFile) && !(this.TargetFramework.Contains("-") && !this.TargetFramework.ToLower().Contains("windows")))
                         {
                             LockFile lockFile = LockFileUtilities.GetLockFile(assetsFile, logger as NuGet.Common.ILogger);
-
                             if (lockFile != null)
                             {
-                                if (lockFile.Targets.Count == 1)
+                                LockFileTarget target = lockFile.Targets.Count == 1 ? lockFile.Targets[0] : lockFile.Targets.FirstOrDefault(t =>
+                                t.Name.StartsWith(this.TargetFramework, StringComparison.InvariantCultureIgnoreCase) //this.TargetFramework:net7.0-windows, targets:net7.0-windows7.0
+                                || this.TargetFramework.StartsWith(t.Name, StringComparison.InvariantCultureIgnoreCase));//this.TargetFramework:net7.0-windows10.0.19041.0, targets:net7.0-windows10.0.19041
+                                if (target != null)
                                 {
-                                    foreach (var lib in lockFile.Targets[0].Libraries)
+                                    foreach (var lib in target.Libraries)
                                     {
                                         bool isPackage = StringComparer.OrdinalIgnoreCase.Compare(lib.Type, "package") == 0;
 
@@ -970,7 +975,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if (propertyTable.Count() != propertyNames.Count())
                 {
-                    propertyTable = await _propertyResolver.EvaluateProjectPropertiesAsync(this.FullPath, this.TargetFrameworks.FirstOrDefault(), propertyNames, this.GlobalProperties, logger, cancellationToken).ConfigureAwait(false);
+                    propertyTable = await _propertyResolver.EvaluateProjectPropertiesAsync(this.FullPath, this.TargetFramework, propertyNames, this.GlobalProperties, logger, cancellationToken).ConfigureAwait(false);
 
                     foreach (var entry in propertyTable)
                     {
@@ -1000,7 +1005,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     var depsFiles = Directory.GetFiles(binFolder, "*", SearchOption.AllDirectories)
                         .Where(d => Path.GetFileName(d).Equals(fileName, RuntimeEnvironmentHelper.FileStringComparison))
-                        .Where(f => PathHelper.GetFolderName(Path.GetDirectoryName(f)) == this.TargetFrameworks.FirstOrDefault())
+                        .Where(f => PathHelper.GetFolderName(Path.GetDirectoryName(f)) == this.TargetFramework || Directory.GetParent(Directory.GetParent(f).FullName).Name == this.TargetFramework)
                         .Select(f => new FileInfo(f))
                         .OrderByDescending(f => f.CreationTimeUtc);
 
