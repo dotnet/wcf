@@ -10,7 +10,7 @@
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "$TEMP$MultiTargetTypeReuse//TypeReuseClient//bin//Debug//net6.0//BinLib.dll"
+      "$TEMP$MultiTargetTypeReuse//TypeReuseClient//bin//Debug//DOTNET_VERSION//BinLib.dll"
     ],
     "targetFramework": "N.N",
     "typeReuseMode": "All"
