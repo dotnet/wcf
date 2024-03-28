@@ -3,10 +3,14 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>N.N</TargetFramework>
-    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="dotnet-svcutil-lib" Version="99.99.99" />
+    <Content CopyToOutputDirectory="always" Include="$(NuGetPackageRoot)dotnet-svcutil-lib/99.99.99/content/internalAssets/**" Link="internalAssets/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="BinLib">
       <HintPath>$resultPath$/TestResults/TypeReuse/BinLib/bin/Debug/netstandard1.3/BinLib.dll</HintPath>
     </Reference>
@@ -20,5 +24,6 @@
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.Web.Services.Description", Version="N.N.N">
   </ItemGroup>
 </Project>

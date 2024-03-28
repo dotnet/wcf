@@ -1,18 +1,24 @@
 {
-  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil-bootstrap",
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "../../TypeReuseSvc.wsdl"
+      "$resultPath$/TestResults/TypeReuse/TypeReuseSvc.wsdl"
     ],
+    "bootstrapPath": "$resultPath$/TestResults/TypeReuse/TypeReuse",
     "namespaceMappings": [
-      "*, TypeReuse60_NS"
+      "*, TypeReuse_NS"
     ],
-    "outputFile": "Reference.cs",
+    "noBootstrapping": true,
+    "noLogo": true,
+    "noProjectUpdates": true,
+    "outputDir": "$resultPath$/TestResults/TypeReuse/TypeReuse/ServiceReference",
+    "outputFile": "$resultPath$/TestResults/TypeReuse/TypeReuse/ServiceReference/Reference.cs",
+    "projectFile": "$resultPath$/TestResults/TypeReuse/TypeReuse/TypeReuse.csproj",
     "references": [
-      "$resultPath$//TestResults//TypeReuse//TypeReuse60//bin//Debug//net6.0//BinLib.dll",
-      "$resultPath$//TestResults//TypeReuse//TypeReuse60//bin//Debug//net6.0//TypesLib.dll",
       "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//DOTNET_VERSION//BinLib.dll",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//DOTNET_VERSION//TypesLib.dll",
       "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
       "Microsoft.DotNet.InternalAbstractions, {Microsoft.DotNet.InternalAbstractions, 99.99.99}",
       "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",
@@ -81,6 +87,8 @@
       "System.Xml.XDocument, {System.Xml.XDocument, 99.99.99}"
     ],
     "targetFramework": "N.N",
-    "typeReuseMode": "All"
+    "toolContext": "Bootstrapper",
+    "typeReuseMode": "All",
+    "verbosity": "Minimal"
   }
 }
