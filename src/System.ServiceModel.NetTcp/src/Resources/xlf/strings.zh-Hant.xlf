@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionNotSupported">
         <source>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</source>
-        <target state="translated">這個平台不支援延伸的保護。請安裝適當的修補程式，或者將 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 值變更為 "Never" 或 "WhenSupported" 的 PolicyEnforcement 值。</target>
+        <target state="translated">此平台上不支援延伸的保護。請安裝適當的修補程式，或者將 Binding 或 BindingElement 上的 ExtendedProtectionPolicy 變更為 PolicyEnforcement 值為 "Never" 或 "WhenSupported" 的值。</target>
         <note />
       </trans-unit>
       <trans-unit id="InsufficentMemory">

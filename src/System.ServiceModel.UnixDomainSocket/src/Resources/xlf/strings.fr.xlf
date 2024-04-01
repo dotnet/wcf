@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="ClientCredentialTypeMustBeSpecifiedForMixedMode">
         <source>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</source>
-        <target state="translated">ClientCredentialType.None est non valide pour le mode de sécurité TransportWithMessageCredential. Indiquez un type pour les informations d'identification de message ou utilisez un autre mode de sécurité.</target>
+        <target state="translated">ClientCredentialType.None n'est pas valide pour le mode de sécurité TransportWithMessageCredential. Indiquez un type d'informations d'identification de message ou utilisez un mode de sécurité différent.</target>
         <note />
       </trans-unit>
       <trans-unit id="DnsResolveFailed">
@@ -34,17 +34,17 @@
       </trans-unit>
       <trans-unit id="NoIPEndpointsFoundForHost">
         <source>No IPEndpoints were found for host {0}.</source>
-        <target state="translated">IPEndpoints introuvables pour l'hôte {0}.</target>
+        <target state="translated">Aucun point de terminaison IP n'a été trouvé pour l'hôte {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
         <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">Le délai d'expiration doit être supérieur ou égal à TimeSpan.Zero. Pour désactiver le délai d'expiration, spécifiez TimeSpan.MaxValue.</target>
+        <target state="translated">Le délai d'attente doit être supérieur ou égal à TimeSpan.Zero. Pour désactiver le délai d'attente, spécifiez TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
-        <target state="translated">Les délais d'expiration supérieurs à Int32.MaxValue TotalMilliseconds (soit environ 24 jours) ne peuvent pas être appliqués. Pour désactiver le délai d'expiration, spécifiez TimeSpan.MaxValue.</target>
+        <target state="translated">Les délais d'attente supérieurs à Int32.MaxValue TotalMilliseconds (soit environ 24 jours) ne peuvent pas être appliqués. Pour désactiver le délai d'attente, spécifiez TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
@@ -54,17 +54,17 @@
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">Le serveur '{0}' a envoyé une erreur indiquant qu'il est trop occupé pour traiter la requête. Réessayez plus tard. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
+        <target state="translated">Le serveur '{0}' a envoyé une erreur indiquant qu'il est trop occupé pour traiter la demande. Réessayez ultérieurement. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
         <note />
       </trans-unit>
       <trans-unit id="SocketAbortedReceiveTimedOut">
         <source>The socket was aborted because an asynchronous receive from the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Le socket a été abandonné, car une réception asynchrone du socket ne s'est pas effectuée dans le délai imparti de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="translated">Le socket a été abandonné car une réception asynchrone du socket ne s'est pas terminée dans le délai imparti de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="SocketAbortedSendTimedOut">
         <source>The socket connection was aborted because an asynchronous send to the socket did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">La connexion au socket a été abandonnée, car un envoi asynchrone au socket ne s'est pas effectué dans le délai imparti de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="translated">La connexion au socket a été abandonnée car un envoi asynchrone au socket ne s'est pas terminé dans le délai imparti de {0}. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="SocketCloseReadReceivedData">
@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="SocketCloseReadTimeout">
         <source>The remote endpoint of the socket ({0}) did not respond to a close request within the allotted timeout ({1}). It is likely that the remote endpoint is not calling Close after receiving the EOF signal (null) from Receive. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Le point de terminaison distant du socket ({0}) n'a pas répondu à une demande de fermeture dans le délai imparti ({1}). Il est probable que le point de terminaison distant n'appelle pas Close après avoir reçu le signal EOF (null) de la part de Receive. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="translated">Le point de terminaison distant du ({0}) n'a pas répondu à une demande de fermeture dans le délai imparti ({1}). Il est probable que le point de terminaison distant n'appelle pas Close après avoir reçu le signal EOF (Null) de la part de Receive. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="SocketConnectionDisposed">
         <source>The socket connection has been disposed.</source>
-        <target state="translated">La connexion au socket a été supprimée.</target>
+        <target state="translated">La connexion au socket a été éliminée.</target>
         <note />
       </trans-unit>
       <trans-unit id="TransferModeNotSupported">
@@ -99,27 +99,27 @@
       </trans-unit>
       <trans-unit id="UDSConnectNoBufs">
         <source>Insufficient winsock resources available to complete socket connection initiation.</source>
-        <target state="translated">Les ressources winsock disponibles sont insuffisantes pour effectuer l'initialisation de la connexion de socket.</target>
+        <target state="translated">Les ressources winsock disponibles sont insuffisantes pour réaliser l'initialisation de la connexion de socket.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectingToViaTimedOut">
         <source>Connecting to via {0} timed out after {1}. Connection attempts were made to {2} of {3} available addresses ({4}). Check the RemoteAddress of your channel and verify that the DNS records for this endpoint correspond to valid IP Addresses. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">La connexion via {0} a dépassé le délai imparti après {1}. Des tentatives de connexion ont été effectuées à {2} adresses disponibles parmi {3} ({4}). Vérifiez RemoteAddress sur votre canal et vérifiez que les enregistrements DNS de ce point de terminaison correspondent à des adresses IP valide. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="translated">La connexion via {0} a dépassé le délai imparti après {1}. Des tentatives de connexion ont été effectuées à {2} adresses disponibles parmi {3} ({4}). Vérifiez RemoteAddress sur votre canal et vérifiez que les enregistrements DNS de ce point de terminaison correspondent à des adresses IP valide. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionResetError">
         <source>The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was '{0}'.</source>
-        <target state="translated">La connexion de socket a été abandonnée. Ceci peut être causé par une erreur durant le traitement de votre message, par le dépassement du délai d'expiration de réception par l'hôte distant ou par un problème de ressource réseau sous-jacent. Le délai d'expiration de socket local était '{0}'.</target>
+        <target state="translated">La connexion de socket a été abandonnée. Ceci peut être causé par une erreur lors du traitement de votre message, par le dépassement du délai d'attente de réception par l'hôte distant ou par un problème de ressource réseau sous-jacent. Le délai d'attente de socket local était '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSConnectionTimedOut">
         <source>The socket transfer timed out after {0}. You have exceeded the timeout set on your binding. The time allotted to this operation may have been a portion of a longer timeout.</source>
-        <target state="translated">Le transfert de socket a dépassé le délai imparti après {0}. Le délai d'expiration défini sur votre liaison a été dépassé. Le temps alloué à cette opération fait peut-être partie d'un délai d'expiration plus long.</target>
+        <target state="translated">Le transfert de socket a dépassé le délai imparti après {0}. Le délai d'attente défini sur votre liaison a été dépassé. Le temps alloué à cette opération fait peut-être partie d'un délai d'attente plus long.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSLocalConnectionAborted">
         <source>The socket connection was aborted by your local machine. This could be caused by a channel Abort(), or a transmission error from another thread using this socket.</source>
-        <target state="translated">La connexion du socket a été abandonnée par votre machine locale. Ceci peut être causé par un Abort() de canal ou par une erreur de transmission à partir d'un autre thread utilisant ce socket.</target>
+        <target state="translated">La connexion du socket a été abandonnée par l'ordinateur local. Ceci peut être causé par un Abort() de canal ou par une erreur de transmission à partir d'un autre thread utilisant ce socket.</target>
         <note />
       </trans-unit>
       <trans-unit id="UDSTransferError">
@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedSslProtectionLevel">
         <source>The protection level '{0}' was specified, yet SSL transport security only supports EncryptAndSign.</source>
-        <target state="translated">Le niveau de protection '{0}' a été spécifié, mais la sécurité du transport SSL prend uniquement en charge EncryptAndSign.</target>
+        <target state="translated">Le niveau de protection '{0}' a été spécifié, mais la sécurité de transport SSL prend uniquement en charge EncryptAndSign.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">

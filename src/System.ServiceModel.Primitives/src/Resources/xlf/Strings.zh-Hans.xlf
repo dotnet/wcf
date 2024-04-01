@@ -374,7 +374,7 @@
       </trans-unit>
       <trans-unit id="CannotDetermineSPNBasedOnAddress">
         <source>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</source>
-        <target state="translated">客户端无法为 SspiNegotiation/Kerberos 根据目标地址“{0}”中的标识确定服务主体名称。目标地址标识必须是 UPN 标识(例如 acmedomain\alice)或 SPN 标识(例如 host/bobs-machine)。</target>
+        <target state="translated">客户端无法以 SspiNegotiation/Kerberos 为目的根据目标地址“{0}”中的标识确定服务主体名称。目标地址标识必须是 UPN 标识(例如 acmedomain\alice)或 SPN 标识(例如 host/bobs-machine)。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
@@ -2419,7 +2419,7 @@
       </trans-unit>
       <trans-unit id="Remoting_SOAPInteropxsdInvalid">
         <source>Soap Parse error, xsd:type '{0}' invalid {1}</source>
-        <target state="translated">Soap 分析错误，xsd:type“{0}”无效的 {1}</target>
+        <target state="translated">SOAP 分析错误，xsd:type“{0}”无效 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ReplyAlreadySent">
@@ -3149,7 +3149,7 @@
       </trans-unit>
       <trans-unit id="SFxMultipleContractStarOperations0">
         <source>A ServiceContract has more the one operation with an Action of "*".  A ServiceContract can have at most one operation an Action = "*".</source>
-        <target state="translated">ServiceContract 有多个操作具有 Action "*"。ServiceContract 至多只能有一个操作为 Action = "*"。</target>
+        <target state="translated">ServiceContract 具有多个操作的行为是 "*"。ServiceContract 最多只能有一个行为 = "*" 的操作。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMultiplePartsNotAllowedInEncoded">
@@ -3304,7 +3304,7 @@
       </trans-unit>
       <trans-unit id="SFxRequestReplyNone">
         <source>A message was received with a WS-Addressing ReplyTo or FaultTo header targeted at the "None" address.  These values are not valid for request-reply operations.  Please consider using a one-way operation or enabling ManualAddressing if you need to support ReplyTo or FaultTo values of "None."</source>
-        <target state="translated">收到目标为 "None" 地址、标头为 WS-Addressing ReplyTo 或 FaultTo 的消息。这些值对于请求-回复操作无效。如果需要支持 "None" 的 ReplyTo 或 FaultTo 值，请考虑使用单向操作或启用 ManualAddressing。</target>
+        <target state="translated">收到了目标为 "None" 地址、标头为 WS-Addressing ReplyTo 或 FaultTo 的消息。这些值对于请求-回复操作无效。如果需要支持 ReplyTo 或 FaultTo 值为 "None"，请考虑使用单向操作或启用 ManualAddressing。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxRequestTimedOut1">
@@ -3399,7 +3399,7 @@
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeRpcLiteral">
         <source>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</source>
-        <target state="translated">无法加载操作“{0}”，因为它以 "literal" 模式指定了 "rpc-style"，但使用消息协定类型或 System.ServiceModel.Channels.Message。该组合不允许使用 -- 请为样式或用法参数指定消息协定类型或 System.ServiceModel.Channels.Message 之外的其他值。</target>
+        <target state="translated">无法加载操作“{0}”，因为它在 "literal" 模式下指定了 "rpc-style" ，但使用消息协定类型或 System.ServiceModel.Channels.Message。不允许使用该组合。请为样式指定不同的值，或使用除消息协定类型之外的参数或 System.ServiceModel.Channels.Message。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedOrUntypedMessageCannotBeMixedWithParameters">
