@@ -534,7 +534,7 @@ Document Identifier: '{0}'.</source>
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="translated">&lt;メタデータ ドキュメントのパス&gt;</target>
+        <target state="translated">&lt;metadata document path&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
@@ -687,7 +687,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;型&gt;</target>
+        <target state="translated">&lt;type&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -697,7 +697,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;型&gt;</target>
+        <target state="translated">&lt;type&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
@@ -717,32 +717,32 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="translated">&lt;プロジェクト ファイル&gt;</target>
+        <target state="translated">&lt;project file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;package&gt;</source>
-        <target state="translated">&lt;パッケージ&gt;</target>
+        <target state="translated">&lt;package&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="translated">&lt;ランタイムの識別子&gt;</target>
+        <target state="translated">&lt;runtime identifier&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
         <source>&lt;framework&gt;</source>
-        <target state="translated">&lt;フレームワーク&gt;</target>
+        <target state="translated">&lt;framework&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="translated">&lt;詳細レベル&gt;</target>
+        <target state="translated">&lt;verbosity level&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="translated">&lt;Web サービス参照&gt;</target>
+        <target state="translated">&lt;web service reference&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
