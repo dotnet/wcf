@@ -20,7 +20,7 @@ public static partial class Endpoints
     // HTTP Addresses
     public static string DefaultCustomHttp_Address
     {
-        get { return GetEndpointAddress("DefaultCustomHttp.svc//default-custom-http"); }
+        get { return GetEndpointAddress("DefaultCustomHttp.svc/default-custom-http"); }
     }
 
     public static string HttpBaseAddress_Basic_Text
@@ -40,18 +40,18 @@ public static partial class Endpoints
 
     public static string HttpBaseAddress_BasicService1
     {
-        get { return GetEndpointAddress("BasicService1.svc//Service1"); }
+        get { return GetEndpointAddress("BasicService1.svc/Service1"); }
     }
 
     // Endpoint that relies on post-1.1.0 features
     public static string HttpBaseAddress_4_4_0_Basic
     {
-        get { return GetEndpointAddress("BasicHttp_4_4_0.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttp_4_4_0.svc/Basic"); }
     }
 
     public static string HttpBaseAddress_Basic_Soap
     {
-        get { return GetEndpointAddress("BasicHttpSoap.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpSoap.svc/Basic"); }
     }
 
     public static string HttpBaseAddress_NetHttp
@@ -61,37 +61,37 @@ public static partial class Endpoints
 
     public static string HttpSoap11_Address
     {
-        get { return GetEndpointAddress("HttpSoap11.svc//http-soap11"); }
+        get { return GetEndpointAddress("HttpSoap11.svc/http-soap11"); }
     }
 
     public static string HttpSoap11WSA10_Address
     {
-        get { return GetEndpointAddress("HttpSoap11WSA10.svc//http-Soap11WSA10"); }
+        get { return GetEndpointAddress("HttpSoap11WSA10.svc/http-Soap11WSA10"); }
     }
 
     public static string HttpSoap11WSA2004_Address
 	{
-		get { return GetEndpointAddress("HttpSoap11WSA2004.svc//http-Soap11WSA2004"); }
+		get { return GetEndpointAddress("HttpSoap11WSA2004.svc/http-Soap11WSA2004"); }
 	}
 
     public static string HttpSoap12_Address
     {
-        get { return GetEndpointAddress("HttpSoap12.svc//http-soap12"); }
+        get { return GetEndpointAddress("HttpSoap12.svc/http-soap12"); }
     }
 
     public static string HttpSoap12WSANone_Address
     {
-        get { return GetEndpointAddress("HttpSoap12WSANone.svc//http-Soap12WSANone"); }
+        get { return GetEndpointAddress("HttpSoap12WSANone.svc/http-Soap12WSANone"); }
     }
 
     public static string HttpSoap12WSA2004_Address
 	{
-		get { return GetEndpointAddress("HttpSoap12WSA2004.svc//http-Soap12WSA2004"); }
+		get { return GetEndpointAddress("HttpSoap12WSA2004.svc/http-Soap12WSA2004"); }
 	}
 
     public static string HttpBinary_Address
     {
-        get { return GetEndpointAddress("HttpBinary.svc//http-binary"); }
+        get { return GetEndpointAddress("HttpBinary.svc/http-binary"); }
     }
 
     public static string HttpProtocolError_Address
@@ -101,52 +101,52 @@ public static partial class Endpoints
 
     public static string HttpBaseAddress_ChannelExtensibility
     {
-        get { return GetEndpointAddress("ChannelExtensibility.svc//ChannelExtensibility"); }
+        get { return GetEndpointAddress("ChannelExtensibility.svc/ChannelExtensibility"); }
     }
 
     public static string UnderstoodHeaders
     {
-        get { return GetEndpointAddress("UnderstoodHeaders.svc//UnderstoodHeaders"); }
+        get { return GetEndpointAddress("UnderstoodHeaders.svc/UnderstoodHeaders"); }
     }
 
     public static string XmlSFAttribute_Address
     {
-        get { return GetEndpointAddress("XmlSFAttribute.svc//XmlSFAttribute"); }
+        get { return GetEndpointAddress("XmlSFAttribute.svc/XmlSFAttribute"); }
     }
 
     public static string BasicHttpRpcEncSingleNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcEncSingleNs.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpRpcEncSingleNs.svc/Basic"); }
     }
 
     public static string BasicHttpRpcLitSingleNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcLitSingleNs.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpRpcLitSingleNs.svc/Basic"); }
     }
 
     public static string BasicHttpDocLitSingleNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpDocLitSingleNs.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpDocLitSingleNs.svc/Basic"); }
     }
 
     public static string BasicHttpRpcEncDualNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcEncDualNs.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpRpcEncDualNs.svc/Basic"); }
     }
 
     public static string BasicHttpRpcLitDualNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcLitDualNs.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpRpcLitDualNs.svc/Basic"); }
     }
 
     public static string BasicHttpDocLitDualNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpDocLitDualNs.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpDocLitDualNs.svc/Basic"); }
     }
 
     public static string BasicHttpRpcEncWithHeaders_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcEncWithHeaders.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpRpcEncWithHeaders.svc/Basic"); }
     }
 
     public static string ReliableSession_NetHttp
@@ -177,22 +177,22 @@ public static partial class Endpoints
     #region WebSocket Addresses
     public static string HttpBaseAddress_NetHttpWebSockets
     {
-        get { return GetEndpointAddress("NetHttpWebSockets.svc//NetHttpWebSockets", "ws"); }
+        get { return GetEndpointAddress("NetHttpWebSockets.svc/NetHttpWebSockets", "ws"); }
     }
 
     public static string HttpBaseAddress_NetHttpsWebSockets
     {
-        get { return GetEndpointAddress("NetHttpsWebSockets.svc//NetHttpsWebSockets", protocol: "wss"); }
+        get { return GetEndpointAddress("NetHttpsWebSockets.svc/NetHttpsWebSockets", protocol: "wss"); }
     }
 
     public static string NetHttpWebSocketTransport_Address
     {
-        get { return GetEndpointAddress("WebSocketTransport.svc//http-requestreplywebsockets-transportusagealways", protocol: "ws"); }
+        get { return GetEndpointAddress("WebSocketTransport.svc/http-requestreplywebsockets-transportusagealways", protocol: "ws"); }
     }
 
     public static string NetHttpDuplexWebSocket_Address
     {
-        get { return GetEndpointAddress("DuplexWebSocket.svc//http-defaultduplexwebsockets", protocol: "ws"); }
+        get { return GetEndpointAddress("DuplexWebSocket.svc/http-defaultduplexwebsockets", protocol: "ws"); }
     }
 
     public static string WebSocketHttpDuplexStreamed_Address
@@ -217,44 +217,44 @@ public static partial class Endpoints
 
     public static string WebSocketHttpVerifyWebSocketsUsed_Address
     {
-        get { return GetEndpointAddress("WebSocketHttpVerifyWebSocketsUsed.svc//WebSocketHttpVerifyWebSocketsUsed", protocol: "ws"); }
+        get { return GetEndpointAddress("WebSocketHttpVerifyWebSocketsUsed.svc/WebSocketHttpVerifyWebSocketsUsed", protocol: "ws"); }
     }
     #endregion WebSocket Addresses
 
     #region Service Contract Addresses
     public static string ServiceContractAsyncIntOut_Address
     {
-        get { return GetEndpointAddress("ServiceContractAsyncIntOut.svc//ServiceContractIntOut"); }
+        get { return GetEndpointAddress("ServiceContractAsyncIntOut.svc/ServiceContractIntOut"); }
     }
 
     public static string ServiceContractAsyncUniqueTypeOut_Address
     {
-        get { return GetEndpointAddress("ServiceContractAsyncUniqueTypeOut.svc//ServiceContractUniqueTypeOut"); }
+        get { return GetEndpointAddress("ServiceContractAsyncUniqueTypeOut.svc/ServiceContractUniqueTypeOut"); }
     }
 
     public static string ServiceContractAsyncIntRef_Address
     {
-        get { return GetEndpointAddress("ServiceContractAsyncIntRef.svc//ServiceContractIntRef"); }
+        get { return GetEndpointAddress("ServiceContractAsyncIntRef.svc/ServiceContractIntRef"); }
     }
 
     public static string ServiceContractAsyncUniqueTypeRef_Address
     {
-        get { return GetEndpointAddress("ServiceContractAsyncUniqueTypeRef.svc//ServiceContractAsyncUniqueTypeRef"); }
+        get { return GetEndpointAddress("ServiceContractAsyncUniqueTypeRef.svc/ServiceContractAsyncUniqueTypeRef"); }
     }
 
     public static string ServiceContractSyncUniqueTypeOut_Address
     {
-        get { return GetEndpointAddress("ServiceContractSyncUniqueTypeOut.svc//ServiceContractUniqueTypeOutSync"); }
+        get { return GetEndpointAddress("ServiceContractSyncUniqueTypeOut.svc/ServiceContractUniqueTypeOutSync"); }
     }
 
     public static string ServiceContractSyncUniqueTypeRef_Address
     {
-        get { return GetEndpointAddress("ServiceContractSyncUniqueTypeRef.svc//ServiceContractUniqueTypeRefSync"); }
+        get { return GetEndpointAddress("ServiceContractSyncUniqueTypeRef.svc/ServiceContractUniqueTypeRefSync"); }
     }
 
     public static string DataContractResolver_Address
     {
-        get { return GetEndpointAddress("DataContractResolver.svc//DataContractResolver"); }
+        get { return GetEndpointAddress("DataContractResolver.svc/DataContractResolver"); }
     }
 
     #endregion Service Contract Addresses
@@ -263,12 +263,12 @@ public static partial class Endpoints
 
     public static string CustomTextEncoderBuffered_Address
     {
-        get { return GetEndpointAddress("CustomTextEncoderBuffered.svc//http-customtextencoder"); }
+        get { return GetEndpointAddress("CustomTextEncoderBuffered.svc/http-customtextencoder"); }
     }
 
     public static string CustomTextEncoderStreamed_Address
     {
-        get { return GetEndpointAddress("CustomTextEncoderStreamed.svc//http-customtextencoder-streamed"); }
+        get { return GetEndpointAddress("CustomTextEncoderStreamed.svc/http-customtextencoder-streamed"); }
     }
     #endregion Custom Message Encoder Addresses
     #endregion HTTP Addresses
@@ -303,7 +303,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("WindowAuthenticationNtlm/HttpsNtlm.svc//https-ntlm", protocol: "https");
+            return GetEndpointAddress("WindowAuthenticationNtlm/HttpsNtlm.svc/https-ntlm", protocol: "https");
         }
     }
 
@@ -351,7 +351,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsSoap11.svc//https-soap11", protocol: "https");
+            return GetEndpointAddress("HttpsSoap11.svc/https-soap11", protocol: "https");
         }
     }
 
@@ -359,7 +359,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsSoap12.svc//https-soap12", protocol: "https");
+            return GetEndpointAddress("HttpsSoap12.svc/https-soap12", protocol: "https");
         }
     }
 
@@ -383,7 +383,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsCertValModePeerTrust.svc//https-server-cert-valmode-peertrust", protocol: "https");
+            return GetEndpointAddress("HttpsCertValModePeerTrust.svc/https-server-cert-valmode-peertrust", protocol: "https");
         }
     }
 
@@ -391,7 +391,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsCertValModeChainTrust.svc//https-server-cert-valmode-chaintrust", protocol: "https");
+            return GetEndpointAddress("HttpsCertValModeChainTrust.svc/https-server-cert-valmode-chaintrust", protocol: "https");
         }
     }
 
@@ -399,7 +399,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsTransSecMessCredsCert.svc//https-message-credentials-cert", protocol: "https");
+            return GetEndpointAddress("HttpsTransSecMessCredsCert.svc/https-message-credentials-cert", protocol: "https");
         }
     }
 
@@ -407,7 +407,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsTransSecMessCredsUserName.svc//https-message-credentials-username", protocol: "https");
+            return GetEndpointAddress("HttpsTransSecMessCredsUserName.svc/https-message-credentials-username", protocol: "https");
         }
     }
 
@@ -415,7 +415,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsTransSecMessCredsCert.svc//https2007-message-credentials-cert", protocol: "https");
+            return GetEndpointAddress("HttpsTransSecMessCredsCert.svc/https2007-message-credentials-cert", protocol: "https");
         }
     }
 
@@ -423,7 +423,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsTransSecMessCredsUserName.svc//https2007-message-credentials-username", protocol: "https");
+            return GetEndpointAddress("HttpsTransSecMessCredsUserName.svc/https2007-message-credentials-username", protocol: "https");
         }
     }
 
@@ -431,7 +431,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("BasicHttpsTransSecMessCredsCert.svc//https-message-credentials-cert", protocol: "https");
+            return GetEndpointAddress("BasicHttpsTransSecMessCredsCert.svc/https-message-credentials-cert", protocol: "https");
         }
     }
 
@@ -439,7 +439,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("BasicHttpsBindingTransSecMessCredsCert.svc//https-transwithmessage-credentials-cert", protocol: "https");
+            return GetEndpointAddress("BasicHttpsBindingTransSecMessCredsCert.svc/https-transwithmessage-credentials-cert", protocol: "https");
         }
     }
 
@@ -447,7 +447,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("BasicHttpsTransSecMessCredsUserName.svc//https-message-credentials-username", protocol: "https");
+            return GetEndpointAddress("BasicHttpsTransSecMessCredsUserName.svc/https-message-credentials-username", protocol: "https");
         }
     }
 
@@ -506,24 +506,24 @@ public static partial class Endpoints
     // net.tcp Addresses
     public static string Tcp_DefaultBinding_Address
     {
-        get { return GetEndpointAddress("TcpDefault.svc//tcp-default", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("TcpDefault.svc/tcp-default", protocol: "net.tcp"); }
     }
 
     public static string Tcp_NoSecurity_Address
     {
-        get { return GetEndpointAddress("TcpNoSecurity.svc//tcp-nosecurity", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("TcpNoSecurity.svc/tcp-nosecurity", protocol: "net.tcp"); }
     }
 
     public static string Tcp_Streamed_NoSecurity_Address
     {
-        get { return GetEndpointAddress("TcpStreamedNoSecurity.svc//tcp-streamed-nosecurity", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("TcpStreamedNoSecurity.svc/tcp-streamed-nosecurity", protocol: "net.tcp"); }
     }
 
     public static string Tcp_VerifyDNS_Address
     {
         get
         {
-            return GetEndpointAddress("TcpVerifyDNS.svc//tcp-VerifyDNS", protocol: "net.tcp");
+            return GetEndpointAddress("TcpVerifyDNS.svc/tcp-VerifyDNS", protocol: "net.tcp");
         }
     }
 
@@ -539,7 +539,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpExpiredServerCert.svc//tcp-ExpiredServerCert", protocol: "net.tcp");
+            return GetEndpointAddress("TcpExpiredServerCert.svc/tcp-ExpiredServerCert", protocol: "net.tcp");
         }
     }
 
@@ -555,7 +555,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpInvalidEkuServerCert.svc//tcp-InvalidEkuServerCert", protocol: "net.tcp");
+            return GetEndpointAddress("TcpInvalidEkuServerCert.svc/tcp-InvalidEkuServerCert", protocol: "net.tcp");
         }
     }
 
@@ -571,7 +571,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpRevokedServerCert.svc//tcp-RevokedServerCert", protocol: "net.tcp");
+            return GetEndpointAddress("TcpRevokedServerCert.svc/tcp-RevokedServerCert", protocol: "net.tcp");
         }
     }
 
@@ -586,32 +586,32 @@ public static partial class Endpoints
 
     public static string Tcp_NoSecurity_Callback_Address
     {
-        get { return GetEndpointAddress("Duplex.svc//tcp-nosecurity-callback", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("Duplex.svc/tcp-nosecurity-callback", protocol: "net.tcp"); }
     }
 
     public static string Tcp_CustomBinding_NoSecurity_Text_Address
     {
-        get { return GetEndpointAddress("TcpNoSecurityText.svc//tcp-custombinding-nosecurity-text", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("TcpNoSecurityText.svc/tcp-custombinding-nosecurity-text", protocol: "net.tcp"); }
     }
 
     public static string Tcp_NoSecurity_TaskReturn_Address
     {
-        get { return GetEndpointAddress("DuplexChannelCallbackReturn.svc//tcp-nosecurity-taskreturn", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("DuplexChannelCallbackReturn.svc/tcp-nosecurity-taskreturn", protocol: "net.tcp"); }
     }
 
     public static string Tcp_NoSecurity_DuplexCallback_Address
     {
-        get { return GetEndpointAddress("DuplexCallback.svc//tcp-nosecurity-typedproxy-duplexcallback", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("DuplexCallback.svc/tcp-nosecurity-typedproxy-duplexcallback", protocol: "net.tcp"); }
     }
 
     public static string Tcp_NoSecurity_DataContractDuplexCallback_Address
     {
-        get { return GetEndpointAddress("DuplexCallbackDataContractComplexType.svc//tcp-nosecurity-callback", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("DuplexCallbackDataContractComplexType.svc/tcp-nosecurity-callback", protocol: "net.tcp"); }
     }
 
     public static string Tcp_NoSecurity_XmlDuplexCallback_Address
     {
-        get { return GetEndpointAddress("DuplexCallbackXmlComplexType.svc//tcp-nosecurity-callback", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("DuplexCallbackXmlComplexType.svc/tcp-nosecurity-callback", protocol: "net.tcp"); }
     }
 
 
@@ -619,7 +619,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpTransportSecurityWithSsl.svc//tcp-server-ssl-security", protocol: "net.tcp");
+            return GetEndpointAddress("TcpTransportSecurityWithSsl.svc/tcp-server-ssl-security", protocol: "net.tcp");
         }
     }
 
@@ -635,7 +635,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpTransportSecuritySslClientCredentialTypeCertificate.svc//tcp-server-ssl-security-clientcredentialtype-certificate", protocol: "net.tcp");
+            return GetEndpointAddress("TcpTransportSecuritySslClientCredentialTypeCertificate.svc/tcp-server-ssl-security-clientcredentialtype-certificate", protocol: "net.tcp");
         }
     }
 
@@ -643,7 +643,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpTransportSecuritySslCustomCertValidation.svc//tcp-server-ssl-security-clientcredentialtype-certificate-customvalidator", protocol: "net.tcp");
+            return GetEndpointAddress("TcpTransportSecuritySslCustomCertValidation.svc/tcp-server-ssl-security-clientcredentialtype-certificate-customvalidator", protocol: "net.tcp");
         }
     }
 
@@ -651,7 +651,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpCertificateWithServerAltName.svc//tcp-server-alt-name-cert", protocol: "net.tcp");
+            return GetEndpointAddress("TcpCertificateWithServerAltName.svc/tcp-server-alt-name-cert", protocol: "net.tcp");
         }
     }
 
@@ -659,7 +659,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpCertificateWithSubjectCanonicalNameLocalhost.svc//tcp-server-subject-cn-localhost-cert", protocol: "net.tcp");
+            return GetEndpointAddress("TcpCertificateWithSubjectCanonicalNameLocalhost.svc/tcp-server-subject-cn-localhost-cert", protocol: "net.tcp");
         }
     }
 
@@ -667,7 +667,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpCertificateWithSubjectCanonicalNameDomainName.svc//tcp-server-subject-cn-domainname-cert", protocol: "net.tcp");
+            return GetEndpointAddress("TcpCertificateWithSubjectCanonicalNameDomainName.svc/tcp-server-subject-cn-domainname-cert", protocol: "net.tcp");
         }
     }
 
@@ -675,7 +675,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpCertificateWithSubjectCanonicalNameFqdn.svc//tcp-server-subject-cn-fqdn-cert", protocol: "net.tcp");
+            return GetEndpointAddress("TcpCertificateWithSubjectCanonicalNameFqdn.svc/tcp-server-subject-cn-fqdn-cert", protocol: "net.tcp");
         }
     }
 
@@ -691,7 +691,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("NetTcpCertValModePeerTrust.svc//nettcp-server-cert-valmode-peertrust", protocol: "net.tcp");
+            return GetEndpointAddress("NetTcpCertValModePeerTrust.svc/nettcp-server-cert-valmode-peertrust", protocol: "net.tcp");
         }
     }
 
@@ -734,12 +734,12 @@ public static partial class Endpoints
 
     public static string Tcp_SecModeTransWithMessCred_ClientCredTypeCert
     {
-        get { return GetEndpointAddress("TcpTransSecMessCredsCert.svc//tcp-message-credentials-cert", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("TcpTransSecMessCredsCert.svc/tcp-message-credentials-cert", protocol: "net.tcp"); }
     }
 
     public static string Tcp_SecModeTransWithMessCred_ClientCredTypeUserName
     {
-        get { return GetEndpointAddress("TcpTransSecMessCredsUserName.svc//tcp-message-credentials-username", protocol: "net.tcp"); }
+        get { return GetEndpointAddress("TcpTransSecMessCredsUserName.svc/tcp-message-credentials-username", protocol: "net.tcp"); }
     }
 
     public static string ReliableSession_NetTcp

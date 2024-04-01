@@ -2,15 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+using CoreWCF.Description;
+using CoreWCF.Dispatcher;
+#else
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Net;
-using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
+#endif
+using System.Collections.ObjectModel;
+using System.Net;
+using System.Security.Principal;
 using System.Text;
 
 namespace WcfService
@@ -45,6 +52,7 @@ namespace WcfService
             return true;
         }
 
+        [Obsolete]
         public override bool CheckAccess(OperationContext operationContext, ref Message message)
         {
             var basicState = new BasicAuthenticationState(operationContext, GetRealm(ref message));
@@ -122,18 +130,15 @@ namespace WcfService
             private readonly string _realm;
             private string _username;
             private string _password;
-            private bool? _authorized;
 
             public BasicAuthenticationState(OperationContext operationContext, string realm)
             {
                 _operationContext = operationContext;
                 _realm = realm;
                 _username = _password = string.Empty;
-                _authorized = new bool?();
                 _authorizationHeader = GetAuthorizationHeader(operationContext);
                 if (_authorizationHeader.Length < BasicAuthenticationMechanismLength)
                 {
-                    _authorized = false;
                     return;
                 }
 
@@ -143,7 +148,6 @@ namespace WcfService
                 int colonPos = authDecoded.IndexOf(':');
                 if(colonPos <= 0)
                 {
-                    _authorized = false;
                     return;
                 }
                 _username = authDecoded.Substring(0, colonPos);

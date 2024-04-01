@@ -2,15 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.Channels;
+#else
 using System;
 using System.IO;
 using System.ServiceModel.Channels;
+#endif
 using System.Text;
 using System.Xml;
 
 namespace WcfService
 {
-    internal class CustomTextMessageEncoder : System.ServiceModel.Channels.MessageEncoder
+    internal class CustomTextMessageEncoder : MessageEncoder
     {
         private CustomTextMessageEncoderFactory _factory;
         private XmlWriterSettings _writerSettings;
@@ -50,6 +54,12 @@ namespace WcfService
             }
         }
 
+#if NET
+        public override Message ReadMessage(ArraySegment<byte> buffer, BufferManager bufferManager, string contentType) => throw new NotImplementedException();
+        public override Task<Message> ReadMessageAsync(Stream stream, int maxSizeOfHeaders, string contentType) => throw new NotImplementedException();
+        public override ArraySegment<byte> WriteMessage(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset) => throw new NotImplementedException();
+        public override Task WriteMessageAsync(Message message, Stream stream) => throw new NotImplementedException();
+#else
         public override Message ReadMessage(Stream stream, int maxSizeOfHeaders, string contentType)
         {
             XmlReader reader = XmlReader.Create(stream);
@@ -102,5 +112,6 @@ namespace WcfService
             ArraySegment<byte> byteArray = new ArraySegment<byte>(totalBytes, messageOffset, messageLength);
             return byteArray;
         }
+#endif
     }
 }

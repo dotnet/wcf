@@ -24,6 +24,8 @@ variables:
   value: false
 - name: _RunAsInternal
   value: true
+- name: _RunWithCoreWcfService
+  value: true
 - group: DotNet-Wcf-SDLValidation-Params
 resources:
   repositories:
@@ -98,6 +100,7 @@ extends:
                 XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
                 RunAsPublic: $(_RunAsPublic)
                 RunAsInternal: $(_RunAsInternal)
+                RunWithCoreWcfService: $(_RunWithCoreWcfService)
                 IsWindowsBuild: true
     - ${{ if eq(variables._RunAsInternal, True) }}:
       - template: /eng/common/templates-official/post-build/post-build.yml@self

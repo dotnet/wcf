@@ -2,10 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.IdentityModel.Tokens;
+#else
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
+#endif
+using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Xml;
