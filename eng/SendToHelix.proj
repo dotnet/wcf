@@ -16,6 +16,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj">
       <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
     </XUnitProject>

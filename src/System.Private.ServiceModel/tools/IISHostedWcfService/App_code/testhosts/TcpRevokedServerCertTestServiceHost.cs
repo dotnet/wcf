@@ -2,10 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+#else
 using System;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+#endif
+using System.Security.Cryptography.X509Certificates;
 
 namespace WcfService
 {
@@ -16,7 +21,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            NetTcpBinding binding = new NetTcpBinding() { PortSharingEnabled = false };
+            NetTcpBinding binding = new NetTcpBinding();
             binding.Security.Mode = SecurityMode.Transport;
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
 

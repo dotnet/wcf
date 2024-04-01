@@ -2,9 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+#else
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+#endif
 
 namespace WcfService
 {
@@ -16,7 +21,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public TcpSessionTestServiceHost(params Uri[] baseAddresses)
@@ -31,7 +36,7 @@ namespace WcfService
         protected override string Address { get { return ""; } }
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false, ReceiveTimeout = TimeSpan.FromSeconds(5)};
+            return new NetTcpBinding(SecurityMode.None) { ReceiveTimeout = TimeSpan.FromSeconds(5) };
         }
 
         public TcpSessionShortTimeoutTestServiceHost(params Uri[] baseAddresses)
@@ -46,7 +51,7 @@ namespace WcfService
         protected override string Address { get { return ""; } }
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false};
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public TcpSessionDuplexTestServiceHost(params Uri[] baseAddresses)
