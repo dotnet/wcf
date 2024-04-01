@@ -1,10 +1,10 @@
 {
   "profiles": {
     "SelfHostedCoreWCFService": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
+        "commandName": "Project",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        },
         "applicationUrl": "https://localhost:44285;http://localhost:8081"
     }
   }
