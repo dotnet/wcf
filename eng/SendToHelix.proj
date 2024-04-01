@@ -15,7 +15,7 @@
     <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(RunWithCoreWcfService)' == 'true' " >
     <ProjectReference Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj" />
   </ItemGroup>
 
@@ -63,6 +63,15 @@
     <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
   </PropertyGroup>
+
+  <ItemGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND !$(HelixTargetQueue.StartsWith('Windows'))" >
+    <HelixPreCommands>$(HelixPreCommands);sh $(MSBuildThisFileDirectory)/../artifacts/bin/SelfHostedCoreWCFService/SelfHostedCoreWCFService</HelixPreCommands>
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND $(HelixTargetQueue.StartsWith('Windows'))" >
+    <HelixPreCommands>$(HelixPreCommands);$(MSBuildThisFileDirectory)/../artifacts/bin/SelfHostedCoreWCFService/SelfHostedCoreWCFService.exe</HelixPreCommands>
+  </ItemGroup>
+
 
   <Target Name="Pack"/>
 
