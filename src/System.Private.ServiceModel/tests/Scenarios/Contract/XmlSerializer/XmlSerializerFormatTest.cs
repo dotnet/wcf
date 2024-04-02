@@ -92,7 +92,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception exception)
         {
-            Assert.True(false, $"Test Failed, caught unexpected exception.\nException: {exception.ToString()}\nException Message: {exception.Message}");
+            Assert.Fail($"Test Failed, caught unexpected exception.\nException: {exception.ToString()}\nException Message: {exception.Message}");
         }
         finally
         {
@@ -114,7 +114,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception exception)
         {
-            Assert.True(false, $"Test Failed, caught unexpected exception.\nException: {exception.ToString()}\nException Message: {exception.Message}");
+            Assert.Fail($"Test Failed, caught unexpected exception.\nException: {exception.ToString()}\nException Message: {exception.Message}");
         }
         finally
         {
@@ -146,7 +146,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception ex)
         {
-            Assert.True(false, ex.Message);
+            Assert.Fail(ex.Message);
         }
         finally
         {
@@ -194,7 +194,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception ex)
         {
-            Assert.True(false, ex.Message);
+            Assert.Fail(ex.Message);
         }
         finally
         {
@@ -242,7 +242,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception ex)
         {
-            Assert.True(false, ex.Message);
+            Assert.Fail(ex.Message);
         }
         finally
         {
@@ -290,7 +290,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception ex)
         {
-            Assert.True(false, ex.Message);
+            Assert.Fail(ex.Message);
         }
         finally
         {
@@ -346,7 +346,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception ex)
         {
-            Assert.True(false, ex.Message);
+            Assert.Fail(ex.Message);
         }
         finally
         {
@@ -403,7 +403,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception ex)
         {
-            Assert.True(false, ex.Message);
+            Assert.Fail(ex.Message);
         }
         finally
         {
@@ -460,7 +460,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception ex)
         {
-            Assert.True(false, ex.Message);
+            Assert.Fail(ex.Message);
         }
         finally
         {
@@ -498,7 +498,7 @@ public static partial class XmlSerializerFormatTests
         }
         catch (Exception ex)
         {
-            Assert.True(false, ex.Message);
+            Assert.Fail(ex.Message);
         }
         finally
         {

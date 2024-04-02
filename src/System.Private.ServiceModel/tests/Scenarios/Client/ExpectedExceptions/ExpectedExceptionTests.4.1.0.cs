@@ -116,7 +116,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             string testExceptionMessage = $"The ping to validate the newly created endpoint failed.\nThe endpoint pinged was: {restartServiceAddress}\nThe GUID used to extract the ServiceHost from the server side dictionary was: {guid}";
             string fullExceptionMessage = $"testExceptionMessage: {testExceptionMessage}\nexceptionMessage: {exceptionMessage}\ninnerExceptionMessage: {innerExceptionMessage}";
             
-            Assert.True(false, fullExceptionMessage);
+            Assert.Fail(fullExceptionMessage);
         }
         finally
         {
@@ -351,7 +351,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         try
         {
             serviceProxy.Echo(testString);
-            Assert.True(false, "Expected: SecurityNegotiationException, Actual: no exception");
+            Assert.Fail("Expected: SecurityNegotiationException, Actual: no exception");
         }
         catch (CommunicationException exception)
         {
@@ -360,7 +360,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             string exceptionType = exception.GetType().Name;
             if (exceptionType != "SecurityNegotiationException")
             {
-                Assert.True(false, string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
+                Assert.Fail(string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
             }
         }
         finally
@@ -393,7 +393,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         try
         {
             serviceProxy.Echo(testString);
-            Assert.True(false, "Expected: SecurityNegotiationException, Actual: no exception");
+            Assert.Fail("Expected: SecurityNegotiationException, Actual: no exception");
         }
         catch (CommunicationException exception)
         {
@@ -402,7 +402,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             string exceptionType = exception.GetType().Name;
             if (exceptionType != "SecurityNegotiationException")
             {
-                Assert.True(false, string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
+                Assert.Fail(string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
             }
 
             Assert.True(exception.Message.Contains(Endpoints.Tcp_RevokedServerCertResource_HostName),
@@ -440,7 +440,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         try
         {
             serviceProxy.Echo(testString);
-            Assert.True(false, "Expected: SecurityNegotiationException, Actual: no exception");
+            Assert.Fail("Expected: SecurityNegotiationException, Actual: no exception");
         }
         catch (CommunicationException exception)
         {
@@ -449,7 +449,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             string exceptionType = exception.GetType().Name;
             if (exceptionType != "SecurityNegotiationException")
             {
-                Assert.True(false, string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
+                Assert.Fail(string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
             }
 
             Assert.True(exception.Message.Contains(Endpoints.Tcp_RevokedServerCertResource_HostName),
@@ -523,7 +523,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
                     // is wrong other than what we are testing, so just fail early.
                     if ((endOfOpeningStall - startOfOpeningStall).TotalMilliseconds > timeoutMs)
                     {
-                        Assert.True(false, "The Opening event timed out waiting for operations to queue, which was not expected for this test.");
+                        Assert.Fail("The Opening event timed out waiting for operations to queue, which was not expected for this test.");
                     }
 
                     // As soon as we have all our Tasks at least running, wait a little

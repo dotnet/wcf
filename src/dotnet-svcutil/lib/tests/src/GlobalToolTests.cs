@@ -7,6 +7,7 @@ using System.IO;
 using Microsoft.Tools.ServiceModel.Svcutil;
 using System.Threading;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace SvcutilTest
 {
@@ -111,7 +112,7 @@ namespace SvcutilTest
         [InlineData("netstd20")] //WCF package older than V4.10 get referened and CloseAsync() is generated
         [InlineData("net60")] //WCF package newer than V4.10 get referened and CloseAsync() is not generated
         [InlineData("net60net48")] //WCF package newer than V4.10 and System.ServiceModel.dll are referenced conditionally by target and CloseAsync() be generarted with conditional compilation mark
-        public void MultiTargetCloseAsyncGeneration(string testCaseName)
+        public async Task MultiTargetCloseAsyncGenerationAsync(string testCaseName)
         {
             this_TestCaseName = "MultiTargetCloseAsyncGeneration";
             TestFixture();
@@ -125,7 +126,7 @@ namespace SvcutilTest
             Directory.CreateDirectory(this_TestCaseOutputDir);
             File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, "Program.cs"), Path.Combine(this_TestCaseOutputDir, "Program.cs"), true);
             File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, $"{testCaseName}.csproj"), Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), true);
-            this_TestCaseProject = MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), null, CancellationToken.None).Result;
+            this_TestCaseProject = await MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), null, CancellationToken.None);
             
             this_FixupUtil = new FixupUtil();
             this_FixupUtil.Init(g_TestResultsDir, g_TestCasesDir, this_TestCaseOutputDir, g_ServiceUrl, g_ServiceId, g_RepositoryRoot);
@@ -140,14 +141,14 @@ namespace SvcutilTest
         [Trait("Category", "BVT")]
         [Theory]
         [InlineData("net6.0", "-elm")]
-        public void ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
+        public async Task ParamsFiles_SDK_TFMAsync(string targetFramework, string extraOptions)
         {
             this_TestCaseName = "ParamsFiles_SDK_TFM";
             TestFixture();
             var testCaseName = $"TF{targetFramework}".Replace(".", "_");
             InitializeGlobal(testCaseName, targetFramework: "net6.0", g_SdkVersion);
             this_TestCaseProject.TargetFramework = targetFramework;
-            this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None).Wait();
+            await this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None);
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
             var ns = testCaseName.Replace(".", "_") + "_NS";
