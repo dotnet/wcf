@@ -1,7 +1,6 @@
-# trigger ci builds for merged PRs into listed branches
-# Setting batch to true, triggers one build at a time.
-# if there is a push while a build in progress, it will wait,
-# until the running build finishes, and produce a build with all the changes
+# This Yaml Document has been converted by ESAI Yaml Pipeline Conversion Tool.
+# Please make sure to check all the converted content, it is your team's responsibility to make sure that the pipeline is still valid and functions as expected.
+# This pipeline will be extended to the MicroBuild template
 trigger:
   batch: true
   branches:
@@ -11,294 +10,103 @@ trigger:
     - release/4.*
     - release/6.*
 
-# trigger ci builds for pull requests into listed branches
-pr:
-  branches:
-    include:
-    - main
-    - release/3.*
-    - release/4.*
-    - release/6.*
-
-variables:  
-  - name: _TeamName
-    value: WcfCore
-  - name: _PublishUsingPipelines
-    value: true
-  - name: _DotNetArtifactsCategory
-    value: .NETCore
-  - name: _RunAsPublic
-    value: true
-  - name: _RunAsInternal
-    value: false
-
-  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-    - name: _RunAsPublic
-      value: false
-    - name: _RunAsInternal
-      value: true
-    - group: DotNet-Wcf-SDLValidation-Params
-
+variables:
+- template: /eng/common/templates-official/variables/pool-providers.yml@self
+- name: _TeamName
+  value: WcfCore
+- name: TeamName
+  value: WcfCore
+- name: _PublishUsingPipelines
+  value: true
+- name: _DotNetArtifactsCategory
+  value: .NETCore
+- name: _RunAsPublic
+  value: false
+- name: _RunAsInternal
+  value: true
+- group: DotNet-Wcf-SDLValidation-Params
 resources:
-  containers:
-  - container: ubuntu_2004_20211215
-    image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-coredeps
-
-stages:
-- stage: Build
-  displayName: Build
-  jobs:
-  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/release/6.1')) }}:
-    - template: /eng/common/templates/job/onelocbuild.yml
-      parameters:
-        MirrorRepo: wcf
-        LclSource: lclFilesfromPackage
-        LclPackageId: 'LCL-JUNO-PROD-WCF-REL'
-  - template: /eng/common/templates/jobs/jobs.yml
-    parameters:
-      enableMicrobuild: true
-      enablePublishBuildArtifacts: true
-      enablePublishBuildAssets: true
-      enablePublishUsingPipelines: $(_PublishUsingPipelines)
-      enableTelemetry: true
-      helixRepo: dotnet/wcf
+  repositories:
+  - repository: MicroBuildTemplate
+    type: git
+    name: 1ESPipelineTemplates/MicroBuildTemplate
+    ref: refs/tags/release
+extends:
+  template: azure-pipelines/MicroBuild.1ES.Official.yml@MicroBuildTemplate
+  parameters:
+    sdl:
+      sourceAnalysisPool:
+        name: $(DncEngInternalBuildPool)
+        image: 1es-windows-2022-pt
+        os: windows
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: Build
+      displayName: Build
       jobs:
-      - job: Windows
-        timeoutInMinutes: 90
-        pool:
-          ${{ if eq(variables._RunAsPublic, True) }}:
-            name: NetCore-Public
-            demands: ImageOverride -equals windows.vs2022.amd64.open
-          ${{ if eq(variables._RunAsInternal, True) }}:
-            name: NetCore1ESPool-Internal
-            demands: ImageOverride -equals windows.vs2022.amd64
-        variables:
-        - _InternalBuildArgs: ''
-        - HelixApiAccessToken: ''
-        - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-
-        # Internal/Official Build Variables
-        - ${{ if eq(variables._RunAsInternal, True) }}:
-            # Only enable publishing in non-public, non PR scenarios.
-            # Publish-Build-Assets provides: MaestroAccessToken, BotAccount-dotnet-maestro-bot-PAT
-            # DotNet-HelixApi-Access provides: HelixApiAccessToken
-            - group: Publish-Build-Assets
-            - group: DotNet-HelixApi-Access
-            - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
-            - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName)
-                /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed)
-                /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines)
-                /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
-                /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
-            # Service uri needed for integration tests in official builds
-            - _serviceUri: wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1
-
-        # Public/PR & CI Build Variables
-        - ${{ if eq(variables._RunAsPublic, True) }}:
-            # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
-            - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
-            # For PR and CI test runs we need to update the Service being used by Scenario tests.
-            # Used in UpdatePRService.yml
-            # I think this can be removed based on the logic, setting it to true for now.
-            - _updateService: true
-
-        # Send to Helix variables
-        - _xUnitWorkItemTimeout: '00:10:00'
-
-        strategy:
-          matrix:
-            Release:
-              _BuildConfig: Release
-              # PRs or external builds are not signed.
-              ${{ if eq(variables._RunAsPublic, True) }}:
-                _SignType: test
-                _DotNetPublishToBlobFeed : false
-                _WcfPRServiceId: 1
+      - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
+        - template: /eng/common/templates-official/job/onelocbuild.yml@self
+          parameters:
+            MirrorRepo: wcf
+            LclSource: lclFilesfromPackage
+            LclPackageId: 'LCL-JUNO-PROD-WCF'
+      - template: /eng/common/templates-official/jobs/jobs.yml@self
+        parameters:
+          enableMicrobuild: true
+          enablePublishBuildArtifacts: true
+          enablePublishBuildAssets: true
+          enablePublishUsingPipelines: $(_PublishUsingPipelines)
+          enableTelemetry: true
+          helixRepo: dotnet/wcf
+          jobs:
+          - job: Windows
+            timeoutInMinutes: 90
+            pool:
               ${{ if eq(variables._RunAsInternal, True) }}:
-                _SignType: real
-                _DotNetPublishToBlobFeed : true
-            ${{ if eq(variables._RunAsPublic, True) }}:
-              Debug:
-                _BuildConfig: Debug
-                _SignType: test
-                _DotNetPublishToBlobFeed : false
-                _WcfPRServiceId: 2
-
-        steps:
-        - checkout: self
-          clean: true
-        - ${{ if eq(variables._RunAsPublic, True) }}:
-          - template: /eng/UpdatePRService.yml
-            parameters:
-              wcfPRServiceId: $(_WcfPRServiceId)
-        - script: eng\common\cibuild.cmd
-            -configuration $(_BuildConfig)
-            -preparemachine
-            $(_InternalBuildArgs)
-            $(_TestArgs)
-            /p:Test=false
-          displayName: Windows Build / Publish
-
-        - powershell: eng\common\build.ps1
-            -configuration $(_BuildConfig)
-            -preparemachine
-            -ci
-            -test
-            -integrationTest
-            -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
-            $(_TestArgs)
-            /p:TestJob=Windows
-            /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
-          displayName: Windows - Run Helix Tests
-          env:
-            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-            HelixAccessToken: $(HelixApiAccessToken)
-            XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
-            RunAsPublic: $(_RunAsPublic)
-            RunAsInternal: $(_RunAsInternal)
-            IsWindowsBuild: true
-
-      # Only build and test Unix in PR and CI builds.
-      - ${{ if eq(variables._RunAsPublic, True) }}:
-        - job: Linux
-          timeoutInMinutes: 90
-          container: ubuntu_2004_20211215
-          pool:
-            name:  NetCore-Public
-            demands: ImageOverride -equals build.Ubuntu.1804.Amd64.Open
-          variables:
-          - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-          - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
-          - _updateService: true
-
-          # Send to Helix variables
-          - _xUnitWorkItemTimeout: '00:10:00'
-
-          strategy:
-            matrix:
-              Release:
-                _BuildConfig: Release
-                _SignType: none
-                _DotNetPublishToBlobFeed : false
-                _WcfPRServiceId: 3
-                _PublishType: none
-              Debug:
-                _BuildConfig: Debug
-                _SignType: none
-                _DotNetPublishToBlobFeed : false
-                _WcfPRServiceId: 4
-                _PublishType: none
-          steps:
-          - checkout: self
-            clean: true
-          - template: /eng/UpdatePRService.yml
-            parameters:
-              wcfPRServiceId: $(_WcfPRServiceId)
-          - script: eng/common/cibuild.sh
-              -configuration $(_BuildConfig)
-              -preparemachine
-              $(_TestArgs)
-              /p:Test=false
-            displayName: Unix Build
-          - script: eng/common/build.sh
-              --configuration $(_BuildConfig)
-              --prepareMachine
-              --ci
-              --test
-              --integrationTest
-              --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
-              $(_TestArgs)
-              /p:TestJob=Linux
-              /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
-            displayName: Linux - Run Helix Tests
-            env:
-              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-              ServiceHost: $(_serviceUri)
-              RunAsPublic: $(_RunAsPublic)
-              RunAsInternal: $(_RunAsInternal)
-              IsWindowsBuild: false
-
-      # Only build and test Unix in PR and CI builds.
-      - ${{ if eq(variables._RunAsPublic, True) }}:
-        - job: MacOS
-          timeoutInMinutes: 90
-          pool:
-            name: NetCore-Public
-            demands: ImageOverride -equals windows.vs2022.amd64.open
-          variables:
-          - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-          - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
-          - _updateService: true
-
-          # Send to Helix variables
-          - _xUnitWorkItemTimeout: '00:10:00'
-
-          strategy:
-            matrix:
-              Release:
-                _BuildConfig: Release
-                _SignType: none
-                _DotNetPublishToBlobFeed : false
-                _WcfPRServiceId: 5
-                _PublishType: none
-              Debug:
-                _BuildConfig: Debug
-                _SignType: none
-                _DotNetPublishToBlobFeed : false
-                _WcfPRServiceId: 6
-                _PublishType: none
-          steps:
-          - checkout: self
-            clean: true
-          - template: /eng/UpdatePRService.yml
-            parameters:
-              wcfPRServiceId: $(_WcfPRServiceId)
-          - script: eng\common\cibuild.cmd
-              -configuration $(_BuildConfig)
-              -preparemachine
-              $(_TestArgs)
-              /p:Test=false
-            displayName: MacOS Build
-          - powershell: eng\common\build.ps1
-              -configuration $(_BuildConfig)
-              -prepareMachine
-              -ci
-              -test
-              -integrationTest
-              -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
-              $(_TestArgs)
-              /p:TestJob=MacOS
-              /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
-            displayName: MacOS - Run Helix Tests
-            env:
-              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-              ServiceHost: $(_serviceUri)
-              RunAsPublic: $(_RunAsPublic)
-              RunAsInternal: $(_RunAsInternal)
-              IsWindowsBuild: false
-
-- ${{ if eq(variables._RunAsInternal, True) }}:
-  - template: eng\common\templates\post-build\post-build.yml
-    parameters:
-      validateDependsOn:
-      - Build
-      publishingInfraVersion: 3
-      # Symbol validation isn't being very reliable lately. This should be enabled back
-      # once this issue is resolved: https://github.com/dotnet/arcade/issues/2871
-      enableSymbolValidation: false
-      # Sourcelink validation isn't passing for Arcade due to some regressions. This should be
-      # enabled back once this issue is resolved: https://github.com/dotnet/arcade/issues/2912
-      enableSourceLinkValidation: false
-      # This is to enable SDL runs part of Post-Build Validation Stage
-      SDLValidationParameters:
-        enable: true
-        params: ' -SourceToolsList @("policheck","credscan")
-        -TsaInstanceURL $(_TsaInstanceURL)
-        -TsaProjectName $(_TsaProjectName)
-        -TsaNotificationEmail $(_TsaNotificationEmail)
-        -TsaCodebaseAdmin $(_TsaCodebaseAdmin)
-        -TsaBugAreaPath $(_TsaBugAreaPath)
-        -TsaIterationPath $(_TsaIterationPath)
-        -TsaRepositoryName "WCF"
-        -TsaCodebaseName "WCF"
-        -TsaPublish $True'
+                name: $(DncEngInternalBuildPool)
+                image: 1es-windows-2022-pt
+                os: windows
+            variables:
+            - _InternalBuildArgs: ''
+            - HelixApiAccessToken: ''
+            - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
+            - ${{ if eq(variables._RunAsInternal, True) }}:
+              - group: Publish-Build-Assets
+              - group: DotNet-HelixApi-Access
+              - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
+              - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName) /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed) /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines) /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory) /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
+              - _serviceUri: wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1
+            - _xUnitWorkItemTimeout: '00:10:00'
+            strategy:
+              matrix:
+                Release:
+                  _BuildConfig: Release
+                  ${{ if eq(variables._RunAsInternal, True) }}:
+                    _SignType: real
+                    _DotNetPublishToBlobFeed: true
+            steps:
+            - checkout: self
+              clean: true
+            - script: eng\common\cibuild.cmd -configuration $(_BuildConfig) -preparemachine $(_InternalBuildArgs) $(_TestArgs) /p:Test=false
+              displayName: Windows Build / Publish
+            - powershell: eng\common\build.ps1 -configuration $(_BuildConfig) -preparemachine -ci -test -integrationTest -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj $(_TestArgs) /p:TestJob=Windows /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
+              displayName: Windows - Run Helix Tests
+              env:
+                SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+                HelixAccessToken: $(HelixApiAccessToken)
+                XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
+                RunAsPublic: $(_RunAsPublic)
+                RunAsInternal: $(_RunAsInternal)
+                IsWindowsBuild: true
+    - ${{ if eq(variables._RunAsInternal, True) }}:
+      - template: /eng/common/templates-official/post-build/post-build.yml@self
+        parameters:
+          validateDependsOn:
+          - Build
+          publishingInfraVersion: 3
+          enableSymbolValidation: false
+          enableSourceLinkValidation: false
+          SDLValidationParameters:
+            enable: true
+            params: ' -SourceToolsList @("policheck","credscan") -TsaInstanceURL $(_TsaInstanceURL) -TsaProjectName $(_TsaProjectName) -TsaNotificationEmail $(_TsaNotificationEmail) -TsaCodebaseAdmin $(_TsaCodebaseAdmin) -TsaBugAreaPath $(_TsaBugAreaPath) -TsaIterationPath $(_TsaIterationPath) -TsaRepositoryName "WCF" -TsaCodebaseName "WCF" -TsaPublish $True'
