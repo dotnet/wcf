@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="CopyrightForCmdLine">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="translated">Copyright (c) Microsoft Corporation. All rights reserved.</target>
+        <target state="translated">Copyright (c) Microsoft Corporation.  All rights reserved.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrAmbiguityInAssemblyNames">
@@ -657,7 +657,7 @@ or because all contracts/services were discovered to exist in /reference assembl
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;type&gt;</target>
+        <target state="translated">&lt;형식&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
@@ -667,7 +667,7 @@ or because all contracts/services were discovered to exist in /reference assembl
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="translated">&lt;type&gt;</target>
+        <target state="translated">&lt;형식&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
@@ -687,7 +687,7 @@ or because all contracts/services were discovered to exist in /reference assembl
       </trans-unit>
       <trans-unit id="ParametersOutputType">
         <source>&lt;output type&gt;</source>
-        <target state="translated">&lt;output type&gt;</target>
+        <target state="translated">&lt;출력 형식&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
@@ -697,7 +697,7 @@ or because all contracts/services were discovered to exist in /reference assembl
       </trans-unit>
       <trans-unit id="ParametersTarget">
         <source>&lt;enum&gt;</source>
-        <target state="translated">&lt;enum&gt;</target>
+        <target state="translated">&lt;열거&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ValidationError">
