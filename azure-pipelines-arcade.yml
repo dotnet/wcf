@@ -58,6 +58,7 @@ extends:
           enablePublishBuildAssets: true
           enablePublishUsingPipelines: $(_PublishUsingPipelines)
           enableTelemetry: true
+          enableSourceIndex: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
           helixRepo: dotnet/wcf
           jobs:
           - job: Windows
