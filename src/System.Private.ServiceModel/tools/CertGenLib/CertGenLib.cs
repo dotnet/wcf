@@ -143,7 +143,7 @@ public class CertGenLib
             ValidityType = CertificateValidityType.Valid,
             Subject = s_fqdn,
             SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" },
-            EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID> { Org.BouncyCastle.Asn1.X509.KeyPurposeID.IdKPClientAuth }
+            EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID> { Org.BouncyCastle.Asn1.X509.KeyPurposeID.id_kp_clientAuth }
         };
         CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 

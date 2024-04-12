@@ -303,7 +303,7 @@ namespace WcfTestCommon
             else
             {
                 X509Name subjectName = CreateX509Name(subject);
-                s_certGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
+                s_certGenerator.SetIssuerDN(signingCertificate.SubjectDN);
                 s_certGenerator.SetSubjectDN(subjectName);
 
                 s_certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(_authorityKeyPair.Public));
@@ -320,7 +320,7 @@ namespace WcfTestCommon
             s_certGenerator.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(isAuthority));
             if (certificateCreationSettings.EKU == null || certificateCreationSettings.EKU.Count == 0)
             {
-                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth, KeyPurposeID.IdKPClientAuth));
+                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.id_kp_serverAuth, KeyPurposeID.id_kp_clientAuth));
             }
             else
             {
@@ -474,7 +474,7 @@ namespace WcfTestCommon
             s_crlGenerator.SetThisUpdate(updateTime);
             //There is no need to update CRL.
             s_crlGenerator.SetNextUpdate(now.Add(ValidityPeriod));
-            s_crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
+            s_crlGenerator.SetIssuerDN(signingCertificate.SubjectDN);
 
             s_crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(signingCertificate));
 
