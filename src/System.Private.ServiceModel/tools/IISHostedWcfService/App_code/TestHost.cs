@@ -53,6 +53,12 @@ namespace WcfService
         [OperationContract]
         [WebGet(UriTemplate = "State", BodyStyle = WebMessageBodyStyle.Bare)]
         Stream State();
+
+#if NET
+        [OperationContract]
+        [WebGet(UriTemplate = "Shutdown", BodyStyle = WebMessageBodyStyle.Bare)]
+        void Shutdown();
+#endif
     }
 
     public class TestHost : ITestHost
@@ -275,6 +281,11 @@ namespace WcfService
             builder.Append(footer);
 
             return builder.ToString();
+        }
+
+        public void Shutdown()
+        {
+            Environment.Exit(0);
         }
     }
 }

@@ -1,0 +1,5 @@
+{
+    "CertExpirationInDay": "90",
+    "CrlFileLocation": "c:\\wcftest\\test.crl",
+    "testserverbase": ""
+}

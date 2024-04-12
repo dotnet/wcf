@@ -4,36 +4,30 @@
 
 #if NET
 using CoreWCF;
-using CoreWCF.Configuration;
-using Microsoft.AspNetCore;
+using CoreWCF.Channels;
 
 namespace WcfService
 {
-    public class TestHostServiceHost
+    //Start the crlUrl service as the client use it to ensure all services have been started
+    [TestServiceDefinition(BasePath = "", Schema = ServiceSchema.HTTP)]
+    public class TestHostServiceHost : TestServiceHostBase<ITestHost>
     {
-        public void StartService()
-        {
-            IWebHost host = WebHost.CreateDefaultBuilder().UseStartup<Startup>().Build();
-            host.Run();
-        }
-    }
+        protected override string Address { get { return "http://localhost/TestHost.svc"; } }
 
-    internal class Startup
-    {
-        public const string TestHostRelativeAddress = "/TestHost.svc";
-
-        public void ConfigureServices(IServiceCollection services)
+        protected override Binding GetBinding()
         {
-            services.AddServiceModelWebServices();
+            return GetWebHttpBinding();
         }
 
-        public void Configure(IApplicationBuilder app)
+        private Binding GetWebHttpBinding()
         {
-            app.UseServiceModel(builder =>
-            {
-                builder.AddService<TestHost>();
-                builder.AddServiceWebEndpoint<TestHost, ITestHost>(new WebHttpBinding(WebHttpSecurityMode.None), TestHostRelativeAddress);
-            });
+            var binding = new WebHttpBinding();
+            return binding;
+        }
+
+        public TestHostServiceHost(params Uri[] baseAddresses)
+            : base(typeof(TestHost), baseAddresses)
+        {
         }
     }
 }

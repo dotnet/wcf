@@ -6,29 +6,30 @@ using WcfService;
 
 namespace SelfHostedWCFService
 {
+    public class Parameters
+    {
+        public const string ServiceBootstrap = "bootstrap";
+    }
+
     public class SelfHostedWCFService
     {
-        private static void Main()
+        private static bool s_serviceBootstrap = false;
+
+        public static async Task Main(string[] args)
         {
-            // Setup certificates
+            ParseArgs(args);
+
+            if (s_serviceBootstrap)
+            {
+                await ServiceHostHelper.ServiceBootstrap();
+                Environment.Exit(1);
+            }
+
             Console.WriteLine("Installing certificates...");
             CertGenLib.SetupCerts();
 
             Console.WriteLine("Starting all service hosts...");
-            //TestDefinitionHelper.StartHosts()
-            var runHostTask = Task.Run(() => TestDefinitionHelper.StartHosts());
-            //runHostTask.Wait();
-            Task.Delay(5000).Wait();
-
-            //Start the crlUrl service last as the client use it to ensure all services have been started
-            TestHostServiceHost host = new TestHostServiceHost();
-            //host.StartService();
-            var runTestHostTask = Task.Run(() => host.StartService());
-            //runTestHostTask.Wait();
-
-            // Ping to make sure the service is started
-            bool result = ServiceHostHelper.Ping("http://localhost:8081/TestHost.svc/Ping");
-            if (!result) { return; }
+            await TestDefinitionHelper.StartHosts();
 
             Console.WriteLine("All service hosts have started.");
             do
@@ -41,5 +42,30 @@ namespace SelfHostedWCFService
                 }
             } while (true);
         }
+
+        private static bool ParseArgs(string[] args)
+        {
+            foreach (string s in args)
+            {
+                string[] p = s.Split(new char[] { ':' }, count: 2);
+                if (p.Length != 2)
+                {
+                    continue;
+                }
+
+                switch (p[0].ToLower())
+                {
+                    case Parameters.ServiceBootstrap:
+                        bool.TryParse(p[1], out s_serviceBootstrap);
+                        break;
+                    default:
+                        Console.WriteLine("unknown argument: " + s);
+                        continue;
+                }
+            }
+
+            return true;
+        }
+
     }
 }

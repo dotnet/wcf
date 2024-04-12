@@ -8,6 +8,7 @@ using WcfTestCommon;
 using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
 using System.IO;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 
 public class CertGenLib
 {
@@ -171,11 +172,25 @@ public class CertGenLib
         return 0;
     }
 
+    public static class ApplicationConfiguration
+    {
+        private static readonly IConfigurationRoot s_configuration;
+        static ApplicationConfiguration()
+        {
+            var builder = new ConfigurationBuilder().AddJsonFile("CertGenLibSettings.json");
+            s_configuration = builder.Build();
+        }
+        public static string GetSetting(string key)
+        {
+            return s_configuration[key];
+        }
+    }
+
     private static void ApplyAppSettings()
     {
-        s_testserverbase = string.Empty;
-        s_validatePeriod = TimeSpan.FromDays(90);
-        s_crlFileLocation = @"c:\wcftest\test.crl";
+        s_testserverbase = ApplicationConfiguration.GetSetting("testserverbase") ?? string.Empty;
+        s_validatePeriod = TimeSpan.FromDays(int.Parse(ApplicationConfiguration.GetSetting("CertExpirationInDay")));
+        s_crlFileLocation = ApplicationConfiguration.GetSetting("CrlFileLocation") ?? string.Empty;
     }
 
     private static void CreateAndInstallMachineCertificate(CertificateGenerator certificateGenerate, CertificateCreationSettings certificateCreationSettings)

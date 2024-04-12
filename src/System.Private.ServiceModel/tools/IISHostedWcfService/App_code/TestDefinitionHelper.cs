@@ -57,7 +57,7 @@ namespace WcfService
         }
 
 #if NET
-        internal static void StartHosts()
+        internal static async Task StartHosts()
         {
             bool success = true;
             var webHost = WebHost.CreateDefaultBuilder()
@@ -88,8 +88,9 @@ namespace WcfService
                             };
                         });
                     services.AddServiceModelServices()
-                    .AddServiceModelMetadata();
-                    services.AddAuthorization();
+                    .AddServiceModelMetadata()
+                    .AddServiceModelWebServices()
+                    .AddAuthorization();
                 })
                 .Configure(app =>
                 {
@@ -180,7 +181,7 @@ namespace WcfService
                     });
                 }).Build();
 
-            webHost.Run();
+            await webHost.StartAsync();
         }
 
         internal static IEnumerable<Type> GetAttributedServiceHostTypes()
