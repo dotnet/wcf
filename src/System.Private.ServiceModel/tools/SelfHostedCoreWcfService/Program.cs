@@ -26,12 +26,16 @@ namespace SelfHostedWCFService
             }
 
             Console.WriteLine("Installing certificates...");
-            CertGenLib.SetupCerts();
+            string testserverbase = string.Empty;
+            TimeSpan validatePeriod = TimeSpan.FromDays(1);
+            string crlFileLocation = "c:\\wcftest\\test.crl";
 
-            Console.WriteLine("Starting all service hosts...");
+            CertificateGeneratorLibrary.SetupCerts(testserverbase, validatePeriod, crlFileLocation);
+
+            Console.WriteLine("Starting services...");
             await TestDefinitionHelper.StartHosts();
 
-            Console.WriteLine("All service hosts have started.");
+            Console.WriteLine("All services started.");
             do
             {
                 Console.WriteLine("Type <Exit> to terminate the self service Host.");

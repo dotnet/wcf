@@ -77,6 +77,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CertGenLib\CertGenLib.csproj" />
+    <ProjectReference Include="..\CertGenLib\CertificateGeneratorLibrary\CertificateGeneratorLibrary.csproj" />
   </ItemGroup>
 </Project>
