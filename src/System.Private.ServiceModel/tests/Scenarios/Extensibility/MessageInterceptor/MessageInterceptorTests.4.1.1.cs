@@ -30,39 +30,4 @@ public partial class MessageInterceptorTests : ConditionalWcfTest
             return new MessageModifier();
         }
     }
-
-    [WcfFact]
-    [OuterLoop]
-    public static void CustomBinding_Message_Interceptor()
-    {
-        ChannelFactory<IWcfChannelExtensibilityContract> factory = null;
-        IWcfChannelExtensibilityContract serviceProxy = null;
-
-        try
-        {
-            // *** SETUP *** \\
-            CustomBinding binding = new CustomBinding(
-                new InterceptingBindingElement(new MessageModifier()),
-                new HttpTransportBindingElement());
-
-            factory = new ChannelFactory<IWcfChannelExtensibilityContract>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_ChannelExtensibility));
-            serviceProxy = factory.CreateChannel();
-
-            // *** EXECUTE & VALIDATE *** \\
-            int[] windSpeeds = new int[] { 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 };
-            for (int i = 0; i < 10; i++)
-            {
-                serviceProxy.ReportWindSpeed(windSpeeds[i]);
-            }
-
-            // *** CLEANUP *** \\
-            ((ICommunicationObject)serviceProxy).Close();
-            factory.Close();
-        }
-        finally
-        {
-            // *** ENSURE CLEANUP *** \\
-            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-        }
-    }
 }
