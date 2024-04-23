@@ -54,6 +54,7 @@ namespace WcfService
             return true;
         }
 
+        [Obsolete]
         public override bool CheckAccess(OperationContext operationContext, ref Message message)
         {
            var contractName = operationContext.EndpointDispatcher.ContractName; 

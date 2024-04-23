@@ -52,6 +52,7 @@ namespace WcfService
             return true;
         }
 
+        [Obsolete]
         public override bool CheckAccess(OperationContext operationContext, ref Message message)
         {
             var basicState = new BasicAuthenticationState(operationContext, GetRealm(ref message));
@@ -129,18 +130,15 @@ namespace WcfService
             private readonly string _realm;
             private string _username;
             private string _password;
-            private bool? _authorized;
 
             public BasicAuthenticationState(OperationContext operationContext, string realm)
             {
                 _operationContext = operationContext;
                 _realm = realm;
                 _username = _password = string.Empty;
-                _authorized = new bool?();
                 _authorizationHeader = GetAuthorizationHeader(operationContext);
                 if (_authorizationHeader.Length < BasicAuthenticationMechanismLength)
                 {
-                    _authorized = false;
                     return;
                 }
 
@@ -150,7 +148,6 @@ namespace WcfService
                 int colonPos = authDecoded.IndexOf(':');
                 if(colonPos <= 0)
                 {
-                    _authorized = false;
                     return;
                 }
                 _username = authDecoded.Substring(0, colonPos);

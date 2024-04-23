@@ -122,6 +122,7 @@ namespace WcfService
                 _parent = parent;
             }
 
+            [Obsolete]
             public override bool CheckAccess(OperationContext operationContext, ref Message message)
             {
                 bool success = false;

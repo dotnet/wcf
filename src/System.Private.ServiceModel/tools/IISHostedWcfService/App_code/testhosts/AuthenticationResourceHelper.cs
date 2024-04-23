@@ -108,6 +108,7 @@ namespace WcfService
 
         private class SideChannelHeaderUserNamePasswordValidator : UserNamePasswordValidator
         {
+            [Obsolete]
             public override void Validate(string userName, string password)
             {
                 char[] usernameArr = userName.ToCharArray();

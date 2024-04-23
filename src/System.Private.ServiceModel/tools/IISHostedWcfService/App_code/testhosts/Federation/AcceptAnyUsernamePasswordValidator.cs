@@ -12,6 +12,7 @@ namespace WcfService
 {
     internal class AcceptAnyUsernamePasswordValidator : UserNamePasswordValidator
     {
+        [Obsolete]
         public override void Validate(string userName, string password)
         {
             // Do Nothing as we accept anything
