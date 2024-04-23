@@ -8,9 +8,8 @@ using WcfTestCommon;
 using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
 using System.IO;
 using System.Net;
-using Microsoft.Extensions.Configuration;
 
-public class CertGenLib
+public class CertificateGeneratorLibrary
 {
     private const string ClientCertificateSubject = "WCF Client Certificate";
     private const string CertificateIssuer = "DO_NOT_TRUST_WcfBridgeRootCA";
@@ -51,9 +50,11 @@ public class CertGenLib
         RemoveCertificatesFromStore(StoreName.TrustedPeople, StoreLocation.CurrentUser);
     }
 
-    public static int SetupCerts()
+    public static int SetupCerts(string testserverbase, TimeSpan validatePeriod, string crlFileLocation)
     {
-        ApplyAppSettings();
+        s_testserverbase = testserverbase;
+        s_validatePeriod = validatePeriod;
+        s_crlFileLocation = crlFileLocation;
 
         UninstallAllCerts();
 
@@ -170,27 +171,6 @@ public class CertGenLib
         File.WriteAllBytes(s_crlFileLocation, certificateGenerate.CrlEncoded);
 
         return 0;
-    }
-
-    public static class ApplicationConfiguration
-    {
-        private static readonly IConfigurationRoot s_configuration;
-        static ApplicationConfiguration()
-        {
-            var builder = new ConfigurationBuilder().AddJsonFile("CertGenLibSettings.json");
-            s_configuration = builder.Build();
-        }
-        public static string GetSetting(string key)
-        {
-            return s_configuration[key];
-        }
-    }
-
-    private static void ApplyAppSettings()
-    {
-        s_testserverbase = ApplicationConfiguration.GetSetting("testserverbase") ?? string.Empty;
-        s_validatePeriod = TimeSpan.FromDays(int.Parse(ApplicationConfiguration.GetSetting("CertExpirationInDay")));
-        s_crlFileLocation = ApplicationConfiguration.GetSetting("CrlFileLocation") ?? string.Empty;
     }
 
     private static void CreateAndInstallMachineCertificate(CertificateGenerator certificateGenerate, CertificateCreationSettings certificateCreationSettings)
