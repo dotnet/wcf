@@ -64,13 +64,13 @@
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND !$(HelixTargetQueue.StartsWith('Windows'))" >
+  <PropertyGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND !$(HelixTargetQueue.StartsWith('Windows'))" >
     <HelixPreCommands>$(HelixPreCommands);sh $(MSBuildThisFileDirectory)/../artifacts/bin/SelfHostedCoreWCFService/SelfHostedCoreWCFService</HelixPreCommands>
-  </ItemGroup>
+  </PropertyGroup>
   
-  <ItemGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND $(HelixTargetQueue.StartsWith('Windows'))" >
+  <PropertyGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND $(HelixTargetQueue.StartsWith('Windows'))" >
     <HelixPreCommands>$(HelixPreCommands);$(MSBuildThisFileDirectory)/../artifacts/bin/SelfHostedCoreWCFService/SelfHostedCoreWCFService.exe</HelixPreCommands>
-  </ItemGroup>
+  </PropertyGroup>
 
 
   <Target Name="Pack"/>
