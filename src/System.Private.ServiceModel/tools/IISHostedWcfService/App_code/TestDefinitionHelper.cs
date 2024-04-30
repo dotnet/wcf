@@ -101,7 +101,7 @@ namespace WcfService
                         foreach (var serviceTestHost in GetAttributedServiceHostTypes())
                         {
                             var serviceBaseAddresses = new List<Uri>();
-                            var endpointBasePath = new Dictionary<string, string>();
+                            var endpointBasePath = new Dictionary<Enum, string>();
                             foreach (TestServiceDefinitionAttribute attr in serviceTestHost.GetCustomAttributes(typeof(TestServiceDefinitionAttribute), false))
                             {
                                 Uri serviceBaseAddress = null;
@@ -111,7 +111,7 @@ namespace WcfService
                                     {
                                         if (attr.Schema.HasFlag(schema))
                                         {
-                                            endpointBasePath.Add(schema.ToString().ToLower(), attr.BasePath);
+                                            endpointBasePath.Add(schema, attr.BasePath);
                                             serviceBaseAddress = new Uri(BaseAddresses[(ServiceSchema)schema]);
                                             serviceBaseAddresses.Add(serviceBaseAddress);
                                         }
@@ -147,8 +147,8 @@ namespace WcfService
                                     });
                                     foreach (var endpoint in serviceHost.Endpoints)
                                     {
-                                        string scheme = endpoint.Binding.Scheme.Replace("net.tcp", "nettcp");
-                                        string basePath = endpointBasePath[scheme];
+                                        Enum schema = ServiceHostHelper.ToServiceSchema(endpoint.Binding.Scheme);
+                                        string basePath = endpointBasePath[schema];
                                         string endpointAddress = string.Format("{0}/{1}", basePath, endpoint.Address);
                                         serviceBuilder.AddServiceEndpoint(serviceHost.ServiceType, endpoint.ContractType, endpoint.Binding, new Uri(endpointAddress, UriKind.RelativeOrAbsolute), null);
                                     }

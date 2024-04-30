@@ -70,6 +70,17 @@ namespace WcfService
             }
             Environment.Exit(1);
         }
+
+        public static Enum ToServiceSchema(string CoreWcfScheme) => CoreWcfScheme switch
+        {
+            "http" => ServiceSchema.HTTP,
+            "https" => ServiceSchema.HTTPS,
+            "net.tcp" => ServiceSchema.NETTCP,
+            "net.pipe" => ServiceSchema.NETPIPE,
+            "ws" => ServiceSchema.WS,
+            "wss" => ServiceSchema.WSS,
+            _ => throw new ArgumentOutOfRangeException(nameof(CoreWcfScheme), $"Not expected CoreWcfScheme value: {CoreWcfScheme}"),
+        };
     }
 }
 #endif

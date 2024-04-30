@@ -249,7 +249,10 @@ namespace WcfService
 #if NET
         public string GetRestartServiceEndpoint()
         {
-           IWebHost host = WebHost.CreateDefaultBuilder().UseStartup<BasicHttpBindingStartup>().Build();
+            IWebHost host = WebHost.CreateDefaultBuilder().UseKestrel(options =>
+            {
+                options.Listen(IPAddress.Loopback, 0);
+            }).UseStartup<BasicHttpBindingStartup>().Build();
 
             host.Run();
 
@@ -268,7 +271,7 @@ namespace WcfService
         {
             private readonly Guid _guid = Guid.NewGuid();
             private readonly string _localHost = "http://localhost:0";
-            private readonly string _path = "WindowsCommunicationFoundationTest/" + WindowsIdentity.GetCurrent().Name.Split('\\').Last();
+            private readonly string _path = "WindowsCommunicationFoundationTest";
 
             public void ConfigureServices(IServiceCollection services)
             {
