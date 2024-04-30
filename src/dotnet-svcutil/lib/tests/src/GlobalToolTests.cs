@@ -139,36 +139,6 @@ namespace SvcutilTest
         }
 
         [Trait("Category", "BVT")]
-        [Fact]
-        public async Task MultiTargetTypeReuse()
-        {
-            this_TestCaseName = "MultiTargetTypeReuse";
-            TestFixture();
-            string testClientFolder = "TypeReuseClient";
-            this_TestCaseBaselinesDir = Path.Combine(this_TestGroupBaselinesDir, testClientFolder);
-            Directory.CreateDirectory(this_TestCaseBaselinesDir);
-
-            this_TestGroupOutputDir = Path.Combine(Path.GetTempPath(), this_TestCaseName);
-            this_TestCaseLogFile = Path.Combine(this_TestGroupOutputDir, $"{this_TestCaseName}.log");
-            this_TestCaseOutputDir = Path.Combine(this_TestGroupOutputDir, testClientFolder);
-            FileUtil.TryDeleteDirectory(this_TestCaseOutputDir);
-            Directory.CreateDirectory(this_TestCaseOutputDir);
-            FileUtil.CopyDirectory(Path.Combine(g_TestCasesDir, this_TestCaseName), this_TestGroupOutputDir, true);
-            this_TestCaseProject = await MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testClientFolder}.csproj"), null, CancellationToken.None);
-            ProcessRunner.ProcessResult ret = await this_TestCaseProject.BuildAsync(true, this_TestCaseLogger, CancellationToken.None);
-            Assert.True(ret.ExitCode == 0, ret.OutputText);
-
-            this_FixupUtil = new FixupUtil();
-            this_FixupUtil.Init(g_TestResultsDir, g_TestCasesDir, this_TestCaseOutputDir, g_ServiceUrl, g_ServiceId, g_RepositoryRoot);
-
-            var uri = Path.Combine(g_TestCasesDir, "wsdl", "TypeReuseSvc.wsdl");
-            var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
-            var options = $"{uri} -nl --outputDir {outDir}";
-
-            TestGlobalSvcutil(options, expectSuccess: true);
-        }
-
-        [Trait("Category", "BVT")]
         [Theory]
         [InlineData("net6.0", "-elm")]
         public async Task ParamsFiles_SDK_TFMAsync(string targetFramework, string extraOptions)

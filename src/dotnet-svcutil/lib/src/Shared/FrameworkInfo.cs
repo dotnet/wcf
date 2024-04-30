@@ -40,7 +40,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             // framework spec form: 'net5.0'
             // framework spec form: '.NETCoreApp,Version=v6.0'
             // framework spec form: '.NETFramework,Version=v4.8'
-            // framework spec form: 'net7.0-windows10.0.19041.0', 'net7.0-windows'
             for (int i = 0; i < fullFrameworkName.Length; i++)
             {
                 char c = fullFrameworkName[i];
@@ -50,25 +49,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                     // Version ctr requires at least Major and Minor parts
                     string versionString = fullFrameworkName.Substring(i);
-                    if ((name == Netfx))
+                    if ((name == Netfx) && !versionString.Contains("."))
                     {
                         // net452
-                        if(!versionString.Contains("."))
+                        StringBuilder sb = new StringBuilder(versionString);
+                        for (int j = 1; j < sb.Length; j += 2)
                         {
-                            StringBuilder sb = new StringBuilder(versionString);
-                            for (int j = 1; j < sb.Length; j += 2)
-                            {
-                                sb.Insert(j, '.');
-                            }
-                            versionString = sb.ToString();
+                            sb.Insert(j, '.');
                         }
-                        // net7.0-windows10.0.19041.0
-                        if (versionString.Contains("-"))
-                        {
-                            versionString = versionString.Substring(0, versionString.IndexOf("-"));
-                        }                        
+                        versionString = sb.ToString();
                     }
-                    
+
                     version = new Version(versionString);
                     break;
                 }
