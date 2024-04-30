@@ -7,7 +7,7 @@ using Microsoft.CodeDom;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Xml.Linq;
+using static Microsoft.Tools.ServiceModel.Svcutil.TargetFrameworkHelper;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
@@ -32,7 +32,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (options.TargetFramework.IsDnx)
                 {
-                    if (TargetFrameworkHelper.NetCoreVersionReferenceTable.TryGetValue(options.TargetFramework.Version, out var referenceTable))
+                    bool findVersion = false;
+                    System.Collections.Generic.List<ProjectDependency> referenceTable = null;
+                    if(options.TargetFramework.Name != FrameworkInfo.Netstandard)
+                    {
+                        findVersion = NetCoreVersionReferenceTable.TryGetValue(options.TargetFramework.Version, out referenceTable);
+                    }
+                    else if (NetStandardToNetCoreVersionMap.Keys.Contains(options.TargetFramework.Version))
+                    {
+                        findVersion = NetCoreVersionReferenceTable.TryGetValue(NetCoreToWCFPackageReferenceVersionMap[NetStandardToNetCoreVersionMap[options.TargetFramework.Version]], out referenceTable);
+                    }
+
+                    if (findVersion)
                     {
                         string version = referenceTable.FirstOrDefault().Version;
                         string[] vers = version.Split('.');
