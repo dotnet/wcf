@@ -17,7 +17,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class MSBuildProj : IDisposable
     {
-        private const string DirBuildProps = "Directory.Build.props";
         private bool _isSaved;
         private bool _ownsDirectory;
         private readonly ProjectPropertyResolver _propertyResolver;
@@ -199,15 +198,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (targetFrameworkElements.Count() > 0)
                 {
                     // If property is specified more than once, MSBuild will resolve it by overwriting it with the last value.
-                    var targetFramework = targetFrameworkElements.Last().Value.Trim();
+                    var targetFramework = targetFrameworkElements.Last().Value.Trim().ToLowerInvariant();
                     if (!string.IsNullOrWhiteSpace(targetFramework))
                     {
-                        if (targetFramework.ToString().StartsWith("$"))
-                        {
-                            targetFramework = GetValueFromDirBuildProps(targetFramework, msbuildProj.DirectoryPath);
-                        }
-
-                        if (TargetFrameworkHelper.IsSupportedFramework(targetFramework, out FrameworkInfo fxInfo))
+                        if(TargetFrameworkHelper.IsSupportedFramework(targetFramework, out FrameworkInfo fxInfo))
                         {
                             msbuildProj._targetFrameworks.Add(targetFramework);
                         }
@@ -221,11 +215,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     if (targetFrameworksElements.Count() > 0)
                     {
                         var targetFrameworks = targetFrameworksElements.Last().Value;
-                        if (targetFrameworks.ToString().StartsWith("$"))
-                        {
-                            targetFrameworks = GetValueFromDirBuildProps(targetFrameworks, msbuildProj.DirectoryPath);
-                        }
-
                         foreach (var targetFx in targetFrameworks.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()))
                         {
                             if (!string.IsNullOrWhiteSpace(targetFx))
@@ -424,27 +413,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             project._isSaved = true;
 
             return project;
-        }
-
-        private static string GetValueFromDirBuildProps(string elementStr, string dirPath)
-        {
-            try
-            {
-                //elementStr format: $(ElementName)
-                elementStr = elementStr.Substring(2).TrimEnd(')');
-                string filePath = Path.Combine(dirPath, DirBuildProps);
-                XDocument doc = XDocument.Load(filePath);
-                var ele = doc.Root?.Descendants(elementStr).FirstOrDefault();
-                if (ele != null)
-                {
-                    return ele.Value;
-                }
-            }
-            catch
-            {
-            }
-
-            return "";
         }
 
         private static IEnumerable<XElement> GetGroupValues(XElement projectElement, string group, bool createOnMissing = false)

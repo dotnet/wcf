@@ -39,7 +39,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             // framework spec form: 'netcore1.5' or 'net452'
             // framework spec form: 'net5.0'
             // framework spec form: '.NETCoreApp,Version=v6.0'
-            // framework spec form: '.NETFramework,Version=v4.8'
             for (int i = 0; i < fullFrameworkName.Length; i++)
             {
                 char c = fullFrameworkName[i];
@@ -67,14 +66,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (name.ToLower().Contains(Netversion))
             {
-                //netcoreapp3.1 and lower
-                if (version.Major < 4)
+                if (version.Major >= 5)
                 {
-                    name = Netcoreapp;
+                    name = Netfx;
                 }
                 else
                 {
-                    name = Netfx;
+                    name = Netcoreapp;
                 }
 
                 fullFrameworkName = string.Concat(name, version.ToString());
