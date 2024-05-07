@@ -1574,6 +1574,10 @@ namespace System.ServiceModel.Channels
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return default; }
         public void Remove(System.ServiceModel.Channels.MessageHeaderInfo headerInfo) { }
     }
+    internal interface IMergeEnabledMessageProperty
+    {
+        bool TryMergeWithProperty(object propertyToMerge);
+    }
 }
 namespace System.ServiceModel.Description
 {
