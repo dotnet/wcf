@@ -470,7 +470,7 @@ if [[ "$__CodeName" == "alpine" ]]; then
     __ApkKeysDir="$(mktemp -d)"
     arch="$(uname -m)"
 
-    ensureDownloadTool()
+    ensureDownloadTool
     
     if [[ "$__hasWget" == 1 ]]; then
         wget -P "$__ApkToolsDir" "https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v$__ApkToolsVersion/$arch/apk.static"
@@ -540,7 +540,7 @@ elif [[ "$__CodeName" == "freebsd" ]]; then
     mkdir -p "$__RootfsDir"/usr/local/etc
     JOBS=${MAXJOBS:="$(getconf _NPROCESSORS_ONLN)"}
 
-    ensureDownloadTool()
+    ensureDownloadTool
 
     if [[ "$__hasWget" == 1 ]]; then
         wget -O- "https://download.freebsd.org/ftp/releases/${__FreeBSDArch}/${__FreeBSDMachineArch}/${__FreeBSDBase}/base.txz" | tar -C "$__RootfsDir" -Jxf - ./lib ./usr/lib ./usr/libdata ./usr/include ./usr/share/keys ./etc ./bin/freebsd-version
@@ -570,7 +570,7 @@ elif [[ "$__CodeName" == "illumos" ]]; then
     pushd "$__RootfsDir/tmp"
     JOBS=${MAXJOBS:="$(getconf _NPROCESSORS_ONLN)"}
 
-    ensureDownloadTool()
+    ensureDownloadTool
 
     echo "Downloading sysroot."
     if [[ "$__hasWget" == 1 ]]; then
@@ -654,7 +654,7 @@ elif [[ "$__CodeName" == "haiku" ]]; then
 
     mkdir "$__RootfsDir/tmp/download"
 
-    ensureDownloadTool()
+    ensureDownloadTool
 
     echo "Downloading Haiku package tool"
     git clone https://github.com/haiku/haiku-toolchains-ubuntu --depth 1 "$__RootfsDir/tmp/script"
