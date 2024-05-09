@@ -15,10 +15,6 @@
     <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(RunWithCoreWcfService)' == 'true' " >
-    <ProjectReference Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj" />
-  </ItemGroup>
-
   <ItemGroup>
     <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj">
       <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
@@ -59,12 +55,14 @@
     <Creator Condition=" '$(Creator)' == ''">anon</Creator>
   </PropertyGroup>
   
-  <PropertyGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND !$(HelixTargetQueue.StartsWith('Windows'))" >
-    <HelixPreCommands>$(HelixPreCommands);sh $(MSBuildThisFileDirectory)/../artifacts/bin/SelfHostedCoreWCFService/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+  <PropertyGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND $(HelixTargetQueue.StartsWith('Linux'))" >
+    <HelixPreCommands>$(HelixPreCommands);sh $(MSBuildThisFileDirectory)../artifacts/bin/SelfHostedCoreWCFService/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
   
-  <PropertyGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND $(HelixTargetQueue.StartsWith('Windows'))" >
-    <HelixPreCommands>$(HelixPreCommands);$(MSBuildThisFileDirectory)/../artifacts/bin/SelfHostedCoreWCFService/SelfHostedCoreWCFService.exe bootstrap:true</HelixPreCommands>
+  <PropertyGroup>
+    <HelixPreCommands>$(HelixPreCommands);ls;</HelixPreCommands>
+	<HelixPreCommands>$(HelixPreCommands);dir /s /b /o:gn ;</HelixPreCommands>
+	<HelixPreCommands>$(HelixPreCommands);$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <PropertyGroup Condition="!$(HelixTargetQueue.StartsWith('Windows'))">
