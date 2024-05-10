@@ -141,7 +141,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         var tfx = this.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
                         if (!string.IsNullOrEmpty(tfx) && dnxInfo.Version.Major >= 6)
                         {
-                            _packageReferenceGroup.Add(new XAttribute("Condition", $"'$(TargetFramework)' != '{netfxInfo.FullName}'"));
+                            _packageReferenceGroup.Add(new XAttribute("Condition", $"!$(TargetFramework.StartsWith('net4'))"));
                         }
                     }
                 }
@@ -549,7 +549,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         {
                             if (this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out netfxInfo) && !netfxInfo.IsDnx))
                             {
-                                this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Condition", $"'$(TargetFramework)' == '{netfxInfo.FullName}'"), new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
+                                this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Condition", $"$(TargetFramework.StartsWith('net4'))"), new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
                             }
                         }
                         else
