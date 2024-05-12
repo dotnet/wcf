@@ -5,6 +5,7 @@
 #if NET
 using CoreWCF.IdentityModel.Selectors;
 #else
+using System;
 using System.IdentityModel.Selectors;
 #endif
 

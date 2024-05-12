@@ -22,9 +22,8 @@ public class CertificateGeneratorLibrary
 
     private static void RemoveCertificatesFromStore(StoreName storeName, StoreLocation storeLocation)
     {
-        Console.WriteLine("  Checking StoreName '{0}', StoreLocation '{1}'", storeName, storeLocation);
-
-        X509Store store = new X509Store(storeName, storeLocation);
+        X509Store store = CertificateHelper.GetX509Store(storeName, storeLocation);
+        Console.WriteLine("  Checking StoreName '{0}', StoreLocation '{1}'", storeName, store.Location);
         {
             store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
 
