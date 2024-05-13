@@ -6,7 +6,7 @@
     <LangVersion>latest</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="System.ServiceModel.NetNamedPipe" Version="6.0.*" Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="System.ServiceModel.NetNamedPipe" Version="6.2.*" Condition="'$(TargetFramework)' == 'net6.0'">
 			<PrivateAssets>contentfiles;analyzers;build</PrivateAssets>
 		</PackageReference>
     <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == 'net462'" />
