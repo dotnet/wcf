@@ -32,12 +32,8 @@ namespace WcfService
         {
             base.ApplyConfiguration();
 
-            string certThumprint = TestHost.CertificateFromFriendlyName(StoreName.My, StoreLocation.LocalMachine, "WCF Bridge - TcpCertificateWithServerAltNameResource").Thumbprint;
-
-            this.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine,
-                                                        StoreName.My,
-                                                        X509FindType.FindByThumbprint,
-                                                        certThumprint);
+            X509Certificate2 cert = TestHost.CertificateFromFriendlyName(StoreName.My, StoreLocation.LocalMachine, "WCF Bridge - TcpCertificateWithServerAltNameResource");
+            this.Credentials.ServiceCertificate.Certificate = cert;
         }
 
         public TcpCertificateWithServerAltNameTestServiceHost(params Uri[] baseAddresses)

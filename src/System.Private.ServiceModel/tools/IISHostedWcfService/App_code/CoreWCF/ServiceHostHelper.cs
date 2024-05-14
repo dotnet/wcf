@@ -27,14 +27,14 @@ namespace WcfService
                     }
                     else
                     {
-                        Console.WriteLine($"Ping failed... retrying after 3 seconds. {response.ReasonPhrase}");
+                        Console.WriteLine($"Ping failed... retrying after 10 seconds. {response.ReasonPhrase}");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Ping failed... retrying after 3 seconds. {ex.Message}");
+                    Console.WriteLine($"Ping failed... retrying after 10 seconds. {ex.Message}");
                 }
-                await Task.Delay(3000);
+                await Task.Delay(10000);
             }
 
             Console.WriteLine("Ping failed... Exiting..");

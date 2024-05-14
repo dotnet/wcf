@@ -32,12 +32,8 @@ namespace WcfService
         {
             base.ApplyConfiguration();
 
-            string certThumprint = TestHost.CertificateFromFriendlyName(StoreName.TrustedPeople, StoreLocation.LocalMachine, "WCF Bridge - UserPeerTrustCertificateResource").Thumbprint;
-
-            this.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine,
-                                                        StoreName.TrustedPeople,
-                                                        X509FindType.FindByThumbprint,
-                                                        certThumprint);
+            X509Certificate2 cert = TestHost.CertificateFromFriendlyName(StoreName.TrustedPeople, StoreLocation.LocalMachine, "WCF Bridge - UserPeerTrustCertificateResource");
+            this.Credentials.ServiceCertificate.Certificate = cert;
         }
 
         public TcpCertificateValidationPeerTrustTestServiceHost(params Uri[] baseAddresses)

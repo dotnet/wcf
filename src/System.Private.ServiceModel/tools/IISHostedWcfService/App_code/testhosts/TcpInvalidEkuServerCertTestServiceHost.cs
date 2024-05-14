@@ -32,12 +32,8 @@ namespace WcfService
         {
             base.ApplyConfiguration();
 
-            string thumbprint = TestHost.CertificateFromFriendlyName(StoreName.My, StoreLocation.LocalMachine, "WCF Bridge - TcpInvalidEkuServerCert").Thumbprint;
-
-            this.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine,
-                                                        StoreName.My,
-                                                        X509FindType.FindByThumbprint,
-                                                        thumbprint);
+            X509Certificate2 cert = TestHost.CertificateFromFriendlyName(StoreName.My, StoreLocation.LocalMachine, "WCF Bridge - TcpInvalidEkuServerCert");
+            this.Credentials.ServiceCertificate.Certificate = cert;
         }
 
         public TcpInvalidEkuServerCertTestServiceHost(params Uri[] baseAddresses)
