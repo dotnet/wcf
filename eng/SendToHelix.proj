@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-   <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
+   <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.sln"/>
   </ItemGroup>
  		
   <ItemGroup>
@@ -75,6 +75,10 @@
   </PropertyGroup>
 
   <Target Name="Pack"/>
+
+  <Target Name="BuildProjects">
+   <MSBuild Projects="@(ProjectsToBuild)" Targets="Build" />
+  </Target>
 
   <ItemGroup>
     <!-- Directory that is zipped up and sent as a correlation payload to Helix -->
