@@ -65,7 +65,7 @@
   
   <PropertyGroup>
     <HelixPreCommands>$(HelixPreCommands);ls;</HelixPreCommands>
-	<HelixPreCommands>$(HelixPreCommands);dir /s /b /o:gn ;</HelixPreCommands>
+	<HelixPreCommands>$(HelixPreCommands);dir C:\h /s /b /o:gn ;</HelixPreCommands>
 	<HelixPreCommands>$(HelixPreCommands);$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
