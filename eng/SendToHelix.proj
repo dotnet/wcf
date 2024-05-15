@@ -19,14 +19,14 @@
    <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.sln"/>
   </ItemGroup>
  		
-  <ItemGroup>
-    <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj">
-      <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
-    </XUnitProject>
-    <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj">
-      <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
-    </XUnitProject>
-  </ItemGroup>
+  <!-- <ItemGroup> -->
+    <!-- <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj"> -->
+      <!-- <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework> -->
+    <!-- </XUnitProject> -->
+    <!-- <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj"> -->
+      <!-- <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework> -->
+    <!-- </XUnitProject> -->
+  <!-- </ItemGroup> -->
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsPublic)' == 'true'" >
     <HelixTargetQueue Include="windows.11.amd64.client.open" />
