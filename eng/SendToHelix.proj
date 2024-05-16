@@ -77,9 +77,9 @@
   <Target Name="Pack"/>
 
   <Target Name="BuildProjects">
-   <MSBuild Projects="@(ProjectsToBuild)" Properties="" Targets="Publish" />
+   <MSBuild Projects="@(ProjectsToBuild)" Properties="PublishDir=$(Build.ArtifactStagingDirectory)" Targets="Publish" />
   </Target>
-
+ 
   <ItemGroup>
     <!-- Directory that is zipped up and sent as a correlation payload to Helix -->
     <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tools\scripts'))" >
