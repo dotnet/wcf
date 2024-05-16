@@ -11,9 +11,7 @@
     <Using Include="Microsoft.Extensions.DependencyInjection.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CoreWCF.ConfigurationManager" Version="1.5.0-wsrs.1.g14d7d00798" />
     <PackageReference Include="CoreWCF.Http" Version="1.5.0-wsrs.1.g14d7d00798" />
-    <PackageReference Include="CoreWCF.NetNamedPipe" Version="1.5.0-wsrs.1.g14d7d00798" />
     <PackageReference Include="CoreWCF.NetTcp" Version="1.5.0-wsrs.1.g14d7d00798" />
     <PackageReference Include="CoreWCF.Primitives" Version="1.5.0-wsrs.1.g14d7d00798" />
     <PackageReference Include="CoreWCF.WebHttp" Version="1.5.0-wsrs.1.g14d7d00798" />

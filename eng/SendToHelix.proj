@@ -16,13 +16,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-   <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.sln"/>
+   <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
   </ItemGroup>
  		
   <ItemGroup>
-    <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj">
-      <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
-    </XUnitProject>
+    <!-- <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj"> -->
+      <!-- <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework> -->
+    <!-- </XUnitProject> -->
     <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj">
       <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
     </XUnitProject>
@@ -77,7 +77,7 @@
   <Target Name="Pack"/>
 
   <Target Name="BuildProjects">
-   <MSBuild Projects="@(ProjectsToBuild)" Targets="Build" />
+   <MSBuild Projects="@(ProjectsToBuild)" Properties="" Targets="Publish" />
   </Target>
 
   <ItemGroup>
