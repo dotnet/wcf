@@ -754,7 +754,7 @@ namespace System.Runtime.Serialization
             //Serializable types from Orcas needs to be supported in Silverlight 
             private static bool IsTypeSerializable(Type type)
             {
-                return (type == Globals.TypeOfDBNull);
+                return type == Globals.TypeOfDBNull || type.IsSerializable;
             }
 
             private static DataContract CreateGetOnlyCollectionDataContract(int id, RuntimeTypeHandle typeHandle, Type type)
@@ -962,6 +962,16 @@ namespace System.Runtime.Serialization
                         dataContract = new UnsignedIntDataContract();
                     else if (DictionaryGlobals.LongLocalName.Value == name)
                         dataContract = new LongDataContract();
+                    else if (DictionaryGlobals.IntegerLocalName.Value == name)
+                        dataContract = new IntegerDataContract();
+                    else if (DictionaryGlobals.PositiveIntegerLocalName.Value == name)
+                        dataContract = new PositiveIntegerDataContract();
+                    else if (DictionaryGlobals.NonPositiveIntegerLocalName.Value == name)
+                        dataContract = new NonPositiveIntegerDataContract();
+                    else if (DictionaryGlobals.NegativeIntegerLocalName.Value == name)
+                        dataContract = new NegativeIntegerDataContract();
+                    else if (DictionaryGlobals.NonNegativeIntegerLocalName.Value == name)
+                        dataContract = new NonNegativeIntegerDataContract();
                     else if (DictionaryGlobals.UnsignedLongLocalName.Value == name)
                         dataContract = new UnsignedLongDataContract();
                     else if (DictionaryGlobals.FloatLocalName.Value == name)

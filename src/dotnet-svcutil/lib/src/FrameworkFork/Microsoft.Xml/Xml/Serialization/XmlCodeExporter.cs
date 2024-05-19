@@ -718,7 +718,7 @@ namespace Microsoft.Xml.Serialization
                     string attrName = Accessor.UnescapeName(attribute.Name);
                     bool sameType = mapping.TypeDesc == member.TypeDesc ||
                         (member.TypeDesc.IsArrayLike && mapping.TypeDesc == member.TypeDesc.ArrayElementTypeDesc);
-                    bool sameName = attrName == member.Name && !forceUseMemberName;
+                    bool sameName = attrName == member.Name && !forceUseMemberName && member.Name != "System";
                     bool sameNs = attribute.Namespace == ns;
                     bool defaultForm = attribute.Form != XmlSchemaForm.Qualified;
                     ExportAttribute(metadata,
@@ -745,7 +745,7 @@ namespace Microsoft.Xml.Serialization
                     ElementAccessor element = member.Elements[0];
                     TypeMapping mapping = (TypeMapping)element.Mapping;
                     string elemName = Accessor.UnescapeName(element.Name);
-                    bool sameName = ((elemName == member.Name) && !forceUseMemberName);
+                    bool sameName = (elemName == member.Name) && !forceUseMemberName && member.Name != "System";
                     bool isArray = mapping is ArrayMapping;
                     bool sameNs = element.Namespace == ns;
                     bool defaultForm = element.Form != XmlSchemaForm.Unqualified;

@@ -347,6 +347,10 @@ namespace Microsoft.Xml.Serialization
             CodeMemberProperty prop = new CodeMemberProperty();
             prop.Type = new CodeTypeReference(typeName);
             prop.Name = name;
+            if(name.Equals("System"))
+            {
+                prop.Name = "SystemMember";
+            }
             prop.Attributes = (prop.Attributes & ~MemberAttributes.AccessMask) | MemberAttributes.Public;
 
             //add get

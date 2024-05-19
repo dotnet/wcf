@@ -55,6 +55,11 @@ namespace System.Runtime.Serialization
         public readonly static XmlDictionaryString UriLocalName;
         public readonly static XmlDictionaryString QNameLocalName;
         public readonly static XmlDictionaryString Space;
+        public readonly static XmlDictionaryString IntegerLocalName;
+        public readonly static XmlDictionaryString PositiveIntegerLocalName;
+        public readonly static XmlDictionaryString NegativeIntegerLocalName;
+        public readonly static XmlDictionaryString NonPositiveIntegerLocalName;
+        public readonly static XmlDictionaryString NonNegativeIntegerLocalName;
 
         public readonly static XmlDictionaryString hexBinaryLocalName;
         static DictionaryGlobals()
@@ -111,7 +116,16 @@ namespace System.Runtime.Serialization
                 ClrAssemblyLocalName = dictionary.Add(Globals.ClrAssemblyLocalName);
                 Space = dictionary.Add(Globals.Space);
 
+                // 35
                 hexBinaryLocalName = dictionary.Add("hexBinary");
+                IntegerLocalName = dictionary.Add("integer");
+                PositiveIntegerLocalName = dictionary.Add("positiveInteger");
+                NegativeIntegerLocalName = dictionary.Add("negativeInteger");
+                NonPositiveIntegerLocalName = dictionary.Add("nonPositiveInteger");
+
+                // 40
+                NonNegativeIntegerLocalName = dictionary.Add("nonNegativeInteger");
+
                 // Add new templates here
             }
             catch (Exception ex)
