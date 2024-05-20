@@ -64,9 +64,9 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <HelixPreCommands>$(HelixPreCommands);ls;</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);ls ../../;</HelixPreCommands>
 	<HelixPreCommands>$(HelixPreCommands);dir C:\h /s /b /o:gn ;</HelixPreCommands>
-	<HelixPreCommands>$(HelixPreCommands);SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+	<HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD\Release\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <PropertyGroup Condition="!$(HelixTargetQueue.StartsWith('Windows'))">
@@ -77,7 +77,7 @@
   <Target Name="Pack"/>
 
   <Target Name="BuildProjects">
-   <MSBuild Projects="@(ProjectsToBuild)" Properties="Configuration=Release;PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" Targets="Publish" />
+   <MSBuild Projects="@(ProjectsToBuild)" Properties="PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" Targets="Publish" />
   </Target>
  
   <ItemGroup>
