@@ -101,11 +101,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {new Version("8.0"), new List<ProjectDependency> {
                 ProjectDependency.FromPackage("System.ServiceModel.Http", "8.*"),
                 ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "8.*"),
-                ProjectDependency.FromPackage("System.ServiceModel.NetNamedPipe", "8.*"),
-                ProjectDependency.FromPackage("System.ServiceModel.Primitives", "8.*"),
-                ProjectDependency.FromPackage("System.ServiceModel.Federation", "8.*"),
-                ProjectDependency.FromPackage("System.ServiceModel.UnixDomainSocket", "8.*"),
-                ProjectDependency.FromPackage("System.Web.Services.Description", "8.*")
+                ProjectDependency.FromPackage("System.ServiceModel.Primitives", "8.*")
             } }
         };
 
