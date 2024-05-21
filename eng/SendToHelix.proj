@@ -71,13 +71,13 @@
   </PropertyGroup>-->
 
   <PropertyGroup Condition="'$(TestJob)' == 'Windows'">
-    <HelixPreCommands>$(HelixPreCommands);dir C:\h /s /b /o:gn ;</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);dir C:\h /s /b /o:gn | find "SelfHostedCoreWCFService"</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD\Release\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);Release\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' != 'Windows'">
-    <HelixPreCommands>$(HelixPreCommands);ls -R ../../;</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);ls -R ../../ | grep SelfHostedCoreWCFService</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
@@ -87,7 +87,7 @@
   <Target Name="Pack"/>
 
   <Target Name="BuildProjects">
-    <MSBuild Projects="@(ProjectsToBuild)" Properties="PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" Targets="Publish" />
+    <MSBuild Projects="@(ProjectsToBuild)" Properties="Configuration=Release;PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" Targets="Publish" />
   </Target>
 
   <ItemGroup>
@@ -97,7 +97,7 @@
     </HelixCorrelationPayload>
 
     <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'))" >
-      <PayloadDirectory>%(Identity)</PayloadDirectory>
+      <Destination>SelfHostedCoreWCFService</Destination>
     </HelixCorrelationPayload>
   </ItemGroup>
 
