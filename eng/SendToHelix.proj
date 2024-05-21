@@ -80,8 +80,8 @@
     <HelixPreCommands>$(HelixPreCommands);ls -R ../../ | grep SelfHostedCoreWCFService</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);SelfHostedCoreWCFService/Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <Target Name="Pack"/>
