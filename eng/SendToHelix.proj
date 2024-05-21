@@ -5,7 +5,7 @@
     <HelixType>test/product/</HelixType>
     <HelixBuild>$(BUILD_BUILDNUMBER)</HelixBuild>
     <HelixBuild Condition="'$(HelixBuild)' == ''">123460.01</HelixBuild>
-	<DotNetCliPackageType>sdk</DotNetCliPackageType>
+    <DotNetCliPackageType>sdk</DotNetCliPackageType>
     <DotNetCliVersion>8.0.100</DotNetCliVersion>
     <IncludeDotNetCli>true</IncludeDotNetCli>
 
@@ -16,13 +16,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-   <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
+    <AdditionalDotNetPackage Include="6.0.0">
+      <PackageType>aspnetcore-runtime</PackageType>
+      <Channel>Current</Channel>
+    </AdditionalDotNetPackage>
   </ItemGroup>
- 		
+
   <ItemGroup>
-     <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj"> 
-       <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework> 
-     </XUnitProject> 
+    <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj">
+      <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
+    </XUnitProject>
     <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj">
       <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
     </XUnitProject>
@@ -58,15 +65,16 @@
     <Creator>$(BUILD_SOURCEVERSIONAUTHOR)</Creator>
     <Creator Condition=" '$(Creator)' == ''">anon</Creator>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND $(HelixTargetQueue.StartsWith('Linux'))" >
-    <HelixPreCommands>$(HelixPreCommands);SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
-  
+
   <PropertyGroup>
-    <HelixPreCommands>$(HelixPreCommands);ls ../../;</HelixPreCommands>
-	<HelixPreCommands>$(HelixPreCommands);dir C:\h /s /b /o:gn ;</HelixPreCommands>
-	<HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD\Release\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);ls ../;</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);dir C:\h /s /b /o:gn ;</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <PropertyGroup Condition="!$(HelixTargetQueue.StartsWith('Windows'))">
@@ -77,16 +85,16 @@
   <Target Name="Pack"/>
 
   <Target Name="BuildProjects">
-   <MSBuild Projects="@(ProjectsToBuild)" Properties="PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" Targets="Publish" />
+    <MSBuild Projects="@(ProjectsToBuild)" Properties="PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" Targets="Publish" />
   </Target>
- 
+
   <ItemGroup>
     <!-- Directory that is zipped up and sent as a correlation payload to Helix -->
     <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tools\scripts'))" >
       <PayloadDirectory>%(Identity)</PayloadDirectory>
     </HelixCorrelationPayload>
 
-    <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'))" >
+    <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService\Release\net6.0'))" >
       <PayloadDirectory>%(Identity)</PayloadDirectory>
     </HelixCorrelationPayload>
   </ItemGroup>
