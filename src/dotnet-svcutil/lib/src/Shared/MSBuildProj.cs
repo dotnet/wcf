@@ -573,7 +573,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", Path.Combine(dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar)), "internalAssets\\**")), new XAttribute("Link", "internalAssets/%(RecursiveDir)%(Filename)%(Extension)")));
                             break;
                         case ProjectDependencyType.Package:
-                            string path = $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}\\content\\internalAssets\\**";
+                            string path = $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}\\internalAssets\\**";
                             this.PacakgeReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", path), new XAttribute("Link", "internalAssets/%(RecursiveDir)%(Filename)%(Extension)")));
                             break;
                     }

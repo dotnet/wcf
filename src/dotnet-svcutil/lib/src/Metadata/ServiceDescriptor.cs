@@ -108,7 +108,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 }
                 else
                 {
-                    tfn = "net8.0";
+                    tfn = "net6.0";
                 }
 
                 string toolPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
