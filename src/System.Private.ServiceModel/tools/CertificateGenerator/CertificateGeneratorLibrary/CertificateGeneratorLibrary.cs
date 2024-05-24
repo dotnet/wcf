@@ -167,6 +167,9 @@ public class CertificateGeneratorLibrary
         CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
 
         //Create CRL and save it
+        FileInfo file = new FileInfo(s_crlFileLocation);
+        file.Directory.Create();
+
         File.WriteAllBytes(s_crlFileLocation, certificateGenerate.CrlEncoded);
 
         return 0;
