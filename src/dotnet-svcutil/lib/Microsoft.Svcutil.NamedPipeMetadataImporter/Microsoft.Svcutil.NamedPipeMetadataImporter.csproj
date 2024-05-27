@@ -3,7 +3,7 @@
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
   </PropertyGroup>
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net462</TargetFrameworks>
+		<TargetFrameworks>net6.0;net8.0;net462</TargetFrameworks>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <LangVersion>latest</LangVersion>
@@ -13,6 +13,9 @@
 		<PackageReference Include="System.ServiceModel.NetNamedPipe" Version="6.2.*" Condition="'$(TargetFramework)' == 'net6.0'">
 			<IncludeAssets>all</IncludeAssets>
 		</PackageReference>
+    <PackageReference Include="System.ServiceModel.NetNamedPipe" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'">
+      <IncludeAssets>all</IncludeAssets>
+    </PackageReference>
     <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == 'net462'" />
 	</ItemGroup>
   <PropertyGroup>
@@ -31,6 +34,7 @@
       <PublishedDlls Include="$(OutputPath)\*.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\internalAssets\net6.0" Condition="$(OutputPath.Contains('net6.0'))" />
+    <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\internalAssets\net8.0" Condition="$(OutputPath.Contains('net8.0'))" />
     <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\internalAssets\net462" Condition="$(OutputPath.Contains('net462'))" />
   </Target>
 </Project>

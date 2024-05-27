@@ -15,7 +15,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xml;
-using static Microsoft.Tools.ServiceModel.Svcutil.Metadata.MetadataDocumentLoader;
 using WsdlNS = System.Web.Services.Description;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
@@ -108,7 +107,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 }
                 else
                 {
-                    tfn = "net6.0";
+                    tfn = Environment.Version.Major >= 8 ? "net8.0" : "net6.0";                        
                 }
 
                 string toolPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
