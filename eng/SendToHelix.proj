@@ -15,12 +15,14 @@
     <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
 
-  <ItemGroup>
-    <AdditionalDotNetPackage Include="6.0.27">
-      <PackageType>aspnetcore-runtime</PackageType>
-      <Channel>Current</Channel>
-    </AdditionalDotNetPackage>
-  </ItemGroup>
+  <Target Name="InstallDotNet">
+    <ItemGroup>
+      <AdditionalDotNetPackage Include="6.0.27">
+        <PackageType>aspnetcore-runtime</PackageType>
+        <Channel>Current</Channel>
+      </AdditionalDotNetPackage>
+    </ItemGroup>
+  </Target>
 
   <ItemGroup>
     <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
@@ -70,19 +72,21 @@
     <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>-->
 
-  <PropertyGroup Condition="'$(TestJob)' == 'Windows'">
-    <HelixPreCommands>$(HelixPreCommands);dir C:\ /s /b /o:gn | find "SelfHostedCoreWCFService"</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\Release\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
-  </PropertyGroup>
+  <Target Name="RunTests" DependsOnTargets="InstallDotNet">
+    <PropertyGroup Condition="'$(TestJob)' == 'Windows'">
+      <HelixPreCommands>$(HelixPreCommands);dir C:\ /s /b /o:gn | find "SelfHostedCoreWCFService"</HelixPreCommands>
+      <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\Release\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+      <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TestJob)' != 'Windows'">
-    <HelixPreCommands>$(HelixPreCommands);find / -type d -name 'SelfHostedCoreWCFService'</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(TestJob)' != 'Windows'">
+      <HelixPreCommands>$(HelixPreCommands);find / -type d -name 'SelfHostedCoreWCFService'</HelixPreCommands>
+      <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
+      <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
+      <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+      <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    </PropertyGroup>
+  </Target>
 
   <Target Name="Pack"/>
 
