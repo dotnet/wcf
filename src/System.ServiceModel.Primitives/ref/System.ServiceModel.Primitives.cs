@@ -552,6 +552,10 @@ namespace System.ServiceModel
         public FaultException(TDetail detail) { }
         public FaultException(TDetail detail, System.ServiceModel.FaultReason reason) { }
         public FaultException(TDetail detail, System.ServiceModel.FaultReason reason, System.ServiceModel.FaultCode code, string action) { }
+        public FaultException(TDetail detail, System.ServiceModel.FaultReason reason, System.ServiceModel.FaultCode code) { }
+        public FaultException(TDetail detail, string reason) { }
+        public FaultException(TDetail detail, string reason, System.ServiceModel.FaultCode code) { }
+        public FaultException(TDetail detail, string reason, System.ServiceModel.FaultCode code, string action) { }
         protected FaultException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public TDetail Detail { get { return default; } }
         public override System.ServiceModel.Channels.MessageFault CreateMessageFault() { return default; }
