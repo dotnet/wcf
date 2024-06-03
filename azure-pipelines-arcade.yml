@@ -39,6 +39,10 @@ extends:
         name: $(DncEngInternalBuildPool)
         image: 1es-windows-2022
         os: windows
+      codeql:
+        compiled:
+          enabled: false
+          justificationForDisabling: 'CodeQL is already enabled in pipeline dotnet-wcf-codeql; this is a duplicate scan'
     customBuildTags:
     - ES365AIMigrationTooling
     stages:
