@@ -24,55 +24,55 @@
     </ItemGroup>
   </Target>
 
-  <ItemGroup>
-    <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
-  </ItemGroup>
+  <Target Name="RunTests" DependsOnTargets="InstallDotNet">
+    <ItemGroup>
+      <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj">
-      <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
-    </XUnitProject>
-    <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj">
-      <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
-    </XUnitProject>
-  </ItemGroup>
+    <ItemGroup>
+      <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj">
+        <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
+      </XUnitProject>
+      <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj">
+        <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
+      </XUnitProject>
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsPublic)' == 'true'" >
-    <HelixTargetQueue Include="windows.11.amd64.client.open" />
-    <HelixTargetQueue Include="windows.amd64.server2022.open" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsPublic)' == 'true'" >
+      <HelixTargetQueue Include="windows.11.amd64.client.open" />
+      <HelixTargetQueue Include="windows.amd64.server2022.open" />
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
-    <HelixTargetQueue Include="windows.11.amd64.client" />
-    <HelixTargetQueue Include="(Debian.11.Amd64)Ubuntu.2204.Amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
-    <HelixTargetQueue Include="(Mariner.2.0.Amd64)Ubuntu.2204.Amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-helix-amd64" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
+      <HelixTargetQueue Include="windows.11.amd64.client" />
+      <HelixTargetQueue Include="(Debian.11.Amd64)Ubuntu.2204.Amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
+      <HelixTargetQueue Include="(Mariner.2.0.Amd64)Ubuntu.2204.Amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-helix-amd64" />
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TestJob)' == 'Linux'" >
-    <HelixTargetQueue Include="SLES.15.Amd64.Open" />
-    <HelixTargetQueue Include="(Fedora.38.Amd64.Open)ubuntu.2204.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:fedora-38-helix" />
-    <HelixTargetQueue Include="Ubuntu.2204.Amd64.Open" />
-    <HelixTargetQueue Include="(Debian.11.Amd64.Open)Ubuntu.2204.Amd64.Open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
-    <HelixTargetQueue Include="(Mariner.2.0.Amd64.Open)Ubuntu.2204.Amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-helix-amd64" />
-    <HelixTargetQueue Include="(openSUSE.15.2.Amd64.Open)Ubuntu.2204.Amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:opensuse-15.2-helix-amd64" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TestJob)' == 'Linux'" >
+      <HelixTargetQueue Include="SLES.15.Amd64.Open" />
+      <HelixTargetQueue Include="(Fedora.38.Amd64.Open)ubuntu.2204.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:fedora-38-helix" />
+      <HelixTargetQueue Include="Ubuntu.2204.Amd64.Open" />
+      <HelixTargetQueue Include="(Debian.11.Amd64.Open)Ubuntu.2204.Amd64.Open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
+      <HelixTargetQueue Include="(Mariner.2.0.Amd64.Open)Ubuntu.2204.Amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-helix-amd64" />
+      <HelixTargetQueue Include="(openSUSE.15.2.Amd64.Open)Ubuntu.2204.Amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:opensuse-15.2-helix-amd64" />
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TestJob)' == 'MacOS'" >
-    <HelixTargetQueue Include="OSX.1200.Amd64.Open" />
-    <HelixTargetQueue Include="OSX.1200.Arm64.Open" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TestJob)' == 'MacOS'" >
+      <HelixTargetQueue Include="OSX.1200.Amd64.Open" />
+      <HelixTargetQueue Include="OSX.1200.Arm64.Open" />
+    </ItemGroup>
 
-  <PropertyGroup Condition=" '$(RunAsPublic)' == 'true' ">
-    <IsExternal>true</IsExternal>
-    <Creator>$(BUILD_SOURCEVERSIONAUTHOR)</Creator>
-    <Creator Condition=" '$(Creator)' == ''">anon</Creator>
-  </PropertyGroup>
+    <PropertyGroup Condition=" '$(RunAsPublic)' == 'true' ">
+      <IsExternal>true</IsExternal>
+      <Creator>$(BUILD_SOURCEVERSIONAUTHOR)</Creator>
+      <Creator Condition=" '$(Creator)' == ''">anon</Creator>
+    </PropertyGroup>
 
-  <!--<PropertyGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND '$(TestJob)' == 'Linux'" >
+    <!--<PropertyGroup Condition=" '$(RunWithCoreWcfService)' == 'true' AND '$(TestJob)' == 'Linux'" >
     <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>-->
 
-  <Target Name="RunTests" DependsOnTargets="InstallDotNet">
     <PropertyGroup Condition="'$(TestJob)' == 'Windows'">
       <HelixPreCommands>$(HelixPreCommands);dir C:\ /s /b /o:gn | find "SelfHostedCoreWCFService"</HelixPreCommands>
       <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\Release\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
