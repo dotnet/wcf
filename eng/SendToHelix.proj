@@ -45,7 +45,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'MacOS'" >
-    <HelixTargetQueue Include="osx.14.amd64.open" />
     <HelixTargetQueue Include="osx.14.arm64.open" />
   </ItemGroup>
 
