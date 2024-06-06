@@ -15,7 +15,7 @@
     <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
 
-  <Target Name="InstallDotNet">
+  <Target Name="InstallDotNet" BeforeTargets="CoreTest">
     <ItemGroup>
       <AdditionalDotNetPackage Include="6.0.27">
         <PackageType>aspnetcore-runtime</PackageType>
@@ -104,7 +104,7 @@
     <!--<HelixContent Include="$(RepoRoot)src\Project\**" LinkBase="$(MSBuildThisFileDirectory)\myassets"/>-->
 
     <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'))" >
-      <Destination>%(Identity)</Destination>
+      <Destination>SelfHostedCoreWCFService</Destination>
     </HelixCorrelationPayload>
   </ItemGroup>
 
