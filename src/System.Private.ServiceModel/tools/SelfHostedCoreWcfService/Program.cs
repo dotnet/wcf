@@ -31,7 +31,7 @@ namespace SelfHostedWCFService
             string crlFileLocation = "c:\\WCFTest\\test.crl";
 
             CertificateGeneratorLibrary.SetupCerts(testserverbase, validatePeriod, crlFileLocation);
-
+            //System.Diagnostics.Debugger.Launch();
             Console.WriteLine("Starting services...");
             await TestDefinitionHelper.StartHosts();
 
