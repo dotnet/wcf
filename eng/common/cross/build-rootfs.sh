@@ -338,6 +338,13 @@ while :; do
                 __UbuntuRepo="http://ftp.debian.org/debian/"
             fi
             ;;
+        bookworm) # Debian 12
+            __CodeName=bookworm
+
+            if [[ -z "$__UbuntuRepo" ]]; then
+                __UbuntuRepo="http://ftp.debian.org/debian/"
+            fi
+            ;;
         sid) # Debian sid
             __CodeName=sid
             __KeyringFile="/usr/share/keyrings/debian-archive-keyring.gpg"
