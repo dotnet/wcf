@@ -12,7 +12,7 @@ namespace WcfService
     [TestServiceDefinition(BasePath = "", Schema = ServiceSchema.HTTP)]
     public class TestHostServiceHost : TestServiceHostBase<ITestHost>
     {
-        protected override string Address { get { return "http://localhost/TestHost.svc"; } }
+        protected override string Address { get { return "TestHost.svc"; } }
 
         protected override Binding GetBinding()
         {

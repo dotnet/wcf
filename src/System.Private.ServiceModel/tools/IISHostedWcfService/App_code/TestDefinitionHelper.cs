@@ -43,9 +43,9 @@ namespace WcfService
                     var tcpPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("tcpPort")) ? DefaultTcpPort : int.Parse(Environment.GetEnvironmentVariable("tcpPort"));
                     dict[ServiceSchema.NETTCP] = string.Format(@"net.tcp://localhost:{0}", tcpPort);
                     var websocketPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("websocketPort")) ? DefaultWebSocketPort : int.Parse(Environment.GetEnvironmentVariable("websocketPort"));
-                    dict[ServiceSchema.WS] = string.Format(@"http://localhost:{0}", websocketPort);
+                    dict[ServiceSchema.WS] = string.Format(@"ws://localhost:{0}", websocketPort);
                     var websocketsPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("websocketsPort")) ? DefaultWebSocketSPort : int.Parse(Environment.GetEnvironmentVariable("websocketsPort"));
-                    dict[ServiceSchema.WSS] = string.Format(@"https://localhost:{0}", websocketsPort);
+                    dict[ServiceSchema.WSS] = string.Format(@"wss://localhost:{0}", websocketsPort);
                     s_baseAddresses = dict;
                     dict[ServiceSchema.NETPIPE] = @"net.pipe://localhost";
                     Console.WriteLine("Using base addresses:");
@@ -72,9 +72,18 @@ namespace WcfService
             var serviceTestHostOptionsDict = new Dictionary<string, ServiceTestHostOptions>();
 
             var webHost = new WebHostBuilder()
-                .UseKestrel(options => {
+                .ConfigureLogging((ILoggingBuilder logging) =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConsole();
+                    logging.AddFilter("Default", LogLevel.Debug);
+                    logging.AddFilter("Microsoft", LogLevel.Debug);
+                    logging.SetMinimumLevel(LogLevel.Debug);
+                })
+                .UseKestrel(options =>
+                {
                     options.Listen(IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.HTTP]).Port);
-                    options.Listen(address: IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.HTTPS]).Port, listenOptions =>
+                    options.Listen(IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.HTTPS]).Port, listenOptions =>
                     {
                         listenOptions.UseHttps(httpsOptions =>
                         {
@@ -87,7 +96,7 @@ namespace WcfService
                         }
                     });
                     options.Listen(IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.WS]).Port);
-                    options.Listen(address: IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.WSS]).Port, listenOptions =>
+                    options.Listen(IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.WSS]).Port, listenOptions =>
                     {
                         listenOptions.UseHttps(httpsOptions =>
                         {
@@ -100,7 +109,7 @@ namespace WcfService
                         }
                     });
                 })
-                //.UseNetTcp(IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.NETTCP]).Port)
+                .UseNetTcp(IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.NETTCP]).Port)
                 .ConfigureServices(services =>
                 {
                     services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
@@ -181,11 +190,11 @@ namespace WcfService
                                     serviceBuilder.AddService(serviceHost.ServiceType, options =>
                                     {
                                         var localHostTypeName = serviceHostTypeName;
-                                        //options.BaseAddresses.Clear();
-                                        foreach (var baseAddress in serviceTestHostOptionsDict[localHostTypeName].serviceBaseAddresses)
+                                        options.BaseAddresses.Clear();
+                                        foreach (var baseAddress in BaseAddresses.Values)
                                         {
-                                            if (!options.BaseAddresses.Contains(baseAddress))
-                                                options.BaseAddresses.Add(baseAddress);
+                                            //if (!options.BaseAddresses.Contains(baseAddress))
+                                                options.BaseAddresses.Add(new Uri(baseAddress));
                                         }
 
                                         foreach (var endpoint in serviceHost.Endpoints)

@@ -92,7 +92,7 @@
   <Target Name="Pack"/>
 
   <Target Name="BuildProjects">
-    <MSBuild Targets="Publish" Projects="@(ProjectsToBuild)" Properties="Configuration=Release;PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" />
+    <MSBuild Targets="Publish" Projects="@(ProjectsToBuild)" Properties="Configuration=Release;PublishSingleFile=True;SelfContained=True;PublishTrimmed=False;PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" />
   </Target>
 
   <ItemGroup>
