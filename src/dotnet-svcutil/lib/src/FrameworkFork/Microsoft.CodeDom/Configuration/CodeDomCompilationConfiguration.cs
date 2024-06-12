@@ -38,6 +38,17 @@ namespace Microsoft.CodeDom.Compiler
             compilerInfo._providerOptions = new Dictionary<string, string>();
             compilerInfo._providerOptions[RedistVersionInfo.NameTag] = RedistVersionInfo.DefaultVersion;
             AddCompilerInfo(compilerInfo);
+
+            // VB
+            compilerParameters = new CompilerParameters();
+            compilerParameters.WarningLevel = 4;
+            typeName = "Microsoft.VisualBasic.VBCodeProvider";
+            compilerInfo = new CompilerInfo(compilerParameters, typeName);
+            compilerInfo._compilerLanguages = new string[] { "vb", "vbs", "visualbasic", "vbscript" };
+            compilerInfo._compilerExtensions = new string[] { ".vb", "vb" };
+            compilerInfo._providerOptions = new Dictionary<string, string>();
+            compilerInfo._providerOptions[RedistVersionInfo.NameTag] = RedistVersionInfo.DefaultVersion;
+            AddCompilerInfo(compilerInfo);
         }
 
         private void AddCompilerInfo(CompilerInfo compilerInfo)
