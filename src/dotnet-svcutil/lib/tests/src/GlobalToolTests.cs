@@ -170,24 +170,23 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("net6.0", "-elm")]
-        public async void ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
+        [InlineData("-elm")]
+        public async void ParamsFiles(string extraOptions)
         {
-            this_TestCaseName = "ParamsFiles_SDK_TFM";
+            this_TestCaseName = "ParamsFiles";
             TestFixture();
-            var testCaseName = $"TF{targetFramework}".Replace(".", "_");
-            InitializeGlobal(testCaseName, targetFramework: "net6.0", g_SdkVersion);
-            this_TestCaseProject.TargetFramework = targetFramework;
+            var testCaseName = extraOptions.Substring(1);
+            InitializeGlobal(testCaseName);
             await this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None);
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
-            var ns = testCaseName.Replace(".", "_") + "_NS";
+            var ns = testCaseName + "_NS";
 
             // generate params file from options
             var paramsFilePath = Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.params.json");
             var options = new Microsoft.Tools.ServiceModel.Svcutil.SvcutilOptions();
             options.Inputs.Add(new Uri(url));
-            options.References.Add(Microsoft.Tools.ServiceModel.Svcutil.ProjectDependency.FromPackage("Newtonsoft.Json", "13.0.1"));
+            options.References.Add(Microsoft.Tools.ServiceModel.Svcutil.ProjectDependency.FromPackage("Newtonsoft.Json", "13.0.2"));
             options.OutputDir = new DirectoryInfo(this_TestCaseOutputDir);
             options.BootstrapPath = new DirectoryInfo(this_TestCaseBootstrapDir);
             options.NamespaceMappings.Add(new System.Collections.Generic.KeyValuePair<string, string>("*", ns));
