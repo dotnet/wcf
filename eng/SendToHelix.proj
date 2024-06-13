@@ -15,15 +15,6 @@
     <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
 
-  <Target Name="InstallDotNet" BeforeTargets="CoreTest">
-    <ItemGroup>
-      <AdditionalDotNetPackage Include="6.0.27">
-        <PackageType>aspnetcore-runtime</PackageType>
-        <Channel>Current</Channel>
-      </AdditionalDotNetPackage>
-    </ItemGroup>
-  </Target>
-
   <ItemGroup>
     <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
   </ItemGroup>
@@ -85,14 +76,14 @@
     <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
-  
+
   <!--<Target Name="RunTests" DependsOnTargets="InstallDotNet">
   </Target>-->
 
   <Target Name="Pack"/>
 
   <Target Name="BuildProjects">
-    <MSBuild Targets="Publish" Projects="@(ProjectsToBuild)" Properties="Configuration=Release;PublishSingleFile=True;SelfContained=True;PublishTrimmed=False;PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" />
+    <MSBuild Targets="Publish" Projects="@(ProjectsToBuild)" RemoveProperties="Configuration" Properties="Configuration=Release;PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" />
   </Target>
 
   <ItemGroup>
