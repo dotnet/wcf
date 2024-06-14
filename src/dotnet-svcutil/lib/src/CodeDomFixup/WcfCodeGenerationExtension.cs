@@ -62,7 +62,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             foreach (var binding in bindings)
             {
-                if (binding is NetNamedPipeBinding && _options.Project != null && !_options.Project.TargetFrameworks.FirstOrDefault().ToLower().Contains("windows"))
+                if (binding is NetNamedPipeBinding && _options.Project != null && !_options.Project.TargetFrameworks.Any(t => t.ToLower().Contains("windows")))
                 {
                     MetadataConversionError error = new MetadataConversionError(SR.WrnTargetFrameworkNotSupported_NetNamedPipe, isWarning: true);
                     if (!importer.Errors.Contains(error))
