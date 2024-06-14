@@ -65,16 +65,16 @@
 
   <PropertyGroup Condition="'$(TestJob)' == 'Windows'">
     <HelixPreCommands>$(HelixPreCommands);dir C:\ /s /b /o:gn | find "SelfHostedCoreWCFService"</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\Release\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\net6.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\Release\net8.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\net8.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' != 'Windows'">
-    <HelixPreCommands>$(HelixPreCommands);find / -type d -name 'SelfHostedCoreWCFService'</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);sudo find / -name 'SelfHostedCoreWCFService.dll'</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net6.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net8.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net8.0/SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <!--<Target Name="RunTests" DependsOnTargets="InstallDotNet">
