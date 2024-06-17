@@ -27,7 +27,20 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-
+  <Target Name="CopyPackageDlls" AfterTargets="build">
+    <ItemGroup>
+      <TargetFrameworkItems Include="$(TargetFrameworks)" />
+    </ItemGroup>
+    <ItemGroup>
+      <TargetFrameworkItem Include="%(TargetFrameworkItems.Identity)">
+        <Tfx>%(TargetFrameworkItems.Identity)</Tfx>
+      </TargetFrameworkItem>
+    </ItemGroup>
+    <ItemGroup>
+      <DesignData Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\dotnet-svcutil-lib\$(Configuration)\netstandard2.0\internalAssets\**" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\internalAssets" />
+    </ItemGroup>
+  </Target>
+  
   <ItemGroup>
     <ProjectReference Include="..\lib\src\dotnet-svcutil-lib.csproj" />
   </ItemGroup>

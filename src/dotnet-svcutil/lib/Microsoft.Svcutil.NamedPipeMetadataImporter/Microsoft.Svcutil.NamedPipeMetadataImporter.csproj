@@ -1,14 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
+  </PropertyGroup>
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net462</TargetFrameworks>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <LangVersion>latest</LangVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.ServiceModel.NetNamedPipe" Version="6.0.*" Condition="'$(TargetFramework)' == 'net6.0'">
-			<PrivateAssets>contentfiles;analyzers;build</PrivateAssets>
+      <IncludeAssets>all</IncludeAssets>
 		</PackageReference>
     <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == 'net462'" />
 	</ItemGroup>
+  <PropertyGroup>
+    <CustomOutputFolder>$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\dotnet-svcutil-lib\$(Configuration)\netstandard2.0</CustomOutputFolder>
+    <MajorVersion>8</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
+    <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>false</IncludeSource>
+  </PropertyGroup>
+  <Target Name="CopyPackageDlls" AfterTargets="Build">
+    <ItemGroup>
+      <PublishedDlls Include="$(OutputPath)\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\internalAssets\net6.0" Condition="$(OutputPath.Contains('net6.0'))" />
+    <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\internalAssets\net462" Condition="$(OutputPath.Contains('net462'))" />
+  </Target>
 </Project>
