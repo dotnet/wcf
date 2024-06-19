@@ -73,6 +73,7 @@
     <HelixPreCommands>$(HelixPreCommands);sudo find / -name 'SelfHostedCoreWCFService.dll'</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net8.0/SelfHostedCoreWCFService.dll</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net8.0/SelfHostedCoreWCFService.dll bootstrap:true</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);$HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net8.0/SelfHostedCoreWCFService.dll bootstrap:true</HelixPreCommands>
   </PropertyGroup>
