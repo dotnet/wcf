@@ -5,10 +5,10 @@
     <HelixType>test/product/</HelixType>
     <HelixBuild>$(BUILD_BUILDNUMBER)</HelixBuild>
     <HelixBuild Condition="'$(HelixBuild)' == ''">123460.01</HelixBuild>
-    <DotNetCliPackageType>sdk</DotNetCliPackageType>
+    <DotNetCliPackageType>aspnetcore-runtime</DotNetCliPackageType>
     <DotNetCliVersion>8.0.100</DotNetCliVersion>
     <IncludeDotNetCli>true</IncludeDotNetCli>
-
+  
     <EnableAzurePipelinesReporter>true</EnableAzurePipelinesReporter>
     <TestRunNamePrefix>$(AGENT_JOBNAME)</TestRunNamePrefix>
 
@@ -83,7 +83,7 @@
   <Target Name="Pack"/>
 
   <Target Name="BuildProjects">
-    <MSBuild Targets="Publish" Projects="@(ProjectsToBuild)" RemoveProperties="Configuration" Properties="Configuration=Release;PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" />
+    <MSBuild Targets="Build;Publish" Projects="@(ProjectsToBuild)" RemoveProperties="Configuration" Properties="Configuration=Release;PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" />
   </Target>
 
   <ItemGroup>
