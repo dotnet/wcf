@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.DotNet.Helix.Sdk" DefaultTargets="Test">
+<Project Sdk="Microsoft.DotNet.Helix.Sdk" InitialTargets="InstallDotNet;Test">
   <PropertyGroup>
     <HelixSource Condition=" '$(RunAsPublic)' == 'true' ">pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
     <HelixSource Condition=" '$(RunAsInternal)' == 'true' ">official/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
@@ -17,6 +17,15 @@
     <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
 
+  <Target Name="InstallDotNet" BeforeTargets="CoreTest">
+    <ItemGroup>
+      <AdditionalDotNetPackage Include="8.0.5">
+        <PackageType>aspnetcore-runtime</PackageType>
+        <Channel>Current</Channel>
+      </AdditionalDotNetPackage>
+    </ItemGroup>
+  </Target>
+  
   <ItemGroup>
     <ProjectsToBuild Include="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
   </ItemGroup>
