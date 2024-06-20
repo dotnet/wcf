@@ -99,14 +99,12 @@ namespace Microsoft.Xml.Schema
 
         internal static string CreateMessage(string res, string[] args)
         {
-            try
+            if (args == null)
             {
-                return string.Format(res, args);
+                return res;
             }
-            catch (MissingManifestResourceException)
-            {
-                return "UNKNOWN(" + res + ")";
-            }
+
+            return string.Format(res, args);
         }
 
         internal string GetRes
