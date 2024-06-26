@@ -65,7 +65,11 @@
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="System.Reflection.DispatchProxy" Version="4.4.0" />
   </ItemGroup>
-
+  <Target Name="CopyPackageDlls" AfterTargets="build">
+    <ItemGroup>
+      <DesignData Include="$(OutputPath)internalAssets\**" Pack="true" PackagePath="internalAssets" />
+    </ItemGroup>
+  </Target>
   <!-- Include resx files here so that arcade will handle them correctly. -->
   <ItemGroup>
     <EmbeddedResource Update="Bootstrapper\Resource.resx">
@@ -118,11 +122,5 @@
       <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
       <ClassName>System.Web.Services.ResWebServices</ClassName>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="internalAssets\**">
-      <Link>internalAssets/%(RecursiveDir)%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>
