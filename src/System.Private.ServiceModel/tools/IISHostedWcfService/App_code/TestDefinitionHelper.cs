@@ -139,6 +139,7 @@ namespace WcfService
                     services.AddServiceModelServices()
                     .AddServiceModelMetadata()
                     .AddServiceModelWebServices()
+                    .AddRouting()
                     .AddAuthorization();
                 })
                 .Configure(app =>
