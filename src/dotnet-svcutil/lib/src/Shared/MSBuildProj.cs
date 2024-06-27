@@ -570,11 +570,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     switch(dependency.DependencyType)
                     {
                         case ProjectDependencyType.Binary:
-                            this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", Path.Combine(dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar)), "internalAssets\\**")), new XAttribute("Link", "internalAssets/%(RecursiveDir)%(Filename)%(Extension)")));
+                            this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", Path.Combine(dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar)), "dependencies\\**")), new XAttribute("Link", "dependencies/%(RecursiveDir)%(Filename)%(Extension)")));
                             break;
                         case ProjectDependencyType.Package:
-                            string path = $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}\\internalAssets\\**";
-                            this.PacakgeReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", path), new XAttribute("Link", "internalAssets/%(RecursiveDir)%(Filename)%(Extension)")));
+                            string path = $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}\\dependencies\\**";
+                            this.PacakgeReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", path), new XAttribute("Link", "dependencies/%(RecursiveDir)%(Filename)%(Extension)")));
                             break;
                     }
                 }

@@ -68,7 +68,7 @@
   
   <Target Name="CopyPackageDlls" AfterTargets="build">
     <ItemGroup>
-      <DesignData Include="$(OutputPath)internalAssets\**" Pack="true" PackagePath="internalAssets" />
+      <DesignData Include="$(OutputPath)dependencies\**" Pack="true" PackagePath="dependencies" />
     </ItemGroup>
   </Target>
   <!-- Include resx files here so that arcade will handle them correctly. -->

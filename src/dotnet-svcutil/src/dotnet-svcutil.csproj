@@ -37,7 +37,7 @@
       </TargetFrameworkItem>
     </ItemGroup>
     <ItemGroup>
-      <DesignData Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\dotnet-svcutil-lib\$(Configuration)\netstandard2.0\internalAssets\**" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\internalAssets" />
+      <DesignData Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\dotnet-svcutil-lib\$(Configuration)\netstandard2.0\dependencies\**" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\dependencies" />
     </ItemGroup>
   </Target>
   

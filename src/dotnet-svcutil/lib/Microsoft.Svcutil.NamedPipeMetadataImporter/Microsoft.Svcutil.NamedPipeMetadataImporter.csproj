@@ -26,7 +26,7 @@
     <ItemGroup>
       <PublishedDlls Include="$(OutputPath)\*.dll" />
     </ItemGroup>
-    <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\internalAssets\net6.0" Condition="$(OutputPath.Contains('net6.0'))" />
-    <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\internalAssets\net462" Condition="$(OutputPath.Contains('net462'))" />
+    <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\dependencies\net6.0" Condition="$(OutputPath.Contains('net6.0'))" />
+    <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\dependencies\net462" Condition="$(OutputPath.Contains('net462'))" />
   </Target>
 </Project>
