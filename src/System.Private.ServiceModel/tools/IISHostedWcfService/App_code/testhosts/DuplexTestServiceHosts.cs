@@ -152,4 +152,20 @@ namespace WcfService
         {
         }
     }
+
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "DuplexCallbackErrorHandler.svc")]
+    public class DuplexCallbackErrorHandlerServiceHost : TestServiceHostBase<IWcfDuplexService_CallbackErrorHandler>
+    {
+        protected override string Address { get { return "tcp"; } }
+
+        protected override Binding GetBinding()
+        {
+            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+        }
+
+        public DuplexCallbackErrorHandlerServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfDuplexService_CallbackErrorHandler), baseAddresses)
+        {
+        }
+    }
 }

@@ -115,4 +115,18 @@ namespace WcfService
         [OperationContract]
         void ReplyThrow(string input);
     }
+
+    [ServiceContract(CallbackContract = typeof(IWcfDuplexService_CallbackErrorHandler_Callback))]
+    public interface IWcfDuplexService_CallbackErrorHandler
+    {
+        [OperationContract]
+        bool Hello(string greeting);
+    }
+
+    public interface IWcfDuplexService_CallbackErrorHandler_Callback
+    {
+        [OperationContract]
+        [FaultContract(typeof(CustomMessage))]
+        void ReplyThrow(string input);
+    }
 }
