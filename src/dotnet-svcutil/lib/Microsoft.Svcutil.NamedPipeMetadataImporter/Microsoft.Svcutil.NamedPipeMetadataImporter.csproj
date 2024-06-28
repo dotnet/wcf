@@ -16,17 +16,9 @@
     <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == 'net462'" />
 	</ItemGroup>
   <PropertyGroup>
-    <CustomOutputFolder>$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\dotnet-svcutil-lib\$(Configuration)\netstandard2.0</CustomOutputFolder>
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>false</IncludeSource>
   </PropertyGroup>
-  <Target Name="CopyPackageDlls" AfterTargets="Build">
-    <ItemGroup>
-      <PublishedDlls Include="$(OutputPath)\*.dll" />
-    </ItemGroup>
-    <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\dependencies\net6.0" Condition="$(OutputPath.Contains('net6.0'))" />
-    <Copy SourceFiles="@(PublishedDlls)" DestinationFolder="$(CustomOutputFolder)\dependencies\net462" Condition="$(OutputPath.Contains('net462'))" />
-  </Target>
 </Project>

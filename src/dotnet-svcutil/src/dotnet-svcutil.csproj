@@ -36,8 +36,8 @@
         <Tfx>%(TargetFrameworkItems.Identity)</Tfx>
       </TargetFrameworkItem>
     </ItemGroup>
-    <ItemGroup>
-      <DesignData Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\dotnet-svcutil-lib\$(Configuration)\netstandard2.0\dependencies\**" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\dependencies" />
+    <ItemGroup>      
+      <DesignData Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\**" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\dependencies" />
     </ItemGroup>
   </Target>
   

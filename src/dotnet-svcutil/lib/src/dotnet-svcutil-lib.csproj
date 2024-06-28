@@ -68,7 +68,7 @@
   
   <Target Name="CopyPackageDlls" AfterTargets="build">
     <ItemGroup>
-      <DesignData Include="$(OutputPath)dependencies\**" Pack="true" PackagePath="dependencies" />
+      <DesignData Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\**" Pack="true" PackagePath="dependencies" />
     </ItemGroup>
   </Target>
   <!-- Include resx files here so that arcade will handle them correctly. -->
