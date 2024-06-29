@@ -10,7 +10,6 @@ using System.Security.Cryptography.X509Certificates;
 using CoreWCF.Configuration;
 using CoreWCF.Description;
 using idunno.Authentication.Basic;
-using Microsoft.AspNetCore;
 #else
 using System;
 using System.Collections.Generic;
@@ -145,7 +144,7 @@ namespace WcfService
                 .Configure(app =>
                 {
                     app.UseAuthentication();
-                    app.UseAuthorization();
+                    app.UseAuthorization();                    
                     app.UseServiceModel(serviceBuilder =>
                     {
                         foreach (var serviceTestHost in GetAttributedServiceHostTypes())
@@ -197,16 +196,16 @@ namespace WcfService
                                             //if (!options.BaseAddresses.Contains(baseAddress))
                                                 options.BaseAddresses.Add(new Uri(baseAddress));
                                         }
-
-                                        foreach (var endpoint in serviceHost.Endpoints)
-                                        {
-                                            Enum schema = ServiceHostHelper.ToServiceSchema(endpoint.Binding.Scheme);
-                                            string basePath = serviceTestHostOptionsDict[localHostTypeName].endpointBasePath[schema];
-                                            string endpointAddress = string.Format("{0}/{1}", basePath, endpoint.Address);
-                                            serviceBuilder.AddServiceEndpoint(serviceHost.ServiceType, endpoint.ContractType, endpoint.Binding, new Uri(endpointAddress, UriKind.RelativeOrAbsolute), null);
-                                        }
                                     });
-                                   
+
+                                    foreach (var endpoint in serviceHost.Endpoints)
+                                    {
+                                        Enum schema = ServiceHostHelper.ToServiceSchema(endpoint.Binding.Scheme);
+                                        string basePath = serviceTestHostOptionsDict[serviceHostTypeName].endpointBasePath[schema];
+                                        string endpointAddress = string.Format("{0}/{1}", basePath, endpoint.Address);
+                                        serviceBuilder.AddServiceEndpoint(serviceHost.ServiceType, endpoint.ContractType, endpoint.Binding, new Uri(endpointAddress, UriKind.RelativeOrAbsolute), null);
+                                    }
+
                                     serviceBuilder.ConfigureServiceHostBase(serviceHost.ServiceType, serviceHostBase =>
                                     {
                                         var localHostTypeName = serviceHostTypeName;

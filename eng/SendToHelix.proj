@@ -17,7 +17,7 @@
     <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
 
-  <Target Name="InstallDotNet" BeforeTargets="CoreTest">
+  <Target Name="InstallDotNet">
     <ItemGroup>
       <AdditionalDotNetPackage Include="8.0.5">
         <PackageType>aspnetcore-runtime</PackageType>
@@ -80,11 +80,9 @@
     <HelixPreCommands>$(HelixPreCommands);set DOTNET_ROOT=%HELIX_CORRELATION_PAYLOAD%\dotnet-cli;set DOTNET_CLI_TELEMETRY_OPTOUT=1</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);set DOTNET_CLI_HOME=%HELIX_WORKITEM_ROOT%\.dotnet</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);set NUGET_PACKAGES=%HELIX_WORKITEM_ROOT%\.nuget</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);dotnet --list-runtimes; dotnet --list-sdks</HelixPreCommands>
 
     <HelixPreCommands>$(HelixPreCommands);dir C:\ /s /b /o:gn | find "SelfHostedCoreWCFService.exe"</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\Release\net8.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\net8.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' != 'Windows'">
@@ -92,18 +90,15 @@
     <HelixPreCommands>$(HelixPreCommands);export DOTNET_ROOT=$HELIX_CORRELATION_PAYLOAD/dotnet-cli;export DOTNET_CLI_TELEMETRY_OPTOUT=1</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);export DOTNET_CLI_HOME=$HELIX_WORKITEM_ROOT/.dotnet</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);export NUGET_PACKAGES=$HELIX_WORKITEM_ROOT/.nuget</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);dotnet --list-runtimes; dotnet --list-sdks</HelixPreCommands>
 
     <HelixPreCommands>$(HelixPreCommands);sudo find / -name 'SelfHostedCoreWCFService.dll'</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
-    <!--<HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net8.0/SelfHostedCoreWCFService.dll</HelixPreCommands>-->
-    <HelixPreCommands>$(HelixPreCommands);dotnet exec --roll-forward Major $HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/Release/net8.0/SelfHostedCoreWCFService.dll bootstrap:true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);dotnet exec --roll-forward Major $HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net8.0/SelfHostedCoreWCFService.dll bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);dotnet exec --roll-forward Major $HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/SelfHostedCoreWCFService.dll bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <Target Name="BuildProjects">
-    <MSBuild Targets="Build;Publish" Projects="@(ProjectsToBuild)" RemoveProperties="Configuration" Properties="Configuration=Release;PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'" />
+    <MSBuild Targets="Publish" Projects="@(ProjectsToBuild)" Properties="PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService';AppendTargetFrameworkToOutputPath=false" />
   </Target>
 
   <ItemGroup>
