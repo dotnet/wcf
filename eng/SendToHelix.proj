@@ -98,7 +98,7 @@
   </PropertyGroup>
 
   <Target Name="BuildProjects">
-    <MSBuild Targets="Publish" Projects="@(ProjectsToBuild)" Properties="PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService';AppendTargetFrameworkToOutputPath=false" />
+    <MSBuild Targets="Publish" Projects="@(ProjectsToBuild)" Properties="PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService';OutputPath='$(Configuration)\'" />
   </Target>
 
   <ItemGroup>
