@@ -2,15 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Web;
+#else
 using System;
 using System.IO;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+#endif
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using WcfTestCommon;
 using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
-
 
 namespace WcfService
 {
@@ -48,6 +53,12 @@ namespace WcfService
         [OperationContract]
         [WebGet(UriTemplate = "State", BodyStyle = WebMessageBodyStyle.Bare)]
         Stream State();
+
+#if NET
+        [OperationContract]
+        [WebGet(UriTemplate = "Shutdown", BodyStyle = WebMessageBodyStyle.Bare)]
+        void Shutdown();
+#endif
     }
 
     public class TestHost : ITestHost
@@ -202,7 +213,7 @@ namespace WcfService
 
             try
             {
-                store = new X509Store(name, location);
+                store = CertificateHelper.GetX509Store(name, location);
                 store.Open(OpenFlags.ReadOnly);
                 X509Certificate2Collection foundCertificates = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, validOnly: true);
                 return foundCertificates.Count == 0 ? null : foundCertificates[0];
@@ -222,7 +233,7 @@ namespace WcfService
 
             try
             {
-                store = new X509Store(name, location);
+                store = CertificateHelper.GetX509Store(name, location);
                 store.Open(OpenFlags.ReadOnly);
 
                 X509Certificate2Collection foundCertificates = store.Certificates.Find(X509FindType.FindByIssuerName, "DO_NOT_TRUST_WcfBridgeRootCA", false);
@@ -270,6 +281,11 @@ namespace WcfService
             builder.Append(footer);
 
             return builder.ToString();
+        }
+
+        public void Shutdown()
+        {
+            Environment.Exit(0);
         }
     }
 }

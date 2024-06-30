@@ -8,6 +8,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+    <!--<ProjectReference Include="..\..\..\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj" />-->
     <PackageReference Include="xunit.stafact" Version="$(XUnitStaFactPackageVersion)" />
     <PackageReference Include="Microsoft.DotNet.XUnitExtensions" Version="$(MicrosoftDotNetXUnitExtensionsPackageVersion)" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="$(MicrosoftDotNetPlatformAbstractionsVersion)" />

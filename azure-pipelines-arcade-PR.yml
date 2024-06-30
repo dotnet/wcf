@@ -31,6 +31,8 @@ variables:
     value: true
   - name: _RunAsInternal
     value: false
+  - name: _RunWithCoreWcfService
+    value: true
   
   - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
     - name: _RunAsPublic
@@ -134,6 +136,7 @@ stages:
             XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
             RunAsPublic: $(_RunAsPublic)
             RunAsInternal: $(_RunAsInternal)
+            RunWithCoreWcfService: $(_RunWithCoreWcfService)
             IsWindowsBuild: true
 
       # Only build and test Linux in PR and CI builds.
@@ -194,6 +197,7 @@ stages:
               ServiceHost: $(_serviceUri)
               RunAsPublic: $(_RunAsPublic)
               RunAsInternal: $(_RunAsInternal)
+              RunWithCoreWcfService: $(_RunWithCoreWcfService)
               IsWindowsBuild: false
 
       # Only build and test MacOS in PR and CI builds.
@@ -253,4 +257,5 @@ stages:
               ServiceHost: $(_serviceUri)
               RunAsPublic: $(_RunAsPublic)
               RunAsInternal: $(_RunAsInternal)
+              RunWithCoreWcfService: $(_RunWithCoreWcfService)
               IsWindowsBuild: false

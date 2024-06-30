@@ -4,7 +4,6 @@
 
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -44,10 +43,10 @@ namespace WcfTestCommon
         // Give the cert a grace period in case there's a time skew between machines
         private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
 
-        private const string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
+        private readonly string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
         private readonly string _signatureAlgorithm = Org.BouncyCastle.Asn1.Pkcs.PkcsObjectIdentifiers.Sha256WithRsaEncryption.Id;
-        private const string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
-        private const int _keyLengthInBits = 2048;
+        private readonly string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
+        private readonly int _keyLengthInBits = 2048;
 
         private static readonly X509V3CertificateGenerator s_certGenerator = new X509V3CertificateGenerator();
         private static readonly X509V2CrlGenerator s_crlGenerator = new X509V2CrlGenerator();
@@ -304,7 +303,7 @@ namespace WcfTestCommon
             else
             {
                 X509Name subjectName = CreateX509Name(subject);
-                s_certGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
+                s_certGenerator.SetIssuerDN(signingCertificate.SubjectDN);
                 s_certGenerator.SetSubjectDN(subjectName);
 
                 s_certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(_authorityKeyPair.Public));
@@ -321,7 +320,7 @@ namespace WcfTestCommon
             s_certGenerator.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(isAuthority));
             if (certificateCreationSettings.EKU == null || certificateCreationSettings.EKU.Count == 0)
             {
-                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth, KeyPurposeID.IdKPClientAuth));
+                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.id_kp_serverAuth, KeyPurposeID.id_kp_clientAuth));
             }
             else
             {
@@ -373,7 +372,7 @@ namespace WcfTestCommon
 
             if (isAuthority || certificateCreationSettings.IncludeCrlDistributionPoint)
             {
-                var crlDistributionPoints = new DistributionPoint[1] 
+                var crlDistributionPoints = new DistributionPoint[1]
                 {
                     new DistributionPoint(
                         new DistributionPointName(
@@ -475,7 +474,7 @@ namespace WcfTestCommon
             s_crlGenerator.SetThisUpdate(updateTime);
             //There is no need to update CRL.
             s_crlGenerator.SetNextUpdate(now.Add(ValidityPeriod));
-            s_crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
+            s_crlGenerator.SetIssuerDN(signingCertificate.SubjectDN);
 
             s_crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(signingCertificate));
 
@@ -525,8 +524,8 @@ namespace WcfTestCommon
         {
             X509Name authorityX509Name;
 
-            IList authorityKeyIdOrder = new ArrayList();
-            IDictionary authorityKeyIdName = new Hashtable();
+            IList<DerObjectIdentifier> authorityKeyIdOrder = new List<DerObjectIdentifier>();
+            IDictionary<DerObjectIdentifier, string> authorityKeyIdName = new Dictionary<DerObjectIdentifier, string>();
 
             authorityKeyIdOrder.Add(X509Name.OU);
             authorityKeyIdOrder.Add(X509Name.O);
