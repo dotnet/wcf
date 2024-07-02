@@ -27,7 +27,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <Target Name="CopyPackageDlls" AfterTargets="build">
+  <Target Name="PackAdditonalDlls" AfterTargets="build">
     <ItemGroup>
       <TargetFrameworkItems Include="$(TargetFrameworks)" />
     </ItemGroup>
@@ -37,7 +37,8 @@
       </TargetFrameworkItem>
     </ItemGroup>
     <ItemGroup>      
-      <DesignData Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\**" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\dependencies" />
+      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net6.0\*.dll" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\net6.0"/>
+      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net462\*.dll" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\net462"/>
     </ItemGroup>
   </Target>
   

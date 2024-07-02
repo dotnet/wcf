@@ -570,11 +570,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     switch(dependency.DependencyType)
                     {
                         case ProjectDependencyType.Binary:
-                            this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", Path.Combine(dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar)), "dependencies\\**")), new XAttribute("Link", "dependencies/%(RecursiveDir)%(Filename)%(Extension)")));
+                            this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", Path.Combine(dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar)), "net6.0\\**")), new XAttribute("Link", "net6.0/%(RecursiveDir)%(Filename)%(Extension)")));
+                            this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", Path.Combine(dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar)), "net462\\**")), new XAttribute("Link", "net462/%(RecursiveDir)%(Filename)%(Extension)")));
                             break;
                         case ProjectDependencyType.Package:
-                            string path = $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}\\dependencies\\**";
-                            this.PacakgeReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", path), new XAttribute("Link", "dependencies/%(RecursiveDir)%(Filename)%(Extension)")));
+                            this.PacakgeReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}\\net6.0\\**"), new XAttribute("Link", "net6.0/%(RecursiveDir)%(Filename)%(Extension)")));
+                            this.PacakgeReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}\\net462\\**"), new XAttribute("Link", "net462/%(RecursiveDir)%(Filename)%(Extension)")));
                             break;
                     }
                 }
