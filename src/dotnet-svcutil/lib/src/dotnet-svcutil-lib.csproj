@@ -69,6 +69,7 @@
   <Target Name="PackAdditonalDlls" AfterTargets="build">
     <ItemGroup>
       <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net6.0\*.dll" Pack="true" PackagePath="net6.0"/>
+      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net8.0\*.dll" Pack="true" PackagePath="net8.0"/>
       <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net462\*.dll" Pack="true" PackagePath="net462"/>
     </ItemGroup>
   </Target>
