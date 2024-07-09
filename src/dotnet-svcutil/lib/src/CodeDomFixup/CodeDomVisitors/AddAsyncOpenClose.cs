@@ -13,56 +13,29 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class AddAsyncOpenClose : ClientClassVisitor
     {
+        //default behavior: won't generate CloseAsync()
         private bool _generateCloseAsync = false;
         private bool _addCondition = false;
 
         public AddAsyncOpenClose(CommandProcessorOptions options)
         {
+            //multi TFMs contain .NET Framework targets. Sample forms: net48;net6.0 / net472;net48
             if (options.Project != null && options.Project.TargetFrameworks.Count() > 1 && options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
             {
                 _generateCloseAsync = true;
                 FrameworkInfo dnxInfo = null;
+
+                //TFMs contain both .NET Framework and .NET (Core) targets, add condition for generated CloseAsync()
                 var tfx = options.Project.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
-                if (!string.IsNullOrEmpty(tfx) && dnxInfo.Version.Major >= 6)
+                if (!string.IsNullOrEmpty(tfx))
                 {
                     _addCondition = true;
                 }
             }
-            else
+            // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
+            else if (!options.TargetFramework.IsDnx)
             {
-                if (options.TargetFramework.IsDnx)
-                {
-                    bool findVersion = false;
-                    System.Collections.Generic.List<ProjectDependency> referenceTable = null;
-                    if(options.TargetFramework.Name != FrameworkInfo.Netstandard)
-                    {
-                        findVersion = NetCoreVersionReferenceTable.TryGetValue(options.TargetFramework.Version, out referenceTable);
-                    }
-                    else if (NetStandardToNetCoreVersionMap.Keys.Contains(options.TargetFramework.Version))
-                    {
-                        findVersion = NetCoreVersionReferenceTable.TryGetValue(NetCoreToWCFPackageReferenceVersionMap[NetStandardToNetCoreVersionMap[options.TargetFramework.Version]], out referenceTable);
-                    }
-
-                    if (findVersion)
-                    {
-                        string version = referenceTable.FirstOrDefault().Version;
-                        string[] vers = version.Split('.');
-                        if (vers.Length > 1)
-                        {
-                            Version v = new Version(int.Parse(vers[0]), int.TryParse(vers[1], out int minor) ? minor : 0);
-                            // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
-                            if (v.CompareTo(new Version(4, 10)) < 0)
-                            {
-                                _generateCloseAsync = true;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
-                    _generateCloseAsync = true;
-                }
+                _generateCloseAsync = true;
             }
         }
 

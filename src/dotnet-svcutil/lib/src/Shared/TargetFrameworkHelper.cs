@@ -15,27 +15,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     {
         public static ReadOnlyDictionary<Version, Version> NetStandardToNetCoreVersionMap { get; } = new ReadOnlyDictionary<Version, Version>(new SortedDictionary<Version, Version>
          {
-            // Service Model requires netstandard1.3 so it is the minimum version that will work.
-             {new Version("1.3"), new Version("1.0") },
-             {new Version("1.4"), new Version("1.0") },
-             {new Version("1.5"), new Version("1.0") },
-             {new Version("1.6"), new Version("1.0") },
-             {new Version("1.6.1"), new Version("1.1") },
-             {new Version("2.0"), new Version("5.1") },
-             {new Version("2.1"), new Version("5.1") }
+             {new Version("2.0"), new Version("2.0") },
+             {new Version("2.1"), new Version("3.1") }
          });
 
         public static ReadOnlyDictionary<Version, Version> NetCoreToWCFPackageReferenceVersionMap { get; } = new ReadOnlyDictionary<Version, Version>(new SortedDictionary<Version, Version>
          {
-             {new Version("1.0"), new Version("1.0") },
-             {new Version("1.1"), new Version("1.1") },
              {new Version("2.0"), new Version("2.0") },
-             {new Version("2.1"), new Version("2.1") },
-             {new Version("2.2"), new Version("2.1") },
-             {new Version("3.0"), new Version("2.1") },
-             {new Version("3.1"), new Version("3.1") },
-             {new Version("5.0"), new Version("5.0") },
-             {new Version("5.1"), new Version("5.1") },
+             {new Version("2.1"), new Version("2.0") },
+             {new Version("2.2"), new Version("2.0") },
+             {new Version("3.0"), new Version("2.0") },
+             {new Version("3.1"), new Version("2.0") },
+             {new Version("5.0"), new Version("2.0") },
              {new Version("6.0"), new Version("6.0") },
              {new Version("7.0"), new Version("6.0") },
              {new Version("8.0"), new Version("8.0") }
@@ -43,46 +34,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         internal static SortedDictionary<Version, List<ProjectDependency>> NetCoreVersionReferenceTable = new SortedDictionary<Version, List<ProjectDependency>>
         {
-            {new Version("1.0"), new List<ProjectDependency> {
-                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.0.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.1.*"    ),
-                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.1.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.0.*"),
-                ProjectDependency.FromPackage("System.Xml.XmlSerializer", "4.0.*"    ),
-            } },
-            {new Version("1.1"), new List<ProjectDependency> {
-                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.3.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.3.*"    ),
-                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.3.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.3.*"),
-                ProjectDependency.FromPackage("System.Xml.XmlSerializer", "4.3.*"    ),
-            } },
+           
             {new Version("2.0"), new List<ProjectDependency> {
-                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.4.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.4.*"    ),
-                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.4.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.4.*"),
-            } },
-            {new Version("2.1"), new List<ProjectDependency> {
-                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.6.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.6.*"    ),
-                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.6.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.6.*"),
-            } },
-            {new Version("3.1"), new List<ProjectDependency> {
-                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.7.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.7.*"    ),
-                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.7.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.7.*"),
-             } },
-            {new Version("5.0"), new List<ProjectDependency> {
-                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.8.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.8.*"    ),
-                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.8.*"  ),
-                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.8.*"),
-                ProjectDependency.FromPackage("System.ServiceModel.Federation", "4.8.*")
-            } },
-            {new Version("5.1"), new List<ProjectDependency> {
                 ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.10.*"  ),
                 ProjectDependency.FromPackage("System.ServiceModel.Http", "4.10.*"    ),
                 ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.10.*"  ),
@@ -129,31 +82,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public static Version MinSupportedNetStandardVersion { get; } = NetStandardToNetCoreVersionMap.Keys.First();
         public static Version MinSupportedNetCoreAppVersion { get; } = NetCoreToWCFPackageReferenceVersionMap.Keys.First();
 
-        public static IEnumerable<ProjectDependency> GetWcfProjectReferences(string targetFramework)
+        public static IEnumerable<ProjectDependency> GetWcfProjectReferences(IEnumerable<string> targetFrameworks)
         {
             IEnumerable<ProjectDependency> dependencies = null;
-
-            if (IsSupportedFramework(targetFramework, out var frameworkInfo))
+            Version version = GetLowestNetCoreVersion(targetFrameworks);
+            if(version != null)
             {
-                if (frameworkInfo.IsDnx)
-                {
-                    if(frameworkInfo.Name == FrameworkInfo.Netstandard && TargetFrameworkHelper.NetStandardToNetCoreVersionMap.Keys.Contains(frameworkInfo.Version))
-                    {
-                        dependencies = NetCoreVersionReferenceTable[NetCoreToWCFPackageReferenceVersionMap[NetStandardToNetCoreVersionMap[frameworkInfo.Version]]];
-                    }
-                    else if(frameworkInfo.Name != FrameworkInfo.Netstandard && NetCoreToWCFPackageReferenceVersionMap.ContainsKey(frameworkInfo.Version))
-                    {
-                        dependencies = NetCoreVersionReferenceTable[NetCoreToWCFPackageReferenceVersionMap[frameworkInfo.Version]];
-                    }
-                    else
-                    {
-                        dependencies = NetCoreVersionReferenceTable.Last().Value;
-                    }
-                }
-                else
-                {
-                    dependencies = FullFrameworkReferences;
-                }
+                dependencies = NetCoreVersionReferenceTable[NetCoreToWCFPackageReferenceVersionMap[version]];
+            }
+            else
+            {
+                dependencies = FullFrameworkReferences;
             }
 
             return dependencies;
@@ -193,20 +132,36 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             foreach (string targetFramework in targetFrameworks)
             {
-                if (TargetFrameworkHelper.IsSupportedFramework(targetFramework, out var frameworkInfo) && frameworkInfo.IsDnx)
+                if (IsSupportedFramework(targetFramework, out var frameworkInfo) && frameworkInfo.IsDnx)
                 {
                     Version netCoreVersion;
 
                     if (frameworkInfo.IsKnownDnx)
                     {
-                        netCoreVersion = frameworkInfo.Name == FrameworkInfo.Netstandard ?
-                           TargetFrameworkHelper.NetStandardToNetCoreVersionMap[frameworkInfo.Version] :
-                           frameworkInfo.Version;
+
+                        if(frameworkInfo.Name == FrameworkInfo.Netstandard)
+                        {
+                            if(!NetStandardToNetCoreVersionMap.TryGetValue(frameworkInfo.Version, out netCoreVersion))
+                            {
+                                netCoreVersion = NetStandardToNetCoreVersionMap.LastOrDefault().Value;
+                            }
+                        }
+                        else
+                        {
+                            if (NetCoreToWCFPackageReferenceVersionMap.TryGetValue(frameworkInfo.Version, out Version version))
+                            {
+                                netCoreVersion = frameworkInfo.Version;
+                            }
+                            else
+                            {
+                                netCoreVersion = NetCoreToWCFPackageReferenceVersionMap.Keys.LastOrDefault();
+                            }
+                        }
                     }
                     else
                     {
                         // target framework is not known to the tool, use the latest known netcore version.
-                        netCoreVersion = TargetFrameworkHelper.NetCoreVersionReferenceTable.Keys.LastOrDefault();
+                        netCoreVersion = NetCoreToWCFPackageReferenceVersionMap.Keys.LastOrDefault();
                     }
 
                     if (targetVersion == null || targetVersion > netCoreVersion)
