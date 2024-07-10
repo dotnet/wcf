@@ -4,17 +4,17 @@
   <ProductDependencies>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.24317.3">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.24360.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>579b9d3c2a51de22be7685f0bd624bf83265c901</Sha>
+      <Sha>04cb1e3add386e77631c17e19bcccb9f4943e8b3</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.GenFacades" Version="9.0.0-beta.24317.3">
+    <Dependency Name="Microsoft.DotNet.GenFacades" Version="9.0.0-beta.24360.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>579b9d3c2a51de22be7685f0bd624bf83265c901</Sha>
+      <Sha>04cb1e3add386e77631c17e19bcccb9f4943e8b3</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="9.0.0-beta.24317.3">
+    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="9.0.0-beta.24360.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>579b9d3c2a51de22be7685f0bd624bf83265c901</Sha>
+      <Sha>04cb1e3add386e77631c17e19bcccb9f4943e8b3</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
