@@ -101,18 +101,18 @@ namespace SvcutilTest
 
             var uri = Path.Combine(g_TestCasesDir, "wsdl", "WcfProjectNService", "tempuri.org.wsdl");
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
-            var options = $"{uri} -nl -d {outDir} -tf netcoreapp1.0";
+            var options = $"{uri} -nl -d {outDir} -tf net8.0";
             
             TestGlobalSvcutil(options, expectSuccess: true);
         }
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("net48")] //System.ServiceModel get referened and CloseAsync() is generated
-        [InlineData("net50")] //WCF package older than V4.10 get referened and CloseAsync() is generated
-        [InlineData("netstd20")] //WCF package of V4.10.* get referened and CloseAsync() is not generated
-        [InlineData("net60")] //WCF package newer than V4.10 get referened and CloseAsync() is not generated
-        [InlineData("net60net48")] //WCF package newer than V4.10 and System.ServiceModel.dll are referenced conditionally by target and CloseAsync() be generarted with conditional compilation mark
+        [InlineData("net48")] //System.ServiceModel get referenced and CloseAsync() is generated
+        [InlineData("net50")] //WCF package V4.10 get referenced and CloseAsync() is not generated
+        [InlineData("netstd20")] //WCF package V4.10 get referenced and CloseAsync() is not generated
+        [InlineData("net60")] //WCF package V6.* get referenced and CloseAsync() is not generated
+        [InlineData("net60net48")] //WCF package V6.* and System.ServiceModel.dll are conditionally referenced base on TFM and CloseAsync() is generarted with compilation marker
         public async Task MultiTargetCloseAsyncGeneration(string testCaseName)
         {
             this_TestCaseName = "MultiTargetCloseAsyncGeneration";
