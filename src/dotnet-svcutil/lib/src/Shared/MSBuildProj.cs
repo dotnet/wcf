@@ -540,14 +540,29 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if(copyInternalAssets && dependency.AssemblyName == "dotnet-svcutil-lib")
                 {
-                    switch(dependency.DependencyType)
+                    string basePath;
+                    string[] frameworks = { "net6.0", "net8.0", "net462" };
+                    switch (dependency.DependencyType)
                     {
                         case ProjectDependencyType.Binary:
-                            this.ReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", Path.Combine(dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar)), "internalAssets\\**")), new XAttribute("Link", "internalAssets/%(RecursiveDir)%(Filename)%(Extension)")));
+                            basePath = dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar));
+                            foreach (var framework in frameworks)
+                            {
+                                this.ReferenceGroup.Add(new XElement("Content",
+                                    new XAttribute("CopyToOutputDirectory", "always"),
+                                    new XAttribute("Include", Path.Combine(basePath, $"{framework}\\**")),
+                                    new XAttribute("Link", $"{framework}/%(RecursiveDir)%(Filename)%(Extension)")));
+                            }
                             break;
                         case ProjectDependencyType.Package:
-                            string path = $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}\\content\\internalAssets\\**";
-                            this.PacakgeReferenceGroup.Add(new XElement("Content", new XAttribute("CopyToOutputDirectory", "always"), new XAttribute("Include", path), new XAttribute("Link", "internalAssets/%(RecursiveDir)%(Filename)%(Extension)")));
+                            basePath = $"$(NuGetPackageRoot){dependency.Name}\\{dependency.Version}";
+                            foreach (var framework in frameworks)
+                            {
+                                this.PacakgeReferenceGroup.Add(new XElement("Content",
+                                    new XAttribute("CopyToOutputDirectory", "always"),
+                                    new XAttribute("Include", $"{basePath}\\{framework}\\**"),
+                                    new XAttribute("Link", $"{framework}/%(RecursiveDir)%(Filename)%(Extension)")));
+                            }
                             break;
                     }
                 }

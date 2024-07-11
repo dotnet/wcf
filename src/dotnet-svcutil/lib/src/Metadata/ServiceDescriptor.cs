@@ -107,11 +107,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 }
                 else
                 {
-                    tfn = "net6.0";
+                    tfn = Environment.Version.Major >= 8 ? "net8.0" : "net6.0";
                 }
 
                 string toolPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                Assembly assembly = Assembly.LoadFrom($"{toolPath}/internalAssets/{tfn}/Microsoft.Svcutil.NamedPipeMetadataImporter.dll");
+                Assembly assembly = Assembly.LoadFrom($"{toolPath}/{tfn}/Microsoft.Svcutil.NamedPipeMetadataImporter.dll");
 
                 Type type = assembly.GetType("Microsoft.Tools.ServiceModel.Svcutil.NamedPipeMetadataImporter");
                 if (type != null)

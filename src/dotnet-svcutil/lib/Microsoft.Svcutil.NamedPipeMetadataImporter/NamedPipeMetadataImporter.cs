@@ -17,7 +17,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         const string BindingNamespace = "http://schemas.microsoft.com/ws/2005/02/mex/bindings";
         XmlReader _xmlReader;
 
-#if NET6_0
+#if NET6_0_OR_GREATER
         [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
         public XmlReader GetReader(Uri uri)
@@ -25,7 +25,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return GetMetadatadataAsync(uri).GetAwaiter().GetResult();
         }
 
-#if NET6_0
+#if NET6_0_OR_GREATER
         [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
         public async Task<XmlReader> GetMetadatadataAsync(Uri uri)
@@ -77,7 +77,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-#if NET6_0
+#if NET6_0_OR_GREATER
         [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
         public CustomBinding CreateNamedPipeBinding()
