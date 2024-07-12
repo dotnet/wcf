@@ -7,7 +7,6 @@ using Microsoft.CodeDom;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Linq;
-using static Microsoft.Tools.ServiceModel.Svcutil.TargetFrameworkHelper;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
@@ -19,21 +18,29 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public AddAsyncOpenClose(CommandProcessorOptions options)
         {
-            //multi TFMs contain .NET Framework targets. Sample forms: net48;net6.0 / net472;net48
-            if (options.Project != null && options.Project.TargetFrameworks.Count() > 1 && options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
+            if (options.Project != null)
             {
-                _generateCloseAsync = true;
-                FrameworkInfo dnxInfo = null;
+                Version lowestNetcoreVer = TargetFrameworkHelper.GetLowestNetCoreVersion(options.Project.TargetFrameworks);
+                bool containsNet6OrGreater = options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && netfxInfo.IsDnx && netfxInfo.Version.Major >= 6);
+                bool containsNetFx = options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx);
 
-                //TFMs contain both .NET Framework and .NET (Core) targets, add condition for generated CloseAsync()
-                var tfx = options.Project.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
-                if (!string.IsNullOrEmpty(tfx))
+                // netfx or lowest.net core < 6.0
+                if (lowestNetcoreVer == null || (lowestNetcoreVer != null && lowestNetcoreVer.Major < 6))
                 {
+                    _generateCloseAsync = true;
+                    if (containsNet6OrGreater)
+                    {
+                        _addCondition = true;
+                    }
+                }
+                //lowest .net core >= 6.0
+                else if (containsNetFx)
+                {
+                    _generateCloseAsync = true;
                     _addCondition = true;
                 }
             }
-            // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
-            else if (!options.TargetFramework.IsDnx)
+            else if (options.TargetFramework.Version.Major < 6)
             {
                 _generateCloseAsync = true;
             }
@@ -90,7 +97,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if(_addCondition && methodName.Equals("Close"))
             {
-                CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, "NETFRAMEWORK");
+                CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, "!NET6_0_OR_GREATER");
                 CodeIfDirective ifEnd = new CodeIfDirective(CodeIfMode.End, "");
                 implMethod.StartDirectives.Add(ifStart);
                 implMethod.EndDirectives.Add(ifEnd);
