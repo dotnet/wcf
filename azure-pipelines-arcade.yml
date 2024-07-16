@@ -39,15 +39,19 @@ extends:
     sdl:
       sourceAnalysisPool:
         name: $(DncEngInternalBuildPool)
-        image: 1es-windows-2022-pt
+        image: 1es-windows-2022
         os: windows
+      codeql:
+        compiled:
+          enabled: false
+          justificationForDisabling: 'CodeQL is already enabled in pipeline dotnet-wcf-codeql; this is a duplicate scan'
     customBuildTags:
     - ES365AIMigrationTooling
     stages:
     - stage: Build
       displayName: Build
       jobs:
-      - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
+      - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/release/6.1'))) }}:
         - template: /eng/common/templates-official/job/onelocbuild.yml@self
           parameters:
             MirrorRepo: wcf
@@ -60,6 +64,7 @@ extends:
           enablePublishBuildAssets: true
           enablePublishUsingPipelines: $(_PublishUsingPipelines)
           enableTelemetry: true
+          enableSourceIndex: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
           helixRepo: dotnet/wcf
           jobs:
           - job: Windows
@@ -67,7 +72,7 @@ extends:
             pool:
               ${{ if eq(variables._RunAsInternal, True) }}:
                 name: $(DncEngInternalBuildPool)
-                image: 1es-windows-2022-pt
+                image: 1es-windows-2022
                 os: windows
             variables:
             - _InternalBuildArgs: ''

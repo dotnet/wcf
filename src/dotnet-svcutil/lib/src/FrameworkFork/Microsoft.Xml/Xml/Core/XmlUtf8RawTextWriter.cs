@@ -4,9 +4,10 @@
 
 
 // WARNING: This file is generated and should not be modified directly.  Instead,
-// modify XmlTextWriterGenerator.cxx and run gen.bat in the same directory.
+// modify XmlTextWriterGenerator.cxxbak and run gen.bat in the same directory.
 // This batch file will execute the following commands:
 //
+//   Before running below command, rename XmlRawTextWriterGenerator.cxxbak to XmlRawTextWriterGenerator.cxx
 //   cl.exe /C /EP /D _XML_ENCODED_TEXT_WRITER XmlRawTextWriterGenerator.cxx > XmlEncodedRawTextWriter.cs
 //
 // Because these two implementations of XmlTextWriter are so similar, the C++ preprocessor

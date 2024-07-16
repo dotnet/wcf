@@ -131,7 +131,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public static void WriteJson(JsonWriter writer, TAppOptions options, JsonSerializer serializer)
         {
-            serializer.TypeNameHandling = TypeNameHandling.Auto;
+            serializer.TypeNameHandling = TypeNameHandling.None;
 
             ((IOptionsSerializationHandler)options).RaiseBeforeSerializeEvent();
 

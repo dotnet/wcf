@@ -109,6 +109,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             else
             {
                 _resolveExternalDocs = true;
+                this.metadataSourceFiles.Add(metadataUri);
                 this.MetadataSourceUrl = metadataUri;
             }
         }

@@ -171,7 +171,7 @@ namespace SvcutilTest
         [Trait("Category", "BVT")]
         [Theory]
         [InlineData("net6.0", "-elm")]
-        public async void ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
+        public async Task ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
         {
             this_TestCaseName = "ParamsFiles_SDK_TFM";
             TestFixture();

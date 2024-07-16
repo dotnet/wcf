@@ -97,4 +97,112 @@ public static class FaultExceptionTest
         Assert.NotNull(exception.Code);
         Assert.Equal(reason, exception.Reason.ToString());
     }
+
+    [WcfFact]
+    public static void Ctor_TDetail_FaultReason_FaultCode()
+    {
+        var detail = new FaultDetail("Fault message");
+        var reason = new FaultReason("Fault reason");
+        var code = new FaultCode("MustUnderstand");
+        var exception = new FaultException<FaultDetail>(detail, reason, code);
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Detail);
+        Assert.NotNull(exception.Reason);
+        Assert.NotNull(exception.Code);
+        Assert.Equal(detail.Message, exception.Detail.Message);
+        Assert.Equal(reason, exception.Reason);
+        Assert.Equal(reason.ToString(), exception.Message);
+        Assert.Equal(code, exception.Code);
+        //default reason, default code
+        exception = new FaultException<FaultDetail> (null,(FaultReason)null,null);
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Code);
+        Assert.NotNull(exception.Reason);
+        Assert.NotEqual(string.Empty, exception.Reason.ToString());
+        Assert.False(string.IsNullOrEmpty(exception.Message));
+        Assert.Null(exception.Detail);
+        Assert.Null(exception.Action);
+    }
+
+    [WcfFact]
+    public static void Ctor_TDetail_StringReason()
+    {
+        var detail = new FaultDetail("Fault message");
+        string reason = "Fault reason";
+        var exception = new FaultException<FaultDetail>(detail, reason);
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Detail);
+        Assert.NotNull(exception.Reason);
+        Assert.Equal(detail, exception.Detail);
+        Assert.Equal(reason, exception.Reason.ToString());
+        Assert.Equal(reason, exception.Message);
+        //empty reason, default code
+        exception = new FaultException<FaultDetail>(null, string.Empty);
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Code);
+        Assert.NotNull(exception.Reason);
+        Assert.Null(exception.Detail);
+        Assert.Null(exception.Action);
+        Assert.Equal(string.Empty, exception.Reason.ToString());
+        Assert.Equal(string.Empty, exception.Message);
+        Assert.Null(exception.Action);
+    }
+
+    [WcfFact]
+    public static void Ctor_TDetail_StringReason_FaultCode()
+    {
+        var detail = new FaultDetail("Fault message");
+        string reason = "Fault reason";
+        var code = new FaultCode("MustUnderstand");
+        var exception = new FaultException<FaultDetail>(detail, reason, code);
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Detail);
+        Assert.NotNull(exception.Reason);
+        Assert.NotNull(exception.Code);
+        Assert.Equal(detail, exception.Detail);
+        Assert.Equal(reason, exception.Reason.ToString());
+        Assert.Equal(reason, exception.Message);
+        Assert.Equal(code, exception.Code);
+        //default reason, default code
+        exception = new FaultException<FaultDetail>(null, (string)null, null);
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Code);
+        Assert.NotNull(exception.Reason);
+        Assert.NotEqual(string.Empty, exception.Reason.ToString());
+        Assert.False(string.IsNullOrEmpty(exception.Message));
+        Assert.Null(exception.Detail);
+        Assert.Null(exception.Action);
+    }
+
+    [WcfFact]
+    public static void Ctor_TDetail_StringReason_FaultCode_StringAction()
+    {
+        var detail = new FaultDetail("Fault message");
+        string reason = "Fault reason";
+        var code = new FaultCode("Server");
+        string action = "http://example.com/faults/processingerror";
+        var exception = new FaultException<FaultDetail>(detail, reason, code, action);
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Detail);
+        Assert.NotNull(exception.Reason);
+        Assert.NotNull(exception.Code);
+        Assert.NotNull(exception.Action);
+        Assert.IsType<FaultException<FaultDetail>>(exception);
+        Assert.Equal(detail, exception.Detail);
+        Assert.Equal(reason, exception.Reason.ToString());
+        Assert.Equal(reason, exception.Message);
+        Assert.Equal(code, exception.Code);
+        Assert.Equal(action, exception.Action);
+        Assert.IsAssignableFrom<Exception>(exception);
+        Assert.IsAssignableFrom<FaultException>(exception);
+        //empty reason, default code
+        exception = new FaultException<FaultDetail>(null, string.Empty, null, null);
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Code);
+        Assert.NotNull(exception.Reason);
+        Assert.Equal(string.Empty, exception.Reason.ToString());
+        Assert.Equal(string.Empty, exception.Message);
+        Assert.Null(exception.Detail);
+        Assert.Null(exception.Action);
+    }
 }
