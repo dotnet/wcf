@@ -23,9 +23,12 @@ public class CertificateGeneratorLibrary
     private static void RemoveCertificatesFromStore(StoreName storeName, StoreLocation storeLocation)
     {
         X509Store store = CertificateHelper.GetX509Store(storeName, storeLocation);
-        Console.WriteLine("  Checking StoreName '{0}'", storeName);
+        Console.WriteLine("  Checking StoreName '{0}', StoreLocation '{1}'", storeName, store.Location);
         {
-            store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
+            if (!CertificateHelper.CurrentOperatingSystem.IsMacOS()) 
+            {
+                store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
+            }
 
             foreach (var cert in store.Certificates.Find(X509FindType.FindByIssuerName, CertificateIssuer, false))
             {

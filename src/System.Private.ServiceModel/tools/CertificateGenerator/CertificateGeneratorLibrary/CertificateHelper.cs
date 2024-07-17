@@ -52,7 +52,7 @@ namespace WcfTestCommon
             else if (CurrentOperatingSystem.IsMacOS())
             {
                 // MacOS SafeKeychainHandle
-                GetMacOSX509Store();
+                store = GetMacOSX509Store();
             }
             return store;
         }
