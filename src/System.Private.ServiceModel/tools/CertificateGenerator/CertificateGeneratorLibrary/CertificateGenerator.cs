@@ -452,7 +452,7 @@ namespace WcfTestCommon
                 container.Pfx = stream.ToArray();
             }
 
-            X509Certificate2 outputCert;
+            X509Certificate2 outputCert = null;
 
             if (isAuthority)
             {
@@ -463,7 +463,34 @@ namespace WcfTestCommon
             {
                 // Otherwise, allow encode with the private key. note that X509Certificate2.RawData will not provide the private key
                 // you will have to re-export this cert if needed
-                outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+                {
+                    //string tempKeychainFilePath = Path.GetTempFileName();
+                    string tempKeychainFilePath = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                    System.Security.Cryptography.X509Certificates.X509Store MacOsTempStore = CertificateHelper.GetMacOSX509Store(tempKeychainFilePath);
+                    MacOsTempStore.Certificates.Import(container.Pfx, _password, X509KeyStorageFlags.Exportable);
+                    MacOsTempStore.Close();
+                    MacOsTempStore.Dispose();
+
+                    MacOsTempStore = CertificateHelper.GetMacOSX509Store(tempKeychainFilePath);
+
+                    outputCert = ((IEnumerable<X509Certificate2>)MacOsTempStore.Certificates).FirstOrDefault();
+
+                    if (outputCert == null)
+                    {
+                        Console.WriteLine("Couldn't find Certificate..");
+                    }
+
+                    MacOsTempStore.Dispose();
+                    if (File.Exists(tempKeychainFilePath))
+                    {
+                        File.Delete(tempKeychainFilePath);
+                    }
+                }
+                else
+                {
+                    outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                }
             }
 
             container.Subject = subject;

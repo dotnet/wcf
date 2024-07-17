@@ -52,7 +52,7 @@ namespace WcfTestCommon
             else if (CurrentOperatingSystem.IsMacOS())
             {
                 // MacOS SafeKeychainHandle
-                GetMacOSX509Store();
+                store = GetMacOSX509Store();
             }
             return store;
         }
@@ -62,16 +62,21 @@ namespace WcfTestCommon
         internal static string OSXCustomKeychainPassword => "WCFKeychainFilePassword";
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static X509Store GetMacOSX509Store()
+        public static X509Store GetMacOSX509Store(string storeFilePath = null)
         {
-            SafeKeychainHandle keychain;
-            if (!File.Exists(OSXCustomKeychainFilePath))
+            if (storeFilePath == null)
             {
-                keychain = SafeKeychainHandle.Create(OSXCustomKeychainFilePath, OSXCustomKeychainPassword);
+                storeFilePath = OSXCustomKeychainFilePath;
+            }
+
+            SafeKeychainHandle keychain;
+            if (!File.Exists(storeFilePath))
+            {
+                keychain = SafeKeychainHandle.Create(storeFilePath, OSXCustomKeychainPassword);
             }
             else
             {
-                keychain = SafeKeychainHandle.Open(OSXCustomKeychainFilePath, OSXCustomKeychainPassword);
+                keychain = SafeKeychainHandle.Open(storeFilePath, OSXCustomKeychainPassword);
             }
 
             if (keychain.IsInvalid)
