@@ -149,4 +149,37 @@ namespace WcfService
             }
         }
     }
+
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    public class WcfDuplexService_CallbackErrorHandler : IWcfDuplexService_CallbackErrorHandler
+    {
+        public bool Hello(string greeting)
+        {
+            bool result = false;
+            try
+            {
+                Callback.ReplyThrow(greeting);
+            }
+            catch (FaultException<CustomMessage> fex)
+            {
+                if(fex.Message.Equals("custom fault reason") && fex.Code.Name.Equals("custom fault code"))
+                {
+                    result = true;
+                }
+            }
+            catch (Exception)
+            {  
+            }
+
+            return result;
+        }
+
+        public IWcfDuplexService_CallbackErrorHandler_Callback Callback
+        {
+            get
+            {
+                return OperationContext.Current.GetCallbackChannel<IWcfDuplexService_CallbackErrorHandler_Callback>();
+            }
+        }
+    }
 }
