@@ -33,7 +33,7 @@ if NOT [%__EXITCODE%]==[0] (
   goto :done
   )
 
-netsh advfirewall firewall add rule name="_WCF Test Server PortTcp"  dir=in action=allow profile=any localport=809 protocol=tcp
+netsh advfirewall firewall add rule name="_WCF Test Server PortTcp"  dir=in action=allow profile=any localport=8808 protocol=tcp
 set __EXITCODE=%ERRORLEVEL%
 if NOT [%__EXITCODE%]==[0] (
   echo Error: error adding rule name _WCF Test Server PortTcp

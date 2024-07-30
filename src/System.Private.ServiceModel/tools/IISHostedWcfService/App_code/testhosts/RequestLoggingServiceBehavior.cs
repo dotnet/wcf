@@ -4,12 +4,19 @@
 
 // 
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+using CoreWCF.Description;
+using CoreWCF.Dispatcher;
+#else
 using System;
-using System.Collections.ObjectModel;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
+#endif
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace WcfService
@@ -115,6 +122,7 @@ namespace WcfService
                 _parent = parent;
             }
 
+            [Obsolete]
             public override bool CheckAccess(OperationContext operationContext, ref Message message)
             {
                 bool success = false;

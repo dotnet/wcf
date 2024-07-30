@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-
-
 public class UniqueType
 {
     public string stringValue;

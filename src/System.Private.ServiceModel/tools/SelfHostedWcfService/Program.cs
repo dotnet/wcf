@@ -14,7 +14,7 @@ namespace SelfHostedWCFService
     {
         private static int s_httpPort = 8081;
         private static int s_httpsPort = 44285;
-        private static int s_tcpPort = 809;
+        private static int s_tcpPort = 8808;
         private static int s_websocketPort = 8083;
         private static int s_websocketsPort = 8084;
 

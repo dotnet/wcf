@@ -2,13 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.Channels;
+#else
 using System.ServiceModel.Channels;
+#endif
 
 namespace WcfService
 {
     internal class CustomTextMessageEncoderFactory : MessageEncoderFactory
     {
-        private System.ServiceModel.Channels.MessageEncoder _encoder;
+        private MessageEncoder _encoder;
         private MessageVersion _version;
         private string _mediaType;
         private string _charSet;
@@ -21,7 +25,7 @@ namespace WcfService
             _encoder = new CustomTextMessageEncoder(this);
         }
 
-        public override System.ServiceModel.Channels.MessageEncoder Encoder
+        public override MessageEncoder Encoder
         {
             get
             {

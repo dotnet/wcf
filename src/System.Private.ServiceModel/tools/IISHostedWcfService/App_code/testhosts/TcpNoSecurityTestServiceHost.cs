@@ -2,11 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+#else
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Web.Hosting;
+#endif
 
 namespace WcfService
 {
@@ -27,7 +32,7 @@ namespace WcfService
 
         private Binding GetNetTcpBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false , Name = "tcp-nosecurity" };
+            return new NetTcpBinding(SecurityMode.None) { Name = "tcp-nosecurity" };
         }
 
         private Binding GetNetNamedPipeBinding()

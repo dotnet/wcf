@@ -24,6 +24,8 @@ variables:
   value: false
 - name: _RunAsInternal
   value: true
+- name: _RunWithCoreWcfService
+  value: false
 - group: DotNet-Wcf-SDLValidation-Params
 resources:
   repositories:
@@ -95,7 +97,7 @@ extends:
               clean: true
             - script: eng\common\cibuild.cmd -configuration $(_BuildConfig) -preparemachine $(_InternalBuildArgs) $(_TestArgs) /p:Test=false
               displayName: Windows Build / Publish
-            - powershell: eng\common\build.ps1 -configuration $(_BuildConfig) -preparemachine -ci -test -integrationTest -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj $(_TestArgs) /p:TestJob=Windows /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
+            - powershell: eng\common\build.ps1 -configuration $(_BuildConfig) -preparemachine -ci -test -integrationTest -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj $(_TestArgs) /p:TestJob=Windows  /p:RunWithCoreWcfService=$(_RunWithCoreWcfService) /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
               displayName: Windows - Run Helix Tests
               env:
                 SYSTEM_ACCESSTOKEN: $(System.AccessToken)
