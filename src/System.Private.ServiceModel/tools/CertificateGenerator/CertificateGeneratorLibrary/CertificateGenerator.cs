@@ -463,7 +463,14 @@ namespace WcfTestCommon
             {
                 // Otherwise, allow encode with the private key. note that X509Certificate2.RawData will not provide the private key
                 // you will have to re-export this cert if needed
-                outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+                {
+                    outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
+                }
+                else
+                {
+                    outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                }
             }
 
             container.Subject = subject;
