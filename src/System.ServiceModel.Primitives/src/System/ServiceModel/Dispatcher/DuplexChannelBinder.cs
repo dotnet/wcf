@@ -822,7 +822,7 @@ namespace System.ServiceModel.Dispatcher
 
                 if (timeout != TimeSpan.MaxValue)
                 {
-                    _timer = new Timer(new TimerCallback(AsyncDuplexRequest.s_timerCallback), this, timeout, TimeSpan.FromMilliseconds(-1));
+                    _timer = new Timer(new TimerCallback(AsyncDuplexRequest.s_timerCallback), this, timeout, Timeout.InfiniteTimeSpan);
                 }
                 if (DiagnosticUtility.ShouldUseActivity)
                 {

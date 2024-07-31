@@ -49,7 +49,7 @@ namespace System.ServiceModel.Dispatcher
         {
             if (rpc.Operation.IsTerminating && rpc.Channel.HasSession)
             {
-                var timer = new Timer(s_abortChannelTimerCallback, rpc.Channel.Binder.Channel, rpc.Channel.CloseTimeout, TimeSpan.FromMilliseconds(-1));
+                var timer = new Timer(s_abortChannelTimerCallback, rpc.Channel.Binder.Channel, rpc.Channel.CloseTimeout, Timeout.InfiniteTimeSpan);
             }
         }
 

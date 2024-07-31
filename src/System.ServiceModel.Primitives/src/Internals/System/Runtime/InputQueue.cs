@@ -907,7 +907,7 @@ namespace System.Runtime
                 _inputQueue = inputQueue;
                 if (timeout != TimeSpan.MaxValue)
                 {
-                    _timer = new Timer(new TimerCallback(s_timerCallback), this, timeout, TimeSpan.FromMilliseconds(-1));
+                    _timer = new Timer(new TimerCallback(s_timerCallback), this, timeout, Timeout.InfiniteTimeSpan);
                 }
             }
 
@@ -932,7 +932,7 @@ namespace System.Runtime
                 _item = item.Value;
                 if (_timer != null)
                 {
-                    _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                    _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
                 }
                 Complete(false, item.Exception);
             }
@@ -958,7 +958,7 @@ namespace System.Runtime
             {
                 if (timeout != TimeSpan.MaxValue)
                 {
-                    _timer = new Timer(new TimerCallback(s_timerCallback), this, timeout, TimeSpan.FromMilliseconds(-1));
+                    _timer = new Timer(new TimerCallback(s_timerCallback), this, timeout, Timeout.InfiniteTimeSpan);
                 }
             }
 
@@ -976,7 +976,7 @@ namespace System.Runtime
 
                 lock (ThisLock)
                 {
-                    timely = (_timer == null) || _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                    timely = (_timer == null) || _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
                     _itemAvailable = itemAvailable;
                 }
 
