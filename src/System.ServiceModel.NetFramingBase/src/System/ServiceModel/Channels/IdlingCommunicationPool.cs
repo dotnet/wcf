@@ -165,7 +165,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (_idleTimer != null)
                     {
-                        _idleTimer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                        _idleTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
                     }
                 }
 
@@ -180,11 +180,11 @@ namespace System.ServiceModel.Channels
                                 s_onIdle = new Action<object>(OnIdle);
                             }
 
-                            _idleTimer = new Timer(new TimerCallback(new Action<object>(s_onIdle)), this, _idleTimeout, TimeSpan.FromMilliseconds(-1));
+                            _idleTimer = new Timer(new TimerCallback(new Action<object>(s_onIdle)), this, _idleTimeout, Timeout.InfiniteTimeSpan);
                         }
                         else
                         {
-                            _idleTimer.Change(_idleTimeout, TimeSpan.FromMilliseconds(-1));
+                            _idleTimer.Change(_idleTimeout, Timeout.InfiniteTimeSpan);
                         }
                     }
                 }
@@ -267,7 +267,7 @@ namespace System.ServiceModel.Channels
 
                     if (calledFromTimer && setTimer)
                     {
-                        _idleTimer.Change(_idleTimeout, TimeSpan.FromMilliseconds(-1));
+                        _idleTimer.Change(_idleTimeout, Timeout.InfiniteTimeSpan);
                     }
                 }
 
