@@ -118,4 +118,42 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    // Test for https://github.com/CoreWCF/CoreWCF/issues/1391
+    [WcfFact]
+    [OuterLoop]
+    public static void SecurityModeNone_Echo_RoundTrips_String_Stream_TimeoutMaxValue()
+    {
+        string testString = "Hello";
+        ChannelFactory<IWcfServiceGenerated> factory = null;
+        IWcfServiceGenerated serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            var binding = new NetTcpBinding(SecurityMode.None)
+            {
+                SendTimeout = TimeSpan.MaxValue,
+                ReceiveTimeout = TimeSpan.MaxValue
+            };
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+            binding.TransferMode = TransferMode.Streamed;
+
+            factory = new ChannelFactory<IWcfServiceGenerated>(binding, new EndpointAddress(Endpoints.Tcp_Streamed_NoSecurity_Address));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }
