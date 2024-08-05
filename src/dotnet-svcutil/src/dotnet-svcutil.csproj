@@ -15,6 +15,7 @@
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <NoDefaultExcludes>true</NoDefaultExcludes>
     <EnableXlfLocalization>true</EnableXlfLocalization>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -45,5 +46,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\lib\src\dotnet-svcutil-lib.csproj" />
+    <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
