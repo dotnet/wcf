@@ -501,6 +501,17 @@ namespace SvcutilTest
             TestSvcutil(AppendCommonOptions(wsdlFile));
         }
 
+        [Trait("Category", "Test")]
+        [Fact]
+        public void ContractTypeNamedReservedKeyword()
+        {
+            this_TestCaseName = "ContractTypeNamedReservedKeyword";
+            TestFixture();
+            InitializeE2E(this_TestCaseName);
+            string wsdlFile = Path.Combine(g_TestCasesDir, "wsdl", "TypeNameUseReservedKeyword.wsdl");
+            TestSvcutil(AppendCommonOptions(wsdlFile));
+        }
+
         private void WcfRuntimeSvcs(string serviceName, bool expectSuccess)
         {
             var testCaseName = serviceName.Replace(".svc", "").Replace("/", "_");
