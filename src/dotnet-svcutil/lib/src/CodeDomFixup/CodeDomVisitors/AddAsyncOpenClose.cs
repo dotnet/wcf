@@ -7,51 +7,42 @@ using Microsoft.CodeDom;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class AddAsyncOpenClose : ClientClassVisitor
     {
+        //default behavior: won't generate CloseAsync()
         private bool _generateCloseAsync = false;
         private bool _addCondition = false;
 
         public AddAsyncOpenClose(CommandProcessorOptions options)
         {
-            if (options.Project != null && options.Project.TargetFrameworks.Count() > 1 && options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
+            if (options.Project != null)
             {
-                _generateCloseAsync = true;
-                FrameworkInfo dnxInfo = null;
-                var tfx = options.Project.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
-                if (!string.IsNullOrEmpty(tfx) && dnxInfo.Version.Major >= 6)
+                Version lowestNetcoreVer = TargetFrameworkHelper.GetLowestNetCoreVersion(options.Project.TargetFrameworks);
+                bool containsNet6OrGreater = options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && netfxInfo.IsDnx && netfxInfo.Version.Major >= 6);
+                bool containsNetFx = options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx);
+
+                // netfx or lowest.net core < 6.0
+                if (lowestNetcoreVer == null || (lowestNetcoreVer != null && lowestNetcoreVer.Major < 6))
                 {
+                    _generateCloseAsync = true;
+                    if (containsNet6OrGreater)
+                    {
+                        _addCondition = true;
+                    }
+                }
+                //lowest .net core >= 6.0
+                else if (containsNetFx)
+                {
+                    _generateCloseAsync = true;
                     _addCondition = true;
                 }
             }
-            else
+            else if (options.TargetFramework.Version.Major < 6)
             {
-                if (options.TargetFramework.IsDnx)
-                {
-                    if (TargetFrameworkHelper.NetCoreVersionReferenceTable.TryGetValue(options.TargetFramework.Version, out var referenceTable))
-                    {
-                        string version = referenceTable.FirstOrDefault().Version;
-                        string[] vers = version.Split('.');
-                        if (vers.Length > 1)
-                        {
-                            Version v = new Version(int.Parse(vers[0]), int.TryParse(vers[1], out int minor) ? minor : 0);
-                            // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
-                            if (v.CompareTo(new Version(4, 10)) < 0)
-                            {
-                                _generateCloseAsync = true;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
-                    _generateCloseAsync = true;
-                }
+                _generateCloseAsync = true;
             }
         }
 
@@ -106,7 +97,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if(_addCondition && methodName.Equals("Close"))
             {
-                CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, "NETFRAMEWORK");
+                CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, "!NET6_0_OR_GREATER");
                 CodeIfDirective ifEnd = new CodeIfDirective(CodeIfMode.End, "");
                 implMethod.StartDirectives.Add(ifStart);
                 implMethod.EndDirectives.Add(ifEnd);

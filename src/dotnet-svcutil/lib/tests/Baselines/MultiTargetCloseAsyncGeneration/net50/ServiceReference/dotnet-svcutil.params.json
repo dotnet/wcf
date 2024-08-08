@@ -3,13 +3,13 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "../../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/WcfProjectNService/tempuri.org.wsdl"
+      "$testCasesPath$/wsdl/Simple.wsdl"
     ],
     "namespaceMappings": [
       "*, ServiceReference"
     ],
     "outputFile": "Reference.cs",
-    "targetFramework": "net46",
+    "targetFramework": "N.N",
     "typeReuseMode": "All"
   }
 }

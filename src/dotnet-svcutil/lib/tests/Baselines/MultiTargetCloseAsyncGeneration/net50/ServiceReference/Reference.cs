@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UpdateServiceRefOptionsDefault
+namespace ServiceReference
 {
     using System.Runtime.Serialization;
     
@@ -72,25 +72,25 @@ namespace UpdateServiceRefOptionsDefault
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UpdateServiceRefOptionsDefault.ITypeReuseSvc")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.ITypeReuseSvc")]
     public interface ITypeReuseSvc
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetData", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataResponse")]
-        System.Threading.Tasks.Task<UpdateServiceRefOptionsDefault.BinLibrary> GetDataAsync(int value);
+        System.Threading.Tasks.Task<ServiceReference.BinLibrary> GetDataAsync(int value);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContract", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContractResponse")]
-        System.Threading.Tasks.Task<UpdateServiceRefOptionsDefault.TypeReuseCompositeType> GetDataUsingDataContractAsync(UpdateServiceRefOptionsDefault.TypeReuseCompositeType composite);
+        System.Threading.Tasks.Task<ServiceReference.TypeReuseCompositeType> GetDataUsingDataContractAsync(ServiceReference.TypeReuseCompositeType composite);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface ITypeReuseSvcChannel : UpdateServiceRefOptionsDefault.ITypeReuseSvc, System.ServiceModel.IClientChannel
+    public interface ITypeReuseSvcChannel : ServiceReference.ITypeReuseSvc, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<UpdateServiceRefOptionsDefault.ITypeReuseSvc>, UpdateServiceRefOptionsDefault.ITypeReuseSvc
+    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<ServiceReference.ITypeReuseSvc>, ServiceReference.ITypeReuseSvc
     {
         
         /// <summary>
@@ -133,12 +133,12 @@ namespace UpdateServiceRefOptionsDefault
         {
         }
         
-        public System.Threading.Tasks.Task<UpdateServiceRefOptionsDefault.BinLibrary> GetDataAsync(int value)
+        public System.Threading.Tasks.Task<ServiceReference.BinLibrary> GetDataAsync(int value)
         {
             return base.Channel.GetDataAsync(value);
         }
         
-        public System.Threading.Tasks.Task<UpdateServiceRefOptionsDefault.TypeReuseCompositeType> GetDataUsingDataContractAsync(UpdateServiceRefOptionsDefault.TypeReuseCompositeType composite)
+        public System.Threading.Tasks.Task<ServiceReference.TypeReuseCompositeType> GetDataUsingDataContractAsync(ServiceReference.TypeReuseCompositeType composite)
         {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
@@ -146,6 +146,11 @@ namespace UpdateServiceRefOptionsDefault
         public virtual System.Threading.Tasks.Task OpenAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
+        }
+        
+        public virtual System.Threading.Tasks.Task CloseAsync()
+        {
+            return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
