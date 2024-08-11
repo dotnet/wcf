@@ -174,6 +174,21 @@ public static partial class Endpoints
         get { return GetEndpointAddress("WSHttp.svc/"); }
     }
 
+    public static string WSHttpRpcEncSingleNs_Address
+    {
+        get { return GetEndpointAddress("WSHttpRpcEncSingleNs.svc//Basic"); }
+    }
+
+    public static string WSHttpRpcEncDualNs_Address
+    {
+        get { return GetEndpointAddress("WSHttpRpcEncDualNs.svc//Basic"); }
+    }
+
+    public static string WSHttpRpcEncWithHeaders_Address
+    {
+        get { return GetEndpointAddress("WSHttpRpcEncWithHeaders.svc//Basic"); }
+    }
+
     #region WebSocket Addresses
     public static string HttpBaseAddress_NetHttpWebSockets
     {
