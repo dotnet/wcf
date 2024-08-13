@@ -40,7 +40,7 @@ namespace System.ServiceModel.Channels
         {
             if(address.Identity == null)
             {
-                var hostIdentity = new DnsEndpointIdentity(address.Uri.Host ?? "localhost");
+                var hostIdentity = new DnsEndpointIdentity(string.IsNullOrEmpty(address.Uri.Host) ? "localhost" : address.Uri.Host);
                 var uriBuilder = new UriBuilder(address.Uri);
                 uriBuilder.Host = null;
                 address = new EndpointAddress(uriBuilder.Uri, hostIdentity,address.Headers.ToArray());
