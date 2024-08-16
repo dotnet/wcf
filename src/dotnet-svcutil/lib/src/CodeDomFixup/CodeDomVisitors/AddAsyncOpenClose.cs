@@ -12,40 +12,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class AddAsyncOpenClose : ClientClassVisitor
     {
-        //default behavior: won't generate CloseAsync()
-        private bool _generateCloseAsync = false;
-        private bool _addCondition = false;
-
-        public AddAsyncOpenClose(CommandProcessorOptions options)
-        {
-            if (options.Project != null)
-            {
-                Version lowestNetcoreVer = TargetFrameworkHelper.GetLowestNetCoreVersion(options.Project.TargetFrameworks);
-                bool containsNet6OrGreater = options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && netfxInfo.IsDnx && netfxInfo.Version.Major >= 6);
-                bool containsNetFx = options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx);
-
-                // netfx or lowest.net core < 6.0
-                if (lowestNetcoreVer == null || (lowestNetcoreVer != null && lowestNetcoreVer.Major < 6))
-                {
-                    _generateCloseAsync = true;
-                    if (containsNet6OrGreater)
-                    {
-                        _addCondition = true;
-                    }
-                }
-                //lowest .net core >= 6.0
-                else if (containsNetFx)
-                {
-                    _generateCloseAsync = true;
-                    _addCondition = true;
-                }
-            }
-            else if (options.TargetFramework.Version.Major < 6)
-            {
-                _generateCloseAsync = true;
-            }
-        }
-
         protected override void VisitClientClass(CodeTypeDeclaration type)
         {
             base.VisitClientClass(type);
@@ -53,10 +19,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             using (NameScope nameScope = new CodeTypeNameScope(type))
             {
                 type.Members.Add(GenerateTaskBasedAsyncMethod("Open", nameScope));
-                if(_generateCloseAsync)
-                {
-                    type.Members.Add(GenerateTaskBasedAsyncMethod("Close", nameScope));
-                }
+                type.Members.Add(GenerateTaskBasedAsyncMethod("Close", nameScope));
             }
         }
 
@@ -95,7 +58,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     GenerateBeginMethodInvokeExpression(methodName),
                     delegateOfEndCall)));
 
-            if(_addCondition && methodName.Equals("Close"))
+            if(methodName.Equals("Close"))
             {
                 CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, "!NET6_0_OR_GREATER");
                 CodeIfDirective ifEnd = new CodeIfDirective(CodeIfMode.End, "");
