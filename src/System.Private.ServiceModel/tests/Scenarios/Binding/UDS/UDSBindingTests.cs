@@ -75,13 +75,9 @@ public partial class Binding_UDSBindingTests : ConditionalWcfTest
                 System.ServiceModel.UnixDomainSocketBinding binding = new UnixDomainSocketBinding(System.ServiceModel.UnixDomainSocketSecurityMode.Transport);
                 binding.Security.Transport.ClientCredentialType = System.ServiceModel.UnixDomainSocketClientCredentialType.Windows;
 
-                var uriBuilder = new UriBuilder()
-                {
-                    Scheme = "net.uds",
-                    Path = UDS.GetUDSFilePath()
-                };
+                var uri = new Uri("net.uds://" + UDS.GetUDSFilePath());
                 factory = new System.ServiceModel.ChannelFactory<IEchoService>(binding,
-                    new System.ServiceModel.EndpointAddress(uriBuilder.ToString()));
+                    new System.ServiceModel.EndpointAddress(uri));
                 channel = factory.CreateChannel();
                 ((IChannel)channel).Open();
                 string result = channel.Echo(testString);
