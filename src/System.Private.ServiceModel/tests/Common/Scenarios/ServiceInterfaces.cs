@@ -89,6 +89,9 @@ public interface IWcfService
 
     [OperationContract]
     Dictionary<string, string> GetRequestHttpHeaders();
+
+    [OperationContract]
+    Task EchoReturnTaskAsync();
 }
 
 [ServiceContract]

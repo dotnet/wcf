@@ -468,5 +468,13 @@ namespace WcfService
 
             return ms;
         }
+
+        public System.Threading.Tasks.Task EchoReturnTask()
+        {
+            return System.Threading.Tasks.Task.Run(() =>
+            {
+                System.Threading.Tasks.Task.Delay(1).Wait();                
+            });
+        }
     }
 }

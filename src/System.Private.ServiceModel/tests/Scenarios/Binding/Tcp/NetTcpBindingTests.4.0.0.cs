@@ -82,6 +82,45 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
         }
     }
 
+    // Test for https://github.com/dotnet/wcf/issues/5626
+    [WcfFact]
+    [OuterLoop]
+    public static async Task SecurityModeNone_Echo_RoundTrips_Task_SyncAfterAsync()
+    {
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+            Assert.Equal(testString, result);
+
+            // Without the ConfigureAwait, the xunit sync context will hop threads from the
+            // completing thread to their sync context. ConfigureAwait means it continues
+            // executing on the completing thread and triggers the bug (without the fix).
+            await serviceProxy.EchoReturnTaskAsync().ConfigureAwait(false);
+
+            result = serviceProxy.Echo(testString);
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
     // Test for https://github.com/dotnet/wcf/issues/5134
     [WcfFact]
     [OuterLoop]
