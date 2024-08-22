@@ -104,10 +104,17 @@
 <xs:complexType name="Composite">
 <xs:sequence>
 <xs:element minOccurs="0" name="BoolValue" type="xs:boolean"/>
+<xs:element minOccurs="0" name="NestedClassValue" nillable="true" type="tns:Composite.file"/>
 <xs:element minOccurs="0" name="StringValue" nillable="true" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:element name="Composite" nillable="true" type="tns:Composite"/>
+<xs:complexType name="Composite.file">
+<xs:sequence>
+<xs:element minOccurs="0" name="NestedClassString" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="Composite.file" nillable="true" type="tns:Composite.file"/>
 <xs:complexType name="file">
 <xs:sequence>
 <xs:element minOccurs="0" name="BoolValue" type="xs:boolean"/>

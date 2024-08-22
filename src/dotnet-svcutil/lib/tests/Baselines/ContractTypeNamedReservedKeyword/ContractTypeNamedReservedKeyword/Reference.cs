@@ -20,6 +20,8 @@ namespace ContractTypeNamedReservedKeyword_NS
         
         private bool BoolValueField;
         
+        private ContractTypeNamedReservedKeyword_NS.Composite.file NestedClassValueField;
+        
         private string StringValueField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
@@ -36,6 +38,19 @@ namespace ContractTypeNamedReservedKeyword_NS
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public ContractTypeNamedReservedKeyword_NS.Composite.file NestedClassValue
+        {
+            get
+            {
+                return this.NestedClassValueField;
+            }
+            set
+            {
+                this.NestedClassValueField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string StringValue
         {
             get
@@ -45,6 +60,28 @@ namespace ContractTypeNamedReservedKeyword_NS
             set
             {
                 this.StringValueField = value;
+            }
+        }
+        
+        [System.Diagnostics.DebuggerStepThroughAttribute()]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+        [System.Runtime.Serialization.DataContractAttribute(Name="Composite.file", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
+        public partial class @file : object
+        {
+            
+            private string NestedClassStringField;
+            
+            [System.Runtime.Serialization.DataMemberAttribute()]
+            public string NestedClassString
+            {
+                get
+                {
+                    return this.NestedClassStringField;
+                }
+                set
+                {
+                    this.NestedClassStringField = value;
+                }
             }
         }
     }

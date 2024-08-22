@@ -18,10 +18,25 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 foreach (CodeTypeDeclaration typeDeclaration in ns.Types)
                 {
-                    if(_reservedKeyword.Contains(typeDeclaration.Name))
-                    {
-                        typeDeclaration.Name = "@" + typeDeclaration.Name;
-                    }
+                    // Process the top-level type declaration and its nested types
+                    ProcessTypeAndMembers(typeDeclaration);
+                }
+            }
+        }
+
+        private void ProcessTypeAndMembers(CodeTypeDeclaration typeDeclaration)
+        {
+            if (_reservedKeyword.Contains(typeDeclaration.Name))
+            {
+                typeDeclaration.Name = "@" + typeDeclaration.Name;
+            }
+
+            foreach (CodeTypeMember member in typeDeclaration.Members)
+            {
+                if (member is CodeTypeDeclaration nestedType)
+                {
+                    // Recursively process the nested type
+                    ProcessTypeAndMembers(nestedType);
                 }
             }
         }
