@@ -210,7 +210,7 @@ namespace System.ServiceModel.Channels
 
             private static Task CreateTask(ServiceChannel channel, ProxyOperationRuntime operation, object[] inputParameters)
             {
-                TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+                TaskCompletionSource<object> tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
                 bool completedCallback = false;
 
                 Action<IAsyncResult> endCallDelegate = (asyncResult) =>

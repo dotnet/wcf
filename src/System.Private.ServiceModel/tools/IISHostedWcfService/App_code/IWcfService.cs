@@ -165,5 +165,8 @@ namespace WcfService
 
         [OperationContract]
         Dictionary<string,string> GetRequestHttpHeaders();
+
+        [OperationContract]
+        System.Threading.Tasks.Task EchoReturnTask();
     }
 }

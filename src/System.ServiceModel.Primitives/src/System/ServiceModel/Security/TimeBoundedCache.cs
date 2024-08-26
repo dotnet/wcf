@@ -76,7 +76,7 @@ namespace System.ServiceModel.Security
         {
             if (Count == 0 && _purgingTimer != null)
             {
-                _purgingTimer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                _purgingTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
                 _purgingTimer.Dispose();
                 _purgingTimer = null;
             }
@@ -90,7 +90,7 @@ namespace System.ServiceModel.Security
             }
             if (_purgingTimer == null)
             {
-                _purgingTimer = new Timer(new TimerCallback(PurgeCallback), this, _purgeInterval, TimeSpan.FromMilliseconds(-1));
+                _purgingTimer = new Timer(new TimerCallback(PurgeCallback), this, _purgeInterval, Timeout.InfiniteTimeSpan);
             }
         }
 
@@ -420,7 +420,7 @@ namespace System.ServiceModel.Security
                 self.PurgeStaleItems();
                 if (self.Count > 0 && self._purgingTimer != null)
                 {
-                    self._purgingTimer.Change(self._purgeInterval, TimeSpan.FromMilliseconds(-1));
+                    self._purgingTimer.Change(self._purgeInterval, Timeout.InfiniteTimeSpan);
                 }
             }
             finally

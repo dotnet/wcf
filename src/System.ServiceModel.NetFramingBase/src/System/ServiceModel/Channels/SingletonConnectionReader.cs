@@ -623,7 +623,7 @@ namespace System.ServiceModel.Channels
                 if (size > 0)
                 {
                     int bytesEncoded = IntEncoder.Encode(size, _encodedSize);
-                    return Connection.WriteAsync(_encodedSize.Slice(0, bytesEncoded), false, TimeSpan.FromMilliseconds(WriteTimeout));
+                    return Connection.WriteAsync(_encodedSize.Slice(0, bytesEncoded), false, TimeoutHelper.FromMilliseconds(WriteTimeout));
                 }
                 else
                 {

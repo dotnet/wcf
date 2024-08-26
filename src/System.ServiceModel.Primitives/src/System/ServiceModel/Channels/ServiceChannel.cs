@@ -2339,7 +2339,7 @@ namespace System.ServiceModel.Channels
 
                     if (timeout != TimeSpan.MaxValue)
                     {
-                        _timer = new Timer(s_timeoutCallback, this, timeout, TimeSpan.FromMilliseconds(-1));
+                        _timer = new Timer(s_timeoutCallback, this, timeout, Timeout.InfiniteTimeSpan);
                     }
                 }
 
@@ -2350,7 +2350,7 @@ namespace System.ServiceModel.Channels
 
                 void IWaiter.Signal()
                 {
-                    if ((_timer == null) || _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1)))
+                    if ((_timer == null) || _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan))
                     {
                         Complete(false);
                         _manager._channel.Closed -= OnClosed;
@@ -2363,7 +2363,7 @@ namespace System.ServiceModel.Channels
 
                 private void OnClosed(object sender, EventArgs e)
                 {
-                    if ((_timer == null) || _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1)))
+                    if ((_timer == null) || _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan))
                     {
                         Complete(false, _manager._channel.CreateClosedException());
                     }
@@ -2406,7 +2406,7 @@ namespace System.ServiceModel.Channels
             private SessionIdleManager(IChannelBinder binder, TimeSpan idle)
             {
                 _binder = binder;
-                _timer = new Timer(new TimerCallback(GetTimerCallback()), this, idle, TimeSpan.FromMilliseconds(-1));
+                _timer = new Timer(new TimerCallback(GetTimerCallback()), this, idle, Timeout.InfiniteTimeSpan);
                 _idleTicks = Ticks.FromTimeSpan(idle);
                 _thisLock = new Object();
             }
@@ -2439,7 +2439,7 @@ namespace System.ServiceModel.Channels
                 lock (_thisLock)
                 {
                     _isTimerCancelled = true;
-                    _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                    _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
                 }
             }
 
@@ -2508,7 +2508,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (!_isTimerCancelled && _binder.Channel.State != CommunicationState.Faulted && _binder.Channel.State != CommunicationState.Closed)
                         {
-                            _timer.Change(Ticks.ToTimeSpan(abortTime - ticksNow), TimeSpan.FromMilliseconds(-1));
+                            _timer.Change(Ticks.ToTimeSpan(abortTime - ticksNow), Timeout.InfiniteTimeSpan);
                         }
                     }
                 }
