@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+
+  <PropertyGroup>
+    <!-- When building through build-tests.cmd tests.builds is the main project that is being built. We set IsTestProject to true when the project path has /tests/.
+    Since IsTestProject is set to false in this case, when TargetGroup = netfx it will add net462 and net47 build configurations if they exist on the test project.
+    We only want to build tests against current TargetGroup -->
+    <AdditionalBuildConfigurations Condition="'$(TargetGroup)' == 'netfx'"></AdditionalBuildConfigurations>
+    <GenerateCodeCoverageReportForAll>true</GenerateCodeCoverageReportForAll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <TestProjectExclusions Include="$(MSBuildThisFileDirectory)System.Private.ServiceModel\tests\Scenarios\AllScenarioTests.csproj" />
+  </ItemGroup>
+
+  <!-- For UAP we are using an APPX that is registered with a unique ID. Because of that we need to run tests sequentially -->
+  <PropertyGroup Condition="'$(BuildingUAPVertical)'=='true' and '$(SkipTests)' != 'true' " >
+    <SerializeProjects>true</SerializeProjects>
+  </PropertyGroup>
+
+  <Import Project="$(ToolsDir)CodeCoverage.targets" Condition="Exists('$(ToolsDir)CodeCoverage.targets')" />
+  <Import Project="$(ToolsDir)PerfTesting.targets" Condition="Exists('$(ToolsDir)PerfTesting.targets') and '$(Performance)' == 'true'"/>
+  <Import Project="$(ToolsDir)VersionTools.targets" Condition="Exists('$(ToolsDir)VersionTools.targets')" />
+
+  <PropertyGroup>
+    <_ProjectPattern Condition="'$(Performance)'!='true'">.Tests</_ProjectPattern>
+    <_ProjectPattern Condition="'$(Performance)'=='true'">.Performance.Tests</_ProjectPattern>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <!--If a uapaot run use the single scenario test project by default-->
+    <Project Include="$(MSBuildThisFileDirectory)System.Private.ServiceModel\tests\Scenarios\AllScenarioTests.csproj" Condition="'$(TargetGroup)'=='uapaot' and '$(BuildSeparateScenarioProjects)'!='true' and '$(OuterLoop)' == 'true'" />
+
+    <!--In VSTS build separate scenario projects even for uapaot.-->
+    <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'=='uapaot' and '$(BuildSeparateScenarioProjects)'=='true'" />
+    
+    <!--All non-uapaot runs use the separate scenario test projects.-->
+    <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'!='uapaot' and '$(OuterLoop)' == 'true'" />
+
+    <!--Always include unit test projects.-->
+    <Project Include="$(MSBuildThisFileDirectory)*\tests\*$(_ProjectPattern).csproj" />
+  </ItemGroup>
+
+  <Import Project="$(ToolsDir)Build.Post.targets" Condition="Exists('$(ToolsDir)Build.Post.targets')" />
+
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.traversal.targets))\dir.traversal.targets" />
+  
+  <!-- Hook that can be used to insert custom build tasks to the build process such as setup and/or cleanup tasks -->
+  <Import Project="test.override.targets" Condition="Exists('test.override.targets')" />
+  
+      <!-- TODO: Can we move this archive test build to BuildTools -->
+  <UsingTask TaskName="ZipFileCreateFromDependencyLists" Condition="'$(Platform)' == 'ARM64' and '$(ArchiveTests)' == 'true'" AssemblyFile="$(BuildToolsTaskDir)Microsoft.DotNet.Build.Tasks.dll"/>
+  <Target Name="ArchiveTestBuild" Condition="'$(Platform)' == 'ARM64' and '$(ArchiveTests)' == 'true'" AfterTargets="Build" >
+    <ItemGroup>
+      <ExcludeFromArchive Include="nupkg$" />
+      <ExcludeFromArchive Include="Microsoft.DotNet.BuildTools" />
+      <ExcludeFromArchive Include="TestData" />
+      <TestDependencyListFile Include="$(BinDir)/TestDependencies/*.dependencylist.txt" />
+    </ItemGroup>
+
+    <ZipFileCreateFromDependencyLists
+      DependencyListFiles="@(TestDependencyListFile)"
+      DestinationArchive="$(TestWorkingDir)$(OSPlatformConfig)/archive/Packages.zip"
+      RelativePathBaseDirectory="$(PackagesDir)"
+      OverwriteDestination="true" />
+  </Target>
+
+  <Import Project="$(MSBuildThisFileDirectory)GenerateDepsJson.targets" />
+</Project>

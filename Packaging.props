@@ -1,0 +1,78 @@
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreReleaseLabel>uwp60</PreReleaseLabel>
+    <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
+    <PackageLicenseFile>$(ProjectDir)LICENSE.TXT</PackageLicenseFile>
+    <PackageThirdPartyNoticesFile>$(ProjectDir)THIRD-PARTY-NOTICES.TXT</PackageThirdPartyNoticesFile>
+    <!--<RuntimeIdGraphDefinitionFile>$(ProjectDir)pkg/Microsoft.NETCore.Platforms/runtime.json</RuntimeIdGraphDefinitionFile>--> <!--Not needed for WCF-->
+    <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=799421</ReleaseNotes>
+    <ProjectUrl>https://dot.net</ProjectUrl>
+    <!-- Add a condition for this when we are able to run on .NET Core -->
+    <PackagingTaskDir>$(ToolsDir)net46/</PackagingTaskDir>
+    <LicenseUrl>https://github.com/dotnet/corefx/blob/master/LICENSE.TXT</LicenseUrl>
+    <!-- defined in buildtools packaging.targets, but we need this before targets are imported -->
+    <PackagePlatform Condition="'$(PackagePlatform)' == ''">$(Platform)</PackagePlatform>
+    <PackagePlatform Condition="'$(PackagePlatform)' == 'amd64'">x64</PackagePlatform>
+    <NativePackagePath>$(MSBuildThisFileDirectory)src/Native/pkg</NativePackagePath>
+
+    <XmlDocPackage>Microsoft.Private.Intellisense</XmlDocPackage>
+    <XmlDocPackageVersion>1.0.0-rc4-24206-00</XmlDocPackageVersion>
+    <XmlDocFileRoot>$(PackagesDir)$(XmlDocPackage.ToLowerInvariant())/$(XmlDocPackageVersion)/xmldocs</XmlDocFileRoot>
+    <XmlDocDir>$(BinDir)docs</XmlDocDir>
+
+    <!-- By default the packaging targets will package desktop facades as ref,
+         but we don't use this as we now build partial-reference-facades. -->
+    <PackageDesktopAsRef>false</PackageDesktopAsRef>
+
+    <!-- We're currently not building a "live" baseline, instead we're using .NETCore 1.0 RTM stable versions as the baseline -->
+    <SkipBaseLineCheck>true</SkipBaseLineCheck>
+
+    <!-- by default all packages will use the same version which revs with respect to product version -->
+    <PackageVersion Condition="'$(PackageVersion)' == ''">4.5.0</PackageVersion>
+    <SkipValidatePackageTargetFramework>true</SkipValidatePackageTargetFramework>
+    <SkipGenerationCheck>true</SkipGenerationCheck>
+  </PropertyGroup>
+
+  <Import Condition="Exists('pkg/baseline/baseline.props') AND '$(MSBuildProjectExtension)' == '.pkgproj'" Project="pkg/baseline/baseline.props" />
+
+  <PropertyGroup Condition="'$(OsEnvironment)'=='Unix'">
+    <!--
+      Building packages fails for two reasons.
+      First, nuget doesn't like the paths in the nuspec having backslashes as directory separators.
+      Second, we aren't yet building pdbs, which the nuspecs specify.
+    -->
+    <SkipBuildPackages>true</SkipBuildPackages>
+  </PropertyGroup>
+
+  <!--
+    Disable designer marker: not included in WCF before BuildTools 2.0.
+    For info on this feature, see https://github.com/dotnet/corefx/commit/8d7870ad127d5b25968835ceb22a6c87eb7e73f8
+  -->
+  <PropertyGroup>
+    <IncludeDesignerMarker Condition="'$(IncludeDesignerMarker)' == ''">false</IncludeDesignerMarker>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.pkgproj'">
+    <!-- Add required legal files to packages -->
+    <File Condition="Exists('$(PackageLicenseFile)')"
+          Include="$(PackageLicenseFile)" >
+        <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>
+    <File Condition="Exists('$(PackageThirdPartyNoticesFile)')"
+          Include="$(PackageThirdPartyNoticesFile)" >
+        <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>
+
+    <!-- Add version file to packages -->
+    <File Condition="Exists('$(SyncInfoFile)')"
+          Include="$(SyncInfoFile)" >
+        <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>
+
+    <!-- Add a marker to help the designer optimize & share .NET Core packages -->
+    <File Condition="'$(IncludeDesignerMarker)' != 'false'"
+          Include="$(ProjectDir)pkg/useSharedDesignerContext.txt">
+        <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>
+  </ItemGroup>
+</Project>

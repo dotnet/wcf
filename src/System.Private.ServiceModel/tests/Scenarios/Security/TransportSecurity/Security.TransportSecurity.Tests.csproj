@@ -6,12 +6,12 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AllScenarioTests</RootNamespace>
-    <AssemblyName>AllScenarioTests</AssemblyName>
+    <RootNamespace>Security.TransportSecurity.Tests</RootNamespace>
+    <AssemblyName>Security.TransportSecurity.Tests</AssemblyName>
     <TestCategories>OuterLoop</TestCategories>
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ProjectGuid>{3DD4C6E6-349B-4D9E-983D-785D420BB0AF}</ProjectGuid>
+    <ProjectGuid>{452BA2A7-81AD-4146-AD02-35EC242FF0EB}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <_XunitOptions>$(_XunitOptions) -parallel none</_XunitOptions>
@@ -20,15 +20,13 @@
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <TargetingPackExclusions Include="System.ServiceModel.Duplex" />
-    
     <ReferenceFromRuntime Include="System.Private.ServiceModel" />
     <ReferenceFromRuntime Include="System.ServiceModel.Duplex" />
     <ReferenceFromRuntime Include="System.ServiceModel.Http" />
     <ReferenceFromRuntime Include="System.ServiceModel.NetTcp" />
     <ReferenceFromRuntime Include="System.ServiceModel.Primitives" />
     <ReferenceFromRuntime Include="System.ServiceModel.Security" />
-    
+
     <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
