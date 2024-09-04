@@ -22,11 +22,13 @@ namespace WcfService
         {
             var bindings = new List<Binding>();
             bindings.Add(GetNetTcpBinding());
+
+#if !NET
             if (!HostingEnvironment.IsHosted)
             {
                 bindings.Add(GetNetNamedPipeBinding());
             }
-
+#endif
             return bindings;
         }
 
@@ -35,10 +37,12 @@ namespace WcfService
             return new NetTcpBinding() { Name = "tcp-default" };
         }
 
+#if !NET
         private Binding GetNetNamedPipeBinding()
         {
             return new NetNamedPipeBinding() { Name = "namedpipe-default" };
         }
+#endif
 
         public TcpDefaultResourceTestServiceHost(params Uri[] baseAddresses)
             : base(typeof(WcfService), baseAddresses)
