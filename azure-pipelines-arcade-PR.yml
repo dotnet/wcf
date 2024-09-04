@@ -31,6 +31,8 @@ variables:
     value: true
   - name: _RunAsInternal
     value: false
+  - name: _RunWithCoreWcfService
+    value: false
   
   - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
     - name: _RunAsPublic
@@ -105,7 +107,7 @@ stages:
         steps:
         - checkout: self
           clean: true
-        - ${{ if eq(variables._RunAsPublic, True) }}:
+        - ${{ if and(eq(variables._RunAsPublic, True), ne(variables._RunWithCoreWcfService, True)) }}:
           - template: /eng/UpdatePRService.yml
             parameters:
               wcfPRServiceId: $(_WcfPRServiceId)
@@ -126,6 +128,7 @@ stages:
             -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
             $(_TestArgs)
             /p:TestJob=Windows
+            /p:RunWithCoreWcfService=$(_RunWithCoreWcfService)
             /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
           displayName: Windows - Run Helix Tests
           env:
@@ -169,9 +172,10 @@ stages:
           steps:
           - checkout: self
             clean: true
-          - template: /eng/UpdatePRService.yml
-            parameters:
-              wcfPRServiceId: $(_WcfPRServiceId)
+          - ${{ if and(eq(variables._RunAsPublic, True), ne(variables._RunWithCoreWcfService, True)) }}:
+            - template: /eng/UpdatePRService.yml
+              parameters:
+                wcfPRServiceId: $(_WcfPRServiceId)
           - script: eng/common/cibuild.sh
               -configuration $(_BuildConfig)
               -preparemachine
@@ -187,6 +191,7 @@ stages:
               --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
               $(_TestArgs)
               /p:TestJob=Linux
+              /p:RunWithCoreWcfService=$(_RunWithCoreWcfService)
               /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
             displayName: Linux - Run Helix Tests
             env:
@@ -228,9 +233,10 @@ stages:
           steps:
           - checkout: self
             clean: true
-          - template: /eng/UpdatePRService.yml
-            parameters:
-              wcfPRServiceId: $(_WcfPRServiceId)
+          - ${{ if and(eq(variables._RunAsPublic, True), ne(variables._RunWithCoreWcfService, True)) }}:
+            - template: /eng/UpdatePRService.yml
+              parameters:
+                wcfPRServiceId: $(_WcfPRServiceId)
           - script: eng\common\cibuild.cmd
               -configuration $(_BuildConfig)
               -preparemachine
@@ -246,6 +252,7 @@ stages:
               -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
               $(_TestArgs)
               /p:TestJob=MacOS
+              /p:RunWithCoreWcfService=$(_RunWithCoreWcfService)
               /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
             displayName: MacOS - Run Helix Tests
             env:
