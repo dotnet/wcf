@@ -7,7 +7,7 @@ using Microsoft.CodeDom;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-    internal class CodeTypeNameFixer : CodeDomVisitor
+    internal class TypeNameFixup : CodeDomVisitor
     {
         //starting in c#11, types cannot be named as file/required/scoped, work around this by escaping with an @ prefix.
         //ref: https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/breaking-changes/compiler%20breaking%20changes%20-%20dotnet%207#types-cannot-be-named-file
