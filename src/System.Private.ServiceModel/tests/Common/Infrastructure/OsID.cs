@@ -36,9 +36,7 @@ namespace Infrastructure.Common
              Windows_Server_2008 | Windows_Server_2008_R2 | Windows_Server_2012 | Windows_Server_2012_R2 | Windows_Server_2016 |
              WindowsPhone | Windows_Nano,
 
-        CentOS_7 =             0x00000800,
-        CentOS_7_3 =             0x00001000,
-        AnyCentOS = CentOS_7 | CentOS_7_3,
+        Mariner =             0x00000800,
 
         Debian_8 =               0x00002000,
         Debian_9 =               0x00004000,
@@ -71,7 +69,7 @@ namespace Infrastructure.Common
 
         // 'Any' combinations must explicitly name only known flags so "G" formatting
         // can be used to show a comma separated list of the bitmask.
-        AnyUnix = AnyCentOS | AnyDebian | AnyFedora | AnyOpenSUSE | AnyOSX | AnyRHEL | AnyUbuntu,
+        AnyUnix = Mariner | AnyDebian | AnyFedora | AnyOpenSUSE | AnyOSX | AnyRHEL | AnyUbuntu,
 
         Any = AnyUnix | AnyWindows
     }

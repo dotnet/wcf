@@ -26,16 +26,17 @@
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
     <HelixTargetQueue Include="Windows.10.Amd64" />
-    <HelixTargetQueue Include="Debian.9.Amd64" />
-    <HelixTargetQueue Include="RedHat.7.Amd64" />
+    <HelixTargetQueue Include="(Debian.11.Amd64)Ubuntu.2204.Amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
+    <HelixTargetQueue Include="(Mariner.2.0.Amd64)Ubuntu.2204.Amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-helix-amd64" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'Linux'" >
-    <HelixTargetQueue Include="Centos.7.Amd64.Open" />
-    <HelixTargetQueue Include="Debian.9.Amd64.Open" />
-    <HelixTargetQueue Include="RedHat.7.Amd64.Open" />
-    <HelixTargetQueue Include="SLES.12.Amd64.Open" />
-    <HelixTargetQueue Include="Ubuntu.1804.Amd64.Open" />
+    <HelixTargetQueue Include="SLES.15.Amd64.Open" />
+    <HelixTargetQueue Include="(Fedora.38.Amd64.Open)ubuntu.2204.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:fedora-38-helix" />
+    <HelixTargetQueue Include="Ubuntu.2204.Amd64.Open" />
+    <HelixTargetQueue Include="(Debian.11.Amd64.Open)Ubuntu.2204.Amd64.Open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
+    <HelixTargetQueue Include="(Mariner.2.0.Amd64.Open)Ubuntu.2204.Amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-helix-amd64" />
+    <HelixTargetQueue Include="(openSUSE.15.2.Amd64.Open)Ubuntu.2204.Amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:opensuse-15.2-helix-amd64" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'MacOS'" >

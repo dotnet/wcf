@@ -28,8 +28,7 @@ namespace Infrastructure.Common
 
         private static List<Tuple<string, OSID>> _runtimeToOSID = new List<Tuple<string, OSID>>
         {
-            new Tuple<string, OSID>("centos.7", OSID.CentOS_7),
-            new Tuple<string, OSID>("centos.", OSID.AnyCentOS),
+            new Tuple<string, OSID>("mariner", OSID.Mariner),
 
             new Tuple<string, OSID>("debian.9", OSID.Debian_9),
             new Tuple<string, OSID>("debian.8", OSID.Debian_8),
