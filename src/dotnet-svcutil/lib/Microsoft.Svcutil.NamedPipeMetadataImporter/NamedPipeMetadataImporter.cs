@@ -15,7 +15,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         const string UriSchemeNetPipe = "net.pipe";
         const string NamedPipeBindingName = "MetadataExchangeNamedPipeBinding";
         const string BindingNamespace = "http://schemas.microsoft.com/ws/2005/02/mex/bindings";
-        XmlReader _xmlReader;
 
 #if NET6_0_OR_GREATER
         [System.Runtime.Versioning.SupportedOSPlatform("windows")]
@@ -38,20 +37,31 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             ChannelFactory<IMetadataExchange> factory = new ChannelFactory<IMetadataExchange>(CreateNamedPipeBinding(), new EndpointAddress(uri.AbsoluteUri));
             IMetadataExchange proxy = factory.CreateChannel();
             MessageVersion messageVersion = factory.Endpoint.Binding.MessageVersion;
-
+            var tcs = new TaskCompletionSource<XmlReader>();
             try
             {
                 var _message = Message.CreateMessage(messageVersion, WSTransfer.GetAction);
-                IAsyncResult result = proxy.BeginGet(_message, new AsyncCallback(RequestCallback), proxy);
+                IAsyncResult result = proxy.BeginGet(_message, new AsyncCallback(ar =>
+                {
+                    try
+                    {
+                        RequestCallback(ar, tcs);
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.SetException(ex);
+                    }
+                }), proxy);
 
                 while (!result.IsCompleted)
                 {
                     await Task.Delay(100);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 ((IClientChannel)proxy).Close();
+                tcs.SetException(ex);
             }
 
             finally
@@ -59,20 +69,33 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 ((IClientChannel)proxy).Abort();
             }
 
-            return _xmlReader;
+            return await tcs.Task;
         }
 
-        public void RequestCallback(IAsyncResult result)
+        public void RequestCallback(IAsyncResult result, TaskCompletionSource<XmlReader> tcs)
         {
             if (result.CompletedSynchronously)
                 return;
 
             if (result.AsyncState is IMetadataExchange metadataClient)
             {
-                Message response = metadataClient.EndGet(result);
-                if (!response.IsFault)
+                try
                 {
-                    _xmlReader = response.GetReaderAtBodyContents();
+                    Message response = metadataClient.EndGet(result);
+                    if (!response.IsFault)
+                    {
+                        XmlReader xmlReader = response.GetReaderAtBodyContents();
+                        tcs.SetResult(xmlReader);
+                    }
+                    else
+                    {
+                        // Handle fault response
+                        tcs.SetException(new Exception("Fault response received."));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
                 }
             }
         }

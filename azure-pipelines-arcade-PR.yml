@@ -107,7 +107,7 @@ stages:
         steps:
         - checkout: self
           clean: true
-        - ${{ if eq(variables._RunAsPublic, True) }}:
+        - ${{ if and(eq(variables._RunAsPublic, True), ne(variables._RunWithCoreWcfService, True)) }}:
           - template: /eng/UpdatePRService.yml
             parameters:
               wcfPRServiceId: $(_WcfPRServiceId)
@@ -172,9 +172,10 @@ stages:
           steps:
           - checkout: self
             clean: true
-          - template: /eng/UpdatePRService.yml
-            parameters:
-              wcfPRServiceId: $(_WcfPRServiceId)
+          - ${{ if and(eq(variables._RunAsPublic, True), ne(variables._RunWithCoreWcfService, True)) }}:
+            - template: /eng/UpdatePRService.yml
+              parameters:
+                wcfPRServiceId: $(_WcfPRServiceId)
           - script: eng/common/cibuild.sh
               -configuration $(_BuildConfig)
               -preparemachine
@@ -232,9 +233,10 @@ stages:
           steps:
           - checkout: self
             clean: true
-          - template: /eng/UpdatePRService.yml
-            parameters:
-              wcfPRServiceId: $(_WcfPRServiceId)
+          - ${{ if and(eq(variables._RunAsPublic, True), ne(variables._RunWithCoreWcfService, True)) }}:
+            - template: /eng/UpdatePRService.yml
+              parameters:
+                wcfPRServiceId: $(_WcfPRServiceId)
           - script: eng\common\cibuild.cmd
               -configuration $(_BuildConfig)
               -preparemachine

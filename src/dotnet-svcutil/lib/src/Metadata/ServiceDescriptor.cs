@@ -100,8 +100,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             //if it's net.pipe url
             if (MetadataUrl != null && MetadataUrl.Scheme.Equals("net.pipe"))
             {
-                string tfn;                
-                if(OperationalCtx == OperationalContext.Infrastructure)
+                string tfn;
+                if (OperationalCtx == OperationalContext.Infrastructure)
                 {
                     tfn = "net462";
                 }
@@ -116,27 +116,35 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 Type type = assembly.GetType("Microsoft.Tools.ServiceModel.Svcutil.NamedPipeMetadataImporter");
                 if (type != null)
                 {
-                    object typeInstance = Activator.CreateInstance(type, null);
-                    MethodInfo methodInfo = type.GetMethod("GetMetadatadataAsync", BindingFlags.Public | BindingFlags.Instance);
-                    var xmlReader = await (Task<System.Xml.XmlReader>)methodInfo.Invoke(typeInstance, new object[] { MetadataUrl });
-
-                    if (xmlReader != null)
+                    try
                     {
-                        Encoding encoding = Encoding.UTF8;
-                        MemoryStream stream = new MemoryStream(encoding.GetBytes(xmlReader.ReadOuterXml()));
-                        stream.Position = 0;
-                        XmlReader reader = XmlDictionaryReader.CreateTextReader(
-                            new MaxMessageSizeStream(stream, int.MaxValue),
-                            Encoding.UTF8,
-                            EncoderDefaults.ReaderQuotas,
-                            null);
+                        object typeInstance = Activator.CreateInstance(type, null);
+                        MethodInfo methodInfo = type.GetMethod("GetMetadatadataAsync", BindingFlags.Public | BindingFlags.Instance);
+                        var xmlReader = await (Task<System.Xml.XmlReader>)methodInfo.Invoke(typeInstance, new object[] { MetadataUrl });
 
-                        reader.Read();
-                        reader.MoveToContent();
+                        if (xmlReader != null)
+                        {
+                            Encoding encoding = Encoding.UTF8;
+                            MemoryStream stream = new MemoryStream(encoding.GetBytes(xmlReader.ReadOuterXml()));
+                            stream.Position = 0;
+                            XmlReader reader = XmlDictionaryReader.CreateTextReader(
+                                new MaxMessageSizeStream(stream, int.MaxValue),
+                                Encoding.UTF8,
+                                EncoderDefaults.ReaderQuotas,
+                                null);
 
-                        MetadataSet newSet = MetadataSet.ReadFrom(reader);
-                        (this.metadataDocumentLoader.MetadataSections as List<MetadataSection>).AddRange(newSet.MetadataSections);
-                        this.metadataDocumentLoader.State = MetadataDocumentLoader.LoadState.Successful;
+                            reader.Read();
+                            reader.MoveToContent();
+
+                            MetadataSet newSet = MetadataSet.ReadFrom(reader);
+                            (this.metadataDocumentLoader.MetadataSections as List<MetadataSection>).AddRange(newSet.MetadataSections);
+                            this.metadataDocumentLoader.State = MetadataDocumentLoader.LoadState.Successful;
+                        }
+                    }
+                    catch
+                    {
+                        this.metadataDocumentLoader.State = MetadataDocumentLoader.LoadState.Failed;
+                        throw;
                     }
                 }
             }
