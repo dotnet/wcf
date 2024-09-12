@@ -4,15 +4,23 @@ The `dotnet-svcutil` tool is a .NET command-line utility for retrieving metadata
 
 ## How to use
 
-Install and run the tool:
-> ```
-> dotnet tool install --global dotnet-svcutil
-> dotnet-svcutil <metadataDocumentPath> | <url> | <epr> [options*]
-> ```
+### Installing dotnet-svcutil:
 
-To view all available options, run:
+To install the dotnet-svcutil tool globally, run:
 
-> dotnet-svcutil --help
+`dotnet tool install --global dotnet-svcutil`
+
+For more details, visit the NuGet package page: [dotnet-svcutil on NuGet](https://www.nuget.org/packages/dotnet-svcutil).
+
+### Using dotnet-svcutil:
+
+To use the dotnet-svcutil tool, execute the following command:
+
+`dotnet-svcutil <metadataDocumentPath> | <url> | <epr> [options*]`
+
+
+For additional usage instructions, refer to the [dotnet-svcutil documentation on GitHub](https://github.com/dotnet/wcf/tree/main/src/dotnet-svcutil#using-dotnet-svcutil).
+
 
 ## Key Features
 
