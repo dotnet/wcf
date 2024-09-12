@@ -616,8 +616,8 @@ namespace BasicHttpsTransSecMessCredsUserName_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(BasicHttpsTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(BasicHttpsTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(BasicHttpsTransSecMessCredsUserName_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<BasicHttpsTransSecMessCredsUserName_NS.TestFaultsResponse> TestFaultsAsync(BasicHttpsTransSecMessCredsUserName_NS.TestFaultsRequest request);
         
@@ -752,6 +752,10 @@ namespace BasicHttpsTransSecMessCredsUserName_NS
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetRequestHttpHeaders", ReplyAction="http://tempuri.org/IWcfService/GetRequestHttpHeadersResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<BasicHttpsTransSecMessCredsUserName_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync(BasicHttpsTransSecMessCredsUserName_NS.GetRequestHttpHeadersRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoReturnTask", ReplyAction="http://tempuri.org/IWcfService/EchoReturnTaskResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Threading.Tasks.Task EchoReturnTaskAsync();
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -2640,6 +2644,11 @@ namespace BasicHttpsTransSecMessCredsUserName_NS
         {
             BasicHttpsTransSecMessCredsUserName_NS.GetRequestHttpHeadersRequest inValue = new BasicHttpsTransSecMessCredsUserName_NS.GetRequestHttpHeadersRequest();
             return ((BasicHttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue);
+        }
+        
+        public System.Threading.Tasks.Task EchoReturnTaskAsync()
+        {
+            return base.Channel.EchoReturnTaskAsync();
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
