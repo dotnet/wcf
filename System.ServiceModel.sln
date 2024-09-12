@@ -89,8 +89,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.UDS.IntegrationTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.NetNamedPipe.Tests", "src\System.ServiceModel.NetNamedPipe\tests\System.ServiceModel.NetNamedPipe.Tests.csproj", "{FD188537-21AF-48C5-84FF-F8758F4C42A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelfHostedCoreWCFService", "src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj", "{D89D949F-254B-4A29-AE78-DEB081ACA601}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -261,10 +259,6 @@ Global
 		{FD188537-21AF-48C5-84FF-F8758F4C42A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD188537-21AF-48C5-84FF-F8758F4C42A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD188537-21AF-48C5-84FF-F8758F4C42A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D89D949F-254B-4A29-AE78-DEB081ACA601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D89D949F-254B-4A29-AE78-DEB081ACA601}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D89D949F-254B-4A29-AE78-DEB081ACA601}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D89D949F-254B-4A29-AE78-DEB081ACA601}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

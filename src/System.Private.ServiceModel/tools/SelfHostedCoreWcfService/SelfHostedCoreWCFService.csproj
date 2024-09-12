@@ -5,7 +5,7 @@
     <IsPackable>false</IsPackable>
     <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <Using Include="System.Runtime.Serialization" />
     <Using Include="Microsoft.Extensions.DependencyInjection.Extensions" />
