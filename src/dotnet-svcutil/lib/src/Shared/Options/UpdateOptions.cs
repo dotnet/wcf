@@ -97,16 +97,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     this.Inputs[idx] = new Uri(relPath, UriKind.Relative);
                 }
             }
-
-            //update referenced assembly path
-            for (int idx = 0; idx < this.References.Count; idx++)
-            {
-                var reference = this.References[idx];
-                if (reference.DependencyType.Equals(ProjectDependencyType.Binary))
-                {
-                    this.References[idx] = ProjectDependency.FromAssembly(reference.AssemblyName);
-                }
-            }
         }
 
         public void ResolveFullPathsFrom(DirectoryInfo optionsFileDirectory)
