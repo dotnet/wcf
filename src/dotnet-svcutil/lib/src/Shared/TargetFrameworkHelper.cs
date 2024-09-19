@@ -15,12 +15,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     {
         public static ReadOnlyDictionary<Version, Version> NetStandardToNetCoreVersionMap { get; } = new ReadOnlyDictionary<Version, Version>(new SortedDictionary<Version, Version>
          {
+            // Service Model requires netstandard1.3 so it is the minimum version that will work.
+             {new Version("1.3"), new Version("1.0") },
+             {new Version("1.4"), new Version("1.0") },
+             {new Version("1.5"), new Version("1.0") },
+             {new Version("1.6"), new Version("1.0") },
+             {new Version("1.6.1"), new Version("1.1") },
              {new Version("2.0"), new Version("2.0") },
              {new Version("2.1"), new Version("3.1") }
          });
 
         public static ReadOnlyDictionary<Version, Version> NetCoreToWCFPackageReferenceVersionMap { get; } = new ReadOnlyDictionary<Version, Version>(new SortedDictionary<Version, Version>
          {
+             {new Version("1.0"), new Version("2.0") },
+             {new Version("1.1"), new Version("2.0") },
              {new Version("2.0"), new Version("2.0") },
              {new Version("2.1"), new Version("2.0") },
              {new Version("2.2"), new Version("2.0") },
