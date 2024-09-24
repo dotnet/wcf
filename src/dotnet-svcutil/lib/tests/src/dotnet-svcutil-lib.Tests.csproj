@@ -10,6 +10,7 @@
     <IsTestProject>true</IsTestProject>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <NuGetAuditMode>direct</NuGetAuditMode>
   </PropertyGroup>
   <PropertyGroup>
     <!-- disable .net core assembly info generation as we have custom versioning. -->

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <TargetFrameworks>$(DotNetVersion);$(NetFrameworkVersion);netstandard2.0</TargetFrameworks>
+    <AssemblyName>System.ServiceModel.NetTcp</AssemblyName>
+    <RootNamespace>System.ServiceModel</RootNamespace>
+    <CLSCompliant>true</CLSCompliant>
+    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <NoWarn>$(NoWarn);SYSLIB0039</NoWarn>
+    <IsShippingPackage>false</IsShippingPackage>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'" >
+    <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\ref\System.ServiceModel.NetFramingBase.Ref.csproj" />
+  </ItemGroup>
+</Project>

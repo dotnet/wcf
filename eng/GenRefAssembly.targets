@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <GenAPIGenerateReferenceAssemblySource Condition="'$(GenAPIGenerateReferenceAssemblySource)' == ''">true</GenAPIGenerateReferenceAssemblySource>
+    <GenAPITargetPath>..\ref\$(AssemblyName).cs</GenAPITargetPath>
+    <RefAssemblyProjectReference>$(MSBuildProjectDirectory)\..\ref\$(AssemblyName).Ref.csproj</RefAssemblyProjectReference>
+    <RefAssemblyProjectReference>$([System.IO.Path]::GetFullPath($(RefAssemblyProjectReference)))</RefAssemblyProjectReference>
+    <GenAPIExcludeApiList Condition="Exists('ReferenceAssemblyExclusions.txt')">ReferenceAssemblyExclusions.txt</GenAPIExcludeApiList>
+    <!-- <RefAssemblyProjectReference Condition="'$(RefAssemblyProjectReference)' == '' AND '$(HasReferenceAssembly)' == 'true'">$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)\..\ref\$(AssemblyName).Ref.csproj)</RefAssemblyProjectReference> -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="ReferenceAssemblyExclusions.txt" Condition="Exists('ReferenceAssemblyExclusions.txt')" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.GenAPI"
+                      version="$(MicrosoftDotNetGenApiPackageVersion)"
+                      PrivateAssets="all"
+                      IsImplicitlyDefined="true"/>
+    <ProjectReference Include="$(RefAssemblyProjectReference)">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>ResolvedReferenceAssemblyReference</OutputItemType>
+    </ProjectReference>
+  </ItemGroup>
+  
+  <PropertyGroup Condition="'$(HasReferenceAssembly)' == 'true'">
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddReferenceAssemblyToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+  
+  <Target Name="AddReferenceAssemblyToPackage" AfterTargets="AssignTargetPaths">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(ResolvedReferenceAssemblyReference)" PackagePath="ref/$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
+</Project>

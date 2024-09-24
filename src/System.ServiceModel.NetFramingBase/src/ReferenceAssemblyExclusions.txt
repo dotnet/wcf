@@ -1,0 +1,2 @@
+M:System.ServiceModel.Channels.NetFramingTransportChannelFactory`1.OnCloseAsync(System.TimeSpan)
+M:System.ServiceModel.Channels.NetFramingTransportChannelFactory`1.OnOpenAsync(System.TimeSpan)

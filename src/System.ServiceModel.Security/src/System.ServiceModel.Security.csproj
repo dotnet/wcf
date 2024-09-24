@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <AssemblyName>System.ServiceModel.Security</AssemblyName>
+    <CLSCompliant>true</CLSCompliant>
+    <IsPackable>false</IsPackable>
+    <TargetFrameworks>$(DotNetVersion);netstandard2.0;$(NetFrameworkVersion)</TargetFrameworks>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <IsShippingPackage>false</IsShippingPackage>
+    <IncludeSRCommonCode>false</IncludeSRCommonCode>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+  </ItemGroup>
+
+</Project>
