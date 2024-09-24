@@ -9,17 +9,18 @@
     <Ship_SvcUtilXmlSerPackages Condition="'$(Ship_SvcUtilXmlSerPackages)'==''">false</Ship_SvcUtilXmlSerPackages>
     <Ship_SvcUtilPackages Condition="'$(Ship_SvcUtilPackages)'==''">false</Ship_SvcUtilPackages>
     <Ship_WcfPackages Condition="'$(Ship_WcfPackages)'==''">true</Ship_WcfPackages>
+    <PlaceholderFile>$(RepositoryEngineeringDir)_._</PlaceholderFile>
   </PropertyGroup>
 
-  <!-- Include license and third party files to packages -->
-  <ItemGroup>
-    <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
-    <Content Include="$(RepoRoot)LICENSE.TXT" Pack="true" PackagePath="\" />
-  </ItemGroup>
+  <PropertyGroup>
+    <NetFrameworkVersion>net462</NetFrameworkVersion>
+    <DotNetVersion>net8.0</DotNetVersion>
+  </PropertyGroup>
 
   <PropertyGroup>
     <IsPartialFacadeAssembly Condition="'$(IsPartialFacadeAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Facade')))">true</IsPartialFacadeAssembly>
-    <IsReferenceAssembly Condition="'$(IsReferenceAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Ref')))">true</IsReferenceAssembly>
+    <IsReferenceAssembly Condition="'$(IsReferenceAssembly)' == '' and ($(MSBuildProjectName.EndsWith('.Ref')))">true</IsReferenceAssembly>
+    <HasReferenceAssembly Condition="'$(IsReferenceAssembly)' != 'true' AND Exists('..\ref\$([System.IO.Path]::GetFileNameWithoutExtension($(MSBuildProjectFile))).Ref.csproj')">true</HasReferenceAssembly>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -52,7 +53,7 @@
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">
     <!-- Microsoft.NET.Test.Sdk package defaults to restore the minimum supported version for its dependency Newtonsoft.Json, here force test project to reference higher version for security reason. -->
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonPackageVersion)" />
   </ItemGroup>
 
 </Project>

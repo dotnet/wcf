@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">
+    <None Include="@(Compile)" />
+    <Compile Remove="@(Compile)" />
+    <Reference Include="System" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(IsPartialFacadeAssembly)' != 'true' and '$(EnableDefaultCompileItems)' != 'false'">
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' and Exists('netstandard.cs')">
+    <None Include="@(Compile)" />
+    <Compile Remove="@(Compile)" />
+    <None Condition="Exists('netstandard.cs')" Remove="netstandard.cs" />
+    <Compile Condition="Exists('netstandard.cs')" Include="netstandard.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)' and '$(EnableDefaultCompileItems)' != 'false'">
+    <None Include="@(Compile)" />
+    <Compile Remove="@(Compile)" />
+    <None Condition="Exists('$(AssemblyName).cs')" Remove="$(AssemblyName).cs" />
+    <Compile Condition="Exists('$(AssemblyName).cs')" Include="$(AssemblyName).cs" />
+  </ItemGroup>
+</Project>

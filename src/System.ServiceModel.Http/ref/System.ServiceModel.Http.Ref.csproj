@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <TargetFrameworks>$(DotNetVersion);$(NetFrameworkVersion);netstandard2.0</TargetFrameworks>
+    <AssemblyName>System.ServiceModel.Http</AssemblyName>
+    <RootNamespace>System.ServiceModel</RootNamespace>
+    <CLSCompliant>true</CLSCompliant>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <IsShippingPackage>false</IsShippingPackage>
+    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
+  </PropertyGroup>
+
+</Project>

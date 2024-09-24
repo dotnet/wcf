@@ -1,16 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="BouncyCastle.Crypto.dll" Version="1.8.1" />
+    <PackageReference Include="BouncyCastle.Crypto.dll" Version="$(BouncyCastleCryptodllPackageVersion)" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="System.Configuration" />
   </ItemGroup>
-
 </Project>

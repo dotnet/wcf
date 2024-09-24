@@ -2,8 +2,16 @@
 <Project>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" />
-  <Import Project="eng\FacadeAssemblies.targets" Condition="'$(IsPartialFacadeAssembly)' == 'true'" />
+  <!-- <Import Project="eng\FacadeAssemblies.targets" Condition="'$(IsPartialFacadeAssembly)' == 'true'" /> -->
+  <Import Project="eng\GenRefAssembly.targets" Condition="'$(HasReferenceAssembly)' == 'true'" />
+  <Import Project="eng\ReferenceAssembly.targets" Condition="'$(IsReferenceAssembly)' == 'true'" />
   <Import Project="eng\testing\runsettings.targets" Condition="'$(EnableRunSettingsSupport)' == 'true'" />
+
+  <!-- Include license and third party files to packages -->
+  <ItemGroup Condition="'$(IsShippingPackage)' != 'false'">
+    <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
+    <Content Include="$(RepoRoot)LICENSE.TXT" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <PropertyGroup>
     <!-- Disable some standard properties for building our projects -->
@@ -11,6 +19,9 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <!-- [todo:arcade] This attribute exists in our previously shipped S.P.SM assembly but not in all the Facade assemblies. For now removing accross all assemblies. -->
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+    <!-- We only want to ensure direct dependencies don't have a vulnerability for our packages,
+         but for unit tests, we want to make sure we aren't using vulnerable versions at runtime -->
+    <NuGetAuditMode Condition="'$(IsTestProject)' != 'true'">direct</NuGetAuditMode>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -46,5 +57,6 @@
       <_Parameter1>true</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
-
+  
+  <Import Project="eng\RuntimePackages.targets" Condition="'$(StrongNameKeyId)' == 'Microsoft'" />
 </Project>

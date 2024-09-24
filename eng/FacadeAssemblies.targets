@@ -11,8 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.GenFacades" Version="$(MicrosoftDotNetGenFacadesPackageVersion)" PrivateAssets="All" />
-
+    <PackageReference Include="Microsoft.DotNet.GenFacades"
+                      Version="$(MicrosoftDotNetGenFacadesVersion)"
+                      PrivateAssets="all"
+                      IsImplicitlyDefined="true" />
+    
     <ContractProjectReference Include="..\ref\$(AssemblyName).Ref.csproj" 
                               Condition="'@(ContractProjectReference)' == '' AND '$(HasReferenceAssembly)' == 'true'" />
   </ItemGroup>
