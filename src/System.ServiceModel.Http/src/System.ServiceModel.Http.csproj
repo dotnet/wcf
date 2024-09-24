@@ -7,13 +7,29 @@
     <IsPackable>true</IsPackable>
     <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
     <NoWarn>$(NoWarn);NU5131</NoWarn>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net462</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).</PackageDescription>
   </PropertyGroup>
 
-  <ItemGroup>
+  <PropertyGroup>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <GenAPIGenerateReferenceAssemblySource>true</GenAPIGenerateReferenceAssemblySource>
+    <GenAPITargetPath>..\ref\System.ServiceModel.Http.cs</GenAPITargetPath>
+    <GenAPIVerbosity>high</GenAPIVerbosity>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net462'">
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
+    <Reference Include="System.ServiceModel.dll" />
+  </ItemGroup>
+<!-- Version="$(MicrosoftDotNetGenAPIVersion)" -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.GenAPI" version="8.0.0-beta.24360.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,4 +59,18 @@
       <ClassName>System.SR</ClassName>
     </EmbeddedResource>
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net462'">
+    <Compile Remove="NetFxTypeForwards.cs" />
+    <None Include="NetFxTypeForwards.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <None Include="@(Compile)" />
+    <None Include="@(EmbeddedResource)" />
+    <Compile Remove="@(Compile)" />
+    <EmbeddedResource Remove="@(EmbeddedResource)" />
+    <Compile Include="NetFxTypeForwards.cs" />
+  </ItemGroup>
+
 </Project>
