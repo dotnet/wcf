@@ -13,6 +13,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -285,6 +286,11 @@ namespace TestTypes
             }
         }
     }
+}
+
+[DataContract]
+public class CustomMessage
+{
 }
 
 [DataContract(Namespace = "http://www.contoso.com/wcfnamespace")]
@@ -703,6 +709,53 @@ public class WcfDuplexService_CallbackDebugBehavior_Callback : IWcfDuplexService
     {
         throw new Exception(input);
     }
+}
+
+[CallbackBehavior(UseSynchronizationContext = false)]
+public class WcfDuplexService_CallbackErrorHandler_Callback : IWcfDuplexService_CallbackErrorHandler_Callback, IEndpointBehavior, IErrorHandler
+{
+    public void ReplyThrow(string input)
+    {
+        throw new FaultException<ArgumentException>(new ArgumentException());
+    }
+
+    void IEndpointBehavior.AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
+    {
+        return;
+    }
+
+    void IEndpointBehavior.ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
+    {
+        clientRuntime.CallbackDispatchRuntime.ChannelDispatcher.ErrorHandlers.Add(this);
+    }
+
+    void IEndpointBehavior.ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
+    {
+        return;
+    }
+
+    void IEndpointBehavior.Validate(ServiceEndpoint endpoint)
+    {
+        return;
+    }
+
+    #region IErrorHandler Members
+    public bool HandleError(Exception error)
+    {
+        return true;
+    }
+
+    public void ProvideFault(Exception error, MessageVersion version, ref Message msg)
+    {
+        if (error is FaultException<ArgumentException>)
+        {
+            //overriding the given fault to CustomMessage fault
+            var faultObj = new FaultException<CustomMessage>(new CustomMessage(), "custom fault reason", new FaultCode("custom fault code"));
+            MessageFault fault = faultObj.CreateMessageFault();
+            msg = Message.CreateMessage(version, fault, "http://tempuri.org/IWcfDuplexService_CallbackErrorHandler/ReplyThrowCustomMessageFault");
+        }        
+    }
+    #endregion    
 }
 
 public class DuplexTaskReturnServiceCallback : IWcfDuplexTaskReturnCallback

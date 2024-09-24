@@ -1838,6 +1838,7 @@ namespace System.ServiceModel.Dispatcher
         public System.Type ContractClientType { get { return default; } set { } }
         public string ContractName { get { return default; } }
         public string ContractNamespace { get { return default; } }
+        internal bool EnableFaults { get { return default; } set { } }
         public System.Collections.Generic.SynchronizedCollection<IInteractiveChannelInitializer> InteractiveChannelInitializers { get { return default; } }
         public bool ManualAddressing { get { return default; } set { } }
         public int MaxFaultSize { get { return default; } set { } }
@@ -1866,6 +1867,7 @@ namespace System.ServiceModel.Dispatcher
     {
         internal ChannelDispatcher() { }
         public bool IncludeExceptionDetailInFaults { get { return default; } set { } }
+        public Collection<IErrorHandler> ErrorHandlers { get { return default; } }
     }
     public partial class EndpointDispatcher
     {
@@ -1910,6 +1912,11 @@ namespace System.ServiceModel.Dispatcher
     {
         void AfterCall(string operationName, object[] outputs, object returnValue, object correlationState);
         object BeforeCall(string operationName, object[] inputs);
+    }
+    public interface IErrorHandler
+    {
+        void ProvideFault(Exception error, System.ServiceModel.Channels.MessageVersion version, ref System.ServiceModel.Channels.Message fault);
+        bool HandleError(Exception error);
     }
 }
 
