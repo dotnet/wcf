@@ -1,3 +1,9 @@
+parameters:
+- name: _RunWithCoreWcfService
+  displayName: Run tests using CoreWCF service
+  type: boolean
+  default: false
+
 # trigger ci builds for merged PRs into listed branches
 # Setting batch to true, triggers one build at a time.
 # if there is a push while a build in progress, it will wait,
@@ -30,8 +36,6 @@ variables:
   - name: _RunAsPublic
     value: true
   - name: _RunAsInternal
-    value: false
-  - name: _RunWithCoreWcfService
     value: false
   
   - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
@@ -77,13 +81,12 @@ stages:
         - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
 
         # Public/PR & CI Build Variables
-        - ${{ if eq(variables._RunAsPublic, True) }}:
-            # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
-            - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
-            # For PR and CI test runs we need to update the Service being used by Scenario tests.
-            # Used in UpdatePRService.yml
-            # I think this can be removed based on the logic, setting it to true for now.
-            - _updateService: true
+        # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
+        - _serviceUri:
+        # For PR and CI test runs we need to update the Service being used by Scenario tests.
+        # Used in UpdatePRService.yml
+        # I think this can be removed based on the logic, setting it to true for now.
+        - _updateService: false
 
         # Send to Helix variables
         - _xUnitWorkItemTimeout: '00:10:00'
@@ -107,7 +110,14 @@ stages:
         steps:
         - checkout: self
           clean: true
-        - ${{ if and(eq(variables._RunAsPublic, True), ne(variables._RunWithCoreWcfService, True)) }}:
+        - powershell: |
+            Write-Host "##vso[task.setvariable variable=_updateService]true"
+            Write-Host "##vso[task.setvariable variable=_serviceUri]wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)"
+
+          displayName: Update _updateService variable
+          condition: and(eq(variables._RunAsPublic, True), ne('${{ parameters._RunWithCoreWcfService }}', True))
+
+        - ${{ if eq(variables._RunAsPublic, True) }}:
           - template: /eng/UpdatePRService.yml
             parameters:
               wcfPRServiceId: $(_WcfPRServiceId)
@@ -128,7 +138,7 @@ stages:
             -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
             $(_TestArgs)
             /p:TestJob=Windows
-            /p:RunWithCoreWcfService=$(_RunWithCoreWcfService)
+            /p:RunWithCoreWcfService=${{ parameters._RunWithCoreWcfService }}
             /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
           displayName: Windows - Run Helix Tests
           env:
@@ -149,8 +159,8 @@ stages:
             demands: ImageOverride -equals build.Ubuntu.1804.Amd64.Open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-          - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
-          - _updateService: true
+          - _serviceUri:
+          - _updateService: false
 
           # Send to Helix variables
           - _xUnitWorkItemTimeout: '00:10:00'
@@ -172,10 +182,16 @@ stages:
           steps:
           - checkout: self
             clean: true
-          - ${{ if and(eq(variables._RunAsPublic, True), ne(variables._RunWithCoreWcfService, True)) }}:
-            - template: /eng/UpdatePRService.yml
-              parameters:
-                wcfPRServiceId: $(_WcfPRServiceId)
+          - powershell: |
+              Write-Host "##vso[task.setvariable variable=_updateService]true"
+              Write-Host "##vso[task.setvariable variable=_serviceUri]wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)"
+
+            displayName: Update _updateService variable
+            condition: and(eq(variables._RunAsPublic, True), ne('${{ parameters._RunWithCoreWcfService }}', True))
+
+          - template: /eng/UpdatePRService.yml
+            parameters:
+              wcfPRServiceId: $(_WcfPRServiceId)
           - script: eng/common/cibuild.sh
               -configuration $(_BuildConfig)
               -preparemachine
@@ -191,7 +207,7 @@ stages:
               --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
               $(_TestArgs)
               /p:TestJob=Linux
-              /p:RunWithCoreWcfService=$(_RunWithCoreWcfService)
+              /p:RunWithCoreWcfService=${{ parameters._RunWithCoreWcfService }}
               /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
             displayName: Linux - Run Helix Tests
             env:
@@ -210,8 +226,8 @@ stages:
             demands: ImageOverride -equals windows.vs2022.amd64.open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-          - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
-          - _updateService: true
+          - _serviceUri:
+          - _updateService: false
 
           # Send to Helix variables
           - _xUnitWorkItemTimeout: '00:10:00'
@@ -233,10 +249,16 @@ stages:
           steps:
           - checkout: self
             clean: true
-          - ${{ if and(eq(variables._RunAsPublic, True), ne(variables._RunWithCoreWcfService, True)) }}:
-            - template: /eng/UpdatePRService.yml
-              parameters:
-                wcfPRServiceId: $(_WcfPRServiceId)
+          - powershell: |
+              Write-Host "##vso[task.setvariable variable=_updateService]true"
+              Write-Host "##vso[task.setvariable variable=_serviceUri]wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)"
+
+            displayName: Update _updateService variable
+            condition: and(eq(variables._RunAsPublic, True), ne('${{ parameters._RunWithCoreWcfService }}', True))
+
+          - template: /eng/UpdatePRService.yml
+            parameters:
+              wcfPRServiceId: $(_WcfPRServiceId)
           - script: eng\common\cibuild.cmd
               -configuration $(_BuildConfig)
               -preparemachine
@@ -252,7 +274,7 @@ stages:
               -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
               $(_TestArgs)
               /p:TestJob=MacOS
-              /p:RunWithCoreWcfService=$(_RunWithCoreWcfService)
+              /p:RunWithCoreWcfService=${{ parameters._RunWithCoreWcfService }}
               /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
             displayName: MacOS - Run Helix Tests
             env:
