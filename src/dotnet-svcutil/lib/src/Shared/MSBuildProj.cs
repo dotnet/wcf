@@ -134,14 +134,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         _packageReferenceGroup = refItems.FirstOrDefault().Parent;
                     }
 
-                    FrameworkInfo netfxInfo = null;
-                    FrameworkInfo dnxInfo = null;
-                    if (this.TargetFrameworks.Count() > 1 && this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out netfxInfo) && !netfxInfo.IsDnx))
+                    if (this.TargetFrameworks.Count() > 1 && this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
                     {
-                        var tfx = this.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
-                        if (!string.IsNullOrEmpty(tfx) && dnxInfo.Version.Major >= 6)
+                        Version ver = TargetFrameworkHelper.GetLowestNetCoreVersion(this.TargetFrameworks);
+                        if (ver != null && ver.Major >= 6)
                         {
-                            _packageReferenceGroup.Add(new XAttribute("Condition", $"'$(TargetFramework)' != '{netfxInfo.FullName}'"));
+                            _packageReferenceGroup.Add(new XAttribute("Condition", $"!$(TargetFramework.StartsWith('net4'))"));
                         }
                     }
                 }
@@ -541,15 +539,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         this.ProjectReferceGroup.Add(new XElement("ProjectReference", new XAttribute("Include", dependency.FullPath)));
                         break;
                     case ProjectDependencyType.Binary:
-                        FrameworkInfo netfxInfo = null;
-                        FrameworkInfo dnxInfo = null;
-                        string dnxStr = this.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
+                        Version ver = TargetFrameworkHelper.GetLowestNetCoreVersion(this.TargetFrameworks);
                         if (this.TargetFrameworks.Count() > 1 && dependency.Name.Equals(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault().Name)
-                            && !string.IsNullOrWhiteSpace(dnxStr) && dnxInfo.Version.Major >= 6)
+                            && ver != null && ver.Major >= 6)
                         {
-                            if (this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out netfxInfo) && !netfxInfo.IsDnx))
+                            if (this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
                             {
-                                this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Condition", $"'$(TargetFramework)' == '{netfxInfo.FullName}'"), new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
+                                this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Condition", $"$(TargetFramework.StartsWith('net4'))"), new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
                             }
                         }
                         else
