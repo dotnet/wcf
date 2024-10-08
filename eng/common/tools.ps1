@@ -900,7 +900,7 @@ function IsWindowsPlatform() {
 }
 
 function Get-Darc($version) {
-  $darcPath  = "$TempDir\darc\$([guid]::NewGuid())"
+  $darcPath  = "$TempDir\darc\$(New-Guid)"
   if ($version -ne $null) {
     & $PSScriptRoot\darc-init.ps1 -toolpath $darcPath -darcVersion $version | Out-Host
   } else {
