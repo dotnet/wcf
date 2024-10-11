@@ -245,7 +245,7 @@ namespace WcfService
             Guid guid = Guid.NewGuid();
             string localHost = "http://localhost";
             string path = "/WindowsCommunicationFoundationTest/" + WindowsIdentity.GetCurrent().Name.Split('\\').Last() + "/" + guid.ToString();
-            
+
             ServiceHost host = new ServiceHost(typeof(WcfRestartService));
             host.AddServiceEndpoint(typeof(IWcfRestartService), binding, localHost + path);
             host.Open();
@@ -311,7 +311,7 @@ namespace WcfService
             return result;
         }
 
-        public XmlMessageContractTestResponse EchoMessageResquestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request)
+        public XmlMessageContractTestResponse EchoMessageRequestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request)
         {
             var result = new XmlMessageContractTestResponse(request.Message);
             return result;
