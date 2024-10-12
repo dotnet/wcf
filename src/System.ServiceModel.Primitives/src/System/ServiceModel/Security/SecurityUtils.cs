@@ -201,6 +201,8 @@ namespace System.ServiceModel.Security
         public const string Principal = "Principal";
         private static IIdentity s_anonymousIdentity;
         private static X509SecurityTokenAuthenticator s_nonValidatingX509Authenticator;
+        internal const string EnableLegacyUpnUsernameFixString = "Switch.System.ServiceModel.EnableLegacyUpnUsernameFix";
+        internal static bool s_enableLegacyUpnUsernameFix = AppContext.TryGetSwitch(EnableLegacyUpnUsernameFixString, out bool enabled) && enabled;
 
         internal static string GetSpnFromIdentity(EndpointIdentity identity, EndpointAddress target)
         {
@@ -933,6 +935,11 @@ namespace System.ServiceModel.Security
 
         internal static void FixNetworkCredential(ref NetworkCredential credential)
         {
+            FixNetworkCredential(ref credential, s_enableLegacyUpnUsernameFix);
+        }
+
+        internal static void FixNetworkCredential(ref NetworkCredential credential, bool enableLegacyUpnUsernameFix)
+        {
             if (credential == null)
             {
                 return;
@@ -952,7 +959,7 @@ namespace System.ServiceModel.Security
                         credential = new NetworkCredential(partsWithSlashDelimiter[1], credential.Password, partsWithSlashDelimiter[0]);
                     }
                 }
-                else if (partsWithSlashDelimiter.Length == 1 && partsWithAtDelimiter.Length == 2)
+                else if (enableLegacyUpnUsernameFix && partsWithSlashDelimiter.Length == 1 && partsWithAtDelimiter.Length == 2)
                 {
                     if (!string.IsNullOrEmpty(partsWithAtDelimiter[0]) && !string.IsNullOrEmpty(partsWithAtDelimiter[1]))
                     {
