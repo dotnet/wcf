@@ -33,8 +33,7 @@ namespace WcfTestCommon
             /// Returns true if current OS matches OSPlatform
             /// </summary>
             /// <param name="os">OS Platform to check for</param>
-            public static bool IsOSPlatform(OSPlatform osPlatform) =>
-              RuntimeInformation.IsOSPlatform(osPlatform);
+            public static bool IsOSPlatform(OSPlatform osPlatform) => RuntimeInformation.IsOSPlatform(osPlatform);
         }
 
         public static X509Store GetX509Store(StoreName storeName, StoreLocation storeLocation)
