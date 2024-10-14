@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BouncyCastle.Crypto.dll" Version="1.8.1" />
+    <ProjectReference Include="..\CertificateGeneratorLibrary\CertificateGeneratorLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
