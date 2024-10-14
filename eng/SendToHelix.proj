@@ -19,9 +19,10 @@
   
   <Target Name="InstallDotNet">
     <ItemGroup>
-      <AdditionalDotNetPackage Include="8.0.5">
+      <AdditionalDotNetPackage Include="Latest">
         <PackageType>aspnetcore-runtime</PackageType>
-        <Channel>Current</Channel>
+        <Version>Latest</Version>
+        <Channel>8.0</Channel>
       </AdditionalDotNetPackage>
     </ItemGroup>
   </Target>
