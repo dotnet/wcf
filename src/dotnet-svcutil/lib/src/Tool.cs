@@ -272,7 +272,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             try
             {
-                var dependencies = TargetFrameworkHelper.GetWcfProjectReferences(project.TargetFramework);
+                var dependencies = TargetFrameworkHelper.GetWcfProjectReferences(project.TargetFrameworks);
                 if (dependencies != null)
                 {
                     bool needSave = false;
@@ -289,8 +289,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     if (project.TargetFrameworks.Count() > 1 && project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo fxInfo) && !fxInfo.IsDnx))
                     {
                         FrameworkInfo fxInfo = null;
-                        var tfx = project.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out fxInfo) && fxInfo.IsDnx);
-                        if (!string.IsNullOrEmpty(tfx) && fxInfo.Version.Major >= 6)
+                        Version ver = TargetFrameworkHelper.GetLowestNetCoreVersion(project.TargetFrameworks);
+                        if (ver != null && ver.Major >= 6)
                         {
                             needSave |= project.AddDependency(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault());
                         }
