@@ -10,7 +10,7 @@
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "BinLib"
+      "BinLib, *"
     ],
     "targetFramework": "N.N",
     "typeReuseMode": "All"

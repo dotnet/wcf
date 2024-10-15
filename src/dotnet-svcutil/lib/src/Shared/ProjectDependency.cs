@@ -153,7 +153,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             this.ReferenceIdentity = this.DependencyType == ProjectDependencyType.Package || this.DependencyType == ProjectDependencyType.Tool || !string.IsNullOrWhiteSpace(packageName) ?
                 string.Format(CultureInfo.InvariantCulture, "{0}, {{{1}, {2}}}", this.AssemblyName, this.Name, this.Version) :
-                this.AssemblyName;
+                string.Format(CultureInfo.InvariantCulture, "{0}, {1}", this.AssemblyName, this.Version);
 
             this.IsFramework = this.Name == NetCoreAppPackageID || this.Name == NetStandardLibraryPackageID;
         }
