@@ -108,10 +108,10 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("net48")] //System.ServiceModel get referened and CloseAsync() is generated
-        [InlineData("netstd20")] //WCF package older than V4.10 get referened and CloseAsync() is generated
-        [InlineData("net60")] //WCF package newer than V4.10 get referened and CloseAsync() is not generated
-        [InlineData("net60net48")] //WCF package newer than V4.10 and System.ServiceModel.dll are referenced conditionally by target and CloseAsync() be generarted with conditional compilation mark
+        [InlineData("net48")] //System.ServiceModel get referened and CloseAsync() is generated with Target Framework Preprocessor Directive 
+        [InlineData("netstd20")] //WCF package V4.10 get referened and CloseAsync() is generated with TFPD
+        [InlineData("net60")] //WCF package V6.2 get referened and CloseAsync() is generated with TFPD
+        [InlineData("net60net48")] //WCF package V6.2 and System.ServiceModel.dll are referenced conditionally by target and CloseAsync() is generated with TFPD
         public async Task MultiTargetCloseAsyncGeneration(string testCaseName)
         {
             this_TestCaseName = "MultiTargetCloseAsyncGeneration";
