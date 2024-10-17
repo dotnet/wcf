@@ -2,7 +2,8 @@
 <Project>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" />
-  <Import Project="eng\FacadeAssemblies.targets" Condition="'$(IsPartialFacadeAssembly)' == 'true'" />
+  <!-- <Import Project="eng\FacadeAssemblies.targets" Condition="'$(IsPartialFacadeAssembly)' == 'true'" /> -->
+  <Import Project="eng\ReferenceAssemblies.targets" Condition="'$(HasReferenceAssembly)' == 'true'" />
   <Import Project="eng\testing\runsettings.targets" Condition="'$(EnableRunSettingsSupport)' == 'true'" />
 
   <PropertyGroup>

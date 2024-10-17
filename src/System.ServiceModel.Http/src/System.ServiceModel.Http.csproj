@@ -12,27 +12,21 @@
     <PackageDescription>Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).</PackageDescription>
   </PropertyGroup>
 
+    <!-- DesignTimeBuild requires all the TargetFramework Derived Properties to not be present in the first property group. -->
   <PropertyGroup>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <GenAPIGenerateReferenceAssemblySource>true</GenAPIGenerateReferenceAssemblySource>
-    <GenAPITargetPath>..\ref\System.ServiceModel.Http.cs</GenAPITargetPath>
-    <GenAPIVerbosity>high</GenAPIVerbosity>
+    <TargetFrameworkId>$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)'))</TargetFrameworkId>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net462'">
+  <ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
     <Reference Include="System.ServiceModel.dll" />
   </ItemGroup>
-<!-- Version="$(MicrosoftDotNetGenAPIVersion)" -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.GenAPI" version="8.0.0-beta.24360.5" />
-  </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
     <Compile Include="..\..\Common\src\System\SR.cs">
       <Link>Common\System\SR.cs</Link>
     </Compile>
@@ -51,7 +45,7 @@
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
     <EmbeddedResource Update="Resources\Strings.resx">
       <GenerateSource>true</GenerateSource>
       <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
@@ -60,17 +54,21 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net462'">
+  <ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
     <Compile Remove="NetFxTypeForwards.cs" />
     <None Include="NetFxTypeForwards.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
     <None Include="@(Compile)" />
     <None Include="@(EmbeddedResource)" />
     <Compile Remove="@(Compile)" />
     <EmbeddedResource Remove="@(EmbeddedResource)" />
     <Compile Include="NetFxTypeForwards.cs" />
   </ItemGroup>
+
+  <!--<ItemGroup Condition="'$(IsCrossTargetingBuild)' != 'true'" >
+    <Content Include="$(ArtifactsObjDir)\$(AssemblyName).Ref\$(Configuration)\$(TargetFramework)\$(AssemblyName).dll" Pack="true" PackagePath="ref\$(TargetFramework)\" Visible="false"/>
+  </ItemGroup>-->
 
 </Project>

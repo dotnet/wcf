@@ -20,6 +20,11 @@
   <PropertyGroup>
     <IsPartialFacadeAssembly Condition="'$(IsPartialFacadeAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Facade')))">true</IsPartialFacadeAssembly>
     <IsReferenceAssembly Condition="'$(IsReferenceAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Ref')))">true</IsReferenceAssembly>
+    <ReferenceAssemblyExistence Condition="Exists('..\ref\$(AssemblyName).Ref.csproj')">true</ReferenceAssemblyExistence>
+    <ReferenceAssemblyExistence Condition="!Exists('..\ref\$(AssemblyName).Ref.csproj')">false</ReferenceAssemblyExistence>
+    <CalculatedReferenceAssemblyPath>$(MSBuildProjectDirectory)\..\ref\$([System.IO.Path]::GetFileNameWithoutExtension($(MSBuildProjectFile))).Ref.csproj</CalculatedReferenceAssemblyPath>
+    <CalculatedReferenceAssemblyPath>$([System.IO.Path]::GetFullPath($(CalculatedReferenceAssemblyPath)))</CalculatedReferenceAssemblyPath>
+    <HasReferenceAssembly Condition="'$(IsReferenceAssembly)' != 'true' AND Exists('..\ref\$([System.IO.Path]::GetFileNameWithoutExtension($(MSBuildProjectFile))).Ref.csproj')">true</HasReferenceAssembly>
   </PropertyGroup>
 
   <PropertyGroup>

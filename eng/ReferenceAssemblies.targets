@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <GenAPIGenerateReferenceAssemblySource>true</GenAPIGenerateReferenceAssemblySource>
+    <GenAPITargetPath>..\ref\$(AssemblyName).cs</GenAPITargetPath>
+    <GenAPIVerbosity>high</GenAPIVerbosity>
+    <RefAssemblyProjectReference>$(MSBuildProjectDirectory)\..\ref\$(AssemblyName).Ref.csproj</RefAssemblyProjectReference>
+    <RefAssemblyProjectReference>$([System.IO.Path]::GetFullPath($(RefAssemblyProjectReference)))</RefAssemblyProjectReference>
+
+    <!-- <RefAssemblyProjectReference Condition="'$(RefAssemblyProjectReference)' == '' AND '$(HasReferenceAssembly)' == 'true'">$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)\..\ref\$(AssemblyName).Ref.csproj)</RefAssemblyProjectReference> -->
+  </PropertyGroup>
+
+
+<!-- Version="$(MicrosoftDotNetGenAPIVersion)" -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.GenAPI"
+                      version="8.0.0-beta.24360.5"
+                      PrivateAssets="all"
+                      IsImplicitlyDefined="true"/>
+    <ProjectReference Include="$(RefAssemblyProjectReference)">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>ResolvedReferenceAssemblyReference</OutputItemType>
+    </ProjectReference>
+  </ItemGroup>
+  
+  <PropertyGroup Condition="'$(HasReferenceAssembly)' == 'true'">
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificBuildOutput);AddReferenceAssemblyToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+  
+  <Target Name="AddReferenceAssemblyToPackage" AfterTargets="AssignTargetPaths">
+    <Message Text="Running target AddReferenceAssemblyToPackage" Importance="high" />
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(ResolvedReferenceAssemblyReference)" PackagePath="ref/$(TargetFramework)" />
+    </ItemGroup>
+    <Message Text="In AddReferenceAssemblyToPackage added @(ResolvedReferenceAssemblyReference) with package path ref/$(TargetFramework)" Importance="high" />
+  </Target>
+</Project>
