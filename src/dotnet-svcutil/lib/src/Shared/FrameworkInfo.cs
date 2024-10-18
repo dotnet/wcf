@@ -78,18 +78,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (name.ToLower().Contains(Netversion))
             {
-                //.NETStandard,Version=v2.0 => netstandard2.0
+                //TFMoniker form ".NETStandard,Version=v2.0" resolves to framework name "netstandard."
                 if (name.ToLower().Contains(Netstandard))
                 {
                     name = Netstandard;
                 }
-                //.NETFramework,Version=v4.8 => net4.8
-                //.NETCoreApp,Version=v6.0 => net6.0
+                //TFMoniker form ".NETFramework,Version=v4.8" resolves to framework name "net"
+                //TFMoniker form ".NETCoreApp,Version=v6.0" resolves to framework name "net"
                 else if (name.ToLower().Contains(Netframework) || version.Major >= 5)
                 {
                     name = Netfx;
                 }
-                //.NETCoreApp,Version=v3.1 => netcoreapp3.1
+
+                //TFMoniker form ".NETCoreApp,Version=v3.1" resolves to framework name "netcoreapp"
                 else
                 {
                     name = Netcoreapp;
