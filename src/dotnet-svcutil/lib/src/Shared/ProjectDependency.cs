@@ -43,7 +43,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         /// <summary>
         /// Assembly full path.
         /// </summary>
-        public string FullPath { get; private set; }
+        public string FullPath { get; set; }
 
         /// <summary>
         /// Assembly name.
@@ -63,7 +63,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         /// <summary>
         /// The package identity, used for describing the dependency passed to Svcutil.
         /// </summary>
-        public string ReferenceIdentity { get; private set; }
+        public string ReferenceIdentity { get; set; }
 
         #region instance contruction methods
         // this ctr is private to ensure the integrity of the data which can be done only by the provided static instance creation (FromXXX) methods.
