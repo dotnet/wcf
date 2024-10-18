@@ -97,6 +97,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     this.Inputs[idx] = new Uri(relPath, UriKind.Relative);
                 }
             }
+
+            // Update references
+            for (int idx = 0; idx < this.References.Count; idx++)
+            {
+                var reference = this.References[idx];
+                if (reference.DependencyType == ProjectDependencyType.Project || reference.DependencyType == ProjectDependencyType.Binary)
+                {
+                    PathHelper.GetRelativePath(reference.FullPath, optionsFileDirectory, out relPath);
+                    this.References[idx].ReferenceIdentity = relPath;
+                }
+            }
         }
 
         public void ResolveFullPathsFrom(DirectoryInfo optionsFileDirectory)
@@ -114,6 +125,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (!input.IsAbsoluteUri && PathHelper.IsFile(input, optionsFileDirectory.FullName, out var fileUri))
                 {
                     this.Inputs[idx] = fileUri;
+                }
+            }
+
+            // Update references full path
+            for (int idx = 0; idx < this.References.Count; idx++)
+            {
+                var reference = this.References[idx];
+                if (reference.DependencyType == ProjectDependencyType.Project || reference.DependencyType == ProjectDependencyType.Binary)
+                {
+                    this.References[idx].FullPath = Path.Combine(optionsFileDirectory.FullName, reference.ReferenceIdentity);
                 }
             }
         }
