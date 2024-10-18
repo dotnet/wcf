@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(ServiceTcpPort)' == ''">
-      <ServiceTcpPort>809</ServiceTcpPort>
+      <ServiceTcpPort>8808</ServiceTcpPort>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(ServiceWebSocketPort)' == ''">
