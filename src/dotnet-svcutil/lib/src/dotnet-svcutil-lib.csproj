@@ -64,6 +64,7 @@
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.6.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="System.Reflection.DispatchProxy" Version="4.4.0" />
+    <PackageReference Include="System.Reflection.MetadataLoadContext" Version="6.0.0" />
   </ItemGroup>
   
   <Target Name="PackAdditonalDlls" AfterTargets="build">

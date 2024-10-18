@@ -5,8 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
@@ -17,16 +17,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         static public Assembly LoadAssembly(string path)
         {
-            string DotDll = ".dll";
-            string DotExe = ".exe";
+            string[] runtimeAssemblies = Directory.GetFiles(RuntimeEnvironment.GetRuntimeDirectory(), "*.dll");
+            var paths = new List<string>(runtimeAssemblies);
 
-            if (path.EndsWith(DotDll, StringComparison.OrdinalIgnoreCase) || path.EndsWith(DotExe, StringComparison.OrdinalIgnoreCase))
-            {
-                path = path.Remove(path.Length - DotDll.Length, DotDll.Length);
-            }
+            var resolver = new PathAssemblyResolver(paths);
+            var mlc = new MetadataLoadContext(resolver);
+            
             try
             {
-                return Assembly.Load(new AssemblyName(path));
+                return mlc.LoadFromAssemblyPath(path);
             }
             catch (Exception ex)
             {
@@ -49,10 +48,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 listType.AddRange(Array.FindAll<Type>(rtle.Types, delegate (Type t)
                 {
                     return t != null;
-                }));
-
-                //type.Module or type.Assembly could throw if multiple assembly with same name get referenced but only one version get restored.                
-                listType = listType.Except(GetUnAvailableTypes(listType)).ToList();
+                }));               
 
                 if (verbosity > Verbosity.Normal)
                 {

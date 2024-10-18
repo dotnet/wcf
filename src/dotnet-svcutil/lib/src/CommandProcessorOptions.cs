@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -813,25 +814,22 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             // we should not load the ServiceModel assemblies as types will clash with the private code types.
             var loadableReferences = this.References.Where(r => !TargetFrameworkHelper.ServiceModelPackages.Any(s => s.Name == r.Name));
+
+            string projFolder = Path.Combine(this.BootstrapPath.FullName, nameof(SvcutilBootstrapper));
+            DirectoryInfo directoryInfo = new DirectoryInfo(projFolder); 
+            
+
             foreach (ProjectDependency reference in loadableReferences)
             {
                 Assembly assembly = null;
 
-                if (this.ToolContext == OperationalContext.Infrastructure)
-                {
-                    string projFolder = Path.Combine(this.BootstrapPath.FullName, nameof(SvcutilBootstrapper));
-                    DirectoryInfo directoryInfo = new DirectoryInfo(projFolder);
-                    FileInfo assemblyFile = directoryInfo.GetFiles(reference.AssemblyName + ".*", SearchOption.AllDirectories).FirstOrDefault();
-                    if (assemblyFile != null)
-                    {
-                        assembly = Assembly.LoadFrom(assemblyFile.FullName);
-                    }
-                }
-                else
-                {
-                    assembly = TypeLoader.LoadAssembly(reference.AssemblyName);
-                }
+                FileInfo assemblyFile = directoryInfo.GetFiles(reference.AssemblyName + ".*", SearchOption.AllDirectories).FirstOrDefault();
 
+                if (assemblyFile != null)
+                {
+                    assembly = TypeLoader.LoadAssembly(assemblyFile.FullName);
+                }
+               
                 if (assembly != null)
                 {
                     if (!this.ReferencedAssemblies.Contains(assembly))
