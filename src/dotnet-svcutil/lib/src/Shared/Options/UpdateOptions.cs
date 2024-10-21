@@ -104,8 +104,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 var reference = this.References[idx];
                 if (reference.DependencyType == ProjectDependencyType.Project || reference.DependencyType == ProjectDependencyType.Binary)
                 {
-                    PathHelper.GetRelativePath(reference.FullPath, optionsFileDirectory, out relPath);
-                    this.References[idx].ReferenceIdentity = relPath;
+                    this.References[idx].ReferenceIdentity = PathHelper.GetRelativePath(reference.FullPath, optionsFileDirectory, out relPath) ? relPath : reference.FullPath;
                 }
             }
         }
@@ -134,7 +133,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 var reference = this.References[idx];
                 if (reference.DependencyType == ProjectDependencyType.Project || reference.DependencyType == ProjectDependencyType.Binary)
                 {
-                    this.References[idx].FullPath = Path.Combine(optionsFileDirectory.FullName, reference.ReferenceIdentity);
+                    string fullPath = Path.GetFullPath(Path.Combine(optionsFileDirectory.FullName, reference.ReferenceIdentity));
+                    this.References[idx].FullPath = fullPath;
+                    this.References[idx].ReferenceIdentity = fullPath;
                 }
             }
         }

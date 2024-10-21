@@ -627,12 +627,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     {
                         for (int idx = this.References.Count - 1; idx >= 0; idx--)
                         {
-                            var selected = references.Where(x => string.Equals(this.References[idx].Name, x.Name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-                            if (selected != null)
-                            {
-                                this.References[idx] = selected;
-                            }
-                            else
+                            if (!references.Contains(this.References[idx]))
                             {
                                 this.References.RemoveAt(idx);
                             }
