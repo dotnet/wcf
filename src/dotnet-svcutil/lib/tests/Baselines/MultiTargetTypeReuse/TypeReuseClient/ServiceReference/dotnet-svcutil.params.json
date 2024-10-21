@@ -10,7 +10,7 @@
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "BinLib, *"
+      "../bin/Debug/net6.0/BinLib.dll"
     ],
     "targetFramework": "N.N",
     "typeReuseMode": "All"
