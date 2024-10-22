@@ -71,7 +71,9 @@ public class BasicHttpsBindingTest : ConditionalWcfTest
         binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
         var factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(FakeAddress.HttpsAddress));
         byte[] certificateBytes = Convert.FromBase64String(BasicHttpsBindingTest.AUserCertificate);
+#pragma warning disable SYSLIB0057
         var certificate = new X509Certificate2(certificateBytes);
+#pragma warning restore SYSLIB0057
         factory.Credentials.ClientCertificate.Certificate = certificate;
         var channel = factory.CreateChannel();
         Assert.Throws<PlatformNotSupportedException>(() => channel.Echo("hello"));
