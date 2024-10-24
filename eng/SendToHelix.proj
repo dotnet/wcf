@@ -32,8 +32,8 @@
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
     <HelixTargetQueue Include="windows.11.amd64.client" />
-    <HelixTargetQueue Include="(Debian.11.Amd64.Open)Ubuntu.2204.Amd64.Open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
-    <HelixTargetQueue Include="(Mariner.2.0.Amd64.Open)Ubuntu.2204.Amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-helix-amd64" />
+    <HelixTargetQueue Include="(Debian.11.Amd64)Ubuntu.2204.Amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64" />
+    <HelixTargetQueue Include="(Mariner.2.0.Amd64)Ubuntu.2204.Amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-helix-amd64" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'Linux'" >
