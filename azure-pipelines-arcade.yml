@@ -6,7 +6,6 @@ trigger:
   branches:
     include:
     - main
-    - release/3.*
     - release/4.*
     - release/6.*
 
@@ -43,6 +42,10 @@ extends:
         compiled:
           enabled: false
           justificationForDisabling: 'CodeQL is already enabled in pipeline dotnet-wcf-codeql; this is a duplicate scan'
+      policheck:
+        enabled: true
+      tsa:
+        enabled: true
     customBuildTags:
     - ES365AIMigrationTooling
     stages:
