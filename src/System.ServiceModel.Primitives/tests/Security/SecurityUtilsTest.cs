@@ -20,12 +20,23 @@ public static class SecurityUtilsTest
         MethodInfo method = t.GetMethod("FixNetworkCredential", BindingFlags.NonPublic | BindingFlags.Static,
             null, new[] { typeof(NetworkCredential).MakeByRefType() }, null);
 
-        //switch on
+        FieldInfo f = t.GetField("s_enableLegacyUpnUsernameFix", BindingFlags.Static | BindingFlags.NonPublic);
+
+        //default
         var credential = new NetworkCredential("user@domain.com", "password");
         var parameters = new object[] { credential };
-        AppContext.SetSwitch("Switch.System.ServiceModel.EnableLegacyUpnUsernameFix", true);
         method.Invoke(null, parameters);
+        credential = (NetworkCredential)parameters[0];
+        Assert.NotNull(credential);
+        Assert.Equal("user@domain.com", credential.UserName);
+        Assert.Equal("password", credential.Password);
+        Assert.Equal(string.Empty, credential.Domain);
 
+        //switch on
+        f.SetValue(t, true);
+        credential = new NetworkCredential("user@domain.com", "password");
+        parameters = new object[] { credential };
+        method.Invoke(null, parameters);
         credential = (NetworkCredential)parameters[0];
         Assert.NotNull(credential);
         Assert.Equal("user", credential.UserName);
@@ -33,12 +44,10 @@ public static class SecurityUtilsTest
         Assert.Equal("domain.com", credential.Domain);
 
         //switch off
-        FieldInfo f = t.GetField("s_enableLegacyUpnUsernameFix", BindingFlags.Static | BindingFlags.NonPublic);
         f.SetValue(t, false);
         credential = new NetworkCredential("user@domain.com", "password");
         parameters = new object[] { credential };
         method.Invoke(null, parameters);
-
         credential = (NetworkCredential)parameters[0];
         Assert.NotNull(credential);
         Assert.Equal("user@domain.com", credential.UserName);
