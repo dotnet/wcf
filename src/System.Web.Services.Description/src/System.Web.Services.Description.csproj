@@ -7,13 +7,13 @@
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == 'net461'">true</IsPartialFacadeAssembly>
-    <EnableDefaultItems Condition="'$(TargetFramework)' == 'net461'">false</EnableDefaultItems>
+    <TargetFrameworks>netstandard2.0;$(NetFrameworkVersion)</TargetFrameworks>
+    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
+    <EnableDefaultItems Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">false</EnableDefaultItems>
     <PackageDescription>Contains classes that enable you to publicly describe an XML Web service by using the Web Services Description Language (WSDL).</PackageDescription>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">
     <Reference Include="System.Web.Services" />
 	  <Reference Include="System.Xml" />
   </ItemGroup>
@@ -27,11 +27,4 @@
       <ClassName>System.SR</ClassName>
     </EmbeddedResource>
   </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Include="..\..\Common\src\System\SR.cs">
-      <Link>Common\System\SR.cs</Link>
-    </Compile>
-  </ItemGroup>
-
 </Project>

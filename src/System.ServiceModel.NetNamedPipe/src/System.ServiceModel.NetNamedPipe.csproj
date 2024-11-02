@@ -6,7 +6,7 @@
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>$(DotNetVersion)</TargetFrameworks>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageDescription>Provides the types that permit SOAP messages to be exchanged using named pipes (example: NetNamedPipeBinding).</PackageDescription>
@@ -25,23 +25,5 @@
       <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
       <ClassName>System.SR</ClassName>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\Common\src\System\SR.cs">
-      <Link>Common\System\SR.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\ServiceModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\IdentityModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\IdentityModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\Internals\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
   </ItemGroup>
 </Project>

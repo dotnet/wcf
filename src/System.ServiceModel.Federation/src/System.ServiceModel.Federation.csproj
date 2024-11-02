@@ -6,20 +6,20 @@
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>$(DotNetVersion)</TargetFramework>
     <PackageDescription>Provides the types that allow security communications with SOAP messages using WS-Federation.</PackageDescription>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
-    <ProjectReference Include="..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
   </ItemGroup>
 
-  <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
   <ItemGroup>
     <EmbeddedResource Update="Resources\Strings.resx">
       <GenerateSource>true</GenerateSource>
@@ -29,28 +29,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\Common\src\System\SR.cs">
-      <Link>Common\System\SR.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\ServiceModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\IdentityModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\IdentityModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\Internals\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="System\IdentityModel\Security\" />
-    <Folder Include="System\Runtime\" />
-    <Folder Include="System\ServiceModel\Diagnostics\" />
-    <Folder Include="System\ServiceModel\Security\" />
-  </ItemGroup>
 </Project>

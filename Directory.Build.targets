@@ -3,8 +3,15 @@
 
   <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" />
   <!-- <Import Project="eng\FacadeAssemblies.targets" Condition="'$(IsPartialFacadeAssembly)' == 'true'" /> -->
-  <Import Project="eng\ReferenceAssemblies.targets" Condition="'$(HasReferenceAssembly)' == 'true'" />
+  <Import Project="eng\GenRefAssembly.targets" Condition="'$(HasReferenceAssembly)' == 'true'" />
+  <Import Project="eng\ReferenceAssembly.targets" Condition="'$(IsReferenceAssembly)' == 'true'" />
   <Import Project="eng\testing\runsettings.targets" Condition="'$(EnableRunSettingsSupport)' == 'true'" />
+
+  <!-- Include license and third party files to packages -->
+  <ItemGroup Condition="'$(IsShippingPackage)' != 'false'">
+    <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
+    <Content Include="$(RepoRoot)LICENSE.TXT" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <PropertyGroup>
     <!-- Disable some standard properties for building our projects -->
@@ -47,5 +54,6 @@
       <_Parameter1>true</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
-
+  
+  <Import Project="eng\RuntimePackages.targets" Condition="'$(StrongNameKeyId)' == 'Microsoft'" />
 </Project>

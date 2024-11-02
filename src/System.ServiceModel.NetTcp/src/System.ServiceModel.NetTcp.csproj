@@ -5,38 +5,21 @@
     <AssemblyName>System.ServiceModel.NetTcp</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
-    <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
-    <NoWarn>$(NoWarn);NU5131</NoWarn>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>$(DotNetVersion);$(NetFrameworkVersion);netstandard2.0</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).</PackageDescription>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
     <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\src\System.ServiceModel.NetFramingBase.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\Common\src\System\SR.cs">
-      <Link>Common\System\SR.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\ServiceModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\IdentityModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\IdentityModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\Internals\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-  </ItemGroup>
-
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">
     <EmbeddedResource Update="Resources\Strings.resx">
       <GenerateSource>true</GenerateSource>
       <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
@@ -44,4 +27,17 @@
       <ClassName>System.SR</ClassName>
     </EmbeddedResource>
   </ItemGroup>
+
+  <!--<ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
+    <Compile Remove="NetFxTypeForwards.cs" />
+    <None Include="NetFxTypeForwards.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
+    <None Include="@(Compile)" />
+    <None Include="@(EmbeddedResource)" />
+    <Compile Remove="@(Compile)" />
+    <EmbeddedResource Remove="@(EmbeddedResource)" />
+    <Compile Include="NetFxTypeForwards.cs" />
+  </ItemGroup>-->
 </Project>

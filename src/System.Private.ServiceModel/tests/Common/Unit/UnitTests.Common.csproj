@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
     <CLSCompliant>false</CLSCompliant>
     <IsPackable>false</IsPackable>
+    <IncludeSRCommonCode>false</IncludeSRCommonCode>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <ProjectReference Include="..\..\..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />

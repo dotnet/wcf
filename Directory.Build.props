@@ -11,19 +11,14 @@
     <Ship_WcfPackages Condition="'$(Ship_WcfPackages)'==''">true</Ship_WcfPackages>
   </PropertyGroup>
 
-  <!-- Include license and third party files to packages -->
-  <ItemGroup>
-    <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
-    <Content Include="$(RepoRoot)LICENSE.TXT" Pack="true" PackagePath="\" />
-  </ItemGroup>
+  <PropertyGroup>
+    <NetFrameworkVersion>net462</NetFrameworkVersion>
+    <DotNetVersion>net8.0</DotNetVersion>
+  </PropertyGroup>
 
   <PropertyGroup>
     <IsPartialFacadeAssembly Condition="'$(IsPartialFacadeAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Facade')))">true</IsPartialFacadeAssembly>
-    <IsReferenceAssembly Condition="'$(IsReferenceAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Ref')))">true</IsReferenceAssembly>
-    <ReferenceAssemblyExistence Condition="Exists('..\ref\$(AssemblyName).Ref.csproj')">true</ReferenceAssemblyExistence>
-    <ReferenceAssemblyExistence Condition="!Exists('..\ref\$(AssemblyName).Ref.csproj')">false</ReferenceAssemblyExistence>
-    <CalculatedReferenceAssemblyPath>$(MSBuildProjectDirectory)\..\ref\$([System.IO.Path]::GetFileNameWithoutExtension($(MSBuildProjectFile))).Ref.csproj</CalculatedReferenceAssemblyPath>
-    <CalculatedReferenceAssemblyPath>$([System.IO.Path]::GetFullPath($(CalculatedReferenceAssemblyPath)))</CalculatedReferenceAssemblyPath>
+    <IsReferenceAssembly Condition="'$(IsReferenceAssembly)' == '' and ($(MSBuildProjectName.EndsWith('.Ref')))">true</IsReferenceAssembly>
     <HasReferenceAssembly Condition="'$(IsReferenceAssembly)' != 'true' AND Exists('..\ref\$([System.IO.Path]::GetFileNameWithoutExtension($(MSBuildProjectFile))).Ref.csproj')">true</HasReferenceAssembly>
   </PropertyGroup>
 

@@ -5,43 +5,13 @@
     <AssemblyName>System.ServiceModel.Http</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
-    <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
-    <NoWarn>$(NoWarn);NU5131</NoWarn>
-    <TargetFrameworks>net8.0;net462</TargetFrameworks>
+    <TargetFrameworks>$(DotNetVersion);$(NetFrameworkVersion);netstandard2.0</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).</PackageDescription>
   </PropertyGroup>
 
-    <!-- DesignTimeBuild requires all the TargetFramework Derived Properties to not be present in the first property group. -->
-  <PropertyGroup>
-    <TargetFrameworkId>$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)'))</TargetFrameworkId>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
-    <Reference Include="System.ServiceModel.dll" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
-    <Compile Include="..\..\Common\src\System\SR.cs">
-      <Link>Common\System\SR.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\ServiceModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\IdentityModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\IdentityModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\Internals\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
@@ -53,22 +23,5 @@
       <ClassName>System.SR</ClassName>
     </EmbeddedResource>
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
-    <Compile Remove="NetFxTypeForwards.cs" />
-    <None Include="NetFxTypeForwards.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
-    <None Include="@(Compile)" />
-    <None Include="@(EmbeddedResource)" />
-    <Compile Remove="@(Compile)" />
-    <EmbeddedResource Remove="@(EmbeddedResource)" />
-    <Compile Include="NetFxTypeForwards.cs" />
-  </ItemGroup>
-
-  <!--<ItemGroup Condition="'$(IsCrossTargetingBuild)' != 'true'" >
-    <Content Include="$(ArtifactsObjDir)\$(AssemblyName).Ref\$(Configuration)\$(TargetFramework)\$(AssemblyName).dll" Pack="true" PackagePath="ref\$(TargetFramework)\" Visible="false"/>
-  </ItemGroup>-->
 
 </Project>

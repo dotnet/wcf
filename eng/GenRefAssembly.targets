@@ -29,10 +29,8 @@
   </PropertyGroup>
   
   <Target Name="AddReferenceAssemblyToPackage" AfterTargets="AssignTargetPaths">
-    <Message Text="Running target AddReferenceAssemblyToPackage" Importance="high" />
     <ItemGroup>
       <TfmSpecificPackageFile Include="@(ResolvedReferenceAssemblyReference)" PackagePath="ref/$(TargetFramework)" />
     </ItemGroup>
-    <Message Text="In AddReferenceAssemblyToPackage added @(ResolvedReferenceAssemblyReference) with package path ref/$(TargetFramework)" Importance="high" />
   </Target>
 </Project>

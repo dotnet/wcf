@@ -4,23 +4,24 @@
     <OutputType>Library</OutputType>
     <CLSCompliant>false</CLSCompliant>
     <IsPackable>false</IsPackable>
+    <IncludeSRCommonCode>false</IncludeSRCommonCode>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <PackageReference Include="xunit.stafact" Version="$(XUnitStaFactPackageVersion)" />
     <PackageReference Include="Microsoft.DotNet.XUnitExtensions" Version="$(MicrosoftDotNetXUnitExtensionsPackageVersion)" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="$(MicrosoftDotNetPlatformAbstractionsVersion)" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <None Include="testproperties.props" />
     <None Include="testproperties.targets" />
   </ItemGroup>
-  
+
   <Import Project="testproperties.props" />
   <Import Project="testproperties.targets" />
-  
+
   <!-- Add our code-gen target after the imports above because they reset $(CoreCompileDependsOn) -->
   <PropertyGroup>
     <CoreCompileDependsOn>$(CoreCompileDependsOn);CreateTestProperties</CoreCompileDependsOn>

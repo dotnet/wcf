@@ -6,16 +6,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
-    <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
-    <NoWarn>$(NoWarn);NU5131</NoWarn>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>$(DotNetVersion);$(NetFrameworkVersion);netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the common types used by all of the WCF libraries.</PackageDescription>
-    <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
+    <IncludeSRCommonCode>false</IncludeSRCommonCode>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
     <InternalsVisibleTo Include="System.ServiceModel.Http" />
     <InternalsVisibleTo Include="System.ServiceModel.Federation" />
     <InternalsVisibleTo Include="System.ServiceModel.NetFramingBase" />
@@ -24,34 +22,18 @@
     <InternalsVisibleTo Include="System.ServiceModel.NetNamedPipe" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
     <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
     <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="$(MicrosoftExtensionsObjectPoolVersion)" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\Common\src\System\NotImplemented.cs">
-      <Link>Common\System\NotImplemented.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\__HResults.cs">
-      <Link>Common\System\__HResults.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\ServiceModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\System\IdentityModel\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\System\IdentityModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-    <Compile Include="..\..\Common\src\Internals\**\*.cs">
-      <Visible>true</Visible>
-      <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
+  <!-- TODO: Move this version number to central package management -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
     <EmbeddedResource Update="Resources\Strings.resx">
       <GenerateSource>true</GenerateSource>
       <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
@@ -59,4 +41,37 @@
       <ClassName>System.SRP</ClassName>
     </EmbeddedResource>
   </ItemGroup>
+
+  <!-- Add ProjectReference to Duplex and Security but don't reference the assemblies for compilation.
+       The OutputItemType value adds the referenced projects compiled output assembly file path to be
+       added to an ItemGroup of that name (RetiredPackagesAssemblies in this case). The
+       AddRetiredPackageAssembliesToPackage target then adds the assemblies that we added to the
+       RetiredPackagesAssemblies ItemGroup to this projects nuget package in the lib
+       folder for the relevant tfm. This results in the Security and Duplex assemblies (which only type
+       forward to this primitives assembly) being available at runtime for any application that was
+       compiled against an earlier version of the WCF libraries.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.Duplex\src\System.ServiceModel.Duplex.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>RetiredPackagesAssemblies</OutputItemType>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.Security\src\System.ServiceModel.Security.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>RetiredPackagesAssemblies</OutputItemType>
+    </ProjectReference>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificBuildOutput);AddRetiredPackageAssembliesToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <Target Name="AddRetiredPackageAssembliesToPackage" AfterTargets="AssignTargetPaths">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(RetiredPackagesAssemblies)" PackagePath="lib/$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
 </Project>

@@ -3,12 +3,15 @@
     <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <TargetFrameworks>$(DotNetVersion);$(NetFrameworkVersion);netstandard2.0</TargetFrameworks>
-    <AssemblyName>System.ServiceModel.Http</AssemblyName>
+    <AssemblyName>System.ServiceModel.NetTcp</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <CLSCompliant>true</CLSCompliant>
+    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <IsShippingPackage>false</IsShippingPackage>
-    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'" >
+    <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\src\System.ServiceModel.NetFramingBase.csproj" />
+  </ItemGroup>
 </Project>
