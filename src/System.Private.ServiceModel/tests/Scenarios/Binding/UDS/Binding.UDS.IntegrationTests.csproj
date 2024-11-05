@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreWCF.NetFramingBase" Version="1.5.2" />
-    <PackageReference Include="CoreWCF.UnixDomainSocket" Version="1.5.0" />
+    <PackageReference Include="CoreWCF.Primitives" />
+    <PackageReference Include="CoreWCF.NetFramingBase" />
+    <PackageReference Include="CoreWCF.UnixDomainSocket" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

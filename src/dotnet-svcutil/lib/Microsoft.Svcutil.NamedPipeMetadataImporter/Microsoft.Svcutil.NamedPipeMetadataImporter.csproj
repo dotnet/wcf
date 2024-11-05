@@ -10,12 +10,8 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.ServiceModel.NetNamedPipe" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'">
-      <IncludeAssets>all</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.ServiceModel.NetNamedPipe" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'">
-      <IncludeAssets>all</IncludeAssets>
-    </PackageReference>
+    <!-- See Directory.Packages.Props for the version that will be used -->
+    <PackageReference Include="System.ServiceModel.NetNamedPipe" />
     <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == 'net462'" />
   </ItemGroup>
   <PropertyGroup>

@@ -7,6 +7,9 @@
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <TargetFramework>$(DotNetVersion)</TargetFramework>
+    <!-- Enable transitive pinning due to Microsoft.IdentityModel.Protocols.WsTrust not being
+         proactively updated by the identity team and it now references vulnerable dependencies -->
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <PackageDescription>Provides the types that allow security communications with SOAP messages using WS-Federation.</PackageDescription>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
@@ -17,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" />
   </ItemGroup>
 
   <ItemGroup>

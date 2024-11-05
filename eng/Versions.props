@@ -20,17 +20,7 @@
   <PropertyGroup>
     <MicrosoftDotNetGenFacadesPackageVersion>10.0.0-beta.24476.2</MicrosoftDotNetGenFacadesPackageVersion>
     <MicrosoftDotNetXUnitExtensionsPackageVersion>10.0.0-beta.24476.2</MicrosoftDotNetXUnitExtensionsPackageVersion>
-  </PropertyGroup>
-  <!-- CoreFx dependencies -->
-  <PropertyGroup>
-    <SystemSecurityCryptographyXmlPackageVersion>6.0.1</SystemSecurityCryptographyXmlPackageVersion>
-    <MicrosoftExtensionsObjectPoolVersion>6.0.16</MicrosoftExtensionsObjectPoolVersion>
+    <MicrosoftDotNetGenAPIPackageVersion>10.0.0-beta.24476.2</MicrosoftDotNetGenAPIPackageVersion>
   </PropertyGroup>
   <!-- Additional dependencies -->
-  <PropertyGroup>
-    <XUnitStaFactPackageVersion>0.3.5</XUnitStaFactPackageVersion>
-    <!-- Needed by Infrastructure.Common.csproj -->
-    <MicrosoftDotNetPlatformAbstractionsVersion>2.1.0</MicrosoftDotNetPlatformAbstractionsVersion>
-    <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.8.0</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
-  </PropertyGroup>
 </Project>

@@ -15,7 +15,7 @@
 <!-- Version="$(MicrosoftDotNetGenAPIVersion)" -->
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.GenAPI"
-                      version="8.0.0-beta.24360.5"
+                      version="$(MicrosoftDotNetGenApiPackageVersion)"
                       PrivateAssets="all"
                       IsImplicitlyDefined="true"/>
     <ProjectReference Include="$(RefAssemblyProjectReference)">

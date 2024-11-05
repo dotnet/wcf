@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled Condition="'$(IsTestProject)' == 'true'">true</CentralPackageTransitivePinningEnabled>
+    <NuGetAuditMode Condition="'$(IsTestProject)' != 'true'">direct</NuGetAuditMode>
+  </PropertyGroup>
+  <PropertyGroup>
+    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net6.0'">6.2.0</WCFClientPackageVersion>
+    <!-- Change net8.0, net9.0, net10.0, netstandard2.0, and net462 to 8.1.0 once it's released -->
+    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">8.0.0</WCFClientPackageVersion>
+    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net9.0'">8.0.0</WCFClientPackageVersion>
+    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'netstandard2.0'">4.10.3</WCFClientPackageVersion>
+    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net462'">4.10.3</WCFClientPackageVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- darc controlled packages -->
+    <PackageVersion Include="Microsoft.DotNet.XUnitExtensions" Version="$(MicrosoftDotNetXUnitExtensionsPackageVersion)" />
+    <PackageVersion Include="Microsoft.DotNet.PlatformAbstractions" Version="$(MicrosoftDotNetPlatformAbstractionsVersion)" />
+  
+    <PackageVersion Include="System.Security.Principal.Windows" Version="5.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.10" /> <!-- $(MicrosoftExtensionsObjectPoolVersion) -->
+    <PackageVersion Include="System.Security.Cryptography.Xml" Version="8.0.2" /> <!-- $(SystemSecurityCryptographyXmlPackageVersion) -->
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="6.8.0" /> <!-- $(MicrosoftIdentityModelProtocolsWsTrustPackageVersion) -->
+
+    <!-- dotnet-svcutil-lib packages -->
+    <PackageVersion Include="Microsoft.ApplicationInsights" Version="2.22.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="8.0.2" />
+    <PackageVersion Include="NuGet.ProjectModel" Version="6.11.1" />
+    <PackageVersion Include="NuGet.Versioning" Version="6.11.1" />
+    <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
+    <PackageVersion Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
+    <PackageVersion Include="System.Runtime.Loader" Version="4.3.0" />
+
+
+    <PackageVersion Include="BouncyCastle.Crypto.dll" Version="1.8.1" />
+    <PackageVersion Include="Xunit.StaFact" Version="1.2.46-alpha" /> <!-- $(XUnitStaFactPackageVersion) -->
+    <PackageVersion Include="CoreWCF.Primitives" Version="1.6.0" />
+    <PackageVersion Include="CoreWCF.UnixDomainSocket" Version="1.6.0" />
+    <PackageVersion Include="CoreWCF.NetFramingBase" Version="1.6.0" />
+    <PackageVersion Include="System.ServiceModel.NetTcp" Version="$(WCFClientPackageVersion)" />
+    <PackageVersion Include="System.ServiceModel.Http" Version="$(WCFClientPackageVersion)" />
+    <PackageVersion Include="System.ServiceModel.Primitives" Version="$(WCFClientPackageVersion)" />
+    <PackageVersion Include="System.ServiceModel.NetNamedPipe" Version="$(WCFClientPackageVersion)" />
+    <PackageVersion Include="System.ServiceModel.UnixDomainSocket" Version="$(WCFClientPackageVersion)" />
+    <PackageVersion Include="System.ServiceModel.Federation" Version="$(WCFClientPackageVersion)" />
+    <PackageVersion Include="Microsoft.Crank.EventSources" Version="0.1.0-alpha.20501.1" />
+    <PackageVersion Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="System.Reflection.DispatchProxy" Version="4.7.1" />
+    
+    <!-- There hasn't been an update of Microsoft.IdentityModel.Protocols.WsTrust since 6.8.0 
+         All the Microsoft.IdentityModel.* transitive dependencies are out of date. Adding them
+         so that WCF doesn't get flagged for vulnerabilities. We wouldn't normally do this,
+         but the WsTrust package isn't being actively maintained so out of an abundance of
+         caution, for this once case, we're elevating the transitive dependencies -->
+    <PackageVersion Include="Microsoft.IdentityModel.Tokens.Saml" Version="8.2.0" />
+    <PackageVersion Include="Microsoft.IdentityModel.Xml" Version="8.2.0" />
+    <!-- From WsTrust -> System.Xml.XmlDocument -> System.Xml.ReaderWriter -> System.Text.RegularExpressions -->
+    <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" /> 
+  </ItemGroup>
+  
+  <!-- Test only dependencies -->
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <!-- Temporary versions due to transitive dependencies -->
+    <!-- Once the dependency is updated, these items can be removed -->
+    <!-- CoreWCF.Primitives outdated dependencies -->
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="6.0.2" />
+    <!-- Nuget.Packaging is referencing Pkcs v6.0.4 which references Asn1 v6.0.0 -->
+    <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" />
+   
+    <!-- CoreWCF transitive dependencies where the dependent package bringing in the vulnerable package doesn't have a newer version -->
+    <!-- CoreWCF.Primitives -> Microsoft.Extensions.Logging.Console 6.0.0 (no newer 6.x version) -> System.Text.Json 6.0.0 which is vulnerable
+         Updating to 8.0.5 as Microsoft.Extensions.DependencyModel depends on System.Text.Json and we don't want to downgrade. --> 
+    <PackageVersion Include="System.Text.Json" Version="8.0.5" />
+    
+    <!-- Binding.UDS.IntergrationTests adds a FrameworkReference to Microsoft.AspNetCore.App. When referencing this framework, it removes compile time
+         and deployment references to the old AspNetCore 2.1 assemblies such as Microsoft.AspNetCore.Authentication so your application isn't actually
+         using the old assemblies if you are using a newer version of .NET. Unfortunately the nuget vulnerabilty auditting tool is unaware of this
+         and flags a net8.0 targetted test for a transitive dependency of System.Text.Encodings.Web via the old Microsoft.AspNetCore.Authentication
+         nuget package. System.Text.Encodings.Web v4.5.0 has a vulnerability, but we wouldn't be running with that anyway. So lets tell dotnet a
+         second time that we aren't using that package just to keep tooling happy. -->
+    <PackageVersion Include="System.Text.Encodings.Web" Version="8.0.0" />
+  </ItemGroup>
+</Project>

@@ -60,9 +60,7 @@ namespace System.ServiceModel
         public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get { throw null; } set { } }
         [System.ComponentModel.DefaultValueAttribute(System.Net.Security.ProtectionLevel.EncryptAndSign)]
         public System.Net.Security.ProtectionLevel ProtectionLevel { get { throw null; } set { } }
-#pragma warning disable SYSLIB0039 // Type or member is obsolete
         [System.ComponentModel.DefaultValueAttribute(System.Security.Authentication.SslProtocols.Tls | System.Security.Authentication.SslProtocols.Tls11 | System.Security.Authentication.SslProtocols.Tls12)]
-#pragma warning restore SYSLIB0039 // Type or member is obsolete
         public System.Security.Authentication.SslProtocols SslProtocols { get { throw null; } set { } }
     }
 }
