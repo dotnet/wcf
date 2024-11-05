@@ -42,6 +42,9 @@ extends:
         compiled:
           enabled: false
           justificationForDisabling: 'CodeQL is already enabled in pipeline dotnet-wcf-codeql; this is a duplicate scan'
+      binskim:
+        enabled: true
+        justificationForDisabling: true
       policheck:
         enabled: true
       tsa:
