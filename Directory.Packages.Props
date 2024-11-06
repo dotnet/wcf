@@ -46,6 +46,9 @@
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="System.Reflection.DispatchProxy" Version="4.7.1" />
     
+    <!-- Used by System.ServiceModel.Shim to add the Syndication api's to the shim -->
+    <PackageVersion Include="System.ServiceModel.Syndication" Version="8.0.0" />
+    
     <!-- There hasn't been an update of Microsoft.IdentityModel.Protocols.WsTrust since 6.8.0 
          All the Microsoft.IdentityModel.* transitive dependencies are out of date. Adding them
          so that WCF doesn't get flagged for vulnerabilities. We wouldn't normally do this,

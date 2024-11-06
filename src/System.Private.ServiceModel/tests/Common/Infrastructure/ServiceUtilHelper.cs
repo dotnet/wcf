@@ -481,39 +481,46 @@ public static class ServiceUtilHelper
     private static Uri BuildBaseUri(string protocol)
     {
         var builder = new UriBuilder();
-        builder.Host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
-        builder.Scheme = protocol;
-
-        if (!IISHosted)
+        try
         {
-            switch (protocol)
-            {
-                case "http":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceHttpPort_PropertyName));
-                    break;
-                case "ws":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceWebSocketPort_PropertyName));
-                    builder.Scheme = "http";
-                    break;
-                case "https":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceHttpsPort_PropertyName));
-                    break;
-                case "wss":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceSecureWebSocketPort_PropertyName));
-                    builder.Scheme = "https";
-                    break;
-                case "net.tcp":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceTcpPort_PropertyName));
-                    break;
-                case "net.pipe":
-                    // No port number used with named pipes, so do nothing
-                    break;
-                default:
-                    break;
-            }
-        }
+            builder.Host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+            builder.Scheme = protocol;
 
-        return builder.Uri;
+            if (!IISHosted)
+            {
+                switch (protocol)
+                {
+                    case "http":
+                        builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceHttpPort_PropertyName));
+                        break;
+                    case "ws":
+                        builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceWebSocketPort_PropertyName));
+                        builder.Scheme = "http";
+                        break;
+                    case "https":
+                        builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceHttpsPort_PropertyName));
+                        break;
+                    case "wss":
+                        builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceSecureWebSocketPort_PropertyName));
+                        builder.Scheme = "https";
+                        break;
+                    case "net.tcp":
+                        builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceTcpPort_PropertyName));
+                        break;
+                    case "net.pipe":
+                        // No port number used with named pipes, so do nothing
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return builder.Uri;
+        }
+        catch (UriFormatException ufe)
+        {
+            throw new UriFormatException($"UriBuilder didn't like parsing {builder.ToString()}", ufe);
+        }
     }
 
     public static string GetEndpointAddress(string endpoint, string protocol = "http")
@@ -535,7 +542,7 @@ public static class ServiceUtilHelper
         using (HttpClient httpClient = new HttpClient())
         {
             HttpResponseMessage response = httpClient.GetAsync(requestUri).GetAwaiter().GetResult();
-            return response.Content.ReadAsStringAsync().GetAwaiter().GetResult(); 
+            return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
         }
     }
 

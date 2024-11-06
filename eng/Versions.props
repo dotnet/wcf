@@ -24,5 +24,6 @@
   </PropertyGroup>
   <!-- Additional dependencies -->
   <PropertyGroup>
+    <MicrosoftTargetingPackNETFrameworkv472PackageVersion>1.0.0</MicrosoftTargetingPackNETFrameworkv472PackageVersion>
   </PropertyGroup>
 </Project>

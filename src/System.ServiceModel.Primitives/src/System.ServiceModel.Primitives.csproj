@@ -67,6 +67,13 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
+    <ProjectReference Include="..\..\System.ServiceModel.Shim\System.ServiceModel.Shim.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>RetiredPackagesAssemblies</OutputItemType>
+    </ProjectReference>
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificBuildOutput);AddRetiredPackageAssembliesToPackage</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
