@@ -16,15 +16,16 @@
   <ItemGroup>
     <!-- darc controlled packages -->
     <PackageVersion Include="Microsoft.DotNet.XUnitExtensions" Version="$(MicrosoftDotNetXUnitExtensionsPackageVersion)" />
-    <PackageVersion Include="Microsoft.DotNet.PlatformAbstractions" Version="$(MicrosoftDotNetPlatformAbstractionsVersion)" />
+    <!-- Needed by Infrastructure.Common.csproj -->
+    <PackageVersion Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
   
     <PackageVersion Include="System.Security.Principal.Windows" Version="5.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.10" /> <!-- $(MicrosoftExtensionsObjectPoolVersion) -->
-    <PackageVersion Include="System.Security.Cryptography.Xml" Version="8.0.2" /> <!-- $(SystemSecurityCryptographyXmlPackageVersion) -->
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="6.8.0" /> <!-- $(MicrosoftIdentityModelProtocolsWsTrustPackageVersion) -->
+    <PackageVersion Include="Microsoft.Extensions.ObjectPool" Version="8.0.10" />
+    <PackageVersion Include="System.Security.Cryptography.Xml" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="6.8.0" />
 
     <!-- dotnet-svcutil-lib packages -->
-    <PackageVersion Include="Microsoft.ApplicationInsights" Version="2.22.0" />
+    <PackageVersion Include="Microsoft.ApplicationInsights" Version="2.20.0" /> <!-- Moving to 2.22.0 causes build break -->
     <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="8.0.2" />
     <PackageVersion Include="NuGet.ProjectModel" Version="6.11.1" />
     <PackageVersion Include="NuGet.Versioning" Version="6.11.1" />
@@ -32,12 +33,8 @@
     <PackageVersion Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
     <PackageVersion Include="System.Runtime.Loader" Version="4.3.0" />
 
-
+    <PackageVersion Include="Xunit.StaFact" Version="1.2.46-alpha" />
     <PackageVersion Include="BouncyCastle.Crypto.dll" Version="1.8.1" />
-    <PackageVersion Include="Xunit.StaFact" Version="1.2.46-alpha" /> <!-- $(XUnitStaFactPackageVersion) -->
-    <PackageVersion Include="CoreWCF.Primitives" Version="1.6.0" />
-    <PackageVersion Include="CoreWCF.UnixDomainSocket" Version="1.6.0" />
-    <PackageVersion Include="CoreWCF.NetFramingBase" Version="1.6.0" />
     <PackageVersion Include="System.ServiceModel.NetTcp" Version="$(WCFClientPackageVersion)" />
     <PackageVersion Include="System.ServiceModel.Http" Version="$(WCFClientPackageVersion)" />
     <PackageVersion Include="System.ServiceModel.Primitives" Version="$(WCFClientPackageVersion)" />
@@ -81,5 +78,9 @@
          nuget package. System.Text.Encodings.Web v4.5.0 has a vulnerability, but we wouldn't be running with that anyway. So lets tell dotnet a
          second time that we aren't using that package just to keep tooling happy. -->
     <PackageVersion Include="System.Text.Encodings.Web" Version="8.0.0" />
+
+    <PackageVersion Include="CoreWCF.Primitives" Version="1.6.0" />
+    <PackageVersion Include="CoreWCF.UnixDomainSocket" Version="1.6.0" />
+    <PackageVersion Include="CoreWCF.NetFramingBase" Version="1.6.0" />
   </ItemGroup>
 </Project>

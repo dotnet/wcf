@@ -23,4 +23,6 @@
     <MicrosoftDotNetGenAPIPackageVersion>10.0.0-beta.24476.2</MicrosoftDotNetGenAPIPackageVersion>
   </PropertyGroup>
   <!-- Additional dependencies -->
+  <PropertyGroup>
+  </PropertyGroup>
 </Project>

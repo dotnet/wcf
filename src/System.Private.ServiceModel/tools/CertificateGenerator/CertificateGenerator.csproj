@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BouncyCastle.Crypto.dll" Version="1.8.1" />
+    <PackageReference Include="BouncyCastle.Crypto.dll" />
   </ItemGroup>
 
   <ItemGroup>

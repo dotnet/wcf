@@ -3,7 +3,7 @@
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net8.0;net462</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0;$(NetFrameworkVersion)</TargetFrameworks>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <LangVersion>latest</LangVersion>
@@ -11,8 +11,8 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- See Directory.Packages.Props for the version that will be used -->
-    <PackageReference Include="System.ServiceModel.NetNamedPipe" />
-    <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == 'net462'" />
+    <PackageReference Include="System.ServiceModel.NetNamedPipe" Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'" />
+    <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'" />
   </ItemGroup>
   <PropertyGroup>
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
