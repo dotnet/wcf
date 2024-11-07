@@ -2,17 +2,18 @@
 <Project>
   <PropertyGroup>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-    <GenAPIGenerateReferenceAssemblySource>true</GenAPIGenerateReferenceAssemblySource>
+    <GenAPIGenerateReferenceAssemblySource Condition="'$(GenAPIGenerateReferenceAssemblySource)' == ''">true</GenAPIGenerateReferenceAssemblySource>
     <GenAPITargetPath>..\ref\$(AssemblyName).cs</GenAPITargetPath>
-    <GenAPIVerbosity>high</GenAPIVerbosity>
     <RefAssemblyProjectReference>$(MSBuildProjectDirectory)\..\ref\$(AssemblyName).Ref.csproj</RefAssemblyProjectReference>
     <RefAssemblyProjectReference>$([System.IO.Path]::GetFullPath($(RefAssemblyProjectReference)))</RefAssemblyProjectReference>
-
+    <GenAPIExcludeApiList Condition="Exists('ReferenceAssemblyExclusions.txt')">ReferenceAssemblyExclusions.txt</GenAPIExcludeApiList>
     <!-- <RefAssemblyProjectReference Condition="'$(RefAssemblyProjectReference)' == '' AND '$(HasReferenceAssembly)' == 'true'">$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)\..\ref\$(AssemblyName).Ref.csproj)</RefAssemblyProjectReference> -->
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="ReferenceAssemblyExclusions.txt" Condition="Exists('ReferenceAssemblyExclusions.txt')" />
+  </ItemGroup>
 
-<!-- Version="$(MicrosoftDotNetGenAPIVersion)" -->
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.GenAPI"
                       version="$(MicrosoftDotNetGenApiPackageVersion)"
@@ -25,7 +26,7 @@
   </ItemGroup>
   
   <PropertyGroup Condition="'$(HasReferenceAssembly)' == 'true'">
-    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificBuildOutput);AddReferenceAssemblyToPackage</TargetsForTfmSpecificContentInPackage>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddReferenceAssemblyToPackage</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
   
   <Target Name="AddReferenceAssemblyToPackage" AfterTargets="AssignTargetPaths">

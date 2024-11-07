@@ -9,6 +9,7 @@
     <Ship_SvcUtilXmlSerPackages Condition="'$(Ship_SvcUtilXmlSerPackages)'==''">false</Ship_SvcUtilXmlSerPackages>
     <Ship_SvcUtilPackages Condition="'$(Ship_SvcUtilPackages)'==''">false</Ship_SvcUtilPackages>
     <Ship_WcfPackages Condition="'$(Ship_WcfPackages)'==''">true</Ship_WcfPackages>
+    <PlaceholderFile>$(RepositoryEngineeringDir)_._</PlaceholderFile>
   </PropertyGroup>
 
   <PropertyGroup>

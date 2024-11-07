@@ -23,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" />
-    <ProjectReference Include="..\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.Ref.csproj" />
-    <ProjectReference Include="..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+    <ProjectReference Include="..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.Ref.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" PrivateAssets="all"/>
     <PackageReference Include="System.ServiceModel.Syndication" />
   </ItemGroup>
 </Project>

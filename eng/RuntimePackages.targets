@@ -39,4 +39,21 @@
     <None Condition="Exists('netstandard.cs')" Include="netstandard.cs" />
     <None Condition="Exists('NetFxTypeForwards.cs')" Include="NetFxTypeForwards.cs" />
   </ItemGroup>
+  
+  <PropertyGroup>
+    <!-- Placeholders don't need a dependency group. -->
+    <NoWarn>$(NoWarn);NU5128;NU5131</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(PlaceholderFile)"
+          Pack="true"
+          PackagePath="ref\netcoreapp2.0\;
+                       $(BuildOutputTargetFolder)\MonoAndroid10\;
+                       $(BuildOutputTargetFolder)\MonoTouch10\;
+                       $(BuildOutputTargetFolder)\xamarinios10\;
+                       $(BuildOutputTargetFolder)\xamarinmac20\;
+                       $(BuildOutputTargetFolder)\xamarintvos10\;
+                       $(BuildOutputTargetFolder)\xamarinwatchos10\"
+          Condition="$(TargetFrameworks.Contains('netstandard2.'))" />
+  </ItemGroup>
 </Project>

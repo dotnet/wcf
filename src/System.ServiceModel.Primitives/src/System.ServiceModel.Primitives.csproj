@@ -12,6 +12,11 @@
     <LangVersion>latest</LangVersion>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the common types used by all of the WCF libraries.</PackageDescription>
+    <!-- The implementation assembly for Primitives doesn't yet match the reference assembly
+         Generating the reference assembly would generate api's we don't want. For now the
+         Primitives.Ref project has disabled EnableDefaultCompileItems so if it was generated,
+         we wouldn't compile it anyway. -->
+    <GenAPIGenerateReferenceAssemblySource>false</GenAPIGenerateReferenceAssemblySource>
     <IncludeSRCommonCode>false</IncludeSRCommonCode>
   </PropertyGroup>
 
@@ -68,7 +73,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
-    <ProjectReference Include="..\..\System.ServiceModel.Shim\System.ServiceModel.Shim.csproj">
+    <ProjectReference Include="..\..\System.ServiceModel.Shim\System.ServiceModel.Shim.csproj" PrivateAssets="all">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>RetiredPackagesAssemblies</OutputItemType>
     </ProjectReference>

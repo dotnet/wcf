@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
-    <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\src\System.ServiceModel.NetFramingBase.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\ref\System.ServiceModel.NetFramingBase.Ref.csproj" />
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
@@ -29,17 +29,4 @@
       <ClassName>System.SR</ClassName>
     </EmbeddedResource>
   </ItemGroup>
-
-  <!--<ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
-    <Compile Remove="NetFxTypeForwards.cs" />
-    <None Include="NetFxTypeForwards.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
-    <None Include="@(Compile)" />
-    <None Include="@(EmbeddedResource)" />
-    <Compile Remove="@(Compile)" />
-    <EmbeddedResource Remove="@(EmbeddedResource)" />
-    <Compile Include="NetFxTypeForwards.cs" />
-  </ItemGroup>-->
 </Project>

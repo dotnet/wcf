@@ -6,7 +6,7 @@
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <TargetFramework>$(DotNetVersion)</TargetFramework>
+    <TargetFrameworks>$(DotNetVersion)</TargetFrameworks>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <PackageDescription>Contain common types for NetFraming based transports such as NetTcp and NetNamedPipe.</PackageDescription>
   </PropertyGroup>
