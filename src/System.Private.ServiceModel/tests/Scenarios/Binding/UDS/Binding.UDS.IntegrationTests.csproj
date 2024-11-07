@@ -5,14 +5,17 @@
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="CoreWCF.Primitives" />
-    <PackageReference Include="CoreWCF.NetFramingBase" />
-    <PackageReference Include="CoreWCF.UnixDomainSocket" />
+    <PackageReference Include="CoreWCF.Primitives" Version="$(CoreWCFPrimitivesPackageVersion)" />
+    <PackageReference Include="CoreWCF.NetFramingBase" Version="$(CoreWCFNetFramingBasePackageVersion)" />
+    <PackageReference Include="CoreWCF.UnixDomainSocket" Version="$(CoreWCFUnixDomainSocketPackageVersion)" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <!-- Temporary until CoreWCF is updated -->
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(MicrosoftExtensionsCachingMemoryPackageVersion)" />
+    <PackageReference Include="System.Text.Json" Version="$(SystemTextJsonPackageVersion)" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="$(SystemTextRegularExpressionsPackageVersion)" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="$(SystemTextEncodingsWebPackageVersion)" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
     <ProjectReference Include="$(WcfScenarioTestCommonProj)" />

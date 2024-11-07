@@ -16,16 +16,14 @@
     <StrongNameKeyId>ECMA</StrongNameKeyId>
     <MicrosoftTargetingPackNETFrameworkv472Package>Microsoft.TargetingPack.NETFramework.v4.7.2</MicrosoftTargetingPackNETFrameworkv472Package>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageDownload Include="$(MicrosoftTargetingPackNETFrameworkv472Package)" Version="[$(MicrosoftTargetingPackNETFrameworkv472PackageVersion)]" />
     <ResolvedMatchingContract Include="$(NuGetPackageRoot)$(MicrosoftTargetingPackNETFrameworkv472Package.ToLowerInvariant())\$(MicrosoftTargetingPackNETFrameworkv472PackageVersion)\lib\net472\System.ServiceModel.dll" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" PrivateAssets="all"/>
-    <ProjectReference Include="..\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.Ref.csproj" PrivateAssets="all"/>
-    <ProjectReference Include="..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" PrivateAssets="all"/>
-    <PackageReference Include="System.ServiceModel.Syndication" />
+    <ProjectReference Include="..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.Ref.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" PrivateAssets="all" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="$(SystemServiceModelSyndicationPackageVersion)" />
   </ItemGroup>
 </Project>

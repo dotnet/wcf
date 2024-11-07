@@ -2,19 +2,16 @@
   <PropertyGroup>
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
   </PropertyGroup>
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
   </PropertyGroup>
-
   <PropertyGroup>
     <NoWarn>$(NoWarn);CS0108;CS0219;CS0168;CS0169;CS0414;CS0436;CS0649;NU5100</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>$(DefineConstants);HIDE_XSL;FEATURE_CORECLR;PRIVATE_RTLIB;NETCORE</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_SvcUtilPackages)</IsShipping>
@@ -30,12 +27,10 @@
     <!-- Enable localization -->
     <EnableXlfLocalization>true</EnableXlfLocalization>
   </PropertyGroup>
-
   <PropertyGroup>
     <!-- For debug builds we include the full value string so that we get actual resources, even in the case the toolchain strips the resources file -->
     <GenerateResxSourceIncludeDefaultValues Condition="'$(Configuration)' == 'Debug'">true</GenerateResxSourceIncludeDefaultValues>
   </PropertyGroup>
-
   <ItemGroup>
     <!-- AssemblyInformationalVersionAttribute is used at runtime to find the NuGet package, it must be the as the pkg version. -->
     <AssemblyAttribute Include="System.Reflection.AssemblyInformationalVersionAttribute">
@@ -51,26 +46,24 @@
       <_Parameter1>Microsoft.VisualStudio.WCF.ServiceReferences, PublicKey ='002400000480000094000000060200000024000052534131000400000100010007d1fa57c4aed9f0a32e84aa0faefd0de9e8fd6aec8f87fb03766c834c99921eb23be79ad9d5dcc1dd9ad236132102900b723cf980957fc4e177108fc607774f29e8320e92ea05ece4e821c0a5efe8f1645c4c0c93c1ab99285d622caa652c1dfad63d745d6f2de5f17e5eaf0fc4963d261c8a12436518206dc093344d5ad293'</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
-
   <ItemGroup>
     <!-- Be careful when adding package references. They should be the lowest package version for the framework supported by the tool. 
       If the tool is used on a project with a reference to a lower version the bootstrapper will fail with a nuget package downgrade error. -->
-    <PackageReference Include="Microsoft.ApplicationInsights" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" />
-    <PackageReference Include="NuGet.ProjectModel" />
-    <PackageReference Include="NuGet.Versioning" />
-    <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="System.Reflection.Emit" />
-    <PackageReference Include="System.Reflection.Emit.Lightweight" />
-    <PackageReference Include="System.Runtime.Loader" />
-    <PackageReference Include="System.Reflection.DispatchProxy" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="$(MicrosoftApplicationInsightsPackageVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(MicrosoftExtensionsDependencyModelPackageVersion)" />
+    <PackageReference Include="NuGet.ProjectModel" Version="$(NuGetProjectModelPackageVersion)" />
+    <PackageReference Include="NuGet.Versioning" Version="$(NuGetVersioningPackageVersion)" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonPackageVersion)" />
+    <PackageReference Include="System.Reflection.Emit" Version="$(SystemReflectionEmitPackageVersion)" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="$(SystemReflectionEmitLightweightPackageVersion)" />
+    <PackageReference Include="System.Runtime.Loader" Version="$(SystemRuntimeLoaderPackageVersion)" />
+    <PackageReference Include="System.Reflection.DispatchProxy" Version="$(SystemReflectionDispatchProxyPackageVersion)" />
   </ItemGroup>
-  
   <Target Name="PackAdditonalDlls" AfterTargets="build">
     <ItemGroup>
-      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net6.0\*.dll" Pack="true" PackagePath="net6.0"/>
-      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net8.0\*.dll" Pack="true" PackagePath="net8.0"/>
-      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net462\*.dll" Pack="true" PackagePath="net462"/>
+      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net6.0\*.dll" Pack="true" PackagePath="net6.0" />
+      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net8.0\*.dll" Pack="true" PackagePath="net8.0" />
+      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net462\*.dll" Pack="true" PackagePath="net462" />
     </ItemGroup>
   </Target>
   <!-- Include resx files here so that arcade will handle them correctly. -->

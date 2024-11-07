@@ -19,6 +19,9 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <!-- [todo:arcade] This attribute exists in our previously shipped S.P.SM assembly but not in all the Facade assemblies. For now removing accross all assemblies. -->
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+    <!-- We only want to ensure direct dependencies don't have a vulnerability for our packages,
+         but for unit tests, we want to make sure we aren't using vulnerable versions at runtime -->
+    <NuGetAuditMode Condition="'$(IsTestProject)' != 'true'">direct</NuGetAuditMode>
   </PropertyGroup>
 
   <PropertyGroup>

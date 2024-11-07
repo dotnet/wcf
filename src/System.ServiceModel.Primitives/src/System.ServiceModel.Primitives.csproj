@@ -19,7 +19,6 @@
     <GenAPIGenerateReferenceAssemblySource>false</GenAPIGenerateReferenceAssemblySource>
     <IncludeSRCommonCode>false</IncludeSRCommonCode>
   </PropertyGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
     <InternalsVisibleTo Include="System.ServiceModel.Http" />
     <InternalsVisibleTo Include="System.ServiceModel.Federation" />
@@ -28,17 +27,14 @@
     <InternalsVisibleTo Include="System.ServiceModel.UnixDomainSocket" />
     <InternalsVisibleTo Include="System.ServiceModel.NetNamedPipe" />
   </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
-    <PackageReference Include="System.Security.Cryptography.Xml" />
-    <PackageReference Include="Microsoft.Extensions.ObjectPool" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
+    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="$(MicrosoftExtensionsObjectPoolPackageVersion)" />
   </ItemGroup>
-
   <!-- TODO: Move this version number to central package management -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Security.Principal.Windows" />
+    <PackageReference Include="System.Security.Principal.Windows" Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
   </ItemGroup>
-
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
     <EmbeddedResource Update="Resources\Strings.resx">
@@ -48,7 +44,6 @@
       <ClassName>System.SRP</ClassName>
     </EmbeddedResource>
   </ItemGroup>
-
   <!-- Add ProjectReference to Duplex and Security but don't reference the assemblies for compilation.
        The OutputItemType value adds the referenced projects compiled output assembly file path to be
        added to an ItemGroup of that name (RetiredPackagesAssemblies in this case). The
@@ -64,25 +59,21 @@
       <OutputItemType>RetiredPackagesAssemblies</OutputItemType>
     </ProjectReference>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Security\src\System.ServiceModel.Security.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>RetiredPackagesAssemblies</OutputItemType>
     </ProjectReference>
   </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
     <ProjectReference Include="..\..\System.ServiceModel.Shim\System.ServiceModel.Shim.csproj" PrivateAssets="all">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>RetiredPackagesAssemblies</OutputItemType>
     </ProjectReference>
   </ItemGroup>
-
   <PropertyGroup>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificBuildOutput);AddRetiredPackageAssembliesToPackage</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
-
   <Target Name="AddRetiredPackageAssembliesToPackage" AfterTargets="AssignTargetPaths">
     <ItemGroup>
       <TfmSpecificPackageFile Include="@(RetiredPackagesAssemblies)" PackagePath="lib/$(TargetFramework)" />

@@ -11,7 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- See Directory.Packages.Props for the version that will be used -->
-    <PackageReference Include="System.ServiceModel.NetNamedPipe" Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'" />
+    <PackageReference Include="System.ServiceModel.NetNamedPipe" Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'" Version="$(SystemServiceModelNetNamedPipePackageVersion)" />
     <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'" />
   </ItemGroup>
   <PropertyGroup>

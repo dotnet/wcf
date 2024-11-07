@@ -11,7 +11,6 @@
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <IsShippingPackage>false</IsShippingPackage>
   </PropertyGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">
     <Compile Include="System.ServiceModel.Primitives.netstandard.cs" />
     <Compile Include="System.ServiceModel.Security.cs" />
@@ -19,9 +18,8 @@
     <Compile Condition="'$(TargetFramework)' != 'netstandard2.0'" Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
     <None Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
   </ItemGroup>
-
   <!-- TODO: Move this version number to central package management -->
   <ItemGroup>
-    <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.Security.Principal.Windows" />
+    <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.Security.Principal.Windows" Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
   </ItemGroup>
 </Project>

@@ -13,16 +13,22 @@
     <PackageDescription>Provides the types that allow security communications with SOAP messages using WS-Federation.</PackageDescription>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <ProjectReference Include="..\..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
+    <!-- There hasn't been an update of Microsoft.IdentityModel.Protocols.WsTrust since 6.8.0
+         All the Microsoft.IdentityModel.* transitive dependencies are out of date. Adding them
+         so that WCF doesn't get flagged for vulnerabilities. We wouldn't normally do this,
+         but the WsTrust package isn't being actively maintained so out of an abundance of
+         caution, for this once case, we're elevating the transitive dependencies -->
+    <PackageReference Include="Microsoft.IdentityModel.Tokens.Saml" Version="$(MicrosoftIdentityModelTokensSamlPackageVersion)" />
+    <PackageReference Include="Microsoft.IdentityModel.Xml" Version="$(MicrosoftIdentityModelXmlPackageVersion)" />
+    <!-- From WsTrust -> System.Xml.XmlDocument -> System.Xml.ReaderWriter -> System.Text.RegularExpressions -->
+    <PackageReference Include="System.Text.RegularExpressions" Version="$(SystemTextRegularExpressionsPackageVersion)" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Resources\Strings.resx">
       <GenerateSource>true</GenerateSource>
@@ -31,5 +37,4 @@
       <ClassName>System.SR</ClassName>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>
