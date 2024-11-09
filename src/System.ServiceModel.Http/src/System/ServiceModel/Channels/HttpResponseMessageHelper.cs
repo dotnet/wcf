@@ -80,7 +80,7 @@ namespace System.ServiceModel.Channels
                     // an XmlException might be thrown when trying to parse the response data.
                     // CommunicationException is the base type for any ServiceModel exceptions. If anything went
                     // wrong in any ServiceModel code, an exception deriving from CommunicationException will be
-                    // thrown. 
+                    // thrown.
                     // In these cases, be tolerant of the failure and treat it as though the action is absent.
                 }
                 catch (XmlException)
@@ -144,25 +144,30 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SR.HttpContentTypeHeaderRequired));
                 }
+
                 return false;
             }
-            else if (_contentLength != 0)
+
+            if (_contentLength == 0)
             {
-                if (!_encoder.IsContentTypeSupported(_contentType))
-                {
-                    int bytesToRead = (int)_contentLength;
-                    Stream contentStream = await GetStreamAsync(timeoutHelper);
-                    string responseExcerpt = HttpChannelUtilities.GetResponseStreamExcerptString(contentStream, ref bytesToRead);
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(HttpChannelUtilities.TraceResponseException(
-                        new ProtocolException(
-                            SR.Format(
-                                SR.ResponseContentTypeMismatch,
-                                _contentType,
-                                _encoder.ContentType,
-                                bytesToRead,
-                                responseExcerpt))));
-                }
+                return false;
             }
+
+            if (!_encoder.IsContentTypeSupported(_contentType))
+            {
+                int bytesToRead = (int)_contentLength;
+                Stream contentStream = await GetStreamAsync(timeoutHelper);
+                string responseExcerpt = HttpChannelUtilities.GetResponseStreamExcerptString(contentStream, ref bytesToRead);
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(HttpChannelUtilities.TraceResponseException(
+                    new ProtocolException(
+                        SR.Format(
+                            SR.ResponseContentTypeMismatch,
+                            _contentType,
+                            _encoder.ContentType,
+                            bytesToRead,
+                            responseExcerpt))));
+            }
+
             return true;
         }
 
@@ -217,7 +222,7 @@ namespace System.ServiceModel.Channels
             while (count > 0)
             {
                 int bytesRead = await inputStream.ReadAsync(buffer, offset, count, ct);
-                if (bytesRead == 0) // EOF 
+                if (bytesRead == 0) // EOF
                 {
                     if (_contentLength != -1)
                     {
