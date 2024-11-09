@@ -297,7 +297,10 @@ namespace System.ServiceModel.Channels
             }
             finally
             {
-                inputStream.Dispose();
+                if (inputStream != null)
+                {
+                    inputStream.Dispose();
+                }
             }
         }
 
