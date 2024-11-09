@@ -148,7 +148,7 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            if (_contentLength == 0)
+            if (_contentLength <= 0)
             {
                 return false;
             }
