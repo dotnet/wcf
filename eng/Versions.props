@@ -18,36 +18,30 @@
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
-    <MicrosoftDotNetGenFacadesPackageVersion>10.0.0-beta.24557.1</MicrosoftDotNetGenFacadesPackageVersion>
-    <MicrosoftDotNetXUnitExtensionsPackageVersion>10.0.0-beta.24557.1</MicrosoftDotNetXUnitExtensionsPackageVersion>
-    <MicrosoftDotNetGenAPIPackageVersion>10.0.0-beta.24557.1</MicrosoftDotNetGenAPIPackageVersion>
+    <MicrosoftDotNetGenFacadesPackageVersion>10.0.0-beta.24558.2</MicrosoftDotNetGenFacadesPackageVersion>
+    <MicrosoftDotNetXUnitExtensionsPackageVersion>10.0.0-beta.24558.2</MicrosoftDotNetXUnitExtensionsPackageVersion>
+    <MicrosoftDotNetGenAPIPackageVersion>10.0.0-beta.24558.2</MicrosoftDotNetGenAPIPackageVersion>
   </PropertyGroup>
   <!-- Additional dependencies -->
   <PropertyGroup>
     <MicrosoftTargetingPackNETFrameworkv472PackageVersion>1.0.0</MicrosoftTargetingPackNETFrameworkv472PackageVersion>
   </PropertyGroup>
-
   <PropertyGroup>
     <!-- Needed by Infrastructure.Common.csproj -->
     <MicrosoftDotNetPlatformAbstractionsPackageVersion>3.1.6</MicrosoftDotNetPlatformAbstractionsPackageVersion>
-
     <!-- Used by System.ServiceModel.* projects -->
     <SystemSecurityPrincipalWindowsPackageVersion>5.0.0</SystemSecurityPrincipalWindowsPackageVersion>
     <MicrosoftExtensionsObjectPoolPackageVersion>8.0.10</MicrosoftExtensionsObjectPoolPackageVersion>
     <SystemSecurityCryptographyXmlPackageVersion>8.0.2</SystemSecurityCryptographyXmlPackageVersion>
     <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.8.0</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
-
     <XunitStaFactPackageVersion>1.2.46-alpha</XunitStaFactPackageVersion>
     <BouncyCastleCryptodllPackageVersion>1.8.1</BouncyCastleCryptodllPackageVersion>
-
     <MicrosoftCrankEventSourcesPackageVersion>0.1.0-alpha.20501.1</MicrosoftCrankEventSourcesPackageVersion>
     <SystemRuntimeSerializationPrimitivesPackageVersion>4.3.0</SystemRuntimeSerializationPrimitivesPackageVersion>
     <NewtonsoftJsonPackageVersion>13.0.3</NewtonsoftJsonPackageVersion>
     <SystemReflectionDispatchProxyPackageVersion>4.7.1</SystemReflectionDispatchProxyPackageVersion>
-
     <!-- Used by System.ServiceModel.Shim to add the Syndication api's to the shim -->
     <SystemServiceModelSyndicationPackageVersion>8.0.0</SystemServiceModelSyndicationPackageVersion>
-
     <!-- There hasn't been an update of Microsoft.IdentityModel.Protocols.WsTrust since 6.8.0
      All the Microsoft.IdentityModel.* transitive dependencies are out of date. Adding them
      so that WCF doesn't get flagged for vulnerabilities. We wouldn't normally do this,
@@ -58,7 +52,6 @@
     <!-- From WsTrust -> System.Xml.XmlDocument -> System.Xml.ReaderWriter -> System.Text.RegularExpressions -->
     <SystemTextRegularExpressionsPackageVersion>4.3.1</SystemTextRegularExpressionsPackageVersion>
   </PropertyGroup>
-
   <!-- dotnet-svcutil-lib packages -->
   <PropertyGroup>
     <MicrosoftApplicationInsightsPackageVersion>2.20.0</MicrosoftApplicationInsightsPackageVersion>
@@ -68,7 +61,6 @@
     <SystemReflectionEmitPackageVersion>4.7.0</SystemReflectionEmitPackageVersion>
     <SystemReflectionEmitLightweightPackageVersion>4.7.0</SystemReflectionEmitLightweightPackageVersion>
     <SystemRuntimeLoaderPackageVersion>4.3.0</SystemRuntimeLoaderPackageVersion>
-
     <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net6.0'">6.2.0</WCFClientPackageVersion>
     <!-- Change net8.0, net9.0, net10.0, netstandard2.0, and net462 to 8.1.0 once it's released -->
     <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">8.0.0</WCFClientPackageVersion>
@@ -82,7 +74,6 @@
     <SystemServiceModelUnixDomainSocketPackageVersion>$(WCFClientPackageVersion)</SystemServiceModelUnixDomainSocketPackageVersion>
     <SystemServiceModelFederationPackageVersion>$(WCFClientPackageVersion)</SystemServiceModelFederationPackageVersion>
   </PropertyGroup>
-
   <PropertyGroup>
     <MicrosoftExtensionsCachingMemoryPackageVersion>6.0.2</MicrosoftExtensionsCachingMemoryPackageVersion>
     <SystemFormatsAsn1PackageVersion>8.0.1</SystemFormatsAsn1PackageVersion>
