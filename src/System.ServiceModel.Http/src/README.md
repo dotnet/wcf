@@ -4,7 +4,7 @@ The System.ServiceModel.Http provides the types that permit SOAP messages to be 
 
 ### Installing the package:
 
-Install System.ServiceModel.Http ackage from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.Http)
+Install System.ServiceModel.Http package from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.Http)
 
 `dotnet add package System.ServiceModel.Http`
 

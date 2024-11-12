@@ -4,7 +4,7 @@ The System.ServiceModel.NetNamedPipe provides the types that permit SOAP message
 
 ### Installing the package:
 
-Install System.ServiceModel.NetNamedPipe ackage from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.NetNamedPipe)
+Install System.ServiceModel.NetNamedPipe package from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.NetNamedPipe)
 
 `dotnet add package System.ServiceModel.NetNamedPipe`
 

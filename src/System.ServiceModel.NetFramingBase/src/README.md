@@ -4,7 +4,7 @@ The System.ServiceModel.NetFramingBase contains common types for NetFraming base
 
 ### Installing the package:
 
-Install System.ServiceModel.NetFramingBase ackage from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.NetFramingBase)
+Install System.ServiceModel.NetFramingBase package from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.NetFramingBase)
 
 `dotnet add package System.ServiceModel.NetFramingBase`
 

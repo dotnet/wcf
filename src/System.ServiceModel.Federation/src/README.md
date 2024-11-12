@@ -4,7 +4,7 @@ The System.ServiceModel.Federation provides the types that allow security commun
 
 ### Installing the package:
 
-Install System.ServiceModel.Federation ackage from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.Federation)
+Install System.ServiceModel.Federation package from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.Federation)
 
 `dotnet add package System.ServiceModel.Federation`
 

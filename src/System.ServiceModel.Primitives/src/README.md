@@ -4,7 +4,7 @@ The System.ServiceModel.Primitives provides the common types used by all of the 
 
 ### Installing the package:
 
-Install System.ServiceModel.Primitives ackage from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.Primitives)
+Install System.ServiceModel.Primitives package from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.Primitives)
 
 `dotnet add package System.ServiceModel.Primitives`
 

@@ -4,7 +4,7 @@ The System.ServiceModel.NetTcp provides the types that permit SOAP messages to b
 
 ### Installing the package:
 
-Install System.ServiceModel.NetTcp ackage from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.NetTcp)
+Install System.ServiceModel.NetTcp package from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.NetTcp)
 
 `dotnet add package System.ServiceModel.NetTcp`
 

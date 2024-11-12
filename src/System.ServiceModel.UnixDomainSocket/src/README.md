@@ -4,7 +4,7 @@ The System.ServiceModel.UnixDomainSocket Provides the types that allow security 
 
 ### Installing the package:
 
-Install System.ServiceModel.UnixDomainSocket ackage from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.UnixDomainSocket)
+Install System.ServiceModel.UnixDomainSocket package from [Nuget.org](https://www.nuget.org/packages/System.ServiceModel.UnixDomainSocket)
 
 `dotnet add package System.ServiceModel.UnixDomainSocket`
 
