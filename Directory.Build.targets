@@ -57,6 +57,10 @@
       <_Parameter1>true</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
+
+  <ItemGroup Condition="Exists('README.md')" >
+    <None Include="README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
   
   <Import Project="eng\RuntimePackages.targets" Condition="'$(StrongNameKeyId)' == 'Microsoft'" />
 </Project>

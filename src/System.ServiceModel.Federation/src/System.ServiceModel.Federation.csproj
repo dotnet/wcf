@@ -10,8 +10,8 @@
     <!-- Enable transitive pinning due to Microsoft.IdentityModel.Protocols.WsTrust not being
          proactively updated by the identity team and it now references vulnerable dependencies -->
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <PackageDescription>Provides the types that allow security communications with SOAP messages using WS-Federation.</PackageDescription>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />

@@ -8,7 +8,7 @@
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <TargetFrameworks>$(DotNetVersion)</TargetFrameworks>
     <RootNamespace>System.ServiceModel</RootNamespace>
-    <PackageDescription>Contain common types for NetFraming based transports such as NetTcp and NetNamedPipe.</PackageDescription>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>

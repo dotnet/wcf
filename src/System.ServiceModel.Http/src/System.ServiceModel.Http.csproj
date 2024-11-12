@@ -9,7 +9,7 @@
     <NoWarn>$(NoWarn);NU5131</NoWarn>
     <TargetFrameworks>$(DotNetVersion);$(NetFrameworkVersion);netstandard2.0</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <PackageDescription>Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).</PackageDescription>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">
