@@ -76,7 +76,13 @@
   </PropertyGroup>
   <Target Name="AddRetiredPackageAssembliesToPackage" AfterTargets="AssignTargetPaths">
     <ItemGroup>
+      <RetiredPackagesAssemblies Update="@(RetiredPackagesAssemblies)">
+        <PdbFilePath>%(RetiredPackagesAssemblies.RootDir)%(RetiredPackagesAssemblies.Directory)%(RetiredPackagesAssemblies.Filename).pdb</PdbFilePath>  
+      </RetiredPackagesAssemblies>
+    </ItemGroup>
+    <ItemGroup>
       <TfmSpecificPackageFile Include="@(RetiredPackagesAssemblies)" PackagePath="lib/$(TargetFramework)" />
+      <TfmSpecificPackageFile Include="%(RetiredPackagesAssemblies.PdbFilePath)" PackagePath="lib/$(TargetFramework)" Condition="Exists('%(RetiredPackagesAssemblies.PdbFilePath)')" />
     </ItemGroup>
   </Target>
 </Project>
