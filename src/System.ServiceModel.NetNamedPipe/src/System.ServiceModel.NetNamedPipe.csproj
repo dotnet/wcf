@@ -16,7 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\src\System.ServiceModel.NetFramingBase.csproj" />
-    <None Include="Readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->

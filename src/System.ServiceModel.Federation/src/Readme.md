@@ -11,7 +11,8 @@ Install System.ServiceModel.Federation ackage from [Nuget.org](https://www.nuget
 ## How to use
 
 See [blog post](https://devblogs.microsoft.com/dotnet/wsfederationhttpbinding-in-net-standard-wcf/) for more information.
-p## Feedback & Contributing
+
+## Feedback & Contributing
 
 To explore the project or contribute, visit our [GitHub repository](https://github.com/dotnet/wcf/).
 For reporting issues or providing feedback, please [open an issue on GitHub](https://github.com/dotnet/wcf).
