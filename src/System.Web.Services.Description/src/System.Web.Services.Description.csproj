@@ -11,6 +11,7 @@
     <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
     <EnableDefaultItems Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">false</EnableDefaultItems>
     <PackageDescription>Contains classes that enable you to publicly describe an XML Web service by using the Web Services Description Language (WSDL).</PackageDescription>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">

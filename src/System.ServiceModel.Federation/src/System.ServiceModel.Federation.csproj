@@ -12,6 +12,7 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <PackageDescription>Provides the types that allow security communications with SOAP messages using WS-Federation.</PackageDescription>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
