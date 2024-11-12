@@ -8,7 +8,7 @@
     <TargetFrameworks>$(DotNetVersion)</TargetFrameworks>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <PackageDescription>Provides the types that permit SOAP messages to be exchanged using Unix domain socket.</PackageDescription>
-    <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
