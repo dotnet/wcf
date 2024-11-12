@@ -16,7 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <ProjectReference Include="..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
-
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
