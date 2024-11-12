@@ -9,6 +9,7 @@
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <IsShippingPackage>false</IsShippingPackage>
     <IncludeSRCommonCode>false</IncludeSRCommonCode>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">

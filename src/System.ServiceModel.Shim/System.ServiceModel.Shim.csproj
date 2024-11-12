@@ -15,6 +15,7 @@
     <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
     <StrongNameKeyId>ECMA</StrongNameKeyId>
     <MicrosoftTargetingPackNETFrameworkv472Package>Microsoft.TargetingPack.NETFramework.v4.7.2</MicrosoftTargetingPackNETFrameworkv472Package>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <PackageDownload Include="$(MicrosoftTargetingPackNETFrameworkv472Package)" Version="[$(MicrosoftTargetingPackNETFrameworkv472PackageVersion)]" />
