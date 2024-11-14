@@ -10,7 +10,6 @@
     <TargetFrameworks>netstandard2.0;$(NetFrameworkVersion)</TargetFrameworks>
     <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
     <EnableDefaultItems Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">false</EnableDefaultItems>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">

@@ -9,7 +9,6 @@
     <TargetFrameworks>$(DotNetVersion)</TargetFrameworks>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>

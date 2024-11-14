@@ -8,7 +8,6 @@
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <TargetFrameworks>$(DotNetVersion)</TargetFrameworks>
     <RootNamespace>System.ServiceModel</RootNamespace>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>

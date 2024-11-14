@@ -46,6 +46,9 @@
     <Deterministic>true</Deterministic>
     <DebugType>portable</DebugType>
   </PropertyGroup>
+  <PropertyGroup Condition="Exists('README.md')">
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="$(PlaceholderFile)"
           Pack="true"
