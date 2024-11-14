@@ -104,7 +104,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 else
                 {
                     // Show early warnings
-                    var earlyWarnings = options.Warnings;
+                    var earlyWarnings = options.Warnings.ToList();
                     foreach (string warning in earlyWarnings.Distinct())
                     {
                         ToolConsole.WriteWarning(warning);

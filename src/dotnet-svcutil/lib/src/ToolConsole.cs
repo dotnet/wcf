@@ -135,7 +135,23 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         str = logTag + str.Replace(Environment.NewLine, newLineReplacement);
                     }
 
-                    Console.WriteLine(str);
+                    var originalColor = Console.ForegroundColor;
+                    if (logTag == LogTag.Warning)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine(str);
+                        Console.ForegroundColor = originalColor;
+                    }
+                    else if (logTag == LogTag.Error)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(str);
+                        Console.ForegroundColor = originalColor;
+                    }
+                    else
+                    {
+                        Console.WriteLine(str);
+                    }
                 }
             }
         }

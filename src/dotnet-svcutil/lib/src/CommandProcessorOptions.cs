@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -667,6 +668,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private async Task ProcessTargetFrameworkOptionAsync(CancellationToken cancellationToken)
         {
+            if(this.Project != null)
+            {
+                this.Project.EndOfLifeTargetFrameworks?.ToList().ForEach(tfx => this.AddWarning(string.Format(CultureInfo.CurrentCulture, SR.WrnOutOfSupportTargetFrameworkFormat, tfx)));
+            }
+            else
+            {
+                if (TargetFrameworkHelper.IsEndofLifeFramework(this.TargetFramework?.FullName))
+                {
+                    this.AddWarning(string.Format(CultureInfo.CurrentCulture, SR.WrnOutOfSupportTargetFrameworkFormat, this.TargetFramework.FullName));
+                }
+            }
+
             if (this.TargetFramework == null)
             {
                 var targetFrameworkMoniker = string.Empty;

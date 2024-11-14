@@ -43,7 +43,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
 
         private List<string> _targetFrameworks = new List<string>();
+        private List<string> _endOfLifeTargetFrameworks = new List<string>();
         public IEnumerable<string> TargetFrameworks { get { return _targetFrameworks; } }
+        public IEnumerable<string> EndOfLifeTargetFrameworks { get { return _endOfLifeTargetFrameworks; } }
 
         private string _runtimeIdentifier;
         public string RuntimeIdentifier
@@ -358,7 +360,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 var sdkVersion = await ProjectPropertyResolver.GetSdkVersionAsync(msbuildProj.DirectoryPath, logger, cancellationToken).ConfigureAwait(false);
                 msbuildProj.SdkVersion = sdkVersion ?? string.Empty;
-
+                foreach (var tfx in msbuildProj._targetFrameworks)
+                {
+                    if(TargetFrameworkHelper.IsEndofLifeFramework(tfx))
+                    {
+                        msbuildProj._endOfLifeTargetFrameworks.Add(tfx);
+                    }
+                }
                 return msbuildProj;
             }
         }

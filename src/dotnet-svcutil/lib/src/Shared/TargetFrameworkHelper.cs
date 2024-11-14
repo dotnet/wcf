@@ -13,6 +13,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class TargetFrameworkHelper
     {
+        private static readonly int s_minEOFNetVersion = 5;
+        private static readonly int s_maxEOFNetVersion = 7;
+
         public static ReadOnlyDictionary<Version, Version> NetStandardToNetCoreVersionMap { get; } = new ReadOnlyDictionary<Version, Version>(new SortedDictionary<Version, Version>
          {
             // Service Model requires netstandard1.3 so it is the minimum version that will work.
@@ -192,6 +195,21 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             return isSupported;
+        }
+
+        public static bool IsEndofLifeFramework(string fullFrameworkName)
+        {
+            if (FrameworkInfo.TryParse(fullFrameworkName, out FrameworkInfo frameworkInfo))
+            {
+                // Return true if .NETCoreApp or .NET version is within the end-of-life range
+                return frameworkInfo.Name.Equals(FrameworkInfo.Netcoreapp, StringComparison.OrdinalIgnoreCase) ||
+                       (frameworkInfo.Name.Equals(FrameworkInfo.Netfx, StringComparison.OrdinalIgnoreCase) &&
+                        frameworkInfo.Version.Major >= s_minEOFNetVersion &&
+                        frameworkInfo.Version.Major <= s_maxEOFNetVersion);
+            }
+
+            // Return false if parsing fails or no conditions matched
+            return false;
         }
 
         public static bool ContainsFullFrameworkTarget(IEnumerable<string> targetFrameworks)
