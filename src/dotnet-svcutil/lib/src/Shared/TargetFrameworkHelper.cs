@@ -35,8 +35,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
              {new Version("3.0"), new Version("2.0") },
              {new Version("3.1"), new Version("2.0") },
              {new Version("5.0"), new Version("2.0") },
-             {new Version("6.0"), new Version("6.0") },
-             {new Version("7.0"), new Version("6.0") },
+             {new Version("6.0"), new Version("2.0") },
+             {new Version("7.0"), new Version("2.0") },
              {new Version("8.0"), new Version("8.0") }
          });
 
@@ -49,16 +49,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 ProjectDependency.FromPackage("System.ServiceModel.Security", "4.10.*"),
                 ProjectDependency.FromPackage("System.ServiceModel.Federation", "4.10.*")
             } },
-            {new Version("6.0"), new List<ProjectDependency> {
-                ProjectDependency.FromPackage("System.ServiceModel.Http", "6.*"),
-                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "6.*"),
-                ProjectDependency.FromPackage("System.ServiceModel.Primitives", "6.*")
-            } },
             {new Version("8.0"), new List<ProjectDependency> {
                 ProjectDependency.FromPackage("System.ServiceModel.Http", "8.*"),
                 ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "8.*"),
                 ProjectDependency.FromPackage("System.ServiceModel.Primitives", "8.*")
-                
             } }
         };
 

@@ -10,5 +10,7 @@
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
+    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
   </ItemGroup>
 </Project>

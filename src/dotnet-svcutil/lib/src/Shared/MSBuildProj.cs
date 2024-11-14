@@ -133,15 +133,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     {
                         _packageReferenceGroup = refItems.FirstOrDefault().Parent;
                     }
-
-                    if (this.TargetFrameworks.Count() > 1 && this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
-                    {
-                        Version ver = TargetFrameworkHelper.GetLowestNetCoreVersion(this.TargetFrameworks);
-                        if (ver != null && ver.Major >= 6)
-                        {
-                            _packageReferenceGroup.Add(new XAttribute("Condition", $"!$(TargetFramework.StartsWith('net4'))"));
-                        }
-                    }
                 }
 
                 return _packageReferenceGroup;
@@ -539,19 +530,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         this.ProjectReferceGroup.Add(new XElement("ProjectReference", new XAttribute("Include", dependency.FullPath)));
                         break;
                     case ProjectDependencyType.Binary:
-                        Version ver = TargetFrameworkHelper.GetLowestNetCoreVersion(this.TargetFrameworks);
-                        if (this.TargetFrameworks.Count() > 1 && dependency.Name.Equals(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault().Name)
-                            && ver != null && ver.Major >= 6)
-                        {
-                            if (this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo netfxInfo) && !netfxInfo.IsDnx))
-                            {
-                                this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Condition", $"$(TargetFramework.StartsWith('net4'))"), new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
-                            }
-                        }
-                        else
-                        {
-                            this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
-                        }
+                        this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
                         break;
                     case ProjectDependencyType.Package:
                         this.PacakgeReferenceGroup.Add(new XElement("PackageReference", new XAttribute("Include", dependency.Name), new XAttribute("Version", dependency.Version)));
