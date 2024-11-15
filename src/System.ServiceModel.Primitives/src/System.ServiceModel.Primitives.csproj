@@ -17,7 +17,6 @@
          we wouldn't compile it anyway. -->
     <GenAPIGenerateReferenceAssemblySource>false</GenAPIGenerateReferenceAssemblySource>
     <IncludeSRCommonCode>false</IncludeSRCommonCode>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
     <InternalsVisibleTo Include="System.ServiceModel.Http" />
