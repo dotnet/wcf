@@ -120,7 +120,7 @@ namespace SvcutilTest
             InitializeE2E(testCaseName);
 
             var uri = Path.Combine(g_TestCasesDir, "wsdl", "WcfProjectNService", "tempuri.org.wsdl");
-            var options = $"{uri} {optionModifier} -nl -tf netcoreapp1.0";
+            var options = $"{uri} {optionModifier} -nl -tf net8.0";
             this_TestCaseName = testCaseName;
             TestSvcutil(AppendCommonOptions(options));
         }

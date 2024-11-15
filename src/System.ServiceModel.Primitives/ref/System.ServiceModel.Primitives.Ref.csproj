@@ -2,17 +2,24 @@
   <PropertyGroup>
     <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>$(DotNetVersion);$(NetFrameworkVersion);netstandard2.0</TargetFrameworks>
     <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <CLSCompliant>true</CLSCompliant>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <IsShippingPackage>false</IsShippingPackage>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="System.ServiceModel.Primitives.cs" />
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">
+    <Compile Include="System.ServiceModel.Primitives.netstandard.cs" />
     <Compile Include="System.ServiceModel.Security.cs" />
-    <Compile Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
     <Compile Include="System.ServiceModel.Duplex.cs" />
+    <Compile Condition="'$(TargetFramework)' != 'netstandard2.0'" Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
+    <None Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
+  </ItemGroup>
+  <!-- TODO: Move this version number to central package management -->
+  <ItemGroup>
+    <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.Security.Principal.Windows" Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
   </ItemGroup>
 </Project>

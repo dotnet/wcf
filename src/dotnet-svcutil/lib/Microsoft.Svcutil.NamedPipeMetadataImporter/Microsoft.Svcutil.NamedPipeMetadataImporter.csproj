@@ -3,20 +3,16 @@
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net8.0;net462</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0;$(NetFrameworkVersion)</TargetFrameworks>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <LangVersion>latest</LangVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.ServiceModel.NetNamedPipe" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'">
-      <IncludeAssets>all</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.ServiceModel.NetNamedPipe" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'">
-      <IncludeAssets>all</IncludeAssets>
-    </PackageReference>
-    <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == 'net462'" />
+    <!-- See Directory.Packages.Props for the version that will be used -->
+    <PackageReference Include="System.ServiceModel.NetNamedPipe" Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'" Version="$(SystemServiceModelNetNamedPipePackageVersion)" />
+    <Reference Include="System.ServiceModel" Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'" />
   </ItemGroup>
   <PropertyGroup>
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>

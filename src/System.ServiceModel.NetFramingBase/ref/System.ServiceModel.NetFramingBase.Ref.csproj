@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <TargetFrameworks>$(DotNetVersion)</TargetFrameworks>
+    <AssemblyName>System.ServiceModel.NetFramingBase</AssemblyName>
+    <RootNamespace>System.ServiceModel</RootNamespace>
+    <CLSCompliant>true</CLSCompliant>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <NoWarn>$(NoWarn);SYSLIB0039</NoWarn>
+    <IsShippingPackage>false</IsShippingPackage>
+  </PropertyGroup>
+</Project>

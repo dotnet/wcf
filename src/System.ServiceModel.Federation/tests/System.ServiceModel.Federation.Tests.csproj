@@ -1,20 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
     <CLSCompliant>false</CLSCompliant>
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Federation\src\System.ServiceModel.Federation.csproj" />
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <ProjectReference Include="$(WcfUnitTestCommonProj)" />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
   </ItemGroup>
-
 </Project>

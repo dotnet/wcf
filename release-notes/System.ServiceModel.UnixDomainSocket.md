@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 8.1.0
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.UnixDomainSocket/8.1.0)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v8.1.0-rtm)
+
 ### 8.0.0
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.UnixDomainSocket/8.0.0)

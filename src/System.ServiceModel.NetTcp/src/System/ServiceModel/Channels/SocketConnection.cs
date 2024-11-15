@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Threading;
-using System.Runtime.InteropServices;
-using System.Drawing;
 
 namespace System.ServiceModel.Channels
 {
@@ -26,7 +24,7 @@ namespace System.ServiceModel.Channels
         private TimeSpan _asyncReceiveTimeout;
 
         //// Socket.SendTimeout/Socket.ReceiveTimeout only work with the synchronous API calls and therefore they
-        //// do not get updated when asynchronous Send/Read operations are performed.  In order to make sure we 
+        //// do not get updated when asynchronous Send/Read operations are performed.  In order to make sure we
         //// Set the proper timeouts on the Socket itself we need to keep these two additional fields.
         //private TimeSpan _socketSyncSendTimeout;
         //private TimeSpan _socketSyncReceiveTimeout;
@@ -374,7 +372,7 @@ namespace System.ServiceModel.Channels
 
             lock (ThisLock)
             {
-                // Abort could have been called on a separate thread and cleaned up 
+                // Abort could have been called on a separate thread and cleaned up
                 // our buffers/completion here
                 if (_closeState != CloseState.Closed)
                 {

@@ -72,8 +72,8 @@ if "%4"=="" (
 ) 
 
 REM Disregard the chevrons and quotataions in the next line - it's to output the correct ampersand character to PowerShell
-REM We have to duplicate the request URL below for output and for PowerShell because of Powershell's crazy escape sequences interacting 
-REM badly with cmd's crazy and conflicting escape sequences
+REM We have to duplicate the request URL below for output and for PowerShell because of Powershell's escape sequences interacting 
+REM badly with cmd's conflicting escape sequences
 
 echo   [%~n0] Making call to %__SYNC_HOST_URL%?id=%__REPO_ID%^&%__OPERATION_MODE%=%__BRANCH_OR_PR_ID%
 powershell -NoProfile -ExecutionPolicy unrestricted -Command "(New-Object Net.WebClient).DownloadString('%__SYNC_HOST_URL%?id=%__REPO_ID%&%__OPERATION_MODE%=%__BRANCH_OR_PR_ID%');"

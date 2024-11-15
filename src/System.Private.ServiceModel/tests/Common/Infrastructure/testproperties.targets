@@ -98,10 +98,13 @@ namespace Infrastructure.Common
       This target writes the test properties to the file specified by
       $(GeneratedTestPropertiesFileName) if it does not already exist.
   -->
+  <PropertyGroup>
+    <ProcessedLine>$(_TestPropertyCode.Replace("%3B", ";"))</ProcessedLine>
+  </PropertyGroup>
   <Target Name="CreateTestPropertiesFile" Condition="!Exists('$(GeneratedTestPropertiesFileName)')">
     <WriteLinesToFile
         File="$(GeneratedTestPropertiesFileName)"
-        Lines="$(_TestPropertyCode)"
+        Lines="$(ProcessedLine)"
         Overwrite="true"/>
   </Target>
 
