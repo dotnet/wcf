@@ -4,6 +4,8 @@
 // Changes to this file must follow the http://aka.ms/api-review process.
 // ------------------------------------------------------------------------------
 
+using System.Collections.ObjectModel;
+
 namespace System.ServiceModel
 {
     public abstract partial class ChannelFactory : System.IAsyncDisposable
@@ -47,5 +49,21 @@ namespace System.IdentityModel.Selectors
         protected virtual System.Threading.Tasks.Task<System.IdentityModel.Tokens.SecurityToken> GetTokenCoreAsync(System.TimeSpan timeout) { return default; }
         protected virtual System.Threading.Tasks.Task<System.IdentityModel.Tokens.SecurityToken> RenewTokenCoreAsync(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken tokenToBeRenewed) { return default; }
         protected virtual System.Threading.Tasks.Task CancelTokenCoreAsync(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken token) { return default; }
+    }
+}
+namespace System.ServiceModel.Dispatcher
+{
+    public sealed partial class ClientRuntime
+    {
+        internal bool EnableFaults { get { return default; } set { } }   
+    }
+    public partial class ChannelDispatcher
+    {
+        public Collection<IErrorHandler> ErrorHandlers { get { return default; } }
+    }
+    public interface IErrorHandler
+    {
+        void ProvideFault(Exception error, System.ServiceModel.Channels.MessageVersion version, ref System.ServiceModel.Channels.Message fault);
+        bool HandleError(Exception error);
     }
 }
