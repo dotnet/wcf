@@ -11,7 +11,6 @@ namespace System.ServiceModel.Channels
 {
     public sealed class WebSocketTransportSettings : IEquatable<WebSocketTransportSettings>
     {
-        public const string ConnectionOpenedAction = "http://schemas.microsoft.com/2011/02/session/onopen";
         public const string BinaryMessageReceivedAction = "http://schemas.microsoft.com/2011/02/websockets/onbinarymessage";
         public const string TextMessageReceivedAction = "http://schemas.microsoft.com/2011/02/websockets/ontextmessage";
         public const string SoapContentTypeHeader = "soap-content-type";

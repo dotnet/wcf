@@ -16,19 +16,15 @@ namespace System.ServiceModel.Channels
     public class HttpTransportBindingElement
         : TransportBindingElement
     {
-        private HostNameComparisonMode _hostNameComparisonMode;
         private bool _inheritBaseAddressSettings;
         private int _maxBufferSize;
         private bool _maxBufferSizeInitialized;
         private string _method;
         private AuthenticationSchemes _proxyAuthenticationScheme;
-        private string _realm;
-        private TimeSpan _requestInitializationTimeout;
         private TransferMode _transferMode;
         private bool _useDefaultWebProxy;
         private WebSocketTransportSettings _webSocketSettings;
         private ExtendedProtectionPolicy _extendedProtectionPolicy;
-        private int _maxPendingAccepts;
         private MruCache<string, HttpClient> _httpClientCache;
 
         public HttpTransportBindingElement()
@@ -38,18 +34,13 @@ namespace System.ServiceModel.Channels
             AuthenticationScheme = HttpTransportDefaults.AuthenticationScheme;
             BypassProxyOnLocal = HttpTransportDefaults.BypassProxyOnLocal;
             DecompressionEnabled = HttpTransportDefaults.DecompressionEnabled;
-            _hostNameComparisonMode = HttpTransportDefaults.HostNameComparisonMode;
             KeepAliveEnabled = HttpTransportDefaults.KeepAliveEnabled;
             _maxBufferSize = TransportDefaults.MaxBufferSize;
-            _maxPendingAccepts = HttpTransportDefaults.DefaultMaxPendingAccepts;
             _method = string.Empty;
             _proxyAuthenticationScheme = HttpTransportDefaults.ProxyAuthenticationScheme;
             Proxy = HttpTransportDefaults.Proxy;
             ProxyAddress = HttpTransportDefaults.ProxyAddress;
-            _realm = HttpTransportDefaults.Realm;
-            _requestInitializationTimeout = HttpTransportDefaults.RequestInitializationTimeout;
             _transferMode = HttpTransportDefaults.TransferMode;
-            UnsafeConnectionNtlmAuthentication = HttpTransportDefaults.UnsafeConnectionNtlmAuthentication;
             _useDefaultWebProxy = HttpTransportDefaults.UseDefaultWebProxy;
             _webSocketSettings = HttpTransportDefaults.GetDefaultWebSocketTransportSettings();
         }
@@ -61,24 +52,18 @@ namespace System.ServiceModel.Channels
             AuthenticationScheme = elementToBeCloned.AuthenticationScheme;
             BypassProxyOnLocal = elementToBeCloned.BypassProxyOnLocal;
             DecompressionEnabled = elementToBeCloned.DecompressionEnabled;
-            _hostNameComparisonMode = elementToBeCloned._hostNameComparisonMode;
             _inheritBaseAddressSettings = elementToBeCloned.InheritBaseAddressSettings;
             KeepAliveEnabled = elementToBeCloned.KeepAliveEnabled;
             _maxBufferSize = elementToBeCloned._maxBufferSize;
             _maxBufferSizeInitialized = elementToBeCloned._maxBufferSizeInitialized;
-            _maxPendingAccepts = elementToBeCloned._maxPendingAccepts;
             _method = elementToBeCloned._method;
             Proxy = elementToBeCloned.Proxy;
             ProxyAddress = elementToBeCloned.ProxyAddress;
             _proxyAuthenticationScheme = elementToBeCloned._proxyAuthenticationScheme;
-            _realm = elementToBeCloned._realm;
-            _requestInitializationTimeout = elementToBeCloned._requestInitializationTimeout;
             _transferMode = elementToBeCloned._transferMode;
-            UnsafeConnectionNtlmAuthentication = elementToBeCloned.UnsafeConnectionNtlmAuthentication;
             _useDefaultWebProxy = elementToBeCloned._useDefaultWebProxy;
             _webSocketSettings = elementToBeCloned._webSocketSettings.Clone();
             _extendedProtectionPolicy = elementToBeCloned.ExtendedProtectionPolicy;
-            MessageHandlerFactory = elementToBeCloned.MessageHandlerFactory;
         }
 
         [DefaultValue(HttpTransportDefaults.AllowCookies)]
@@ -92,22 +77,6 @@ namespace System.ServiceModel.Channels
 
         [DefaultValue(HttpTransportDefaults.DecompressionEnabled)]
         public bool DecompressionEnabled { get; set; }
-
-        [DefaultValue(HttpTransportDefaults.HostNameComparisonMode)]
-        public HostNameComparisonMode HostNameComparisonMode
-        {
-            get
-            {
-                return _hostNameComparisonMode;
-            }
-            set
-            {
-                HostNameComparisonModeHelper.Validate(value);
-                _hostNameComparisonMode = value;
-            }
-        }
-
-        public HttpMessageHandlerFactory MessageHandlerFactory { get; set; }
 
         public ExtendedProtectionPolicy ExtendedProtectionPolicy
         {
@@ -183,50 +152,10 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        // server
-        [DefaultValue(HttpTransportDefaults.DefaultMaxPendingAccepts)]
-        public int MaxPendingAccepts
-        {
-            get
-            {
-                return _maxPendingAccepts;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
-                        SR.ValueMustBeNonNegative));
-                }
-
-                if (value > HttpTransportDefaults.MaxPendingAcceptsUpperLimit)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
-                        SR.Format(SR.HttpMaxPendingAcceptsTooLargeError, HttpTransportDefaults.MaxPendingAcceptsUpperLimit)));
-                }
-
-                _maxPendingAccepts = value;
-            }
-        }
-
-        // string.Empty == wildcard
-        internal string Method
-        {
-            get
-            {
-                return _method;
-            }
-
-            set
-            {
-                _method = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
-            }
-        }
-
         // fully specified proxy by client
         [DefaultValue(HttpTransportDefaults.Proxy)]
         public IWebProxy Proxy { get; set; }
-        
+
         [DefaultValue(HttpTransportDefaults.ProxyAddress)]
         [TypeConverter(typeof(UriTypeConverter))]
         public Uri ProxyAddress { get; set; }
@@ -248,41 +177,6 @@ namespace System.ServiceModel.Channels
                 }
 
                 _proxyAuthenticationScheme = value;
-            }
-        }
-
-        [DefaultValue(HttpTransportDefaults.Realm)]
-        public string Realm
-        {
-            get
-            {
-                return _realm;
-            }
-            set
-            {
-                _realm = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
-            }
-        }
-
-        [DefaultValue(typeof(TimeSpan), HttpTransportDefaults.RequestInitializationTimeoutString)]
-        public TimeSpan RequestInitializationTimeout
-        {
-            get
-            {
-                return _requestInitializationTimeout;
-            }
-            set
-            {
-                if (value < TimeSpan.Zero)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRange0));
-                }
-                if (TimeoutHelper.IsTooLarge(value))
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRangeTooBig));
-                }
-
-                _requestInitializationTimeout = value;
             }
         }
 
@@ -327,9 +221,6 @@ namespace System.ServiceModel.Channels
             return effectiveAuthenticationSchemes != AuthenticationSchemes.None &&
                 effectiveAuthenticationSchemes.IsNotSet(AuthenticationSchemes.Anonymous);
         }
-
-        [DefaultValue(HttpTransportDefaults.UnsafeConnectionNtlmAuthentication)]
-        public bool UnsafeConnectionNtlmAuthentication { get; set; }
 
         [DefaultValue(HttpTransportDefaults.UseDefaultWebProxy)]
         public bool UseDefaultWebProxy
@@ -440,11 +331,6 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
 
-            if (MessageHandlerFactory != null)
-            {
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(SR.HttpPipelineNotSupportedOnClientSide, "MessageHandlerFactory")));
-            }
-
             if (!CanBuildChannelFactory<TChannel>(context))
             {
                 Contract.Assert(context.Binding != null);
@@ -493,11 +379,6 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            if (_hostNameComparisonMode != http._hostNameComparisonMode)
-            {
-                return false;
-            }
-
             if (_inheritBaseAddressSettings != http._inheritBaseAddressSettings)
             {
                 return false;
@@ -518,17 +399,7 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            if (_realm != http._realm)
-            {
-                return false;
-            }
-
             if (_transferMode != http._transferMode)
-            {
-                return false;
-            }
-
-            if (UnsafeConnectionNtlmAuthentication != http.UnsafeConnectionNtlmAuthentication)
             {
                 return false;
             }
