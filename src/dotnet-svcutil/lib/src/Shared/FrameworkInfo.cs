@@ -110,9 +110,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             fxInfo.Name = name;
             fxInfo.Version = version;
             fxInfo.IsDnx = name == Netstandard || name == Netcoreapp || version.Major >= 5;
+            // A .NET version is known DNX if it's dnx: netstandard with version <= MaxSupportedNetStandardVersion, 
+            // or non-netstandard with version <= MaxSupportedNetCoreAppVersion.
             fxInfo.IsKnownDnx = fxInfo.IsDnx &&
-                        ((name == Netstandard && TargetFrameworkHelper.NetStandardToNetCoreVersionMap.Keys.Any((netstdVersion) => netstdVersion == version)) ||
-                         (name != Netstandard && TargetFrameworkHelper.NetCoreToWCFPackageReferenceVersionMap.Keys.Any((netcoreVersion) => netcoreVersion == version)));
+                        ((name == Netstandard && version <= TargetFrameworkHelper.MaxSupportedNetStandardVersion) ||
+                         (name != Netstandard && version <= TargetFrameworkHelper.MaxSupportedNetCoreAppVersion));
 
             return fxInfo;
         }

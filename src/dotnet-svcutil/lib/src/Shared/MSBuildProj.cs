@@ -233,7 +233,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                     else
                     {
-                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.NetCoreVersionReferenceTable.LastOrDefault().Key.ToString());
+                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.MinNetVersionForLatestWCFPackages.ToString());
                     }
                     
                     msbuildProj._targetFrameworks.Add(msbuildProj._targetFramework);
