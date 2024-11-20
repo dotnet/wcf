@@ -52,6 +52,7 @@
   <ItemGroup>
     <None Include="$(PlaceholderFile)"
           Pack="true"
+          Visible="false"
           PackagePath="ref\netcoreapp2.0\;
                        $(BuildOutputTargetFolder)\MonoAndroid10\;
                        $(BuildOutputTargetFolder)\MonoTouch10\;
@@ -59,6 +60,6 @@
                        $(BuildOutputTargetFolder)\xamarinmac20\;
                        $(BuildOutputTargetFolder)\xamarintvos10\;
                        $(BuildOutputTargetFolder)\xamarinwatchos10\"
-          Condition="$(TargetFrameworks.Contains('netstandard2.'))" />
+          Condition="$(TargetFrameworks.Contains('netstandard2.0')) and $(TargetFrameworks.Contains('$(DotNetVersion)'))" />
   </ItemGroup>
 </Project>
