@@ -2,10 +2,10 @@
 <Project>
   <!-- Versioning specifications:  https://github.com/dotnet/arcade/blob/master/Documentation/CorePackages/Versioning.md -->
   <PropertyGroup>
-    <ProductVersion>8.1.0</ProductVersion>
+    <ProductVersion>8.1.1</ProductVersion>
     <MajorVersion>8</MajorVersion>
     <MinorVersion>1</MinorVersion>
-    <WcfAssemblyVersion>8.1.0.0</WcfAssemblyVersion>
+    <WcfAssemblyVersion>8.1.1.0</WcfAssemblyVersion>
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
