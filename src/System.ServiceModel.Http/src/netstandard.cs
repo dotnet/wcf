@@ -149,7 +149,6 @@ namespace System.ServiceModel
         protected WSHttpBindingBase(bool reliableSessionEnabled) { }
         public bool BypassProxyOnLocal { get { return default; } set { } }
         public bool TransactionFlow { get { return default; } set { } }
-        //public System.ServiceModel.HostNameComparisonMode HostNameComparisonMode { get { return default; } set { } }
         public long MaxBufferPoolSize { get { return default; } set { } }
         public long MaxReceivedMessageSize { get { return default; } set { } }
         public System.ServiceModel.WSMessageEncoding MessageEncoding { get { return default; } set { } }

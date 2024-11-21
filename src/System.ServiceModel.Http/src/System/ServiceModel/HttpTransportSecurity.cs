@@ -12,7 +12,6 @@ namespace System.ServiceModel
     {
         internal const HttpClientCredentialType DefaultClientCredentialType = HttpClientCredentialType.None;
         internal const HttpProxyCredentialType DefaultProxyCredentialType = HttpProxyCredentialType.None;
-        internal const string DefaultRealm = HttpTransportDefaults.Realm;
 
         private HttpClientCredentialType _clientCredentialType;
         private HttpProxyCredentialType _proxyCredentialType;
@@ -23,7 +22,6 @@ namespace System.ServiceModel
         {
             _clientCredentialType = DefaultClientCredentialType;
             _proxyCredentialType = DefaultProxyCredentialType;
-            Realm = DefaultRealm;
             _extendedProtectionPolicy = ExtendedProtectionPolicyHelper.DefaultPolicy;
         }
 
@@ -54,8 +52,6 @@ namespace System.ServiceModel
                 _proxyCredentialType = value;
             }
         }
-
-        public string Realm { get; set; }
 
         public ExtendedProtectionPolicy ExtendedProtectionPolicy
         {
@@ -91,7 +87,6 @@ namespace System.ServiceModel
         {
             http.AuthenticationScheme = HttpClientCredentialTypeHelper.MapToAuthenticationScheme(_clientCredentialType);
             http.ProxyAuthenticationScheme = HttpProxyCredentialTypeHelper.MapToAuthenticationScheme(_proxyCredentialType);
-            http.Realm = Realm;
             http.ExtendedProtectionPolicy = ExtendedProtectionPolicy;
         }
 
@@ -99,14 +94,12 @@ namespace System.ServiceModel
         {
             transportSecurity._clientCredentialType = HttpClientCredentialTypeHelper.MapToClientCredentialType(http.AuthenticationScheme);
             transportSecurity._proxyCredentialType = HttpProxyCredentialTypeHelper.MapToProxyCredentialType(http.ProxyAuthenticationScheme);
-            transportSecurity.Realm = http.Realm;
             transportSecurity._extendedProtectionPolicy = http.ExtendedProtectionPolicy;
         }
 
         private void DisableAuthentication(HttpTransportBindingElement http)
         {
             http.AuthenticationScheme = AuthenticationSchemes.Anonymous;
-            http.Realm = DefaultRealm;
             //ExtendedProtectionPolicy is always copied - even for security mode None, Message and TransportWithMessageCredential,
             //because the settings for ExtendedProtectionPolicy are always below the <security><transport> element
             //http.ExtendedProtectionPolicy = this.extendedProtectionPolicy;
@@ -114,7 +107,7 @@ namespace System.ServiceModel
 
         private static bool IsDisabledAuthentication(HttpTransportBindingElement http)
         {
-            return http.AuthenticationScheme == AuthenticationSchemes.Anonymous && http.Realm == DefaultRealm;
+            return http.AuthenticationScheme == AuthenticationSchemes.Anonymous;
         }
 
         internal void ConfigureTransportProtectionAndAuthentication(HttpsTransportBindingElement https)
@@ -123,7 +116,7 @@ namespace System.ServiceModel
             https.RequireClientCertificate = (_clientCredentialType == HttpClientCredentialType.Certificate);
         }
 
-        public static void ConfigureTransportProtectionAndAuthentication(HttpsTransportBindingElement https, HttpTransportSecurity transportSecurity)
+        internal static void ConfigureTransportProtectionAndAuthentication(HttpsTransportBindingElement https, HttpTransportSecurity transportSecurity)
         {
             ConfigureAuthentication(https, transportSecurity);
             if (https.RequireClientCertificate)

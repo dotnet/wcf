@@ -13,24 +13,14 @@ namespace System.ServiceModel.Channels
         internal const AuthenticationSchemes AuthenticationScheme = AuthenticationSchemes.Anonymous;
         internal const bool BypassProxyOnLocal = false;
         internal const bool DecompressionEnabled = true;
-        internal const HostNameComparisonMode HostNameComparisonMode = System.ServiceModel.HostNameComparisonMode.StrongWildcard;
         internal const bool KeepAliveEnabled = true;
         internal const IWebProxy Proxy = null;
         internal const Uri ProxyAddress = null;
         internal const AuthenticationSchemes ProxyAuthenticationScheme = AuthenticationSchemes.Anonymous;
-        internal const string Realm = "";
         internal const TransferMode TransferMode = System.ServiceModel.TransferMode.Buffered;
-        internal const bool UnsafeConnectionNtlmAuthentication = false;
         internal const bool UseDefaultWebProxy = true;
         internal const string UpgradeHeader = "Upgrade";
         internal const string ConnectionHeader = "Connection";
-        internal const HttpMessageHandlerFactory MessageHandlerFactory = null;
-
-        internal static TimeSpan RequestInitializationTimeout => TimeSpanHelper.FromMilliseconds(0, RequestInitializationTimeoutString);
-        internal const string RequestInitializationTimeoutString = "00:00:00";
-
-        internal const int DefaultMaxPendingAccepts = 0;
-        internal const int MaxPendingAcceptsUpperLimit = 100000;
 
         internal static WebSocketTransportSettings GetDefaultWebSocketTransportSettings()
         {

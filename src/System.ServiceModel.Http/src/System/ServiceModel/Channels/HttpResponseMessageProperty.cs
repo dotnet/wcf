@@ -111,46 +111,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public bool SuppressEntityBody
-        {
-            get
-            {
-                return _useHttpBackedProperty ?
-                    _httpBackedProperty.SuppressEntityBody :
-                    _traditionalProperty.SuppressEntityBody;
-            }
-
-            set
-            {
-                if (_useHttpBackedProperty)
-                {
-                    _httpBackedProperty.SuppressEntityBody = value;
-                }
-                else
-                {
-                    _traditionalProperty.SuppressEntityBody = value;
-                }
-            }
-        }
-
-        public bool SuppressPreamble
-        {
-            get
-            {
-                return _useHttpBackedProperty ?
-                    false :
-                    _traditionalProperty.SuppressPreamble;
-            }
-
-            set
-            {
-                if (!_useHttpBackedProperty)
-                {
-                    _traditionalProperty.SuppressPreamble = value;
-                }
-            }
-        }
-
         public HttpResponseMessage HttpResponseMessage
         {
             get
@@ -180,9 +140,9 @@ namespace System.ServiceModel.Channels
         {
             // The ImmutableDispatchRuntime will merge MessageProperty instances from the
             //  OperationContext (that were created before the response message was created) with
-            //  MessageProperty instances on the message itself.  The message's version of the 
-            //  HttpResponseMessageProperty may hold a reference to an HttpResponseMessage, and this 
-            //  cannot be discarded, so values from the OperationContext's property must be set on 
+            //  MessageProperty instances on the message itself.  The message's version of the
+            //  HttpResponseMessageProperty may hold a reference to an HttpResponseMessage, and this
+            //  cannot be discarded, so values from the OperationContext's property must be set on
             //  the message's version without completely replacing the message's property.
             if (_useHttpBackedProperty)
             {
@@ -263,10 +223,6 @@ namespace System.ServiceModel.Channels
             public bool HasStatusCodeBeenSet { get; private set; }
 
             public string StatusDescription { get; set; }
-
-            public bool SuppressEntityBody { get; set; }
-
-            public bool SuppressPreamble { get; set; }
         }
 
         private class HttpResponseMessageBackedProperty
@@ -321,48 +277,6 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            public bool SuppressEntityBody
-            {
-                get
-                {
-                    HttpContent content = HttpResponseMessage.Content;
-                    if (content != null)
-                    {
-                        long? contentLength = content.Headers.ContentLength;
-
-                        if (!contentLength.HasValue ||
-                            (contentLength.HasValue && contentLength.Value > 0))
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-
-                set
-                {
-                    HttpContent content = HttpResponseMessage.Content;
-                    if (value && content != null &&
-                        (!content.Headers.ContentLength.HasValue ||
-                        content.Headers.ContentLength.Value > 0))
-                    {
-                        HttpContent newContent = new ByteArrayContent(Array.Empty<byte>());
-                        foreach (KeyValuePair<string, IEnumerable<string>> header in content.Headers)
-                        {
-                            newContent.Headers.AddHeaderWithoutValidation(header);
-                        }
-
-                        HttpResponseMessage.Content = newContent;
-                        content.Dispose();
-                    }
-                    else if (!value && content == null)
-                    {
-                        HttpResponseMessage.Content = new ByteArrayContent(Array.Empty<byte>());
-                    }
-                }
-            }
-
             public HttpResponseMessageProperty CreateTraditionalResponseMessageProperty()
             {
                 HttpResponseMessageProperty copiedProperty = new HttpResponseMessageProperty();
@@ -378,7 +292,6 @@ namespace System.ServiceModel.Channels
                 }
 
                 copiedProperty.StatusDescription = StatusDescription;
-                copiedProperty.SuppressEntityBody = SuppressEntityBody;
 
                 return copiedProperty;
             }
@@ -395,7 +308,6 @@ namespace System.ServiceModel.Channels
                     StatusDescription = propertyToMerge.StatusDescription;
                 }
 
-                SuppressEntityBody = propertyToMerge.SuppressEntityBody;
                 HttpResponseMessage.MergeWebHeaderCollection(propertyToMerge.Headers);
             }
         }

@@ -60,21 +60,6 @@ namespace System.ServiceModel
             }
         }
 
-        [DefaultValue(HttpTransportDefaults.HostNameComparisonMode)]
-        public HostNameComparisonMode HostNameComparisonMode
-        {
-            get
-            {
-                return _httpTransport.HostNameComparisonMode;
-            }
-
-            set
-            {
-                _httpTransport.HostNameComparisonMode = value;
-                _httpsTransport.HostNameComparisonMode = value;
-            }
-        }
-
         [DefaultValue(TransportDefaults.MaxBufferSize)]
         public int MaxBufferSize
         {
