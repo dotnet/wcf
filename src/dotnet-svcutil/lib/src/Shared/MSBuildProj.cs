@@ -45,7 +45,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private List<string> _targetFrameworks = new List<string>();
         private List<string> _endOfLifeTargetFrameworks = new List<string>();
         public IEnumerable<string> TargetFrameworks { get { return _targetFrameworks; } }
-        public IEnumerable<string> EndOfLifeTargetFrameworks { get { return _endOfLifeTargetFrameworks; } }
+        internal IEnumerable<string> EndOfLifeTargetFrameworks { get { return _endOfLifeTargetFrameworks; } }
 
         private string _runtimeIdentifier;
         public string RuntimeIdentifier
