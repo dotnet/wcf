@@ -15,14 +15,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     {
         private static readonly Version s_minEOFNetVersion = new Version("5.0");
         private static readonly Version s_maxEOFNetVersion = new Version("7.0");
-
+        internal static readonly List<string> s_supportedVersions = new List<string>() { "8.0", "9.0", "10.0"};
+        
         public static Version MinSupportedNetFxVersion { get; } = new Version("4.5");
         public static Version MinSupportedNetStandardVersion { get; } = new Version("1.3");
         public static Version MinSupportedNetCoreAppVersion { get; } = new Version("1.0");
-        public static Version MaxSupportedNetStandardVersion { get; } = new Version("2.1");
-        public static Version MaxSupportedNetCoreAppVersion { get; } = new Version("9.0");
-        public static Version MinNetVersionForLatestWCFPackages { get; } = new Version("8.0");
-        public static Version MinNetStdVersionForLatestWCFPackages { get; } = new Version("2.0");
 
         internal static SortedDictionary<string, List<ProjectDependency>> NetCoreVersionReferenceTable = new SortedDictionary<string, List<ProjectDependency>>
         {
@@ -62,25 +59,23 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public static IEnumerable<ProjectDependency> GetWcfProjectReferences(IEnumerable<string> targetFrameworks)
         {
-            IEnumerable<ProjectDependency> dependencies = null;
-            Version version = GetLowestNetCoreVersion(targetFrameworks);
-            if (version != null)
+            // Return FullFrameworkReferences if no .NET target is found
+            if (!targetFrameworks.Any(targetFramework => IsSupportedFramework(targetFramework, out var frameworkInfo) && frameworkInfo.IsDnx))
             {
-                if(version >= MinNetVersionForLatestWCFPackages)
-                {
-                    dependencies = NetCoreVersionReferenceTable["Current"];
-                }                
-                else
-                {
-                    dependencies = NetCoreVersionReferenceTable["Legacy"];
-                }                    
+                return FullFrameworkReferences;
+            }
+
+            // Return appropriate dependencies based on supported .NET targets
+            if (targetFrameworks.Any(targetFramework => IsSupportedFramework(targetFramework, out var frameworkInfo)
+                                && frameworkInfo.IsDnx
+                                && s_supportedVersions.Contains(frameworkInfo.Version.ToString())))
+            {
+                return NetCoreVersionReferenceTable["Current"];
             }
             else
             {
-                dependencies = FullFrameworkReferences;
+                return NetCoreVersionReferenceTable["Legacy"];
             }
-
-            return dependencies;
         }
 
         /// <summary>
@@ -93,17 +88,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (targetFrameworks != null)
             {
-                targetFramework = targetFrameworks.FirstOrDefault((framework) => IsSupportedFramework(framework, out fxInfo) && fxInfo.IsKnownDnx);
+                targetFramework = targetFrameworks.FirstOrDefault((framework) => IsSupportedFramework(framework, out fxInfo) && fxInfo.IsDnx);
                 if (targetFramework == null)
                 {
-                    targetFramework = targetFrameworks.FirstOrDefault((framework) => IsSupportedFramework(framework, out fxInfo) && fxInfo.IsDnx);
+                    targetFramework = targetFrameworks.FirstOrDefault((framework) => IsSupportedFramework(framework, out fxInfo));
                     if (targetFramework == null)
                     {
-                        targetFramework = targetFrameworks.FirstOrDefault((framework) => IsSupportedFramework(framework, out fxInfo));
-                        if (targetFramework == null)
-                        {
-                            targetFramework = targetFrameworks.FirstOrDefault() ?? string.Empty;
-                        }
+                        targetFramework = targetFrameworks.FirstOrDefault() ?? string.Empty;
                     }
                 }
             }
@@ -118,16 +109,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             foreach (string targetFramework in targetFrameworks)
             {
                 if (TargetFrameworkHelper.IsSupportedFramework(targetFramework, out var frameworkInfo) && frameworkInfo.IsDnx)
-                {
-                    Version netCoreVersion = frameworkInfo.Version;
-                    if (frameworkInfo.Name == FrameworkInfo.Netstandard && frameworkInfo.Version >= MinNetStdVersionForLatestWCFPackages)
+                {                    
+                    if (targetVersion == null || targetVersion > frameworkInfo.Version)
                     {
-                        netCoreVersion = MinNetVersionForLatestWCFPackages;
-                    }
-
-                    if (targetVersion == null || targetVersion > netCoreVersion)
-                    {
-                        targetVersion = netCoreVersion;
+                        targetVersion = frameworkInfo.Version;
                     }
                 }
             }

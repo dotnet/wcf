@@ -25,7 +25,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public string Name { get; private set; }
         public Version Version { get; private set; }
         public bool IsDnx { get; private set; }
-        public bool IsKnownDnx { get; private set; }
 
         public static FrameworkInfo Parse(string fullFrameworkName)
         {
@@ -110,11 +109,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             fxInfo.Name = name;
             fxInfo.Version = version;
             fxInfo.IsDnx = name == Netstandard || name == Netcoreapp || version.Major >= 5;
-            // A .NET version is known DNX if it's dnx: netstandard with version <= MaxSupportedNetStandardVersion, 
-            // or non-netstandard with version <= MaxSupportedNetCoreAppVersion.
-            fxInfo.IsKnownDnx = fxInfo.IsDnx &&
-                        ((name == Netstandard && version <= TargetFrameworkHelper.MaxSupportedNetStandardVersion) ||
-                         (name != Netstandard && version <= TargetFrameworkHelper.MaxSupportedNetCoreAppVersion));
 
             return fxInfo;
         }
