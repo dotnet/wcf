@@ -15,7 +15,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     {
         private static readonly Version s_minEOFNetVersion = new Version("5.0");
         private static readonly Version s_maxEOFNetVersion = new Version("7.0");
-        internal static readonly List<string> s_supportedVersions = new List<string>() { "8.0", "9.0", "10.0"};
+        internal static readonly List<string> s_supportedVersions = new List<string>() { "8.0", "9.0", "10.0" };
         
         public static Version MinSupportedNetFxVersion { get; } = new Version("4.5");
         public static Version MinSupportedNetStandardVersion { get; } = new Version("1.3");
@@ -55,27 +55,31 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             ProjectDependency.FromPackage("System.ServiceModel.Federation", "*"),
             ProjectDependency.FromPackage("System.ServiceModel.NetNamedPipe", "*"),
             ProjectDependency.FromPackage("System.ServiceModel.NetFramingBase", "*")
-        };     
+        };
 
         public static IEnumerable<ProjectDependency> GetWcfProjectReferences(IEnumerable<string> targetFrameworks)
         {
-            // Return FullFrameworkReferences if no .NET target is found
+            // If there is no .NET Core or .NET Standard target framework, return FullFrameworkReferences
             if (!targetFrameworks.Any(targetFramework => IsSupportedFramework(targetFramework, out var frameworkInfo) && frameworkInfo.IsDnx))
             {
                 return FullFrameworkReferences;
             }
 
-            // Return appropriate dependencies based on supported .NET targets
-            if (targetFrameworks.Any(targetFramework => IsSupportedFramework(targetFramework, out var frameworkInfo)
-                                && frameworkInfo.IsDnx
-                                && s_supportedVersions.Contains(frameworkInfo.Version.ToString())))
+            // Determine the lowest .NET Core version in the target frameworks
+            Version netCoreVersion = GetLowestNetCoreVersion(targetFrameworks);
+
+            // Return the appropriate WCF reference based on the target framework version
+            // Behavior table based on framework combinations:
+            // netstandard2.0       :  add WCF reference 4.10.*
+            // netstandard2.0;net8.0:  add WCF reference 8.*
+            // netstandard2.0;net6.0:  add WCF reference 4.10.*
+            // net6.0;net8.0        :  add WCF reference 4.10.*
+            if (netCoreVersion != null && s_supportedVersions.Contains(netCoreVersion.ToString()))
             {
                 return NetCoreVersionReferenceTable["Current"];
             }
-            else
-            {
-                return NetCoreVersionReferenceTable["Legacy"];
-            }
+            // Otherwise, return the legacy WCF reference
+            return NetCoreVersionReferenceTable["Legacy"];
         }
 
         /// <summary>
@@ -108,8 +112,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             foreach (string targetFramework in targetFrameworks)
             {
-                if (TargetFrameworkHelper.IsSupportedFramework(targetFramework, out var frameworkInfo) && frameworkInfo.IsDnx)
-                {                    
+                if (TargetFrameworkHelper.IsSupportedFramework(targetFramework, out var frameworkInfo) && frameworkInfo.IsDnx && frameworkInfo.Name != FrameworkInfo.Netstandard)
+                {
                     if (targetVersion == null || targetVersion > frameworkInfo.Version)
                     {
                         targetVersion = frameworkInfo.Version;
