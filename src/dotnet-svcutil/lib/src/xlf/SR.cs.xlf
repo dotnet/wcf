@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 K tomu může dojít v případě, že jazyk nepodporuje všechny generované elementy kódu. Zvažte možnost použít jiný jazyk.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">Pro hodnotu {0} předanou možnosti --{1} se nepovedlo vytvořit poskytovatele kódu. Ověřte, že je poskytovatel kódu správně nainstalovaný a nakonfigurovaný.</target>
@@ -545,6 +550,11 @@ Identifikátor dokumentu: {0}</target>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
         <target state="translated">Vygeneruje třídy, které jsou označeny jako vnitřní. Výchozí: generovat veřejné třídy (Krátký tvar: /{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="new">The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">

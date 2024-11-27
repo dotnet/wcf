@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 Dies kann daran liegen, dass nicht alle zu generierenden Codeelemente von der Sprache unterstützt werden. Verwenden Sie ggf. eine andere Sprache.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">Für den an die Option --{1} übergebenen Wert "{0}" konnte kein Codeanbieter erstellt werden. Überprüfen Sie, ob der Codeanbieter ordnungsgemäß installiert und konfiguriert ist.</target>
@@ -545,6 +550,11 @@ Dokumentbezeichner: "{0}".</target>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
         <target state="translated">Klassen generieren, die als intern markiert sind. Standard: öffentliche Klassen generieren. (Kurzform: /{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="new">The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">

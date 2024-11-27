@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 这可能是由于该语言不支持正在生成的所有代码元素。请考虑使用其他语言。</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">无法为传递给 --{1} 选项的值“{0}”创建代码提供程序。请验证是否正确安装并配置了代码提供程序。</target>
@@ -545,6 +550,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
         <target state="translated">生成标记为内部的类。默认设置: 生成公共类。(缩写: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="new">The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">

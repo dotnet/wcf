@@ -1,0 +1,16 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/Simple.wsdl"
+    ],
+    "language": "VB",
+    "namespaceMappings": [
+      "*, ServiceReference"
+    ],
+    "outputFile": "Reference.vb",
+    "targetFramework": "N.N",
+    "typeReuseMode": "All"
+  }
+}
