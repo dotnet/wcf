@@ -13,10 +13,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class TargetFrameworkHelper
     {
-        private static readonly Version s_minEOFNetVersion = new Version("5.0");
-        private static readonly Version s_maxEOFNetVersion = new Version("7.0");
-        internal static readonly List<string> s_supportedVersions = new List<string>() { "8.0", "9.0", "10.0" };
-        
+        internal static readonly List<string> s_currentSupportedVersions = new List<string>() { "8.0", "9.0" };
         public static Version MinSupportedNetFxVersion { get; } = new Version("4.5");
         public static Version MinSupportedNetStandardVersion { get; } = new Version("1.3");
         public static Version MinSupportedNetCoreAppVersion { get; } = new Version("1.0");
@@ -74,7 +71,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             // netstandard2.0;net8.0:  add WCF reference 8.*
             // netstandard2.0;net6.0:  add WCF reference 4.10.*
             // net6.0;net8.0        :  add WCF reference 4.10.*
-            if (netCoreVersion != null && s_supportedVersions.Contains(netCoreVersion.ToString()))
+            if (netCoreVersion != null && s_currentSupportedVersions.Contains(netCoreVersion.ToString()))
             {
                 return NetCoreVersionReferenceTable["Current"];
             }
@@ -152,11 +149,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             if (FrameworkInfo.TryParse(fullFrameworkName, out FrameworkInfo frameworkInfo))
             {
-                // Return true if .NETCoreApp or .NET version is within the end-of-life range
-                return frameworkInfo.Name.Equals(FrameworkInfo.Netcoreapp, StringComparison.OrdinalIgnoreCase) ||
-                       (frameworkInfo.Name.Equals(FrameworkInfo.Netfx, StringComparison.OrdinalIgnoreCase) &&
-                        frameworkInfo.Version >= s_minEOFNetVersion &&
-                        frameworkInfo.Version <= s_maxEOFNetVersion);
+                // Return true if .NET version is less than the lowest supported Version
+                return frameworkInfo.IsDnx
+                    && !frameworkInfo.Name.Equals(FrameworkInfo.Netstandard, StringComparison.OrdinalIgnoreCase)
+                    && frameworkInfo.Version < new Version(s_currentSupportedVersions.First());
             }
 
             // Return false if parsing fails or no conditions matched
