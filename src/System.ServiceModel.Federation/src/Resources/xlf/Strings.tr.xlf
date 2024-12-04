@@ -7,6 +7,11 @@
         <target state="translated">'{0}' eylemini işleyin.</target>
         <note />
       </trans-unit>
+      <trans-unit id="AsyncResultCompletedTwice">
+        <source>AsyncResult completed twice.</source>
+        <target state="new">AsyncResult completed twice.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
         <target state="translated">Taşıyıcı anahtar senaryoları yanıtta bir kanıt belirteci veya veren entropi içermemelidir.</target>
@@ -70,6 +75,11 @@
       <trans-unit id="IssuedTokenRenewalThresholdPercentageIncorrect">
         <source>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</source>
         <target state="translated">IssuedTokenRenewalThresholdPercentage değeri en az 1 ve en fazla 100 olmalıdır. Değer şuydu: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KeyTypeNotSupported">
+        <source>KeyType is not supported: {0}</source>
+        <target state="new">KeyType is not supported: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">

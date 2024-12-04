@@ -11,29 +11,29 @@ using System.Threading;
 /// A generic base class for IAsyncResult implementations
 /// that wraps a ManualResetEvent.
 /// </summary>
-abstract class AsyncResult : IAsyncResult
+internal abstract class AsyncResult : IAsyncResult
 {
-    AsyncCallback callback;
-    object state;
-    bool completedSynchronously;
-    bool endCalled;
-    Exception exception;
-    bool isCompleted;
-    ManualResetEvent manualResetEvent;
-    object thisLock;
+    private AsyncCallback _callback;
+    private object _state;
+    private bool _completedSynchronously;
+    private bool _endCalled;
+    private Exception _exception;
+    private bool _isCompleted;
+    private ManualResetEvent _manualResetEvent;
+    private object _thisLock;
 
     protected AsyncResult(AsyncCallback callback, object state)
     {
-        this.callback = callback;
-        this.state = state;
-        this.thisLock = new object();
+        this._callback = callback;
+        this._state = state;
+        this._thisLock = new object();
     }
 
     public object AsyncState
     {
         get
         {
-            return state;
+            return _state;
         }
     }
 
@@ -41,20 +41,20 @@ abstract class AsyncResult : IAsyncResult
     {
         get
         {
-            if (manualResetEvent != null)
+            if (_manualResetEvent != null)
             {
-                return manualResetEvent;
+                return _manualResetEvent;
             }
 
             lock (ThisLock)
             {
-                if (manualResetEvent == null)
+                if (_manualResetEvent == null)
                 {
-                    manualResetEvent = new ManualResetEvent(isCompleted);
+                    _manualResetEvent = new ManualResetEvent(_isCompleted);
                 }
             }
 
-            return manualResetEvent;
+            return _manualResetEvent;
         }
     }
 
@@ -62,7 +62,7 @@ abstract class AsyncResult : IAsyncResult
     {
         get
         {
-            return completedSynchronously;
+            return _completedSynchronously;
         }
     }
 
@@ -70,15 +70,15 @@ abstract class AsyncResult : IAsyncResult
     {
         get
         {
-            return isCompleted;
+            return _isCompleted;
         }
     }
 
-    object ThisLock
+    private object ThisLock
     {
         get
         {
-            return this.thisLock;
+            return this._thisLock;
         }
     }
 
@@ -86,37 +86,37 @@ abstract class AsyncResult : IAsyncResult
     // of the operation and notify the callback.
     protected void Complete(bool completedSynchronously)
     {
-        if (isCompleted)
+        if (_isCompleted)
         {
             // It is a bug to call Complete twice.
             throw new InvalidOperationException("Cannot call Complete twice");
         }
 
-        this.completedSynchronously = completedSynchronously;
+        this._completedSynchronously = completedSynchronously;
 
         if (completedSynchronously)
         {
             // If we completedSynchronously, then there is no chance that the manualResetEvent was created so
             // we do not need to worry about a race condition.
-            Debug.Assert(this.manualResetEvent == null, "No ManualResetEvent should be created for a synchronous AsyncResult.");
-            this.isCompleted = true;
+            Debug.Assert(this._manualResetEvent == null, "No ManualResetEvent should be created for a synchronous AsyncResult.");
+            this._isCompleted = true;
         }
         else
         {
             lock (ThisLock)
             {
-                this.isCompleted = true;
-                if (this.manualResetEvent != null)
+                this._isCompleted = true;
+                if (this._manualResetEvent != null)
                 {
-                    this.manualResetEvent.Set();
+                    this._manualResetEvent.Set();
                 }
             }
         }
 
         // If the callback throws, there is a bug in the callback implementation
-        if (callback != null)
+        if (_callback != null)
         {
-            callback(this);
+            _callback(this);
         }
     }
 
@@ -124,7 +124,7 @@ abstract class AsyncResult : IAsyncResult
     // the callback, it will capture the exception and store it to be thrown during AsyncResult.End.
     protected void Complete(bool completedSynchronously, Exception exception)
     {
-        this.exception = exception;
+        this._exception = exception;
         Complete(completedSynchronously);
     }
 
@@ -145,26 +145,26 @@ abstract class AsyncResult : IAsyncResult
             throw new ArgumentException("Invalid async result.", "result");
         }
 
-        if (asyncResult.endCalled)
+        if (asyncResult._endCalled)
         {
             throw new InvalidOperationException("Async object already ended.");
         }
 
-        asyncResult.endCalled = true;
+        asyncResult._endCalled = true;
 
-        if (!asyncResult.isCompleted)
+        if (!asyncResult._isCompleted)
         {
             asyncResult.AsyncWaitHandle.WaitOne();
         }
 
-        if (asyncResult.manualResetEvent != null)
+        if (asyncResult._manualResetEvent != null)
         {
-            asyncResult.manualResetEvent.Dispose();
+            asyncResult._manualResetEvent.Dispose();
         }
 
-        if (asyncResult.exception != null)
+        if (asyncResult._exception != null)
         {
-            throw asyncResult.exception;
+            throw asyncResult._exception;
         }
 
         return asyncResult;
@@ -172,7 +172,7 @@ abstract class AsyncResult : IAsyncResult
 }
 
 //An AsyncResult that completes as soon as it is instantiated.
-class CompletedAsyncResult : AsyncResult
+internal class CompletedAsyncResult : AsyncResult
 {
     public CompletedAsyncResult(AsyncCallback callback, object state)
         : base(callback, state)
@@ -187,9 +187,9 @@ class CompletedAsyncResult : AsyncResult
 }
 
 //A strongly typed AsyncResult
-abstract class TypedAsyncResult<T> : AsyncResult
+internal abstract class TypedAsyncResult<T> : AsyncResult
 {
-    T data;
+    private T _data;
 
     protected TypedAsyncResult(AsyncCallback callback, object state)
         : base(callback, state)
@@ -198,12 +198,12 @@ abstract class TypedAsyncResult<T> : AsyncResult
 
     public T Data
     {
-        get { return data; }
+        get { return _data; }
     }
 
     protected void Complete(T data, bool completedSynchronously)
     {
-        this.data = data;
+        this._data = data;
         Complete(completedSynchronously);
     }
 
@@ -215,7 +215,7 @@ abstract class TypedAsyncResult<T> : AsyncResult
 }
 
 //A strongly typed AsyncResult that completes as soon as it is instantiated.
-class TypedCompletedAsyncResult<T> : TypedAsyncResult<T>
+internal class TypedCompletedAsyncResult<T> : TypedAsyncResult<T>
 {
     public TypedCompletedAsyncResult(T data, AsyncCallback callback, object state)
         : base(callback, state)

@@ -7,6 +7,11 @@
         <target state="translated">处理操作“{0}”。</target>
         <note />
       </trans-unit>
+      <trans-unit id="AsyncResultCompletedTwice">
+        <source>AsyncResult completed twice.</source>
+        <target state="new">AsyncResult completed twice.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
         <target state="translated">持有者关键方案不应在响应中包含证明令牌或证书颁发者熵。</target>
@@ -70,6 +75,11 @@
       <trans-unit id="IssuedTokenRenewalThresholdPercentageIncorrect">
         <source>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</source>
         <target state="translated">IssuedTokenRenewalThresholdPercentage 必须大于或等于 1，且小于或等于 100。之前的值为:“{0}”。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KeyTypeNotSupported">
+        <source>KeyType is not supported: {0}</source>
+        <target state="new">KeyType is not supported: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">

@@ -6,7 +6,7 @@
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <TargetFramework>$(DotNetVersion)</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <!-- Enable transitive pinning due to Microsoft.IdentityModel.Protocols.WsTrust not being
          proactively updated by the identity team and it now references vulnerable dependencies -->
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>

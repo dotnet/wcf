@@ -11,8 +11,9 @@ public struct TimeoutHelper
     public static TimeSpan DefaultTimeout { get { return TimeSpan.FromMinutes(2); } }
     public static TimeSpan DefaultShortTimeout { get { return TimeSpan.FromSeconds(4); } }
     public static TimeSpan Infinite { get { return TimeSpan.MaxValue; } }
-    DateTime deadline;
-    TimeSpan originalTimeout;
+
+    private DateTime _deadline;
+    private TimeSpan _originalTimeout;
 
     public TimeoutHelper(TimeSpan timeout)
     {
@@ -21,31 +22,31 @@ public struct TimeoutHelper
             throw new ArgumentOutOfRangeException("timeout");
         }
 
-        this.originalTimeout = timeout;
+        this._originalTimeout = timeout;
         if (timeout == TimeSpan.MaxValue)
         {
-            this.deadline = DateTime.MaxValue;
+            this._deadline = DateTime.MaxValue;
         }
         else
         {
-            this.deadline = DateTime.UtcNow + timeout;
+            this._deadline = DateTime.UtcNow + timeout;
         }
     }
 
     public TimeSpan OriginalTimeout
     {
-        get { return this.originalTimeout; }
+        get { return this._originalTimeout; }
     }
 
     public TimeSpan RemainingTime()
     {
-        if (this.deadline == DateTime.MaxValue)
+        if (this._deadline == DateTime.MaxValue)
         {
             return TimeSpan.MaxValue;
         }
         else
         {
-            TimeSpan remaining = this.deadline - DateTime.UtcNow;
+            TimeSpan remaining = this._deadline - DateTime.UtcNow;
             if (remaining <= TimeSpan.Zero)
             {
                 return TimeSpan.Zero;
@@ -150,7 +151,7 @@ public struct TimeoutHelper
         }
     }
 
-    static class Ticks
+    private static class Ticks
     {
         public static long FromMilliseconds(int milliseconds)
         {

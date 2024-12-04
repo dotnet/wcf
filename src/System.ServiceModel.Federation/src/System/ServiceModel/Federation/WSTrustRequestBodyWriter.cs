@@ -20,8 +20,8 @@ namespace System.ServiceModel.Federation
         /// <param name="trustSerializer">The <see cref="WsTrustSerializer"/> used to write the <see cref="WsTrustRequest"/> into a <see cref="XmlDictionaryWriter"/>.</param>
         public WSTrustRequestBodyWriter(WsTrustRequest trustRequest, WsTrustSerializer trustSerializer) : base(true)
         {
-            TrustRequest = trustRequest ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(trustRequest));
-            TrustSerializer = trustSerializer ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(trustSerializer));
+            TrustRequest = trustRequest ?? throw new ArgumentNullException(nameof(trustRequest));
+            TrustSerializer = trustSerializer ?? throw new ArgumentNullException(nameof(trustSerializer));
         }
 
         /// <summary>
