@@ -125,7 +125,7 @@ namespace System.ServiceModel.Federation
         {
             get => _issuedTokenRenewalThresholdPercentage;
             set => _issuedTokenRenewalThresholdPercentage = (value <= 0 || value > 100)
-                ? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentOutOfRangeException(nameof(value), LogHelper.FormatInvariant(SR.GetResourceString(SR.IssuedTokenRenewalThresholdPercentageIncorrect), value)), EventLevel.Error)
+                ? throw new ArgumentOutOfRangeException(nameof(value), SR.Format(SR.IssuedTokenRenewalThresholdPercentageIncorrect, value))
                 : value;
         }
 
@@ -153,7 +153,7 @@ namespace System.ServiceModel.Federation
         {
             get => _maxIssuedTokenCachingTime;
             set => _maxIssuedTokenCachingTime = value <= TimeSpan.Zero
-                ? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentOutOfRangeException(nameof(value), LogHelper.FormatInvariant(SR.GetResourceString(SR.MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero), value)), EventLevel.Error)
+                ? throw new ArgumentOutOfRangeException(nameof(value), SR.Format(SR.MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero, value))
                 : value;
         }
 
@@ -163,7 +163,7 @@ namespace System.ServiceModel.Federation
         public MessageSecurityVersion MessageSecurityVersion
         {
             get => _messageSecurityVersion;
-            set => _messageSecurityVersion = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(value)), EventLevel.Error);
+            set => _messageSecurityVersion = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         /// <summary>

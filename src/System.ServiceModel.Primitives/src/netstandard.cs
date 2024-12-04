@@ -2468,10 +2468,12 @@ namespace System.ServiceModel.Security.Tokens
         protected IssuedSecurityTokenParameters(IssuedSecurityTokenParameters other) { }
         public IssuedSecurityTokenParameters() { }
         protected override SecurityTokenParameters CloneCore() { return default; }
+        public Collections.ObjectModel.Collection<Xml.XmlElement> AdditionalRequestParameters { get { return default; } }
         public MessageSecurityVersion DefaultMessageSecurityVersion { get { return default; } set { } }
         public EndpointAddress IssuerAddress { get { return default; } set { } }
         public Channels.Binding IssuerBinding { get { return default; } set { } }
         public System.IdentityModel.Tokens.SecurityKeyType KeyType { get { return default; } set { } }
+        public int KeySize { get { return default; } set { } }
         public string TokenType { get { return default; } set { } }
     }
     public partial class SecureConversationSecurityTokenParameters : System.ServiceModel.Security.Tokens.SecurityTokenParameters

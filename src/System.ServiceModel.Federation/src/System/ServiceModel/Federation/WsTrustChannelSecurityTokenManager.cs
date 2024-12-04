@@ -25,7 +25,7 @@ namespace System.ServiceModel.Federation
         public WSTrustChannelSecurityTokenManager(WSTrustChannelClientCredentials wsTrustChannelClientCredentials)
             : base(wsTrustChannelClientCredentials)
         {
-            _wsTrustChannelClientCredentials = wsTrustChannelClientCredentials ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(wsTrustChannelClientCredentials)), EventLevel.Error);
+            _wsTrustChannelClientCredentials = wsTrustChannelClientCredentials ?? throw new ArgumentNullException(nameof(wsTrustChannelClientCredentials));
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace System.ServiceModel.Federation
         public override SecurityTokenProvider CreateSecurityTokenProvider(SecurityTokenRequirement tokenRequirement)
         {
             if (tokenRequirement == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(tokenRequirement)), EventLevel.Error);
+                throw new ArgumentNullException(nameof(tokenRequirement));
 
             // If the token requirement includes an issued security token parameter of type
             // WSTrustTokenParameters, then tokens should be provided by a WSTrustChannelSecurityTokenProvider.

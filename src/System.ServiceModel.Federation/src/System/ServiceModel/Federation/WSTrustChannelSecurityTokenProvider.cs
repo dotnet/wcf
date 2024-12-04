@@ -8,10 +8,8 @@ using System.Diagnostics.Tracing;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.IO;
-using System.Runtime.Diagnostics;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using System.ServiceModel.Diagnostics;
 using System.Runtime;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
@@ -44,7 +42,6 @@ namespace System.ServiceModel.Federation
         private readonly SecurityAlgorithmSuite _securityAlgorithmSuite;
         private WsSerializationContext _requestSerializationContext;
         private WrapperSecurityCommunicationObject _communicationObject;
-        private EventTraceActivity _eventTraceActivity;
 
         /// <summary>
         /// Instantiates a <see cref="WSTrustChannelSecurityTokenProvider"/> that describe the parameters for a WSTrust request.
@@ -54,14 +51,14 @@ namespace System.ServiceModel.Federation
         /// <exception cref="ArgumentException">thrown if <see cref="SecurityTokenRequirement.GetProperty{TValue}(string)"/> (IssuedSecurityTokenParameters) is not a <see cref="WSTrustTokenParameters"/>.</exception>
         public WSTrustChannelSecurityTokenProvider(SecurityTokenRequirement tokenRequirement)
         {
-            SecurityTokenRequirement = tokenRequirement ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(tokenRequirement)), EventLevel.Error);
+            SecurityTokenRequirement = tokenRequirement ?? throw new ArgumentNullException(nameof(tokenRequirement));
             SecurityTokenRequirement.TryGetProperty(SecurityAlgorithmSuiteProperty, out _securityAlgorithmSuite);
 
             IssuedSecurityTokenParameters issuedSecurityTokenParameters = SecurityTokenRequirement.GetProperty<IssuedSecurityTokenParameters>(IssuedSecurityTokenParametersProperty);
             WSTrustTokenParameters = issuedSecurityTokenParameters as WSTrustTokenParameters;
             if (WSTrustTokenParameters == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentException(LogHelper.FormatInvariant(SR.GetResourceString(SR.IssuedSecurityTokenParametersIncorrectType), issuedSecurityTokenParameters), nameof(tokenRequirement)), EventLevel.Error);
+                throw new ArgumentException(SR.Format(SR.IssuedSecurityTokenParametersIncorrectType, issuedSecurityTokenParameters), nameof(tokenRequirement));
             }
 
             _communicationObject = new WrapperSecurityCommunicationObject(this);
@@ -139,7 +136,7 @@ namespace System.ServiceModel.Federation
                     keyType = _requestSerializationContext.TrustKeyTypes.Bearer;
                     break;
                 default:
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant("KeyType is not supported: {0}", WSTrustTokenParameters.KeyType)), EventLevel.Error);
+                    throw new NotSupportedException(SR.Format(SR.KeyTypeNotSupported, WSTrustTokenParameters.KeyType));
             }
 
             Entropy entropy = null;
@@ -186,25 +183,13 @@ namespace System.ServiceModel.Federation
 
                 trustRequest.Claims = new Claims(WSTrustTokenParameters.Claims.Dialect, claimTypes);
             }
-            
+
             foreach (XmlElement parameter in WSTrustTokenParameters.AdditionalRequestParameters)
             {
                 trustRequest.AdditionalXmlElements.Add((XmlElement)parameter.CloneNode(true));
             }
 
             return trustRequest;
-        }
-
-        private EventTraceActivity EventTraceActivity
-        {
-            get
-            {
-                if (_eventTraceActivity == null)
-                {
-                    _eventTraceActivity = EventTraceActivity.GetFromThreadOrCreate();
-                }
-                return _eventTraceActivity;
-            }
         }
 
         private WsTrustResponse GetCachedResponse(WsTrustRequest request)
@@ -319,7 +304,7 @@ namespace System.ServiceModel.Federation
             if (messageSecurityVersion.TrustVersion == TrustVersion.WSTrustFeb2005)
                 return WsTrustVersion.TrustFeb2005;
 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant(SR.GetResourceString(SR.WsTrustVersionNotSupported), MessageSecurityVersion.TrustVersion)), EventLevel.Error);
+            throw new NotSupportedException(SR.Format(SR.WsTrustVersionNotSupported, MessageSecurityVersion.TrustVersion));
         }
 
         private void InitializeKeyEntropyMode()
@@ -381,8 +366,7 @@ namespace System.ServiceModel.Federation
             set
             {
                 if (!Enum.IsDefined(typeof(SecurityKeyEntropyMode), value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidEnumArgumentException(nameof(value), (int)value, typeof(SecurityKeyEntropyMode)), EventLevel.Error);
-
+                    throw new InvalidEnumArgumentException(nameof(value), (int)value, typeof(SecurityKeyEntropyMode));
                 _keyEntropyMode = value;
             }
         }
@@ -491,10 +475,7 @@ namespace System.ServiceModel.Federation
 
         void ISecurityCommunicationObject.OnFaulted() { }
 
-        void ISecurityCommunicationObject.OnOpened()
-        {
-            SecurityTraceRecordHelper.TraceTokenProviderOpened(EventTraceActivity, this);
-        }
+        void ISecurityCommunicationObject.OnOpened() { }
 
         void ISecurityCommunicationObject.OnOpening() { }
 
