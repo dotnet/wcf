@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.Runtime.ExceptionServices;
 using System.Threading;
 
 namespace System.Runtime
@@ -348,7 +349,7 @@ namespace System.Runtime
 
             if (asyncResult._exception != null)
             {
-                throw Fx.Exception.AsError(asyncResult._exception);
+                ExceptionDispatchInfo.Capture(Fx.Exception.AsError(asyncResult._exception)).Throw();
             }
 
             return asyncResult;
