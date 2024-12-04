@@ -812,6 +812,11 @@ If you were trying to generate a client, this could be because the metadata docu
         <target state="translated">Конечная точка "{0}" по адресу "{1}" содержит одну или несколько привязок, несовместимых с приложениями .Net Core. Пропуск...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
+        <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
+        <target state="new">The target framework '{0}' is out of support and will not receive security updates in the future.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">Значение, указанное для параметра --{0}, определяет путь к файлу "{1}", который не находится в каталоге проекта "{2}". Это может привести к тому, что файл не будет скомпилирован.</target>

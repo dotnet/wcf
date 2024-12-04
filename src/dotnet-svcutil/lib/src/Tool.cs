@@ -104,7 +104,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 else
                 {
                     // Show early warnings
-                    var earlyWarnings = options.Warnings;
+                    var earlyWarnings = options.Warnings.ToList();
                     foreach (string warning in earlyWarnings.Distinct())
                     {
                         ToolConsole.WriteWarning(warning);
@@ -272,28 +272,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             try
             {
-                var dependencies = TargetFrameworkHelper.GetWcfProjectReferences(project.TargetFramework);
+                var dependencies = TargetFrameworkHelper.GetWcfProjectReferences(project.TargetFrameworks);
                 if (dependencies != null)
                 {
                     bool needSave = false;
                     foreach (var dep in dependencies)
                     {
-                        if (dep.Name.Contains("NetNamedPipe") && !project.TargetFrameworks.Any(t => t.ToLower().Contains("windows")))
-                        {
-                            continue;
-                        }
-
                         needSave |= project.AddDependency(dep);
-                    }
-
-                    if (project.TargetFrameworks.Count() > 1 && project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo fxInfo) && !fxInfo.IsDnx))
-                    {
-                        FrameworkInfo fxInfo = null;
-                        var tfx = project.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out fxInfo) && fxInfo.IsDnx);
-                        if (!string.IsNullOrEmpty(tfx) && fxInfo.Version.Major >= 6)
-                        {
-                            needSave |= project.AddDependency(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault());
-                        }
                     }
 
                     if (needSave)
