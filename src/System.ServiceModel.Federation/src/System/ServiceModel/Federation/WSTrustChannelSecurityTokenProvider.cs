@@ -22,6 +22,7 @@ using Microsoft.IdentityModel.Protocols.WsFed;
 using Microsoft.IdentityModel.Protocols.WsPolicy;
 using Microsoft.IdentityModel.Protocols.WsTrust;
 using SecurityToken = System.IdentityModel.Tokens.SecurityToken;
+using System.IdentityModel.Security;
 
 namespace System.ServiceModel.Federation
 {
