@@ -969,17 +969,17 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            if (socketConnection == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new EndpointNotFoundException(SR.Format(SR.NoIPEndpointsFoundForHost, uri.Host)));
-            }
-
             if (lastException != null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     SocketConnectionInitiator.ConvertConnectException(lastException, uri,
                     timeoutHelper.ElapsedTime(), lastException));
+            }
+
+            if (socketConnection == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    new EndpointNotFoundException(SR.Format(SR.NoIPEndpointsFoundForHost, uri.Host)));
             }
 
             return socketConnection;
