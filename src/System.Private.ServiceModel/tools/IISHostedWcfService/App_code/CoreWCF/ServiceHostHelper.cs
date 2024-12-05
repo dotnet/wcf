@@ -77,10 +77,10 @@ namespace WcfService
             Environment.Exit(1);
         }
 
-        public static Enum ToServiceSchema(string CoreWcfScheme) => CoreWcfScheme switch
+        public static Enum ToServiceSchema(string CoreWcfScheme, bool usesWebsockets) => CoreWcfScheme switch
         {
-            "http" => ServiceSchema.HTTP,
-            "https" => ServiceSchema.HTTPS,
+            "http" => usesWebsockets ? ServiceSchema.WS : ServiceSchema.HTTP,
+            "https" => usesWebsockets ? ServiceSchema.WSS : ServiceSchema.HTTPS,
             "net.tcp" => ServiceSchema.NETTCP,
             "net.pipe" => ServiceSchema.NETPIPE,
             "ws" => ServiceSchema.WS,

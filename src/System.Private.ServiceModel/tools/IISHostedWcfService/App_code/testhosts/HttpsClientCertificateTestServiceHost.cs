@@ -17,6 +17,7 @@ using System.ServiceModel.Security;
 namespace WcfService
 {
     [TestServiceDefinition(Schema = ServiceSchema.HTTPS, BasePath = "ClientCertificateAccepted/HttpsClientCertificate.svc")]
+    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "ClientCertificateAccepted/HttpsClientCertificate.svc")]
     public class HttpsClientCertificateTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override IList<Binding> GetBindings()
