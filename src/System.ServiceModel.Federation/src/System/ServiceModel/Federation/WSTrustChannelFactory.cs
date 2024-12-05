@@ -20,7 +20,7 @@ namespace System.ServiceModel.Federation
         public WSTrustChannelFactory(ServiceEndpoint serviceEndpoint)
             : base(serviceEndpoint)
         {
-            _ = serviceEndpoint ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(serviceEndpoint));
+            _ = serviceEndpoint ?? throw new ArgumentNullException(nameof(serviceEndpoint));
             EndpointAddress = serviceEndpoint.Address;
         }
 
@@ -32,9 +32,9 @@ namespace System.ServiceModel.Federation
         public WSTrustChannelFactory(Binding binding, EndpointAddress endpointAddress)
             : base(binding, endpointAddress)
         {
-            _ = binding ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(binding));
+            _ = binding ?? throw new ArgumentNullException(nameof(binding));
 
-            EndpointAddress = endpointAddress ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(endpointAddress));
+            EndpointAddress = endpointAddress ?? throw new ArgumentNullException(nameof(endpointAddress));
         }
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace System.ServiceModel.Federation
         /// <returns>A <see cref="IChannel"/> that can be used to send an Issue request to a STS.</returns>
         public override IWSTrustChannelContract CreateChannel(EndpointAddress endpointAddress, Uri via)
         {
-            _ = endpointAddress ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(endpointAddress));
-            _ = via ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(via));
+            _ = endpointAddress ?? throw new ArgumentNullException(nameof(endpointAddress));
+            _ = via ?? throw new ArgumentNullException(nameof(via));
 
             return new WSTrustChannel(base.CreateChannel(endpointAddress, via) as IRequestChannel);
         }

@@ -625,4 +625,7 @@ Your credentials will be sent to the server in clear text.</value>
   <data name="WrnTargetFrameworkNotSupported_NetNamedPipe" xml:space="preserve">
     <value>NetNamedPipe is not supported on current .net target framework.</value>
   </data>
+  <data name="WrnOutOfSupportTargetFrameworkFormat" xml:space="preserve">
+    <value>The target framework '{0}' is out of support and will not receive security updates in the future.</value>
+  </data>
 </root>

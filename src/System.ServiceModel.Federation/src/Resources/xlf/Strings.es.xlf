@@ -7,6 +7,11 @@
         <target state="translated">Procese la acción "{0}".</target>
         <note />
       </trans-unit>
+      <trans-unit id="AsyncResultCompletedTwice">
+        <source>AsyncResult completed twice.</source>
+        <target state="new">AsyncResult completed twice.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
         <target state="translated">Los escenarios de clave del portador no deben incluir un token de prueba o una entropía de emisor en la respuesta.</target>
@@ -70,6 +75,11 @@
       <trans-unit id="IssuedTokenRenewalThresholdPercentageIncorrect">
         <source>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</source>
         <target state="translated">IssuedTokenRenewalThresholdPercentage debe ser mayor o igual que 1 y menor o igual que 100. Era: "{0}".</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KeyTypeNotSupported">
+        <source>KeyType is not supported: {0}</source>
+        <target state="new">KeyType is not supported: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">

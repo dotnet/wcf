@@ -198,4 +198,10 @@
   <data name="CannotDetermineSPNBasedOnAddress" xml:space="preserve">
     <value>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</value>
   </data>
+  <data name="AsyncResultCompletedTwice" xml:space="preserve">
+    <value>AsyncResult completed twice.</value>
+  </data>
+  <data name="KeyTypeNotSupported" xml:space="preserve">
+    <value>KeyType is not supported: {0}</value>
+  </data>
 </root>

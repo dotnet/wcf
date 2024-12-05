@@ -9,6 +9,7 @@ namespace System.Runtime
 {
     internal class InternalSR
     {
+#pragma warning disable IDE1006 // Naming Styles
         internal static readonly string ActionItemIsAlreadyScheduled = "The ActionItem was already scheduled for execution that hasn't been completed yet.";
         internal static readonly string AsyncCallbackThrewException = "Async Callback threw an exception.";
         internal static readonly string AsyncResultAlreadyEnded = "End cannot be called twice on an AsyncResult.";
@@ -20,6 +21,7 @@ namespace System.Runtime
         internal static readonly string ReadNotSupported = "Read not supported on this stream.";
         internal static readonly string SeekNotSupported = "Seek not supported on this stream.";
         internal static readonly string ValueMustBeNonNegative = "Value must be non-negative.";
+#pragma warning restore IDE1006 // Naming Styles
 
         internal static string ArgumentNullOrEmpty(object param0) => $"The argument {param0} is null or empty.";
         internal static string AsyncResultCompletedTwice(object param0) => $"The IAsyncResult implementation '{param0}' tried to complete a single operation multiple times. This could be caused by an incorrect application IAsyncResult implementation or other extensibility code, such as an IAsyncResult that returns incorrect CompletedSynchronously values or invokes the AsyncCallback multiple times.";

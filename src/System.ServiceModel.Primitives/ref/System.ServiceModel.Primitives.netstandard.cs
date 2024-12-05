@@ -1125,6 +1125,9 @@ namespace System.ServiceModel.Channels
         protected virtual void OnOpening() { }
         public void Open() { }
         public void Open(System.TimeSpan timeout) { }
+        protected internal void ThrowIfDisposed() { }
+        protected internal void ThrowIfDisposedOrImmutable() { }
+        protected internal void ThrowIfDisposedOrNotOpen() { }
     }
     public enum CompressionFormat
     {

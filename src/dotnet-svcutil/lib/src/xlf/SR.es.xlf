@@ -812,6 +812,11 @@ Si intentaba generar un cliente, es posible que se deba a que los documentos de 
         <target state="translated">El punto de conexión "{0}" en la dirección "{1}" contiene uno o varios enlaces no compatibles con las aplicaciones de .Net Core, omitiendo...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
+        <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
+        <target state="new">The target framework '{0}' is out of support and will not receive security updates in the future.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">El valor especificado con la opción --{0} se resuelve en la ruta de acceso de archivo "{1}", que no está en el directorio del proyecto "{2}". El archivo no puede compilarse.</target>

@@ -44,13 +44,13 @@ namespace System.ServiceModel.Federation
             // Encrypted keys and encrypted entropy are not supported, currently, as they should
             // only be needed by unsupported message security scenarios.
             if (response.RequestedProofToken?.EncryptedKey != null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(SR.GetResourceString(SR.EncryptedKeysForProofTokensNotSupported)), EventLevel.Error);
+                throw new NotSupportedException(SR.EncryptedKeysForProofTokensNotSupported);
 
             // Bearer scenarios have no proof token
             if (string.Equals(keyType, serializationContext.TrustKeyTypes.Bearer, StringComparison.Ordinal))
             {
                 if (response.RequestedProofToken != null || response.Entropy != null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException(SR.GetResourceString(SR.BearerKeyShouldNotIincludeAProofToken)), EventLevel.Error);
+                    throw new InvalidOperationException(SR.BearerKeyShouldNotIincludeAProofToken);
 
                 return null;
             }
@@ -61,7 +61,7 @@ namespace System.ServiceModel.Federation
             {
                 // Confirm that a computed key algorithm isn't also specified
                 if (!string.IsNullOrEmpty(response.RequestedProofToken.ComputedKeyAlgorithm) || response.Entropy != null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException(SR.GetResourceString(SR.RSTRProofTokenShouldNotHaveAComputedKeyAlgorithmOrIssuerEntropy)), EventLevel.Error);
+                    throw new InvalidOperationException(SR.RSTRProofTokenShouldNotHaveAComputedKeyAlgorithmOrIssuerEntropy);
 
                 return new BinarySecretSecurityToken(response.RequestedProofToken.BinarySecret.Data);
             }
@@ -70,7 +70,7 @@ namespace System.ServiceModel.Federation
             else if (response.RequestedProofToken?.ComputedKeyAlgorithm != null)
             {
                 if (!string.Equals(keyType, serializationContext.TrustKeyTypes.Symmetric, StringComparison.Ordinal))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException(SR.GetResourceString(SR.ComputedKeyProofTokensAreOnlySupportedWithSymmetricKeyTypes)), EventLevel.Error);
+                    throw new InvalidOperationException(SR.ComputedKeyProofTokensAreOnlySupportedWithSymmetricKeyTypes);
 
                 if (string.Equals(response.RequestedProofToken.ComputedKeyAlgorithm, serializationContext.TrustKeyTypes.PSHA1, StringComparison.Ordinal))
                 {
@@ -78,16 +78,16 @@ namespace System.ServiceModel.Federation
                     // If we wish to support it in the future, most of the work will be in the WSTrust serializer;
                     // this code would just have to use protected key's .Secret property to get the key material.
                     if (response.Entropy?.ProtectedKey != null || request.Entropy?.ProtectedKey != null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper( new NotSupportedException(SR.GetResourceString(SR.ProtectedKeyEntropyIsNotSupported)), EventLevel.Error);
+                        throw new NotSupportedException(SR.ProtectedKeyEntropyIsNotSupported);
 
                     // Get issuer and requester entropy
                     byte[] issuerEntropy = response.Entropy?.BinarySecret?.Data;
                     if (issuerEntropy == null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException(SR.GetResourceString(SR.ComputedKeyProofTokensRequireIssuerToSupplyKeyMaterialViaEntropy)), EventLevel.Error);
+                        throw new InvalidOperationException(SR.ComputedKeyProofTokensRequireIssuerToSupplyKeyMaterialViaEntropy);
 
                     byte[] requestorEntropy = request.Entropy?.BinarySecret?.Data;
                     if (requestorEntropy == null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException(SR.GetResourceString(SR.ComputedKeyProofTokensRequireRequesterToSupplyKeyMaterialViaEntropy)), EventLevel.Error);
+                        throw new InvalidOperationException(SR.ComputedKeyProofTokensRequireRequesterToSupplyKeyMaterialViaEntropy);
 
                     // Get key size
                     int keySizeInBits = response.KeySizeInBits ?? 0; // RSTR key size has precedence
@@ -98,13 +98,13 @@ namespace System.ServiceModel.Federation
                         keySizeInBits = algorithmSuite?.DefaultSymmetricKeyLength ?? 0; // Symmetric keys should default to a length corresponding to the algorithm in use
 
                     if (keySizeInBits == 0)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException(SR.GetResourceString(SR.NoKeySizeProvided)), EventLevel.Error);
+                        throw new InvalidOperationException(SR.NoKeySizeProvided);
 
                     return new BinarySecretSecurityToken(Psha1KeyGenerator.ComputeCombinedKey(issuerEntropy, requestorEntropy, keySizeInBits));
                 }
                 else
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(SR.GetResourceString(SR.OnlyPSHA1ComputedKeysAreSupported)), EventLevel.Error);
+                    throw new NotSupportedException(SR.OnlyPSHA1ComputedKeysAreSupported);
                 }
             }
             // If the response does not have a proof token or computed key value, but the request proposed entropy,
@@ -112,7 +112,7 @@ namespace System.ServiceModel.Federation
             else if (request.Entropy != null)
             {
                 if (request.Entropy.ProtectedKey != null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(SR.GetResourceString(SR.ProtectedKeyEntropyIsNotSupported)), EventLevel.Error);
+                    throw new NotSupportedException(SR.ProtectedKeyEntropyIsNotSupported);
 
                 if (request.Entropy.BinarySecret != null)
                     return new BinarySecretSecurityToken(request.Entropy.BinarySecret.Data);

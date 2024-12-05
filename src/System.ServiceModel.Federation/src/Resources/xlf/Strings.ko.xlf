@@ -7,6 +7,11 @@
         <target state="translated">동작 '{0}'을(를) 처리하세요.</target>
         <note />
       </trans-unit>
+      <trans-unit id="AsyncResultCompletedTwice">
+        <source>AsyncResult completed twice.</source>
+        <target state="new">AsyncResult completed twice.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
         <target state="translated">전달자 키 시나리오는 응답에 증명 토큰 또는 발급자 엔트로피를 포함하지 않아야 합니다.</target>
@@ -70,6 +75,11 @@
       <trans-unit id="IssuedTokenRenewalThresholdPercentageIncorrect">
         <source>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</source>
         <target state="translated">IssuedTokenRenewalThresholdPercentage는 1보다 크거나 같고 100보다 작거나 같아야 합니다. 이전: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KeyTypeNotSupported">
+        <source>KeyType is not supported: {0}</source>
+        <target state="new">KeyType is not supported: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">

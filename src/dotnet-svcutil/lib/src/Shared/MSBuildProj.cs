@@ -43,7 +43,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
 
         private List<string> _targetFrameworks = new List<string>();
+        private List<string> _endOfLifeTargetFrameworks = new List<string>();
         public IEnumerable<string> TargetFrameworks { get { return _targetFrameworks; } }
+        internal IEnumerable<string> EndOfLifeTargetFrameworks { get { return _endOfLifeTargetFrameworks; } }
 
         private string _runtimeIdentifier;
         public string RuntimeIdentifier
@@ -132,17 +134,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     else
                     {
                         _packageReferenceGroup = refItems.FirstOrDefault().Parent;
-                    }
-
-                    FrameworkInfo netfxInfo = null;
-                    FrameworkInfo dnxInfo = null;
-                    if (this.TargetFrameworks.Count() > 1 && this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out netfxInfo) && !netfxInfo.IsDnx))
-                    {
-                        var tfx = this.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
-                        if (!string.IsNullOrEmpty(tfx) && dnxInfo.Version.Major >= 6)
-                        {
-                            _packageReferenceGroup.Add(new XAttribute("Condition", $"'$(TargetFramework)' != '{netfxInfo.FullName}'"));
-                        }
                     }
                 }
 
@@ -242,9 +233,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                     else
                     {
-                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.NetCoreVersionReferenceTable.LastOrDefault().Key.ToString());
+                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.s_currentSupportedVersions.First());
                     }
-                    
+
                     msbuildProj._targetFrameworks.Add(msbuildProj._targetFramework);
                 }
 
@@ -369,7 +360,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 var sdkVersion = await ProjectPropertyResolver.GetSdkVersionAsync(msbuildProj.DirectoryPath, logger, cancellationToken).ConfigureAwait(false);
                 msbuildProj.SdkVersion = sdkVersion ?? string.Empty;
-
+                foreach (var tfx in msbuildProj._targetFrameworks)
+                {
+                    if(TargetFrameworkHelper.IsEndofLifeFramework(tfx))
+                    {
+                        msbuildProj._endOfLifeTargetFrameworks.Add(tfx);
+                    }
+                }
                 return msbuildProj;
             }
         }
@@ -541,21 +538,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         this.ProjectReferceGroup.Add(new XElement("ProjectReference", new XAttribute("Include", dependency.FullPath)));
                         break;
                     case ProjectDependencyType.Binary:
-                        FrameworkInfo netfxInfo = null;
-                        FrameworkInfo dnxInfo = null;
-                        string dnxStr = this.TargetFrameworks.FirstOrDefault(t => TargetFrameworkHelper.IsSupportedFramework(t, out dnxInfo) && dnxInfo.IsDnx);
-                        if (this.TargetFrameworks.Count() > 1 && dependency.Name.Equals(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault().Name)
-                            && !string.IsNullOrWhiteSpace(dnxStr) && dnxInfo.Version.Major >= 6)
-                        {
-                            if (this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out netfxInfo) && !netfxInfo.IsDnx))
-                            {
-                                this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Condition", $"'$(TargetFramework)' == '{netfxInfo.FullName}'"), new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
-                            }
-                        }
-                        else
-                        {
-                            this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
-                        }
+                        this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
                         break;
                     case ProjectDependencyType.Package:
                         this.PacakgeReferenceGroup.Add(new XElement("PackageReference", new XAttribute("Include", dependency.Name), new XAttribute("Version", dependency.Version)));

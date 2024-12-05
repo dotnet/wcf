@@ -27,9 +27,9 @@ namespace System.ServiceModel.Federation
         /// <param name="requestChannel">The <see cref="IRequestChannel" /> this channel will be used to send a <see cref="WsTrustRequest" /> to the STS.</param>
         public WSTrustChannel(IRequestChannel requestChannel)
         {
-            RequestChannel = requestChannel ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(requestChannel));
+            RequestChannel = requestChannel ?? throw new ArgumentNullException(nameof(requestChannel));
             if (requestChannel.State != CommunicationState.Created)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(LogHelper.FormatInvariant(SR.GetResourceString(SR.IRequestChannelMustBeCreated), requestChannel.State)));
+                throw new InvalidOperationException(SR.Format(SR.IRequestChannelMustBeCreated, requestChannel.State));
 
             MessageVersion = RequestChannel.GetProperty<MessageVersion>();
             if (MessageVersion == null || MessageVersion == MessageVersion.None)
@@ -72,7 +72,7 @@ namespace System.ServiceModel.Federation
         /// <returns>The <see cref="Message" /> that represents the <see cref="WsTrustRequest"/>.</returns>
         protected virtual Message CreateRequest(WsTrustRequest trustRequest)
         {
-            _ = trustRequest ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(trustRequest));
+            _ = trustRequest ?? throw new ArgumentNullException(nameof(trustRequest));
             return Message.CreateMessage(MessageVersion,
                                          GetRequestAction(trustRequest),
                                          new WSTrustRequestBodyWriter(trustRequest, TrustSerializer));
@@ -85,7 +85,7 @@ namespace System.ServiceModel.Federation
         /// <returns>The WS-Addressing action to use.</returns>
         public static string GetRequestAction(WsTrustRequest trustRequest)
         {
-            _ = trustRequest ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(trustRequest));
+            _ = trustRequest ?? throw new ArgumentNullException(nameof(trustRequest));
 
             WsTrustActions wsTrustActions;
             if (trustRequest.WsTrustVersion == WsTrustVersion.Trust13)
@@ -95,7 +95,7 @@ namespace System.ServiceModel.Federation
             else if (trustRequest.WsTrustVersion == WsTrustVersion.Trust14)
                 wsTrustActions = WsTrustActions.Trust14;
             else
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.GetResourceString(SR.WsTrustVersionNotSupported, trustRequest.WsTrustVersion.ToString())));
+                throw new NotSupportedException(SR.Format(SR.WsTrustVersionNotSupported, trustRequest.WsTrustVersion.ToString()));
 
             if (trustRequest.RequestType.Equals(wsTrustActions.Issue))
                 return wsTrustActions.IssueRequest;
@@ -106,7 +106,7 @@ namespace System.ServiceModel.Federation
             else if (trustRequest.RequestType.Equals(wsTrustActions.Validate))
                 return wsTrustActions.ValidateRequest;
             else
-               throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.GetResourceString(SR.RequestTypeNotSupported, trustRequest.RequestType)));
+               throw new NotSupportedException(SR.Format(SR.RequestTypeNotSupported, trustRequest.RequestType));
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace System.ServiceModel.Federation
         /// <returns>The <see cref="WsSerializationContext"/> for the <see cref="WsTrustRequest"/>.</returns>
         private WsSerializationContext GetSerializationContext(WsTrustRequest trustRequest)
         {
-            _ = trustRequest ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(trustRequest));
+            _ = trustRequest ?? throw new ArgumentNullException(nameof(trustRequest));
             if (trustRequest.WsTrustVersion == WsTrustVersion.TrustFeb2005)
             {
                 if (_wsSerializationContextTrustFeb2005 == null)
@@ -139,7 +139,7 @@ namespace System.ServiceModel.Federation
                 return _wsSerializationContextTrust1_4;
             }
 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.GetResourceString(SR.WsTrustVersionNotSupported, trustRequest.WsTrustVersion.ToString())));
+            throw new NotSupportedException(SR.Format(SR.WsTrustVersionNotSupported, trustRequest.WsTrustVersion.ToString()));
         }
 
         #region IChannel Members
@@ -201,7 +201,7 @@ namespace System.ServiceModel.Federation
         }
 
         /// <summary>
-        /// Causes a communication object to transition immediately from its current state into the closed state. 
+        /// Causes a communication object to transition immediately from its current state into the closed state.
         /// </summary>
         void ICommunicationObject.Abort()
         {
@@ -215,11 +215,11 @@ namespace System.ServiceModel.Federation
         /// The <see cref="TimeSpan" /> that specifies how long the close operation has to complete before timing out.
         /// </param>
         /// <param name="callback">
-        /// The <see cref="AsyncCallback" /> delegate that receives notification of the completion of the asynchronous 
+        /// The <see cref="AsyncCallback" /> delegate that receives notification of the completion of the asynchronous
         /// close operation.
         /// </param>
         /// <param name="state">
-        /// An object, specified by the application, that contains state information associated with the asynchronous 
+        /// An object, specified by the application, that contains state information associated with the asynchronous
         /// close operation.
         /// </param>
         /// <returns>The <see cref="IAsyncResult" /> that references the asynchronous close operation.</returns>
@@ -232,11 +232,11 @@ namespace System.ServiceModel.Federation
         /// Begins an asynchronous operation to close a communication object.
         /// </summary>
         /// <param name="callback">
-        /// The <see cref="AsyncCallback" /> delegate that receives notification of the completion of the asynchronous 
+        /// The <see cref="AsyncCallback" /> delegate that receives notification of the completion of the asynchronous
         /// close operation.
         /// </param>
         /// <param name="state">
-        /// An object, specified by the application, that contains state information associated with the asynchronous 
+        /// An object, specified by the application, that contains state information associated with the asynchronous
         /// close operation.
         /// </param>
         /// <returns>The <see cref="IAsyncResult" /> that references the asynchronous close operation.</returns>
@@ -252,11 +252,11 @@ namespace System.ServiceModel.Federation
         /// The <see cref="TimeSpan" /> that specifies how long the open operation has to complete before timing out.
         /// </param>
         /// <param name="callback">
-        /// The <see cref="AsyncCallback" /> delegate that receives notification of the completion of the asynchronous 
+        /// The <see cref="AsyncCallback" /> delegate that receives notification of the completion of the asynchronous
         /// close operation.
         /// </param>
         /// <param name="state">
-        /// An object, specified by the application, that contains state information associated with the asynchronous 
+        /// An object, specified by the application, that contains state information associated with the asynchronous
         /// close operation.
         /// </param>
         /// <returns>The <see cref="IAsyncResult" /> that references the asynchronous open operation.</returns>
@@ -269,11 +269,11 @@ namespace System.ServiceModel.Federation
         /// Begins an asynchronous operation to open a communication object.
         /// </summary>
         /// <param name="callback">
-        /// The <see cref="AsyncCallback" /> delegate that receives notification of the completion of the asynchronous 
+        /// The <see cref="AsyncCallback" /> delegate that receives notification of the completion of the asynchronous
         /// close operation.
         /// </param>
         /// <param name="state">
-        /// An object, specified by the application, that contains state information associated with the asynchronous 
+        /// An object, specified by the application, that contains state information associated with the asynchronous
         /// close operation.
         /// </param>
         /// <returns>The <see cref="IAsyncResult" /> that references the asynchronous open operation.</returns>
@@ -331,7 +331,7 @@ namespace System.ServiceModel.Federation
         }
 
         /// <summary>
-        /// Causes a communication object to transition from the created state into the opened state. 
+        /// Causes a communication object to transition from the created state into the opened state.
         /// </summary>
         void ICommunicationObject.Open()
         {
@@ -355,21 +355,21 @@ namespace System.ServiceModel.Federation
         /// <returns>A <see cref="WCFSecurityToken" /> issued by the STS.</returns>
         public async virtual Task<WCFSecurityToken> IssueAsync(WsTrustRequest trustRequest)
         {
-            _ = trustRequest ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(trustRequest));
+            _ = trustRequest ?? throw new ArgumentNullException(nameof(trustRequest));
 
             Message requestMessage = CreateRequest(trustRequest);
             Message response = await Task.Factory.FromAsync(RequestChannel.BeginRequest, RequestChannel.EndRequest, requestMessage, null, TaskCreationOptions.None).ConfigureAwait(false);
             if (response.IsFault)
             {
                 MessageFault fault = MessageFault.CreateFault(response, FaultMaxBufferSize);
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(FaultException.CreateFault(fault, response.Headers?.Action));
+                throw FaultException.CreateFault(fault, response.Headers?.Action);
             }
 
             WsTrustResponse trustResponse = TrustSerializer.ReadResponse(response.GetReaderAtBodyContents());
             WCFSecurityToken token = WSTrustUtilities.CreateGenericXmlSecurityToken(trustRequest, trustResponse, GetSerializationContext(trustRequest), null);
             if (token == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, string.IsNullOrEmpty(Address) ? ToString() : Address)));
-            
+                throw new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, string.IsNullOrEmpty(Address) ? ToString() : Address));
+
             return token;
         }
         #endregion
