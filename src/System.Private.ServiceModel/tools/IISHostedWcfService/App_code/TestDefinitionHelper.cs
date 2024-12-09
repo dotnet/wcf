@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using CoreWCF.Configuration;
 using CoreWCF.Description;
-using idunno.Authentication.Basic;
+//using idunno.Authentication.Basic;
 #else
 using System;
 using System.Collections.Generic;
@@ -116,30 +116,30 @@ namespace WcfService
                 .UseNetTcp(IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.NETTCP]).Port)
                 .ConfigureServices(services =>
                 {
-                    services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
-                        .AddBasic(options =>
-                        {
-                            options.Realm = "Basic Authentication";
-                            options.Events = new BasicAuthenticationEvents
-                            {
-                                OnValidateCredentials = context =>
-                                {
-                                    if (context.Username == context.Password)
-                                    {
-                                        var claims = new[]
-                                            {
-                                            new Claim(ClaimTypes.NameIdentifier, context.Username, ClaimValueTypes.String, context.Options.ClaimsIssuer),
-                                            new Claim(ClaimTypes.Name, context.Username, ClaimValueTypes.String, context.Options.ClaimsIssuer)
-                                            };
+                    //services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
+                    //    .AddBasic(options =>
+                    //    {
+                    //        options.Realm = "Basic Authentication";
+                    //        options.Events = new BasicAuthenticationEvents
+                    //        {
+                    //            OnValidateCredentials = context =>
+                    //            {
+                    //                if (context.Username == context.Password)
+                    //                {
+                    //                    var claims = new[]
+                    //                        {
+                    //                        new Claim(ClaimTypes.NameIdentifier, context.Username, ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                    //                        new Claim(ClaimTypes.Name, context.Username, ClaimValueTypes.String, context.Options.ClaimsIssuer)
+                    //                        };
 
-                                        context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
-                                        context.Success();
-                                    }
+                    //                    context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
+                    //                    context.Success();
+                    //                }
 
-                                    return Task.CompletedTask;
-                                }
-                            };
-                        });
+                    //                return Task.CompletedTask;
+                    //            }
+                    //        };
+                    //    });
                     services.AddServiceModelServices()
                     .AddServiceModelMetadata()
                     .AddServiceModelWebServices()
