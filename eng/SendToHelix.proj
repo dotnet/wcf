@@ -106,13 +106,9 @@
     <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tools\scripts'))" >
       <PayloadDirectory>%(Identity)</PayloadDirectory>
     </HelixCorrelationPayload>
-
-    <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src'))" >
-      <Destination>wcf_src</Destination>
-    </HelixCorrelationPayload>	
 	
     <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\artifacts\bin'))" >
-      <Destination>wcf_src</Destination>
+      <Destination>artifacts_bin</Destination>
     </HelixCorrelationPayload>
 
   </ItemGroup>
