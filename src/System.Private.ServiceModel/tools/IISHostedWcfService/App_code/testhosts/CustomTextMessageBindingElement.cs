@@ -2,8 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.Channels;
+#else
 using System;
 using System.ServiceModel.Channels;
+#endif
 using System.Xml;
 
 namespace WcfService
@@ -40,7 +44,7 @@ namespace WcfService
         }
 
         public CustomTextMessageBindingElement(string encoding, string mediaType)
-    : this(encoding, mediaType, System.ServiceModel.Channels.MessageVersion.Soap12WSAddressing10)
+    : this(encoding, mediaType, MessageVersion.Soap12WSAddressing10)
         {
         }
 
@@ -116,6 +120,7 @@ namespace WcfService
             return new CustomTextMessageBindingElement(this);
         }
 
+#if !NET
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
             if (context == null)
@@ -150,6 +155,7 @@ namespace WcfService
             context.BindingParameters.Add(this);
             return context.CanBuildInnerChannelListener<TChannel>();
         }
+#endif
 
         public override T GetProperty<T>(BindingContext context)
         {
