@@ -27,7 +27,7 @@
   </Target>
   
   <Target Name="BuildProjects">
-    <MSBuild Targets="Publish" Projects="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
+    <MSBuild Targets="Restore;Publish" Projects="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
   </Target>
     
   <ItemGroup>
