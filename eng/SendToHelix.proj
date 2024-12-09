@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.DotNet.Helix.Sdk" InitialTargets="InstallDotNet;Test">
+<Project Sdk="Microsoft.DotNet.Helix.Sdk" InitialTargets="InstallDotNet;BuildProjects;Test">
   <PropertyGroup>
     <HelixSource Condition=" '$(RunAsPublic)' == 'true' ">pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
     <HelixSource Condition=" '$(RunAsInternal)' == 'true' ">official/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
@@ -27,7 +27,7 @@
   </Target>
   
   <Target Name="BuildProjects">
-    <MSBuild Targets="Build" Projects="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj" Properties="PublishDir='$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'"/>
+    <MSBuild Projects="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj" />
   </Target>
     
   <ItemGroup>
@@ -109,7 +109,12 @@
 
     <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src'))" >
       <Destination>wcf_src</Destination>
+    </HelixCorrelationPayload>	
+	
+    <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\artifacts\bin'))" >
+      <Destination>wcf_src</Destination>
     </HelixCorrelationPayload>
+
   </ItemGroup>
 
   <PropertyGroup>
