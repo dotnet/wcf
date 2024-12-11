@@ -30,7 +30,7 @@
   </PropertyGroup>
   
   <Target Name="AddReferenceAssemblyToPackage" AfterTargets="AssignTargetPaths">
-    <ItemGroup>
+    <ItemGroup Condition="'$(SuppressRefAssemblyTargetFrameworks)' == '' OR !$(SuppressRefAssemblyTargetFrameworks.Contains('$(TargetFramework)'))">
       <TfmSpecificPackageFile Include="@(ResolvedReferenceAssemblyReference)" PackagePath="ref/$(TargetFramework)" />
     </ItemGroup>
   </Target>
