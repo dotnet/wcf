@@ -6,7 +6,7 @@ internal class Program
 {
     /// <summary>
     /// This app validates a NuGet package is formed correctly. Currently it only validates that all types in the
-    /// netstandard2.0 reference assembly are type forwarded for .NET Framework
+    /// netstandard2.0 reference assembly are type forwarded for .NET Framework.
     /// </summary>
     /// <param name="package">The NuGet package to validate</param>
     /// <param name="verbose">Turns on verbose output</param>
@@ -34,15 +34,21 @@ internal class Program
         var netFxLibEntries = zipArchive.Entries.Where(e => e.FullName.StartsWith("lib/net4"));
         if (!netFxLibEntries.Any())
         {
-            Console.Error.WriteLine("Expected assemblies in a lib/net4?? folder, none found");
+            Console.Error.WriteLine("No assemblies found in a lib/net4?? folder. No type forwards to check.");
+            Console.Error.WriteLine("If netfx isn't intended to be supported, this is expected.");
             return 1;
         }
 
         var netstandardRefEntries = zipArchive.Entries.Where(e => e.FullName.StartsWith("ref/netstandard2.0/"));
         if (!netstandardRefEntries.Any())
         {
-            Console.Error.WriteLine("Expected assemblies in the ref/netstandard2.0 folder, none found");
-            return 1;
+            Console.Error.WriteLine("No assemblies in the ref/netstandard2.0 folder, checking lib/netstandard2.0");
+            netstandardRefEntries = zipArchive.Entries.Where(e => e.FullName.StartsWith("lib/netstandard2.0/"));
+            if (!netstandardRefEntries.Any())
+            {
+                Console.Error.WriteLine("No assemblies in the lib/netstandard2.0 folder");
+                return 1;
+            }
         }
 
         var runtimeFolder = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\";
