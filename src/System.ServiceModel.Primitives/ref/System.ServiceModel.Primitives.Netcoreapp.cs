@@ -53,10 +53,6 @@ namespace System.IdentityModel.Selectors
 }
 namespace System.ServiceModel.Dispatcher
 {
-    public sealed partial class ClientRuntime
-    {
-        internal bool EnableFaults { get { return default; } set { } }   
-    }
     public partial class ChannelDispatcher
     {
         public Collection<IErrorHandler> ErrorHandlers { get { return default; } }
