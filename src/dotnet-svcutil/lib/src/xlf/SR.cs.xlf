@@ -814,7 +814,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
-        <target state="new">The target framework '{0}' is out of support and will not receive security updates in the future.</target>
+        <target state="translated">Cílová architektura {0} se nepodporuje a v budoucnu už nebude dostávat aktualizace zabezpečení.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
