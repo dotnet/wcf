@@ -814,7 +814,7 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
-        <target state="new">The target framework '{0}' is out of support and will not receive security updates in the future.</target>
+        <target state="translated">A estrutura de destino '{0}' está sem suporte e não receberá atualizações de segurança no futuro.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
