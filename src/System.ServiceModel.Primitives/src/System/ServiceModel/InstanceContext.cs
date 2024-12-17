@@ -234,6 +234,10 @@ namespace System.ServiceModel
             _channels.Close(timeout);
         }
 
+        protected override void OnClosed() => base.OnClosed();
+
+        protected override void OnFaulted() => base.OnFaulted();
+
         protected override void OnOpen(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
