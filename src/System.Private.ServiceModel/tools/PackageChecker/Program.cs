@@ -39,7 +39,7 @@ namespace PackageChecker
                 return 1;
             }
 
-            var dependencies = await DownloadNugetPackageDependenciesAsync(packageReader, verbose);
+            var dependencies = await DownloadNugetPackageDependenciesAsync(packageReader, package.DirectoryName, verbose);
             Console.WriteLine("Downloaded all dependencies");
             foreach (var tfm in supportedFrameworks)
             {
@@ -325,7 +325,7 @@ namespace PackageChecker
             }
         }
 
-        private static async Task<Dictionary<NuGetFramework, List<string>>> DownloadNugetPackageDependenciesAsync(PackageReaderBase packageReader, bool verbose)
+        private static async Task<Dictionary<NuGetFramework, List<string>>> DownloadNugetPackageDependenciesAsync(PackageReaderBase packageReader, string packageLocation, bool verbose)
         {
             Dictionary<NuGetFramework, List<string>> dependencies = new();
 
@@ -338,7 +338,7 @@ namespace PackageChecker
                 if (verbose) { Console.WriteLine($"Getting dependencies for tfm: {tfm.GetFrameworkString()}"); }
                 foreach (var dependency in group.Packages)
                 {
-                    List<string> implementationPath = await DownloadNugetPackageAndGetImplementationPathsAsync(dependency, group.TargetFramework, verbose);
+                    List<string> implementationPath = await DownloadNugetPackageAndGetImplementationPathsAsync(dependency, group.TargetFramework, packageLocation, verbose);
                     if (implementationPath == null)
                     {
                         Console.Error.WriteLine($"Failed to download {dependency.Id} {dependency.VersionRange} for {tfm}, may fail later");
@@ -365,17 +365,30 @@ namespace PackageChecker
             return dependencies;
         }
 
-        private static async Task<List<string>> DownloadNugetPackageAndGetImplementationPathsAsync(PackageDependency dependency, NuGetFramework tfm, bool verbose)
+        private static async Task<List<string>> DownloadNugetPackageAndGetImplementationPathsAsync(PackageDependency dependency, NuGetFramework tfm, string packageLocation, bool verbose)
         {
             // TODO: Wire up proper logging
             // TODO: Wire up proper cancellation token
 
+            bool isServiceModelDependency = dependency.Id.StartsWith("System.ServiceModel.");
+
             // Define the package sources
-            var packageSources = new List<PackageSource>
+            List<PackageSource> packageSources;
+            if (isServiceModelDependency)
             {
-                new PackageSource("https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json"),
-                new PackageSource("https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json")
-            };
+                packageSources = new List<PackageSource>
+                {
+                    new PackageSource(packageLocation)
+                };
+            }
+            else
+            {
+                packageSources = new List<PackageSource>
+                {
+                    new PackageSource("https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json"),
+                    new PackageSource("https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json")
+                };
+            }
 
             // Create the source repositories
             var sourceRepositories = new List<SourceRepository>();
@@ -387,24 +400,42 @@ namespace PackageChecker
             var logger = NullLogger.Instance;
             var cacheContext = new SourceCacheContext();
             var downloadContext = new PackageDownloadContext(cacheContext);
-            var globalPackagesFolder = SettingsUtility.GetGlobalPackagesFolder(Settings.LoadDefaultSettings(null));
+            string packagesDownloadFolder;
+            if (isServiceModelDependency)
+            {
+                packagesDownloadFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+                Directory.CreateDirectory(packagesDownloadFolder);
+                if (verbose) { Console.WriteLine($"Using temporary packages folder {packagesDownloadFolder} to install {dependency.Id}"); }
+            }
+            else
+            {
+                packagesDownloadFolder = SettingsUtility.GetGlobalPackagesFolder(Settings.LoadDefaultSettings(null));
+            }
 
             // Loop through the repositories to find and download the package
             foreach (var repository in sourceRepositories)
             {
-                var findPackageByIdResource = await repository.GetResourceAsync<FindPackageByIdResource>();
-                // Find all versions that match the version range
-                var allVersions = await findPackageByIdResource.GetAllVersionsAsync(dependency.Id, cacheContext, logger, default);
-                if (allVersions == null)
+                NuGetVersion matchedVersion;
+                if (isServiceModelDependency)
                 {
-                    if (verbose) { Console.WriteLine($"Didn't find package {dependency.Id} in repository {repository.PackageSource.SourceUri}"); }
-                    continue;
+                    matchedVersion = dependency.VersionRange.MinVersion;
                 }
-                var matchedVersion = allVersions.Where(dependency.VersionRange.Satisfies).OrderByDescending(v => v).FirstOrDefault();
-                if (matchedVersion == null)
+                else
                 {
-                    if (verbose) { Console.WriteLine($"No version found that satisfies the {dependency.Id} package version range {dependency.VersionRange.ToNormalizedString()}."); }
-                    continue;
+                    var findPackageByIdResource = await repository.GetResourceAsync<FindPackageByIdResource>();
+                    // Find all versions that match the version range
+                    var allVersions = await findPackageByIdResource.GetAllVersionsAsync(dependency.Id, cacheContext, logger, default);
+                    if (allVersions == null)
+                    {
+                        if (verbose) { Console.WriteLine($"Didn't find package {dependency.Id} in repository {repository.PackageSource.SourceUri}"); }
+                        continue;
+                    }
+                    matchedVersion = allVersions.Where(dependency.VersionRange.Satisfies).OrderByDescending(v => v).FirstOrDefault();
+                    if (matchedVersion == null)
+                    {
+                        if (verbose) { Console.WriteLine($"No version found that satisfies the {dependency.Id} package version range {dependency.VersionRange.ToNormalizedString()}."); }
+                        continue;
+                    }
                 }
 
                 // Get the DownloadResource and download the package
@@ -412,7 +443,7 @@ namespace PackageChecker
                 var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                     new PackageIdentity(dependency.Id, matchedVersion),
                     downloadContext,
-                    globalPackagesFolder,
+                    packagesDownloadFolder,
                     logger,
                     CancellationToken.None);
 
@@ -425,12 +456,33 @@ namespace PackageChecker
                         return null; // Returning instead of continuing as we found the package with the right version but no compatible TFM. We won't find the right version elsewhere.
                     }
 
-                    var packageExtractPath = Path.Combine(globalPackagesFolder, dependency.Id, matchedVersion.ToNormalizedString());
+                    var packageExtractPath = Path.Combine(packagesDownloadFolder, dependency.Id, matchedVersion.ToNormalizedString());
                     var libItems = downloadResult.PackageReader.GetLibItems().Where(fsg => fsg.TargetFramework.Equals(packageTfmToUse)).FirstOrDefault();
                     if (libItems == null)
                     {
                         Console.WriteLine($"No lib items found for {packageTfmToUse} in {dependency.Id} {matchedVersion}");
                         return null;
+                    }
+
+                    if (isServiceModelDependency)
+                    {
+                        // GetDownloadResourceResultAsync doesn't extract the package if it's local, so we need to do it ourselves
+                        Directory.CreateDirectory(packageExtractPath);
+                        foreach(var file in libItems.Items.Where(i => i.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)))
+                        {
+                            var targetPath = Path.Combine(packageExtractPath, file);
+                            var directoryPath = Path.GetDirectoryName(targetPath);
+                            if (!string.IsNullOrEmpty(directoryPath))
+                            {
+                                Directory.CreateDirectory(directoryPath);
+                            }
+
+                            using (var fileStream = downloadResult.PackageReader.GetStream(file))
+                            using (var outStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                            {
+                                await fileStream.CopyToAsync(outStream);
+                            }
+                        }
                     }
 
                     return libItems.Items.Where(i => i.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)).Select(i => Path.Combine(packageExtractPath, i)).ToList();
