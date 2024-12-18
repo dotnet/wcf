@@ -812,6 +812,11 @@ Se si stava provando a creare un client, il problema può dipendere dal fatto ch
         <target state="translated">L'endpoint '{0}' all'indirizzo '{1}' contiene uno o più binding non compatibili con le app .NET Core. Verrà ignorato...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
+        <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
+        <target state="translated">Il supporto per il framework di destinazione '{0}' non è più disponibile e non riceverà gli aggiornamenti della sicurezza in futuro.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">Il valore specificato con l'opzione --{0} viene risolto nel percorso del file '{1}' che non si trova nella directory del progetto '{2}'. È possibile che il file non venga compilato.</target>
