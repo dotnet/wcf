@@ -812,6 +812,11 @@ If you were trying to generate a client, this could be because the metadata docu
         <target state="translated">アドレス '{1}' のエンドポイント '{0}' に、.Net Core アプリと互換性のないバインドが 1 つ以上含まれています。スキップしています...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
+        <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
+        <target state="translated">ターゲット フレームワーク '{0}' はサポート対象外で、今後、セキュリティ更新プログラムは受け取ることはありません。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">--{0} オプションで指定された値はファイル パス '{1}' に解決されますが、このパスはプロジェクト '{2}' のディレクトリの下にありません。このファイルはコンパイルされない可能性があります。</target>
