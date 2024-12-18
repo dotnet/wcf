@@ -812,11 +812,6 @@ If you were trying to generate a client, this could be because the metadata docu
         <target state="translated">位於位址 '{1}' 的端點 '{0}' 包含一或多個與 .Net Core 應用程式不相容的繫結，將會跳過...</target>
         <note />
       </trans-unit>
-      <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
-        <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
-        <target state="translated">已不支援目標 Framework '{0}'，未來將不會收到安全性更新。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">使用 --{0} 選項來指定的值會解析為檔案路徑 '{1}'，但該路徑不在專案 '{2}' 的目錄下。檔案可能無法編譯!</target>
