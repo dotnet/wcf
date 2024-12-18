@@ -812,11 +812,6 @@ If you were trying to generate a client, this could be because the metadata docu
         <target state="translated">'{1}' adresindeki '{0}' uç noktası, .Net Core uygulamalarıyla uyumsuz bir veya daha fazla bağlama içerdiğinden atlanıyor...</target>
         <note />
       </trans-unit>
-      <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
-        <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
-        <target state="translated">'{0}' hedef çerçevesi destek kapsamı dışında olduğu için gelecekte güvenlik güncelleştirmeleri almayacak.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">--{0} seçeneği ile belirtilen değer, '{2}' projesi dizini altında olmayan '{1}' dosya yoluna çözümlenir. Dosya derlenemeyebilir!</target>
