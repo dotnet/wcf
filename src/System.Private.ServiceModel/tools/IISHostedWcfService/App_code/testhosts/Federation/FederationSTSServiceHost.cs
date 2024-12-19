@@ -2,15 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+using CoreWCF.IdentityModel.Tokens;
+using CoreWCF.Security;
+using Microsoft.Extensions.Hosting.Internal;
+#else
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Configuration;
 using System.IdentityModel.Tokens;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using System.Web.Hosting;
+#endif
+using System.Security.Cryptography.X509Certificates;
 
 namespace WcfService
 {

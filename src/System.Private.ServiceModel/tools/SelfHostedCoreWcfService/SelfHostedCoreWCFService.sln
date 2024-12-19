@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.32916.344
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelfHostedCoreWCFService", "SelfHostedCoreWCFService.csproj", "{19D41124-E785-44E4-9B7A-F75B6D21A7CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertificateGeneratorLibrary", "..\CertificateGenerator\CertificateGeneratorLibrary\CertificateGeneratorLibrary.csproj", "{314D8E66-225C-495E-AAB9-93966B825BEA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19D41124-E785-44E4-9B7A-F75B6D21A7CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19D41124-E785-44E4-9B7A-F75B6D21A7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19D41124-E785-44E4-9B7A-F75B6D21A7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19D41124-E785-44E4-9B7A-F75B6D21A7CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{314D8E66-225C-495E-AAB9-93966B825BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{314D8E66-225C-495E-AAB9-93966B825BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{314D8E66-225C-495E-AAB9-93966B825BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{314D8E66-225C-495E-AAB9-93966B825BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38C67964-0504-4D3C-A5A0-2CD0C9A2E018}
+	EndGlobalSection
+EndGlobal
