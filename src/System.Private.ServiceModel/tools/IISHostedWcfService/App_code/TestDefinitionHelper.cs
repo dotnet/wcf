@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using CoreWCF.Channels;
 using CoreWCF.Configuration;
 using CoreWCF.Description;
 using idunno.Authentication.Basic;
@@ -41,17 +42,11 @@ namespace WcfService
                     dict[ServiceSchema.HTTPS] = string.Format(@"https://localhost:{0}", httpsPort);
                     var tcpPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("tcpPort")) ? DefaultTcpPort : int.Parse(Environment.GetEnvironmentVariable("tcpPort"));
                     dict[ServiceSchema.NETTCP] = string.Format(@"net.tcp://localhost:{0}", tcpPort);
-#if NET
-                    var websocketPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("websocketPort")) ? DefaultWebSocketPort : int.Parse(Environment.GetEnvironmentVariable("websocketPort"));
-                    dict[ServiceSchema.WS] = string.Format(@"ws://localhost:{0}", websocketPort);
-                    var websocketsPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("websocketsPort")) ? DefaultWebSocketSPort : int.Parse(Environment.GetEnvironmentVariable("websocketsPort"));
-                    dict[ServiceSchema.WSS] = string.Format(@"wss://localhost:{0}", websocketsPort);
-#else
                     var websocketPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("websocketPort")) ? DefaultWebSocketPort : int.Parse(Environment.GetEnvironmentVariable("websocketPort"));
                     dict[ServiceSchema.WS] = string.Format(@"http://localhost:{0}", websocketPort);
                     var websocketsPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("websocketsPort")) ? DefaultWebSocketSPort : int.Parse(Environment.GetEnvironmentVariable("websocketsPort"));
                     dict[ServiceSchema.WSS] = string.Format(@"https://localhost:{0}", websocketsPort);
-#endif
+
                     s_baseAddresses = dict;
                     dict[ServiceSchema.NETPIPE] = @"net.pipe://localhost";
                     Console.WriteLine("Using base addresses:");
@@ -149,7 +144,7 @@ namespace WcfService
                 .Configure(app =>
                 {
                     app.UseAuthentication();
-                    app.UseAuthorization();                    
+                    app.UseAuthorization();
                     app.UseServiceModel(serviceBuilder =>
                     {
                         foreach (var serviceTestHost in GetAttributedServiceHostTypes())
@@ -194,18 +189,26 @@ namespace WcfService
                                     var serviceHost = (ServiceHost)Activator.CreateInstance(serviceTestHost, serviceTestHostOptionsDict[serviceHostTypeName].serviceBaseAddresses.ToArray());
                                     serviceBuilder.AddService(serviceHost.ServiceType, options =>
                                     {
-                                        var localHostTypeName = serviceHostTypeName;
                                         options.BaseAddresses.Clear();
-                                        foreach (var baseAddress in BaseAddresses.Values)
+                                        foreach (var baseAddress in BaseAddresses)
                                         {
-                                            //if (!options.BaseAddresses.Contains(baseAddress))
-                                                options.BaseAddresses.Add(new Uri(baseAddress));
+                                            if ((BaseAddresses.ContainsKey(ServiceSchema.HTTP) && baseAddress.Key == ServiceSchema.WS) ||
+                                            (BaseAddresses.ContainsKey(ServiceSchema.HTTPS) && baseAddress.Key == ServiceSchema.WSS))
+                                            {
+                                                continue;
+                                            }
+
+                                            options.BaseAddresses.Add(new Uri(baseAddress.Value));
                                         }
                                     });
 
                                     foreach (var endpoint in serviceHost.Endpoints)
                                     {
-                                        Enum schema = ServiceHostHelper.ToServiceSchema(endpoint.Binding.Scheme);
+                                        var customBinding = new CustomBinding(endpoint.Binding);
+                                        var htbe = customBinding.Elements.Find<HttpTransportBindingElement>();
+                                        bool usesWebsockets = htbe != null && htbe.WebSocketSettings.TransportUsage == WebSocketTransportUsage.Always;
+
+                                        Enum schema = ServiceHostHelper.ToServiceSchema(endpoint.Binding.Scheme, usesWebsockets);
                                         string basePath = serviceTestHostOptionsDict[serviceHostTypeName].endpointBasePath[schema];
                                         string endpointAddress = string.Format("{0}/{1}", basePath, endpoint.Address);
                                         serviceBuilder.AddServiceEndpoint(serviceHost.ServiceType, endpoint.ContractType, endpoint.Binding, new Uri(endpointAddress, UriKind.RelativeOrAbsolute), null);
