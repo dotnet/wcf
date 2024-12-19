@@ -766,6 +766,11 @@ public static partial class Endpoints
     {
         get { return GetEndpointAddress("DuplexCallbackDebugBehavior.svc/tcp", protocol: "net.tcp"); }
     }
+
+    public static string DuplexCallbackErrorHandler_Address
+    {
+        get { return GetEndpointAddress("DuplexCallbackErrorHandler.svc/tcp", protocol: "net.tcp"); }
+    }
     #endregion net.tcp Addresses
 
     #region net.pipe Addresses
