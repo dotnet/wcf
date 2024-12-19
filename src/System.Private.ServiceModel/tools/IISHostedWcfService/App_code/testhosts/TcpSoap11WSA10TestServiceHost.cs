@@ -2,8 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.Channels;
+#else
 using System;
 using System.ServiceModel.Channels;
+#endif
 using System.Text;
 
 namespace WcfService
@@ -15,7 +19,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11WSAddressing10, Encoding.UTF8), new TcpTransportBindingElement() { PortSharingEnabled = false });
+            return new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11WSAddressing10, Encoding.UTF8), new TcpTransportBindingElement());
         }
 
         public TcpSoap11WSA10TestServiceHost(params Uri[] baseAddresses)

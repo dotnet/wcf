@@ -2,12 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+#else
 using System;
 using System.IdentityModel;
 using System.IdentityModel.Configuration;
 using System.IdentityModel.Protocols.WSTrust;
-using System.Security.Claims;
 using System.ServiceModel;
+#endif
+using System.Security.Claims;
 
 namespace WcfService
 {
