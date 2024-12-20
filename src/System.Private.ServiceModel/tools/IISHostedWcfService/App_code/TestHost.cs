@@ -214,10 +214,7 @@ namespace WcfService
             try
             {
                 store = CertificateHelper.GetX509Store(name, location);
-                if (!store.IsOpen)
-                {
-                    store.Open(OpenFlags.ReadOnly);
-                }
+
                 X509Certificate2Collection foundCertificates = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, validOnly: true);
                 return foundCertificates.Count == 0 ? null : foundCertificates[0];
             }
@@ -237,10 +234,6 @@ namespace WcfService
             try
             {
                 store = CertificateHelper.GetX509Store(name, location);
-                if (!store.IsOpen)
-                {
-                    store.Open(OpenFlags.ReadOnly);
-                }
 
                 X509Certificate2Collection foundCertificates = store.Certificates.Find(X509FindType.FindByIssuerName, "DO_NOT_TRUST_WcfBridgeRootCA", false);
                 string friendlyNameHash = CertificateGenerator.HashFriendlyNameToString(friendlyName);
