@@ -814,7 +814,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
-        <target state="new">The target framework '{0}' is out of support and will not receive security updates in the future.</target>
+        <target state="translated">已不支援目標 Framework '{0}'，未來將不會收到安全性更新。</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">

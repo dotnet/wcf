@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>System.Web.Services.Description</AssemblyName>
+    <RootNamespace>System.ServiceModel</RootNamespace>
+    <CLSCompliant>true</CLSCompliant>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <IsShippingPackage>false</IsShippingPackage>
+  </PropertyGroup>
+
+</Project>

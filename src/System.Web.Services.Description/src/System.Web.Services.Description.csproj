@@ -1,24 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <AssemblyName>System.Web.Services.Description</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
-    <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <TargetFrameworks>netstandard2.0;$(NetFrameworkVersion)</TargetFrameworks>
-    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <EnableDefaultItems Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">false</EnableDefaultItems>
+    <SuppressRefAssemblyTargetFrameworks>$(NetFrameworkVersion)</SuppressRefAssemblyTargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">
     <Reference Include="System.Web.Services" />
-	  <Reference Include="System.Xml" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <Compile Condition="Exists('NetFxTypeForwards.cs')" Remove="NetFxTypeForwards.cs" />
+    <None Condition="Exists('NetFxTypeForwards.cs')" Include="NetFxTypeForwards.cs" />
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">
     <EmbeddedResource Update="Resources\Strings.resx">
       <GenerateSource>true</GenerateSource>
       <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>

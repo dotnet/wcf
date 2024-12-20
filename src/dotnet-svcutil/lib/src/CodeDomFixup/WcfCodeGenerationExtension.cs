@@ -60,19 +60,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
             }
 
-            foreach (var binding in bindings)
-            {
-                if (binding is NetNamedPipeBinding && _options.Project != null && (!_options.Project.TargetFrameworks.Any(t => t.ToLower().Contains("windows"))
-                    || !_options.Project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo fxInfo) && fxInfo.Version.Major >= 6)))
-                {
-                    MetadataConversionError error = new MetadataConversionError(SR.WrnTargetFrameworkNotSupported_NetNamedPipe, isWarning: true);
-                    if (!importer.Errors.Contains(error))
-                    {
-                        importer.Errors.Add(error);
-                    }
-                }
-            }
-
             UpdateExitStatus(importer.Errors);
             _endpoints = endpoints;
         }

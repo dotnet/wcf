@@ -7,6 +7,8 @@
 // Changes to this file must follow the http://aka.ms/api-review process.
 // ------------------------------------------------------------------------------
 
+using System.Xml;
+
 namespace System.Collections.Generic
 {
     public partial class SynchronizedCollection<T> : IList<T>, IList
@@ -993,6 +995,7 @@ namespace System.ServiceModel
     }
     public abstract class ReliableMessagingVersion
     {
+        internal ReliableMessagingVersion(string ns, XmlDictionaryString dictionaryNs) { }
         public static ReliableMessagingVersion Default { get { return default; } }
         public static ReliableMessagingVersion WSReliableMessaging11 { get { return default; } }
         public static ReliableMessagingVersion WSReliableMessagingFebruary2005 { get { return default; } }
@@ -1778,7 +1781,7 @@ namespace System.ServiceModel.Channels
         public int MaxReadPoolSize { get; set; }
         [System.ComponentModel.DefaultValueAttribute(16)]
         public int MaxWritePoolSize { get; set; }
-        public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get; set; }
+        public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get; }
         [System.ComponentModel.DefaultValueAttribute(65536)]
         public int MaxBufferSize { get; set; }
         public System.Text.Encoding WriteEncoding { get; set; }

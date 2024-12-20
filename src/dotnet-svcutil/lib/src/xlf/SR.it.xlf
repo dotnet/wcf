@@ -814,7 +814,7 @@ Se si stava provando a creare un client, il problema può dipendere dal fatto ch
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
-        <target state="new">The target framework '{0}' is out of support and will not receive security updates in the future.</target>
+        <target state="translated">Il supporto per il framework di destinazione '{0}' non è più disponibile e non riceverà gli aggiornamenti della sicurezza in futuro.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">

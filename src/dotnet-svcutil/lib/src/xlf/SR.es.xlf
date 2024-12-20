@@ -814,7 +814,7 @@ Si intentaba generar un cliente, es posible que se deba a que los documentos de 
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
-        <target state="new">The target framework '{0}' is out of support and will not receive security updates in the future.</target>
+        <target state="translated">La plataforma de destino "{0}" no es compatible y no recibirá actualizaciones de seguridad en el futuro.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">

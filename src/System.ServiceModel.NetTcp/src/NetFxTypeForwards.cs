@@ -10,3 +10,6 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(System.ServiceModel.TcpTransportSecurity))]
 [assembly: TypeForwardedTo(typeof(System.ServiceModel.Channels.TcpConnectionPoolSettings))]
 [assembly: TypeForwardedTo(typeof(System.ServiceModel.Channels.TcpTransportBindingElement))]
+[assembly: TypeForwardedTo(typeof(System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement))]
+[assembly: TypeForwardedTo(typeof(System.ServiceModel.Channels.SslStreamSecurityBindingElement))]
+[assembly: TypeForwardedTo(typeof(System.ServiceModel.Channels.WindowsStreamSecurityBindingElement))]

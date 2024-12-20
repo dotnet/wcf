@@ -376,3 +376,8 @@ public class PingEncodedRequest
         this.Pinginfo = pinginfo;
     }
 }
+
+[DataContract]
+public class CustomMessage
+{
+}

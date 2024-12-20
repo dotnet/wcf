@@ -3,6 +3,10 @@
 
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
+  <PropertyGroup>
+    <!-- Workaround for broken dotnet sdk build publishing pipeline -->
+    <BuildWithNetFrameworkHostedCompiler>false</BuildWithNetFrameworkHostedCompiler>
+  </PropertyGroup>
   <!-- Packaging props -->
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

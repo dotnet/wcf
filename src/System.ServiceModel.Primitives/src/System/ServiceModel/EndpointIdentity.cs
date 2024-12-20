@@ -120,6 +120,11 @@ namespace System.ServiceModel
             return GetClaimComparer().GetHashCode(IdentityClaim);
         }
 
+        public override string ToString()
+        {
+            return "identity(" + IdentityClaim + ")";
+        }
+
         internal bool Matches(Claim claim)
         {
             return GetClaimComparer().Equals(IdentityClaim, claim);
@@ -186,7 +191,7 @@ namespace System.ServiceModel
             {
                 //
                 // Something unknown
-                // 
+                //
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRP.Format(SRP.UnrecognizedIdentityType, reader.Name, reader.NamespaceURI)));
             }
             else

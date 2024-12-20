@@ -10,10 +10,10 @@ namespace System.ServiceModel
     public abstract class DuplexClientBase<TChannel> : ClientBase<TChannel>
         where TChannel : class
     {
+        protected DuplexClientBase(InstanceContext callbackInstance) : base(callbackInstance) { }
+
         protected DuplexClientBase(InstanceContext callbackInstance, Binding binding, EndpointAddress remoteAddress)
-            : base(callbackInstance, binding, remoteAddress)
-        {
-        }
+            : base(callbackInstance, binding, remoteAddress) { }
 
         public IDuplexContextChannel InnerDuplexChannel
         {
