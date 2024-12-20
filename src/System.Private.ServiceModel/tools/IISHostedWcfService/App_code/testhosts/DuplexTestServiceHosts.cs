@@ -166,7 +166,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public DuplexCallbackErrorHandlerServiceHost(params Uri[] baseAddresses)
