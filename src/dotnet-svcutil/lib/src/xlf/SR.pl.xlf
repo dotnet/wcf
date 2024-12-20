@@ -812,6 +812,11 @@ Jeśli próbowano wygenerować klienta, może być to spowodowane przez dokument
         <target state="translated">Punkt końcowy „{0}” pod adresem „{1}” zawiera co najmniej jedno powiązanie, które nie jest zgodne z aplikacjami .Net Core. Są one pomijane...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
+        <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
+        <target state="translated">Platforma docelowa „{0}” nie jest obsługiwana i w przyszłości nie będzie otrzymywać aktualizacji zabezpieczeń.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">Wartość opcji --{0} jest rozpoznawana jako ścieżka „{1}”, która znajduje się poza katalogiem projektu „{2}”. Kompilowanie pliku może zakończyć się niepowodzeniem.</target>

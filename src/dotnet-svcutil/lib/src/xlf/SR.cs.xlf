@@ -812,6 +812,11 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
         <target state="translated">Koncový bod {0} na adrese {1} obsahuje nejméně jednu vazbu, která není kompatibilní s aplikacemi .NET Core. Přeskakování...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
+        <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
+        <target state="translated">Cílová architektura {0} se nepodporuje a v budoucnu už nebude dostávat aktualizace zabezpečení.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
         <target state="translated">Hodnota zadaná pomocí možnosti --{0} se překládá na cestu k souboru {1}, která se nenachází v adresáři projektu {2}. Je možné, že se soubor nezkompiluje!</target>
