@@ -29,8 +29,8 @@ namespace System.ServiceModel
         public ServiceSecurityContext(System.IdentityModel.Policy.AuthorizationContext authorizationContext) { }
         public ServiceSecurityContext(System.IdentityModel.Policy.AuthorizationContext authorizationContext, System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy> authorizationPolicies) { }
         public static System.ServiceModel.ServiceSecurityContext Anonymous => default;
-        public bool IsAnonymous => default;
         public static System.ServiceModel.ServiceSecurityContext Current => default;
+        public bool IsAnonymous => default;
         public System.Security.Principal.IIdentity PrimaryIdentity => default;
         public System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy> AuthorizationPolicies { get; set; }
         public System.IdentityModel.Policy.AuthorizationContext AuthorizationContext => default;
