@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
@@ -61,6 +62,29 @@ namespace System.ServiceModel
             }
         }
 
+        public static ServiceSecurityContext Current
+        {
+            get
+            {
+                ServiceSecurityContext result = null;
+
+                OperationContext operationContext = OperationContext.Current;
+                if (operationContext != null)
+                {
+                    MessageProperties properties = operationContext.IncomingMessageProperties;
+                    if (properties != null)
+                    {
+                        SecurityMessageProperty security = properties.Security;
+                        if (security != null)
+                        {
+                            result = security.ServiceSecurityContext;
+                        }
+                    }
+                }
+
+                return result;
+            }
+        }
 
         public bool IsAnonymous
         {
