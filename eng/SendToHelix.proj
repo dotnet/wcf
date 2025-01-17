@@ -46,7 +46,6 @@
 
   <ItemGroup Condition="'$(TestJob)' == 'MacOS'" >
     <HelixTargetQueue Include="OSX.15.Amd64.Open" />
-    <HelixTargetQueue Include="OSX.15.Arm64.Open" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(RunAsPublic)' == 'true' ">
