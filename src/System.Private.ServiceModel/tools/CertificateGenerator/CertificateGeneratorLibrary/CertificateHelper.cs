@@ -53,8 +53,23 @@ namespace WcfTestCommon
                 // MacOS SafeKeychainHandle
                 store = GetMacOSX509Store();
             }
+
+            store = EnsureStoreIsOpened(store);
             return store;
         }
+
+        private static X509Store EnsureStoreIsOpened(X509Store store)
+        {
+            try
+            {
+                // Try opening the store in read-only mode
+                store.Open(OpenFlags.ReadOnly);
+            }
+            catch { }
+
+            return store;
+        }
+
 
         internal static string OSXCustomKeychainFilePath => Path.Combine(Environment.CurrentDirectory, "wcfLocal.keychain");
 
