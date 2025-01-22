@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="AsyncResultCompletedTwice">
         <source>AsyncResult completed twice.</source>
-        <target state="new">AsyncResult completed twice.</target>
+        <target state="translated">AsyncResult completado dos veces.</target>
         <note />
       </trans-unit>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="KeyTypeNotSupported">
         <source>KeyType is not supported: {0}</source>
-        <target state="new">KeyType is not supported: {0}</target>
+        <target state="translated">KeyType no se admite: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">
