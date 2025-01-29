@@ -17,6 +17,7 @@ namespace Microsoft.Xml.Serialization
     using System.Globalization;
     // using System.Security.Permissions;
     using Microsoft.Xml.Serialization.Advanced;
+    using System.Linq;
 
 #if DEBUG
     using System.Diagnostics;
@@ -504,7 +505,7 @@ namespace Microsoft.Xml.Serialization
         // [PermissionSet(SecurityAction.InheritanceDemand, Name="FullTrust")]
         internal override void ImportDerivedTypes(XmlQualifiedName baseName)
         {
-            foreach (XmlSchema schema in Schemas)
+            foreach (XmlSchema schema in Schemas.OrderBy(x => x.TargetNamespace).ThenBy(x => x.SourceUri))
             {
                 if (Schemas.IsReference(schema)) continue;
                 if (XmlSchemas.IsDataSet(schema)) continue;
