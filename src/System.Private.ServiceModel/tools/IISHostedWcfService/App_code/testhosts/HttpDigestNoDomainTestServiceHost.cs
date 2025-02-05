@@ -22,13 +22,19 @@ namespace WcfService
         {
             var binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+#if NET
+            binding.Security.Mode = BasicHttpSecurityMode.TransportCredentialOnly;
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Digest;
+#endif
             return binding;
         }
 
         protected override void ApplyConfiguration()
         {
             base.ApplyConfiguration();
+#if !NET
             AuthenticationResourceHelper.ConfigureServiceHostUseDigestAuth(this);
+#endif
         }
 
         public HttpDigestNoDomainTestServiceHost(params Uri[] baseAddresses)

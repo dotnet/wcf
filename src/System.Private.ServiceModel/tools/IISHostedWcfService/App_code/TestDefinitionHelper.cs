@@ -111,8 +111,9 @@ namespace WcfService
                 .UseNetTcp(IPAddress.IPv6Any, new Uri(BaseAddresses[ServiceSchema.NETTCP]).Port)
                 .ConfigureServices(services =>
                 {
-                    services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
-                        .AddBasic(options =>
+                    services.AddAuthentication()
+                    .AddDigest()
+                    .AddBasic(options =>
                         {
                             options.Realm = "Basic Authentication";
                             options.Events = new BasicAuthenticationEvents
