@@ -10,8 +10,8 @@ namespace WcfService
 {
     public class DigestAuthenticationHandler : AuthenticationHandler<DigestAuthenticationOptions>
     {
-        public DigestAuthenticationHandler(IOptionsMonitor<DigestAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
-            : base(options, logger, encoder, clock) { }
+        public DigestAuthenticationHandler(IOptionsMonitor<DigestAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder)
+            : base(options, logger, encoder) { }
 
         private const string DigestUsernameHeaderName = "DigestUsername";
         private const string DigestPasswordHeaderName = "DigestPassword";
@@ -41,15 +41,15 @@ namespace WcfService
             if (!digestState.IsValid())
             {
                 return Task.FromResult(AuthenticateResult.Fail("Invalid Username or Password"));
-            }           
+            }
 
-            var claimsPrincipal = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity(new[]
-            {
-                new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, digestState.Username)
-            }));
+            var claimsPrincipal = new System.Security.Claims.ClaimsPrincipal(
+                new System.Security.Claims.ClaimsIdentity(new[] { new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, digestState.Username) }, DigestAuthenticationDefaults.AuthenticationScheme));
+
+            Context.User = claimsPrincipal;
 
             var ticket = new AuthenticationTicket(claimsPrincipal, DigestAuthenticationDefaults.AuthenticationScheme);
-            
+
             return Task.FromResult(AuthenticateResult.Success(ticket));
         }
 
