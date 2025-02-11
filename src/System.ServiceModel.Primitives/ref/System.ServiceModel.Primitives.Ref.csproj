@@ -7,7 +7,6 @@
     <RootNamespace>System.ServiceModel</RootNamespace>
     <CLSCompliant>true</CLSCompliant>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">true</IsPartialFacadeAssembly>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
     <IsShippingPackage>false</IsShippingPackage>
   </PropertyGroup>
@@ -17,8 +16,15 @@
     <Compile Include="System.ServiceModel.Duplex.cs" />
     <Compile Condition="'$(TargetFramework)' != 'netstandard2.0'" Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
     <None Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
+    <None Include="NetFxTypeForwards.cs" />
   </ItemGroup>
-  <!-- TODO: Move this version number to central package management -->
+  <ItemGroup Condition="'$(TargetFramework)' != '$(NetFrameworkVersion)'">
+    <None Include="System.ServiceModel.Primitives.netstandard.cs" />
+    <None Include="System.ServiceModel.Security.cs" />
+    <None Include="System.ServiceModel.Duplex.cs" />
+    <None Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.Security.Principal.Windows" Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
   </ItemGroup>
