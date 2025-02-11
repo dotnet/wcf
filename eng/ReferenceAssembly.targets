@@ -17,8 +17,15 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' and Exists('netstandard.cs')">
     <None Include="@(Compile)" />
     <Compile Remove="@(Compile)" />
-    <None Condition="Exists('netstandard.cs')" Remove="netstandard.cs" />
-    <Compile Condition="Exists('netstandard.cs')" Include="netstandard.cs" />
+    <None Remove="netstandard.cs" />
+    <Compile Include="netstandard.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)' and Exists('NetFxTypeForwards.cs')">
+    <None Include="@(Compile)" />
+    <Compile Remove="@(Compile)" />
+    <None Remove="netstandard.cs" />
+    <Compile Include="NetFxTypeForwards.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)' and '$(EnableDefaultCompileItems)' != 'false'">
