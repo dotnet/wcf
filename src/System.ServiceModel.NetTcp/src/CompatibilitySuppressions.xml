@@ -4,66 +4,6 @@
   <Suppression>
     <DiagnosticId>CP0001</DiagnosticId>
     <Target>T:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.SslStreamSecurityBindingElement</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.TcpConnectionPoolSettings</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.TcpTransportBindingElement</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.WindowsStreamSecurityBindingElement</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.MessageSecurityOverTcp</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.NetTcpBinding</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.NetTcpSecurity</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.TcpClientCredentialType</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.TcpTransportSecurity</Target>
-    <Left>ref/net462/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement</Target>
     <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
     <Right>lib/net8.0/System.ServiceModel.NetTcp.dll</Right>
   </Suppression>
@@ -78,66 +18,6 @@
     <Target>T:System.ServiceModel.Channels.WindowsStreamSecurityBindingElement</Target>
     <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
     <Right>lib/net8.0/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.SslStreamSecurityBindingElement</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.TcpConnectionPoolSettings</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.TcpTransportBindingElement</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.Channels.WindowsStreamSecurityBindingElement</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.MessageSecurityOverTcp</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.NetTcpBinding</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.NetTcpSecurity</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.TcpClientCredentialType</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0001</DiagnosticId>
-    <Target>T:System.ServiceModel.TcpTransportSecurity</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net462/System.ServiceModel.NetTcp.dll</Right>
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0001</DiagnosticId>
