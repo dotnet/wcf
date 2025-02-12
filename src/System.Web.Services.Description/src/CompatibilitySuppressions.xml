@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:System.Web.Services.Configuration.XmlFormatExtensionAttribute</Target>
+    <Left>ref/netstandard2.0/System.Web.Services.Description.dll</Left>
+    <Right>lib/net462/System.Web.Services.Description.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:System.Web.Services.Configuration.XmlFormatExtensionPointAttribute</Target>
+    <Left>ref/netstandard2.0/System.Web.Services.Description.dll</Left>
+    <Right>lib/net462/System.Web.Services.Description.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:System.Web.Services.Configuration.XmlFormatExtensionPrefixAttribute</Target>
+    <Left>ref/netstandard2.0/System.Web.Services.Description.dll</Left>
+    <Right>lib/net462/System.Web.Services.Description.dll</Right>
+  </Suppression>
+</Suppressions>
