@@ -14,4 +14,9 @@
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
     <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\ref\System.ServiceModel.NetFramingBase.Ref.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Condition="'$(TargetFramework)' == '$(DotNetVersion)'" Include="System.ServiceModel.NetTcp.TypeForwards.cs" />
+    <None Condition="'$(TargetFramework)' != '$(DotNetVersion)'" Include="System.ServiceModel.NetTcp.TypeForwards.cs" />
+  </ItemGroup>
 </Project>
