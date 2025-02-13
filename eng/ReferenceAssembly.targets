@@ -21,11 +21,11 @@
     <Compile Include="netstandard.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)' and Exists('NetFxTypeForwards.cs')">
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)' and Exists('..\src\NetFxTypeForwards.cs')">
     <None Include="@(Compile)" />
     <Compile Remove="@(Compile)" />
     <None Remove="netstandard.cs" />
-    <Compile Include="NetFxTypeForwards.cs" />
+    <Compile Include="..\src\NetFxTypeForwards.cs" Link="NetFxTypeForwards.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)' and '$(EnableDefaultCompileItems)' != 'false'">
