@@ -261,7 +261,6 @@ namespace System.ServiceModel.Channels
         public System.Uri ProxyAddress { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute((System.Net.AuthenticationSchemes)(32768))]
         public System.Net.AuthenticationSchemes ProxyAuthenticationScheme { get { return default; } set { } }
-        public System.Net.IWebProxy Proxy { get { return default; } set { } }
         public override string Scheme { get { return default; } }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.TransferMode)(0))]
         public System.ServiceModel.TransferMode TransferMode { get { return default; } set { } }
