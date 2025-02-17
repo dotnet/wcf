@@ -2,12 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.Channels;
+using CoreWCF.Description;
+#else
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+#endif
 
 namespace WcfService
 {
@@ -30,12 +35,13 @@ namespace WcfService
         public TestServiceHostBase(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
         {
-            foreach(var binding in GetBindings())
+            foreach (var binding in GetBindings())
             {
                 AddServiceEndpoint(typeof(ContractType), binding, binding.Name == EmptyAddress ? "" : binding.Name);
             }
         }
 
+#if !NET
         //Overriding ApplyConfiguration() allows us to
         //alter the ServiceDescription prior to opening
         //the service host.
@@ -91,6 +97,7 @@ namespace WcfService
                 }
             }
         }
+#endif
     }
 
     public abstract class TestServiceHostBase<ContractType1, ContractType2> : TestServiceHostBase<ContractType1>
@@ -98,7 +105,7 @@ namespace WcfService
         public TestServiceHostBase(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
         {
-            ServiceEndpoint endpoint2 = this.AddServiceEndpoint(typeof(ContractType2), GetBinding(), Address);
+            AddServiceEndpoint(typeof(ContractType2), GetBinding(), Address);
         }
     }
 }

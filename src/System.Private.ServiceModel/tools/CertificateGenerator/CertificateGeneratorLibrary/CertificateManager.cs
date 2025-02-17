@@ -5,8 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 
@@ -44,25 +42,26 @@ namespace WcfTestCommon
 
         // Adds the given certificate to the given store unless it is
         // already present.  Returns 'true' if the certificate was added.
-        public static bool AddToStoreIfNeeded(StoreName storeName,
-                                               StoreLocation storeLocation,
-                                               X509Certificate2 certificate)
+        public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate)
         {
             X509Store store = null;
             X509Certificate2 existingCert = null;
             try
             {
-                store = new X509Store(storeName, storeLocation);
+                store = CertificateHelper.GetX509Store(storeName, storeLocation);
 
                 // We assume Bridge is running elevated
-                store.Open(OpenFlags.ReadWrite);
+                if (!CertificateHelper.CurrentOperatingSystem.IsMacOS())
+                {
+                    store.Open(OpenFlags.ReadWrite);
+                }
                 existingCert = CertificateFromThumbprint(store, certificate.Thumbprint);
                 if (existingCert == null)
                 {
                     store.Add(certificate);
                     Trace.WriteLine(string.Format("[CertificateManager] Added certificate to store: "));
-                    Trace.WriteLine(string.Format("    {0} = {1}", "StoreName", storeName));
-                    Trace.WriteLine(string.Format("    {0} = {1}", "StoreLocation", storeLocation));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "StoreName", store.Name));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "StoreLocation", store.Location));
                     Trace.WriteLine(string.Format("    {0} = {1}", "CN", certificate.SubjectName.Name));
                     Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey", certificate.HasPrivateKey));
                     Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", certificate.Thumbprint));
