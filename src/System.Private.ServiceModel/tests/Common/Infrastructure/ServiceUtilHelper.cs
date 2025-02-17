@@ -530,8 +530,8 @@ public static class ServiceUtilHelper
 
     private static string GetResourceAddress(string resource, string protocol = "http")
     {
-        string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
-        return string.Format(@"{0}://{1}/{2}/{3}", protocol, host, TestHostUtilitiesService, resource);
+        var baseUri = BuildBaseUri(protocol);
+        return new Uri(baseUri, $"{TestHostUtilitiesService}/{resource}").ToString();
     }
 
     public static string GetResourceFromServiceAsString(string resource)
