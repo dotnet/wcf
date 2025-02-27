@@ -78,22 +78,6 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    //old implementation:
-                    //var clientWebSocket = new ClientWebSocket();
-                    //await ConfigureClientWebSocketAsync(clientWebSocket, helper.RemainingTime());
-                    //await clientWebSocket.ConnectAsync(Via, await helper.GetCancellationTokenAsync());
-                    //ValidateWebSocketConnection(clientWebSocket);
-                    //WebSocket = clientWebSocket;
-
-                    /* new implementation:
-                    1.	Create a SocketsHttpHandler, set certificate, certificate validation callback, and credentials. Wrap in an HttpMessageInvoker.
-                    2.	Create an HttpRequestMessage. Set the required WebSocket headers, including any sub protocols, set the service url etc.
-                    3.	Send the request using the invoker
-                    4.	Validate the response headers, including upgrade status code, websocket specific headers, sub protocol.
-                    5.	Fetch the content stream from the response content
-                    6.	Wrap the content stream in a websocket
-                    */
-
                     try
                     {
                         while (true)
@@ -101,13 +85,6 @@ namespace System.ServiceModel.Channels
                             try
                             {
                                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, Via) { Version = HttpVersion.Version11 };
-                                //if (options._requestHeaders?.Count > 0) // use field to avoid lazily initializing the collection
-                                //{
-                                //    foreach (string key in options.RequestHeaders)
-                                //    {
-                                //        request.Headers.TryAddWithoutValidation(key, options.RequestHeaders[key]);
-                                //    }
-                                //}
 
                                 // These headers were added for WCF specific handshake to avoid encoder or transfermode mismatch between client and server.
                                 // For BinaryMessageEncoder, since we are using a sessionful channel for websocket, the encoder is actually different when
@@ -320,7 +297,7 @@ namespace System.ServiceModel.Channels
             SecurityTokenContainer clientCertificateToken = null;
             if (_channelFactory is HttpsChannelFactory<IDuplexSessionChannel> httpsChannelFactory)
             {
-                if(httpsChannelFactory.RequireClientCertificate)
+                if (httpsChannelFactory.RequireClientCertificate)
                 {
                     SecurityTokenProvider certificateProvider = await httpsChannelFactory.CreateAndOpenCertificateTokenProviderAsync(RemoteAddress, Via, channelParameterCollection, helper.RemainingTime());
                     clientCertificateToken = await httpsChannelFactory.GetCertificateSecurityTokenAsync(certificateProvider, RemoteAddress, Via, channelParameterCollection, helper);
@@ -334,7 +311,7 @@ namespace System.ServiceModel.Channels
                         };
                     }
                 }
-                
+                //Fix for issue #5729: Removed the httpsChannelFactory.RequireClientCertificate condition from the following if statement.
                 if (httpsChannelFactory.WebSocketCertificateCallback != null)
                 {
                     handler.SslOptions.RemoteCertificateValidationCallback = httpsChannelFactory.WebSocketCertificateCallback;
@@ -343,7 +320,7 @@ namespace System.ServiceModel.Channels
 
             //configure handler.Proxy
             (NetworkCredential credential, TokenImpersonationLevel impersonationLevel, AuthenticationLevel authenticationLevel) =
-                await HttpChannelUtilities.GetCredentialAsync(_channelFactory.AuthenticationScheme, _webRequestTokenProvider, timeout);            
+                await HttpChannelUtilities.GetCredentialAsync(_channelFactory.AuthenticationScheme, _webRequestTokenProvider, timeout);
             if (_channelFactory.Proxy != null)
             {
                 handler.Proxy = _channelFactory.Proxy;
@@ -418,7 +395,7 @@ namespace System.ServiceModel.Channels
             {
                 request.Headers.TryAddWithoutValidation(HttpKnownHeaderNames.SecWebSocketProtocol, WebSocketSettings.SubProtocol);
             }
-            
+
             return secValue;
         }
 
@@ -502,4 +479,3 @@ namespace System.ServiceModel.Channels
         }
     }
 }
-

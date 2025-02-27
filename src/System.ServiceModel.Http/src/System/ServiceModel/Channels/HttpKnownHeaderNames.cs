@@ -3,7 +3,6 @@
 
 namespace System.ServiceModel.Channels
 {
-    // from https://source.dot.net/#System.Net.WebSockets.Client/src/libraries/Common/src/System/Net/HttpKnownHeaderNames.cs
     internal static partial class HttpKnownHeaderNames
     {
         public const string Accept = "Accept";
