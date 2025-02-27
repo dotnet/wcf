@@ -37,7 +37,7 @@
 
   <ItemGroup Condition="'$(TestJob)' == 'Linux'" >
     <HelixTargetQueue Include="SLES.15.Amd64.Open" />
-    <HelixTargetQueue Include="(Fedora.40.Amd64.Open)ubuntu.2204.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:fedora-40-helix" />
+    <HelixTargetQueue Include="(Fedora.41.Amd64.Open)ubuntu.2204.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:fedora-41-helix" />
     <HelixTargetQueue Include="Ubuntu.2204.Amd64.Open" />
     <HelixTargetQueue Include="(Debian.12.Amd64.Open)Ubuntu.2204.Amd64.Open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-12-helix-amd64" />
     <HelixTargetQueue Include="(Mariner.2.0.Amd64.Open)Ubuntu.2204.Amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-helix-amd64" />
