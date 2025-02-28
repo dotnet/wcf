@@ -38,6 +38,7 @@ namespace System.IdentityModel.Tokens
             strEntries.Add(new LocalReferenceStrEntry(SecurityTokenSerializer.EmitBspRequiredAttributes, SecurityTokenSerializer));
             strEntries.Add(new X509SkiStrEntry(SecurityTokenSerializer.EmitBspRequiredAttributes));
             strEntries.Add(new X509IssuerSerialStrEntry());
+            strEntries.Add(new SamlJan2004KeyIdentifierStrEntry());
         }
 
 
@@ -453,6 +454,145 @@ namespace System.IdentityModel.Tokens
                 writer.WriteEndElement();
             }
         }
+
+        protected class SamlJan2004KeyIdentifierStrEntry : StrEntry
+        {
+            protected virtual bool IsMatchingValueType(string valueType)
+            {
+                return (valueType == SecurityJan2004Strings.SamlAssertionIdValueType);
+            }
+
+            public override bool CanReadClause(XmlDictionaryReader reader, string tokenType)
+            {
+                if (reader.IsStartElement(XD.SamlDictionary.AuthorityBinding, XD.SecurityJan2004Dictionary.SamlUri))
+                {
+                    return true;
+                }
+                else if (reader.IsStartElement(XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace))
+                {
+                    string valueType = reader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null);
+                    return IsMatchingValueType(valueType);
+                }
+                return false;
+            }
+
+            public override Type GetTokenType(SecurityKeyIdentifierClause clause)
+            {
+                return typeof(SamlSecurityToken);
+            }
+
+            public override string GetTokenTypeUri()
+            {
+                return XD.SecurityXXX2005Dictionary.SamlTokenType.Value;
+            }
+
+            public override SecurityKeyIdentifierClause ReadClause(XmlDictionaryReader reader, byte[] derivationNone, int derivationLength, string tokenType)
+            {
+                bool readAuthorityBinding = false;
+                bool readKeyIdentifier = false;
+                string id = null;
+                string valueType = null;
+                string binding = null;
+                string location = null;
+                string authorityKind = null;
+                while (reader.IsStartElement())
+                {
+                    if (reader.IsStartElement(XD.SamlDictionary.AuthorityBinding, XD.SecurityJan2004Dictionary.SamlUri))
+                    {
+                        if (readAuthorityBinding)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException());
+                        }
+                        readAuthorityBinding = true;
+                        binding = reader.GetAttribute(XD.SamlDictionary.Binding, null);
+                        if (string.IsNullOrEmpty(binding))
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException());
+                        }
+                        location = reader.GetAttribute(XD.SamlDictionary.Location, null);
+                        if (string.IsNullOrEmpty(location))
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException());
+                        }
+                        authorityKind = reader.GetAttribute(XD.SamlDictionary.AuthorityKind, null);
+                        if (string.IsNullOrEmpty(authorityKind))
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException());
+                        }
+                        if (reader.IsEmptyElement)
+                        {
+                            reader.Read();
+                        }
+                        else
+                        {
+                            reader.ReadStartElement();
+                            reader.ReadEndElement();
+                        }
+                    }
+                    else if (reader.IsStartElement(XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace))
+                    {
+                        if (readKeyIdentifier)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException());
+                        }
+                        readKeyIdentifier = true;
+                        valueType = reader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null);
+                        id = reader.ReadElementContentAsString();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (!readKeyIdentifier)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException());
+                }
+                return new SamlAssertionKeyIdentifierClause(id, derivationNone, derivationLength, valueType, tokenType, binding, location, authorityKind);
+            }
+
+            public override bool SupportsCore(SecurityKeyIdentifierClause clause)
+            {
+
+                if (typeof(SamlAssertionKeyIdentifierClause).IsAssignableFrom(clause.GetType()))
+                {
+                    SamlAssertionKeyIdentifierClause samlclause = clause as SamlAssertionKeyIdentifierClause;
+                    if ((samlclause.TokenTypeUri == null) || (samlclause.TokenTypeUri == this.GetTokenTypeUri()))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public override void WriteContent(XmlDictionaryWriter writer, SecurityKeyIdentifierClause clause)
+            {
+                SamlAssertionKeyIdentifierClause samlClause = clause as SamlAssertionKeyIdentifierClause;
+                if (!string.IsNullOrEmpty(samlClause.Binding) || !string.IsNullOrEmpty(samlClause.Location) || !string.IsNullOrEmpty(samlClause.AuthorityKind))
+                {
+                    writer.WriteStartElement(XD.SamlDictionary.PreferredPrefix.Value, XD.SamlDictionary.AuthorityBinding, XD.SecurityJan2004Dictionary.SamlUri);
+                    if (!string.IsNullOrEmpty(samlClause.Binding))
+                    {
+                        writer.WriteAttributeString(XD.SamlDictionary.Binding, null, samlClause.Binding);
+                    }
+                    if (!string.IsNullOrEmpty(samlClause.Location))
+                    {
+                        writer.WriteAttributeString(XD.SamlDictionary.Location, null, samlClause.Location);
+                    }
+                    if (!string.IsNullOrEmpty(samlClause.AuthorityKind))
+                    {
+                        writer.WriteAttributeString(XD.SamlDictionary.AuthorityKind, null, samlClause.AuthorityKind);
+                    }
+                    writer.WriteEndElement();
+                }
+                writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace);
+                string valueType = string.IsNullOrEmpty(samlClause.ValueType) ? XD.SecurityJan2004Dictionary.SamlAssertionIdValueType.Value : samlClause.ValueType;
+                writer.WriteAttributeString(XD.SecurityJan2004Dictionary.ValueType, null, valueType);
+                writer.WriteString(samlClause.AssertionId);
+                writer.WriteEndElement();
+            }
+        }
+
 
         protected class X509IssuerSerialStrEntry : StrEntry
         {
