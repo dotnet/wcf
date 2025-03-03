@@ -562,6 +562,11 @@ Identificateur de document : '{0}'.</target>
         <target state="translated">Mappage du targetNamespace d'un schéma WSDL ou XML à un espace de noms CLR. L'utilisation de '*' pour targetNamespace mappe tous les targetNamespaces sans mappage explicite à l'espace de noms CLR. Valeur par défaut : valeur dérivée de l'espace de noms cible du document de schéma pour les contrats de données. L'espace de noms par défaut est utilisé pour tous les autres types générés. (Forme abrégée : /{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpNoAsyncFormat">
+        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Désactivez la réutilisation des types à partir des références de projet. Les références fournies avec l'option --{1} vont être prises en compte uniquement pour la résolution des types de collection spécifiés avec l'option --{2}. (Forme abrégée : -{0})</target>

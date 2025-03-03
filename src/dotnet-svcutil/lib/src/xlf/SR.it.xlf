@@ -562,6 +562,11 @@ Identificatore di documento: '{0}'.</target>
         <target state="translated">Mapping da un elemento targetNamespace di WSDL o XML Schema a uno spazio dei nomi CLR. Se si usa l'asterisco '*' per targetNamespace, verrà eseguito il mapping di tutti gli elementi targetNamespace senza mapping esplicito allo spazio dei nomi CLR. Impostazione predefinita: derivato dallo spazio dei nomi del documento di schema per i contratti di dati. Per tutti gli altri tipi generati viene usato lo spazio dei nomi predefinito. Forma breve: -{0}</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpNoAsyncFormat">
+        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Disabilita il riutilizzo dei tipi dal riferimenti al progetto. I riferimenti specificati con l'opzione --{1} verranno presi in considerazione solo per risolvere i tipi di raccolta specificati con l'opzione --{2}. Forma breve: -{0}</target>

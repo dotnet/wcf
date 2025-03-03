@@ -86,6 +86,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             public readonly CommandSwitch RuntimeIdentifier = new CommandSwitch(RuntimeIdentifierKey, "ri", SwitchType.SingletonValue, OperationalContext.Global);
             public readonly CommandSwitch Serializer = new CommandSwitch(SerializerModeKey, "ser", SwitchType.SingletonValue);
             public readonly CommandSwitch Sync = new CommandSwitch(SyncKey, "syn", SwitchType.Flag);
+            public readonly CommandSwitch NoAsync = new CommandSwitch(NoAsyncKey, "nasyn", SwitchType.Flag);
             public readonly CommandSwitch TargetFramework = new CommandSwitch(TargetFrameworkKey, "tf", SwitchType.SingletonValue, OperationalContext.Global);
             public readonly CommandSwitch ToolContext = new CommandSwitch(ToolContextKey, "tc", SwitchType.SingletonValue, OperationalContext.Infrastructure);
             public readonly CommandSwitch Update = new CommandSwitch(UpdateServiceReferenceKey, "u", SwitchType.FlagOrSingletonValue, OperationalContext.Project);

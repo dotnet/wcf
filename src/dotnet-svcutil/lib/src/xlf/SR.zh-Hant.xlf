@@ -562,6 +562,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">從 WSDL 或 XML 結構描述 targetNamespace 到 CLR 命名空間的對應。請將對應所有未明確對應到該 CLR 命名空間的 targetNamespaces 之 targetNamespace，使用 '*'。預設: 從資料合約之結構描述文件的目標命名空間衍生。會為所有其他產生的類型使用預設命名空間。(簡短形式: /{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpNoAsyncFormat">
+        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">禁止重複使用專案參考中的類型。使用 --{1} 選項來提供的參考只會用來解析使用 --{2} 選項來指定的集合類型。(簡短形式: -{0})</target>

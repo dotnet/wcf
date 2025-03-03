@@ -562,6 +562,11 @@ Identificador do Documento: '{0}'.</target>
         <target state="translated">Um mapeamento de um targetNamespace de Esquema WSDL ou XML para um namespace CLR. Usar '*' para o targetNamespace mapeará todos os targetNamespaces sem um mapeamento explícito para o namespace CLR em questão. Padrão: derivado do namespace de destino do documento do esquema de Contratos de Dados. O namespace padrão é usado para todos os outros tipos gerados. (Forma Abreviada: /{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpNoAsyncFormat">
+        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Desabilite reutilizando tipos de referências de projeto. Referências fornecidas com a opção --{1} só serão consideradas para resolver os tipos de coleção especificados com a opção --{2}. (Forma abreviada: -{0})</target>
