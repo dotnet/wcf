@@ -214,7 +214,7 @@ namespace System.Runtime
             }
             else
             {
-                // http://msdn.microsoft.com/en-us/library/85bbbxt9(v=vs.110).aspx 
+                // http://msdn.microsoft.com/en-us/library/85bbbxt9(v=vs.110).aspx
                 // with exitContext was used in Desktop which is not supported in Net Native or CoreClr
                 return waitHandle.WaitOne(timeout);
             }
@@ -321,7 +321,7 @@ namespace System.Runtime
                     var token = tokenSource.Token;
 
                     // Clean up cache when Token is canceled
-                    token.Register(s_deregisterToken, Tuple.Create(targetTime, tokenSource));
+                    token.UnsafeRegister(s_deregisterToken, Tuple.Create(targetTime, tokenSource));
 
                     // set the result so other thread may observe the token, and return
                     tcs.TrySetResult(token);
