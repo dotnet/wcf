@@ -18,8 +18,8 @@
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
-    <MicrosoftDotNetGenFacadesPackageVersion>10.0.0-beta.25126.4</MicrosoftDotNetGenFacadesPackageVersion>
-    <MicrosoftDotNetXUnitExtensionsPackageVersion>10.0.0-beta.25126.4</MicrosoftDotNetXUnitExtensionsPackageVersion>
+    <MicrosoftDotNetGenFacadesPackageVersion>10.0.0-beta.25154.6</MicrosoftDotNetGenFacadesPackageVersion>
+    <MicrosoftDotNetXUnitExtensionsPackageVersion>10.0.0-beta.25154.6</MicrosoftDotNetXUnitExtensionsPackageVersion>
   </PropertyGroup>
   <!-- CoreFx dependencies -->
   <PropertyGroup>
