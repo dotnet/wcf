@@ -1,0 +1,18 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../src/dotnet-svcutil/lib/tests/TestCases/TypeReuse/TypeReuseIXmlSerializable.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, ReuseIXmlSerializabaleType_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "references": [
+      "$testCasesPath$//TypeReuse//CommonTypes.dll"
+    ],
+    "targetFramework": "N.N",
+    "typeReuseMode": "Specified"
+  }
+}

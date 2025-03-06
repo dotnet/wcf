@@ -206,5 +206,19 @@ namespace SvcutilTest
 
             TestGlobalSvcutil(input, expectSuccess: true);
         }
+
+        [Trait("Category", "Test")]
+        [Fact]
+        public void ReuseIXmlSerializabaleType()
+        {
+            this_TestCaseName = "ReuseIXmlSerializabaleType";
+            TestFixture();
+            InitializeGlobal(this_TestCaseName);
+
+            var uri = Path.Combine(g_TestCasesDir, "TypeReuse", "TypeReuseIXmlSerializable.wsdl");
+            var refs = Path.Combine(g_TestCasesDir, "TypeReuse", "CommonTypes.dll");
+            var options = $"{uri} -r {refs} -nl -v minimal -n \"\"*,{this_TestCaseName}_NS\"\"";
+            TestGlobalSvcutil(options);
+        }
     }
 }
