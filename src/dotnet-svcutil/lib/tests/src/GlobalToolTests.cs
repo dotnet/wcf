@@ -209,9 +209,9 @@ namespace SvcutilTest
 
         [Trait("Category", "Test")]
         [Fact]
-        public void ReuseIXmlSerializabaleType()
+        public void ReuseIXmlSerializableType()
         {
-            this_TestCaseName = "ReuseIXmlSerializabaleType";
+            this_TestCaseName = "ReuseIXmlSerializableType";
             TestFixture();
             InitializeGlobal(this_TestCaseName);
 

@@ -7,12 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ReuseIXmlSerializabaleType_NS
+namespace ReuseIXmlSerializableType_NS
 {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ReuseIXmlSerializabaleType_NS.IService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ReuseIXmlSerializableType_NS.IService")]
     public interface IService
     {
         
@@ -24,13 +24,13 @@ namespace ReuseIXmlSerializabaleType_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface IServiceChannel : ReuseIXmlSerializabaleType_NS.IService, System.ServiceModel.IClientChannel
+    public interface IServiceChannel : ReuseIXmlSerializableType_NS.IService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class ServiceClient : System.ServiceModel.ClientBase<ReuseIXmlSerializabaleType_NS.IService>, ReuseIXmlSerializabaleType_NS.IService
+    public partial class ServiceClient : System.ServiceModel.ClientBase<ReuseIXmlSerializableType_NS.IService>, ReuseIXmlSerializableType_NS.IService
     {
         
         /// <summary>

@@ -6,7 +6,7 @@
       "../../../../../../src/dotnet-svcutil/lib/tests/TestCases/TypeReuse/TypeReuseIXmlSerializable.wsdl"
     ],
     "namespaceMappings": [
-      "*, ReuseIXmlSerializabaleType_NS"
+      "*, ReuseIXmlSerializableType_NS"
     ],
     "outputFile": "Reference.cs",
     "references": [
