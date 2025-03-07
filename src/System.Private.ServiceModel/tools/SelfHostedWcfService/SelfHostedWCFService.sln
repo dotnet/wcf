@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34707.107
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfHostedWCFService", "SelfHostedWCFService.csproj", "{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelfHostedWCFService", "SelfHostedWCFService.csproj", "{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertificateGeneratorLibrary", "..\CertificateGenerator\CertificateGeneratorLibrary\CertificateGeneratorLibrary.csproj", "{EF492133-7146-4A3F-B07B-80C3304D4B6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF492133-7146-4A3F-B07B-80C3304D4B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF492133-7146-4A3F-B07B-80C3304D4B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF492133-7146-4A3F-B07B-80C3304D4B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF492133-7146-4A3F-B07B-80C3304D4B6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
