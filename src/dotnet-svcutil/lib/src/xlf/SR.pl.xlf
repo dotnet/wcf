@@ -562,6 +562,11 @@ Identyfikator dokumentu: „{0}”.</target>
         <target state="translated">Mapowanie z elementu targetNamespace schematu WSDL lub XML na przestrzeń nazw CLR. Użycie symbolu „*” dla elementu targetNamespace spowoduje mapowanie wszystkich elementów targetNamespace bez jawnego mapowania na przestrzeń nazw CLR. Domyślnie: pochodna z docelowej przestrzeni nazw dokumentu schematu dla kontraktów danych. Domyślna przestrzeń nazw jest używana w przypadku wszystkich innych wygenerowanych typów. (Krótka wersja: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpNoAsyncFormat">
+        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Wyłącz ponowne używanie typów z odwołań projektu. Odwołania udostępnione za pomocą opcji --{1} będą uwzględniane tylko podczas rozpoznawania typów kolekcji określonych przy użyciu opcji --{2}. (Krótka forma: -{0})</target>

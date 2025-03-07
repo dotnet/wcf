@@ -24,6 +24,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public const string RuntimeIdentifierKey = "runtimeIdentifier";
         public const string SerializerModeKey = "serializer";
         public const string SyncKey = "sync";
+        public const string NoAsyncKey = "noAsync";
         public const string TargetFrameworkKey = "targetFramework";
         public const string TypeReuseModeKey = "typeReuseMode";
         public const string WrappedKey = "wrapped";
@@ -42,6 +43,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public string RuntimeIdentifier { get { return GetValue<string>(RuntimeIdentifierKey); } set { SetValue(RuntimeIdentifierKey, value); } }
         public SerializerMode? SerializerMode { get { return GetValue<SerializerMode?>(SerializerModeKey); } set { SetValue(SerializerModeKey, value); } }
         public bool? Sync { get { return GetValue<bool?>(SyncKey); } set { SetValue(SyncKey, value); } }
+        public bool? NoAsync { get { return GetValue<bool?>(NoAsyncKey); } set { SetValue(NoAsyncKey, value); } }
         public FrameworkInfo TargetFramework { get { return GetValue<FrameworkInfo>(TargetFrameworkKey); } set { SetValue(TargetFrameworkKey, value); } }
         public TypeReuseMode? TypeReuseMode { get { return GetValue<TypeReuseMode?>(TypeReuseModeKey); } set { SetValue(TypeReuseModeKey, value); } }
         public bool? Wrapped { get { return GetValue<bool?>(WrappedKey); } set { SetValue(WrappedKey, value); } }
@@ -62,6 +64,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 new SingleValueOption<string>(RuntimeIdentifierKey),
                 new SingleValueOption<SerializerMode>(SerializerModeKey) { SerializationName = "serializerMode", DefaultValue = Svcutil.SerializerMode.Default },
                 new SingleValueOption<bool>(SyncKey) { SerializationName = "sync" },
+                new SingleValueOption<bool>(NoAsyncKey) { SerializationName = "noAsync" },
                 new SingleValueOption<FrameworkInfo>(TargetFrameworkKey),
                 new SingleValueOption<TypeReuseMode>(TypeReuseModeKey),
                 new SingleValueOption<bool>(WrappedKey));

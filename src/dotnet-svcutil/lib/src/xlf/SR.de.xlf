@@ -562,6 +562,11 @@ Dokumentbezeichner: "{0}".</target>
         <target state="translated">Eine Zuordnung von einem WSDL- oder XML-Schema-targetNamespace zu einem CLR-Namespace. Bei Verwendung von "*" als targetNamespace werden alle targetNamespaces ohne explizite Zuordnung diesem CLR-Namespace zugeordnet. Standard: Wird vom Zielnamespace des Schemadokuments für Datenverträge abgeleitet. Für alle anderen generierten Typen wird der Standardnamespace verwendet. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpNoAsyncFormat">
+        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Deaktivieren der Wiederverwendung von Typen aus Projektverweisen. Verweise, die mit der Option --{1} angegeben werden, werden nur für die Auflösung von Sammlungstypen berücksichtigt, die mit der Option --{2} angegeben wurden. (Kurzform: -{0})</target>
