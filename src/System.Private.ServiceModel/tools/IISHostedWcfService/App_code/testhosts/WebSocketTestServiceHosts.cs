@@ -21,9 +21,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            NetHttpBinding binding = new NetHttpBinding();
-            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            return binding;
+            return new NetHttpBinding();
         }
 
         public DuplexWebSocketTestServiceHost(params Uri[] baseAddresses)

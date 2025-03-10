@@ -1,9 +1,6 @@
 ﻿#if NET
-using CoreWCF;
-using CoreWCF.Channels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
-using System.Net;
 using System.Text.Encodings.Web;
 
 namespace WcfService

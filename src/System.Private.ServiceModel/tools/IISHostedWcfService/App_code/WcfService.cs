@@ -254,7 +254,7 @@ namespace WcfService
                 options.Listen(IPAddress.Loopback, 0);
             }).UseStartup<BasicHttpBindingStartup>().Build();
 
-            host.Run();
+            host.Start();
 
             BasicHttpBindingStartup startupService = new BasicHttpBindingStartup();
             string endpointAddress = startupService.GetEndpointAddress();

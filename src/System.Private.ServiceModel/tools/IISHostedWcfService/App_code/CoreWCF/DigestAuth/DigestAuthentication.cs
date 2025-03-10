@@ -3,11 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 #if NET
-using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using CoreWCF.Channels;
-using CoreWCF;
 
 namespace WcfService
 {
@@ -18,10 +15,7 @@ namespace WcfService
         private const string UriAuthenticationParameter = "uri";
         private const string UsernameAuthenticationParameter = "username";
         private const string NonceAuthenticationParameter = "nonce";
-        private const string RealmAuthenticationParameter = "realm";
         private const string ResponseAuthenticationParameter = "response";
-        private const string AuthenticationChallengeHeaderName = "WWW-Authenticate";
-        private const string AuthorizationHeaderName = "Authorization";
         private readonly string _authorizationHeader;
         private readonly Dictionary<string, string> _authorizationParameters;
         private readonly string _method;
@@ -60,73 +54,11 @@ namespace WcfService
             _nonceString = _authorizationParameters[NonceAuthenticationParameter];
         }
 
-        public bool IsRequestDigestAuth
-        {
-            get
-            {
-                return AuthMechanism.Equals(DigestAuthenticationMechanism);
-            }
-        }
-
-        public string AuthMechanism
-        {
-            get
-            {
-                string[] authMechAndData = _authorizationHeader.Split(' ');
-                if (authMechAndData.Length >= 2)
-                {
-                    return authMechAndData[0];
-                }
-
-                return string.Empty;
-            }
-        }
-
         public string Nonce { get { return _nonceString; } }
-
-        public DateTime NonceExpiryTime
-        {
-            get
-            {
-                DateTime expiry;
-
-                // Make sure the base64 value is padded right as nonce's can't
-                // have the character = at the end.
-                var nonce = Nonce;
-                int remainder = nonce.Length % 4;
-                if (remainder > 0)
-                {
-                    int padCount = 4 - remainder;
-                    nonce = nonce + new string('=', padCount);
-                }
-
-                try
-                {
-                    byte[] nonceBytes = Convert.FromBase64String(nonce);
-                    string expiryString = Encoding.ASCII.GetString(nonceBytes);
-                    expiry = DateTime.Parse(expiryString);
-                }
-                catch (FormatException)
-                {
-                    return DateTime.MinValue;
-                }
-
-                return expiry;
-            }
-            set
-            {
-                string nonceExpiryString = value.ToString("G");
-                byte[] nonceExpiryBytes = Encoding.ASCII.GetBytes(nonceExpiryString);
-                string nonceString = Convert.ToBase64String(nonceExpiryBytes);
-                _nonceString = nonceString.TrimEnd('=');
-            }
-        }
 
         public Dictionary<string, string> Parameters { get { return _authorizationParameters; } }
 
         public string Password { set { _password = value; } }
-
-        public bool IsNonceStale { get { return NonceExpiryTime < DateTime.Now; } }
 
         public string Uri { get { return Parameters[UriAuthenticationParameter]; } }
 

@@ -32,9 +32,10 @@ namespace SelfHostedWCFService
             string crlFileLocation = "c:\\WCFTest\\test.crl";
 
             CertificateGeneratorLibrary.SetupCerts(testserverbase, validatePeriod, crlFileLocation);
-            
+
             Console.WriteLine("Starting services...");
-            await TestDefinitionHelper.StartHosts();
+            var webHost = await TestDefinitionHelper.StartHosts(false);
+            var webHostWebSocket = await TestDefinitionHelper.StartHosts(true);
 
             Console.WriteLine("All services started.");
 
@@ -55,9 +56,12 @@ namespace SelfHostedWCFService
                 //Linux and MacOS
                 Console.WriteLine("Use Shutdown endpoint to terminate the self service Host.");
                 Console.WriteLine("http://localhost:8081/TestHost.svc/shutdown");
-            
+
                 Thread.Sleep(Timeout.Infinite);
             }
+
+            GC.KeepAlive(webHost);
+            GC.KeepAlive(webHostWebSocket);
         }
 
         private static bool ParseArgs(string[] args)
