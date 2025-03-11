@@ -13,7 +13,7 @@
     "version": "10.0.100-preview.3.25125.5"
   },
   "msbuild-sdks": {
-    "Microsoft.DotNet.Arcade.Sdk": "10.0.0-beta.25157.1",
+    "Microsoft.DotNet.Arcade.Sdk": "10.0.0-beta.25160.4",
     "Microsoft.DotNet.Helix.Sdk": "8.0.0-beta.23409.5"
   }
 }
