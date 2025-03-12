@@ -89,7 +89,7 @@ namespace WcfTestCommon
                     throw new ArgumentException("CrlUri must be a valid relative URI", "CrlUriRelativePath");
                 }
 
-                _crlUri = string.Format("http://{0}{1}", _crlServiceUri, _crlUriRelativePath);
+                _crlUri = new Uri(string.Format("http://{0}{1}", _crlServiceUri, _crlUriRelativePath)).AbsoluteUri;
 
                 _initializationDateTime = DateTime.UtcNow;
                 _defaultValidityNotBefore = _initializationDateTime.Subtract(_gracePeriod);

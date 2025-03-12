@@ -52,7 +52,7 @@ public class CertificateGeneratorLibrary
         RemoveCertificatesFromStore(StoreName.TrustedPeople, StoreLocation.CurrentUser);
     }
 
-    public static int SetupCerts(string testserverbase, TimeSpan validatePeriod, string crlFileLocation)
+    public static int SetupCerts(string testserverbase, TimeSpan validatePeriod, string crlFileLocation, int httpPort=80)
     {
         s_testserverbase = testserverbase;
         s_validatePeriod = validatePeriod;
@@ -62,7 +62,8 @@ public class CertificateGeneratorLibrary
 
         CertificateGenerator certificateGenerate = new CertificateGenerator();
         certificateGenerate.CertificatePassword = "test";
-        certificateGenerate.CrlServiceUri = s_fqdn;
+
+        certificateGenerate.CrlServiceUri = $"{s_fqdn}:{httpPort}";
         certificateGenerate.ValidityPeriod = s_validatePeriod;
 
         if (!string.IsNullOrEmpty(s_testserverbase))
