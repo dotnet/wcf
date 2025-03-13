@@ -562,11 +562,6 @@ Document Identifier: '{0}'.</source>
         <target state="translated">WSDL または XML スキーマの targetNamespace から CLR 名前空間へのマッピングです。targetNamespace に '*' を使用すると、その CLR 名前空間への明示的なマッピングなしに、すべての targetNamespaces がマップされます。既定: データ コントラクトのスキーマ ドキュメントのターゲット名前空間から派生します。その他すべての生成された型には、既定の名前空間が使用されます。(短い形式: -{0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="HelpNoAsyncFormat">
-        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
-        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
-        <note />
-      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">プロジェクト参照からの型の再利用を無効にします。--{1} オプションで指定された参照は、--{2} オプションで指定されたコレクション型を解決する場合にのみ考慮されます。(短い形式: -{0})</target>
@@ -615,6 +610,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">非同期のものに加えて、操作の同期メソッドを生成します。(短縮形: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NoAsync_NS
+namespace SyncOnly_NS
 {
     using System.Runtime.Serialization;
     
@@ -442,7 +442,7 @@ namespace NoAsync_NS
         
         private System.Net.HttpStatusCode HttpStatusCodeField;
         
-        private NoAsync_NS.UserGamePlay[] ResultField;
+        private SyncOnly_NS.UserGamePlay[] ResultField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int ErrorCode
@@ -484,7 +484,7 @@ namespace NoAsync_NS
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public NoAsync_NS.UserGamePlay[] Result
+        public SyncOnly_NS.UserGamePlay[] Result
         {
             get
             {
@@ -647,7 +647,7 @@ namespace NoAsync_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="NoAsync_NS.IWcfProjectNService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SyncOnly_NS.IWcfProjectNService")]
     public interface IWcfProjectNService
     {
         
@@ -661,36 +661,36 @@ namespace NoAsync_NS
         string Echo(string message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/EchoComplex", ReplyAction="http://tempuri.org/IWcfProjectNService/EchoComplexResponse")]
-        NoAsync_NS.ComplexCompositeType EchoComplex(NoAsync_NS.ComplexCompositeType message);
+        SyncOnly_NS.ComplexCompositeType EchoComplex(SyncOnly_NS.ComplexCompositeType message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/TestFault", ReplyAction="http://tempuri.org/IWcfProjectNService/TestFaultResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NoAsync_NS.FaultDetail), Action="http://tempuri.org/IWcfProjectNService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(SyncOnly_NS.FaultDetail), Action="http://tempuri.org/IWcfProjectNService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
         void TestFault(string faultMsg);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException", ReplyAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationExceptionResponse")]
         void ThrowInvalidOperationException(string message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContractResponse")]
-        NoAsync_NS.CompositeType GetDataUsingDataContract(NoAsync_NS.CompositeType composite);
+        SyncOnly_NS.CompositeType GetDataUsingDataContract(SyncOnly_NS.CompositeType composite);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders", ReplyAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeadersResponse")]
         System.Collections.Generic.Dictionary<string, string> ValidateMessagePropertyHeaders();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/UserGetAuthToken", ReplyAction="http://tempuri.org/IWcfProjectNService/UserGetAuthTokenResponse")]
-        NoAsync_NS.ResultOfstring UserGetAuthToken(string liveId);
+        SyncOnly_NS.ResultOfstring UserGetAuthToken(string liveId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList", ReplyAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetListResponse")]
-        NoAsync_NS.ResultOfArrayOfUserGamePlay UserGamePlayGetList(string gameKey, string keys);
+        SyncOnly_NS.ResultOfArrayOfUserGamePlay UserGamePlayGetList(string gameKey, string keys);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply", ReplyAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyResponse")]
-        NoAsync_NS.ReplyBankingData MessageContractRequestReply(NoAsync_NS.RequestBankingData request);
+        SyncOnly_NS.ReplyBankingData MessageContractRequestReply(SyncOnly_NS.RequestBankingData request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped", ReplyAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrappedRespo" +
             "nse")]
-        NoAsync_NS.ReplyBankingDataNotWrapped MessageContractRequestReplyNotWrapped(NoAsync_NS.RequestBankingData request);
+        SyncOnly_NS.ReplyBankingDataNotWrapped MessageContractRequestReplyNotWrapped(SyncOnly_NS.RequestBankingData request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty", ReplyAction="http://tempuri.org/IWcfProjectNService/EchoHttpRequestMessagePropertyResponse")]
-        NoAsync_NS.TestHttpRequestMessageProperty EchoHttpRequestMessageProperty();
+        SyncOnly_NS.TestHttpRequestMessageProperty EchoHttpRequestMessageProperty();
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -775,13 +775,13 @@ namespace NoAsync_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface IWcfProjectNServiceChannel : NoAsync_NS.IWcfProjectNService, System.ServiceModel.IClientChannel
+    public interface IWcfProjectNServiceChannel : SyncOnly_NS.IWcfProjectNService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class WcfProjectNServiceClient : System.ServiceModel.ClientBase<NoAsync_NS.IWcfProjectNService>, NoAsync_NS.IWcfProjectNService
+    public partial class WcfProjectNServiceClient : System.ServiceModel.ClientBase<SyncOnly_NS.IWcfProjectNService>, SyncOnly_NS.IWcfProjectNService
     {
         
         /// <summary>
@@ -832,7 +832,7 @@ namespace NoAsync_NS
             return base.Channel.Echo(message);
         }
         
-        public NoAsync_NS.ComplexCompositeType EchoComplex(NoAsync_NS.ComplexCompositeType message)
+        public SyncOnly_NS.ComplexCompositeType EchoComplex(SyncOnly_NS.ComplexCompositeType message)
         {
             return base.Channel.EchoComplex(message);
         }
@@ -847,7 +847,7 @@ namespace NoAsync_NS
             base.Channel.ThrowInvalidOperationException(message);
         }
         
-        public NoAsync_NS.CompositeType GetDataUsingDataContract(NoAsync_NS.CompositeType composite)
+        public SyncOnly_NS.CompositeType GetDataUsingDataContract(SyncOnly_NS.CompositeType composite)
         {
             return base.Channel.GetDataUsingDataContract(composite);
         }
@@ -857,53 +857,53 @@ namespace NoAsync_NS
             return base.Channel.ValidateMessagePropertyHeaders();
         }
         
-        public NoAsync_NS.ResultOfstring UserGetAuthToken(string liveId)
+        public SyncOnly_NS.ResultOfstring UserGetAuthToken(string liveId)
         {
             return base.Channel.UserGetAuthToken(liveId);
         }
         
-        public NoAsync_NS.ResultOfArrayOfUserGamePlay UserGamePlayGetList(string gameKey, string keys)
+        public SyncOnly_NS.ResultOfArrayOfUserGamePlay UserGamePlayGetList(string gameKey, string keys)
         {
             return base.Channel.UserGamePlayGetList(gameKey, keys);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        NoAsync_NS.ReplyBankingData NoAsync_NS.IWcfProjectNService.MessageContractRequestReply(NoAsync_NS.RequestBankingData request)
+        SyncOnly_NS.ReplyBankingData SyncOnly_NS.IWcfProjectNService.MessageContractRequestReply(SyncOnly_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReply(request);
         }
         
         public void MessageContractRequestReply(ref System.DateTime Date_of_Request, ref int Transaction_Amount, ref string Customer_Name)
         {
-            NoAsync_NS.RequestBankingData inValue = new NoAsync_NS.RequestBankingData();
+            SyncOnly_NS.RequestBankingData inValue = new SyncOnly_NS.RequestBankingData();
             inValue.Date_of_Request = Date_of_Request;
             inValue.Transaction_Amount = Transaction_Amount;
             inValue.Customer_Name = Customer_Name;
-            NoAsync_NS.ReplyBankingData retVal = ((NoAsync_NS.IWcfProjectNService)(this)).MessageContractRequestReply(inValue);
+            SyncOnly_NS.ReplyBankingData retVal = ((SyncOnly_NS.IWcfProjectNService)(this)).MessageContractRequestReply(inValue);
             Date_of_Request = retVal.Date_of_Request;
             Transaction_Amount = retVal.Transaction_Amount;
             Customer_Name = retVal.Customer_Name;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        NoAsync_NS.ReplyBankingDataNotWrapped NoAsync_NS.IWcfProjectNService.MessageContractRequestReplyNotWrapped(NoAsync_NS.RequestBankingData request)
+        SyncOnly_NS.ReplyBankingDataNotWrapped SyncOnly_NS.IWcfProjectNService.MessageContractRequestReplyNotWrapped(SyncOnly_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyNotWrapped(request);
         }
         
         public void MessageContractRequestReplyNotWrapped(ref System.DateTime Date_of_Request, ref int Transaction_Amount, ref string Customer_Name)
         {
-            NoAsync_NS.RequestBankingData inValue = new NoAsync_NS.RequestBankingData();
+            SyncOnly_NS.RequestBankingData inValue = new SyncOnly_NS.RequestBankingData();
             inValue.Date_of_Request = Date_of_Request;
             inValue.Transaction_Amount = Transaction_Amount;
             inValue.Customer_Name = Customer_Name;
-            NoAsync_NS.ReplyBankingDataNotWrapped retVal = ((NoAsync_NS.IWcfProjectNService)(this)).MessageContractRequestReplyNotWrapped(inValue);
+            SyncOnly_NS.ReplyBankingDataNotWrapped retVal = ((SyncOnly_NS.IWcfProjectNService)(this)).MessageContractRequestReplyNotWrapped(inValue);
             Date_of_Request = retVal.Date_of_Request;
             Transaction_Amount = retVal.Transaction_Amount;
             Customer_Name = retVal.Customer_Name;
         }
         
-        public NoAsync_NS.TestHttpRequestMessageProperty EchoHttpRequestMessageProperty()
+        public SyncOnly_NS.TestHttpRequestMessageProperty EchoHttpRequestMessageProperty()
         {
             return base.Channel.EchoHttpRequestMessageProperty();
         }

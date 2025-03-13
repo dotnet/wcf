@@ -562,11 +562,6 @@ Document Identifier: '{0}'.</source>
         <target state="translated">Сопоставление пространств имен targetNamespace из схем WSDL или XML и пространств имен CLR. С помощью параметра "*" с целевым пространством имен targetNamespace сопоставляются все целевые пространства имен targetNamespace без явного сопоставления с пространством имен CLR. По умолчанию: получается из пространства имен документа схемы для контрактов данных. Для всех остальных созданных типов используется пространство имен по умолчанию. (Краткая форма: /{0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="HelpNoAsyncFormat">
-        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
-        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
-        <note />
-      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Отключите повторное использование типов в ссылках проекта. Ссылки, указанные в параметре --{1}, могут использоваться только для разрешения типов коллекций, указанных в параметре --{2}. (Краткая форма: -{0})</target>
@@ -615,6 +610,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Создавать синхронные методы для операций в дополнение к асинхронным. (Краткая форма: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">

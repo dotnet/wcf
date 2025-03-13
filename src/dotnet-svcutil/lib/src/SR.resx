@@ -628,7 +628,7 @@ Your credentials will be sent to the server in clear text.</value>
   <data name="WrnOutOfSupportTargetFrameworkFormat" xml:space="preserve">
     <value>The target framework '{0}' is out of support and will not receive security updates in the future.</value>
   </data>
-  <data name="HelpNoAsyncFormat" xml:space="preserve">
-    <value>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</value>
+  <data name="HelpSyncOnlyFormat" xml:space="preserve">
+    <value>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</value>
   </data>
 </root>

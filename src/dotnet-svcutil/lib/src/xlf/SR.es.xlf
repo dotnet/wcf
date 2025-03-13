@@ -562,11 +562,6 @@ Identificador del documento: "{0}".</target>
         <target state="translated">Una asignación de un WSDL o XML Schema targetNamespace a un espacio de nombres CLR. El uso de "*" para targetNamespace asigna todos los objetos targetNamespaces sin una asignación explícita a dicho espacio de nombres CLR. Valor predeterminado: derivado del espacio de nombres de destino del documento de esquema para los contratos de datos. El espacio de nombres predeterminado se utiliza para los restantes tipos generados. (Forma corta: /{0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="HelpNoAsyncFormat">
-        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
-        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
-        <note />
-      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Deshabilite la reutilización de tipos de las referencias del proyecto. Las referencias proporcionadas con la opción --{1} solo se tendrán en cuenta para resolver los tipos de colección que se especifican con la opción --{2}. (Forma abreviada:-{0})</target>
@@ -615,6 +610,11 @@ Identificador del documento: "{0}".</target>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Genere métodos sincrónicos para las operaciones además de los asincrónicos. (Forma corta: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">

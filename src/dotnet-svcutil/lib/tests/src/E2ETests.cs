@@ -112,7 +112,7 @@ namespace SvcutilTest
         [InlineData("NoStdLib", "-nsl")]
         [InlineData("wrapped", "-wr")]
         [InlineData("Sync", "-syn")]
-        [InlineData("NoAsync", "-nasyn")]
+        [InlineData("SyncOnly", "-so")]
         [InlineData("None", " ")]
         public void CodeGenOptions(string testCaseName, string optionModifier)
         {

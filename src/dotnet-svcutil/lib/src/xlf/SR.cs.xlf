@@ -562,11 +562,6 @@ Identifikátor dokumentu: {0}</target>
         <target state="translated">Mapování z oboru názvů targetNamespace schématu WSDL nebo XML na obor názvů CLR. Pomocí znaku * pro targetNamespace lze mapovat všechny obory názvů targetNamespace bez explicitního mapování na daný obor názvů CLR. Výchozí: odvozeno z cílového oboru názvů dokumentu schématu pro kontrakty dat. Výchozí obor názvů je používán pro všechny ostatní generované typy. (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="HelpNoAsyncFormat">
-        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
-        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
-        <note />
-      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Zakáže opakované používání typů z odkazů na projekt. Odkazy poskytnuté pomocí možnosti --{1} se budou brát v úvahu jen pro překlad typů kolekcí zadaných pomocí možnosti --{2}. (Krátký tvar: -{0})</target>
@@ -615,6 +610,11 @@ Identifikátor dokumentu: {0}</target>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Kromě asynchronních metod generovat pro operace i synchronní metody (krátký tvar: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">

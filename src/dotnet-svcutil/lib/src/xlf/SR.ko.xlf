@@ -562,11 +562,6 @@ Document Identifier: '{0}'.</source>
         <target state="translated">WSDL 또는 XML 스키마 targetNamespace에서 CLR 네임스페이스로의 매핑입니다. targetNamespace에 '*'를 사용하여 해당 CLR 네임스페이스에 명시적으로 매핑하지 않고 모든 targetNamespaces를 매핑합니다. 기본값: 데이터 계약에 대한 스키마 문서의 대상 네임스페이스에서 파생됩니다. 생성된 다른 모든 형식에는 기본 네임스페이스가 사용됩니다(약식: -{0}).</target>
         <note />
       </trans-unit>
-      <trans-unit id="HelpNoAsyncFormat">
-        <source>Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</source>
-        <target state="new">Generate only synchronous methods for operations, omitting async methods. (Short Form: -{0})</target>
-        <note />
-      </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">프로젝트 참조의 형식 재사용을 사용하지 않도록 설정합니다. --{1} 옵션과 함께 제공된 참조는 --{2} 옵션과 함께 지정된 컬렉션 형식 확인용으로만 간주됩니다(약식: -{0}).</target>
@@ -615,6 +610,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">비동기 외에 작업에 대한 동기 메서드를 생성합니다. (약식: -{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">

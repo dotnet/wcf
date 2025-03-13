@@ -6,10 +6,10 @@
       "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/WcfProjectNService/tempuri.org.wsdl"
     ],
     "namespaceMappings": [
-      "*, NoAsync_NS"
+      "*, SyncOnly_NS"
     ],
-    "noAsync": true,
     "outputFile": "Reference.cs",
+    "syncOnly": true,
     "targetFramework": "N.N",
     "typeReuseMode": "None"
   }
