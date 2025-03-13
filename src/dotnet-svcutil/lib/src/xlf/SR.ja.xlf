@@ -612,6 +612,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">非同期のものに加えて、操作の同期メソッドを生成します。(短縮形: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
         <source>The target framework used for building reference projects. (Short Form: -{0}).</source>
         <target state="translated">参照プロジェクトを作成するために使用されるターゲット フレームワーク。(短い形式: -{0})。</target>

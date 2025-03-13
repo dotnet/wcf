@@ -612,6 +612,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">除了非同步方法外，也會為作業產生同步方法。(簡短形式: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
         <source>The target framework used for building reference projects. (Short Form: -{0}).</source>
         <target state="translated">用於建置參考專案的目標 Framework。(簡短形式: /{0})</target>

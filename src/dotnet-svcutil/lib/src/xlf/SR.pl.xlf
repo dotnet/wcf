@@ -612,6 +612,11 @@ Identyfikator dokumentu: „{0}”.</target>
         <target state="translated">Generuj metody synchroniczne dla operacji, oprócz metod asynchronicznych. (Krótka forma: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
         <source>The target framework used for building reference projects. (Short Form: -{0}).</source>
         <target state="translated">Docelowa struktura używana do tworzenia projektów z odwołaniem. (Krótka wersja: -{0}).</target>

@@ -612,6 +612,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">비동기 외에 작업에 대한 동기 메서드를 생성합니다. (약식: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
         <source>The target framework used for building reference projects. (Short Form: -{0}).</source>
         <target state="translated">참조 프로젝트를 만드는 데 사용되는 대상 프레임워크입니다(약식: -{0}).</target>

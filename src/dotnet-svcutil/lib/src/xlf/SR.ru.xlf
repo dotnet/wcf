@@ -612,6 +612,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">Создавать синхронные методы для операций в дополнение к асинхронным. (Краткая форма: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSyncOnlyFormat">
+        <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
+        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
         <source>The target framework used for building reference projects. (Short Form: -{0}).</source>
         <target state="translated">Целевая платформа, используемая для сборки ссылочных проектов. (Краткая форма: /{0})</target>
