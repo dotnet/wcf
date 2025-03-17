@@ -614,7 +614,7 @@ Belge Tanımlayıcısı: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpSyncOnlyFormat">
         <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
-        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
+        <target state="translated">İşlemler için yalnızca zaman uyumlu yöntemler oluşturun. Varsayılan: görev tabanlı zaman uyumsuz yöntem imzaları oluşturun. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
