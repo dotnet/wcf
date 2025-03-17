@@ -614,7 +614,7 @@ Document Identifier: '{0}'.</source>
       </trans-unit>
       <trans-unit id="HelpSyncOnlyFormat">
         <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
-        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
+        <target state="translated">작업에 대한 동기 메서드만 생성합니다. 기본값: 작업 기반 비동기 메서드 서명을 생성합니다. (약식: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
