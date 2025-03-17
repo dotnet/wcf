@@ -614,7 +614,7 @@ Identifikátor dokumentu: {0}</target>
       </trans-unit>
       <trans-unit id="HelpSyncOnlyFormat">
         <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
-        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
+        <target state="translated">Generovat pouze synchronní metody pro operace. Výchozí: Generovat podpisy asynchronních metod na základě úloh (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">

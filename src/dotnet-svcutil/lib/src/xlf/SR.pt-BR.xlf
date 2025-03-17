@@ -614,7 +614,7 @@ Identificador do Documento: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpSyncOnlyFormat">
         <source>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</source>
-        <target state="new">Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</target>
+        <target state="translated">Gerar apenas métodos síncronos para operações. Padrão: gerar assinaturas de métodos assíncronos baseadas em tarefas. (Forma Abreviada: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
