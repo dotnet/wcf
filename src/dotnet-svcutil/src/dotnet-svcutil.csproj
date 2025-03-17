@@ -11,7 +11,7 @@
     <MinorVersion>0</MinorVersion>
     <PatchVersion>0</PatchVersion>
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
-    <PackageValidationBaselineVersion>$(SvcutilBaselinePkgVersion)</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion></PackageValidationBaselineVersion>
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <NoDefaultExcludes>true</NoDefaultExcludes>
