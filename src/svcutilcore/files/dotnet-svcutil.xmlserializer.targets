@@ -9,8 +9,22 @@
     <_SerializerCsIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).cs</_SerializerCsIntermediateFolder>
     <_SvcUtilWarningText>Warning : Failed to generate the serializer for $(AssemblyName)$(TargetExt).</_SvcUtilWarningText>
     <_SerializationAssemblyDisabledWarnings>$(NoWarn);219;162;$(SerializationAssemblyDisabledWarnings)</_SerializationAssemblyDisabledWarnings>
+    <FrameworkVersion>net8.0</FrameworkVersion>
+    <SdkFile>$(IntermediateOutputPath)sdks_list.txt</SdkFile>
   </PropertyGroup>
-
+  <Target Name="DetectNetSdkVersion" BeforeTargets="Build">
+    <Exec Command="dotnet --list-sdks &gt; $(SdkFile)" IgnoreStandardErrorWarningFormat="true" />
+    <ReadLinesFromFile File="$(SdkFile)">
+      <Output TaskParameter="Lines" ItemName="SdkVersions" />
+    </ReadLinesFromFile>
+    <ItemGroup>
+      <Net9Sdks Include="@(SdkVersions)" Condition="$([System.String]::new('%(SdkVersions.Identity)').StartsWith('9.0'))"></Net9Sdks>
+    </ItemGroup>
+    <PropertyGroup>
+      <FrameworkVersion Condition="'@(Net9Sdks)' != ''" >net9.0</FrameworkVersion>
+    </PropertyGroup>
+    <Delete Files="$(SdkFile)" ContinueOnError="WarnAndContinue"/>
+  </Target>
   <UsingTask TaskName="Microsoft.NET.Build.Tasks.ResolvePackageAssets"
             AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
 
@@ -26,7 +40,7 @@
           TaskParameter="RuntimeAssemblies"
           ItemName="WCFRuntimeAssembly"/>
     </ResolvePackageAssets>
-    
+
     <ResolvePackageAssets
       Condition="'$(_IsNet5Compatible)' == 'true' And  '$(_IsSdkGreaterThan60)' == 'true'"
       DefaultImplicitPackages="Microsoft.NETCore.App;NETStandard.Library"
@@ -60,7 +74,7 @@
     <Delete Condition="Exists('$(_SerializerPdbIntermediateFolder)') == 'true'" Files="$(_SerializerPdbIntermediateFolder)" ContinueOnError="true" />
     <Delete Condition="Exists('$(_SerializerCsIntermediateFolder)') == 'true'" Files="$(_SerializerCsIntermediateFolder)" ContinueOnError="true" />
     <Message Text="Running SvcUtil Serialization Tool" Importance="normal" />
-    <Exec Command="dotnet $(MSBuildThisFileDirectory)..\lib\net8.0\dotnet-svcutil.xmlserializer.dll $(IntermediateOutputPath)$(AssemblyName)$(TargetExt) --quiet --out:$(IntermediateOutputPath)$(_SerializationAssemblyName) --smreference:&quot;@(_ReferenceSMAssembly)&quot;" ContinueOnError="true" />
+    <Exec Command="dotnet $(MSBuildThisFileDirectory)..\lib\$(FrameworkVersion)\dotnet-svcutil.xmlserializer.dll $(IntermediateOutputPath)$(AssemblyName)$(TargetExt) --quiet --out:$(IntermediateOutputPath)$(_SerializationAssemblyName) --smreference:&quot;@(_ReferenceSMAssembly)&quot;" ContinueOnError="true" />
     <Warning Condition="Exists('$(_SerializerCsIntermediateFolder)') != 'true'" Text="$(_SvcUtilWarningText)" />
     <Csc Condition="Exists('$(_SerializerCsIntermediateFolder)') == 'true'" ContinueOnError="true" OutputAssembly="$(_SerializerDllIntermediateFolder)" References="@(ReferencePath);@(IntermediateAssembly)" EmitDebugInformation="$(DebugSymbols)" Sources="$(_SerializerCsIntermediateFolder)" TargetType="Library" ToolExe="$(CscToolExe)" ToolPath="$(CscToolPath)" DisabledWarnings="$(_SerializationAssemblyDisabledWarnings)" />
     <Warning Condition="Exists('$(_SerializerDllIntermediateFolder)') != 'true' And Exists('$(_SerializerCsIntermediateFolder)') == 'true'" Text="$(_SvcUtilWarningText)" />
