@@ -2,9 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+#else
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+#endif
 
 namespace WcfService
 {
@@ -17,7 +22,6 @@ namespace WcfService
         {
             return new NetTcpBinding(SecurityMode.Transport)
             {
-                PortSharingEnabled = false,
                 TransferMode = TransferMode.Streamed
             };
         }
