@@ -29,10 +29,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new TypeNameFixup()
                     };
 
-            if (options.Sync != true)
+            // Default behavior: Remove sync methods, so only async methods are generated.
+            if (options.Sync != true && options.SyncOnly != true)
             {
                 visitors = AddSyncVisitors(visitors);
             }
+            // If --syncOnly specified, remove async methods, only sync methods remain.
+            else if (options.SyncOnly == true)
+            {
+                visitors = AddAsyncVisitors(visitors);
+            }
+            // If --sync is specified (and --syncOnly is NOT specified), do nothing, keep both sync and async methods.
 
             return visitors;
         }
@@ -51,6 +58,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             list.InsertRange(4, new CodeDomVisitor[] {
                 new RemoveSyncMethodsFromInterface(),
                 new RemoveSyncMethodsFromClientClass()
+            });
+
+            return list.ToArray();
+        }
+
+        private static CodeDomVisitor[] AddAsyncVisitors(CodeDomVisitor[] visitors)
+        {
+            List<CodeDomVisitor> list = new List<CodeDomVisitor>(visitors);
+
+            list.InsertRange(4, new CodeDomVisitor[] {
+                new RemoveAsyncMethodsFromInterface(),
+                new RemoveAsyncMethodsFromClientClass()
             });
 
             return list.ToArray();

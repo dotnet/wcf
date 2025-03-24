@@ -1051,7 +1051,7 @@ namespace System.ServiceModel.Channels
 
                         try
                         {
-                            using (timeoutToken.Register(s_cancelCts, _httpSendCts))
+                            using (timeoutToken.UnsafeRegister(s_cancelCts, _httpSendCts))
                             {
                                 _httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _httpSendCts.Token);
                             }

@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 8.1.2
+
+* [NuGet Package](https://www.nuget.org/packages/System.Web.Services.Description/8.1.2)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v8.1.2-rtm)
+
 ### 8.1.1
 
 * [NuGet Package](https://www.nuget.org/packages/System.Web.Services.Description//8.1.1)

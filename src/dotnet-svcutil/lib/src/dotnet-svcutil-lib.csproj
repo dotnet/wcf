@@ -18,7 +18,8 @@
     <MajorVersion>8</MajorVersion>
     <MinorVersion>0</MinorVersion>
     <PatchVersion>0</PatchVersion>
-    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
+    <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

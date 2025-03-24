@@ -501,7 +501,7 @@ namespace System.Runtime.Serialization
             get
             {
                 if (s_typeOfIXmlSerializable == null)
-                    s_typeOfIXmlSerializable = typeof(IXmlSerializable);
+                    s_typeOfIXmlSerializable = typeof(System.Xml.Serialization.IXmlSerializable);
                 return s_typeOfIXmlSerializable;
             }
         }

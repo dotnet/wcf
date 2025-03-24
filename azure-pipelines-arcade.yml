@@ -85,7 +85,7 @@ extends:
             - ${{ if eq(variables._RunAsInternal, True) }}:
               - group: Publish-Build-Assets
               - group: DotNet-HelixApi-Access
-              - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
+              - _PublishBlobFeedUrl: https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json
               - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName) /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed) /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines) /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory) /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
               - _serviceUri: wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1
             - _xUnitWorkItemTimeout: '00:10:00'

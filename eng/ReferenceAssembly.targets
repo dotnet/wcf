@@ -17,8 +17,15 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' and Exists('netstandard.cs')">
     <None Include="@(Compile)" />
     <Compile Remove="@(Compile)" />
-    <None Condition="Exists('netstandard.cs')" Remove="netstandard.cs" />
-    <Compile Condition="Exists('netstandard.cs')" Include="netstandard.cs" />
+    <None Remove="netstandard.cs" />
+    <Compile Include="netstandard.cs" />
+    <None Condition="Exists('..\src\NetFxTypeForwards.cs')" Include="..\src\NetFxTypeForwards.cs" Link="NetFxTypeForwards.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkVersion)'">
+    <None Include="@(Compile)" />
+    <Compile Remove="@(Compile)" />
+    <Compile Condition="Exists('..\src\NetFxTypeForwards.cs')" Include="..\src\NetFxTypeForwards.cs" Link="NetFxTypeForwards.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)' and '$(EnableDefaultCompileItems)' != 'false'">
@@ -26,5 +33,6 @@
     <Compile Remove="@(Compile)" />
     <None Condition="Exists('$(AssemblyName).cs')" Remove="$(AssemblyName).cs" />
     <Compile Condition="Exists('$(AssemblyName).cs')" Include="$(AssemblyName).cs" />
+    <None Condition="Exists('..\src\NetFxTypeForwards.cs')" Include="..\src\NetFxTypeForwards.cs" Link="NetFxTypeForwards.cs" />
   </ItemGroup>
 </Project>

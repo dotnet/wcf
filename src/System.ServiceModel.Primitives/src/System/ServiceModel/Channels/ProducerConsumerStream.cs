@@ -82,7 +82,7 @@ namespace System.ServiceModel.Channels
                 return 0;
             }
 
-            using (cancellationToken.Register(CancelAndDispose, this))
+            using (cancellationToken.UnsafeRegister(CancelAndDispose, this))
             {
                 Contract.Assert(!_buffer.Task.IsCompleted, "Buffer task should not already be completed");
                 Contract.Assert(_currentBuffer == WriteBufferWrapper.EmptyContainer, "The current buffer should be the EmptyContainer");
@@ -126,7 +126,7 @@ namespace System.ServiceModel.Channels
                 throw new ObjectDisposedException("ProducerConsumerStream");
             }
 
-            using (cancellationToken.Register(CancelAndDispose, this))
+            using (cancellationToken.UnsafeRegister(CancelAndDispose, this))
             {
                 while (count > 0)
                 {

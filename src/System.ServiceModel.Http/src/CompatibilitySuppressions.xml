@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.HttpTransportBindingElement.get_Proxy</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.Http.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.HttpTransportBindingElement.set_Proxy(System.Net.IWebProxy)</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.Http.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.WSHttpBindingBase.set_EnvelopeVersion(System.ServiceModel.EnvelopeVersion)</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
+    <Right>ref/net462/System.ServiceModel.Http.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.NetHttpBinding.#ctor(System.String)</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
+    <Right>ref/net8.0/System.ServiceModel.Http.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.WSHttpBindingBase.set_EnvelopeVersion(System.ServiceModel.EnvelopeVersion)</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
+    <Right>ref/net8.0/System.ServiceModel.Http.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.HttpTransportBindingElement.get_Proxy</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.Http.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.HttpTransportBindingElement.set_Proxy(System.Net.IWebProxy)</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.Http.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+</Suppressions>

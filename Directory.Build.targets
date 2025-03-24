@@ -31,6 +31,8 @@
     <!-- SDK sets product to assembly but we want it to be our product name -->
     <Product>Microsoft%AE .NET Core</Product>
 
+    <EnablePackageValidation Condition="'$(IsPackable)' == 'true' and '$(IsShippingPackage)' == 'true'">true</EnablePackageValidation>
+
     <!-- Use the .NET Core product branding version for informational version description -->
     <!-- [todo:arcade] Currently in local builds this is producing a weird version "3.0.0-ci.19157.1" need to verify what this looks like in an official build. -->
     <InformationalVersion>$(ProductVersion)</InformationalVersion>
