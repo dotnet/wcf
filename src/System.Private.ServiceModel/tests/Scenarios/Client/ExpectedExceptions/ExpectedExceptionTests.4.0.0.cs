@@ -180,6 +180,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void UnexpectedException_Throws_FaultException()
     {

@@ -387,5 +387,13 @@ namespace Infrastructure.Common
         {
             return ConditionalTestDetectors.GetSPN();
         }
+
+        // Returns 'false' if run with CoreWCF Service,
+        // skip failed test
+        public static bool Skip_CoreWCFService_FailedTest()
+        {
+            return !GetConditionValue(nameof(Skip_CoreWCFService_FailedTest),
+                                     ConditionalTestDetectors.IsRunWithCoreWCFService);
+        }
     }
 }

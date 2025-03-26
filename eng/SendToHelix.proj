@@ -85,6 +85,7 @@
     <HelixPreCommands>$(HelixPreCommands);set DOTNET_CLI_HOME=%HELIX_WORKITEM_ROOT%\.dotnet</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);set NUGET_PACKAGES=%HELIX_WORKITEM_ROOT%\.nuget</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);set ServiceUri=localhost</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);set RunWithCoreWCFService=true</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\net8.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
@@ -94,6 +95,7 @@
     <HelixPreCommands>$(HelixPreCommands);export DOTNET_CLI_HOME=$HELIX_WORKITEM_ROOT/.dotnet</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);export NUGET_PACKAGES=$HELIX_WORKITEM_ROOT/.nuget</HelixPreCommands>    
     <HelixPreCommands>$(HelixPreCommands);export ServiceUri=localhost</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);export RunWithCoreWCFService=true</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);dotnet exec --roll-forward Major $HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net8.0/SelfHostedCoreWCFService.dll bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
