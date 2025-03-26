@@ -42,8 +42,38 @@ namespace WcfService
             return false;
         }
 
+        public static async Task<bool> ShutdownServiceAsync(string url)
+        {
+            Console.WriteLine("Shutdown service host...");
+            using HttpClient httpClient = new HttpClient();
+
+            try
+            {
+                using HttpResponseMessage response = await httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Service Shutdown succeed...");
+                    httpClient.Dispose();
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"Service Shutdown failed... Service likely was not running");
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Service Shutdown failed... Service likely was not running");
+            }
+
+            httpClient.Dispose();
+            return false;
+        }
+
         public static async Task ServiceBootstrap()
         {
+            _ = await ShutdownServiceAsync("http://localhost:8081/TestHost.svc/shutdown");
+
             string processArgs = "";
             if (Process.GetCurrentProcess().ProcessName == "dotnet")
             {
