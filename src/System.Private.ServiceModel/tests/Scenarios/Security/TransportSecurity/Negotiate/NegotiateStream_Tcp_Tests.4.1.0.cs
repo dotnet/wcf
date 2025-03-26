@@ -93,7 +93,8 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available),
-               nameof(WindowsOrSelfHosted))]
+               nameof(WindowsOrSelfHosted),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -229,7 +230,8 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available),
                nameof(SPN_Available),
-               nameof(WindowsOrSelfHosted))]
+               nameof(WindowsOrSelfHosted),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -284,7 +286,8 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available),
-               nameof(UPN_Available))]
+               nameof(UPN_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void NegotiateStream_Tcp_With_ExplicitUserNameAndPassword_With_Upn()
     {

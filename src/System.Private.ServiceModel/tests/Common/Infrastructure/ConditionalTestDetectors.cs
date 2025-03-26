@@ -156,6 +156,19 @@ namespace Infrastructure.Common
             return false;
         }
 
+        // Returns 'true' if the server is running with CoreWCF Service
+        public static bool IsRunWithCoreWCFService()
+        {
+            string runWithCoreWCFService = TestProperties.GetProperty(TestProperties.RunWithCoreWCFService_PropertyName);
+
+            if (String.IsNullOrWhiteSpace(runWithCoreWCFService))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         // Returns 'true' if the server is running as localhost.
         // This test is meant to be used only to detect that our service URI
         // indicates localhost.  It is not intended to be used to detect that

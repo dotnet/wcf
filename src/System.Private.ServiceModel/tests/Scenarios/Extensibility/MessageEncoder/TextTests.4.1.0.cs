@@ -16,9 +16,10 @@ using Infrastructure.Common;
 using Extensibility.MessageEncoder.Tests;
 using Xunit;
 
-public static class TextTests
+public class TextTests : ConditionalWcfTest
 {
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void CustomTextMessageEncoder_Http_RequestReply_Buffered()
     {
@@ -57,6 +58,7 @@ public static class TextTests
     }
 
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void CustomTextMessageEncoder_Http_RequestReply_Streamed()
     {

@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static class Binding_ReliableSession_NetTcpBindingTests
+public class Binding_ReliableSession_NetTcpBindingTests : ConditionalWcfTest
 {
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task EchoCall(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {
@@ -50,6 +51,7 @@ public static class Binding_ReliableSession_NetTcpBindingTests
 
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task OneWayCall(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {
@@ -86,6 +88,7 @@ public static class Binding_ReliableSession_NetTcpBindingTests
 
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task DuplexEchoCall(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {

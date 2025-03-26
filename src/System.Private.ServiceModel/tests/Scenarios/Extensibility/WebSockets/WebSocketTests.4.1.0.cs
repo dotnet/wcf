@@ -14,6 +14,7 @@ using Infrastructure.Common;
 public class WebSocketTests : ConditionalWcfTest
 {
     [WcfTheory]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
@@ -246,6 +247,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfTheory]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
@@ -346,7 +348,8 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
-    [Condition(nameof(Root_Certificate_Installed))]
+    [Condition(nameof(Root_Certificate_Installed),
+        nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -699,6 +702,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_WSTransportUsageDefault_DuplexCallback_GuidRoundtrip()
@@ -739,6 +743,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
@@ -779,6 +784,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_WSScheme_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
@@ -826,6 +832,7 @@ public class WebSocketTests : ConditionalWcfTest
     // When not using a callback you can still force WCF to use WebSockets.
     // This test verifies that it actually uses WebSockets when not using a callback.
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_VerifyWebSocketsUsed()
