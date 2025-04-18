@@ -206,7 +206,8 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     [Condition(nameof(Server_Domain_Joined),
                nameof(Root_Certificate_Installed),
                nameof(Digest_Authentication_Available),
-               nameof(Explicit_Credentials_Available))]
+               nameof(Explicit_Credentials_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -227,7 +228,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(NTLM_Available), nameof(Root_Certificate_Installed))]
+    [Condition(nameof(NTLM_Available), nameof(Root_Certificate_Installed), nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void NtlmAuthentication_RoundTrips_Echo()
     {
@@ -238,7 +239,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(NTLM_Available), nameof(Root_Certificate_Installed))]
+    [Condition(nameof(NTLM_Available), nameof(Root_Certificate_Installed), nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void IntegratedWindowsAuthentication_Ntlm_RoundTrips_Echo()
     {

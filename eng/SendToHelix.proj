@@ -1,20 +1,35 @@
-<Project Sdk="Microsoft.DotNet.Helix.Sdk" DefaultTargets="Test">
+<Project Sdk="Microsoft.DotNet.Helix.Sdk" InitialTargets="InstallDotNet;BuildProjects;Test">
   <PropertyGroup>
     <HelixSource Condition=" '$(RunAsPublic)' == 'true' ">pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
     <HelixSource Condition=" '$(RunAsInternal)' == 'true' ">official/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
     <HelixType>test/product/</HelixType>
     <HelixBuild>$(BUILD_BUILDNUMBER)</HelixBuild>
     <HelixBuild Condition="'$(HelixBuild)' == ''">123460.01</HelixBuild>
-	<DotNetCliPackageType>sdk</DotNetCliPackageType>
-    <DotNetCliVersion>8.0.100</DotNetCliVersion>
-    <IncludeDotNetCli>true</IncludeDotNetCli>
 
+    <!-- Read global.json so we know the version of the dotnet cli we need -->
+    <GlobalJsonContent>$([System.IO.File]::ReadAllText('$(RepoRoot)global.json'))</GlobalJsonContent>
+    <DotNetCliPackageType>sdk</DotNetCliPackageType>
+    <DotNetCliVersion>$([System.Text.RegularExpressions.Regex]::Match($(GlobalJsonContent), '(%3F&lt;="dotnet": ").*(%3F=")'))</DotNetCliVersion>
+
+    <IncludeDotNetCli>true</IncludeDotNetCli>
     <EnableAzurePipelinesReporter>true</EnableAzurePipelinesReporter>
     <TestRunNamePrefix>$(AGENT_JOBNAME)</TestRunNamePrefix>
-
     <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
-
+  
+  <Target Name="InstallDotNet">
+    <ItemGroup>
+      <AdditionalDotNetPackage Include="8.0.8">
+        <PackageType>aspnetcore-runtime</PackageType>
+        <Channel>Current</Channel>
+      </AdditionalDotNetPackage>
+    </ItemGroup>
+  </Target>
+  
+  <Target Name="BuildProjects">
+    <MSBuild Targets="Restore;Publish" Projects="..\src\System.Private.ServiceModel\tools\SelfHostedCoreWcfService\SelfHostedCoreWCFService.csproj"/>
+  </Target>
+    
   <ItemGroup>
     <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj">
       <TargetFramework>$(XUnitPublishTargetFramework)</TargetFramework>
@@ -53,18 +68,45 @@
     <Creator>$(BUILD_SOURCEVERSIONAUTHOR)</Creator>
     <Creator Condition=" '$(Creator)' == ''">anon</Creator>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="!$(HelixTargetQueue.StartsWith('Windows'))">
+
+  <PropertyGroup>
+    <RunWithCoreWCFService Condition="'$(RunWithCoreWCFService)' == ''">false</RunWithCoreWCFService>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TestJob)' != 'Windows'" >
     <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
   </PropertyGroup>
 
-  <Target Name="Pack"/>
+  <PropertyGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunWithCoreWCFService)' == 'true'">
+    <HelixPreCommands>$(HelixPreCommands);set PATH=%HELIX_CORRELATION_PAYLOAD%\dotnet-cli%3B%PATH%</HelixPreCommands>
+    <!-- %3B is an escaped ; -->
+    <HelixPreCommands>$(HelixPreCommands);set DOTNET_ROOT=%HELIX_CORRELATION_PAYLOAD%\dotnet-cli;set DOTNET_CLI_TELEMETRY_OPTOUT=1</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);set DOTNET_CLI_HOME=%HELIX_WORKITEM_ROOT%\.dotnet</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);set NUGET_PACKAGES=%HELIX_WORKITEM_ROOT%\.nuget</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);set ServiceUri=localhost</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);set RunWithCoreWCF=true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\net8.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TestJob)' != 'Windows' AND '$(RunWithCoreWCFService)' == 'true'">
+    <HelixPreCommands>$(HelixPreCommands);export PATH=$HELIX_CORRELATION_PAYLOAD/dotnet-cli:$PATH</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);export DOTNET_ROOT=$HELIX_CORRELATION_PAYLOAD/dotnet-cli;export DOTNET_CLI_TELEMETRY_OPTOUT=1</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);export DOTNET_CLI_HOME=$HELIX_WORKITEM_ROOT/.dotnet</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);export NUGET_PACKAGES=$HELIX_WORKITEM_ROOT/.nuget</HelixPreCommands>    
+    <HelixPreCommands>$(HelixPreCommands);export ServiceUri=localhost</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);export RunWithCoreWCF=true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);dotnet exec --roll-forward Major $HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net8.0/SelfHostedCoreWCFService.dll bootstrap:true</HelixPreCommands>
+  </PropertyGroup>
 
   <ItemGroup>
     <!-- Directory that is zipped up and sent as a correlation payload to Helix -->
     <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tools\scripts'))" >
       <PayloadDirectory>%(Identity)</PayloadDirectory>
+    </HelixCorrelationPayload>
+	
+    <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\artifacts\bin\SelfHostedCoreWCFService'))" >
+      <Destination>SelfHostedCoreWCFService</Destination>
     </HelixCorrelationPayload>
   </ItemGroup>
 

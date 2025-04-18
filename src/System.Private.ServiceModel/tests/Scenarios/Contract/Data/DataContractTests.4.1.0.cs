@@ -8,10 +8,11 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class DataContractTests
+public partial class DataContractTests : ConditionalWcfTest
 {
     // Verify that a callback contract correctly returns a complex type when this type is not part of the contract with the ServiceContract attribute.
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void NetTcpBinding_DuplexCallback_ReturnsDataContractComplexType()
     {
@@ -50,6 +51,7 @@ public static partial class DataContractTests
 
     // Verify that a callback contract correctly returns a complex type using Xml instead of DataContract when this type is not part of the contract with the ServiceContract attribute.
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void NetTcpBinding_DuplexCallback_ReturnsXmlComplexType()
     {

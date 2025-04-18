@@ -17,7 +17,8 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
     [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
            nameof(Client_Certificate_Installed),
-           nameof(SSL_Available))]
+           nameof(SSL_Available),
+           nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
@@ -78,7 +79,8 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
     [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
        nameof(Client_Certificate_Installed),
-       nameof(SSL_Available))]
+       nameof(SSL_Available),
+       nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     [WcfFact]
     public static void WSTrustTokeParameters_WSStaticHelper()
@@ -128,8 +130,9 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
 
     [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
-   nameof(Client_Certificate_Installed),
-   nameof(SSL_Available))]
+        nameof(Client_Certificate_Installed),
+        nameof(SSL_Available),
+        nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     [WcfFact]
     public static void WS2007TrustTokeParameters_WSStaticHelper()

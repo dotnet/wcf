@@ -4,10 +4,12 @@
 
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
@@ -44,10 +46,10 @@ namespace WcfTestCommon
         // Give the cert a grace period in case there's a time skew between machines
         private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
 
-        private const string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
+        private readonly string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
         private readonly string _signatureAlgorithm = Org.BouncyCastle.Asn1.Pkcs.PkcsObjectIdentifiers.Sha256WithRsaEncryption.Id;
-        private const string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
-        private const int _keyLengthInBits = 2048;
+        private readonly string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
+        private readonly int _keyLengthInBits = 2048;
 
         private static readonly X509V3CertificateGenerator s_certGenerator = new X509V3CertificateGenerator();
         private static readonly X509V2CrlGenerator s_crlGenerator = new X509V2CrlGenerator();
@@ -87,7 +89,7 @@ namespace WcfTestCommon
                     throw new ArgumentException("CrlUri must be a valid relative URI", "CrlUriRelativePath");
                 }
 
-                _crlUri = string.Format("http://{0}{1}", _crlServiceUri, _crlUriRelativePath);
+                _crlUri = new Uri(string.Format("http://{0}{1}", _crlServiceUri, _crlUriRelativePath)).AbsoluteUri;
 
                 _initializationDateTime = DateTime.UtcNow;
                 _defaultValidityNotBefore = _initializationDateTime.Subtract(_gracePeriod);
@@ -232,6 +234,24 @@ namespace WcfTestCommon
             return CreateCertificate(false, false, _authorityCertificate.InternalCertificate, creationSettings);
         }
 
+        public static BigInteger HashFriendlyName(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                // Convert the input string to a byte array
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+
+                // Compute the hash value of the input bytes, and take the first 20 bytes
+                byte[] hashBytes = sha256.ComputeHash(inputBytes).Take(20).ToArray();
+
+                // return a Positive BigInt of the hash
+                var bigInteger = new BigInteger(1, hashBytes.ToArray());
+                return bigInteger;
+            }
+        }
+
+        public static string HashFriendlyNameToString(string input) => HashFriendlyName(input).ToString(16).ToUpper();
+
         // Only the ctor should be calling with isAuthority = true
         // if isAuthority, value for isMachineCert doesn't matter
         private X509CertificateContainer CreateCertificate(bool isAuthority, bool isMachineCert, X509Certificate signingCertificate, CertificateCreationSettings certificateCreationSettings)
@@ -285,7 +305,17 @@ namespace WcfTestCommon
 
             // Tag on the generation time to prevent caching of the cert CRL in Linux
             X509Name authorityX509Name = CreateX509Name(string.Format("{0} {1}", _authorityCanonicalName, DateTime.Now.ToString("s")));
-            var serialNum = new BigInteger(64 /*sizeInBits*/, _random).Abs();
+            BigInteger serialNum;
+
+            // Search by serial number in Linux/MacOS
+            if (!CertificateHelper.CurrentOperatingSystem.IsWindows() && certificateCreationSettings.FriendlyName != null)
+            {
+                serialNum = HashFriendlyName(certificateCreationSettings.FriendlyName);
+            }
+            else
+            {
+                serialNum = new BigInteger(64 /*sizeInBits*/, _random).Abs();
+            }
 
             var keyPair = isAuthority ? _authorityKeyPair : _keyPairGenerator.GenerateKeyPair();
             if (isAuthority)
@@ -304,7 +334,7 @@ namespace WcfTestCommon
             else
             {
                 X509Name subjectName = CreateX509Name(subject);
-                s_certGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
+                s_certGenerator.SetIssuerDN(signingCertificate.SubjectDN);
                 s_certGenerator.SetSubjectDN(subjectName);
 
                 s_certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(_authorityKeyPair.Public));
@@ -321,7 +351,7 @@ namespace WcfTestCommon
             s_certGenerator.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(isAuthority));
             if (certificateCreationSettings.EKU == null || certificateCreationSettings.EKU.Count == 0)
             {
-                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth, KeyPurposeID.IdKPClientAuth));
+                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.id_kp_serverAuth, KeyPurposeID.id_kp_clientAuth));
             }
             else
             {
@@ -373,7 +403,7 @@ namespace WcfTestCommon
 
             if (isAuthority || certificateCreationSettings.IncludeCrlDistributionPoint)
             {
-                var crlDistributionPoints = new DistributionPoint[1] 
+                var crlDistributionPoints = new DistributionPoint[1]
                 {
                     new DistributionPoint(
                         new DistributionPointName(
@@ -422,7 +452,7 @@ namespace WcfTestCommon
                 container.Pfx = stream.ToArray();
             }
 
-            X509Certificate2 outputCert;
+            X509Certificate2 outputCert = null;
 
             if (isAuthority)
             {
@@ -433,7 +463,34 @@ namespace WcfTestCommon
             {
                 // Otherwise, allow encode with the private key. note that X509Certificate2.RawData will not provide the private key
                 // you will have to re-export this cert if needed
-                outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+                {
+                    //string tempKeychainFilePath = Path.GetTempFileName();
+                    string tempKeychainFilePath = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                    System.Security.Cryptography.X509Certificates.X509Store MacOsTempStore = CertificateHelper.GetMacOSX509Store(tempKeychainFilePath);
+                    MacOsTempStore.Certificates.Import(container.Pfx, _password, X509KeyStorageFlags.Exportable);
+                    MacOsTempStore.Close();
+                    MacOsTempStore.Dispose();
+
+                    MacOsTempStore = CertificateHelper.GetMacOSX509Store(tempKeychainFilePath);
+
+                    outputCert = ((IEnumerable<X509Certificate2>)MacOsTempStore.Certificates).FirstOrDefault();
+
+                    if (outputCert == null)
+                    {
+                        Console.WriteLine("Couldn't find Certificate..");
+                    }
+
+                    MacOsTempStore.Dispose();
+                    if (File.Exists(tempKeychainFilePath))
+                    {
+                        File.Delete(tempKeychainFilePath);
+                    }
+                }
+                else
+                {
+                    outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                }
             }
 
             container.Subject = subject;
@@ -475,7 +532,7 @@ namespace WcfTestCommon
             s_crlGenerator.SetThisUpdate(updateTime);
             //There is no need to update CRL.
             s_crlGenerator.SetNextUpdate(now.Add(ValidityPeriod));
-            s_crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
+            s_crlGenerator.SetIssuerDN(signingCertificate.SubjectDN);
 
             s_crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(signingCertificate));
 
@@ -525,8 +582,8 @@ namespace WcfTestCommon
         {
             X509Name authorityX509Name;
 
-            IList authorityKeyIdOrder = new ArrayList();
-            IDictionary authorityKeyIdName = new Hashtable();
+            IList<DerObjectIdentifier> authorityKeyIdOrder = new List<DerObjectIdentifier>();
+            IDictionary<DerObjectIdentifier, string> authorityKeyIdName = new Dictionary<DerObjectIdentifier, string>();
 
             authorityKeyIdOrder.Add(X509Name.OU);
             authorityKeyIdOrder.Add(X509Name.O);

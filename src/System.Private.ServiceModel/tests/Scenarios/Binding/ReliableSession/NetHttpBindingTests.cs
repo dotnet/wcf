@@ -14,10 +14,11 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static class Binding_ReliableSession_NetHttpBindingTests
+public class Binding_ReliableSession_NetHttpBindingTests : ConditionalWcfTest
 {
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task EchoCall(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {
@@ -56,6 +57,7 @@ public static class Binding_ReliableSession_NetHttpBindingTests
 
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task OneWayCall(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {
@@ -93,6 +95,7 @@ public static class Binding_ReliableSession_NetHttpBindingTests
 
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task ResendFailedRequest(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {
@@ -176,6 +179,7 @@ public static class Binding_ReliableSession_NetHttpBindingTests
 
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task RetryCountApplied(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {
@@ -257,6 +261,7 @@ public static class Binding_ReliableSession_NetHttpBindingTests
 
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task MaxTransferWindowSizeApplied(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {
@@ -345,6 +350,7 @@ public static class Binding_ReliableSession_NetHttpBindingTests
 
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task InactivityTimeoutApplied(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {

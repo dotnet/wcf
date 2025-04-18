@@ -530,8 +530,8 @@ public static class ServiceUtilHelper
 
     private static string GetResourceAddress(string resource, string protocol = "http")
     {
-        string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
-        return string.Format(@"{0}://{1}/{2}/{3}", protocol, host, TestHostUtilitiesService, resource);
+        var baseUri = BuildBaseUri(protocol);
+        return new Uri(baseUri, $"{TestHostUtilitiesService}/{resource}").ToString();
     }
 
     public static string GetResourceFromServiceAsString(string resource)
@@ -542,7 +542,14 @@ public static class ServiceUtilHelper
         using (HttpClient httpClient = new HttpClient())
         {
             HttpResponseMessage response = httpClient.GetAsync(requestUri).GetAwaiter().GetResult();
-            return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+            else
+            {
+                throw new Exception($"Got Status code {response.StatusCode} from {requestUri}.");
+            }
         }
     }
 
@@ -554,7 +561,14 @@ public static class ServiceUtilHelper
         using (HttpClient httpClient = new HttpClient())
         {
             HttpResponseMessage response = httpClient.GetAsync(requestUri).GetAwaiter().GetResult();
-            return response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                return response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+            }
+            else
+            {
+                throw new Exception($"Got Status code {response.StatusCode} from {requestUri}.");
+            }
         }
     }
 
@@ -566,7 +580,14 @@ public static class ServiceUtilHelper
         using (HttpClient httpClient = new HttpClient())
         {
             HttpResponseMessage response = await httpClient.GetAsync(requestUri);
-            return await response.Content.ReadAsByteArrayAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsByteArrayAsync();
+            }
+            else
+            {
+                throw new Exception($"Got Status code {response.StatusCode} from {requestUri}.");
+            }
         }
     }
 }

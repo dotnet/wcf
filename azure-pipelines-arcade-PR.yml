@@ -200,7 +200,6 @@ stages:
               --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
               $(_TestArgs)
               /p:TestJob=Linux
-              /p:RunWithCoreWcfService=$($Env:_RunWithCoreWcfService)
               /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
             displayName: Linux - Run Helix Tests
             env:
@@ -208,11 +207,13 @@ stages:
               ServiceHost: $(_serviceUri)
               RunAsPublic: $(_RunAsPublic)
               RunAsInternal: $(_RunAsInternal)
+              RunWithCoreWcfService: $(_RunWithCoreWcfService)
               IsWindowsBuild: false
 
       # Only build and test MacOS in PR and CI builds.
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: MacOS
+          condition: ne(variables._RunWithCoreWcfService, True)
           timeoutInMinutes: 90
           pool:
             name: NetCore-Public
