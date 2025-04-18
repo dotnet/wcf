@@ -22,7 +22,6 @@
     <MinorVersion>0</MinorVersion>
     <PatchVersion>0</PatchVersion>
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
-    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
     <PackageReleaseNotes>https://github.com/dotnet/wcf/blob/master/release-notes/dotnet-svcutil.xmlserializer-notes.md</PackageReleaseNotes>
     <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
     <StrongNameKeyId>Open</StrongNameKeyId>

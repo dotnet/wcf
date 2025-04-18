@@ -18,7 +18,8 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(Peer_Certificate_Installed),
-               nameof(SSL_Available))]
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Asking for PeerTrust alone should succeed
     // if the certificate is in the TrustedPeople store.  For this test
@@ -124,7 +125,8 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [Issue(1945, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
-               nameof(SSL_Available))]
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Asking for PeerOrChainTrust should succeed if the certificate is
     // chain-trusted, even though it is not in the TrustedPeople store.
@@ -219,7 +221,8 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [Issue(1945, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
-               nameof(SSL_Available))]
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Asking for ChainTrust only should succeed if the certificate is
     // chain-trusted.

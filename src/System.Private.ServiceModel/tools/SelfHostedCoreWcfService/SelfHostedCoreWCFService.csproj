@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>true</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.Runtime.Serialization" />
+    <Using Include="Microsoft.Extensions.DependencyInjection.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CoreWCF.Http" Version="1.6" />
+    <PackageReference Include="CoreWCF.NetTcp" Version="1.6" />
+    <PackageReference Include="CoreWCF.Primitives" Version="1.6" />
+    <PackageReference Include="CoreWCF.WebHttp" Version="1.6" />
+    <PackageReference Include="idunno.Authentication.Basic" Version="2.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\IISHostedWcfService\**\*.cs">
+      <Visible>true</Visible>
+      <Link>IIS/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Remove="..\IISHostedWcfService\App_code\CertificateHelper\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\AcceptAnyUsernameSecurityTokenHandler.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\FederationSTSServiceHost.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\ReturnX509SubjectNameOrRSAIssuerNameRegistry.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Federation\SelfHostSecurityTokenService.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\ReliableSessionDuplexTestServiceHost.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\ReliableSessionOneWayTestServiceHost.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\ReliableSessionTestServiceHost.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Saml2IssuedTokenTestServiceHost.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsCertTestServiceHost.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsUsernameTestServiceHost.cs" />
+
+    <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\AcceptAnyUsernameSecurityTokenHandler.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\FederationSTSServiceHost.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\ReturnX509SubjectNameOrRSAIssuerNameRegistry.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\SelfHostSecurityTokenService.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\ReliableSessionDuplexTestServiceHost.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\ReliableSessionOneWayTestServiceHost.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\ReliableSessionTestServiceHost.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\Saml2IssuedTokenTestServiceHost.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsCertTestServiceHost.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsUsernameTestServiceHost.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\IISHostedWcfService\Web.config">
+      <Link>Web.config</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CertificateGenerator\CertificateGeneratorLibrary\CertificateGeneratorLibrary.csproj" />
+  </ItemGroup>
+</Project>
