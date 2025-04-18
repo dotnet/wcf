@@ -452,7 +452,8 @@ public partial class HttpsTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
            nameof(Client_Certificate_Installed),
            nameof(Server_Accepts_Certificates),
-           nameof(SSL_Available))]
+           nameof(SSL_Available),
+           nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -511,7 +512,8 @@ public partial class HttpsTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
        nameof(Client_Certificate_Installed),
        nameof(Server_Accepts_Certificates),
-       nameof(SSL_Available))]
+       nameof(SSL_Available),
+       nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]

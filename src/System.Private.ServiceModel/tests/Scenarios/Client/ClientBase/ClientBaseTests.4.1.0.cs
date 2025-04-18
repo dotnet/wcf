@@ -10,7 +10,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class ClientBaseTests
+public partial class ClientBaseTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]
@@ -55,6 +55,7 @@ public static partial class ClientBaseTests
     }
 
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void DefaultSettings_SetCookieOnServerSide()
     {

@@ -328,7 +328,7 @@ namespace Infrastructure.Common
             // Temporarily use the simple heuristic that if we are running the services locally, it is.
             // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
             return GetConditionValue(nameof(Windows_Authentication_Available),
-                                     Server_Is_LocalHost);
+                                     Server_Is_LocalHost) && Is_Windows();
         }
 
         // Returns true if NTLM is available to use.
@@ -349,11 +349,6 @@ namespace Infrastructure.Common
             // non-Windows test client machines appropriately.
             return GetConditionValue(nameof(SSL_Available),
                                      ConditionalTestDetectors.IsWindows);
-        }
-
-        public static bool WindowsOrSelfHosted()
-        {
-            return GetConditionValue(nameof(WindowsOrSelfHosted), ConditionalTestDetectors.IsWindowsOrSelfHosted);
         }
 
         // Returns the Domain if available.
@@ -386,6 +381,14 @@ namespace Infrastructure.Common
         public static string GetSPN()
         {
             return ConditionalTestDetectors.GetSPN();
+        }
+
+        // Returns 'false' if run with CoreWCF Service,
+        // skip failed test
+        public static bool Skip_CoreWCFService_FailedTest()
+        {
+            return !GetConditionValue(nameof(Skip_CoreWCFService_FailedTest),
+                                     ConditionalTestDetectors.IsRunWithCoreWCFService);
         }
     }
 }

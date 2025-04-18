@@ -13,8 +13,7 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
     //                         - SecurityMode = Transport
     //                         - ClientCredentialType = Windows
     [WcfFact]
-    [Condition(nameof(Windows_Authentication_Available),
-               nameof(WindowsOrSelfHosted))]
+    [Condition(nameof(Windows_Authentication_Available))]
     [OuterLoop]
     public static void DefaultSettings_Echo_RoundTrips_String()
     {
@@ -50,8 +49,7 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
     // By default ClientCredentialType will be 'Windows'
     // SecurityMode is Transport by default with NetTcpBinding, this test explicitly sets it.
     [WcfFact]
-    [Condition(nameof(Windows_Authentication_Available),
-               nameof(WindowsOrSelfHosted))]
+    [Condition(nameof(Windows_Authentication_Available))]
     [OuterLoop]
     public static void SecurityModeTransport_Echo_RoundTrips_String()
     {

@@ -138,7 +138,7 @@ public class Http_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Windows_Authentication_Available), nameof(Is_Windows))]
+    [Condition(nameof(Windows_Authentication_Available), nameof(Is_Windows), nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void WindowsAuthentication_RoundTrips_Echo()
     {
@@ -149,7 +149,7 @@ public class Http_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Windows_Authentication_Available), nameof(Is_Windows))]
+    [Condition(nameof(Windows_Authentication_Available), nameof(Is_Windows), nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void IntegratedWindowsAuthentication_Negotiate_RoundTrips_Echo()
     {

@@ -49,8 +49,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Encoding.MessageVersion.Int
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensibility.MessageEncoder.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Extensibility\MessageEncoder\Extensibility.MessageEncoder.IntegrationTests.csproj", "{76361777-321D-4588-87F9-38992A758350}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensibility.MessageInterceptor.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Extensibility\MessageInterceptor\Extensibility.MessageInterceptor.IntegrationTests.csproj", "{ACCCB1B8-5ABE-4F3B-BFEF-9A9C15AA1267}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensibility.WebSockets.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Extensibility\WebSockets\Extensibility.WebSockets.IntegrationTests.csproj", "{C8CA16D3-5B1E-4EC0-A817-205A798DC272}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Infrastructure\Infrastructure.IntegrationTests.csproj", "{719E874A-AEFA-44D5-9530-9C41BD0FA4E8}"
@@ -209,10 +207,6 @@ Global
 		{76361777-321D-4588-87F9-38992A758350}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76361777-321D-4588-87F9-38992A758350}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76361777-321D-4588-87F9-38992A758350}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ACCCB1B8-5ABE-4F3B-BFEF-9A9C15AA1267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ACCCB1B8-5ABE-4F3B-BFEF-9A9C15AA1267}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ACCCB1B8-5ABE-4F3B-BFEF-9A9C15AA1267}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ACCCB1B8-5ABE-4F3B-BFEF-9A9C15AA1267}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8CA16D3-5B1E-4EC0-A817-205A798DC272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8CA16D3-5B1E-4EC0-A817-205A798DC272}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8CA16D3-5B1E-4EC0-A817-205A798DC272}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -337,7 +331,6 @@ Global
 		{48C41A27-631F-45FA-ACD5-7D7EDD4A4931} = {D6302510-AB10-4775-BCE9-98FA96FDEB76}
 		{36DD97F6-1F78-4843-A9C0-58C59D367603} = {D6302510-AB10-4775-BCE9-98FA96FDEB76}
 		{76361777-321D-4588-87F9-38992A758350} = {D6302510-AB10-4775-BCE9-98FA96FDEB76}
-		{ACCCB1B8-5ABE-4F3B-BFEF-9A9C15AA1267} = {D6302510-AB10-4775-BCE9-98FA96FDEB76}
 		{C8CA16D3-5B1E-4EC0-A817-205A798DC272} = {D6302510-AB10-4775-BCE9-98FA96FDEB76}
 		{719E874A-AEFA-44D5-9530-9C41BD0FA4E8} = {D6302510-AB10-4775-BCE9-98FA96FDEB76}
 		{E878E412-F0AB-4D87-8A7A-3114AAC48CD5} = {D6302510-AB10-4775-BCE9-98FA96FDEB76}

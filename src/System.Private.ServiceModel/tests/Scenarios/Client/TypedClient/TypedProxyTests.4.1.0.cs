@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class TypedProxyTests
+public partial class TypedProxyTests
 {
     [WcfFact]
     [OuterLoop]

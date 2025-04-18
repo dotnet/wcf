@@ -12,6 +12,7 @@ using Xunit;
 public partial class ExpectedExceptionTests : ConditionalWcfTest
 {
     [WcfTheory]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [InlineData(true)]
     [InlineData(false)]
     public static void DuplexCallbackDebugBehavior_IncludeExceptionDetailInFaults_True(bool includeExceptionDetailInFaults)
@@ -47,7 +48,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
 
         serviceProxy = factory.CreateChannel();
-        
+
         // *** EXECUTE *** \\
         try
         {

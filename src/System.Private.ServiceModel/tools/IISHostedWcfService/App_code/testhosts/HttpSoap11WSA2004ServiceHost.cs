@@ -2,8 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.Channels;
+#else
 using System;
 using System.ServiceModel.Channels;
+#endif
 using System.Text;
 
 namespace WcfService

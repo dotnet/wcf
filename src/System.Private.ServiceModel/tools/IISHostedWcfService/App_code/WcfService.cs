@@ -2,15 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF;
+using CoreWCF.Channels;
+using CoreWCF.Configuration;
+using CoreWCF.Web;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+#else
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
+#endif
+using System.Net;
+using System.Security.Principal;
 using System.Text;
 
 namespace WcfService
@@ -238,6 +247,44 @@ namespace WcfService
             return null;
         }
 
+#if NET
+        public string GetRestartServiceEndpoint()
+        {
+            Guid guid = Guid.NewGuid();
+            string localHost = "http://localhost:0";
+            string path = "WindowsCommunicationFoundationTest";
+            string endpointAddress = $"/{path}/{guid}";
+
+            IWebHost host = WebHost.CreateDefaultBuilder().UseKestrel(options =>
+            {
+                options.Listen(IPAddress.Loopback, 0);
+            }).ConfigureServices(services =>
+            {
+                services.AddServiceModelServices();
+
+            }).Configure(app =>
+            {
+                string serviceEndpointAddress = $"{localHost}/{path}/{guid}";
+                app.UseServiceModel(builder =>
+                {
+                    builder.AddService<WcfRestartService>()
+                    .AddServiceEndpoint<WcfRestartService, IWcfRestartService>(new BasicHttpBinding(BasicHttpSecurityMode.None), serviceEndpointAddress);
+                });
+            }).Build();
+
+            host.Start();
+
+            // Add the WebHost instance to a static dictionary so that it can be used by restart service operation to close the WebHost
+            WcfRestartService.webHostDictionary.Add(guid, host);
+
+            var address = host.ServerFeatures.Get<IServerAddressesFeature>().Addresses.FirstOrDefault();
+            var port = new Uri(address).Port;
+
+            // Return the unique endpoint for this WebHost instance of the WcfRestartService
+            return "http://[HOST]:" + port + endpointAddress;
+        }
+
+#else
         public string GetRestartServiceEndpoint()
         {
             BasicHttpBinding binding = new BasicHttpBinding();
@@ -256,6 +303,7 @@ namespace WcfService
             // Return the unique endpoint for this ServiceHost instance of the WcfRestartService
             return "http://[HOST]" + path;
         }
+#endif
 
         public string GetRequestCustomHeader(string customHeaderName, string customHeaderNamespace)
         {
@@ -473,7 +521,7 @@ namespace WcfService
         {
             return System.Threading.Tasks.Task.Run(() =>
             {
-                System.Threading.Tasks.Task.Delay(1).Wait();                
+                System.Threading.Tasks.Task.Delay(1).Wait();
             });
         }
     }
