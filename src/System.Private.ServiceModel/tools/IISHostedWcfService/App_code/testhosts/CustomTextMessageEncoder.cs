@@ -2,15 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.Channels;
+#else
 using System;
 using System.IO;
 using System.ServiceModel.Channels;
+#endif
 using System.Text;
 using System.Xml;
 
 namespace WcfService
 {
-    internal class CustomTextMessageEncoder : System.ServiceModel.Channels.MessageEncoder
+    internal class CustomTextMessageEncoder : MessageEncoder
     {
         private CustomTextMessageEncoderFactory _factory;
         private XmlWriterSettings _writerSettings;
@@ -50,6 +54,63 @@ namespace WcfService
             }
         }
 
+#if NET
+        public override Message ReadMessage(ArraySegment<byte> buffer, BufferManager bufferManager, string contentType)
+        {
+            XmlReader reader = XmlReader.Create(new MemoryStream(buffer.Array, buffer.Offset, buffer.Count));
+            Message message = Message.CreateMessage(reader, int.MaxValue, MessageVersion);
+            bufferManager.ReturnBuffer(buffer.Array);
+
+            return message;
+        }
+
+        public override async Task<Message> ReadMessageAsync(Stream stream, int maxSizeOfHeaders, string contentType)
+        {
+            XmlReaderSettings settings = new XmlReaderSettings
+            {
+                Async = true
+            };
+
+            XmlReader reader = XmlReader.Create(stream, settings);
+            Message message = Message.CreateMessage(reader, maxSizeOfHeaders, MessageVersion);
+            return await Task.FromResult(message);
+        }
+
+        public override ArraySegment<byte> WriteMessage(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+            XmlWriter xmlWriter = XmlWriter.Create(memoryStream, _writerSettings);
+
+            message.WriteMessage(xmlWriter);
+            xmlWriter.Flush();
+            xmlWriter.Dispose();
+
+            int messageLength = (int)memoryStream.Length;
+            int totalLength = messageLength + messageOffset;
+
+            byte[] totalBuffer = bufferManager.TakeBuffer(totalLength);
+
+            ArraySegment<byte> messageBytes = new ArraySegment<byte>(memoryStream.GetBuffer(), 0, messageLength);
+            Buffer.BlockCopy(messageBytes.Array, 0, totalBuffer, messageOffset, messageLength);
+
+            return new ArraySegment<byte>(totalBuffer, messageOffset, messageLength);
+        }
+
+        public override async Task WriteMessageAsync(Message message, Stream stream)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Async = true,
+                CloseOutput = false
+            };
+
+            await using (XmlWriter xmlWriter = XmlWriter.Create(stream, settings))
+            {
+                message.WriteMessage(xmlWriter);
+                await xmlWriter.FlushAsync();
+            }
+        }
+#else
         public override Message ReadMessage(Stream stream, int maxSizeOfHeaders, string contentType)
         {
             XmlReader reader = XmlReader.Create(stream);
@@ -102,5 +163,6 @@ namespace WcfService
             ArraySegment<byte> byteArray = new ArraySegment<byte>(totalBytes, messageOffset, messageLength);
             return byteArray;
         }
+#endif
     }
 }
