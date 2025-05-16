@@ -81,8 +81,8 @@
     <SystemFormatsAsn1PackageVersion>8.0.1</SystemFormatsAsn1PackageVersion>
     <SystemTextJsonPackageVersion>8.0.5</SystemTextJsonPackageVersion>
     <SystemTextEncodingsWebPackageVersion>8.0.0</SystemTextEncodingsWebPackageVersion>
-    <CoreWCFPrimitivesPackageVersion>1.6.0</CoreWCFPrimitivesPackageVersion>
-    <CoreWCFUnixDomainSocketPackageVersion>1.6.0</CoreWCFUnixDomainSocketPackageVersion>
-    <CoreWCFNetFramingBasePackageVersion>1.6.0</CoreWCFNetFramingBasePackageVersion>
+    <CoreWCFPrimitivesPackageVersion>1.7.0</CoreWCFPrimitivesPackageVersion>
+    <CoreWCFUnixDomainSocketPackageVersion>1.7.0</CoreWCFUnixDomainSocketPackageVersion>
+    <CoreWCFNetFramingBasePackageVersion>1.7.0</CoreWCFNetFramingBasePackageVersion>
   </PropertyGroup>
 </Project>
