@@ -220,7 +220,7 @@
     <value>Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</value>
   </data>
   <data name="HelpNoTypeReuseFormat" xml:space="preserve">
-    <value>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</value>
+    <value>Disable reusing types from project references. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</value>
   </data>
   <data name="HelpExcludeTypeCodeGenerationFormat" xml:space="preserve">
     <value>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</value>

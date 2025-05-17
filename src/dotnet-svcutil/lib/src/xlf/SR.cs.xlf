@@ -563,7 +563,7 @@ Identifikátor dokumentu: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
-        <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
+        <source>Disable reusing types from project references. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Zakáže opakované používání typů z odkazů na projekt. Odkazy poskytnuté pomocí možnosti --{1} se budou brát v úvahu jen pro překlad typů kolekcí zadaných pomocí možnosti --{2}. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>

@@ -563,7 +563,7 @@ Belge Tanımlayıcısı: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
-        <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
+        <source>Disable reusing types from project references. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
         <target state="translated">Proje başvurularından yeniden tür kullanılmasını devre dışı bırakın. --{1} seçeneği ile sağlanan başvurular yalnızca --{2} seçeneği ile belirtilen koleksiyon türlerini çözümlemek için kabul edilir. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
