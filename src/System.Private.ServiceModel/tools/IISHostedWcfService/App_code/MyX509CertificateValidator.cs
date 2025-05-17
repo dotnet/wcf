@@ -2,9 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if NET
+using CoreWCF.IdentityModel.Selectors;
+using CoreWCF.IdentityModel.Tokens;
+#else
 using System;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+#endif
 using System.Security.Cryptography.X509Certificates;
 
 namespace WcfService

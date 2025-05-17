@@ -7,9 +7,10 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-public static class Binding_Http_NetHttpBindingTests
+public class Binding_Http_NetHttpBindingTests : ConditionalWcfTest
 {
     [WcfTheory]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]

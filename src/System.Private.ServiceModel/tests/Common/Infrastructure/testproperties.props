@@ -2,149 +2,152 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 
-    <!-- Set default values for any TestProperties not already specified.
+  <!-- Set default values for any TestProperties not already specified.
            When adding or removing TestProperties, update testproperties.targets
            to generate code at build time.
     -->
-    <PropertyGroup Condition="'$(ServicePort)' == ''">
-      <ServicePort>44283</ServicePort>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(ServicePort)' == ''">
+    <ServicePort>44283</ServicePort>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ServiceHttpPort)' == ''">
-      <ServiceHttpPort>8081</ServiceHttpPort>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(ServiceHttpPort)' == ''">
+    <ServiceHttpPort>8081</ServiceHttpPort>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ServiceHttpsPort)' == ''">
-      <ServiceHttpsPort>44285</ServiceHttpsPort>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(ServiceHttpsPort)' == ''">
+    <ServiceHttpsPort>44285</ServiceHttpsPort>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ServiceTcpPort)' == ''">
-      <ServiceTcpPort>809</ServiceTcpPort>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(ServiceTcpPort)' == ''">
+    <ServiceTcpPort>8808</ServiceTcpPort>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ServiceWebSocketPort)' == ''">
-      <ServiceWebSocketPort>8083</ServiceWebSocketPort>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(ServiceWebSocketPort)' == ''">
+    <ServiceWebSocketPort>8083</ServiceWebSocketPort>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ServiceSecureWebSocketPort)' == ''">
-      <ServiceSecureWebSocketPort>8084</ServiceSecureWebSocketPort>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(ServiceSecureWebSocketPort)' == ''">
+    <ServiceSecureWebSocketPort>8084</ServiceSecureWebSocketPort>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TestRootCertificatePassword)' == ''">
-      <TestRootCertificatePassword>test</TestRootCertificatePassword>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(TestRootCertificatePassword)' == ''">
+    <TestRootCertificatePassword>test</TestRootCertificatePassword>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TestRootCertificateValidityPeriod)' == ''">
-      <TestRootCertificateValidityPeriod>7.00:00:00</TestRootCertificateValidityPeriod>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(TestRootCertificateValidityPeriod)' == ''">
+    <TestRootCertificateValidityPeriod>7.00:00:00</TestRootCertificateValidityPeriod>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(MaxTestTimeSpan)' == ''">
-      <MaxTestTimeSpan>00:01:00</MaxTestTimeSpan>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(MaxTestTimeSpan)' == ''">
+    <MaxTestTimeSpan>00:01:00</MaxTestTimeSpan>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(NegotiateTestRealm)' == ''">
-      <NegotiateTestRealm></NegotiateTestRealm>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(NegotiateTestRealm)' == ''">
+    <NegotiateTestRealm></NegotiateTestRealm>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(NegotiateTestDomain)' == ''">
-      <NegotiateTestDomain></NegotiateTestDomain>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(NegotiateTestDomain)' == ''">
+    <NegotiateTestDomain></NegotiateTestDomain>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(NegotiateTestSpn)' == ''">
-      <NegotiateTestSpn></NegotiateTestSpn>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(NegotiateTestSpn)' == ''">
+    <NegotiateTestSpn></NegotiateTestSpn>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(NegotiateTestUpn)' == ''">
-      <NegotiateTestUpn></NegotiateTestUpn>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(NegotiateTestUpn)' == ''">
+    <NegotiateTestUpn></NegotiateTestUpn>
+  </PropertyGroup>
 
-    <!-- Convention for TestProperties values to use by [ConditionalFact]:
+  <!-- Convention for TestProperties values to use by [ConditionalFact]:
       'true' = yes, the condition is satisfied
       'false' = no, the condition is not satisfied
       empty string = self-detect at runtime if possible, else assume 'false'
     -->
-    <PropertyGroup Condition="'$(Domain_Joined)' == ''">
-      <Domain_Joined></Domain_Joined>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Domain_Joined)' == ''">
+    <Domain_Joined></Domain_Joined>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Server_Domain_Joined)' == ''">
-      <Server_Domain_Joined></Server_Domain_Joined>
-    </PropertyGroup>
-  
-    <PropertyGroup Condition="'$(Root_Certificate_Installed)' == ''">
-      <Root_Certificate_Installed></Root_Certificate_Installed>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Server_Domain_Joined)' == ''">
+    <Server_Domain_Joined></Server_Domain_Joined>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Client_Certificate_Installed)' == ''">
-      <Client_Certificate_Installed></Client_Certificate_Installed>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Root_Certificate_Installed)' == ''">
+    <Root_Certificate_Installed></Root_Certificate_Installed>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Peer_Certificate_Installed)' == ''">
-      <Peer_Certificate_Installed></Peer_Certificate_Installed>
-    </PropertyGroup>
-    
-    <PropertyGroup Condition="'$(OSXPeer_Certificate_Installed)' == ''">
-      <OSXPeer_Certificate_Installed></OSXPeer_Certificate_Installed>
-    </PropertyGroup>
-  
-    <PropertyGroup Condition="'$(SPN_Available)' == ''">
-      <SPN_Available></SPN_Available>
-    </PropertyGroup>
-    
-     <PropertyGroup Condition="'$(NTLM_Available)' == ''">
-      <NTLM_Available></NTLM_Available>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Client_Certificate_Installed)' == ''">
+    <Client_Certificate_Installed></Client_Certificate_Installed>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Ambient_Credentials_Available)' == ''">
-      <Ambient_Credentials_Available></Ambient_Credentials_Available>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Peer_Certificate_Installed)' == ''">
+    <Peer_Certificate_Installed></Peer_Certificate_Installed>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Explicit_Credentials_Available)' == ''">
-      <Explicit_Credentials_Available></Explicit_Credentials_Available>
-    </PropertyGroup>
-  
-    <PropertyGroup Condition="'$(Server_Accepts_Certificates)' == ''">
-      <Server_Accepts_Certificates></Server_Accepts_Certificates>
-    </PropertyGroup>
-  
-    <PropertyGroup Condition="'$(Basic_Authentication_Available)' == ''">
-      <Basic_Authentication_Available></Basic_Authentication_Available>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(OSXPeer_Certificate_Installed)' == ''">
+    <OSXPeer_Certificate_Installed></OSXPeer_Certificate_Installed>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Digest_Authentication_Available)' == ''">
-      <Digest_Authentication_Available></Digest_Authentication_Available>
-    </PropertyGroup>
-  
-    <PropertyGroup Condition="'$(Windows_Authentication_Available)' == ''">
-      <Windows_Authentication_Available></Windows_Authentication_Available>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(SPN_Available)' == ''">
+    <SPN_Available></SPN_Available>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ServiceUri)' == ''">
-      <ServiceUri >localhost</ServiceUri >
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(NTLM_Available)' == ''">
+    <NTLM_Available></NTLM_Available>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ExplicitUserName)' == ''">
-      <ExplicitUserName ></ExplicitUserName >
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Ambient_Credentials_Available)' == ''">
+    <Ambient_Credentials_Available></Ambient_Credentials_Available>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ExplicitPassword)' == ''">
-      <ExplicitPassword ></ExplicitPassword >
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Explicit_Credentials_Available)' == ''">
+    <Explicit_Credentials_Available></Explicit_Credentials_Available>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(SSL_Available)' == ''">
-      <SSL_Available></SSL_Available>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Server_Accepts_Certificates)' == ''">
+    <Server_Accepts_Certificates></Server_Accepts_Certificates>
+  </PropertyGroup>
 
-    <!-- The default value of $(IncludeTestsWithIssues) is blank, which is equivalent fo 'false'.
+  <PropertyGroup Condition="'$(Basic_Authentication_Available)' == ''">
+    <Basic_Authentication_Available></Basic_Authentication_Available>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Digest_Authentication_Available)' == ''">
+    <Digest_Authentication_Available></Digest_Authentication_Available>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Windows_Authentication_Available)' == ''">
+    <Windows_Authentication_Available></Windows_Authentication_Available>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(ServiceUri)' == ''">
+    <ServiceUri >localhost</ServiceUri >
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(ExplicitUserName)' == ''">
+    <ExplicitUserName ></ExplicitUserName >
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(ExplicitPassword)' == ''">
+    <ExplicitPassword ></ExplicitPassword >
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(SSL_Available)' == ''">
+    <SSL_Available></SSL_Available>
+  </PropertyGroup>
+
+  <!-- The default value of $(IncludeTestsWithIssues) is blank, which is equivalent fo 'false'.
          The check of $(WithCategories) preserves the convention used by other repo's where the
          keyword 'failing' inside $(WithCategories) asks that tests with [ActiveIssue] be run.
          Optionally, $(IncludeTestsWithIssues) can be a semicolon-separated list of issue numbers.
          Tests marked with an [Issue] whose issue number is in this list will be run rather than skipped.
     -->
-    <PropertyGroup Condition="'$(IncludeTestsWithIssues)' == '' and $(WithCategories.ToLower().Contains('failing'))">
-      <IncludeTestsWithIssues>true</IncludeTestsWithIssues>
-    </PropertyGroup>
-  
+  <PropertyGroup Condition="'$(IncludeTestsWithIssues)' == '' and $(WithCategories.ToLower().Contains('failing'))">
+    <IncludeTestsWithIssues>true</IncludeTestsWithIssues>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RunWithCoreWCF)' == ''">
+    <RunWithCoreWCF></RunWithCoreWCF>
+  </PropertyGroup>
   <!--
      GeneratedTestPropertiesFileName:
      The full path of the C# file that will be generated at build time to

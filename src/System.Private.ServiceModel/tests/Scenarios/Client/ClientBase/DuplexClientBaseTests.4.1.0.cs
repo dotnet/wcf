@@ -58,6 +58,7 @@ public class DuplexClientBaseTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void DuplexClientBaseOfT_OverNetTcp_Synchronous_Call()
     {

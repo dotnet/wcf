@@ -60,7 +60,8 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Root_Certificate_Installed),
-               nameof(Ambient_Credentials_Available))]
+               nameof(Ambient_Credentials_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void NegotiateStream_Http_AmbientCredentials()
     {
@@ -108,7 +109,8 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Root_Certificate_Installed),
                nameof(Explicit_Credentials_Available),
-               nameof(Domain_Available))]
+               nameof(Domain_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -159,7 +161,8 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     [Condition(nameof(Windows_Authentication_Available),
               nameof(Root_Certificate_Installed),
               nameof(Explicit_Credentials_Available),
-              nameof(Domain_Available))]
+              nameof(Domain_Available),
+              nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -210,7 +213,8 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Root_Certificate_Installed),
-               nameof(SPN_Available))]
+               nameof(SPN_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -304,7 +308,8 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
                nameof(Root_Certificate_Installed),
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available),
-               nameof(SPN_Available))]
+               nameof(SPN_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
