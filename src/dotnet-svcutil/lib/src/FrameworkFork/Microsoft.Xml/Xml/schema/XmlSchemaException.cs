@@ -104,7 +104,14 @@ namespace Microsoft.Xml.Schema
                 return res;
             }
 
-            return string.Format(res, args);
+            try
+            {
+                return string.Format(res, args);
+            }
+            catch (MissingManifestResourceException)
+            {
+                return "UNKNOWN(" + res + ")";
+            }
         }
 
         internal string GetRes
