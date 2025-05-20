@@ -47,6 +47,14 @@ if NOT "%ERRORLEVEL%"=="0" (
     goto end
 )
 
+:: Grant IIS WCF Service Pool permission to access the new certs' private key
+set PoolNames=WcfService1 WcfService2 WcfService3 WcfService4 WcfService5 WcfService6 DefaultAppPool
+
+for %%P in (%PoolNames%) do (
+    echo [%~n0] powershell -NoProfile -ExecutionPolicy unrestricted %_SCRIPTSDIR%\CertificatePrivateKeyPermissions.ps1 'IIS APPPOOL\%%P' >> %_LOGFILE%
+    powershell -NoProfile -ExecutionPolicy unrestricted %_SCRIPTSDIR%\CertificatePrivateKeyPermissions.ps1 'IIS APPPOOL\%%P' >> %_LOGFILE% 2>&1
+)
+
 :: Configure HTTPS ports to use new certificate
 echo [%~n0] powershell -NoProfile -ExecutionPolicy unrestricted %_SCRIPTSDIR%\ConfigHttpsPort.ps1   >> %_LOGFILE% 
 powershell -NoProfile -ExecutionPolicy unrestricted %_SCRIPTSDIR%\ConfigHttpsPort.ps1               >> %_LOGFILE% 2>&1

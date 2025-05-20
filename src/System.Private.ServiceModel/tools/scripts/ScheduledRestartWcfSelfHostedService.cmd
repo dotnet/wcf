@@ -37,6 +37,9 @@ if not "%ERRORLEVEL%"=="0" (
 echo [%~n0] Kill SelfHostedWCFService.exe so that we can clean up the bin directory >> %_LOGFILE%
 TASKKILL /F /IM SelfHostedWCFService.exe >> %_LOGFILE% 2>&1
 
+echo [%~n0] Kill dotnet.exe processes that might remain after running the certificate refresh script >> %_LOGFILE%
+TASKKILL /F /IM dotnet.exe >> %_LOGFILE% 2>&1
+
 :: Pull the latest code from GitHub
 
 pushd %_GITREPO%
