@@ -48,9 +48,7 @@ if NOT "%ERRORLEVEL%"=="0" (
 )
 
 :: Grant IIS WCF Service Pool permission to access the new certs' private key
-set PoolNames=WcfService1 WcfService2 WcfService3 WcfService4 WcfService5 WcfService6 DefaultAppPool
-
-for %%P in (%PoolNames%) do (
+for /f "tokens=*" %%P in ('powershell -command "Get-IISAppPool | Where-Object { $_.Name -like '*wcfservice*' } | Select-Object -ExpandProperty Name"') do (
     echo [%~n0] powershell -NoProfile -ExecutionPolicy unrestricted %_SCRIPTSDIR%\CertificatePrivateKeyPermissions.ps1 'IIS APPPOOL\%%P' >> %_LOGFILE%
     powershell -NoProfile -ExecutionPolicy unrestricted %_SCRIPTSDIR%\CertificatePrivateKeyPermissions.ps1 'IIS APPPOOL\%%P' >> %_LOGFILE% 2>&1
 )
