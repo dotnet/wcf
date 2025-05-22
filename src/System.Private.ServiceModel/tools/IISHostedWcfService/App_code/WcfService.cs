@@ -311,7 +311,7 @@ namespace WcfService
             return result;
         }
 
-        public XmlMessageContractTestResponse EchoMessageResquestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request)
+        public XmlMessageContractTestResponse EchoMessageRequestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request)
         {
             var result = new XmlMessageContractTestResponse(request.Message);
             return result;
