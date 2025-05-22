@@ -55,7 +55,7 @@ namespace SvcutilTest
 
             ValidateTest(options, this_TestCaseProject.DirectoryPath, processResult.ExitCode, processResult.OutputText, expectSuccess);
         }
-        
+
         [Theory]
         [Trait("Category", "BVT")]
         [InlineData("silent")]
@@ -196,7 +196,7 @@ namespace SvcutilTest
             InitializeE2E(testCaseName);
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "WcfProjectNService", "tempuri.org.wsdl")}";
-            var dir = $"-d ../{ testCaseName}";
+            var dir = $"-d ../{testCaseName}";
 
             TestSvcutil(dir + " " + url + " " + options, expectSuccess);
         }
@@ -530,7 +530,7 @@ namespace SvcutilTest
         // need to find a way to keep this test running reliably.
         [Trait("Category", "Test")]
         [Fact]
-        
+
         public void CheckBaslines()
         {
             this_TestCaseName = nameof(CheckBaslines);

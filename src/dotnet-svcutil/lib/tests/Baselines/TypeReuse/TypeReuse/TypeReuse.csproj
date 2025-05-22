@@ -8,7 +8,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="dotnet-svcutil-lib" Version="99.99.99" />
-    <Content CopyToOutputDirectory="always" Include="$(NuGetPackageRoot)dotnet-svcutil-lib/99.99.99/content/internalAssets/**" Link="internalAssets/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content CopyToOutputDirectory="always" Include="$(NuGetPackageRoot)dotnet-svcutil-lib/99.99.99/net6.0/**" Link="net6.0/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content CopyToOutputDirectory="always" Include="$(NuGetPackageRoot)dotnet-svcutil-lib/99.99.99/net8.0/**" Link="net8.0/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content CopyToOutputDirectory="always" Include="$(NuGetPackageRoot)dotnet-svcutil-lib/99.99.99/net462/**" Link="net462/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BinLib">
@@ -22,8 +24,5 @@
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
-    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
-    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
-    <PackageReference Include="System.Web.Services.Description", Version="N.N.N">
   </ItemGroup>
 </Project>
