@@ -7,12 +7,50 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TypeReuse_NS
+namespace ServiceReference
 {
+    using System.Runtime.Serialization;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TypeReuseCompositeType", Namespace="http://schemas.datacontract.org/2004/07/TypesLib")]
+    public partial class TypeReuseCompositeType : object
+    {
+        
+        private bool BoolValueField;
+        
+        private string StringValueField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool BoolValue
+        {
+            get
+            {
+                return this.BoolValueField;
+            }
+            set
+            {
+                this.BoolValueField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string StringValue
+        {
+            get
+            {
+                return this.StringValueField;
+            }
+            set
+            {
+                this.StringValueField = value;
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TypeReuse_NS.ITypeReuseSvc")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.ITypeReuseSvc")]
     public interface ITypeReuseSvc
     {
         
@@ -20,17 +58,17 @@ namespace TypeReuse_NS
         System.Threading.Tasks.Task<BinLib.BinLibrary> GetDataAsync(int value);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContract", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContractResponse")]
-        System.Threading.Tasks.Task<TypesLib.TypeReuseCompositeType> GetDataUsingDataContractAsync(TypesLib.TypeReuseCompositeType composite);
+        System.Threading.Tasks.Task<ServiceReference.TypeReuseCompositeType> GetDataUsingDataContractAsync(ServiceReference.TypeReuseCompositeType composite);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface ITypeReuseSvcChannel : TypeReuse_NS.ITypeReuseSvc, System.ServiceModel.IClientChannel
+    public interface ITypeReuseSvcChannel : ServiceReference.ITypeReuseSvc, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<TypeReuse_NS.ITypeReuseSvc>, TypeReuse_NS.ITypeReuseSvc
+    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<ServiceReference.ITypeReuseSvc>, ServiceReference.ITypeReuseSvc
     {
         
         /// <summary>
@@ -78,7 +116,7 @@ namespace TypeReuse_NS
             return base.Channel.GetDataAsync(value);
         }
         
-        public System.Threading.Tasks.Task<TypesLib.TypeReuseCompositeType> GetDataUsingDataContractAsync(TypesLib.TypeReuseCompositeType composite)
+        public System.Threading.Tasks.Task<ServiceReference.TypeReuseCompositeType> GetDataUsingDataContractAsync(ServiceReference.TypeReuseCompositeType composite)
         {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
