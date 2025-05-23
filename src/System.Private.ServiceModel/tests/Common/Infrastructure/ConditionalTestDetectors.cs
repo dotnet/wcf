@@ -142,18 +142,17 @@ namespace Infrastructure.Common
             return OSID.AnyWindows.MatchesCurrent();
         }
 
-        public static bool IsWindowsOrSelfHosted()
+        // Returns 'true' if the server is running with CoreWCF Service
+        public static bool IsRunWithCoreWCFService()
         {
-            if (IsWindows())
+            string runWithCoreWCFService = TestProperties.GetProperty(TestProperties.RunWithCoreWCF_PropertyName);
+
+            if (String.IsNullOrWhiteSpace(runWithCoreWCFService))
             {
-                return true;
-            }
-            else if (!IsIISHosted())
-            {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         // Returns 'true' if the server is running as localhost.
