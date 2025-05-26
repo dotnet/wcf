@@ -4,8 +4,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BinLib">
-      <HintPath>..\BinLib\BinLib.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\TypesLib\TypesLib.csproj" />
   </ItemGroup>
 </Project>
