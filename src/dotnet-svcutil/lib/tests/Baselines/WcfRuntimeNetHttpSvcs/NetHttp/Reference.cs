@@ -616,8 +616,8 @@ namespace NetHttp_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttp_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(NetHttp_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(NetHttp_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<NetHttp_NS.TestFaultsResponse> TestFaultsAsync(NetHttp_NS.TestFaultsRequest request);
         
@@ -739,9 +739,9 @@ namespace NetHttp_NS
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<NetHttp_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(NetHttp_NS.XmlMessageContractTestRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
-            "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
-            "ageHeaderResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageRequestWithMessa" +
+            "geHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageRequestWithMessa" +
+            "geHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<NetHttp_NS.XmlMessageContractTestResponse> EchoMessageRequestWithMessageHeaderAsync(NetHttp_NS.XmlMessageContractTestRequestWithMessageHeader request);
         
