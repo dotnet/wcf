@@ -522,6 +522,25 @@ namespace SvcutilTest
             this_TestCaseName = testCaseName;
             TestSvcutil(AppendCommonOptions(uri), expectSuccess);
         }
+
+        [Trait("Category", "Test")]
+        [Theory]
+        [InlineData("CertificateAuth")]
+        [InlineData("SspiNegoAuthRequireCancelTokenFasle")]
+        [InlineData("SspiNegoAuthRequireCancelTokenTrue")]
+        public void CustomBindingSecurityCodeGenTest(string testCaseName)
+        {
+            this_TestCaseName = "CustomBindingSecurityCodeGenTest";
+            TestFixture();
+            InitializeE2E(testCaseName);
+
+            string wsdlFile = Path.Combine(g_TestCasesDir, "wsdl", $"{testCaseName}.wsdl");
+            Assert.True(File.Exists(wsdlFile), $"{wsdlFile} not initialized!");
+
+            this_TestCaseName = testCaseName;
+            TestSvcutil(AppendCommonOptions(wsdlFile));
+        }
+
         /*
         // TODO:
         // this is not an actual test but it is a way to keep the repo clean of dead-baselines.

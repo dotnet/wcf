@@ -1120,12 +1120,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             CodeExpression[] defaultBindingElementFactoryMethodExpressionParameters = Array.Empty<CodeExpression>();
 
             // CertificateOverTransport
-            // [carol] Validated: correctly generates code
             if (SecurityBindingElement.IsCertificateOverTransportBinding(bindingElement))
             {
                 defaultBindingElement = SecurityBindingElement.CreateCertificateOverTransportBindingElement();
                 defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateCertificateOverTransportBindingElement);
             }
+
             // IssuedTokenOverTransport
             else if (SecurityBindingElement.IsIssuedTokenOverTransportBinding(bindingElement,
                 out System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters issuedTokenOverTransportParameters))
@@ -1147,8 +1147,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 defaultBindingElementFactoryMethodExpressionParameters = new CodeExpression[]
                 {
-                    // [carol] Updated this TODO item - need review to confirm
-                    // TODO: pass `issuedTokenOverTransportParameters` parameter
                     new CodeObjectCreateExpression(
                         typeof(System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters),
                         new CodeExpression[]
@@ -1166,9 +1164,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 defaultBindingElement = SecurityBindingElement.CreateKerberosOverTransportBindingElement();
                 defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateKerberosOverTransportBindingElement);
             }
+
             // SspiNegotiatedOverTransport
-            // [carol] Updated implementation: Whether the requireCancellation parameter is needed depends on the outcome of the method call in the following if-statements.
-            // TODO: make `requireCancellation` out parameter ??
             else if (SecurityBindingElement.IsSspiNegotiationOverTransportBinding(bindingElement, requireCancellation: true))
             {
                 defaultBindingElement = SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement();
@@ -1180,8 +1177,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement);
                 defaultBindingElementFactoryMethodExpressionParameters = new CodeExpression[]
                 {
-                    // [carol] Updated: The requireCancellation parameter is only necessary when setting it to false. In the parameterless constructor, requireCancellation defaults to true.
-                    // TODO: add requireCancellation parameter
                     new CodePrimitiveExpression(false)
                 };
             }
@@ -1194,7 +1189,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
             else
             {
-                // TODO: throw or fallback to `CreateUserNameOverTransportBindingElement` ??
                 throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingElementNotSupportedFormat, bindingElement.GetType()));
             }
 
