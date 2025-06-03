@@ -1143,10 +1143,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     "issuerAddress",
                     new CodeObjectCreateExpression(typeof(EndpointAddress),
                         new CodeObjectCreateExpression(typeof(Uri),
-                        new CodePrimitiveExpression(issuedTokenOverTransportParameters.IssuerAddress.Uri.ToString())))));
+                        new CodePrimitiveExpression(issuedTokenOverTransportParameters.IssuerAddress.ToString())))));
 
-                defaultBindingElementFactoryMethodExpressionParameters = new CodeExpression[]
-                {
+                statements.Add(new CodeVariableDeclarationStatement(
+                    typeof(System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters),
+                    "issuedTokenParameters",
                     new CodeObjectCreateExpression(
                         typeof(System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters),
                         new CodeExpression[]
@@ -1154,7 +1155,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             new CodePrimitiveExpression(issuedTokenOverTransportParameters.TokenType),
                             new CodeVariableReferenceExpression("issuerAddress"),
                             new CodeVariableReferenceExpression("issuerBinding")
-                        })
+                        })));
+
+                statements.Add(new CodeAssignStatement(
+                    new CodePropertyReferenceExpression(new CodeVariableReferenceExpression("issuedTokenParameters"), "KeySize"),
+                    new CodePrimitiveExpression(issuedTokenOverTransportParameters.KeySize)));
+
+                statements.Add(new CodeAssignStatement(
+                    new CodePropertyReferenceExpression(new CodeVariableReferenceExpression("issuedTokenParameters"), "UseStrTransform"),
+                    new CodePrimitiveExpression(issuedTokenOverTransportParameters.UseStrTransform)));
+
+
+                defaultBindingElementFactoryMethodExpressionParameters = new CodeExpression[]
+                {
+                    new CodeVariableReferenceExpression("issuedTokenParameters")
                 };
             }
 
