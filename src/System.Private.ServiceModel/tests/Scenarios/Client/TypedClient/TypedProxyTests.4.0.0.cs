@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public partial class TypedProxyTests : ConditionalWcfTest
+public static partial class TypedProxyTests
 {
     // ServiceContract typed proxy tests create a ChannelFactory using a provided [ServiceContract] Interface which...
     //       returns a generated proxy based on that Interface.
@@ -567,7 +567,6 @@ public partial class TypedProxyTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static async Task ServiceContract_TypedProxy_Task_Call_AsyncLocal_NonCapture()
     {
@@ -594,6 +593,9 @@ public partial class TypedProxyTests : ConditionalWcfTest
             // *** EXECUTE *** \\
             var opExtension = new OperationContextExtension();
             opContextReference = new WeakReference<OperationContextExtension>(opExtension);
+
+            // force ExecutionContext to capture the null OperationContext
+            await Task.Yield();
             using (new OperationContextScope((IContextChannel)serviceProxy))
             {
                 OperationContext.Current.Extensions.Add(opExtension);
