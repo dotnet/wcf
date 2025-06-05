@@ -564,7 +564,7 @@ Identificador del documento: "{0}".</target>
       </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project references. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
-        <target state="new">Disable reusing types from project references. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</target>
+        <target state="translated">Deshabilite la reutilización de tipos de las referencias del proyecto. Las referencias proporcionadas con la opción --{1} solo se tendrán en cuenta para resolver los tipos de colección que se especifican con la opción --{2}. (Forma corta: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNologoFormat">

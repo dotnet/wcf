@@ -564,7 +564,7 @@ Dokumentbezeichner: "{0}".</target>
       </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project references. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
-        <target state="new">Disable reusing types from project references. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</target>
+        <target state="translated">Deaktivieren der Wiederverwendung von Typen aus Projektverweisen. Verweise, die mit der Option --{1} angegeben werden, werden nur für die Auflösung von Sammlungstypen berücksichtigt, die mit der Option --{2} angegeben wurden. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNologoFormat">
