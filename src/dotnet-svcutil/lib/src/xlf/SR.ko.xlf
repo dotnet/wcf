@@ -564,7 +564,7 @@ Document Identifier: '{0}'.</source>
       </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project references. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
-        <target state="new">Disable reusing types from project references. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</target>
+        <target state="translated">프로젝트 참조에서 형식 재사용을 사용하지 않도록 설정합니다. --{1} 옵션과 함께 제공된 참조는 --{2} 옵션과 함께 지정된 컬렉션 형식 확인용으로만 간주됩니다. (약식: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNologoFormat">
