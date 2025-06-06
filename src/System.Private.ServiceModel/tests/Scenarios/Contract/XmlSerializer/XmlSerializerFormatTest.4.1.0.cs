@@ -51,7 +51,7 @@ public static partial class XmlSerializerFormatTests
         try
         {
             // *** EXECUTE *** \\
-            XmlMessageContractTestResponse response = serviceProxy.EchoMessageResquestWithMessageHeader(input);
+            XmlMessageContractTestResponse response = serviceProxy.EchoMessageRequestWithMessageHeader(input);
 
             // *** VALIDATE *** \\
             Assert.NotNull(response);

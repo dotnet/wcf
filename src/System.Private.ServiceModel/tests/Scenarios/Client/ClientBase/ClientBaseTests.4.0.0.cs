@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class ClientBaseTests
+public partial class ClientBaseTests
 {
     [WcfFact]
     [OuterLoop]

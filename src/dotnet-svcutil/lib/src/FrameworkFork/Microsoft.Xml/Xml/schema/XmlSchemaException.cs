@@ -99,6 +99,11 @@ namespace Microsoft.Xml.Schema
 
         internal static string CreateMessage(string res, string[] args)
         {
+            if (args == null)
+            {
+                return res;
+            }
+
             try
             {
                 return string.Format(res, args);

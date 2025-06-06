@@ -743,7 +743,7 @@ namespace Saml2IssuedToken_mex_NS
             "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
             "ageHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageRequestWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabled", ReplyAction="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabledResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -2617,16 +2617,16 @@ namespace Saml2IssuedToken_mex_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoMessageResquestWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoMessageRequestWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader request)
         {
-            return base.Channel.EchoMessageResquestWithMessageHeaderAsync(request);
+            return base.Channel.EchoMessageRequestWithMessageHeaderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageRequestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
         {
             Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader inValue = new Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader();
             inValue.XmlMessageContractTestRequestWithMessageHeaderMessage = XmlMessageContractTestRequestWithMessageHeaderMessage;
-            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoMessageResquestWithMessageHeaderAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoMessageRequestWithMessageHeaderAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<bool> IsHttpKeepAliveDisabledAsync()

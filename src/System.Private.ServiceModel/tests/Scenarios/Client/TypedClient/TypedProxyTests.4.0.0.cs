@@ -593,6 +593,9 @@ public static partial class TypedProxyTests
             // *** EXECUTE *** \\
             var opExtension = new OperationContextExtension();
             opContextReference = new WeakReference<OperationContextExtension>(opExtension);
+
+            // force ExecutionContext to capture the null OperationContext
+            await Task.Yield();
             using (new OperationContextScope((IContextChannel)serviceProxy))
             {
                 OperationContext.Current.Extensions.Add(opExtension);

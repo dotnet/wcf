@@ -743,7 +743,7 @@ namespace TcpTransSecMessCredsUserName_NS
             "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
             "ageHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader request);
+        System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageRequestWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabled", ReplyAction="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabledResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -2624,16 +2624,16 @@ namespace TcpTransSecMessCredsUserName_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoMessageResquestWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader request)
+        System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> TcpTransSecMessCredsUserName_NS.IWcfService.EchoMessageRequestWithMessageHeaderAsync(TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader request)
         {
-            return base.Channel.EchoMessageResquestWithMessageHeaderAsync(request);
+            return base.Channel.EchoMessageRequestWithMessageHeaderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
+        public System.Threading.Tasks.Task<TcpTransSecMessCredsUserName_NS.XmlMessageContractTestResponse> EchoMessageRequestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
         {
             TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader inValue = new TcpTransSecMessCredsUserName_NS.XmlMessageContractTestRequestWithMessageHeader();
             inValue.XmlMessageContractTestRequestWithMessageHeaderMessage = XmlMessageContractTestRequestWithMessageHeaderMessage;
-            return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoMessageResquestWithMessageHeaderAsync(inValue);
+            return ((TcpTransSecMessCredsUserName_NS.IWcfService)(this)).EchoMessageRequestWithMessageHeaderAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<bool> IsHttpKeepAliveDisabledAsync()

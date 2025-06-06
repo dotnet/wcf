@@ -587,10 +587,10 @@ public interface IXmlMessageContarctTestService
     XmlMessageContractTestResponse EchoMessageResponseWithMessageHeader(XmlMessageContractTestRequest request);
 
     [OperationContract(
-        Action = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMessageHeader",
+        Action = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageRequestWithMessageHeader",
         ReplyAction = "*")]
     [XmlSerializerFormat(SupportFaults = true)]
-    XmlMessageContractTestResponse EchoMessageResquestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request);
+    XmlMessageContractTestResponse EchoMessageRequestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request);
 }
 
 [ServiceContract]

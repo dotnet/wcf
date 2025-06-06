@@ -56,8 +56,10 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
     }
 
     [WcfTheory]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
-               nameof(SSL_Available))]
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     [InlineData(TransferMode.Buffered)]
     [InlineData(TransferMode.Streamed)]
@@ -106,8 +108,10 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
     }
 
     [WcfFact]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
-               nameof(SSL_Available))]
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void Https_SecModeTransWithMessCred_UserNameClientCredential_Succeeds()
     {
@@ -154,6 +158,7 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
     }
 
     [WcfTheory]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
