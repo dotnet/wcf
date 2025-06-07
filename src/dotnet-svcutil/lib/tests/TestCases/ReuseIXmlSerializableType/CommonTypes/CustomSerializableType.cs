@@ -11,7 +11,7 @@ namespace CommonTypes
     {
         public BigInteger TestValue { get; set; }
 
-        public XmlSchema? GetSchema()
+        public XmlSchema GetSchema()
         {
             XmlSchema schema = new XmlSchema()
             {
