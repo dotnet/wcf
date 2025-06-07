@@ -616,8 +616,8 @@ namespace Saml2IssuedToken_mex_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultsResponse> TestFaultsAsync(Saml2IssuedToken_mex_NS.TestFaultsRequest request);
         
@@ -739,9 +739,9 @@ namespace Saml2IssuedToken_mex_NS
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
-            "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
-            "ageHeaderResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageRequestWithMessa" +
+            "geHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageRequestWithMessa" +
+            "geHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageRequestWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader request);
         

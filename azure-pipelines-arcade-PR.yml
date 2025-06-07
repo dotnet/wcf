@@ -40,8 +40,8 @@ variables:
 
 resources:
   containers:
-  - container: ubuntu_2004_20211215
-    image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-coredeps
+  - container: ubuntu_2204
+    image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-22.04-coredeps
 
 stages:
 - stage: Build
@@ -146,10 +146,10 @@ stages:
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: Linux
           timeoutInMinutes: 90
-          container: ubuntu_2004_20211215
+          container: ubuntu_2204
           pool:
             name:  NetCore-Public
-            demands: ImageOverride -equals build.Ubuntu.2004.Amd64.Open
+            demands: ImageOverride -equals build.Ubuntu.2204.Amd64.Open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri:
