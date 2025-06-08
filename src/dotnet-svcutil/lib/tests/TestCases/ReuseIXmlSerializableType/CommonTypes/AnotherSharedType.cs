@@ -10,5 +10,8 @@ namespace CommonTypes
 
         [DataMember]
         public CustomSerializableType SomeXmlSerializableType { get; set; }
+
+        [DataMember]
+        public CustomSerializableTypeWithNs SomeXmlSerializableTypeWithNs { get; set; }
     }
 }
