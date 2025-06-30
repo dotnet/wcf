@@ -14,6 +14,7 @@ namespace WcfService
         private ServiceHostBase _serviceHostBase = null;
         private readonly Type _serviceType;
         private readonly List<Endpoint> _endpoints = new List<Endpoint>();
+        private ServiceCredentials _localCredentials = null;
 
         public ServiceHost(Type serviceType, params Uri[] baseAddresses)
         {
@@ -50,7 +51,47 @@ namespace WcfService
 
         public Type ServiceType => _serviceHostBase != null ? _serviceHostBase.Description.ServiceType : _serviceType;
 
-        public ServiceCredentials Credentials => _serviceHostBase != null ? _serviceHostBase.Credentials : new ServiceCredentials();
+        public ServiceCredentials Credentials
+        {
+            get
+            {
+                if (_localCredentials != null)
+                {
+                    return _localCredentials;
+                }
+
+                _localCredentials = new ServiceCredentials();
+                var multiCreds = _serviceHostBase.Credentials as MultiCredentialServiceCredentials;
+                if (multiCreds == null)
+                {
+                    throw new Exception("Credentials should have been initialized with MultiCredentialServiceCredentials");
+                }
+                var attributes = this.GetType().GetCustomAttributes(typeof(TestServiceDefinitionAttribute), false);
+                if (attributes != null)
+                {
+                    foreach (var attribute in attributes)
+                    {
+                        var basePath = "/" + ((TestServiceDefinitionAttribute)attribute).BasePath;
+                        if (!string.IsNullOrEmpty(basePath))
+                        {
+                            foreach (var endpoint in _endpoints)
+                            {
+                                var path = string.IsNullOrEmpty(endpoint.Address) ? basePath : basePath + "/" + endpoint.Address;
+                                if (!multiCreds.ServiceCredentialsMap.TryGetValue(path, out var creds))
+                                {
+                                    multiCreds.AddServiceCredentials(path, _localCredentials);
+                                }
+                                else
+                                {
+                                    _localCredentials = creds;
+                                }
+                            }
+                        }
+                    }
+                }
+                return _localCredentials;
+            }
+        }
 
         public ServiceDescription Description => _serviceHostBase != null ? _serviceHostBase.Description : new ServiceDescription();
     }

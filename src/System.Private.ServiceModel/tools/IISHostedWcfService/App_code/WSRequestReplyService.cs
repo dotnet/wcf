@@ -13,6 +13,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading;
 #endif
+using System.Net;
 using System.Net.NetworkInformation;
 
 namespace WcfService
@@ -43,6 +44,13 @@ namespace WcfService
             // Access the RemoteEndpointMessageProperty
             RemoteEndpointMessageProperty remp = OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
             bool success = false;
+            IPAddress remoteIP;
+
+            if (IPAddress.TryParse(remp.Address, out remoteIP))
+            {
+                if (remoteIP.IsIPv4MappedToIPv6)
+                    remoteIP = remoteIP.MapToIPv4();
+            }
 
             // Get a collection of all IP addresses on the server.
             // Getting the addresses from the Unicast IPAddress Information collection ensures that a match
@@ -51,15 +59,19 @@ namespace WcfService
             foreach (NetworkInterface adapter in nics)
             {
                 IPInterfaceProperties properties = adapter.GetIPProperties();
-                UnicastIPAddressInformationCollection addressCollection = properties.UnicastAddresses;
-                foreach (UnicastIPAddressInformation address in addressCollection)
+                foreach (UnicastIPAddressInformation address in properties.UnicastAddresses)
                 {
-                    if (remp.Address == address.Address.ToString())
+                    var serverIP = address.Address;
+                    if (serverIP.IsIPv4MappedToIPv6)
+                        serverIP = serverIP.MapToIPv4();
+
+                    if (remoteIP.Equals(serverIP))
                     {
                         success = true;
                         break;
                     }
                 }
+                if (success) break;
             }
 
             if (!success)
