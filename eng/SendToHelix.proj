@@ -78,6 +78,11 @@
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TestJob)' == 'Linux'" >
+    <!-- WCF tests have a dependency on RSA+SHA1 being enabled on Helix: https://github.com/dotnet/wcf/pull/5744#issuecomment-2702201438 -->
+    <HelixPreCommands>$(HelixPreCommands);export OPENSSL_ENABLE_SHA1_SIGNATURES=1</HelixPreCommands>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunWithCoreWCFService)' == 'true'">
     <HelixPreCommands>$(HelixPreCommands);set PATH=%HELIX_CORRELATION_PAYLOAD%\dotnet-cli%3B%PATH%</HelixPreCommands>
     <!-- %3B is an escaped ; -->
