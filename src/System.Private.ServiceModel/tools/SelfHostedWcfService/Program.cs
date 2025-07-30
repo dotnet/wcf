@@ -41,7 +41,7 @@ namespace SelfHostedWCFService
             TestDefinitionHelper.StartHosts();
 
             //Start the crlUrl service last as the client use it to ensure all services have been started
-            Uri testHostUrl = new Uri(string.Format("http://localhost/TestHost.svc", s_httpPort));
+            Uri testHostUrl = new Uri(string.Format("http://localhost:{0}/TestHost.svc", s_httpPort));
             WebServiceHost host = new WebServiceHost(typeof(TestHost), testHostUrl);
             WebHttpBinding binding = new WebHttpBinding();
             host.AddServiceEndpoint(typeof(ITestHost), binding, "");
