@@ -471,12 +471,12 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method with Streamed transfer mode.
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method.
             if (!ScenarioTestHelpers.IsLocalHost())
             {
                 ((ICommunicationObject)client).Close();
                 channelFactory.Close();
-            }           
+            }
         }
         finally
         {
@@ -529,9 +529,9 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
-        }
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         finally
         {
             // *** ENSURE CLEANUP *** \\
@@ -583,8 +583,12 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method.
+            if (!ScenarioTestHelpers.IsLocalHost())
+            {
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         }
         finally
         {
