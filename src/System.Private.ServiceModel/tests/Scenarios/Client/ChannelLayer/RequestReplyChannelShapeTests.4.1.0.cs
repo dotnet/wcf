@@ -18,8 +18,7 @@ public partial class RequestReplyChannelShapeTests : ConditionalWcfTest
     [WcfFact]
     [Issue(3572, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
-               nameof(SSL_Available),
-               nameof(Skip_CoreWCFService_FailedTest))]
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void IRequestChannel_Https_NetHttpsBinding()
     {

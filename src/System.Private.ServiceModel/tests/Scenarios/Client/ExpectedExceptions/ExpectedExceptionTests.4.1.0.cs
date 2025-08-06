@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-public partial class ExpectedExceptionTests : ConditionalWcfTest
+public partial class ExpectedExceptionTests
 {
     [WcfFact]
     [OuterLoop]
@@ -185,7 +185,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void UnknownUrl_Throws_ProtocolException()
     {
