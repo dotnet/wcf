@@ -837,7 +837,6 @@ public class WebSocketTests : ConditionalWcfTest
     // When not using a callback you can still force WCF to use WebSockets.
     // This test verifies that it actually uses WebSockets when not using a callback.
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_VerifyWebSocketsUsed()
