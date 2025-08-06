@@ -15,8 +15,7 @@ public class WS2007HttpTransportWithMessageCredentialsSecurityTests : Conditiona
     [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
        nameof(Client_Certificate_Installed),
-       nameof(SSL_Available),
-       nameof(Skip_CoreWCFService_FailedTest))]
+       nameof(SSL_Available))]
     [OuterLoop]
     public static void Https_SecModeTransWithMessCred_CertClientCredential_Succeeds()
     {
@@ -62,8 +61,7 @@ public class WS2007HttpTransportWithMessageCredentialsSecurityTests : Conditiona
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
-               nameof(SSL_Available),
-               nameof(Skip_CoreWCFService_FailedTest))]
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void Https_SecModeTransWithMessCred_UserNameClientCredential_Succeeds()
     {

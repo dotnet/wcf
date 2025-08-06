@@ -29,8 +29,16 @@ namespace SelfHostedWCFService
             Console.WriteLine("Installing certificates...");
             string testserverbase = string.Empty;
             TimeSpan validatePeriod = TimeSpan.FromDays(1);
-            string crlFileLocation = "c:\\WCFTest\\test.crl";
             int DefaultHttpPort = 8081;
+            string crlFileLocation;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                crlFileLocation = "c:\\WCFTest\\test.crl";
+            }
+            else
+            {
+                crlFileLocation = Path.Combine(Environment.CurrentDirectory, "test.crl");
+            }
 
             CertificateGeneratorLibrary.SetupCerts(testserverbase, validatePeriod, crlFileLocation, DefaultHttpPort);
 
