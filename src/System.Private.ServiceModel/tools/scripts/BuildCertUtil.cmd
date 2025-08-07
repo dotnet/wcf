@@ -5,7 +5,7 @@ setlocal
 pushd %~dp0..\..\..\..\
 
 :buildsln
-set buildtool=eng\common\cibuild.cmd -warnAsError 0 -configuration Release -projects src\System.Private.ServiceModel\tools\CertificateGenerator\CertificateGenerator.sln /p:Sign=false
+set buildtool=eng\common\cibuild.cmd -warnAsError 0 -configuration Release -projects src\System.Private.ServiceModel\tools\CertificateGenerator\CertificateGenerator.sln /p:Sign=false /p:Publish=false
 echo %buildtool%
 call %buildtool%
 
