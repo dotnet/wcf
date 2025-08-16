@@ -252,8 +252,9 @@ namespace WcfService
 #endif
                 foreach (X509Certificate2 cert in foundCertificates)
                 {
-                    // Search by serial number in Linux/MacOS
-                    if (cert.FriendlyName == friendlyName || cert.SerialNumber == friendlyNameHash)
+                    // Search by friendly name in Windows or by serial number in Linux/MacOS (which is the hash of the friendly name).
+                    // Remove any leading zeros from the number string in certificate SerialNumber using TrimStart('0').
+                    if (cert.FriendlyName == friendlyName || cert.SerialNumber.TrimStart('0') == friendlyNameHash)
                     {
                         return cert;
                     }
