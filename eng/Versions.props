@@ -20,9 +20,9 @@
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
-    <MicrosoftDotNetGenFacadesPackageVersion>10.0.0-beta.25415.5</MicrosoftDotNetGenFacadesPackageVersion>
-    <MicrosoftDotNetXUnitExtensionsPackageVersion>10.0.0-beta.25415.5</MicrosoftDotNetXUnitExtensionsPackageVersion>
-    <MicrosoftDotNetGenAPIPackageVersion>10.0.0-beta.25415.5</MicrosoftDotNetGenAPIPackageVersion>
+    <MicrosoftDotNetGenFacadesPackageVersion>10.0.0-beta.25418.4</MicrosoftDotNetGenFacadesPackageVersion>
+    <MicrosoftDotNetXUnitExtensionsPackageVersion>10.0.0-beta.25418.4</MicrosoftDotNetXUnitExtensionsPackageVersion>
+    <MicrosoftDotNetGenAPIPackageVersion>10.0.0-beta.25418.4</MicrosoftDotNetGenAPIPackageVersion>
   </PropertyGroup>
   <!-- Additional dependencies -->
   <PropertyGroup>
