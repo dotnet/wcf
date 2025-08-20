@@ -71,6 +71,7 @@ namespace WcfService
         {
             bool success = true;
             var serviceTestHostOptionsDict = new Dictionary<string, ServiceTestHostOptions>();
+            var multiCreds = new MultiCredentialServiceCredentials();
 
             var webHostBuilder = new WebHostBuilder()
                 .ConfigureLogging((ILoggingBuilder logging) =>
@@ -256,7 +257,13 @@ namespace WcfService
 
                                         smb.HttpGetEnabled = true;
                                     }
-                                    
+
+                                    var creds = serviceHostBase.Description.Behaviors.Find<ServiceCredentials>();
+                                    if (creds != null)
+                                    {
+                                        serviceHostBase.Description.Behaviors.Remove(creds);
+                                    }
+                                    serviceHostBase.Description.Behaviors.Add(multiCreds);
                                     serviceHost.ApplyConfig(serviceHostBase);
                                 });
                             }
@@ -272,8 +279,7 @@ namespace WcfService
                             Console.BackgroundColor = bg;
                             Console.ForegroundColor = fg;
                         }
-                    }
-
+                    }                   
                 });
             });
 

@@ -26,8 +26,7 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
 
     [WcfFact]
     [Issue(3572, OS = OSID.OSX)]
-    [Condition(nameof(Root_Certificate_Installed),
-               nameof(Skip_CoreWCFService_FailedTest))]
+    [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_Localhost_Address_EchoString()
     {

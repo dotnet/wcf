@@ -10,7 +10,6 @@ using Xunit;
 public class Binding_Http_NetHttpBindingTests : ConditionalWcfTest
 {
     [WcfTheory]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
