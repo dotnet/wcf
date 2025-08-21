@@ -15,7 +15,7 @@ using Infrastructure.Common;
 using ScenarioTests.Common;
 using Xunit;
 
-public static partial class ServiceContractTests
+public partial class ServiceContractTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

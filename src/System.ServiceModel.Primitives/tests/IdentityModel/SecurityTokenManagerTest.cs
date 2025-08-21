@@ -10,7 +10,7 @@ using System.IdentityModel.Tokens;
 using Infrastructure.Common;
 using Xunit;
 
-public class SecurityTokenManagerTest
+public class SecurityTokenManagerTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Methods_Override()

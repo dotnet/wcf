@@ -7,7 +7,7 @@ using System.ServiceModel.Description;
 using Infrastructure.Common;
 using Xunit;
 
-public static class TypedMessageConverterTest
+public class TypedMessageConverterTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Default_Create()

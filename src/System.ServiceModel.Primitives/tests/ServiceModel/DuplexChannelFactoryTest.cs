@@ -11,7 +11,7 @@ using System.ServiceModel.Description;
 using Infrastructure.Common;
 using Xunit;
 
-public class DuplexChannelFactoryTest
+public class DuplexChannelFactoryTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void CreateChannel_EndpointAddress_Null_Throws()

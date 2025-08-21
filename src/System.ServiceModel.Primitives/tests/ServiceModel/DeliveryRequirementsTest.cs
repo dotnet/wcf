@@ -7,7 +7,7 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-public static class DeliveryRequirementsTest
+public class DeliveryRequirementsTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void OrderedRequired_OrderedSession_NoThrow()
