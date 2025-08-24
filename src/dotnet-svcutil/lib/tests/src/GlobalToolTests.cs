@@ -215,9 +215,10 @@ namespace SvcutilTest
             TestFixture();
             InitializeGlobal(this_TestCaseName);
 
-            var uri = Path.Combine(g_TestCasesDir, "TypeReuse", "TypeReuseIXmlSerializable.wsdl");
-            var refs = Path.Combine(g_TestCasesDir, "TypeReuse", "CommonTypes.dll");
+            var uri = Path.Combine(g_TestCasesDir, "ReuseIXmlSerializableType", "TypeReuseIXmlSerializable.wsdl");
+            var refs = Path.Combine(g_TestCasesDir, "ReuseIXmlSerializableType", "CommonTypes", "CommonTypes.csproj");
             var options = $"{uri} -r {refs} -nl -v minimal -n \"\"*,{this_TestCaseName}_NS\"\"";
+
             TestGlobalSvcutil(options);
         }
     }
