@@ -13,7 +13,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class TargetFrameworkHelper
     {
-        internal static readonly List<string> s_currentSupportedVersions = new List<string>() { "8.0", "9.0" };
+        internal static readonly List<string> s_currentSupportedVersions = new List<string>() { "8.0", "9.0", "10.0" };
         public static Version MinSupportedNetFxVersionForDotNet { get; } = new Version("4.5");
         public static Version MinSupportedNetStandardVersion { get; } = new Version("1.3");
         public static Version MinSupportedNetCoreAppVersion { get; } = new Version("1.0");
