@@ -3,7 +3,7 @@
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net8.0;$(NetFrameworkVersion)</TargetFrameworks>
+    <TargetFrameworks>net8.0;$(NetFrameworkVersion)</TargetFrameworks>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <LangVersion>latest</LangVersion>

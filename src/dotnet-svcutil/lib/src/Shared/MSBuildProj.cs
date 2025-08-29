@@ -551,7 +551,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if(copyInternalAssets && dependency.AssemblyName == "dotnet-svcutil-lib")
                 {
                     string basePath;
-                    string[] frameworks = { "net6.0", "net8.0", "net462" };
+                    string[] frameworks = { "net8.0", "net462" };
                     switch (dependency.DependencyType)
                     {
                         case ProjectDependencyType.Binary:
