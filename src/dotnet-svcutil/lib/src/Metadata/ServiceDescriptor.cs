@@ -100,15 +100,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             //if it's net.pipe url
             if (MetadataUrl != null && MetadataUrl.Scheme.Equals("net.pipe"))
             {
-                string tfn;
-                if (OperationalCtx == OperationalContext.Infrastructure)
-                {
-                    tfn = "net462";
-                }
-                else
-                {
-                    tfn = Environment.Version.Major >= 8 ? "net8.0" : "net6.0";
-                }
+                string tfn = OperationalCtx == OperationalContext.Infrastructure ? "net462" : "net8.0";
 
                 string toolPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 Assembly assembly = Assembly.LoadFrom($"{toolPath}/{tfn}/Microsoft.Svcutil.NamedPipeMetadataImporter.dll");
