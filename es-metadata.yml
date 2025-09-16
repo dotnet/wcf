@@ -1,0 +1,8 @@
+schemaVersion: 0.0.1
+isProduction: true
+accountableOwners:
+  service: a1a504ec-48f6-4508-8cfe-c6b4d9748bd2
+routing:
+  defaultAreaPath:
+    org: devdiv
+    path: DevDiv\NET Fundamentals\Tellurium
