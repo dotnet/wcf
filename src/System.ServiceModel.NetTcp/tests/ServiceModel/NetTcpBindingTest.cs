@@ -9,7 +9,7 @@ using System.Xml;
 using Infrastructure.Common;
 using Xunit;
 
-public static class NetTcpBindingTest
+public class NetTcpBindingTest : ConditionalWcfTest
 {
     [WcfTheory]
     [InlineData(SecurityMode.None)]

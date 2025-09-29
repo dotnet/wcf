@@ -11,7 +11,7 @@ using System.Threading;
 using Infrastructure.Common;
 using Xunit;
 
-public static class CommunicationObjectTest
+public class CommunicationObjectTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void CommunicationObject_Sync_Open_Close_Methods_Called()
