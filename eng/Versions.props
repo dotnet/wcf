@@ -2,15 +2,17 @@
 <Project>
   <!-- Versioning specifications:  https://github.com/dotnet/arcade/blob/master/Documentation/CorePackages/Versioning.md -->
   <PropertyGroup>
-    <ProductVersion>8.1.2</ProductVersion>
-    <MajorVersion>8</MajorVersion>
-    <MinorVersion>1</MinorVersion>
-    <PatchVersion>2</PatchVersion>
-    <WcfAssemblyVersion>8.1.2.0</WcfAssemblyVersion>
-    <PackageValidationBaselineVersion>$(MajorVersion).$(MinorVersion).$([MSBuild]::Subtract($(PatchVersion), 1))</PackageValidationBaselineVersion>
+    <ProductVersion>10.0.0</ProductVersion>
+    <MajorVersion>10</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <WcfAssemblyVersion>10.0.0.0</WcfAssemblyVersion>
+    <!-- Switch to calculated logic after 10.0.0.0 is released -->
+    <PackageValidationBaselineVersion>8.1.2</PackageValidationBaselineVersion>
+    <!--<PackageValidationBaselineVersion>$(MajorVersion).$(MinorVersion).$([MSBuild]::Subtract($(PatchVersion), 1))</PackageValidationBaselineVersion>-->
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
-    <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
+    <PreReleaseVersionLabel>rc</PreReleaseVersionLabel>
     <PreReleaseVersionIteration>
     </PreReleaseVersionIteration>
     <!-- Opt-in repo features -->
@@ -29,12 +31,15 @@
     <MicrosoftTargetingPackNETFrameworkv472PackageVersion>1.0.0</MicrosoftTargetingPackNETFrameworkv472PackageVersion>
   </PropertyGroup>
   <PropertyGroup>
+    <DotNetRuntimeRcVersion>10.0.0-rc.1.25451.107</DotNetRuntimeRcVersion>
+  </PropertyGroup>
+  <PropertyGroup>
     <!-- Needed by Infrastructure.Common.csproj -->
     <MicrosoftDotNetPlatformAbstractionsPackageVersion>3.1.6</MicrosoftDotNetPlatformAbstractionsPackageVersion>
     <!-- Used by System.ServiceModel.* projects -->
     <SystemSecurityPrincipalWindowsPackageVersion>5.0.0</SystemSecurityPrincipalWindowsPackageVersion>
-    <MicrosoftExtensionsObjectPoolPackageVersion>8.0.10</MicrosoftExtensionsObjectPoolPackageVersion>
-    <SystemSecurityCryptographyXmlPackageVersion>8.0.2</SystemSecurityCryptographyXmlPackageVersion>
+    <MicrosoftExtensionsObjectPoolPackageVersion>$(DotNetRuntimeRcVersion)</MicrosoftExtensionsObjectPoolPackageVersion>
+    <SystemSecurityCryptographyXmlPackageVersion>$(DotNetRuntimeRcVersion)</SystemSecurityCryptographyXmlPackageVersion>
     <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.8.0</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
     <XunitStaFactPackageVersion>1.2.46-alpha</XunitStaFactPackageVersion>
     <BouncyCastleCryptodllPackageVersion>1.8.1</BouncyCastleCryptodllPackageVersion>
@@ -43,30 +48,31 @@
     <NewtonsoftJsonPackageVersion>13.0.3</NewtonsoftJsonPackageVersion>
     <SystemReflectionDispatchProxyPackageVersion>4.7.1</SystemReflectionDispatchProxyPackageVersion>
     <!-- Used by System.ServiceModel.Shim to add the Syndication api's to the shim -->
-    <SystemServiceModelSyndicationPackageVersion>8.0.0</SystemServiceModelSyndicationPackageVersion>
+    <SystemServiceModelSyndicationPackageVersion>$(DotNetRuntimeRcVersion)</SystemServiceModelSyndicationPackageVersion>
     <!-- There hasn't been an update of Microsoft.IdentityModel.Protocols.WsTrust since 6.8.0
      All the Microsoft.IdentityModel.* transitive dependencies are out of date. Adding them
      so that WCF doesn't get flagged for vulnerabilities. We wouldn't normally do this,
      but the WsTrust package isn't being actively maintained so out of an abundance of
      caution, for this once case, we're elevating the transitive dependencies -->
-    <MicrosoftIdentityModelTokensSamlPackageVersion>8.2.0</MicrosoftIdentityModelTokensSamlPackageVersion>
-    <MicrosoftIdentityModelXmlPackageVersion>8.2.0</MicrosoftIdentityModelXmlPackageVersion>
+    <MicrosoftIdentityModelTokensSamlPackageVersion>8.14.0</MicrosoftIdentityModelTokensSamlPackageVersion>
+    <MicrosoftIdentityModelXmlPackageVersion>8.14.0</MicrosoftIdentityModelXmlPackageVersion>
     <!-- From WsTrust -> System.Xml.XmlDocument -> System.Xml.ReaderWriter -> System.Text.RegularExpressions -->
     <SystemTextRegularExpressionsPackageVersion>4.3.1</SystemTextRegularExpressionsPackageVersion>
   </PropertyGroup>
   <!-- dotnet-svcutil-lib packages -->
   <PropertyGroup>
     <MicrosoftApplicationInsightsPackageVersion>2.20.0</MicrosoftApplicationInsightsPackageVersion>
-    <MicrosoftExtensionsDependencyModelPackageVersion>8.0.2</MicrosoftExtensionsDependencyModelPackageVersion>
-    <NuGetProjectModelPackageVersion>6.12.1</NuGetProjectModelPackageVersion>
-    <NuGetVersioningPackageVersion>6.12.1</NuGetVersioningPackageVersion>
+    <MicrosoftExtensionsDependencyModelPackageVersion>$(DotNetRuntimeRcVersion)</MicrosoftExtensionsDependencyModelPackageVersion>
+    <NuGetProjectModelPackageVersion>6.14.0</NuGetProjectModelPackageVersion>
+    <NuGetVersioningPackageVersion>6.14.0</NuGetVersioningPackageVersion>
     <SystemReflectionEmitPackageVersion>4.7.0</SystemReflectionEmitPackageVersion>
     <SystemReflectionEmitLightweightPackageVersion>4.7.0</SystemReflectionEmitLightweightPackageVersion>
     <SystemRuntimeLoaderPackageVersion>4.3.0</SystemRuntimeLoaderPackageVersion>
     <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net6.0'">6.2.0</WCFClientPackageVersion>
-    <!-- Change net8.0, net9.0, net10.0, netstandard2.0, and net462 to 8.1.0 once it's released -->
-    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">8.1.1</WCFClientPackageVersion>
-    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net9.0'">8.1.1</WCFClientPackageVersion>
+    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">8.1.2</WCFClientPackageVersion>
+    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net9.0'">8.1.2</WCFClientPackageVersion>
+    <!-- Change net10.0, netstandard2.0, and net462 to 10.0.0 once it's released -->
+    <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net10.0'">8.1.2</WCFClientPackageVersion>
     <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'netstandard2.0'">4.10.3</WCFClientPackageVersion>
     <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net462'">4.10.3</WCFClientPackageVersion>
     <SystemServiceModelNetTcpPackageVersion>$(WCFClientPackageVersion)</SystemServiceModelNetTcpPackageVersion>
@@ -77,12 +83,11 @@
     <SystemServiceModelFederationPackageVersion>$(WCFClientPackageVersion)</SystemServiceModelFederationPackageVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <MicrosoftExtensionsCachingMemoryPackageVersion>6.0.2</MicrosoftExtensionsCachingMemoryPackageVersion>
-    <SystemFormatsAsn1PackageVersion>8.0.1</SystemFormatsAsn1PackageVersion>
-    <SystemTextJsonPackageVersion>8.0.5</SystemTextJsonPackageVersion>
-    <SystemTextEncodingsWebPackageVersion>8.0.0</SystemTextEncodingsWebPackageVersion>
-    <CoreWCFPrimitivesPackageVersion>1.7.0</CoreWCFPrimitivesPackageVersion>
-    <CoreWCFUnixDomainSocketPackageVersion>1.7.0</CoreWCFUnixDomainSocketPackageVersion>
-    <CoreWCFNetFramingBasePackageVersion>1.7.0</CoreWCFNetFramingBasePackageVersion>
+    <SystemFormatsAsn1PackageVersion>$(DotNetRuntimeRcVersion)</SystemFormatsAsn1PackageVersion>
+    <SystemTextJsonPackageVersion>$(DotNetRuntimeRcVersion)</SystemTextJsonPackageVersion>
+    <SystemTextEncodingsWebPackageVersion>$(DotNetRuntimeRcVersion)</SystemTextEncodingsWebPackageVersion>
+    <CoreWCFPrimitivesPackageVersion>1.8.0</CoreWCFPrimitivesPackageVersion>
+    <CoreWCFUnixDomainSocketPackageVersion>1.8.0</CoreWCFUnixDomainSocketPackageVersion>
+    <CoreWCFNetFramingBasePackageVersion>1.8.0</CoreWCFNetFramingBasePackageVersion>
   </PropertyGroup>
 </Project>
