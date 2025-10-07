@@ -621,20 +621,6 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:System.ServiceModel.Channels.MtomMessageEncodingBindingElement.set_ReaderQuotas(System.Xml.XmlDictionaryReaderQuotas)</Target>
-    <Left>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
-    <Right>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:System.ServiceModel.ReliableMessagingVersion.#ctor</Target>
-    <Left>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
-    <Right>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
     <Target>F:System.ServiceModel.Channels.SecurityHeaderLayout.LaxTimestampFirst</Target>
     <Left>ref/net8.0/System.ServiceModel.dll</Left>
     <Right>lib/net8.0/System.ServiceModel.dll</Right>
@@ -4889,20 +4875,6 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:System.ServiceModel.Channels.MtomMessageEncodingBindingElement.set_ReaderQuotas(System.Xml.XmlDictionaryReaderQuotas)</Target>
-    <Left>ref/net8.0/System.ServiceModel.Primitives.dll</Left>
-    <Right>ref/net8.0/System.ServiceModel.Primitives.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:System.ServiceModel.ReliableMessagingVersion.#ctor</Target>
-    <Left>ref/net8.0/System.ServiceModel.Primitives.dll</Left>
-    <Right>ref/net8.0/System.ServiceModel.Primitives.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
     <Target>F:System.ServiceModel.Channels.SecurityHeaderLayout.LaxTimestampFirst</Target>
     <Left>ref/net8.0/System.ServiceModel.Security.dll</Left>
     <Right>lib/net8.0/System.ServiceModel.Security.dll</Right>
@@ -5520,20 +5492,6 @@
     <Right>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
   </Suppression>
   <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:System.ServiceModel.Channels.MtomMessageEncodingBindingElement.set_ReaderQuotas(System.Xml.XmlDictionaryReaderQuotas)</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
-    <Right>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:System.ServiceModel.ReliableMessagingVersion.#ctor</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
-    <Right>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
     <DiagnosticId>CP0007</DiagnosticId>
     <Target>T:System.ServiceModel.Dispatcher.ClientOperation</Target>
     <Left>ref/net8.0/System.ServiceModel.dll</Left>
@@ -5700,13 +5658,6 @@
     <Target>T:System.IdentityModel.Policy.IAuthorizationPolicy</Target>
     <Left>ref/net8.0/System.ServiceModel.Security.dll</Left>
     <Right>lib/net8.0/System.ServiceModel.Security.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0009</DiagnosticId>
-    <Target>T:System.ServiceModel.ReliableMessagingVersion</Target>
-    <Left>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
-    <Right>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0009</DiagnosticId>
@@ -5746,22 +5697,8 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0009</DiagnosticId>
-    <Target>T:System.ServiceModel.ReliableMessagingVersion</Target>
-    <Left>ref/net8.0/System.ServiceModel.Primitives.dll</Left>
-    <Right>ref/net8.0/System.ServiceModel.Primitives.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0009</DiagnosticId>
     <Target>T:System.ServiceModel.Security.Tokens.SecurityTokenParameters</Target>
     <Left>ref/net8.0/System.ServiceModel.Security.dll</Left>
     <Right>lib/net8.0/System.ServiceModel.Security.dll</Right>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0009</DiagnosticId>
-    <Target>T:System.ServiceModel.ReliableMessagingVersion</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
-    <Right>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
   </Suppression>
 </Suppressions>

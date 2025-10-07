@@ -31,18 +31,4 @@
     <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
     <Right>ref/net8.0/System.ServiceModel.Http.dll</Right>
   </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:System.ServiceModel.Channels.HttpTransportBindingElement.get_Proxy</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
-    <Right>ref/netstandard2.0/System.ServiceModel.Http.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:System.ServiceModel.Channels.HttpTransportBindingElement.set_Proxy(System.Net.IWebProxy)</Target>
-    <Left>ref/netstandard2.0/System.ServiceModel.Http.dll</Left>
-    <Right>ref/netstandard2.0/System.ServiceModel.Http.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
 </Suppressions>
