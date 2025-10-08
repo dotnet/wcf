@@ -7,7 +7,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.Text;
 using System.Xml;
 using Infrastructure.Common;
 using Xunit;
@@ -20,21 +19,16 @@ public static class X509CertificateEndpointIdentityTest
         // Create a self-signed certificate for testing
         X509Certificate2 certificate = CreateTestCertificate();
         
-        // Create an X509CertificateEndpointIdentity with the certificate
-        var identity = new X509CertificateEndpointIdentity(certificate);
-        
-        // Serialize to XML
-        var sb = new StringBuilder();
-        var settings = new XmlWriterSettings { OmitXmlDeclaration = true };
-        using (var writer = XmlWriter.Create(sb, settings))
-        {
-            // Write the Identity element
-            writer.WriteStartElement("Identity", "http://schemas.xmlsoap.org/ws/2006/02/addressingidentity");
-            identity.WriteContentsTo(XmlDictionaryWriter.CreateDictionaryWriter(writer));
-            writer.WriteEndElement();
-        }
-        
-        string xml = sb.ToString();
+        // Manually construct the XML that would be sent from the server
+        // This ensures we're testing deserialization independently of WriteContentsTo
+        string certificateBase64 = Convert.ToBase64String(certificate.RawData);
+        string xml = $@"<Identity xmlns=""http://schemas.xmlsoap.org/ws/2006/02/addressingidentity"">
+    <KeyInfo xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+        <X509Data>
+            <X509Certificate>{certificateBase64}</X509Certificate>
+        </X509Data>
+    </KeyInfo>
+</Identity>";
         
         // Deserialize from XML
         X509CertificateEndpointIdentity deserializedIdentity;
@@ -61,22 +55,18 @@ public static class X509CertificateEndpointIdentityTest
         X509Certificate2 primaryCert = CreateTestCertificate();
         X509Certificate2 supportingCert = CreateTestCertificate();
         
-        var supportingCerts = new X509Certificate2Collection { supportingCert };
-        
-        // Create an X509CertificateEndpointIdentity with primary and supporting certificates
-        var identity = new X509CertificateEndpointIdentity(primaryCert, supportingCerts);
-        
-        // Serialize to XML
-        var sb = new StringBuilder();
-        var settings = new XmlWriterSettings { OmitXmlDeclaration = true };
-        using (var writer = XmlWriter.Create(sb, settings))
-        {
-            writer.WriteStartElement("Identity", "http://schemas.xmlsoap.org/ws/2006/02/addressingidentity");
-            identity.WriteContentsTo(XmlDictionaryWriter.CreateDictionaryWriter(writer));
-            writer.WriteEndElement();
-        }
-        
-        string xml = sb.ToString();
+        // Manually construct the XML that would be sent from the server with multiple certificates
+        // This ensures we're testing deserialization independently of WriteContentsTo
+        string primaryCertBase64 = Convert.ToBase64String(primaryCert.RawData);
+        string supportingCertBase64 = Convert.ToBase64String(supportingCert.RawData);
+        string xml = $@"<Identity xmlns=""http://schemas.xmlsoap.org/ws/2006/02/addressingidentity"">
+    <KeyInfo xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+        <X509Data>
+            <X509Certificate>{primaryCertBase64}</X509Certificate>
+            <X509Certificate>{supportingCertBase64}</X509Certificate>
+        </X509Data>
+    </KeyInfo>
+</Identity>";
         
         // Deserialize from XML
         X509CertificateEndpointIdentity deserializedIdentity;
