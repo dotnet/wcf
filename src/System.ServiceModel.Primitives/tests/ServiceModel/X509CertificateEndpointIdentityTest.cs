@@ -43,9 +43,9 @@ public static class X509CertificateEndpointIdentityTest
         
         // Verify the certificate was correctly deserialized
         Assert.NotNull(deserializedIdentity);
-        Assert.Equal(1, deserializedIdentity.Certificates.Count);
-        Assert.Equal(certificate.Thumbprint, deserializedIdentity.Certificates[0].Thumbprint);
-        Assert.Equal(certificate.GetCertHash(), deserializedIdentity.Certificates[0].GetCertHash());
+        X509Certificate2 deserializedCert = Assert.Single(deserializedIdentity.Certificates);
+        Assert.Equal(certificate.Thumbprint, deserializedCert.Thumbprint);
+        Assert.Equal(certificate.GetCertHash(), deserializedCert.GetCertHash());
     }
     
     [WcfFact]
