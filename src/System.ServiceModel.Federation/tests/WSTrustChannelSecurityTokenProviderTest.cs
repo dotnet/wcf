@@ -17,7 +17,7 @@ using Xunit;
 
 namespace System.ServiceModel.Federation.Tests
 {
-    public static class WSTrustChannelSecurityTokenProviderTest
+    public class WSTrustChannelSecurityTokenProviderTest : ConditionalWcfTest
     {
         [WcfFact]
         public static void EnsibilityTest()

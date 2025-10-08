@@ -7,7 +7,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class TextEncodingTests
+public partial class TextEncodingTests : ConditionalWcfTest
 {
     // Simple echo of a string. Same binding on both client and server. CustomBinding with TextMessageEncoding and no WindowsStreamSecurityBindingElement
     [WcfFact]

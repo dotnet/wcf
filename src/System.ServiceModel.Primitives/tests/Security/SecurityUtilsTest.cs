@@ -9,7 +9,7 @@ using System.ServiceModel.Security;
 using Infrastructure.Common;
 using Xunit;
 
-public static class SecurityUtilsTest
+public class SecurityUtilsTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void FixNetworkCredential_AppContext_EnableLegacyUpnUsernameFix()
