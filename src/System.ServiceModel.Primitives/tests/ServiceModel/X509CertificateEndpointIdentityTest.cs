@@ -105,7 +105,7 @@ public static class X509CertificateEndpointIdentityTest
                 // Export the certificate without the private key and reimport it
                 // This avoids MacOS keychain issues and we don't need the private key for deserialization tests
                 byte[] certData = certificateWithKey.Export(X509ContentType.Cert);
-                return new X509Certificate2(certData);
+                return X509CertificateLoader.LoadCertificate(certData);
             }
         }
     }
