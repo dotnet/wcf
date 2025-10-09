@@ -61,8 +61,7 @@ namespace System.ServiceModel
             reader.ReadStartElement(XD.XmlSignatureDictionary.X509Data, XD.XmlSignatureDictionary.Namespace);
             while (reader.IsStartElement(XD.XmlSignatureDictionary.X509Certificate, XD.XmlSignatureDictionary.Namespace))
             {
-                reader.MoveToContent();
-                X509Certificate2 certificate = new X509Certificate2(Convert.FromBase64String(reader.ReadContentAsString()));
+                X509Certificate2 certificate = new X509Certificate2(Convert.FromBase64String(reader.ReadElementString()));
                 if (Certificates.Count == 0)
                 {
                     // This is the first certificate. We assume this as the primary 
