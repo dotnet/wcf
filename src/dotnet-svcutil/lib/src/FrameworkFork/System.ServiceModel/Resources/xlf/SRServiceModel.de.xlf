@@ -4404,7 +4404,7 @@
       </trans-unit>
       <trans-unit id="channelDoesNotHaveADuplexSession0">
         <source>The current channel does not support closing the output session as this channel does not implement ISessionChannel&lt;IDuplexSession&gt;.</source>
-        <target state="translated">Der aktuelle Kanal unterstützt das Schließen der Ausgabesitzung nicht, da dieser Kanal ISessionChannel&lt;IDuplexSession&gt; nicht implementiert.</target>
+        <target state="translated">Der Current-Kanal unterstützt das Schließen der Ausgabesitzung nicht, da dieser Kanal nicht ISessionChannel&lt;IDuplexSession&gt; implementiert.</target>
         <note />
       </trans-unit>
       <trans-unit id="channelIsNotAvailable0">
