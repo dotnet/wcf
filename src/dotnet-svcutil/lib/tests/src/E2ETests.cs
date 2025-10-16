@@ -55,7 +55,7 @@ namespace SvcutilTest
 
             ValidateTest(options, this_TestCaseProject.DirectoryPath, processResult.ExitCode, processResult.OutputText, expectSuccess);
         }
-        
+
         [Theory]
         [Trait("Category", "BVT")]
         [InlineData("silent")]
@@ -196,19 +196,19 @@ namespace SvcutilTest
             InitializeE2E(testCaseName);
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "WcfProjectNService", "tempuri.org.wsdl")}";
-            var dir = $"-d ../{ testCaseName}";
+            var dir = $"-d ../{testCaseName}";
 
             TestSvcutil(dir + " " + url + " " + options, expectSuccess);
         }
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("TypeReuse60", "net6.0")]
-        public void TypeReuse(string testCaseName, string targetFramework)
+        [InlineData("TypeReuse")]
+        public void TypeReuse(string testCaseName)
         {
             this_TestCaseName = "TypeReuse";
             TestFixture();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: targetFramework, sdkVersion: g_SdkVersion);
+            InitializeE2E(testCaseName, createUniqueProject: true);
 
             var uri = SetupProjectDependencies();
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
@@ -530,7 +530,7 @@ namespace SvcutilTest
         // need to find a way to keep this test running reliably.
         [Trait("Category", "Test")]
         [Fact]
-        
+
         public void CheckBaslines()
         {
             this_TestCaseName = nameof(CheckBaslines);
