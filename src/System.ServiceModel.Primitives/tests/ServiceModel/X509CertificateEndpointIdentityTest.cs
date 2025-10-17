@@ -14,6 +14,7 @@ using Xunit;
 public class X509CertificateEndpointIdentityTest : ConditionalWcfTest
 {
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX)]
     public static void X509Certificate_RoundTrip_Succeeds()
     {
         // Create a self-signed certificate for testing
