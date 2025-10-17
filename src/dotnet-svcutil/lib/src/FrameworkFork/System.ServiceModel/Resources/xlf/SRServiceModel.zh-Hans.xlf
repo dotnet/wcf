@@ -4404,7 +4404,7 @@
       </trans-unit>
       <trans-unit id="channelDoesNotHaveADuplexSession0">
         <source>The current channel does not support closing the output session as this channel does not implement ISessionChannel&lt;IDuplexSession&gt;.</source>
-        <target state="translated">当前的通道不支持关闭输出会话，因为此通道未实现 ISessionChannel&lt;IDuplexSession&gt;。</target>
+        <target state="translated">Current 通道不支持关闭输出会话，因为此通道未实现 ISessionChannel&lt;IDuplexSession&gt;。</target>
         <note />
       </trans-unit>
       <trans-unit id="channelIsNotAvailable0">
