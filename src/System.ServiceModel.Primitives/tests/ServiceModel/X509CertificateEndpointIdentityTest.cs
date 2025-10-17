@@ -11,7 +11,7 @@ using System.Xml;
 using Infrastructure.Common;
 using Xunit;
 
-public static class X509CertificateEndpointIdentityTest
+public class X509CertificateEndpointIdentityTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void X509Certificate_RoundTrip_Succeeds()
@@ -48,7 +48,8 @@ public static class X509CertificateEndpointIdentityTest
         Assert.Equal(certificate.GetCertHash(), deserializedCert.GetCertHash());
     }
     
-    [WcfFact(Skip = "Test fails on macOS due to keychain issues with CreateSelfSigned. Not a product issue.")]
+    [WcfFact]
+    [Condition(nameof(Client_Certificate_Installed))]
     public static void X509Certificate_Multiple_RoundTrip_Succeeds()
     {
         // Create two test certificates
