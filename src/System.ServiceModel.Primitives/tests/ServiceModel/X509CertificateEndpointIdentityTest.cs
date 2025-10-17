@@ -49,7 +49,7 @@ public class X509CertificateEndpointIdentityTest : ConditionalWcfTest
     }
     
     [WcfFact]
-    [Condition(nameof(Client_Certificate_Installed))]
+    [Issue(3572, OS = OSID.OSX)]
     public static void X509Certificate_Multiple_RoundTrip_Succeeds()
     {
         // Create two test certificates
