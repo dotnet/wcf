@@ -2,7 +2,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CLSCompliant>false</CLSCompliant>
@@ -36,7 +36,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="$(SvcUtilCoreProj)" />
     <ProjectReference Include="$(WcfServiceModelHttpProj)" />
@@ -55,7 +55,7 @@
       MatchFileNameOnly='true' >
       <Output TaskParameter='ItemFound' PropertyName='depRef'/>
     </FindInList>
-    
+
     <PropertyGroup>
       <ServiceModelPrimitivesOutputPath>$(ArtifactsBinDir)System.ServiceModel.Primitives/$(Configuration)/$(TargetFramework)/</ServiceModelPrimitivesOutputPath>
       <ServiceModelPrimitivesAssemblyName>System.ServiceModel.Primitives.dll</ServiceModelPrimitivesAssemblyName>
@@ -65,7 +65,7 @@
       <OutputGeneratedSource>$(OutputPath)ScenarioTests.Common.Tests.XmlSerializers.cs</OutputGeneratedSource>
       <CscOutputAssembly>$(OutputPath)ScenarioTests.Common.Tests.XmlSerializers.dll</CscOutputAssembly>
       <ServiceModelPrimitivesAssembly>$(ServiceModelPrimitivesOutputPath)$(ServiceModelPrimitivesAssemblyName)</ServiceModelPrimitivesAssembly>
-      
+
     </PropertyGroup>
     <Message Text="Running Serialization Tool" Importance="normal" />
     <Message Text="Run XmlSerializer: $(DotNetExe) $(DotnetSvcutilXmlSerializerAssembly) $(InputTestAssembly) --quiet --out:$(OutputGeneratedSource) --smreference:$(ServiceModelPrimitivesAssembly) --reference=$(depRef)" Importance="high" />
