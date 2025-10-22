@@ -4,43 +4,274 @@
   <Suppression>
     <DiagnosticId>CP0001</DiagnosticId>
     <Target>T:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement</Target>
-    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net8.0/System.ServiceModel.NetTcp.dll</Right>
+    <Left>ref/net10.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/net10.0/System.ServiceModel.NetTcp.dll</Right>
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0001</DiagnosticId>
     <Target>T:System.ServiceModel.Channels.SslStreamSecurityBindingElement</Target>
-    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net8.0/System.ServiceModel.NetTcp.dll</Right>
+    <Left>ref/net10.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/net10.0/System.ServiceModel.NetTcp.dll</Right>
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0001</DiagnosticId>
     <Target>T:System.ServiceModel.Channels.WindowsStreamSecurityBindingElement</Target>
-    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>lib/net8.0/System.ServiceModel.NetTcp.dll</Right>
+    <Left>ref/net10.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/net10.0/System.ServiceModel.NetTcp.dll</Right>
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0001</DiagnosticId>
     <Target>T:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement</Target>
     <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net8.0/System.ServiceModel.NetTcp.dll</Right>
+    <Right>ref/net10.0/System.ServiceModel.NetTcp.dll</Right>
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0001</DiagnosticId>
     <Target>T:System.ServiceModel.Channels.SslStreamSecurityBindingElement</Target>
     <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net8.0/System.ServiceModel.NetTcp.dll</Right>
+    <Right>ref/net10.0/System.ServiceModel.NetTcp.dll</Right>
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0001</DiagnosticId>
     <Target>T:System.ServiceModel.Channels.WindowsStreamSecurityBindingElement</Target>
     <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net8.0/System.ServiceModel.NetTcp.dll</Right>
+    <Right>ref/net10.0/System.ServiceModel.NetTcp.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement.#ctor</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement.#ctor(System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.SslStreamSecurityBindingElement.#ctor(System.ServiceModel.Channels.SslStreamSecurityBindingElement)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.SslStreamSecurityBindingElement.get_IdentityVerifier</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.SslStreamSecurityBindingElement.set_IdentityVerifier(System.ServiceModel.Security.IdentityVerifier)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.TcpTransportBindingElement.get_ExtendedProtectionPolicy</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.TcpTransportBindingElement.set_ExtendedProtectionPolicy(System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.WindowsStreamSecurityBindingElement.#ctor(System.ServiceModel.Channels.WindowsStreamSecurityBindingElement)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.WindowsStreamSecurityBindingElement.get_ProtectionLevel</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.WindowsStreamSecurityBindingElement.set_ProtectionLevel(System.Net.Security.ProtectionLevel)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.MessageSecurityOverTcp.get_AlgorithmSuite</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.MessageSecurityOverTcp.set_AlgorithmSuite(System.ServiceModel.Security.SecurityAlgorithmSuite)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.NetTcpBinding.get_MaxConnections</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.NetTcpBinding.set_MaxConnections(System.Int32)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.TcpTransportSecurity.get_ExtendedProtectionPolicy</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.TcpTransportSecurity.get_ProtectionLevel</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.TcpTransportSecurity.set_ExtendedProtectionPolicy(System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.TcpTransportSecurity.set_ProtectionLevel(System.Net.Security.ProtectionLevel)</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.TcpTransportBindingElement.get_ExtendedProtectionPolicy</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.TcpTransportBindingElement.set_ExtendedProtectionPolicy(System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy)</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.MessageSecurityOverTcp.get_AlgorithmSuite</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.MessageSecurityOverTcp.set_AlgorithmSuite(System.ServiceModel.Security.SecurityAlgorithmSuite)</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.NetTcpBinding.get_MaxConnections</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.NetTcpBinding.set_MaxConnections(System.Int32)</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.TcpTransportSecurity.get_ExtendedProtectionPolicy</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.TcpTransportSecurity.get_ProtectionLevel</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.TcpTransportSecurity.set_ExtendedProtectionPolicy(System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy)</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.TcpTransportSecurity.set_ProtectionLevel(System.Net.Security.ProtectionLevel)</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:System.ServiceModel.NetTcpBinding.#ctor(System.String)</Target>
     <Left>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Left>
-    <Right>ref/net8.0/System.ServiceModel.NetTcp.dll</Right>
+    <Right>ref/net10.0/System.ServiceModel.NetTcp.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0007</DiagnosticId>
+    <Target>T:System.ServiceModel.Channels.SslStreamSecurityBindingElement</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0007</DiagnosticId>
+    <Target>T:System.ServiceModel.Channels.WindowsStreamSecurityBindingElement</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:System.ServiceModel.TcpClientCredentialType</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:System.ServiceModel.TcpClientCredentialType</Target>
+    <Left>ref/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>ref/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0009</DiagnosticId>
+    <Target>T:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement</Target>
+    <Left>lib/net8.0/System.ServiceModel.NetTcp.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.NetTcp.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
   </Suppression>
 </Suppressions>
