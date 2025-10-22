@@ -91,7 +91,7 @@
     <HelixPreCommands>$(HelixPreCommands);set NUGET_PACKAGES=%HELIX_WORKITEM_ROOT%\.nuget</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);set ServiceUri=localhost</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);set RunWithCoreWCF=true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\net8.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);%HELIX_CORRELATION_PAYLOAD%\SelfHostedCoreWCFService\$(Configuration)\net10.0\SelfHostedCoreWCFService bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' != 'Windows' AND '$(RunWithCoreWCFService)' == 'true'">
@@ -101,7 +101,7 @@
     <HelixPreCommands>$(HelixPreCommands);export NUGET_PACKAGES=$HELIX_WORKITEM_ROOT/.nuget</HelixPreCommands>    
     <HelixPreCommands>$(HelixPreCommands);export ServiceUri=localhost</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);export RunWithCoreWCF=true</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);dotnet exec --roll-forward Major $HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net8.0/SelfHostedCoreWCFService.dll bootstrap:true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);dotnet exec --roll-forward Major $HELIX_CORRELATION_PAYLOAD/SelfHostedCoreWCFService/$(Configuration)/net10.0/SelfHostedCoreWCFService.dll bootstrap:true</HelixPreCommands>
   </PropertyGroup>
 
   <ItemGroup>
