@@ -61,10 +61,12 @@ namespace System.ServiceModel
             reader.ReadStartElement(XD.XmlSignatureDictionary.X509Data, XD.XmlSignatureDictionary.Namespace);
             while (reader.IsStartElement(XD.XmlSignatureDictionary.X509Certificate, XD.XmlSignatureDictionary.Namespace))
             {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
                 X509Certificate2 certificate = new X509Certificate2(Convert.FromBase64String(reader.ReadElementString()));
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
                 if (Certificates.Count == 0)
                 {
-                    // This is the first certificate. We assume this as the primary 
+                    // This is the first certificate. We assume this as the primary
                     // certificate and initialize the base class.
                     Initialize(new Claim(ClaimTypes.Thumbprint, certificate.GetCertHash(), Rights.PossessProperty));
                 }

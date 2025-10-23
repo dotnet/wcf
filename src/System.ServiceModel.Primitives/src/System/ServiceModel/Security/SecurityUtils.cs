@@ -1017,7 +1017,9 @@ namespace System.ServiceModel.Security
 
         public static bool TryCreateX509CertificateFromRawData(byte[] rawData, out X509Certificate2 certificate)
         {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
             certificate = (rawData == null || rawData.Length == 0) ? null : new X509Certificate2(rawData);
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
             return certificate != null && certificate.Handle != IntPtr.Zero;
         }
 
