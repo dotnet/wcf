@@ -148,13 +148,17 @@ public static class ServiceUtilHelper
     // installed.  Exceptions are propagated to the caller.
     private static X509Certificate2 InstallRootCertificateFromServer()
     {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         X509Certificate2 rootCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(RootCertificateResource));
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
         return CertificateManager.InstallCertificateToRootStore(rootCertificate);
     }
 
     public static async Task<X509Certificate2> GetServiceMacineCertFromServerAsync()
     {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         return new X509Certificate2(await GetResourceFromServiceAsByteArrayAsync(MachineCertificateResource));
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
     }
 
     // Tries to ensure that the client certificate is installed into
@@ -359,7 +363,9 @@ public static class ServiceUtilHelper
             storageFlags = X509KeyStorageFlags.Exportable;
         }
 
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         X509Certificate2 clientCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(ClientCertificateResource), "test", storageFlags);
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
         return CertificateManager.InstallCertificateToMyStore(clientCertificate);
     }
 
@@ -368,7 +374,9 @@ public static class ServiceUtilHelper
     // propagated back to the caller.
     private static X509Certificate2 InstallOSXPeerCertificateFromServer()
     {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         X509Certificate2 peerCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(PeerCertificateResource), "test", X509KeyStorageFlags.DefaultKeySet);
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
         return CertificateManager.InstallCertificateToOSXKeychainStore(peerCertificate);
     }
 
@@ -377,7 +385,9 @@ public static class ServiceUtilHelper
     // propagated back to the caller.
     private static X509Certificate2 InstallPeerCertificateFromServer()
     {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         X509Certificate2 peerCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(PeerCertificateResource), "test", X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.UserKeySet);
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
         return CertificateManager.InstallCertificateToTrustedPeopleStore(peerCertificate);
     }
 

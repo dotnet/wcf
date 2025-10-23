@@ -766,7 +766,7 @@ namespace System.ServiceModel.Security
                         SRP.Format(SRP.UnableToFindTokenAuthenticator, typeof(DerivedKeySecurityToken))));
                 }
 
-                // This is just the stub. Nothing to Validate. Set the usedTokenAuthenticator to 
+                // This is just the stub. Nothing to Validate. Set the usedTokenAuthenticator to
                 // DerivedKeySecurityTokenAuthenticator.
                 usedTokenAuthenticator = DerivedTokenAuthenticator;
                 return token;
@@ -1079,7 +1079,9 @@ namespace System.ServiceModel.Security
             token = null;
             if (keyIdentifierClause is X509RawDataKeyIdentifierClause)
             {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
                 token = new X509SecurityToken(new X509Certificate2(((X509RawDataKeyIdentifierClause)keyIdentifierClause).GetX509RawData()), false);
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
                 return true;
             }
             else if (keyIdentifierClause is EncryptedKeyIdentifierClause)

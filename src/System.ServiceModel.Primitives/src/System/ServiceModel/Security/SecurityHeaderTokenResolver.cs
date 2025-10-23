@@ -172,7 +172,9 @@ namespace System.ServiceModel.Security
 
             if ((resolvedToken == null) && (keyIdentifierClause is X509RawDataKeyIdentifierClause) && (!matchOnlyExternal) && (resolveIntrinsicKeyClause))
             {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
                 resolvedToken = new X509SecurityToken(new X509Certificate2(((X509RawDataKeyIdentifierClause)keyIdentifierClause).GetX509RawData()));
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
             }
 
             byte[] derivationNonce = keyIdentifierClause.GetDerivationNonce();
@@ -181,7 +183,7 @@ namespace System.ServiceModel.Security
                 // A Implicit Derived Key is specified. Create a derived key off of the resolve token.
                 if (SecurityUtils.GetSecurityKey<SymmetricSecurityKey>(resolvedToken) == null)
                 {
-                    // The resolved token contains no Symmetric Security key and thus we cannot create 
+                    // The resolved token contains no Symmetric Security key and thus we cannot create
                     // a derived key off of it.
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SRP.Format(SRP.UnableToDeriveKeyFromKeyInfoClause, keyIdentifierClause, resolvedToken)));
                 }
