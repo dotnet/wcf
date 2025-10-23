@@ -8,7 +8,11 @@ using CoreWCF.Channels;
 using CoreWCF.Configuration;
 using CoreWCF.Web;
 using Microsoft.AspNetCore;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Hosting.Server;
 #else
 using System;
 using System.Collections.Generic;
@@ -255,32 +259,38 @@ namespace WcfService
             string path = "WindowsCommunicationFoundationTest";
             string endpointAddress = $"/{path}/{guid}";
 
-            IWebHost host = WebHost.CreateDefaultBuilder().UseKestrel(options =>
-            {
-                options.Listen(IPAddress.Loopback, 0);
-            }).ConfigureServices(services =>
-            {
-                services.AddServiceModelServices();
-
-            }).Configure(app =>
-            {
-                string serviceEndpointAddress = $"{localHost}/{path}/{guid}";
-                app.UseServiceModel(builder =>
+            var builder = Host.CreateDefaultBuilder()
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    builder.AddService<WcfRestartService>()
-                    .AddServiceEndpoint<WcfRestartService, IWcfRestartService>(new BasicHttpBinding(BasicHttpSecurityMode.None), serviceEndpointAddress);
+                    webBuilder.UseKestrel(options =>
+                    {
+                        options.Listen(IPAddress.Loopback, 0);
+                    });
+                    webBuilder.ConfigureServices(services =>
+                    {
+                        services.AddServiceModelServices();
+                    });
+                    webBuilder.Configure(app =>
+                    {
+                        string serviceEndpointAddress = $"{localHost}/{path}/{guid}";
+                        app.UseServiceModel(builder =>
+                        {
+                            builder.AddService<WcfRestartService>()
+                            .AddServiceEndpoint<WcfRestartService, IWcfRestartService>(new BasicHttpBinding(BasicHttpSecurityMode.None), serviceEndpointAddress);
+                        });
+                    });
                 });
-            }).Build();
 
+            var host = builder.Build();
             host.Start();
 
-            // Add the WebHost instance to a static dictionary so that it can be used by restart service operation to close the WebHost
+            // Add the IHost instance to a static dictionary so that it can be used by restart service operation to close the host
             WcfRestartService.webHostDictionary.Add(guid, host);
 
-            var address = host.ServerFeatures.Get<IServerAddressesFeature>().Addresses.FirstOrDefault();
+            var address = host.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>().Addresses.FirstOrDefault();
             var port = new Uri(address).Port;
 
-            // Return the unique endpoint for this WebHost instance of the WcfRestartService
+            // Return the unique endpoint for this host instance of the WcfRestartService
             return "http://[HOST]:" + port + endpointAddress;
         }
 
