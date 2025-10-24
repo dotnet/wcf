@@ -18,10 +18,14 @@
       <Output TaskParameter="Lines" ItemName="SdkVersions" />
     </ReadLinesFromFile>
     <ItemGroup>
+      <Net10Sdks Include="@(SdkVersions)" Condition="$([System.String]::new('%(SdkVersions.Identity)').StartsWith('10.0'))"></Net10Sdks>
       <Net9Sdks Include="@(SdkVersions)" Condition="$([System.String]::new('%(SdkVersions.Identity)').StartsWith('9.0'))"></Net9Sdks>
+      <Net8Sdks Include="@(SdkVersions)" Condition="$([System.String]::new('%(SdkVersions.Identity)').StartsWith('8.0'))"></Net8Sdks>
     </ItemGroup>
     <PropertyGroup>
-      <FrameworkVersion Condition="'@(Net9Sdks)' != ''" >net9.0</FrameworkVersion>
+      <FrameworkVersion Condition="'@(Net10Sdks)' != ''">net10.0</FrameworkVersion>
+      <FrameworkVersion Condition="'@(Net10Sdks)' == '' and '@(Net9Sdks)' != ''">net9.0</FrameworkVersion>
+      <FrameworkVersion Condition="'@(Net10Sdks)' == '' and '@(Net9Sdks)' == '' and '@(Net8Sdks)' != ''">net8.0</FrameworkVersion>
     </PropertyGroup>
     <Delete Files="$(SdkFile)" ContinueOnError="WarnAndContinue"/>
   </Target>

@@ -3,7 +3,7 @@
     <AssemblyVersion>1.1.1.0</AssemblyVersion>
     <AssemblyName>dotnet-svcutil.xmlserializer</AssemblyName>
     <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer</RootNamespace>
-    <TargetFrameworks>net10.0</TargetFrameworks>
+    <TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <TargetExt>.dll</TargetExt>
     <NoWarn>$(NoWarn);1634;1691;649;168;169;NU5129</NoWarn>
@@ -22,6 +22,7 @@
     <MinorVersion>0</MinorVersion>
     <PatchVersion>0</PatchVersion>
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
     <PackageReleaseNotes>https://github.com/dotnet/wcf/blob/master/release-notes/dotnet-svcutil.xmlserializer-notes.md</PackageReleaseNotes>
     <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
     <StrongNameKeyId>Open</StrongNameKeyId>
