@@ -1,0 +1,9 @@
+{
+  "solution": {
+    "path": "AllProjects.slnx",
+	"projects": [
+		"src/svcutilcore/src/dotnet-svcutil.xmlserializer.csproj",
+		"src/svcutilcore/tests/dotnet-svcutil.xmlserializer.IntegrationTests.csproj"
+	]
+  }
+}
