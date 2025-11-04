@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TFnetcoreapp3_1_NS
+namespace elm_NS
 {
     using System.Runtime.Serialization;
     
@@ -72,25 +72,25 @@ namespace TFnetcoreapp3_1_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TFnetcoreapp3_1_NS.ITypeReuseSvc")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="elm_NS.ITypeReuseSvc")]
     public interface ITypeReuseSvc
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetData", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataResponse")]
-        System.Threading.Tasks.Task<TFnetcoreapp3_1_NS.BinLibrary> GetDataAsync(int value);
+        System.Threading.Tasks.Task<elm_NS.BinLibrary> GetDataAsync(int value);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContract", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContractResponse")]
-        System.Threading.Tasks.Task<TFnetcoreapp3_1_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(TFnetcoreapp3_1_NS.TypeReuseCompositeType composite);
+        System.Threading.Tasks.Task<elm_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(elm_NS.TypeReuseCompositeType composite);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface ITypeReuseSvcChannel : TFnetcoreapp3_1_NS.ITypeReuseSvc, System.ServiceModel.IClientChannel
+    public interface ITypeReuseSvcChannel : elm_NS.ITypeReuseSvc, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<TFnetcoreapp3_1_NS.ITypeReuseSvc>, TFnetcoreapp3_1_NS.ITypeReuseSvc
+    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<elm_NS.ITypeReuseSvc>, elm_NS.ITypeReuseSvc
     {
         
         /// <summary>
@@ -133,12 +133,12 @@ namespace TFnetcoreapp3_1_NS
         {
         }
         
-        public System.Threading.Tasks.Task<TFnetcoreapp3_1_NS.BinLibrary> GetDataAsync(int value)
+        public System.Threading.Tasks.Task<elm_NS.BinLibrary> GetDataAsync(int value)
         {
             return base.Channel.GetDataAsync(value);
         }
         
-        public System.Threading.Tasks.Task<TFnetcoreapp3_1_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(TFnetcoreapp3_1_NS.TypeReuseCompositeType composite)
+        public System.Threading.Tasks.Task<elm_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(elm_NS.TypeReuseCompositeType composite)
         {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
@@ -148,10 +148,12 @@ namespace TFnetcoreapp3_1_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
         
+        #if !NET6_0_OR_GREATER
         public virtual System.Threading.Tasks.Task CloseAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
+        #endif
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {

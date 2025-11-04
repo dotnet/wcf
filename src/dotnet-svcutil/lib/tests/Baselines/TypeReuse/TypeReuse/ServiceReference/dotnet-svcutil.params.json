@@ -3,14 +3,16 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/WcfProjectNService/tempuri.org.wsdl"
+      "../../TypeReuseSvc.wsdl"
     ],
     "namespaceMappings": [
-      "*, TestNamespace"
+      "*, TypeReuse_NS"
     ],
     "outputFile": "Reference.cs",
     "references": [
       "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//DOTNET_VERSION//BinLib.dll",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//DOTNET_VERSION//TypesLib.dll",
       "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
       "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",
       "Newtonsoft.Json, {Newtonsoft.Json, 99.99.99}",
