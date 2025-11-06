@@ -12,6 +12,11 @@
         <target state="translated">沒有任何在 {0} 上進行接聽的端點可以接受該訊息。這通常是由不正確位址或 SOAP 動作所造成。若有 InnerException，可參閱以取得詳細資訊。</target>
         <note />
       </trans-unit>
+      <trans-unit id="PackageFullNameInvalid">
+        <source>The package full name '{0}' is invalid.</source>
+        <target state="new">The package full name '{0}' is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
         <source>The pipe cannot be written to or read from because it is already in the process of being closed.</source>
         <target state="translated">管道正在關閉中，因此無法寫入或讀取。</target>
@@ -140,6 +145,11 @@
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
         <target state="translated">無法遵循大於 Int32.MaxValue TotalMilliseconds (大約等於 24 天) 的逾時。若要停用逾時，請指定 TimeSpan.MaxValue。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SessionValueInvalid">
+        <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
+        <target state="new">The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">

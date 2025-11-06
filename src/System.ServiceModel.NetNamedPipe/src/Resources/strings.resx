@@ -213,4 +213,10 @@
   <data name="PlatformNotSupported_NetNamedPipe" xml:space="preserve">
     <value>NetNamedPipe is not supported on this platform.</value>
   </data>
+  <data name="SessionValueInvalid" xml:space="preserve">
+    <value>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</value>
+  </data>
+  <data name="PackageFullNameInvalid" xml:space="preserve">
+    <value>The package full name '{0}' is invalid.</value>
+  </data>
 </root>

@@ -12,6 +12,11 @@
         <target state="translated">메시지를 수락할 수 있는 {0}에서 수신 대기 중인 엔드포인트가 없습니다. 이것은 흔히 잘못된 주소나 SOAP 동작으로 인해 발생합니다. 자세한 내용은 InnerException(있을 경우)을 참조하세요.</target>
         <note />
       </trans-unit>
+      <trans-unit id="PackageFullNameInvalid">
+        <source>The package full name '{0}' is invalid.</source>
+        <target state="new">The package full name '{0}' is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
         <source>The pipe cannot be written to or read from because it is already in the process of being closed.</source>
         <target state="translated">파이프를 이미 닫는 중이기 때문에 파이프에 쓰거나 파이프에서 읽을 수 없습니다.</target>
@@ -140,6 +145,11 @@
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
         <target state="translated">Int32.MaxValue TotalMilliseconds(약 24일)보다 큰 시간 제한은 허용되지 않습니다. 시간 제한을 사용하지 않으려면 TimeSpan.MaxValue를 지정하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SessionValueInvalid">
+        <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
+        <target state="new">The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
