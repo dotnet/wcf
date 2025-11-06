@@ -20,4 +20,21 @@ namespace System.ServiceModel.Channels
         public const ProtectionLevel ProtectionLevel = Net.Security.ProtectionLevel.EncryptAndSign;
         public const TransferMode TransferMode = ServiceModel.TransferMode.Buffered;
     }
+
+    internal static class ApplicationContainerSettingsDefaults
+    {
+        internal const string CurrentUserSessionDefaultString = "CurrentSession";
+        internal const string Session0ServiceSessionString = "ServiceSession";
+        internal const string PackageFullNameDefaultString = null;
+
+        /// <summary>
+        /// The current session will be used for resource lookup.
+        /// </summary>
+        internal const int CurrentSession = -1;
+
+        /// <summary>
+        /// Session 0 is the NT Service session
+        /// </summary>
+        internal const int ServiceSession = 0;
+    }
 }
