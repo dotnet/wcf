@@ -13,6 +13,7 @@ namespace System.ServiceModel.Channels
     {
         private readonly List<SecurityIdentifier> _allowedUsers = new List<SecurityIdentifier>();
         private readonly NamedPipeConnectionPoolSettings _connectionPoolSettings = new NamedPipeConnectionPoolSettings();
+        private NamedPipeSettings _namedPipeSettings = new NamedPipeSettings();
 
         public NamedPipeTransportBindingElement() : base()
         {
@@ -34,11 +35,17 @@ namespace System.ServiceModel.Channels
             }
 
             _connectionPoolSettings = elementToBeCloned._connectionPoolSettings.Clone();
+            _namedPipeSettings = elementToBeCloned._namedPipeSettings.Clone(); 
         }
 
         public NamedPipeConnectionPoolSettings ConnectionPoolSettings
         {
             get { return _connectionPoolSettings; }
+        }
+
+        public NamedPipeSettings PipeSettings
+        {
+            get { return _namedPipeSettings; }
         }
 
         public override string Scheme

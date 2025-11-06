@@ -6,8 +6,7 @@ using System.Runtime.Versioning;
 namespace System.ServiceModel.Channels
 {
     [SupportedOSPlatform("windows")]
-
-    internal class NamedPipeChannelFactory<TChannel> : NetFramingTransportChannelFactory<TChannel>
+    internal class NamedPipeChannelFactory<TChannel> : NetFramingTransportChannelFactory<TChannel>, IPipeTransportFactorySettings
     {
         public NamedPipeChannelFactory(NamedPipeTransportBindingElement bindingElement, BindingContext context)
             : base(bindingElement, context,
@@ -15,6 +14,10 @@ namespace System.ServiceModel.Channels
             bindingElement.ConnectionPoolSettings.IdleTimeout,
             bindingElement.ConnectionPoolSettings.MaxOutboundConnectionsPerEndpoint)
         {
+            if (bindingElement.PipeSettings != null)
+            {
+                this.PipeSettings = bindingElement.PipeSettings.Clone();
+            }
         }
 
         public override string Scheme
@@ -22,19 +25,24 @@ namespace System.ServiceModel.Channels
             get { return Uri.UriSchemeNetPipe; }
         }
 
+        public NamedPipeSettings PipeSettings
+        {
+             get; private set;
+        }
+
         private static string GetConnectionGroupName(NamedPipeTransportBindingElement bindingElement)
         {
-            return bindingElement.ConnectionPoolSettings.GroupName;
+            return bindingElement.ConnectionPoolSettings.GroupName + bindingElement.PipeSettings.ApplicationContainerSettings.GetConnectionGroupSuffix();
         }
 
         public override IConnectionInitiator GetConnectionInitiator()
         {
-            return new PipeConnectionInitiator(ConnectionBufferSize);
+            return new PipeConnectionInitiator(ConnectionBufferSize, this);
         }
 
         protected override string GetConnectionPoolKey(EndpointAddress address, Uri via)
         {
-            return PipeConnectionInitiator.GetPipeName(via);
+            return PipeConnectionInitiator.GetPipeName(via, this);
         }
 
         protected override bool SupportsUpgrade(StreamUpgradeBindingElement upgradeBindingElement)
