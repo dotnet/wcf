@@ -896,7 +896,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 typeof(int), // System.Runtime.dll
                 typeof(System.ServiceModel.ChannelFactory), // System.ServiceModel (svcutil private code)
-                typeof(System.Net.HttpStatusCode) // netstandard.dll, System.Net.Primitives.dll
+                typeof(System.Net.HttpStatusCode), // netstandard.dll, System.Net.Primitives.dll
+                typeof(System.Collections.Generic.LinkedList<>), // System.Collections.dll
+                typeof(System.Collections.ObjectModel.ObservableCollection<>), // System.ObjectModel.dll
+                typeof(System.Collections.SortedList), // System.Collections.NonGeneric.dll
+                typeof(System.Collections.Specialized.ListDictionary) // System.Collections.Specialized.dll
             };
 
             foreach (var type in coreTypes)
