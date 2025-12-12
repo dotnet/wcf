@@ -12,8 +12,7 @@
     <!--<PackageValidationBaselineVersion>$(MajorVersion).$(MinorVersion).$([MSBuild]::Subtract($(PatchVersion), 1))</PackageValidationBaselineVersion>-->
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
-    <PreReleaseVersionLabel>
-    </PreReleaseVersionLabel>
+    <PreReleaseVersionLabel>rc.2</PreReleaseVersionLabel>
     <PreReleaseVersionIteration>
     </PreReleaseVersionIteration>
     <!-- Opt-in repo features -->
@@ -32,7 +31,7 @@
     <MicrosoftTargetingPackNETFrameworkv472PackageVersion>1.0.0</MicrosoftTargetingPackNETFrameworkv472PackageVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <DotNetRuntimeRcVersion>10.0.0</DotNetRuntimeRcVersion>
+    <DotNetRuntimeRcVersion>10.0.0-rc.2.25502.107</DotNetRuntimeRcVersion>
   </PropertyGroup>
   <PropertyGroup>
     <!-- Needed by Infrastructure.Common.csproj -->
