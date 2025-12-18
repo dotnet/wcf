@@ -36,7 +36,7 @@ namespace Infrastructure.Common
              Windows_Server_2008 | Windows_Server_2008_R2 | Windows_Server_2012 | Windows_Server_2012_R2 | Windows_Server_2016 |
              WindowsPhone | Windows_Nano,
 
-        Mariner =                 0x00000800,
+        AzureLinux =             0x00000800,
         Debian =                 0x00001000,
         Fedora =                 0x00002000,
         SLES =                   0x00004000,
@@ -47,7 +47,7 @@ namespace Infrastructure.Common
 
         // 'Any' combinations must explicitly name only known flags so "G" formatting
         // can be used to show a comma separated list of the bitmask.
-        AnyUnix = Mariner | Debian | Fedora | OpenSUSE | OSX | RHEL | Ubuntu,
+        AnyUnix = AzureLinux | Debian | Fedora | OpenSUSE | OSX | RHEL | Ubuntu,
 
         Any = AnyUnix | AnyWindows
     }
