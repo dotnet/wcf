@@ -28,6 +28,7 @@ namespace Infrastructure.Common
 
         private static List<Tuple<string, OSID>> _runtimeToOSID = new List<Tuple<string, OSID>>
         {
+            new Tuple<string, OSID>("azurelinux", OSID.Mariner),  // Azure Linux (successor to CBL-Mariner)
             new Tuple<string, OSID>("Mariner", OSID.Mariner),
             new Tuple<string, OSID>("debian", OSID.Debian),
             new Tuple<string, OSID>("fedora", OSID.Fedora),
@@ -49,6 +50,7 @@ namespace Infrastructure.Common
         // This mapping is described at https://msdn.microsoft.com/en-us/library/windows/desktop/ms724832(v=vs.85).aspx
         private static List<Tuple<string, OSID>> _descriptionToOSID = new List<Tuple<string, OSID>>
         {
+            new Tuple<string, OSID>("Microsoft Azure Linux", OSID.Mariner),  // Azure Linux (successor to CBL-Mariner)
             new Tuple<string, OSID>("Microsoft Windows 6.0.", OSID.Windows_Server_2008),
             new Tuple<string, OSID>("Microsoft Windows 6.1.", OSID.Windows_7 | OSID.Windows_Server_2008_R2),
             new Tuple<string, OSID>("Microsoft Windows 6.2.", OSID.Windows_8 | OSID.Windows_Server_2012),
