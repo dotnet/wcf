@@ -636,6 +636,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             SetPropertyValue("WarningsAsErrors", string.Empty);
         }
 
+        public void SuppressWarningMSB3277()
+        {
+            SetPropertyValue("NoWarn", "$(NoWarn);MSB3277");
+        }
+
         private void UpdateTargetFramework(string targetFramework)
         {
             if (_targetFramework != targetFramework && !string.IsNullOrWhiteSpace(targetFramework))
