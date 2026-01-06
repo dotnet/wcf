@@ -132,6 +132,12 @@ Namespace ServiceReference
             Return System.Threading.Tasks.Task.Factory.FromAsync(CType(Me,System.ServiceModel.ICommunicationObject).BeginOpen(Nothing, Nothing), AddressOf CType(Me,System.ServiceModel.ICommunicationObject).EndOpen)
         End Function
         
+        #If Not NET6_0_OR_GREATER Then
+        Public Overridable Function CloseAsync() As System.Threading.Tasks.Task
+            Return System.Threading.Tasks.Task.Factory.FromAsync(CType(Me,System.ServiceModel.ICommunicationObject).BeginClose(Nothing, Nothing), AddressOf CType(Me,System.ServiceModel.ICommunicationObject).EndClose)
+        End Function
+        #End If
+        
         Private Shared Function GetBindingForEndpoint(ByVal endpointConfiguration As EndpointConfiguration) As System.ServiceModel.Channels.Binding
             If (endpointConfiguration = EndpointConfiguration.BasicHttpBinding_ITypeReuseSvc) Then
                 Dim result As System.ServiceModel.BasicHttpBinding = New System.ServiceModel.BasicHttpBinding()

@@ -337,7 +337,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     var csProjects = Directory.GetFiles(workingDirectory, "*.csproj", SearchOption.TopDirectoryOnly);
                     var vbProjects = Directory.GetFiles(workingDirectory, "*.vbproj", SearchOption.TopDirectoryOnly);
 
-                    if(csProjects.Length == 1 && vbProjects.Length ==0 )
+                    if (csProjects.Length == 1 && vbProjects.Length == 0)
                     {
                         projectFile = csProjects[0];
                     }
@@ -346,7 +346,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         projectFile = vbProjects[0];
                         this.Language = "VisualBasic";
                     }
-                    else if(csProjects.Length == 0 && vbProjects.Length == 0)
+                    else if (csProjects.Length == 0 && vbProjects.Length == 0)
                     {
                         if (this.ToolContext == OperationalContext.Project)
                         {
@@ -675,7 +675,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private async Task ProcessTargetFrameworkOptionAsync(CancellationToken cancellationToken)
         {
-            if(this.Project != null)
+            if (this.Project != null)
             {
                 this.Project.EndOfLifeTargetFrameworks?.ToList().ForEach(tfx => this.AddWarning(string.Format(CultureInfo.CurrentCulture, SR.WrnOutOfSupportTargetFrameworkFormat, tfx)));
             }

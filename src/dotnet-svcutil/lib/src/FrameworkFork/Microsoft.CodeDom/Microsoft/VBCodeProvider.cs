@@ -2786,6 +2786,24 @@ namespace Microsoft.VisualBasic
                 {
                     GenerateCodeRegionDirective((CodeRegionDirective)directive);
                 }
+                else if (directive is CodeIfDirective)
+                {
+                    GenerateCodeIfDirective((CodeIfDirective)directive);
+                }
+            }
+        }
+
+        private void GenerateCodeIfDirective(CodeIfDirective ifDirective)
+        {
+            if (ifDirective.IfMode == CodeIfMode.Start)
+            {
+                Output.Write("#If ");
+                Output.Write(ifDirective.IfText);
+                Output.WriteLine(" Then");
+            }
+            else if (ifDirective.IfMode == CodeIfMode.End)
+            {
+                Output.WriteLine("#End If");
             }
         }
 

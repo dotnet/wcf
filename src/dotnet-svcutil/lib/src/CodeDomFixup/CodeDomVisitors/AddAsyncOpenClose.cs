@@ -12,6 +12,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class AddAsyncOpenClose : ClientClassVisitor
     {
+        private readonly bool _isVisualBasic;
+
+        public AddAsyncOpenClose(bool isVisualBasic)
+        {
+            _isVisualBasic = isVisualBasic;
+        }
+
         protected override void VisitClientClass(CodeTypeDeclaration type)
         {
             base.VisitClientClass(type);
@@ -58,9 +65,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     GenerateBeginMethodInvokeExpression(methodName),
                     delegateOfEndCall)));
 
-            if(methodName.Equals("Close"))
+            if (methodName.Equals("Close"))
             {
-                CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, "!NET6_0_OR_GREATER");
+                string condition = _isVisualBasic ? "Not NET6_0_OR_GREATER" : "!NET6_0_OR_GREATER";
+                CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, condition);
                 CodeIfDirective ifEnd = new CodeIfDirective(CodeIfMode.End, "");
                 implMethod.StartDirectives.Add(ifStart);
                 implMethod.EndDirectives.Add(ifEnd);
