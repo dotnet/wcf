@@ -59,7 +59,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         internal const string WCFCSParamsFileName = "ConnectedService.json";
         internal const string BaseServiceReferenceName = "ServiceReference";
 
-        private static readonly List<string> s_cmdLineOverwriteSwitches = new List<string> { Switches.NoLogo.Name, Switches.Verbosity.Name, Switches.ToolContext.Name, Switches.ProjectFile.Name, Switches.AcceptCertificate.Name, Switches.ServiceContract.Name };
+        private static readonly List<string> s_cmdLineOverwriteSwitches = new List<string> { Switches.NoLogo.Name, Switches.Verbosity.Name, Switches.ToolContext.Name, Switches.ProjectFile.Name, Switches.AcceptCertificate.Name, Switches.ServiceContract.Name, Switches.Language.Name };
 
         internal class CommandSwitches
         {
@@ -94,6 +94,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             public readonly CommandSwitch Wrapped = new CommandSwitch(WrappedKey, "wr", SwitchType.Flag);
             public readonly CommandSwitch AcceptCertificate = new CommandSwitch(AccecptCertificateKey, "ac", SwitchType.Flag);
             public readonly CommandSwitch ServiceContract = new CommandSwitch(ServiceContractKey, "sc", SwitchType.Flag);
+            public readonly CommandSwitch Language = new CommandSwitch(LanguageKey, "l", SwitchType.SingletonValue, OperationalContext.Global);
 
             public void Init() { } // provided as a way to get the static class Switches loaded early.
         }
@@ -200,12 +201,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (this.Help != true && this.Errors.Count() == 0)
                 {
-                    ProcessLanguageOption();
-
                     ProcessSerializerOption();
 
                     // process project file first as it can define the working directory.
                     await ProcessProjectFileOptionAsync(cancellationToken).ConfigureAwait(false);
+
+                    ProcessLanguageOption();
 
                     // next update option as the options may change.
                     await ProcessUpdateOptionAsync(cancellationToken).ConfigureAwait(false);
@@ -332,27 +333,32 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 using (SafeLogger logger = await SafeLogger.WriteStartOperationAsync(this.Logger, $"Resolving {ProjectFileKey} option ...").ConfigureAwait(false))
                 {
                     // Resolve the project in the current directory.
-
                     var workingDirectory = Directory.GetCurrentDirectory();
-                    var projects = Directory.GetFiles(workingDirectory, "*.csproj", SearchOption.TopDirectoryOnly);
+                    var csProjects = Directory.GetFiles(workingDirectory, "*.csproj", SearchOption.TopDirectoryOnly);
+                    var vbProjects = Directory.GetFiles(workingDirectory, "*.vbproj", SearchOption.TopDirectoryOnly);
 
-                    if (projects.Length == 1)
+                    if (csProjects.Length == 1 && vbProjects.Length == 0)
                     {
-                        projectFile = projects[0];
+                        projectFile = csProjects[0];
                     }
-                    else if (projects.Length == 0)
+                    else if (csProjects.Length == 0 && vbProjects.Length == 1)
+                    {
+                        projectFile = vbProjects[0];
+                        this.Language = "VisualBasic";
+                    }
+                    else if (csProjects.Length == 0 && vbProjects.Length == 0)
                     {
                         if (this.ToolContext == OperationalContext.Project)
                         {
                             throw new ToolArgumentException(string.Format(CultureInfo.CurrentCulture, SR.ErrInvalidOperationNoProjectFileFoundUnderFolderFormat, workingDirectory));
                         }
                     }
-                    else if (projects.Length > 1)
+                    else
                     {
                         var moreThanOneProjectMsg = string.Format(CultureInfo.CurrentCulture, SR.ErrMoreThanOneProjectFoundFormat, workingDirectory);
                         if (this.ToolContext != OperationalContext.Project)
                         {
-                            var projectItems = projects.Aggregate((projectMsg, projectItem) => $"{projectMsg}, {projectItem}").Trim(',').Trim();
+                            var projectItems = csProjects.Concat(vbProjects).ToArray().Aggregate((projectMsg, projectItem) => $"{projectMsg}, {projectItem}").Trim(',').Trim();
                             var useProjectOptions = string.Format(CultureInfo.CurrentCulture, SR.UseProjectFileOptionOnMultipleFilesMsgFormat, Switches.ProjectFile.Name, projectItems);
                             throw new ToolArgumentException($"{moreThanOneProjectMsg}{Environment.NewLine}{useProjectOptions}");
                         }
@@ -419,7 +425,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 var outputFile = this.OutputFile?.OriginalPath();
                 if (outputFile == null)
                 {
-                    outputFile = "Reference.cs";
+                    outputFile = "Reference";
                 }
 
                 if (!outputFile.EndsWith(this.CodeProvider.FileExtension, RuntimeEnvironmentHelper.FileStringComparison))
@@ -669,7 +675,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private async Task ProcessTargetFrameworkOptionAsync(CancellationToken cancellationToken)
         {
-            if(this.Project != null)
+            if (this.Project != null)
             {
                 this.Project.EndOfLifeTargetFrameworks?.ToList().ForEach(tfx => this.AddWarning(string.Format(CultureInfo.CurrentCulture, SR.WrnOutOfSupportTargetFrameworkFormat, tfx)));
             }
@@ -754,9 +760,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private void ProcessLanguageOption()
         {
-            if (this.CodeProvider == null)
+            if (!string.IsNullOrEmpty(Language))
             {
-                this.CodeProvider = CodeDomProvider.CreateProvider("csharp");
+                try
+                {
+                    CodeProvider = CodeDomProvider.CreateProvider(Language);
+                }
+                catch (Exception e)
+                {
+                    throw new ToolArgumentException(string.Format(SR.ErrCouldNotCreateCodeProvider, Language, Switches.Language.Abbreviation), e);
+                }
+            }
+            else
+            {
+                CodeProvider = CodeDomProvider.CreateProvider("csharp");
             }
         }
         #endregion

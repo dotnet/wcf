@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System;
 using System.ServiceModel.Description;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
@@ -12,6 +13,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private static CodeDomVisitor[] GetVisitors(ServiceContractGenerator generator, CommandProcessorOptions options)
         {
             ArrayOfXElementTypeHelper arrayOfXElementTypeHelper = new ArrayOfXElementTypeHelper((generator.Options & ServiceContractGenerationOptions.InternalTypes) == ServiceContractGenerationOptions.InternalTypes, generator.TargetCompileUnit);
+            bool isVisualBasic = IsVisualBasicLanguage(options?.Language);
 
             CodeDomVisitor[] visitors = new CodeDomVisitor[]
                     {
@@ -25,7 +27,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new SpecialIXmlSerializableRemapper(arrayOfXElementTypeHelper),
                         new EnsureAdditionalAssemblyReference(),
                         new CreateCallbackImpl((generator.Options & ServiceContractGenerationOptions.TaskBasedAsynchronousMethod) == ServiceContractGenerationOptions.TaskBasedAsynchronousMethod, generator),
-                        new AddAsyncOpenClose(), // this one need to run after CreateCallbakImpl which provide name of VerifyCallbackEvents method
+                        new AddAsyncOpenClose(isVisualBasic), // this one need to run after CreateCallbakImpl which provide name of VerifyCallbackEvents method
                         new TypeNameFixup()
                     };
 
@@ -73,6 +75,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             });
 
             return list.ToArray();
+        }
+
+        private static bool IsVisualBasicLanguage(string language)
+        {
+            if (string.IsNullOrWhiteSpace(language))
+            {
+                return false;
+            }
+
+            language = language.Trim();
+
+            return language.Equals("vb", StringComparison.OrdinalIgnoreCase) ||
+                   language.Equals("visualbasic", StringComparison.OrdinalIgnoreCase) ||
+                   language.Equals("visual basic", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

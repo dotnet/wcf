@@ -71,7 +71,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.RuntimeIdentifier.Name, SR.ParametersRuntimeIdentifier,                   string.Format(SR.HelpRuntimeIdentifierFormat, CommandProcessorOptions.Switches.RuntimeIdentifier.Abbreviation)),
                     ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.TargetFramework.Name,   SR.ParametersTargetFramework,                     string.Format(SR.HelpTargetFrameworkFormat, CommandProcessorOptions.Switches.TargetFramework.Abbreviation)),
                     ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.AcceptCertificate.Name,                                                   string.Format(SR.HelpAcceptCertificateFormat, CommandProcessorOptions.Switches.AcceptCertificate.Abbreviation)),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.ServiceContract.Name,                                                     string.Format(SR.HelpServiceContractFormat, CommandProcessorOptions.Switches.ServiceContract.Abbreviation))
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.ServiceContract.Name,                                                     string.Format(SR.HelpServiceContractFormat, CommandProcessorOptions.Switches.ServiceContract.Abbreviation)),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.Language.Name,                                                            string.Format(SR.HelpLanguage, CommandProcessorOptions.Switches.Language.Abbreviation))
                 }
             };
 

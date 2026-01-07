@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 Возможная причина: язык не поддерживает все элементы создаваемого кода. Попробуйте применить другой язык.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">Не удалось создать поставщик кода для значения "{0}", переданного для параметра --{1}. Убедитесь, что поставщик кода установлен и настроен правильно.</target>
@@ -545,6 +550,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
         <target state="translated">Формирование классов, отмеченных как внутренние. По умолчанию: формирование открытых классов. (Краткая форма: /{0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="new">The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
