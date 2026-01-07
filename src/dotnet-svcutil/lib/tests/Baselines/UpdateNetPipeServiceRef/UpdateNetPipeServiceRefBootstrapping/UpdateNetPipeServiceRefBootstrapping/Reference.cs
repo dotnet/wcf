@@ -13,6 +13,7 @@ namespace UpdateNetPipeServiceRefBootstrapping
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UpdateNetPipeServiceRefBootstrapping.IStreamedService")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IStreamedService
     {
         
@@ -24,12 +25,14 @@ namespace UpdateNetPipeServiceRefBootstrapping
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IStreamedServiceChannel : UpdateNetPipeServiceRefBootstrapping.IStreamedService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class StreamedServiceClient : System.ServiceModel.ClientBase<UpdateNetPipeServiceRefBootstrapping.IStreamedService>, UpdateNetPipeServiceRefBootstrapping.IStreamedService
     {
         
