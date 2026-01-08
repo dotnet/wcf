@@ -586,8 +586,8 @@ namespace SvcutilTest
                 if (string.IsNullOrEmpty(g_RepositoryRoot))
                 {
                     var parentDir = Directory.GetCurrentDirectory();
-                    var rootSolutionFolder = PathHelper.TryFindFileAsync("dotnet-svcutil.sln", parentDir, null, CancellationToken.None).Result;
-                    Assert.True(rootSolutionFolder != null && File.Exists(rootSolutionFolder), $"Unable to find dotnet-svcutil.sln file, current dir: {parentDir}");
+                    var rootSolutionFolder = PathHelper.TryFindFileAsync("dotnet-svcutil.slnf", parentDir, null, CancellationToken.None).Result;
+                    Assert.True(rootSolutionFolder != null && File.Exists(rootSolutionFolder), $"Unable to find dotnet-svcutil.slnf file, current dir: {parentDir}");
 
                     g_RepositoryRoot = Path.GetDirectoryName(rootSolutionFolder);
                 }
