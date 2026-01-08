@@ -6,7 +6,7 @@ namespace System.Runtime.Serialization
 {
     using System;
     using System.Collections.Generic;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom.Compiler;
 
     public class ImportOptions
     {

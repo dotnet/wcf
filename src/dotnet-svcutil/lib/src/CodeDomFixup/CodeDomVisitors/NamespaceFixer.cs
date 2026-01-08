@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.CodeDom;
+using System.CodeDom;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
@@ -31,7 +31,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             // Microsoft.CodeDom
-            var mscodedomTypes = TypeLoader.LoadTypes(typeof(Microsoft.CodeDom.CodeObject).GetTypeInfo().Assembly, Verbosity.Silent);
+            var mscodedomTypes = TypeLoader.LoadTypes(typeof(System.CodeDom.CodeObject).GetTypeInfo().Assembly, Verbosity.Silent);
             
             foreach (var type in mscodedomTypes)
             {

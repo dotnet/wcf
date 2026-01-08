@@ -19,8 +19,8 @@ namespace Microsoft.Xml.Serialization
 
     internal class CodeGenerator
     {
-        internal static bool IsValidLanguageIndependentIdentifier(string ident) { return Microsoft.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(ident); }
-        internal static void ValidateIdentifiers(Microsoft.CodeDom.CodeObject e) { Microsoft.CodeDom.Compiler.CodeGenerator.ValidateIdentifiers(e); }
+        internal static bool IsValidLanguageIndependentIdentifier(string ident) { return System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(ident); }
+        internal static void ValidateIdentifiers(System.CodeDom.CodeObject e) { System.CodeDom.Compiler.CodeGenerator.ValidateIdentifiers(e); }
         internal static BindingFlags InstancePublicBindingFlags = BindingFlags.Instance | BindingFlags.Public;
         internal static BindingFlags InstanceBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         internal static BindingFlags StaticBindingFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;

@@ -4,7 +4,7 @@
 
 namespace System.ServiceModel.Description
 {
-    using Microsoft.CodeDom;
+    using System.CodeDom;
     using System.Collections.Generic;
     using System.Net.Security;
     using System.Reflection;
@@ -418,7 +418,7 @@ namespace System.ServiceModel.Description
 
                 internal CodeParameterDeclarationExpression GetOrCreateParameter(CodeTypeReference type, string name, FieldDirection direction, ref int index, out bool createdNew)
                 {
-                    Fx.Assert(Microsoft.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name), String.Format(System.Globalization.CultureInfo.InvariantCulture, "Type name '{0}' is not ValidLanguageIndependentIdentifier!", name));
+                    Fx.Assert(System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name), String.Format(System.Globalization.CultureInfo.InvariantCulture, "Type name '{0}' is not ValidLanguageIndependentIdentifier!", name));
                     ParametersPartCodeGenerator existingParams = direction != FieldDirection.In ? _ins : _outs;
                     int i = index;
                     CodeParameterDeclarationExpression existing = existingParams.GetParameter(name, ref i);
@@ -584,7 +584,7 @@ namespace System.ServiceModel.Description
 
             private void WrapTypedMessage(CodeNamespace ns, string typeName, MessageDescription messageDescription, bool isReply, bool isInherited, bool hideFromEditor)
             {
-                Fx.Assert(String.IsNullOrEmpty(typeName) || Microsoft.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(typeName), String.Format(System.Globalization.CultureInfo.InvariantCulture, "Type name '{0}' is not ValidLanguageIndependentIdentifier!", typeName));
+                Fx.Assert(String.IsNullOrEmpty(typeName) || System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(typeName), String.Format(System.Globalization.CultureInfo.InvariantCulture, "Type name '{0}' is not ValidLanguageIndependentIdentifier!", typeName));
                 UniqueCodeNamespaceScope namespaceScope = new UniqueCodeNamespaceScope(ns);
                 CodeTypeDeclaration wrapperTypeDecl = _context.Contract.TypeFactory.CreateClassType();
                 CodeTypeReference wrapperTypeRef = namespaceScope.AddUnique(wrapperTypeDecl, typeName + "Body", "Body");
