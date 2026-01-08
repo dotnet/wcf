@@ -15,6 +15,7 @@ namespace BasicHttpRpcLitDualNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="IntParams", Namespace="http://contoso.com/calc")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class IntParams : object
     {
         
@@ -52,6 +53,7 @@ namespace BasicHttpRpcLitDualNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="FloatParams", Namespace="http://contoso.com/calc")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class FloatParams : object
     {
         
@@ -89,6 +91,7 @@ namespace BasicHttpRpcLitDualNs_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ByteParams", Namespace="http://contoso.com/calc")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class ByteParams : object
     {
         
@@ -125,6 +128,7 @@ namespace BasicHttpRpcLitDualNs_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://contoso.com/calc", ConfigurationName="BasicHttpRpcLitDualNs_NS.ICalculatorRpcLit")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ICalculatorRpcLit
     {
         
@@ -162,12 +166,14 @@ namespace BasicHttpRpcLitDualNs_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ICalculatorRpcLitChannel : BasicHttpRpcLitDualNs_NS.ICalculatorRpcLit, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class CalculatorRpcLitClient : System.ServiceModel.ClientBase<BasicHttpRpcLitDualNs_NS.ICalculatorRpcLit>, BasicHttpRpcLitDualNs_NS.ICalculatorRpcLit
     {
         
@@ -306,6 +312,7 @@ namespace BasicHttpRpcLitDualNs_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="BasicHttpRpcLitDualNs_NS.IHelloWorldRpcLit")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IHelloWorldRpcLit
     {
         
@@ -319,12 +326,14 @@ namespace BasicHttpRpcLitDualNs_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IHelloWorldRpcLitChannel : BasicHttpRpcLitDualNs_NS.IHelloWorldRpcLit, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class HelloWorldRpcLitClient : System.ServiceModel.ClientBase<BasicHttpRpcLitDualNs_NS.IHelloWorldRpcLit>, BasicHttpRpcLitDualNs_NS.IHelloWorldRpcLit
     {
         

@@ -14,7 +14,8 @@ Namespace ServiceReference
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="BinLibrary", [Namespace]:="http://schemas.datacontract.org/2004/07/BinLib")>  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="BinLibrary", [Namespace]:="http://schemas.datacontract.org/2004/07/BinLib"),  _
+     System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()>  _
     Partial Public Class BinLibrary
         Inherits Object
         
@@ -33,7 +34,8 @@ Namespace ServiceReference
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="TypeReuseCompositeType", [Namespace]:="http://schemas.datacontract.org/2004/07/TypesLib")>  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="TypeReuseCompositeType", [Namespace]:="http://schemas.datacontract.org/2004/07/TypesLib"),  _
+     System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()>  _
     Partial Public Class TypeReuseCompositeType
         Inherits Object
         
@@ -63,7 +65,8 @@ Namespace ServiceReference
     End Class
     
     <System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99"),  _
-     System.ServiceModel.ServiceContractAttribute(ConfigurationName:="ServiceReference.ITypeReuseSvc")>  _
+     System.ServiceModel.ServiceContractAttribute(ConfigurationName:="ServiceReference.ITypeReuseSvc"),  _
+     System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()>  _
     Public Interface ITypeReuseSvc
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ITypeReuseSvc/GetData", ReplyAction:="http://tempuri.org/ITypeReuseSvc/GetDataResponse")>  _
@@ -73,13 +76,15 @@ Namespace ServiceReference
         Function GetDataUsingDataContractAsync(ByVal composite As ServiceReference.TypeReuseCompositeType) As System.Threading.Tasks.Task(Of ServiceReference.TypeReuseCompositeType)
     End Interface
     
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99"),  _
+     System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()>  _
     Public Interface ITypeReuseSvcChannel
         Inherits ServiceReference.ITypeReuseSvc, System.ServiceModel.IClientChannel
     End Interface
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
-     System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")>  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99"),  _
+     System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()>  _
     Partial Public Class TypeReuseSvcClient
         Inherits System.ServiceModel.ClientBase(Of ServiceReference.ITypeReuseSvc)
         Implements ServiceReference.ITypeReuseSvc

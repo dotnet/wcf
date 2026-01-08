@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using Microsoft.CodeDom;
@@ -13,6 +13,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class AttributeFixer : CodeDomVisitor
     {
+        private static readonly string s_excludeFromCodeCoverageAttributeFullName = typeof(ExcludeFromCodeCoverageAttribute).FullName;
+
         private static Type[] s_attrsToRemove = new Type[]
                     {
                         typeof(TransactionFlowAttribute),
@@ -46,6 +48,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             base.Visit(type);
 
             CollectionHelpers.MapList<CodeAttributeDeclaration>(type.CustomAttributes, IsValidAttribute, null);
+
+            FixupGeneratedCodeAndEnsureExcludeFromCoverage(type.CustomAttributes);
         }
 
         protected override void Visit(CodeTypeMember member)
@@ -53,6 +57,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             base.Visit(member);
 
             CollectionHelpers.MapList<CodeAttributeDeclaration>(member.CustomAttributes, IsValidAttribute, null);
+
+            // Runs before `CodeDomVisitor` enumerates `member.CustomAttributes`.
+            FixupGeneratedCodeAndEnsureExcludeFromCoverage(member.CustomAttributes);
         }
 
         protected override void Visit(CodeAttributeDeclaration attr)
@@ -71,12 +78,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             else if (CodeDomHelpers.MatchType(attr.AttributeType, typeof(FaultContractAttribute)))
             {
                 propsToRemove = s_faultContractPropsToRemove;
-            }
-            else if (CodeDomHelpers.MatchType(attr.AttributeType, typeof(GeneratedCodeAttribute)))
-            {
-                attr.Arguments.Clear();
-                attr.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Tool.ToolName)));
-                attr.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Tool.PackageVersion)));
             }
 
             if (propsToRemove != null)
@@ -113,6 +114,68 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     return false;
             }
             return true;
+        }
+
+        private static void FixupGeneratedCodeAndEnsureExcludeFromCoverage(CodeAttributeDeclarationCollection attributes)
+        {
+            if (attributes == null || attributes.Count == 0)
+            {
+                return;
+            }
+
+            bool hasGeneratedCode = false;
+            bool hasExcludeFromCoverage = false;
+
+            for (int i = 0; i < attributes.Count; i++)
+            {
+                CodeAttributeDeclaration attr = attributes[i];
+                if (attr == null)
+                {
+                    continue;
+                }
+                if (CodeDomHelpers.MatchType(attr.AttributeType, typeof(GeneratedCodeAttribute)))
+                {
+                    hasGeneratedCode = true;
+                    attr.Arguments.Clear();
+                    attr.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Tool.ToolName)));
+                    attr.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Tool.PackageVersion)));
+                }
+                else if (IsExcludeFromCodeCoverageAttribute(attr.AttributeType))
+                {
+                    hasExcludeFromCoverage = true;
+                }
+
+                if (hasGeneratedCode && hasExcludeFromCoverage)
+                {
+                    break;
+                }
+            }
+
+            if (hasGeneratedCode && !hasExcludeFromCoverage)
+            {
+                attributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(s_excludeFromCodeCoverageAttributeFullName)));
+            }
+        }
+
+        private static bool IsExcludeFromCodeCoverageAttribute(CodeTypeReference attributeType)
+        {
+            if (attributeType == null)
+            {
+                return false;
+            }
+
+            string baseType = attributeType.BaseType;
+            if (string.IsNullOrEmpty(baseType))
+            {
+                return false;
+            }
+
+            return baseType == s_excludeFromCodeCoverageAttributeFullName ||
+                   baseType == "System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" ||
+                   baseType == "ExcludeFromCodeCoverageAttribute" ||
+                   baseType == "ExcludeFromCodeCoverage" ||
+                   baseType.EndsWith(".ExcludeFromCodeCoverageAttribute", StringComparison.Ordinal) ||
+                   baseType.EndsWith(".ExcludeFromCodeCoverage", StringComparison.Ordinal);
         }
     }
 }

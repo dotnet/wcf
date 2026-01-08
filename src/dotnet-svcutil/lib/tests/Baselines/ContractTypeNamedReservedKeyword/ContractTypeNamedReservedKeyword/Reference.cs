@@ -15,6 +15,7 @@ namespace ContractTypeNamedReservedKeyword_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Composite", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class Composite : object
     {
         
@@ -66,6 +67,7 @@ namespace ContractTypeNamedReservedKeyword_NS
         [System.Diagnostics.DebuggerStepThroughAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
         [System.Runtime.Serialization.DataContractAttribute(Name="Composite.file", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         public partial class @file : object
         {
             
@@ -89,6 +91,7 @@ namespace ContractTypeNamedReservedKeyword_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="file", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class @file : object
     {
         
@@ -126,6 +129,7 @@ namespace ContractTypeNamedReservedKeyword_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="scoped", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class @scoped : object
     {
         
@@ -162,6 +166,7 @@ namespace ContractTypeNamedReservedKeyword_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="required", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public enum @required : int
     {
         
@@ -174,6 +179,7 @@ namespace ContractTypeNamedReservedKeyword_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ContractTypeNamedReservedKeyword_NS.IService1")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IService1
     {
         
@@ -191,12 +197,14 @@ namespace ContractTypeNamedReservedKeyword_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IService1Channel : ContractTypeNamedReservedKeyword_NS.IService1, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class Service1Client : System.ServiceModel.ClientBase<ContractTypeNamedReservedKeyword_NS.IService1>, ContractTypeNamedReservedKeyword_NS.IService1
     {
         

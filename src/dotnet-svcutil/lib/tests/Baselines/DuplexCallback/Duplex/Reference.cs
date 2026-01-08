@@ -13,6 +13,7 @@ namespace Duplex_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Duplex_NS.IWcfDuplexService", CallbackContract=typeof(Duplex_NS.IWcfDuplexServiceCallback))]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfDuplexService
     {
         
@@ -21,6 +22,7 @@ namespace Duplex_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfDuplexServiceCallback
     {
         
@@ -29,12 +31,14 @@ namespace Duplex_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfDuplexServiceChannel : Duplex_NS.IWcfDuplexService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class WcfDuplexServiceClientBase : System.ServiceModel.DuplexClientBase<Duplex_NS.IWcfDuplexService>, Duplex_NS.IWcfDuplexService
     {
         
