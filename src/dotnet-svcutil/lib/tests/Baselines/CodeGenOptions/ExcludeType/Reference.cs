@@ -436,7 +436,6 @@ namespace ExcludeType_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="HttpStatusCode", Namespace="http://schemas.datacontract.org/2004/07/System.Net")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public enum HttpStatusCode : int
     {
         
@@ -803,7 +802,6 @@ namespace ExcludeType_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ExcludeType_NS.IWcfProjectNService")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfProjectNService
     {
         
@@ -936,7 +934,6 @@ namespace ExcludeType_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfProjectNServiceChannel : ExcludeType_NS.IWcfProjectNService, System.ServiceModel.IClientChannel
     {
     }

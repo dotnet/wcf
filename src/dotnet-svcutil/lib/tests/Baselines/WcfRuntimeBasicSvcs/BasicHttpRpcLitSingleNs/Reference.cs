@@ -128,7 +128,6 @@ namespace BasicHttpRpcLitSingleNs_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://contoso.com/calc", ConfigurationName="BasicHttpRpcLitSingleNs_NS.ICalculatorRpcLit")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ICalculatorRpcLit
     {
         
@@ -166,7 +165,6 @@ namespace BasicHttpRpcLitSingleNs_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ICalculatorRpcLitChannel : BasicHttpRpcLitSingleNs_NS.ICalculatorRpcLit, System.ServiceModel.IClientChannel
     {
     }

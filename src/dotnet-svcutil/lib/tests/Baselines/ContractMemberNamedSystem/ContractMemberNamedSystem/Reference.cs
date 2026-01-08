@@ -13,7 +13,6 @@ namespace ContractMemberNamedSystem_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://Microsoft.ServiceModel.Samples", ConfigurationName="ContractMemberNamedSystem_NS.IService1")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IService1
     {
         
@@ -98,7 +97,6 @@ namespace ContractMemberNamedSystem_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IService1Channel : ContractMemberNamedSystem_NS.IService1, System.ServiceModel.IClientChannel
     {
     }

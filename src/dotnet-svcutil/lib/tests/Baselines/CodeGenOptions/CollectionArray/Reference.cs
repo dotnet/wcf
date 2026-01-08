@@ -655,7 +655,6 @@ namespace CollectionArray_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CollectionArray_NS.IWcfProjectNService")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfProjectNService
     {
         
@@ -788,7 +787,6 @@ namespace CollectionArray_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfProjectNServiceChannel : CollectionArray_NS.IWcfProjectNService, System.ServiceModel.IClientChannel
     {
     }

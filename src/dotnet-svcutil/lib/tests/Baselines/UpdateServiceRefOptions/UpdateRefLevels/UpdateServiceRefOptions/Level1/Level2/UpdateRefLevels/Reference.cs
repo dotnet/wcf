@@ -75,7 +75,6 @@ namespace UpdateServiceRefOptions.Level1.Level2.UpdateRefLevels
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UpdateServiceRefOptions.Level1.Level2.UpdateRefLevels.ITypeReuseSvc")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ITypeReuseSvc
     {
         
@@ -87,7 +86,6 @@ namespace UpdateServiceRefOptions.Level1.Level2.UpdateRefLevels
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ITypeReuseSvcChannel : UpdateServiceRefOptions.Level1.Level2.UpdateRefLevels.ITypeReuseSvc, System.ServiceModel.IClientChannel
     {
     }

@@ -75,7 +75,6 @@ namespace tfmNetstd21_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="tfmNetstd21_NS.ITypeReuseSvc")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ITypeReuseSvc
     {
         
@@ -87,7 +86,6 @@ namespace tfmNetstd21_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ITypeReuseSvcChannel : tfmNetstd21_NS.ITypeReuseSvc, System.ServiceModel.IClientChannel
     {
     }

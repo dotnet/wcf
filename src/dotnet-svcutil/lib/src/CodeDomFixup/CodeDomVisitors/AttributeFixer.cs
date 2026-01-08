@@ -49,7 +49,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             CollectionHelpers.MapList<CodeAttributeDeclaration>(type.CustomAttributes, IsValidAttribute, null);
 
-            FixupGeneratedCodeAndEnsureExcludeFromCoverage(type.CustomAttributes);
+            FixupGeneratedCodeAndEnsureExcludeFromCoverage(type.CustomAttributes, CanApplyExcludeFromCodeCoverage(type));
         }
 
         protected override void Visit(CodeTypeMember member)
@@ -59,7 +59,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             CollectionHelpers.MapList<CodeAttributeDeclaration>(member.CustomAttributes, IsValidAttribute, null);
 
             // Runs before `CodeDomVisitor` enumerates `member.CustomAttributes`.
-            FixupGeneratedCodeAndEnsureExcludeFromCoverage(member.CustomAttributes);
+            FixupGeneratedCodeAndEnsureExcludeFromCoverage(member.CustomAttributes, CanApplyExcludeFromCodeCoverage(member));
         }
 
         protected override void Visit(CodeAttributeDeclaration attr)
@@ -116,7 +116,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return true;
         }
 
-        private static void FixupGeneratedCodeAndEnsureExcludeFromCoverage(CodeAttributeDeclarationCollection attributes)
+        private static void FixupGeneratedCodeAndEnsureExcludeFromCoverage(CodeAttributeDeclarationCollection attributes, bool canAddExcludeFromCoverage)
         {
             if (attributes == null || attributes.Count == 0)
             {
@@ -153,8 +153,24 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (hasGeneratedCode && !hasExcludeFromCoverage)
             {
-                attributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(s_excludeFromCodeCoverageAttributeFullName)));
+                if (canAddExcludeFromCoverage)
+                {
+                    attributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(s_excludeFromCodeCoverageAttributeFullName)));
+                }
             }
+        }
+
+        private static bool CanApplyExcludeFromCodeCoverage(CodeTypeDeclaration type)
+        {
+            return type != null && (type.IsClass || type.IsStruct);
+        }
+
+        private static bool CanApplyExcludeFromCodeCoverage(CodeTypeMember member)
+        {
+            return member is CodeConstructor ||
+                   member is CodeMemberMethod ||
+                   member is CodeMemberProperty ||
+                   member is CodeMemberEvent;
         }
 
         private static bool IsExcludeFromCodeCoverageAttribute(CodeTypeReference attributeType)

@@ -655,7 +655,6 @@ namespace Internal_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Internal_NS.IWcfProjectNService")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     internal interface IWcfProjectNService
     {
         
@@ -788,7 +787,6 @@ namespace Internal_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     internal interface IWcfProjectNServiceChannel : Internal_NS.IWcfProjectNService, System.ServiceModel.IClientChannel
     {
     }

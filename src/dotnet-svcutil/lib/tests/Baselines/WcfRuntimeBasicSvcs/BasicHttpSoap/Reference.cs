@@ -13,7 +13,6 @@ namespace BasicHttpSoap_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="BasicHttpSoap_NS.IWcfSoapService")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfSoapService
     {
         
@@ -143,7 +142,6 @@ namespace BasicHttpSoap_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfSoapServiceChannel : BasicHttpSoap_NS.IWcfSoapService, System.ServiceModel.IClientChannel
     {
     }
