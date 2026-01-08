@@ -75,7 +75,6 @@ namespace UpdateServiceRefOptions_Folder_With_Spaces
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UpdateServiceRefOptions_Folder_With_Spaces.ITypeReuseSvc")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ITypeReuseSvc
     {
         
@@ -87,7 +86,6 @@ namespace UpdateServiceRefOptions_Folder_With_Spaces
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface ITypeReuseSvcChannel : UpdateServiceRefOptions_Folder_With_Spaces.ITypeReuseSvc, System.ServiceModel.IClientChannel
     {
     }
