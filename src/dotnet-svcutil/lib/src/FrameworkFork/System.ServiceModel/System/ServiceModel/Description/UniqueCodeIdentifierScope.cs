@@ -5,7 +5,7 @@
 namespace System.ServiceModel.Description
 {
     using System;
-    using Microsoft.CodeDom;
+    using System.CodeDom;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Runtime;
@@ -90,7 +90,7 @@ namespace System.ServiceModel.Description
             if (String.IsNullOrEmpty(identifier))
                 return defaultIdentifier;
 
-            if (identifier.Length <= MaxIdentifierLength && Microsoft.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(identifier))
+            if (identifier.Length <= MaxIdentifierLength && System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(identifier))
                 return identifier;
 
             StringBuilder builder = new StringBuilder();

@@ -5,7 +5,7 @@
 using System.ServiceModel.Security;
 using System.Diagnostics;
 using System.Net.Security;
-using Microsoft.CodeDom;
+using System.CodeDom;
 
 namespace System.ServiceModel.Description
 {

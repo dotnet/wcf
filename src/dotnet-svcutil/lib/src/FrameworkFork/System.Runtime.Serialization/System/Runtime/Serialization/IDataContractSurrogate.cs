@@ -5,7 +5,7 @@
 namespace System.Runtime.Serialization
 {
     using System;
-    using Microsoft.CodeDom;
+    using System.CodeDom;
     using System.Reflection;
     using System.Collections.ObjectModel;
 
