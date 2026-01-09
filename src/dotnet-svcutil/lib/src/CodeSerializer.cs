@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel.Description;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Xml;
 using Microsoft.Xml.Schema;
 using WsdlNS = System.Web.Services.Description;
@@ -67,7 +68,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 try
                 {
-                    _codeProvider.GenerateCodeFromCompileUnit(codeCompileUnit, writer, codeGenOptions);
+                    string generated;
+                    using (StringWriter buffer = new StringWriter(CultureInfo.InvariantCulture))
+                    {
+                        _codeProvider.GenerateCodeFromCompileUnit(codeCompileUnit, buffer, codeGenOptions);
+                        generated = buffer.ToString();
+                    }
+
+                    generated = WrapCloseAsyncWithDirectivesIfNeeded(generated);
+                    generated = FixCSharpStringConcatParentheses(generated);
+
+                    writer.Write(generated);
                     writer.Flush();
                 }
                 catch (Exception e)
@@ -91,6 +102,192 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             return filePath;
+        }
+
+        private string WrapCloseAsyncWithDirectivesIfNeeded(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            const string markerPrefix = "SVCUTIL_CLOSEASYNC_WRAP:";
+
+            while (true)
+            {
+                int markerIndex = text.IndexOf(markerPrefix, StringComparison.Ordinal);
+                if (markerIndex < 0)
+                {
+                    return text;
+                }
+
+                int markerLineStart = text.LastIndexOf('\n', markerIndex);
+                markerLineStart = markerLineStart < 0 ? 0 : markerLineStart + 1;
+                int markerLineEnd = text.IndexOf('\n', markerIndex);
+                markerLineEnd = markerLineEnd < 0 ? text.Length : markerLineEnd;
+
+                string markerLine = text.Substring(markerLineStart, markerLineEnd - markerLineStart);
+                string indent = GetLeadingWhitespace(markerLine);
+                int conditionStart = markerLine.IndexOf(markerPrefix, StringComparison.Ordinal) + markerPrefix.Length;
+                string condition = conditionStart >= 0 && conditionStart <= markerLine.Length ? markerLine.Substring(conditionStart).Trim() : string.Empty;
+
+                bool isVisualBasic = string.Equals(_codeProvider.FileExtension, "vb", StringComparison.OrdinalIgnoreCase);
+                string ifStart = isVisualBasic ? $"#If {condition} Then" : $"#if {condition}";
+                string ifEnd = isVisualBasic ? "#End If" : "#endif";
+
+                string ifStartLine = indent + ifStart;
+                string ifEndLine = indent + ifEnd;
+
+                // Find the beginning of the member (we'll insert #if before the marker comment)
+                int insertIfPos = markerLineStart;
+
+                // Find the end of the member
+                int memberEndPos = isVisualBasic
+                    ? FindVisualBasicMemberEnd(text, markerLineEnd)
+                    : FindCSharpMemberEnd(text, markerLineEnd);
+
+                if (memberEndPos <= 0)
+                {
+                    return text;
+                }
+
+                // Remove the marker line (and its trailing newline if present)
+                int removeStart = markerLineStart;
+                int removeEnd = markerLineEnd;
+                if (removeEnd < text.Length && text[removeEnd] == '\n')
+                {
+                    removeEnd++;
+                }
+                text = text.Remove(removeStart, removeEnd - removeStart);
+
+                // Adjust positions after removal
+                int removedLength = removeEnd - removeStart;
+                memberEndPos -= removedLength;
+
+                // Insert #if
+                text = text.Insert(insertIfPos, ifStartLine + Environment.NewLine);
+                memberEndPos += ifStartLine.Length + Environment.NewLine.Length;
+
+                // Insert #endif after the member
+                string endifInsertion;
+                if (memberEndPos > 0 && text[memberEndPos - 1] == '\n')
+                {
+                    // We are already at the start of the next line.
+                    endifInsertion = ifEndLine + Environment.NewLine;
+                }
+                else
+                {
+                    // No newline after the member (EOF). Ensure #endif starts on its own line.
+                    endifInsertion = Environment.NewLine + ifEndLine + Environment.NewLine;
+                }
+
+                text = text.Insert(memberEndPos, endifInsertion);
+            }
+        }
+
+        private static string GetLeadingWhitespace(string line)
+        {
+            if (string.IsNullOrEmpty(line))
+            {
+                return string.Empty;
+            }
+
+            int i = 0;
+            while (i < line.Length)
+            {
+                char ch = line[i];
+                if (ch != ' ' && ch != '\t')
+                {
+                    break;
+                }
+                i++;
+            }
+
+            return i == 0 ? string.Empty : line.Substring(0, i);
+        }
+
+        private static int FindCSharpMemberEnd(string text, int searchStart)
+        {
+            int openBrace = text.IndexOf('{', searchStart);
+            if (openBrace < 0)
+            {
+                return -1;
+            }
+
+            int depth = 0;
+            for (int i = openBrace; i < text.Length; i++)
+            {
+                char ch = text[i];
+                if (ch == '{')
+                {
+                    depth++;
+                }
+                else if (ch == '}')
+                {
+                    depth--;
+                    if (depth == 0)
+                    {
+                        // Return position right after the closing brace line
+                        int lineEnd = text.IndexOf('\n', i);
+                        return lineEnd < 0 ? text.Length : Math.Min(text.Length, lineEnd + 1);
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        private static int FindVisualBasicMemberEnd(string text, int searchStart)
+        {
+            int i = searchStart;
+            while (i < text.Length)
+            {
+                int lineEnd = text.IndexOf('\n', i);
+                if (lineEnd < 0)
+                {
+                    lineEnd = text.Length;
+                }
+
+                string line = text.Substring(i, lineEnd - i).TrimStart();
+                if (line.StartsWith("End Function", StringComparison.OrdinalIgnoreCase) ||
+                    line.StartsWith("End Sub", StringComparison.OrdinalIgnoreCase))
+                {
+                    return lineEnd < text.Length ? lineEnd + 1 : text.Length;
+                }
+
+                i = lineEnd + 1;
+            }
+
+            return -1;
+        }
+
+        private string FixCSharpStringConcatParentheses(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            // Only applies to C# output; VB has different syntax/line-continuation.
+            if (string.Equals(_codeProvider.FileExtension, "vb", StringComparison.OrdinalIgnoreCase))
+            {
+                return text;
+            }
+
+            // System.CodeDom may emit redundant parentheses around multi-line string concatenations, e.g.
+            //   ReplyAction=("a" +
+            //       "b")
+            //   new EndpointAddress(("a" +
+            //       "b"))
+            // Parentheses are redundant for a pure string-literal concat.
+            // Be conservative: only rewrite when the closing ')' is followed by a safe delimiter.
+            const string pattern = "\\(\\s*(?<expr>\"(?:[^\"\\\\]|\\\\.)*\"(?:\\s*\\+\\s*\"(?:[^\"\\\\]|\\\\.)*\")+)\\s*\\)(?=\\s*[,\\)\\];])";
+
+            return Regex.Replace(
+                text,
+                pattern,
+                m => m.Groups["expr"].Value,
+                RegexOptions.CultureInvariant);
         }
 
         private StreamWriter CreateOutputFile()
