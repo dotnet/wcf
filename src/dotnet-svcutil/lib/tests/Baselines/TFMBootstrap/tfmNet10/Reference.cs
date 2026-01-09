@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace tfmNet60_NS
+namespace tfmNet10_NS
 {
     using System.Runtime.Serialization;
     
@@ -74,26 +74,26 @@ namespace tfmNet60_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="tfmNet60_NS.ITypeReuseSvc")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="tfmNet10_NS.ITypeReuseSvc")]
     public interface ITypeReuseSvc
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetData", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataResponse")]
-        System.Threading.Tasks.Task<tfmNet60_NS.BinLibrary> GetDataAsync(int value);
+        System.Threading.Tasks.Task<tfmNet10_NS.BinLibrary> GetDataAsync(int value);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContract", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContractResponse")]
-        System.Threading.Tasks.Task<tfmNet60_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(tfmNet60_NS.TypeReuseCompositeType composite);
+        System.Threading.Tasks.Task<tfmNet10_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(tfmNet10_NS.TypeReuseCompositeType composite);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface ITypeReuseSvcChannel : tfmNet60_NS.ITypeReuseSvc, System.ServiceModel.IClientChannel
+    public interface ITypeReuseSvcChannel : tfmNet10_NS.ITypeReuseSvc, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<tfmNet60_NS.ITypeReuseSvc>, tfmNet60_NS.ITypeReuseSvc
+    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<tfmNet10_NS.ITypeReuseSvc>, tfmNet10_NS.ITypeReuseSvc
     {
         
         /// <summary>
@@ -136,12 +136,12 @@ namespace tfmNet60_NS
         {
         }
         
-        public System.Threading.Tasks.Task<tfmNet60_NS.BinLibrary> GetDataAsync(int value)
+        public System.Threading.Tasks.Task<tfmNet10_NS.BinLibrary> GetDataAsync(int value)
         {
             return base.Channel.GetDataAsync(value);
         }
         
-        public System.Threading.Tasks.Task<tfmNet60_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(tfmNet60_NS.TypeReuseCompositeType composite)
+        public System.Threading.Tasks.Task<tfmNet10_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(tfmNet10_NS.TypeReuseCompositeType composite)
         {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
