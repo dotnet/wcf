@@ -68,10 +68,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             if (methodName.Equals("Close"))
             {
                 string condition = _isVisualBasic ? "Not NET6_0_OR_GREATER" : "!NET6_0_OR_GREATER";
-                CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, condition);
-                CodeIfDirective ifEnd = new CodeIfDirective(CodeIfMode.End, "");
-                implMethod.StartDirectives.Add(ifStart);
-                implMethod.EndDirectives.Add(ifEnd);
+                implMethod.Comments.Add(new CodeCommentStatement("SVCUTIL_CLOSEASYNC_WRAP:" + condition));
             }
 
             return implMethod;

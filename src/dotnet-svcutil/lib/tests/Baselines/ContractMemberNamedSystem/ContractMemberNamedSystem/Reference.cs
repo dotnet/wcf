@@ -24,8 +24,7 @@ namespace ContractMemberNamedSystem_NS
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ContractMemberNamedSystem_NS.CompositeType> GetDataUsingDataContractAsync(ContractMemberNamedSystem_NS.CompositeType composite);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://Microsoft.ServiceModel.Samples/IService1/GetDataUsingDataContract2", ReplyAction="http://Microsoft.ServiceModel.Samples/IService1/GetDataUsingDataContract2Response" +
-            "")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://Microsoft.ServiceModel.Samples/IService1/GetDataUsingDataContract2", ReplyAction="http://Microsoft.ServiceModel.Samples/IService1/GetDataUsingDataContract2Response")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ContractMemberNamedSystem_NS.CompositeType2> GetDataUsingDataContract2Async(ContractMemberNamedSystem_NS.CompositeType2 composite);
     }
