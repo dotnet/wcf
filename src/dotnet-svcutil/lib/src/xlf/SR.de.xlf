@@ -211,7 +211,7 @@ Dies kann daran liegen, dass nicht alle zu generierenden Codeelemente von der Sp
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProvider">
         <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
-        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <target state="translated">Für den an das Argument /{1} übergebenen Wert '{0}' konnte kein Codeanbieter erstellt werden. Stellen Sie sicher, dass der Codeanbieter ordnungsgemäß installiert und konfiguriert ist.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
@@ -554,7 +554,7 @@ Dokumentbezeichner: "{0}".</target>
       </trans-unit>
       <trans-unit id="HelpLanguage">
         <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
-        <target state="new">The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
+        <target state="translated">Die Programmiersprache, mit der Code generiert wird. Beispiele für zu verwendende Sprachennamen sind 'CS' und 'VB'. Standard: C#. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">

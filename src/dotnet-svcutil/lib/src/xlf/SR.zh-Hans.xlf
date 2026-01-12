@@ -211,7 +211,7 @@ This could be because the language does not support all the code elements being 
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProvider">
         <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
-        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <target state="translated">无法为传递给 /{1} 参数的值“{0}”创建代码提供程序。请验证是否正确安装并配置了代码提供程序。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
@@ -554,7 +554,7 @@ Document Identifier: '{0}'.</source>
       </trans-unit>
       <trans-unit id="HelpLanguage">
         <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
-        <target state="new">The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
+        <target state="translated">用于生成代码的编程语言。要使用的语言名称示例包括 CS 和 VB。默认语言名称: C#。(短格式: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">

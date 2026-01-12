@@ -211,7 +211,7 @@ K tomu může dojít v případě, že jazyk nepodporuje všechny generované el
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProvider">
         <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
-        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <target state="translated">Pro hodnotu {0} předanou argumentu /{1} nebylo možné vytvořit poskytovatele kódu. Ověřte, že poskytovatel kódu je správně nainstalován a nakonfigurován.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
@@ -554,7 +554,7 @@ Identifikátor dokumentu: {0}</target>
       </trans-unit>
       <trans-unit id="HelpLanguage">
         <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
-        <target state="new">The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
+        <target state="translated">Programovací jazyk, v němž bude vygenerován kód. Příklady názvů jazyků, které lze použít, jsou CS a VB. Výchozí: C#. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
