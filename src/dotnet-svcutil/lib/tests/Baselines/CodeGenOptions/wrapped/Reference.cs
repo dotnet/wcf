@@ -561,7 +561,6 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public enum DayOfWeek
     {
         
@@ -589,7 +588,6 @@ namespace wrapped_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="wrapped_NS.IWcfProjectNService")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfProjectNService
     {
         
@@ -1503,7 +1501,6 @@ namespace wrapped_NS
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/System.Net")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public enum HttpStatusCode
     {
         
@@ -2319,7 +2316,6 @@ namespace wrapped_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfProjectNServiceChannel : wrapped_NS.IWcfProjectNService, System.ServiceModel.IClientChannel
     {
     }

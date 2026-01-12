@@ -52,7 +52,6 @@ namespace noQuery_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="noQuery_NS.IService1")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IService1
     {
         
@@ -64,7 +63,6 @@ namespace noQuery_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IService1Channel : noQuery_NS.IService1, System.ServiceModel.IClientChannel
     {
     }

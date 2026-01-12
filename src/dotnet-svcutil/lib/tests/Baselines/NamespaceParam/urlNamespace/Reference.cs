@@ -665,7 +665,6 @@ namespace schemas.wcf.projectn.com.wcfnamespace
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName="IWcfProjectNService")]
-[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
 public interface IWcfProjectNService
 {
     
@@ -798,7 +797,6 @@ public partial class ReplyBankingDataNotWrapped
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
 public interface IWcfProjectNServiceChannel : IWcfProjectNService, System.ServiceModel.IClientChannel
 {
 }

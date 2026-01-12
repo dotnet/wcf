@@ -655,7 +655,6 @@ namespace multiDocRelativeAndWildcard_NS
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="multiDocRelativeAndWildcard_NS.IWcfProjectNService")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfProjectNService
     {
         
@@ -788,7 +787,6 @@ namespace multiDocRelativeAndWildcard_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public interface IWcfProjectNServiceChannel : multiDocRelativeAndWildcard_NS.IWcfProjectNService, System.ServiceModel.IClientChannel
     {
     }
