@@ -15,6 +15,7 @@ namespace GenericSortedList_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CollectionContainer", Namespace="http://schemas.datacontract.org/2004/07/CollectionTestService")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class CollectionContainer : object
     {
         
@@ -67,6 +68,7 @@ namespace GenericSortedList_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="DictionaryContainer", Namespace="http://schemas.datacontract.org/2004/07/CollectionTestService")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class DictionaryContainer : object
     {
         
@@ -123,6 +125,7 @@ namespace GenericSortedList_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class Service1Client : System.ServiceModel.ClientBase<GenericSortedList_NS.IService1>, GenericSortedList_NS.IService1
     {
         
