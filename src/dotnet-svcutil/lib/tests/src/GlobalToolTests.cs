@@ -234,5 +234,27 @@ namespace SvcutilTest
             var options = $"{uri} -r {refs} -nl -v minimal -n \"\"*,{this_TestCaseName}_NS\"\"";
             TestGlobalSvcutil(options);
         }
+
+        [Trait("Category", "BVT")]
+        [Theory]
+        [InlineData("LegacyNonGeneric", "System.Collections.ArrayList", "System.Collections.Hashtable")]
+        [InlineData("GenericBaseline", "System.Collections.Generic.List`1", "System.Collections.Generic.Dictionary`2")]
+        [InlineData("GenericSortedDict", "System.Collections.Generic.LinkedList`1", "System.Collections.Generic.SortedDictionary`2")]
+        [InlineData("GenericSortedList", "System.Collections.Generic.LinkedList`1", "System.Collections.Generic.SortedList`2")]
+        [InlineData("ObjectModelOrderedDict", "System.Collections.ObjectModel.ObservableCollection`1", "System.Collections.Specialized.OrderedDictionary")]
+        [InlineData("NonGenericSortedDict", "System.Collections.ObjectModel.Collection`1", "System.Collections.SortedList")]
+        [InlineData("HybridDictionary", "System.Collections.Generic.List`1", "System.Collections.Specialized.HybridDictionary")]
+        [InlineData("ListDictionary", "System.Collections.Generic.LinkedList`1", "System.Collections.Specialized.ListDictionary")]
+        public void CollectionTypeOptionTests(string testCaseName, string collectionType, string dictionaryType)
+        {
+            this_TestCaseName = "CollectionTypeOptionTests";
+            TestFixture();
+
+            InitializeGlobal(testCaseName);
+
+            var uri = Path.Combine(g_TestCasesDir, "wsdl", "CollectionTypes.wsdl");
+            var options = $"{uri} --collectionType {collectionType} --collectionType {dictionaryType} -nl -v minimal -n \"\"*,{testCaseName}_NS\"\"";
+            TestGlobalSvcutil(options);
+        }
     }
 }
