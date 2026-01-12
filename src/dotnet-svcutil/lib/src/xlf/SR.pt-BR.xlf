@@ -211,7 +211,7 @@ Isso pode ter ocorrido porque a linguagem não dá suporte para todos os element
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProvider">
         <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
-        <target state="new">A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</target>
+        <target state="translated">Não foi possível criar um provedor de códigos para o valor: '{0}' passado ao argumento /{1}. Verifique se o provedor de códigos está instalado e configurado corretamente.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
@@ -554,7 +554,7 @@ Identificador do Documento: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpLanguage">
         <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
-        <target state="new">The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
+        <target state="translated">A linguagem de programação a ser usada para gerar o código. Os exemplos de nomes de linguagem são CS e Visual Basic. Padrão: C#. (Forma Abreviada: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
