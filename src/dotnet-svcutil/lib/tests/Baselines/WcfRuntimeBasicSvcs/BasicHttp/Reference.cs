@@ -2747,11 +2747,13 @@ namespace BasicHttp_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/BasicHttp.svc/Text");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/BasicHttp.svc/Text" +
+                        "");
             }
             if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/BasicHttp.svc/Mtom");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/BasicHttp.svc/Mtom" +
+                        "");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

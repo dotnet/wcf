@@ -11,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel.Description;
 using System.Text;
-using System.Text.RegularExpressions;
 using Microsoft.Xml;
 using Microsoft.Xml.Schema;
 using WsdlNS = System.Web.Services.Description;
@@ -76,7 +75,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
 
                     generated = WrapCloseAsyncWithDirectivesIfNeeded(generated);
-                    generated = FixCSharpStringConcatParentheses(generated);
 
                     writer.Write(generated);
                     writer.Flush();
@@ -259,35 +257,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             return -1;
-        }
-
-        private string FixCSharpStringConcatParentheses(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-            {
-                return text;
-            }
-
-            // Only applies to C# output; VB has different syntax/line-continuation.
-            if (string.Equals(_codeProvider.FileExtension, "vb", StringComparison.OrdinalIgnoreCase))
-            {
-                return text;
-            }
-
-            // System.CodeDom may emit redundant parentheses around multi-line string concatenations, e.g.
-            //   ReplyAction=("a" +
-            //       "b")
-            //   new EndpointAddress(("a" +
-            //       "b"))
-            // Parentheses are redundant for a pure string-literal concat.
-            // Be conservative: only rewrite when the closing ')' is followed by a safe delimiter.
-            const string pattern = "\\(\\s*(?<expr>\"(?:[^\"\\\\]|\\\\.)*\"(?:\\s*\\+\\s*\"(?:[^\"\\\\]|\\\\.)*\")+)\\s*\\)(?=\\s*[,\\)\\];])";
-
-            return Regex.Replace(
-                text,
-                pattern,
-                m => m.Groups["expr"].Value,
-                RegexOptions.CultureInvariant);
         }
 
         private StreamWriter CreateOutputFile()

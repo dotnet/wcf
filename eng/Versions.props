@@ -63,7 +63,12 @@
   <PropertyGroup>
     <MicrosoftApplicationInsightsPackageVersion>2.20.0</MicrosoftApplicationInsightsPackageVersion>
     <MicrosoftExtensionsDependencyModelPackageVersion>$(DotNetRuntimeRcVersion)</MicrosoftExtensionsDependencyModelPackageVersion>
-    <SystemCodeDomPackageVersion>$(DotNetRuntimeRcVersion)</SystemCodeDomPackageVersion>
+    <!--
+      Keep System.CodeDom compatible with the oldest supported runtime for dotnet-svcutil.
+      Newer System.CodeDom builds (e.g., net10-rc aligned) can reference framework assemblies
+      that don't exist on .NET 8 at runtime (e.g., System.ComponentModel.Primitives v9.0.0.0).
+    -->
+    <SystemCodeDomPackageVersion>8.0.0</SystemCodeDomPackageVersion>
     <NuGetProjectModelPackageVersion>6.14.0</NuGetProjectModelPackageVersion>
     <NuGetVersioningPackageVersion>6.14.0</NuGetVersioningPackageVersion>
     <SystemReflectionEmitPackageVersion>4.7.0</SystemReflectionEmitPackageVersion>
