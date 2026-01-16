@@ -112,103 +112,104 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             const string markerPrefix = "SVCUTIL_CLOSEASYNC_WRAP:";
             bool isVisualBasic = string.Equals(_codeProvider.FileExtension, "vb", StringComparison.OrdinalIgnoreCase);
 
-            while (true)
+            // Quick check: if the marker doesn't exist, avoid any further work.
+            if (text.IndexOf(markerPrefix, StringComparison.Ordinal) < 0)
             {
-                int markerIndex = text.IndexOf(markerPrefix, StringComparison.Ordinal);
-                if (markerIndex < 0)
-                {
-                    return text;
-                }
-
-                int markerLineStart = text.LastIndexOf('\n', markerIndex);
-                markerLineStart = markerLineStart < 0 ? 0 : markerLineStart + 1;
-                int markerLineEnd = text.IndexOf('\n', markerIndex);
-                markerLineEnd = markerLineEnd < 0 ? text.Length : markerLineEnd;
-
-                string markerLine = text.Substring(markerLineStart, markerLineEnd - markerLineStart);
-                string indent = GetLeadingWhitespace(markerLine);
-                int conditionStart = markerLine.IndexOf(markerPrefix, StringComparison.Ordinal) + markerPrefix.Length;
-                string condition = conditionStart >= 0 && conditionStart <= markerLine.Length
-                    ? markerLine.Substring(conditionStart).Trim().Trim('"')
-                    : string.Empty;
-
-                // The marker is emitted as a #region/#endregion pair around the member.
-                // Convert that pair into #if/#endif (or VB equivalents) in the final generated text.
-                int endRegionLineStart = FindMatchingRegionEndLineStart(text, markerLineEnd, isVisualBasic);
-                if (endRegionLineStart < 0)
-                {
-                    return text;
-                }
-
-                int endRegionLineEnd = text.IndexOf('\n', endRegionLineStart);
-                endRegionLineEnd = endRegionLineEnd < 0 ? text.Length : endRegionLineEnd;
-
-                string ifStart = isVisualBasic ? $"#If {condition} Then" : $"#if {condition}";
-                string ifEnd = isVisualBasic ? "#End If" : "#endif";
-
-                string ifStartLine = indent + ifStart;
-
-                // Replace the #region line with #if.
-                int oldStartLen = markerLineEnd - markerLineStart;
-                text = text.Remove(markerLineStart, oldStartLen).Insert(markerLineStart, ifStartLine);
-
-                // Adjust end-region indices after start-line replacement.
-                int delta = ifStartLine.Length - oldStartLen;
-                endRegionLineStart += delta;
-                endRegionLineEnd += delta;
-
-                string endRegionLine = text.Substring(endRegionLineStart, endRegionLineEnd - endRegionLineStart);
-                string endIndent = GetLeadingWhitespace(endRegionLine);
-                string ifEndLine = endIndent + ifEnd;
-
-                // Replace the #endregion line with #endif.
-                int oldEndLen = endRegionLineEnd - endRegionLineStart;
-                text = text.Remove(endRegionLineStart, oldEndLen).Insert(endRegionLineStart, ifEndLine);
-            }
-        }
-
-        private static int FindMatchingRegionEndLineStart(string text, int searchStart, bool isVisualBasic)
-        {
-            if (string.IsNullOrEmpty(text))
-            {
-                return -1;
+                return text;
             }
 
-            int i = searchStart;
-            if (i < text.Length && text[i] == '\n')
-            {
-                i++;
-            }
+            // The marker is emitted as a #region/#endregion pair around the member.
+            // Convert that pair into #if/#endif (or VB equivalents) in a single pass.
+            // We assume there are no nested #region/#endregion directives within the marker region.
+            var output = new StringBuilder(text.Length + 64);
 
-            int depth = 1;
-            while (i < text.Length)
+            int index = 0;
+            bool anyReplacement = false;
+            bool inMarkerRegion = false;
+
+            while (index < text.Length)
             {
-                int lineEnd = text.IndexOf('\n', i);
-                if (lineEnd < 0)
+                int lineStart = index;
+                int lfIndex = text.IndexOf('\n', index);
+                bool hasLf = lfIndex >= 0;
+                int lineEnd = hasLf ? lfIndex : text.Length;
+
+                int contentEnd = lineEnd;
+                string lineEnding = string.Empty;
+                if (hasLf)
                 {
-                    lineEnd = text.Length;
+                    if (lineEnd > lineStart && text[lineEnd - 1] == '\r')
+                    {
+                        contentEnd = lineEnd - 1;
+                        lineEnding = "\r\n";
+                    }
+                    else
+                    {
+                        lineEnding = "\n";
+                    }
                 }
 
-                string line = text.Substring(i, lineEnd - i);
+                string line = text.Substring(lineStart, contentEnd - lineStart);
                 string trimmed = line.TrimStart();
 
                 if (IsRegionStart(trimmed, isVisualBasic))
                 {
-                    depth++;
+                    bool isMarkerRegion = line.IndexOf(markerPrefix, StringComparison.Ordinal) >= 0;
+                    if (isMarkerRegion)
+                    {
+                        // Defensive: if we ever see the marker region start twice without an end,
+                        // don't risk emitting malformed directives.
+                        if (inMarkerRegion)
+                        {
+                            return text;
+                        }
+
+                        string indent = GetLeadingWhitespace(line);
+                        int conditionStart = line.IndexOf(markerPrefix, StringComparison.Ordinal) + markerPrefix.Length;
+                        string condition = conditionStart >= 0 && conditionStart <= line.Length
+                            ? line.Substring(conditionStart).Trim().Trim('"')
+                            : string.Empty;
+
+                        string ifStart = isVisualBasic ? $"#If {condition} Then" : $"#if {condition}";
+                        output.Append(indent).Append(ifStart).Append(lineEnding);
+                        anyReplacement = true;
+                        inMarkerRegion = true;
+                    }
+                    else
+                    {
+                        output.Append(line).Append(lineEnding);
+                    }
                 }
                 else if (IsRegionEnd(trimmed, isVisualBasic))
                 {
-                    depth--;
-                    if (depth == 0)
+                    if (inMarkerRegion)
                     {
-                        return i;
+                        string indent = GetLeadingWhitespace(line);
+                        string ifEnd = isVisualBasic ? "#End If" : "#endif";
+                        output.Append(indent).Append(ifEnd).Append(lineEnding);
+                        anyReplacement = true;
+                        inMarkerRegion = false;
+                    }
+                    else
+                    {
+                        output.Append(line).Append(lineEnding);
                     }
                 }
+                else
+                {
+                    output.Append(line).Append(lineEnding);
+                }
 
-                i = lineEnd + 1;
+                index = hasLf ? lfIndex + 1 : text.Length;
             }
 
-            return -1;
+            // If the marker region wasn't properly closed, avoid generating broken code.
+            if (inMarkerRegion)
+            {
+                return text;
+            }
+
+            return anyReplacement ? output.ToString() : text;
         }
 
         private static bool IsRegionStart(string trimmedLine, bool isVisualBasic)
