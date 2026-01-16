@@ -110,6 +110,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             const string markerPrefix = "SVCUTIL_CLOSEASYNC_WRAP:";
+            bool isVisualBasic = string.Equals(_codeProvider.FileExtension, "vb", StringComparison.OrdinalIgnoreCase);
 
             while (true)
             {
@@ -127,60 +128,111 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 string markerLine = text.Substring(markerLineStart, markerLineEnd - markerLineStart);
                 string indent = GetLeadingWhitespace(markerLine);
                 int conditionStart = markerLine.IndexOf(markerPrefix, StringComparison.Ordinal) + markerPrefix.Length;
-                string condition = conditionStart >= 0 && conditionStart <= markerLine.Length ? markerLine.Substring(conditionStart).Trim() : string.Empty;
+                string condition = conditionStart >= 0 && conditionStart <= markerLine.Length
+                    ? markerLine.Substring(conditionStart).Trim().Trim('"')
+                    : string.Empty;
 
-                bool isVisualBasic = string.Equals(_codeProvider.FileExtension, "vb", StringComparison.OrdinalIgnoreCase);
-                string ifStart = isVisualBasic ? $"#If {condition} Then" : $"#if {condition}";
-                string ifEnd = isVisualBasic ? "#End If" : "#endif";
-
-                string ifStartLine = indent + ifStart;
-                string ifEndLine = indent + ifEnd;
-
-                // Find the beginning of the member (we'll insert #if before the marker comment)
-                int insertIfPos = markerLineStart;
-
-                // Find the end of the member
-                int memberEndPos = isVisualBasic
-                    ? FindVisualBasicMemberEnd(text, markerLineEnd)
-                    : FindCSharpMemberEnd(text, markerLineEnd);
-
-                if (memberEndPos <= 0)
+                // The marker is emitted as a #region/#endregion pair around the member.
+                // Convert that pair into #if/#endif (or VB equivalents) in the final generated text.
+                int endRegionLineStart = FindMatchingRegionEndLineStart(text, markerLineEnd, isVisualBasic);
+                if (endRegionLineStart < 0)
                 {
                     return text;
                 }
 
-                // Remove the marker line (and its trailing newline if present)
-                int removeStart = markerLineStart;
-                int removeEnd = markerLineEnd;
-                if (removeEnd < text.Length && text[removeEnd] == '\n')
-                {
-                    removeEnd++;
-                }
-                text = text.Remove(removeStart, removeEnd - removeStart);
+                int endRegionLineEnd = text.IndexOf('\n', endRegionLineStart);
+                endRegionLineEnd = endRegionLineEnd < 0 ? text.Length : endRegionLineEnd;
 
-                // Adjust positions after removal
-                int removedLength = removeEnd - removeStart;
-                memberEndPos -= removedLength;
+                string ifStart = isVisualBasic ? $"#If {condition} Then" : $"#if {condition}";
+                string ifEnd = isVisualBasic ? "#End If" : "#endif";
 
-                // Insert #if
-                text = text.Insert(insertIfPos, ifStartLine + Environment.NewLine);
-                memberEndPos += ifStartLine.Length + Environment.NewLine.Length;
+                string ifStartLine = indent + ifStart;
 
-                // Insert #endif after the member
-                string endifInsertion;
-                if (memberEndPos > 0 && text[memberEndPos - 1] == '\n')
-                {
-                    // We are already at the start of the next line.
-                    endifInsertion = ifEndLine + Environment.NewLine;
-                }
-                else
-                {
-                    // No newline after the member (EOF). Ensure #endif starts on its own line.
-                    endifInsertion = Environment.NewLine + ifEndLine + Environment.NewLine;
-                }
+                // Replace the #region line with #if.
+                int oldStartLen = markerLineEnd - markerLineStart;
+                text = text.Remove(markerLineStart, oldStartLen).Insert(markerLineStart, ifStartLine);
 
-                text = text.Insert(memberEndPos, endifInsertion);
+                // Adjust end-region indices after start-line replacement.
+                int delta = ifStartLine.Length - oldStartLen;
+                endRegionLineStart += delta;
+                endRegionLineEnd += delta;
+
+                string endRegionLine = text.Substring(endRegionLineStart, endRegionLineEnd - endRegionLineStart);
+                string endIndent = GetLeadingWhitespace(endRegionLine);
+                string ifEndLine = endIndent + ifEnd;
+
+                // Replace the #endregion line with #endif.
+                int oldEndLen = endRegionLineEnd - endRegionLineStart;
+                text = text.Remove(endRegionLineStart, oldEndLen).Insert(endRegionLineStart, ifEndLine);
             }
+        }
+
+        private static int FindMatchingRegionEndLineStart(string text, int searchStart, bool isVisualBasic)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return -1;
+            }
+
+            int i = searchStart;
+            if (i < text.Length && text[i] == '\n')
+            {
+                i++;
+            }
+
+            int depth = 1;
+            while (i < text.Length)
+            {
+                int lineEnd = text.IndexOf('\n', i);
+                if (lineEnd < 0)
+                {
+                    lineEnd = text.Length;
+                }
+
+                string line = text.Substring(i, lineEnd - i);
+                string trimmed = line.TrimStart();
+
+                if (IsRegionStart(trimmed, isVisualBasic))
+                {
+                    depth++;
+                }
+                else if (IsRegionEnd(trimmed, isVisualBasic))
+                {
+                    depth--;
+                    if (depth == 0)
+                    {
+                        return i;
+                    }
+                }
+
+                i = lineEnd + 1;
+            }
+
+            return -1;
+        }
+
+        private static bool IsRegionStart(string trimmedLine, bool isVisualBasic)
+        {
+            if (string.IsNullOrEmpty(trimmedLine))
+            {
+                return false;
+            }
+
+            return isVisualBasic
+                ? trimmedLine.StartsWith("#Region", StringComparison.OrdinalIgnoreCase)
+                : trimmedLine.StartsWith("#region", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsRegionEnd(string trimmedLine, bool isVisualBasic)
+        {
+            if (string.IsNullOrEmpty(trimmedLine))
+            {
+                return false;
+            }
+
+            return isVisualBasic
+                ? trimmedLine.StartsWith("#End Region", StringComparison.OrdinalIgnoreCase)
+                : trimmedLine.StartsWith("#endregion", StringComparison.OrdinalIgnoreCase);
         }
 
         private static string GetLeadingWhitespace(string line)
@@ -204,60 +256,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return i == 0 ? string.Empty : line.Substring(0, i);
         }
 
-        private static int FindCSharpMemberEnd(string text, int searchStart)
-        {
-            int openBrace = text.IndexOf('{', searchStart);
-            if (openBrace < 0)
-            {
-                return -1;
-            }
-
-            int depth = 0;
-            for (int i = openBrace; i < text.Length; i++)
-            {
-                char ch = text[i];
-                if (ch == '{')
-                {
-                    depth++;
-                }
-                else if (ch == '}')
-                {
-                    depth--;
-                    if (depth == 0)
-                    {
-                        // Return position right after the closing brace line
-                        int lineEnd = text.IndexOf('\n', i);
-                        return lineEnd < 0 ? text.Length : Math.Min(text.Length, lineEnd + 1);
-                    }
-                }
-            }
-
-            return -1;
-        }
-
-        private static int FindVisualBasicMemberEnd(string text, int searchStart)
-        {
-            int i = searchStart;
-            while (i < text.Length)
-            {
-                int lineEnd = text.IndexOf('\n', i);
-                if (lineEnd < 0)
-                {
-                    lineEnd = text.Length;
-                }
-
-                string line = text.Substring(i, lineEnd - i).TrimStart();
-                if (line.StartsWith("End Function", StringComparison.OrdinalIgnoreCase) ||
-                    line.StartsWith("End Sub", StringComparison.OrdinalIgnoreCase))
-                {
-                    return lineEnd < text.Length ? lineEnd + 1 : text.Length;
-                }
-
-                i = lineEnd + 1;
-            }
-
-            return -1;
-        }
 
         private StreamWriter CreateOutputFile()
         {
