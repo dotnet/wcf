@@ -68,7 +68,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             if (methodName.Equals("Close"))
             {
                 string condition = _isVisualBasic ? "Not NET6_0_OR_GREATER" : "!NET6_0_OR_GREATER";
-                implMethod.Comments.Add(new CodeCommentStatement("SVCUTIL_CLOSEASYNC_WRAP:" + condition));
+                // System.CodeDom doesn't provide a CodeIfDirectiveStatement; we use a region directive as a stable marker
+                // and post-process the generated text to convert it into the desired conditional compilation directives.
+                implMethod.StartDirectives.Add(new CodeRegionDirective(CodeRegionMode.Start, "SVCUTIL_CLOSEASYNC_WRAP:" + condition));
+                implMethod.EndDirectives.Add(new CodeRegionDirective(CodeRegionMode.End, string.Empty));
             }
 
             return implMethod;
