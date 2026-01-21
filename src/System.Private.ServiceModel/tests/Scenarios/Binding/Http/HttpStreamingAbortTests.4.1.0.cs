@@ -14,6 +14,9 @@ using Xunit;
 
 public static class HttpStreamingAbortTests
 {
+    private const int BufferSize = 1024;
+    private const int LargeStreamSize = 500000; // 500KB
+
     [WcfFact]
     [OuterLoop]
     public static void HttpStreaming_Abort_During_Response_Receiving()
@@ -48,14 +51,14 @@ public static class HttpStreamingAbortTests
             serviceProxy = factory.CreateChannel();
 
             // Create a large string to ensure the response takes time to read
-            string testString = new string('a', 500000); // 500KB of data
+            string testString = new string('a', LargeStreamSize);
 
             // *** EXECUTE *** \\
             // Start the call to get a stream response
             responseStream = serviceProxy.GetStreamFromString(testString);
 
             // Start reading a small amount from the stream to ensure we're in the receiving phase
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[BufferSize];
             int bytesRead = responseStream.Read(buffer, 0, buffer.Length);
 
             // Verify we actually received some data
@@ -139,14 +142,14 @@ public static class HttpStreamingAbortTests
             serviceProxy = factory.CreateChannel();
 
             // Create a large string to ensure the response takes time to read
-            string testString = new string('a', 500000); // 500KB of data
+            string testString = new string('a', LargeStreamSize);
 
             // *** EXECUTE *** \\
             // Start the call to get a stream response
             responseStream = serviceProxy.GetStreamFromString(testString);
 
             // Start reading a small amount from the stream to ensure we're in the receiving phase
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[BufferSize];
             int bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length);
 
             // Verify we actually received some data
