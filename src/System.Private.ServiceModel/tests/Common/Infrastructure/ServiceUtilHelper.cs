@@ -497,11 +497,11 @@ public static class ServiceUtilHelper
             
             // Split ServiceUri into host and path components
             // ServiceUri can be "hostname" or "hostname/path"
-            int slashIndex = serviceUri.IndexOf('/');
-            if (slashIndex >= 0)
+            int pathSeparatorIndex = serviceUri.IndexOf('/');
+            if (pathSeparatorIndex >= 0)
             {
-                builder.Host = serviceUri.Substring(0, slashIndex);
-                builder.Path = serviceUri.Substring(slashIndex);
+                builder.Host = serviceUri.Substring(0, pathSeparatorIndex);
+                builder.Path = serviceUri.Substring(pathSeparatorIndex);
             }
             else
             {
