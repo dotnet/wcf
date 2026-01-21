@@ -67,7 +67,7 @@ public static class HttpStreamingAbortTests
 
             // Try to continue reading from the stream
             // If Abort() works correctly, this should throw an exception
-            // If Abort() doesn't work, this will hang until the SendTimeout expires
+            // If Abort() doesn't work, this will hang until the ReceiveTimeout expires
             try
             {
                 while (responseStream.Read(buffer, 0, buffer.Length) > 0)
@@ -157,7 +157,7 @@ public static class HttpStreamingAbortTests
 
             // Try to continue reading from the stream asynchronously
             // If Abort() works correctly, this should throw an exception
-            // If Abort() doesn't work, this will hang until the SendTimeout expires
+            // If Abort() doesn't work, this will hang until the ReceiveTimeout expires
             try
             {
                 while ((await responseStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
