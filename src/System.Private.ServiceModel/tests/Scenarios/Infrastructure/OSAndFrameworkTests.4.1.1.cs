@@ -67,4 +67,21 @@ public class OSAndFrameworkTests
                                          "Which maps to OSID: '{1}'\n" +
                                            "Detected the current runtimeOSDescription as: '{2}'", testRuntime, id.Name(), runtimeOSDescription));
     }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void ValidateTestServerHostname()
+    {
+        var serviceUri = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+        Assert.False(string.IsNullOrEmpty(serviceUri), $"Test property {TestProperties.ServiceUri_PropertyName} is null or empty");
+        // Check if it can be used to create a Uri
+        try
+        {
+            var basicHttpEndpoint = Endpoints.HttpBaseAddress_Basic;
+        }
+        catch (Exception e)
+        {
+            Assert.Fail($"Creating endpoint address with serviceUri {serviceUri} threw exeception \"{e.Message}\"");
+        }
+    }
 }
