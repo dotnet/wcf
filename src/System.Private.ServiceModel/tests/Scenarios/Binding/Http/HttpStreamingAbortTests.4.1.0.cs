@@ -88,12 +88,11 @@ public static class HttpStreamingAbortTests
 
             // The exception should be related to the communication object being aborted
             // It could be CommunicationObjectAbortedException or an IOException wrapping it
-            string exceptionType = caughtException.GetType().Name;
             Assert.True(
-                exceptionType == "CommunicationObjectAbortedException" ||
-                exceptionType == "IOException" ||
-                exceptionType == "CommunicationException",
-                $"Expected CommunicationObjectAbortedException, IOException, or CommunicationException, but got: {exceptionType}");
+                caughtException is CommunicationObjectAbortedException ||
+                caughtException is IOException ||
+                caughtException is CommunicationException,
+                $"Expected CommunicationObjectAbortedException, IOException, or CommunicationException, but got: {caughtException.GetType().Name}");
         }
         catch (TimeoutException)
         {
@@ -179,13 +178,12 @@ public static class HttpStreamingAbortTests
 
             // The exception should be related to the communication object being aborted
             // It could be CommunicationObjectAbortedException or an IOException wrapping it
-            string exceptionType = caughtException.GetType().Name;
             Assert.True(
-                exceptionType == "CommunicationObjectAbortedException" ||
-                exceptionType == "IOException" ||
-                exceptionType == "CommunicationException" ||
-                exceptionType == "OperationCanceledException",
-                $"Expected CommunicationObjectAbortedException, IOException, CommunicationException, or OperationCanceledException, but got: {exceptionType}");
+                caughtException is CommunicationObjectAbortedException ||
+                caughtException is IOException ||
+                caughtException is CommunicationException ||
+                caughtException is OperationCanceledException,
+                $"Expected CommunicationObjectAbortedException, IOException, CommunicationException, or OperationCanceledException, but got: {caughtException.GetType().Name}");
         }
         catch (TimeoutException)
         {
