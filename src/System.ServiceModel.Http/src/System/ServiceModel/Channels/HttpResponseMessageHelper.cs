@@ -21,10 +21,11 @@ namespace System.ServiceModel.Channels
         private readonly MessageEncoder _encoder;
         private readonly HttpRequestMessage _httpRequestMessage;
         private readonly HttpResponseMessage _httpResponseMessage;
+        private readonly CancellationToken _abortToken;
         private string _contentType;
         private long _contentLength;
 
-        public HttpResponseMessageHelper(HttpResponseMessage httpResponseMessage, HttpChannelFactory<IRequestChannel> factory)
+        public HttpResponseMessageHelper(HttpResponseMessage httpResponseMessage, HttpChannelFactory<IRequestChannel> factory, CancellationToken abortToken = default)
         {
             Contract.Assert(httpResponseMessage != null);
             Contract.Assert(httpResponseMessage.RequestMessage != null);
@@ -33,6 +34,7 @@ namespace System.ServiceModel.Channels
             _httpRequestMessage = httpResponseMessage.RequestMessage;
             _factory = factory;
             _encoder = factory.MessageEncoderFactory.Encoder;
+            _abortToken = abortToken;
         }
 
         internal async Task<Message> ParseIncomingResponse(TimeoutHelper timeoutHelper)
@@ -188,7 +190,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                return await _encoder.ReadMessageAsync(await inputStreamTask, _factory.BufferManager, _factory.MaxBufferSize, _contentType, await timeoutHelper.GetCancellationTokenAsync());
+                return await _encoder.ReadMessageAsync(await inputStreamTask, _factory.BufferManager, _factory.MaxBufferSize, _contentType, await GetCombinedCancellationTokenAsync(timeoutHelper));
             }
             catch (XmlException xmlException)
             {
@@ -212,7 +214,7 @@ namespace System.ServiceModel.Channels
             byte[] buffer = messageBuffer.Array;
             int offset = 0;
             int count = messageBuffer.Count;
-            var ct = await timeoutHelper.GetCancellationTokenAsync();
+            var ct = await GetCombinedCancellationTokenAsync(timeoutHelper);
 
             while (count > 0)
             {
@@ -273,7 +275,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                var ct = await timeoutHelper.GetCancellationTokenAsync();
+                var ct = await GetCombinedCancellationTokenAsync(timeoutHelper);
                 // if we're chunked, make sure we've consumed the whole body
                 if (_contentLength == -1 && buffer.Count == _factory.MaxReceivedMessageSize)
                 {
@@ -304,6 +306,30 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        private async Task<CancellationToken> GetCombinedCancellationTokenAsync(TimeoutHelper timeoutHelper)
+        {
+            var timeoutToken = await timeoutHelper.GetCancellationTokenAsync();
+            
+            // If no abort token is provided, just use the timeout token
+            if (_abortToken == default || !_abortToken.CanBeCanceled)
+            {
+                return timeoutToken;
+            }
+
+            // If the timeout token can't be cancelled, just use the abort token
+            if (!timeoutToken.CanBeCanceled)
+            {
+                return _abortToken;
+            }
+
+            // Both tokens can be cancelled, so create a linked token source
+            // Note: The caller is responsible for disposing the linked token source if needed
+            // However, since we're using it for short-lived operations within this helper,
+            // we'll rely on the garbage collector
+            var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken, _abortToken);
+            return linkedCts.Token;
+        }
+
         private async Task<Stream> GetStreamAsync(TimeoutHelper timeoutHelper)
         {
             var content = _httpResponseMessage.Content;
@@ -313,7 +339,7 @@ namespace System.ServiceModel.Channels
             {
                 contentStream = await content.ReadAsStreamAsync();
                 _contentLength = content.Headers.ContentLength.HasValue ? content.Headers.ContentLength.Value : -1;
-                var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
+                var cancellationToken = await GetCombinedCancellationTokenAsync(timeoutHelper);
                 if (_contentLength <= 0)
                 {
                     var preReadBuffer = new byte[1];
