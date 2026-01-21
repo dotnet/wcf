@@ -24,6 +24,8 @@ namespace System.ServiceModel.Channels
         private readonly CancellationToken _abortToken;
         private string _contentType;
         private long _contentLength;
+        private CancellationTokenSource _linkedCts;
+        private CancellationToken? _cachedCombinedToken;
 
         public HttpResponseMessageHelper(HttpResponseMessage httpResponseMessage, HttpChannelFactory<IRequestChannel> factory, CancellationToken abortToken = default)
         {
@@ -308,28 +310,33 @@ namespace System.ServiceModel.Channels
 
         private async Task<CancellationToken> GetCombinedCancellationTokenAsync(TimeoutHelper timeoutHelper)
         {
+            // If we've already computed the combined token, return it
+            if (_cachedCombinedToken.HasValue)
+            {
+                return _cachedCombinedToken.Value;
+            }
+
             var timeoutToken = await timeoutHelper.GetCancellationTokenAsync();
             
             // If no abort token is provided or it can't be cancelled, just use the timeout token
             if (!_abortToken.CanBeCanceled)
             {
+                _cachedCombinedToken = timeoutToken;
                 return timeoutToken;
             }
 
             // If the timeout token can't be cancelled, just use the abort token
             if (!timeoutToken.CanBeCanceled)
             {
+                _cachedCombinedToken = _abortToken;
                 return _abortToken;
             }
 
             // Both tokens can be cancelled, so create a linked token source
-            // Note: This creates a CancellationTokenSource that is not explicitly disposed.
-            // However, the HttpResponseMessageHelper has a short lifetime (single response parsing),
-            // and the CTS will be garbage collected when the helper goes out of scope.
-            // The registrations within the linked CTS will be automatically cleaned up when
-            // either source token is cancelled or the CTS is finalized.
-            var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken, _abortToken);
-            return linkedCts.Token;
+            // Store the CTS so we can dispose it later if needed
+            _linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken, _abortToken);
+            _cachedCombinedToken = _linkedCts.Token;
+            return _linkedCts.Token;
         }
 
         private async Task<Stream> GetStreamAsync(TimeoutHelper timeoutHelper)
