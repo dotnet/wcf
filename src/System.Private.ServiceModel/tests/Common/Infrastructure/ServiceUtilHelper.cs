@@ -501,7 +501,15 @@ public static class ServiceUtilHelper
             if (pathSeparatorIndex >= 0)
             {
                 builder.Host = serviceUri.Substring(0, pathSeparatorIndex);
-                builder.Path = serviceUri.Substring(pathSeparatorIndex);
+                string path = serviceUri.Substring(pathSeparatorIndex);
+                
+                // Ensure path has trailing slash
+                if (!path.EndsWith("/"))
+                {
+                    path = path + "/";
+                }
+                
+                builder.Path = path;
             }
             else
             {
