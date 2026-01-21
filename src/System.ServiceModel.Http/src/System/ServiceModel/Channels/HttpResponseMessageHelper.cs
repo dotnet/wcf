@@ -310,8 +310,8 @@ namespace System.ServiceModel.Channels
         {
             var timeoutToken = await timeoutHelper.GetCancellationTokenAsync();
             
-            // If no abort token is provided, just use the timeout token
-            if (_abortToken == default || !_abortToken.CanBeCanceled)
+            // If no abort token is provided or it can't be cancelled, just use the timeout token
+            if (!_abortToken.CanBeCanceled)
             {
                 return timeoutToken;
             }
@@ -323,9 +323,11 @@ namespace System.ServiceModel.Channels
             }
 
             // Both tokens can be cancelled, so create a linked token source
-            // Note: The caller is responsible for disposing the linked token source if needed
-            // However, since we're using it for short-lived operations within this helper,
-            // we'll rely on the garbage collector
+            // Note: This creates a CancellationTokenSource that is not explicitly disposed.
+            // However, the HttpResponseMessageHelper has a short lifetime (single response parsing),
+            // and the CTS will be garbage collected when the helper goes out of scope.
+            // The registrations within the linked CTS will be automatically cleaned up when
+            // either source token is cancelled or the CTS is finalized.
             var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken, _abortToken);
             return linkedCts.Token;
         }
