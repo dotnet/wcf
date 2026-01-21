@@ -38,8 +38,6 @@ public static class HttpStreamingAbortTests
                 new HttpTransportBindingElement
                 {
                     TransferMode = TransferMode.StreamedResponse,
-                    // Set a short SendTimeout so that if Abort() doesn't work,
-                    // we'll get a TimeoutException relatively quickly
                     MaxReceivedMessageSize = 1024 * 1024 // 1 MB
                 });
 
