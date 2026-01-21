@@ -493,7 +493,21 @@ public static class ServiceUtilHelper
         var builder = new UriBuilder();
         try
         {
-            builder.Host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+            string serviceUri = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+            
+            // Split ServiceUri into host and path components
+            // ServiceUri can be "hostname" or "hostname/path"
+            int slashIndex = serviceUri.IndexOf('/');
+            if (slashIndex >= 0)
+            {
+                builder.Host = serviceUri.Substring(0, slashIndex);
+                builder.Path = serviceUri.Substring(slashIndex);
+            }
+            else
+            {
+                builder.Host = serviceUri;
+            }
+            
             builder.Scheme = protocol;
 
             if (!IISHosted)
