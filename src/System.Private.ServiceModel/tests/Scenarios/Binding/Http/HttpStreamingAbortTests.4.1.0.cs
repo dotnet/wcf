@@ -41,8 +41,8 @@ public static class HttpStreamingAbortTests
                     MaxReceivedMessageSize = 1024 * 1024 // 1 MB
                 });
 
-            // Set a reasonable SendTimeout - if Abort() doesn't work, this will cause a timeout
-            binding.SendTimeout = TimeSpan.FromSeconds(10);
+            // Set a reasonable ReceiveTimeout - if Abort() doesn't work, this will cause a timeout
+            binding.ReceiveTimeout = TimeSpan.FromSeconds(10);
 
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.CustomTextEncoderStreamed_Address));
             serviceProxy = factory.CreateChannel();
@@ -132,8 +132,8 @@ public static class HttpStreamingAbortTests
                     MaxReceivedMessageSize = 1024 * 1024 // 1 MB
                 });
 
-            // Set a reasonable SendTimeout - if Abort() doesn't work, this will cause a timeout
-            binding.SendTimeout = TimeSpan.FromSeconds(10);
+            // Set a reasonable ReceiveTimeout - if Abort() doesn't work, this will cause a timeout
+            binding.ReceiveTimeout = TimeSpan.FromSeconds(10);
 
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.CustomTextEncoderStreamed_Address));
             serviceProxy = factory.CreateChannel();
