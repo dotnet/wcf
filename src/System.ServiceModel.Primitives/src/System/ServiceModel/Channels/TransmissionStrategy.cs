@@ -185,7 +185,7 @@ namespace System.ServiceModel.Channels
                 throw Fx.AssertAndThrow("Last message supported only in February 2005.");
             }
 
-            (MessageAttemptInfo attemptInfo, _) = await InternalAddAsync(message, true, timeout, state);
+            (MessageAttemptInfo attemptInfo, _) = await InternalAddAsync(message, true, timeout, state).ConfigureAwait(false);
             return attemptInfo;
         }
 
@@ -436,7 +436,7 @@ namespace System.ServiceModel.Channels
                 _waitQueue.Enqueue(adder);
             }
 
-            attemptInfo = await adder.WaitAsync(timeout);
+            attemptInfo = await adder.WaitAsync(timeout).ConfigureAwait(false);
             return (attemptInfo, true);
         }
 
@@ -776,7 +776,7 @@ namespace System.ServiceModel.Channels
 
             public async Task<MessageAttemptInfo> WaitAsync(TimeSpan timeout)
             {
-                if (!await _tcs.Task.AwaitWithTimeout(timeout))
+                if (!await _tcs.Task.AwaitWithTimeout(timeout).ConfigureAwait(false))
                 {
                     if (_strategy.RemoveAdder(this) && _exception == null)
                         _exception = new TimeoutException(SRP.Format(SRP.TimeoutOnAddToWindow, timeout));

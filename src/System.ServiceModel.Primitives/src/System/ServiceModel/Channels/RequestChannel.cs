@@ -85,7 +85,7 @@ namespace System.ServiceModel.Channels
             IRequestBase[] pendingRequests = SetupWaitForPendingRequests();
             if (pendingRequests != null)
             {
-                if (!await _closedTcs.Task.AwaitWithTimeout(timeout))
+                if (!await _closedTcs.Task.AwaitWithTimeout(timeout).ConfigureAwait(false))
                 {
                     foreach (IRequestBase request in pendingRequests)
                     {
@@ -235,7 +235,7 @@ namespace System.ServiceModel.Channels
         private async Task<Message> RequestAsyncInternal(Message message, TimeSpan timeout)
         {
             await TaskHelpers.EnsureDefaultTaskScheduler();
-            return await RequestAsync(message, timeout);
+            return await RequestAsync(message, timeout).ConfigureAwait(false);
         }
 
         public async Task<Message> RequestAsync(Message message, TimeSpan timeout)
@@ -264,7 +264,7 @@ namespace System.ServiceModel.Channels
                 TimeSpan savedTimeout = timeoutHelper.RemainingTime();
                 try
                 {
-                    await request.SendRequestAsync(message, timeoutHelper);
+                    await request.SendRequestAsync(message, timeoutHelper).ConfigureAwait(false);
                 }
                 catch (TimeoutException timeoutException)
                 {
@@ -276,7 +276,7 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    reply = await request.ReceiveReplyAsync(timeoutHelper);
+                    reply = await request.ReceiveReplyAsync(timeoutHelper).ConfigureAwait(false);
                 }
                 catch (TimeoutException timeoutException)
                 {

@@ -32,7 +32,7 @@ namespace System.ServiceModel.Security
             {
                 if (SecurityProtocolFactory.ActAsInitiator)
                 {
-                    message = await SecureOutgoingMessageAtInitiatorAsync(message, actor, timeout);
+                    message = await SecureOutgoingMessageAtInitiatorAsync(message, actor, timeout).ConfigureAwait(false);
                 }
                 else
                 {
@@ -51,7 +51,7 @@ namespace System.ServiceModel.Security
 
         protected virtual async Task<Message> SecureOutgoingMessageAtInitiatorAsync(Message message, string actor, TimeSpan timeout)
         {
-            IList<SupportingTokenSpecification> supportingTokens = await TryGetSupportingTokensAsync(SecurityProtocolFactory, Target, Via, message, timeout);
+            IList<SupportingTokenSpecification> supportingTokens = await TryGetSupportingTokensAsync(SecurityProtocolFactory, Target, Via, message, timeout).ConfigureAwait(false);
             SetUpDelayedSecurityExecution(ref message, actor, supportingTokens);
             return message;
         }

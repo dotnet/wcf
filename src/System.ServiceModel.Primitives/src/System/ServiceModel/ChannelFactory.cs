@@ -149,7 +149,7 @@ namespace System.ServiceModel
                 // Only want to call Close if it is in the Opened state
                 if (State == CommunicationState.Opened)
                 {
-                    await ((IAsyncCommunicationObject)this).CloseAsync(DefaultCloseTimeout);
+                    await ((IAsyncCommunicationObject)this).CloseAsync(DefaultCloseTimeout).ConfigureAwait(false);
                 }
                 // Anything not closed by this point should be aborted
                 if (State != CommunicationState.Closed)
@@ -286,7 +286,7 @@ namespace System.ServiceModel
         {
             if (InnerFactory != null)
             {
-                await CloseOtherAsync(InnerFactory, timeout);
+                await CloseOtherAsync(InnerFactory, timeout).ConfigureAwait(false);
             }
         }
 
@@ -304,7 +304,7 @@ namespace System.ServiceModel
         {
             if (InnerFactory != null)
             {
-                await OpenOtherAsync(InnerFactory, timeout);
+                await OpenOtherAsync(InnerFactory, timeout).ConfigureAwait(false);
             }
         }
 

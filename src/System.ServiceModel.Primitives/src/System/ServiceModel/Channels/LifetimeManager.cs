@@ -71,7 +71,7 @@ namespace System.ServiceModel.Channels
                 _state = LifetimeState.Closing;
             }
 
-            await OnCloseAsync(timeout);
+            await OnCloseAsync(timeout).ConfigureAwait(false);
             _state = LifetimeState.Closed;
         }
 
@@ -116,7 +116,7 @@ namespace System.ServiceModel.Channels
 
             if (busyWaiter != null)
             {
-                result = await busyWaiter.WaitAsync(timeout, aborting);
+                result = await busyWaiter.WaitAsync(timeout, aborting).ConfigureAwait(false);
                 if (Interlocked.Decrement(ref _busyWaiterCount) == 0)
                 {
                     busyWaiter.Dispose();
@@ -244,7 +244,7 @@ namespace System.ServiceModel.Channels
 
         protected virtual async Task OnCloseAsync(TimeSpan timeout)
         {
-            switch (await CloseCoreAsync(timeout, false))
+            switch (await CloseCoreAsync(timeout, false).ConfigureAwait(false))
             {
                 case CommunicationWaitResult.Expired:
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SRP.Format(SRP.SFxCloseTimedOut1, timeout)));
@@ -336,7 +336,7 @@ namespace System.ServiceModel.Channels
                 _result = CommunicationWaitResult.Aborted;
             }
 
-            bool expired = !await _tcs.Task.AwaitWithTimeout(timeout);
+            bool expired = !await _tcs.Task.AwaitWithTimeout(timeout).ConfigureAwait(false);
 
             lock (ThisLock)
             {

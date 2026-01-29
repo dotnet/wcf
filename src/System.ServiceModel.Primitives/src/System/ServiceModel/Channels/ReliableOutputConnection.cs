@@ -115,11 +115,11 @@ namespace System.ServiceModel.Channels
 
             if (completeTransfer)
             {
-                await CompleteTransferAsync(timeoutHelper.RemainingTime());
+                await CompleteTransferAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
-            await _shutdownHandle.WaitAsync(timeoutHelper.RemainingTime());
-            await _sendGuard.CloseAsync(timeoutHelper.RemainingTime());
+            await _shutdownHandle.WaitAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await _sendGuard.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             Strategy.Close();
         }
 
@@ -144,12 +144,12 @@ namespace System.ServiceModel.Channels
                         throw Fx.AssertAndThrow("The isLast overload does not take a state.");
                     }
 
-                    attemptInfo = await Strategy.AddLastAsync(message, helper.RemainingTime(), null);
+                    attemptInfo = await Strategy.AddLastAsync(message, helper.RemainingTime(), null).ConfigureAwait(false);
                 }
                 else
                 {
                     bool success;
-                    (attemptInfo, success) = await Strategy.AddAsync(message, helper.RemainingTime(), state);
+                    (attemptInfo, success) = await Strategy.AddAsync(message, helper.RemainingTime(), state).ConfigureAwait(false);
                     if (!success)
                     {
                         return false;
@@ -176,7 +176,7 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    await _sendAsyncHandler(attemptInfo, helper.RemainingTime(), false);
+                    await _sendAsyncHandler(attemptInfo, helper.RemainingTime(), false).ConfigureAwait(false);
                 }
                 catch (QuotaExceededException)
                 {
@@ -203,7 +203,7 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    await _sendAsyncHandler(attemptInfo, _sendTimeout, true);
+                    await _sendAsyncHandler(attemptInfo, _sendTimeout, true).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -308,7 +308,7 @@ namespace System.ServiceModel.Channels
                                 break;
                             }
 
-                            await _sendAsyncHandler(attemptInfo, _sendTimeout, true);
+                            await _sendAsyncHandler(attemptInfo, _sendTimeout, true).ConfigureAwait(false);
                         }
                         finally
                         {

@@ -208,14 +208,14 @@ namespace System.ServiceModel.Channels
         protected internal override async Task OnOpenAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await SecurityUtilsEx.OpenTokenAuthenticatorIfRequiredAsync(ClientCertificateAuthenticator, timeoutHelper.RemainingTime());
+            await SecurityUtilsEx.OpenTokenAuthenticatorIfRequiredAsync(ClientCertificateAuthenticator, timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             if (_serverTokenProvider != null)
             {
-                await SecurityUtils.OpenTokenProviderIfRequiredAsync(_serverTokenProvider, timeoutHelper.RemainingTime());
+                await SecurityUtils.OpenTokenProviderIfRequiredAsync(_serverTokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 SecurityToken token = _serverTokenProvider.GetTokenAsync(timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
                 SetupServerCertificate(token);
-                await SecurityUtils.CloseTokenProviderIfRequiredAsync(_serverTokenProvider, timeoutHelper.RemainingTime());
+                await SecurityUtils.CloseTokenProviderIfRequiredAsync(_serverTokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 _serverTokenProvider = null;
             }
         }
@@ -328,21 +328,21 @@ namespace System.ServiceModel.Channels
         internal override async ValueTask OpenAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await base.OpenAsync(timeoutHelper.RemainingTime());
+            await base.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             if (_clientCertificateProvider != null)
             {
-                await SecurityUtils.OpenTokenProviderIfRequiredAsync(_clientCertificateProvider, timeoutHelper.RemainingTime());
-                _clientToken = (X509SecurityToken)await _clientCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime());
+                await SecurityUtils.OpenTokenProviderIfRequiredAsync(_clientCertificateProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                _clientToken = (X509SecurityToken)await _clientCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
         }
 
         internal override async ValueTask CloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await base.CloseAsync(timeoutHelper.RemainingTime());
+            await base.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             if (_clientCertificateProvider != null)
             {
-                await SecurityUtils.CloseTokenProviderIfRequiredAsync(_clientCertificateProvider, timeoutHelper.RemainingTime());
+                await SecurityUtils.CloseTokenProviderIfRequiredAsync(_clientCertificateProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
         }
 
@@ -367,7 +367,7 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                await sslStream.AuthenticateAsClientAsync(string.Empty, clientCertificates, _parent.SslProtocols, false);
+                await sslStream.AuthenticateAsClientAsync(string.Empty, clientCertificates, _parent.SslProtocols, false).ConfigureAwait(false);
             }
             catch (SecurityTokenValidationException tokenValidationException)
             {

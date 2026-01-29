@@ -97,7 +97,7 @@ namespace System.ServiceModel.Channels
         private async Task CloseSequenceAsync(TimeSpan timeout)
         {
             CreateCloseRequestor();
-            Message closeReply = await _closeRequestor.RequestAsync(timeout);
+            Message closeReply = await _closeRequestor.RequestAsync(timeout).ConfigureAwait(false);
             ProcessCloseOrTerminateReply(true, closeReply);
         }
 
@@ -244,16 +244,16 @@ namespace System.ServiceModel.Channels
         protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await Connection.CloseAsync(timeoutHelper.RemainingTime());
+            await Connection.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             if (Settings.ReliableMessagingVersion == ReliableMessagingVersion.WSReliableMessaging11)
             {
-                await CloseSequenceAsync(timeoutHelper.RemainingTime());
+                await CloseSequenceAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
-            await TerminateSequenceAsync(timeoutHelper.RemainingTime());
-            await _session.CloseAsync(timeoutHelper.RemainingTime());
-            await _binder.CloseAsync(timeoutHelper.RemainingTime(), MaskingMode.Handled);
+            await TerminateSequenceAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await _session.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await _binder.CloseAsync(timeoutHelper.RemainingTime(), MaskingMode.Handled).ConfigureAwait(false);
         }
 
         protected override void OnClosed()
@@ -270,7 +270,7 @@ namespace System.ServiceModel.Channels
             using (Message message = WsrmUtilities.CreateAckRequestedMessage(Settings.MessageVersion,
                 Settings.ReliableMessagingVersion, ReliableSession.OutputID))
             {
-                await OnConnectionSendAsync(message, timeout, false, true);
+                await OnConnectionSendAsync(message, timeout, false, true).ConfigureAwait(false);
             }
         }
 
@@ -291,7 +291,7 @@ namespace System.ServiceModel.Channels
                 {
                     _session.OnLocalActivity();
                     await OnConnectionSendAsync(attemptInfo.Message, timeout,
-                        (attemptInfo.RetryCount == Settings.MaxRetryCount), maskUnhandledException);
+                        (attemptInfo.RetryCount == Settings.MaxRetryCount), maskUnhandledException).ConfigureAwait(false);
                 }
             }
         }
@@ -337,22 +337,22 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                await _binder.OpenAsync(timeoutHelper.RemainingTime());
-                await _session.OpenAsync(timeoutHelper.RemainingTime());
+                await _binder.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                await _session.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 throwing = false;
             }
             finally
             {
                 if (throwing)
                 {
-                    await Binder.CloseAsync(timeoutHelper.RemainingTime());
+                    await Binder.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
             }
         }
 
         protected override async Task OnSendAsync(Message message, TimeSpan timeout)
         {
-            if (!await Connection.AddMessageAsync(message, timeout, null))
+            if (!await Connection.AddMessageAsync(message, timeout, null).ConfigureAwait(false))
                 ThrowInvalidAddException();
         }
 
@@ -378,7 +378,7 @@ namespace System.ServiceModel.Channels
             using (Message request = WsrmUtilities.CreateAckRequestedMessage(Settings.MessageVersion,
                 Settings.ReliableMessagingVersion, ReliableSession.OutputID))
             {
-                await OnConnectionSendMessageAsync(request, DefaultSendTimeout, MaskingMode.All);
+                await OnConnectionSendMessageAsync(request, DefaultSendTimeout, MaskingMode.All).ConfigureAwait(false);
             }
         }
 
@@ -507,7 +507,7 @@ namespace System.ServiceModel.Channels
 
                             try
                             {
-                                await OnConnectionSendAsync(response, DefaultSendTimeout, false, true);
+                                await OnConnectionSendAsync(response, DefaultSendTimeout, false, true).ConfigureAwait(false);
                             }
                             finally
                             {
@@ -580,12 +580,12 @@ namespace System.ServiceModel.Channels
                 _session.CloseSession();
                 Message message = WsrmUtilities.CreateTerminateMessage(Settings.MessageVersion,
                     reliableMessagingVersion, _session.OutputID);
-                await OnConnectionSendMessageAsync(message, timeout, MaskingMode.Handled);
+                await OnConnectionSendMessageAsync(message, timeout, MaskingMode.Handled).ConfigureAwait(false);
             }
             else if (reliableMessagingVersion == ReliableMessagingVersion.WSReliableMessaging11)
             {
                 CreateTerminateRequestor();
-                Message terminateReply = await _terminateRequestor.RequestAsync(timeout);
+                Message terminateReply = await _terminateRequestor.RequestAsync(timeout).ConfigureAwait(false);
 
                 if (terminateReply != null)
                 {
@@ -662,7 +662,7 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    reply = await binder.RequestAsync(message, timeout, maskingMode);
+                    reply = await binder.RequestAsync(message, timeout, maskingMode).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -682,22 +682,22 @@ namespace System.ServiceModel.Channels
             else
             {
                 maskingMode |= MaskingMode.Handled;
-                reply = await binder.RequestAsync(message, timeout, maskingMode);
+                reply = await binder.RequestAsync(message, timeout, maskingMode).ConfigureAwait(false);
 
                 if (reply != null)
                 {
-                    await ProcessMessageAsync(reply);
+                    await ProcessMessageAsync(reply).ConfigureAwait(false);
                 }
             }
         }
 
         protected override async Task OnConnectionSendMessageAsync(Message message, TimeSpan timeout, MaskingMode maskingMode)
         {
-            Message reply = await binder.RequestAsync(message, timeout, maskingMode);
+            Message reply = await binder.RequestAsync(message, timeout, maskingMode).ConfigureAwait(false);
 
             if (reply != null)
             {
-                await ProcessMessageAsync(reply);
+                await ProcessMessageAsync(reply).ConfigureAwait(false);
             }
         }
 
@@ -739,7 +739,7 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    await Binder.SendAsync(message, timeout, maskingMode);
+                    await Binder.SendAsync(message, timeout, maskingMode).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -759,7 +759,7 @@ namespace System.ServiceModel.Channels
             else
             {
                 maskingMode |= MaskingMode.Handled;
-                await Binder.SendAsync(message, timeout, maskingMode);
+                await Binder.SendAsync(message, timeout, maskingMode).ConfigureAwait(false);
             }
         }
 
@@ -813,7 +813,7 @@ namespace System.ServiceModel.Channels
             {
                 while (true)
                 {
-                    (bool success, RequestContext context) = await Binder.TryReceiveAsync(TimeSpan.MaxValue);
+                    (bool success, RequestContext context) = await Binder.TryReceiveAsync(TimeSpan.MaxValue).ConfigureAwait(false);
                     if (success)
                     {
                         if (context != null)
@@ -821,7 +821,7 @@ namespace System.ServiceModel.Channels
                             using (context)
                             {
                                 Message requestMessage = context.RequestMessage;
-                                await ProcessMessageAsync(requestMessage);
+                                await ProcessMessageAsync(requestMessage).ConfigureAwait(false);
                                 context.Close(DefaultCloseTimeout);
                             }
                         }

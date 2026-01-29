@@ -57,8 +57,8 @@ namespace System.ServiceModel.Channels
         protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await base.OnCloseAsync(timeoutHelper.RemainingTime());
-            await InnerChannelFactory.CloseHelperAsync(timeoutHelper.RemainingTime());
+            await base.OnCloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await InnerChannelFactory.CloseHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -122,14 +122,14 @@ namespace System.ServiceModel.Channels
             Message message;
             if (InnerChannel is IAsyncInputChannel asyncInputChannel)
             {
-                message = await asyncInputChannel.ReceiveAsync(timeout);
+                message = await asyncInputChannel.ReceiveAsync(timeout).ConfigureAwait(false);
             }
             else
             {
-                message = await Task.Factory.FromAsync(InnerChannel.BeginReceive, InnerChannel.EndReceive, timeout, null);
+                message = await Task.Factory.FromAsync(InnerChannel.BeginReceive, InnerChannel.EndReceive, timeout, null).ConfigureAwait(false);
             }
 
-            await InternalOnReceiveAsync(message);
+            await InternalOnReceiveAsync(message).ConfigureAwait(false);
             return message;
         }
 
@@ -138,14 +138,14 @@ namespace System.ServiceModel.Channels
             Message message;
             if (InnerChannel is IAsyncInputChannel asyncInputChannel)
             {
-                message = await asyncInputChannel.ReceiveAsync();
+                message = await asyncInputChannel.ReceiveAsync().ConfigureAwait(false);
             }
             else
             {
-                message = await Task.Factory.FromAsync(InnerChannel.BeginReceive, InnerChannel.EndReceive, null);
+                message = await Task.Factory.FromAsync(InnerChannel.BeginReceive, InnerChannel.EndReceive, null).ConfigureAwait(false);
             }
 
-            await InternalOnReceiveAsync(message);
+            await InternalOnReceiveAsync(message).ConfigureAwait(false);
             return message;
         }
 
@@ -187,14 +187,14 @@ namespace System.ServiceModel.Channels
             Message message;
             if (InnerChannel is IAsyncInputChannel asyncInputChannel)
             {
-                (retVal, message) = await asyncInputChannel.TryReceiveAsync(timeout);
+                (retVal, message) = await asyncInputChannel.TryReceiveAsync(timeout).ConfigureAwait(false);
             }
             else
             {
-                (retVal, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(InnerChannel.BeginTryReceive, InnerChannel.EndTryReceive, timeout, null);
+                (retVal, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(InnerChannel.BeginTryReceive, InnerChannel.EndTryReceive, timeout, null).ConfigureAwait(false);
             }
 
-            await InternalOnReceiveAsync(message);
+            await InternalOnReceiveAsync(message).ConfigureAwait(false);
             return (retVal, message);
         }
 
@@ -282,8 +282,8 @@ namespace System.ServiceModel.Channels
         protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await _innerOutputChannel.CloseHelperAsync(timeout);
-            await base.OnCloseAsync(timeoutHelper.RemainingTime());
+            await _innerOutputChannel.CloseHelperAsync(timeout).ConfigureAwait(false);
+            await base.OnCloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         protected override void OnClose(TimeSpan timeout) => throw ExceptionHelper.PlatformNotSupported();
@@ -295,8 +295,8 @@ namespace System.ServiceModel.Channels
         protected internal override async Task OnOpenAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await base.OnOpenAsync(timeoutHelper.RemainingTime());
-            await _innerOutputChannel.OpenHelperAsync(timeoutHelper.RemainingTime());
+            await base.OnOpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await _innerOutputChannel.OpenHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         protected override void OnOpen(TimeSpan timeout)

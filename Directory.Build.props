@@ -53,6 +53,8 @@
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
     <EnableRunSettingsSupport Condition="'$(ContinuousIntegrationBuild)' != 'true'">true</EnableRunSettingsSupport>
+    <!-- Suppress CA2007 (ConfigureAwait) for test projects -->
+    <NoWarn>$(NoWarn);CA2007</NoWarn>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">

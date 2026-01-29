@@ -50,7 +50,7 @@ namespace System.ServiceModel.Security
 
         public override async Task OnOpenAsync(TimeSpan timeout)
         {
-            await base.OnOpenAsync(timeout);
+            await base.OnOpenAsync(timeout).ConfigureAwait(false);
             if (SecurityTokenParameters == null)
             {
                 OnPropertySettingsError(nameof(SecurityTokenParameters), true);

@@ -720,7 +720,7 @@ namespace System.ServiceModel.Channels
         public virtual async Task WriteMessageAsync(XmlDictionaryWriter writer)
         {
             EnsureWriteMessageState(writer);
-            await OnWriteMessageAsync(writer);
+            await OnWriteMessageAsync(writer).ConfigureAwait(false);
         }
 
         public virtual async Task OnWriteMessageAsync(XmlDictionaryWriter writer)
@@ -730,8 +730,8 @@ namespace System.ServiceModel.Channels
             // We should call OnWriteBodyContentsAsync instead of WriteBodyContentsAsync here,
             // otherwise EnsureWriteMessageState would get called twice. Also see OnWriteMessage()
             // for the example.
-            await OnWriteBodyContentsAsync(writer);
-            await WriteMessagePostambleAsync(writer);
+            await OnWriteBodyContentsAsync(writer).ConfigureAwait(false);
+            await WriteMessagePostambleAsync(writer).ConfigureAwait(false);
         }
 
         private void EnsureWriteMessageState(XmlDictionaryWriter writer)
@@ -815,8 +815,8 @@ namespace System.ServiceModel.Channels
         {
             if (Version.Envelope != EnvelopeVersion.None)
             {
-                await writer.WriteEndElementAsync();
-                await writer.WriteEndElementAsync();
+                await writer.WriteEndElementAsync().ConfigureAwait(false);
+                await writer.WriteEndElementAsync().ConfigureAwait(false);
             }
         }
 

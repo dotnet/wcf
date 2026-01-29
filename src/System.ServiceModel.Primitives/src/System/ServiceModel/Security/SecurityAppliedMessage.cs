@@ -146,7 +146,7 @@ namespace System.ServiceModel.Security
             switch (_state)
             {
                 case BodyState.Created:
-                    await InnerMessage.WriteBodyContentsAsync(writer);
+                    await InnerMessage.WriteBodyContentsAsync(writer).ConfigureAwait(false);
                     return;
                 case BodyState.Signed:
                 case BodyState.EncryptedThenSigned:
@@ -154,7 +154,7 @@ namespace System.ServiceModel.Security
                     reader.ReadStartElement();
                     while (reader.NodeType != XmlNodeType.EndElement)
                     {
-                        await writer.WriteNodeAsync(reader, false);
+                        await writer.WriteNodeAsync(reader, false).ConfigureAwait(false);
                     }
 
                     reader.ReadEndElement();
@@ -254,7 +254,7 @@ namespace System.ServiceModel.Security
 
             _securityHeader.CompleteSecurityApplication();
             _securityHeader.WriteHeader(writer, Version);
-            await writer.WriteEndElementAsync();
+            await writer.WriteEndElementAsync().ConfigureAwait(false);
 
             if (_fullBodyFragment != null)
             {
@@ -271,7 +271,7 @@ namespace System.ServiceModel.Security
                     OnWriteStartBody(writer);
                 }
 
-                await OnWriteBodyContentsAsync(writer);
+                await OnWriteBodyContentsAsync(writer).ConfigureAwait(false);
 
                 if (_endBodyFragment != null)
                 {
@@ -283,7 +283,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            await writer.WriteEndElementAsync();
+            await writer.WriteEndElementAsync().ConfigureAwait(false);
         }
 
         private void AttachChannelBindingTokenIfFound()

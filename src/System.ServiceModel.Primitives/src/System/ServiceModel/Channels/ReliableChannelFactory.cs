@@ -88,9 +88,9 @@ namespace System.ServiceModel.Channels
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             // Closing base first to close channels.  Must close higher channels before closing lower channels.
-            await base.OnCloseAsync(timeoutHelper.RemainingTime());
-            await FaultHelper.CloseAsync(timeoutHelper.RemainingTime());
-            await InnerChannelFactory.CloseHelperAsync(timeoutHelper.RemainingTime());
+            await base.OnCloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await FaultHelper.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await InnerChannelFactory.CloseHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         protected override void OnClose(TimeSpan timeout)

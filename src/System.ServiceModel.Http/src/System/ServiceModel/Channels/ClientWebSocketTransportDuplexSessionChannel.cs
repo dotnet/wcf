@@ -71,8 +71,8 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     var clientWebSocket = new ClientWebSocket();
-                    await ConfigureClientWebSocketAsync(clientWebSocket, helper.RemainingTime());
-                    await clientWebSocket.ConnectAsync(Via, await helper.GetCancellationTokenAsync());
+                    await ConfigureClientWebSocketAsync(clientWebSocket, helper.RemainingTime()).ConfigureAwait(false);
+                    await clientWebSocket.ConnectAsync(Via, await helper.GetCancellationTokenAsync().ConfigureAwait(false)).ConfigureAwait(false);
                     ValidateWebSocketConnection(clientWebSocket);
                     WebSocket = clientWebSocket;
                 }
@@ -149,13 +149,13 @@ namespace System.ServiceModel.Channels
                     RemoteAddress,
                     Via,
                     channelParameterCollection,
-                    helper.RemainingTime());
+                    helper.RemainingTime()).ConfigureAwait(false);
 
             SecurityTokenContainer clientCertificateToken = null;
             if (_channelFactory is HttpsChannelFactory<IDuplexSessionChannel> httpsChannelFactory && httpsChannelFactory.RequireClientCertificate)
             {
-                SecurityTokenProvider certificateProvider = await httpsChannelFactory.CreateAndOpenCertificateTokenProviderAsync(RemoteAddress, Via, channelParameterCollection, helper.RemainingTime());
-                clientCertificateToken = await httpsChannelFactory.GetCertificateSecurityTokenAsync(certificateProvider, RemoteAddress, Via, channelParameterCollection, helper);
+                SecurityTokenProvider certificateProvider = await httpsChannelFactory.CreateAndOpenCertificateTokenProviderAsync(RemoteAddress, Via, channelParameterCollection, helper.RemainingTime()).ConfigureAwait(false);
+                clientCertificateToken = await httpsChannelFactory.GetCertificateSecurityTokenAsync(certificateProvider, RemoteAddress, Via, channelParameterCollection, helper).ConfigureAwait(false);
                 if (clientCertificateToken != null)
                 {
                     X509SecurityToken x509Token = (X509SecurityToken)clientCertificateToken.Token;
@@ -188,7 +188,7 @@ namespace System.ServiceModel.Channels
             }
 
             (NetworkCredential credential, TokenImpersonationLevel impersonationLevel, AuthenticationLevel authenticationLevel) =
-                await HttpChannelUtilities.GetCredentialAsync(_channelFactory.AuthenticationScheme, _webRequestTokenProvider, timeout);
+                await HttpChannelUtilities.GetCredentialAsync(_channelFactory.AuthenticationScheme, _webRequestTokenProvider, timeout).ConfigureAwait(false);
 
             if (_channelFactory.Proxy != null)
             {
@@ -200,7 +200,7 @@ namespace System.ServiceModel.Channels
                     authenticationLevel,
                     impersonationLevel,
                     _webRequestProxyTokenProvider,
-                    helper.RemainingTime());
+                    helper.RemainingTime()).ConfigureAwait(false);
             }
 
             if (credential == CredentialCache.DefaultCredentials || credential == null)

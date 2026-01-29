@@ -25,7 +25,7 @@ namespace System.ServiceModel.Channels
         // used by client WindowsStream security (from InitiateUpgrade)
         public static async ValueTask<(NetworkCredential credential, TokenImpersonationLevel impersonationLevel, bool allowNtlm)> GetSspiCredentialAsync(SecurityTokenProvider tokenProvider, TimeSpan timeout)
         {
-            var result = await GetSspiCredentialCoreAsync(tokenProvider, timeout);
+            var result = await GetSspiCredentialCoreAsync(tokenProvider, timeout).ConfigureAwait(false);
             return (result.credential, result.impersonationLevel, result.allowNtlm);
         }
 
@@ -41,7 +41,7 @@ namespace System.ServiceModel.Channels
 
             if (tokenProvider != null)
             {
-                SspiSecurityToken token = await WindowsStreamTransportSecurityHelpers.GetTokenAsync<SspiSecurityToken>(tokenProvider, timeout);
+                SspiSecurityToken token = await WindowsStreamTransportSecurityHelpers.GetTokenAsync<SspiSecurityToken>(tokenProvider, timeout).ConfigureAwait(false);
                 if (token != null)
                 {
                     result.extractGroupsForWindowsAccounts = token.ExtractGroupsForWindowsAccounts;
@@ -86,7 +86,7 @@ namespace System.ServiceModel.Channels
         private static async Task<T> GetTokenAsync<T>(SecurityTokenProvider tokenProvider, TimeSpan timeout)
             where T : SecurityToken
         {
-            SecurityToken result = await tokenProvider.GetTokenAsync(timeout);
+            SecurityToken result = await tokenProvider.GetTokenAsync(timeout).ConfigureAwait(false);
             if ((result != null) && !(result is T))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(

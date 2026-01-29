@@ -87,7 +87,7 @@ namespace System.ServiceModel.Channels
                 Contract.Assert(!_buffer.Task.IsCompleted, "Buffer task should not already be completed");
                 Contract.Assert(_currentBuffer == WriteBufferWrapper.EmptyContainer, "The current buffer should be the EmptyContainer");
                 _buffer.TrySetResult(new WriteBufferWrapper(buffer, offset, count));
-                return await _dataAvail.Task;
+                return await _dataAvail.Task.ConfigureAwait(false);
             }
         }
         public override void Write(byte[] buffer, int offset, int count)
@@ -132,7 +132,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (_currentBuffer == WriteBufferWrapper.EmptyContainer)
                     {
-                        _currentBuffer = await _buffer.Task;
+                        _currentBuffer = await _buffer.Task.ConfigureAwait(false);
                         _buffer = new TaskCompletionSource<WriteBufferWrapper>();
                     }
 

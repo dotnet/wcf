@@ -152,7 +152,7 @@ namespace System.ServiceModel.Channels
                 if (size == 0)
                 {
                     offset = 0;
-                    size = await Connection.ReadAsync(new Memory<byte>(buffer, 0, Connection.ConnectionBufferSize), timeoutHelper.RemainingTime());
+                    size = await Connection.ReadAsync(new Memory<byte>(buffer, 0, Connection.ConnectionBufferSize), timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     if (size == 0)
                     {
                         DoneReceiving(true, timeoutHelper.RemainingTime());
@@ -313,7 +313,7 @@ namespace System.ServiceModel.Channels
                 int bytesRead = -1;
                 try
                 {
-                    bytesRead = await base.ReadAsync(buffer);
+                    bytesRead = await base.ReadAsync(buffer).ConfigureAwait(false);
                     if (!buffer.IsEmpty && bytesRead == 0)
                     {
                         ProcessEof();
@@ -481,7 +481,7 @@ namespace System.ServiceModel.Channels
                             bytesToRead = Math.Min(count, _chunkBytesRemaining + IntEncoder.MaxEncodedSize);
                         }
 
-                        int bytesRead = await ReadCoreAsync(new Memory<byte>(buffer, offset, bytesToRead));
+                        int bytesRead = await ReadCoreAsync(new Memory<byte>(buffer, offset, bytesToRead)).ConfigureAwait(false);
 
                         // keep decoder up to date
                         DecodeData(buffer, offset, Math.Min(bytesRead, _chunkBytesRemaining));
@@ -510,12 +510,12 @@ namespace System.ServiceModel.Channels
                         {
                             // we don't have space for MaxEncodedSize, so it's worth the copy cost to read into a temp buffer
                             _chunkBufferOffset = 0;
-                            _chunkBufferSize = await ReadCoreAsync(_chunkBuffer);
+                            _chunkBufferSize = await ReadCoreAsync(_chunkBuffer).ConfigureAwait(false);
                             DecodeSize(_chunkBuffer, ref _chunkBufferOffset, ref _chunkBufferSize);
                         }
                         else
                         {
-                            int bytesRead = await ReadCoreAsync(new Memory<byte>(buffer, offset, IntEncoder.MaxEncodedSize));
+                            int bytesRead = await ReadCoreAsync(new Memory<byte>(buffer, offset, IntEncoder.MaxEncodedSize)).ConfigureAwait(false);
                             int sizeOffset = offset;
                             DecodeSize(buffer, ref sizeOffset, ref bytesRead);
                         }
@@ -580,19 +580,19 @@ namespace System.ServiceModel.Channels
 
                 if (writeStreamed)
                 {
-                    await connection.WriteAsync(envelopeStartBytes, false, timeoutHelper.RemainingTime());
+                    await connection.WriteAsync(envelopeStartBytes, false, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     Stream connectionStream = new StreamingOutputConnectionStream(connection, settings);
                     Stream writeTimeoutStream = new TimeoutStream(connectionStream, timeoutHelper.RemainingTime());
-                    await messageEncoder.WriteMessageAsync(message, writeTimeoutStream);
+                    await messageEncoder.WriteMessageAsync(message, writeTimeoutStream).ConfigureAwait(false);
                 }
                 else
                 {
                     ArraySegment<byte> messageData = await messageEncoder.WriteMessageAsync(message,
-                        int.MaxValue, settings.BufferManager, envelopeStartBytes.Length + IntEncoder.MaxEncodedSize);
+                        int.MaxValue, settings.BufferManager, envelopeStartBytes.Length + IntEncoder.MaxEncodedSize).ConfigureAwait(false);
                     messageData = SingletonEncoder.EncodeMessageFrame(messageData);
                     envelopeStartBytes.CopyTo(new Memory<byte>(messageData.Array, messageData.Offset - envelopeStartBytes.Length, envelopeStartBytes.Length));
                     await connection.WriteAsync(new Memory<byte>(messageData.Array, messageData.Offset - envelopeStartBytes.Length,
-                        messageData.Count + envelopeStartBytes.Length), true, timeoutHelper.RemainingTime());
+                        messageData.Count + envelopeStartBytes.Length), true, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
             }
             else if (isRequest) // context handles response end bytes
@@ -603,7 +603,7 @@ namespace System.ServiceModel.Channels
             if (!endBytes.IsEmpty)
             {
                 await connection.WriteAsync(endBytes,
-                    true, timeoutHelper.RemainingTime());
+                    true, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
         }
 
@@ -633,14 +633,14 @@ namespace System.ServiceModel.Channels
 
             public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken = default)
             {
-                await WriteChunkSizeAsync(count);
-                await base.WriteAsync(buffer, offset, count, cancellationToken);
+                await WriteChunkSizeAsync(count).ConfigureAwait(false);
+                await base.WriteAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
             }
 
             public override async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
             {
-                await WriteChunkSizeAsync(buffer.Length);
-                await base.WriteAsync(buffer, cancellationToken);
+                await WriteChunkSizeAsync(buffer.Length).ConfigureAwait(false);
+                await base.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
             }
 
             public override void WriteByte(byte value)

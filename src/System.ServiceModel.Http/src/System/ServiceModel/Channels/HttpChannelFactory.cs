@@ -247,7 +247,7 @@ namespace System.ServiceModel.Channels
             SecurityTokenContainer clientCertificateToken, TimeSpan timeout)
         {
             (NetworkCredential credential, TokenImpersonationLevel impersonationLevel, AuthenticationLevel authenticationLevel) = await HttpChannelUtilities.GetCredentialAsync(AuthenticationScheme,
-                tokenProvider, timeout);
+                tokenProvider, timeout).ConfigureAwait(false);
 
             HttpClient httpClient;
 
@@ -289,7 +289,7 @@ namespace System.ServiceModel.Channels
                     else if (ProxyFactory != null)
                     {
                         clientHandler.Proxy = await ProxyFactory.CreateWebProxyAsync(authenticationLevel,
-                            impersonationLevel, proxyTokenProvider, timeout);
+                            impersonationLevel, proxyTokenProvider, timeout).ConfigureAwait(false);
                         clientHandler.UseProxy = true;
                     }
                 }
@@ -468,7 +468,7 @@ namespace System.ServiceModel.Channels
             if (tokenProvider != null)
             {
                 result = new SecurityTokenProviderContainer(tokenProvider);
-                await result.OpenAsync(timeout);
+                await result.OpenAsync(timeout).ConfigureAwait(false);
             }
             else
             {
@@ -742,11 +742,11 @@ namespace System.ServiceModel.Channels
         private async Task<(SecurityTokenProviderContainer tokenProvider, SecurityTokenProviderContainer proxyTokenProvider)> CreateAndOpenTokenProvidersCoreAsync(EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            SecurityTokenProviderContainer tokenProvider = await CreateAndOpenTokenProviderAsync(timeoutHelper.RemainingTime(), AuthenticationScheme, to, via, channelParameters);
+            SecurityTokenProviderContainer tokenProvider = await CreateAndOpenTokenProviderAsync(timeoutHelper.RemainingTime(), AuthenticationScheme, to, via, channelParameters).ConfigureAwait(false);
             SecurityTokenProviderContainer proxyTokenProvider;
             if (ProxyFactory != null)
             {
-                proxyTokenProvider = await CreateAndOpenTokenProviderAsync(timeoutHelper.RemainingTime(), ProxyFactory.AuthenticationScheme, to, via, channelParameters);
+                proxyTokenProvider = await CreateAndOpenTokenProviderAsync(timeoutHelper.RemainingTime(), ProxyFactory.AuthenticationScheme, to, via, channelParameters).ConfigureAwait(false);
             }
             else
             {
@@ -829,7 +829,7 @@ namespace System.ServiceModel.Channels
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 if (!ManualAddressing)
                 {
-                    (_tokenProvider, _proxyTokenProvider) = await Factory.CreateAndOpenTokenProvidersAsync(RemoteAddress, Via, ChannelParameters, timeoutHelper.RemainingTime());
+                    (_tokenProvider, _proxyTokenProvider) = await Factory.CreateAndOpenTokenProvidersAsync(RemoteAddress, Via, ChannelParameters, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
             }
 
@@ -902,7 +902,7 @@ namespace System.ServiceModel.Channels
                 var timeoutHelper = new TimeoutHelper(timeout);
                 PrepareClose(false);
                 CloseTokenProviders(timeoutHelper.RemainingTime());
-                await WaitForPendingRequestsAsync(timeoutHelper.RemainingTime());
+                await WaitForPendingRequestsAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             protected override IAsyncRequest CreateAsyncRequest(Message message)
@@ -921,7 +921,7 @@ namespace System.ServiceModel.Channels
                 SecurityTokenProviderContainer requestProxyTokenProvider;
                 if (ManualAddressing)
                 {
-                    (requestTokenProvider, requestProxyTokenProvider) = await Factory.CreateAndOpenTokenProvidersAsync(to, via, ChannelParameters, timeoutHelper.RemainingTime());
+                    (requestTokenProvider, requestProxyTokenProvider) = await Factory.CreateAndOpenTokenProvidersAsync(to, via, ChannelParameters, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 else
                 {
@@ -931,7 +931,7 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    return await Factory.GetHttpClientAsync(to, via, requestTokenProvider, requestProxyTokenProvider, clientCertificateToken, timeoutHelper.RemainingTime());
+                    return await Factory.GetHttpClientAsync(to, via, requestTokenProvider, requestProxyTokenProvider, clientCertificateToken, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -999,7 +999,7 @@ namespace System.ServiceModel.Channels
                     }
 
                     _factory.ApplyManualAddressing(ref _to, ref _via, message);
-                    _httpClient = await _channel.GetHttpClientAsync(_to, _via, _timeoutHelper);
+                    _httpClient = await _channel.GetHttpClientAsync(_to, _via, _timeoutHelper).ConfigureAwait(false);
 
                     // The _httpRequestMessage field will be set to null by Cleanup() due to faulting
                     // or aborting, so use a local copy for exception handling within this method.
@@ -1041,19 +1041,19 @@ namespace System.ServiceModel.Channels
                                 // There is a possibility that a HEAD pre-auth request might fail when the actual request
                                 // will succeed. For example, when the web service refuses HEAD requests. We don't want
                                 // to fail the actual request because of some subtlety which causes the HEAD request.
-                                await SendPreauthenticationHeadRequestIfNeeded();
+                                await SendPreauthenticationHeadRequestIfNeeded().ConfigureAwait(false);
                             }
                             catch { /* ignored */ }
                         }
 
                         bool success = false;
-                        var timeoutToken = await _timeoutHelper.GetCancellationTokenAsync();
+                        var timeoutToken = await _timeoutHelper.GetCancellationTokenAsync().ConfigureAwait(false);
 
                         try
                         {
                             using (timeoutToken.UnsafeRegister(s_cancelCts, _httpSendCts))
                             {
-                                _httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _httpSendCts.Token);
+                                _httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _httpSendCts.Token).ConfigureAwait(false);
                             }
 
                             // As we have the response message and no exceptions have been thrown, the request message has completed it's job.
@@ -1132,7 +1132,7 @@ namespace System.ServiceModel.Channels
                     {
                         _timeoutHelper = timeoutHelper;
                         var responseHelper = new HttpResponseMessageHelper(_httpResponseMessage, _factory);
-                        var replyMessage = await responseHelper.ParseIncomingResponse(timeoutHelper);
+                        var replyMessage = await responseHelper.ParseIncomingResponse(timeoutHelper).ConfigureAwait(false);
                         TryCompleteHttpRequest(_httpRequestMessage);
                         return replyMessage;
                     }
@@ -1353,8 +1353,8 @@ namespace System.ServiceModel.Channels
                         RequestUri = requestUri
                     };
 
-                    var cancelToken = await _timeoutHelper.GetCancellationTokenAsync();
-                    await _httpClient.SendAsync(headHttpRequestMessage, cancelToken);
+                    var cancelToken = await _timeoutHelper.GetCancellationTokenAsync().ConfigureAwait(false);
+                    await _httpClient.SendAsync(headHttpRequestMessage, cancelToken).ConfigureAwait(false);
                 }
             }
         }
@@ -1387,7 +1387,7 @@ namespace System.ServiceModel.Channels
                 if (AuthenticationScheme != AuthenticationSchemes.Anonymous)
                 {
                     (NetworkCredential credential, TokenImpersonationLevel impersonationLevel, AuthenticationLevel authenticationLevel) = await HttpChannelUtilities.GetCredentialAsync(AuthenticationScheme,
-                        tokenProvider, timeout);
+                        tokenProvider, timeout).ConfigureAwait(false);
 
                     // The impersonation level for target auth is also used for proxy auth (by System.Net).  Therefore,
                     // fail if the level stipulated for proxy auth is more restrictive than that for target auth.

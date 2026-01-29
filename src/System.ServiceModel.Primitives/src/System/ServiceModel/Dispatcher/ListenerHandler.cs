@@ -71,7 +71,7 @@ namespace System.ServiceModel.Dispatcher
             ChannelDispatcher.Channels.CloseInput();
 
             // Start closing existing channels
-            await CloseChannelsAsync(timeoutHelper.RemainingTime());
+            await CloseChannelsAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)
@@ -147,11 +147,11 @@ namespace System.ServiceModel.Dispatcher
                     if (channel is ISessionChannel<IDuplexSession>)
                     {
                         IDuplexSession duplexSession = ((ISessionChannel<IDuplexSession>)channel).Session;
-                        await Task.Factory.FromAsync(duplexSession.BeginCloseOutputSession, duplexSession.EndCloseOutputSession, timeout, null);
+                        await Task.Factory.FromAsync(duplexSession.BeginCloseOutputSession, duplexSession.EndCloseOutputSession, timeout, null).ConfigureAwait(false);
                     }
                     else
                     {
-                        await channel.CloseHelperAsync(timeout);
+                        await channel.CloseHelperAsync(timeout).ConfigureAwait(false);
                     }
                 }
             }
@@ -211,7 +211,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 closeTasks[index] = CloseChannelAsync(channels[index], timeoutHelper.RemainingTime());
             }
-            await Task.WhenAll(closeTasks);
+            await Task.WhenAll(closeTasks).ConfigureAwait(false);
         }
 
         private void Dispatch()

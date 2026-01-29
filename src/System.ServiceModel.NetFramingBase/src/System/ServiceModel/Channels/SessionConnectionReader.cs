@@ -112,14 +112,14 @@ namespace System.ServiceModel.Channels
                 {
                     // Using IConnection.ConnectionBufferSize as the length for the Memory<byte> as the EnvelopeBuffer is only used when the envelope (SOAP message) is larger
                     // than the connection buffer size and we limit the amount of data read from the connection at a time to ConnectionBufferSize bytes.
-                    bytesRead = await _connection.ReadAsync(new Memory<byte>(EnvelopeBuffer, EnvelopeOffset, _connection.ConnectionBufferSize), timeoutHelper.RemainingTime());
+                    bytesRead = await _connection.ReadAsync(new Memory<byte>(EnvelopeBuffer, EnvelopeOffset, _connection.ConnectionBufferSize), timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     HandleReadComplete(bytesRead, true);
                 }
                 else
                 {
                     // Using IConnection.ConnectionBufferSize as the length for the Memory<byte> as the leased buffer might be larger than ConnectionBufferSize and we
                     // limit the amount of data read from the connection at a time to ConnectionBufferSize bytes.
-                    bytesRead = await _connection.ReadAsync(new Memory<byte>(_buffer, 0, _connection.ConnectionBufferSize), timeoutHelper.RemainingTime());
+                    bytesRead = await _connection.ReadAsync(new Memory<byte>(_buffer, 0, _connection.ConnectionBufferSize), timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     HandleReadComplete(bytesRead, false);
                 }
             }
@@ -148,7 +148,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                Message message = await ReceiveAsync(timeout);
+                Message message = await ReceiveAsync(timeout).ConfigureAwait(false);
                 _pendingMessage = message;
                 return true;
             }

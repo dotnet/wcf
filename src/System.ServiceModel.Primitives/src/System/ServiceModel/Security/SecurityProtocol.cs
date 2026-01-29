@@ -272,7 +272,7 @@ namespace System.ServiceModel.Security
                     }
                     foreach (SupportingTokenProviderSpecification spec in scopedProviders)
                     {
-                        await SecurityUtils.OpenTokenProviderIfRequiredAsync(spec.TokenProvider, timeoutHelper.RemainingTime());
+                        await SecurityUtils.OpenTokenProviderIfRequiredAsync(spec.TokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                         if (spec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.Endorsing || spec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.SignedEndorsing)
                         {
                             if (spec.TokenParameters.RequireDerivedKeys && !spec.TokenParameters.HasAsymmetricKey)
@@ -337,7 +337,7 @@ namespace System.ServiceModel.Security
                         SecurityProtocolFactory.ExpectSupportingTokens = true;
                         foreach (SupportingTokenProviderSpecification tokenProviderSpec in ChannelSupportingTokenProviderSpecification)
                         {
-                            await SecurityUtils.OpenTokenProviderIfRequiredAsync(tokenProviderSpec.TokenProvider, timeoutHelper.RemainingTime());
+                            await SecurityUtils.OpenTokenProviderIfRequiredAsync(tokenProviderSpec.TokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                             if (tokenProviderSpec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.Endorsing || tokenProviderSpec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.SignedEndorsing)
                             {
                                 if (tokenProviderSpec.TokenParameters.RequireDerivedKeys && !tokenProviderSpec.TokenParameters.HasAsymmetricKey)
@@ -351,7 +351,7 @@ namespace System.ServiceModel.Security
                     }
                 }
                 // create a merged map of the per operation supporting tokens
-                await MergeSupportingTokenProvidersAsync(timeoutHelper.RemainingTime());
+                await MergeSupportingTokenProvidersAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
         }
 
@@ -394,7 +394,7 @@ namespace System.ServiceModel.Security
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 foreach (SupportingTokenProviderSpecification spec in ChannelSupportingTokenProviderSpecification)
                 {
-                    await SecurityUtils.CloseTokenProviderIfRequiredAsync(spec.TokenProvider, timeoutHelper.RemainingTime());
+                    await SecurityUtils.CloseTokenProviderIfRequiredAsync(spec.TokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
 
                 foreach (string action in ScopedSupportingTokenProviderSpecification.Keys)
@@ -402,7 +402,7 @@ namespace System.ServiceModel.Security
                     ICollection<SupportingTokenProviderSpecification> supportingProviders = ScopedSupportingTokenProviderSpecification[action];
                     foreach (SupportingTokenProviderSpecification spec in supportingProviders)
                     {
-                        await SecurityUtils.CloseTokenProviderIfRequiredAsync(spec.TokenProvider, timeoutHelper.RemainingTime());
+                        await SecurityUtils.CloseTokenProviderIfRequiredAsync(spec.TokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     }
                 }
             }
@@ -511,7 +511,7 @@ namespace System.ServiceModel.Security
                 {
                     SupportingTokenProviderSpecification spec = supportingTokenProviders[i];
                     SecurityToken supportingToken;
-                    supportingToken = await spec.TokenProvider.GetTokenAsync(timeoutHelper.RemainingTime());
+                    supportingToken = await spec.TokenProvider.GetTokenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
                     supportingTokens.Add(new SupportingTokenSpecification(supportingToken, EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance, spec.SecurityTokenAttachmentMode, spec.TokenParameters));
                 }
@@ -595,7 +595,7 @@ namespace System.ServiceModel.Security
 
             try
             {
-                token = await provider.GetTokenAsync(timeout);
+                token = await provider.GetTokenAsync(timeout).ConfigureAwait(false);
             }
             catch (SecurityTokenException exception)
             {
@@ -614,7 +614,7 @@ namespace System.ServiceModel.Security
         // subclasses that offer correlation should override this version
         public virtual async Task<(SecurityProtocolCorrelationState, Message)> SecureOutgoingMessageAsync(Message message, TimeSpan timeout, SecurityProtocolCorrelationState correlationState)
         {
-            return (null, await SecureOutgoingMessageAsync(message, timeout));
+            return (null, await SecureOutgoingMessageAsync(message, timeout).ConfigureAwait(false));
         }
 
         protected virtual void OnOutgoingMessageSecured(Message securedMessage)

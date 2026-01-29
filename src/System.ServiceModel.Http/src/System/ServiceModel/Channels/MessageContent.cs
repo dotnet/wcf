@@ -188,7 +188,7 @@ namespace System.ServiceModel.Channels
                 var thisPtr = content as StreamedMessageContent;
                 try
                 {
-                    await _messageEncoder.WriteMessageAsync(thisPtr._message, thisPtr._stream);
+                    await _messageEncoder.WriteMessageAsync(thisPtr._message, thisPtr._stream).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -204,7 +204,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                await _messageEncoder.WriteMessageAsync(_message, new BufferedWriteStream(stream, _bufferManager));
+                await _messageEncoder.WriteMessageAsync(_message, new BufferedWriteStream(stream, _bufferManager)).ConfigureAwait(false);
             }
             finally
             {
@@ -255,7 +255,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 EnsureMessageEncoded();
-                await stream.WriteAsync(_buffer.Array, _buffer.Offset, _buffer.Count);
+                await stream.WriteAsync(_buffer.Array, _buffer.Offset, _buffer.Count).ConfigureAwait(false);
             }
             finally
             {

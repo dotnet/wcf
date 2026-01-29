@@ -66,7 +66,7 @@ namespace System.ServiceModel.Channels
 
             while (offset < currentBufferSize)
             {
-                int count = await stream.ReadAsync(buffer, offset, currentBufferSize - offset, cancellationToken);
+                int count = await stream.ReadAsync(buffer, offset, currentBufferSize - offset, cancellationToken).ConfigureAwait(false);
                 if (count == 0)
                 {
                     stream.Dispose();
@@ -95,7 +95,7 @@ namespace System.ServiceModel.Channels
         // used for buffered streaming
         internal virtual async Task<Message> ReadMessageAsync(Stream stream, BufferManager bufferManager, int maxBufferSize, string contentType, CancellationToken cancellationToken)
         {
-            return ReadMessage(await BufferMessageStreamAsync(stream, bufferManager, maxBufferSize, cancellationToken), bufferManager, contentType);
+            return ReadMessage(await BufferMessageStreamAsync(stream, bufferManager, maxBufferSize, cancellationToken).ConfigureAwait(false), bufferManager, contentType);
         }
 
         public override string ToString()

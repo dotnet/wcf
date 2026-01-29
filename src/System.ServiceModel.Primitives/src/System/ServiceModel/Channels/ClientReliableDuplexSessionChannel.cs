@@ -192,14 +192,14 @@ namespace System.ServiceModel.Channels
         private async Task InternalCloseOutputSessionAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await OutputConnection.CloseAsync(timeoutHelper.RemainingTime());
+            await OutputConnection.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             if (Settings.ReliableMessagingVersion == ReliableMessagingVersion.WSReliableMessaging11)
             {
-                await CloseSequenceAsync(timeoutHelper.RemainingTime());
+                await CloseSequenceAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
-            await TerminateSequenceAsync(timeoutHelper.RemainingTime());
+            await TerminateSequenceAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         protected virtual void OnRemoteActivity()
@@ -579,7 +579,7 @@ namespace System.ServiceModel.Channels
                         {
                             try
                             {
-                                await Binder.SendAsync(message, DefaultSendTimeout);
+                                await Binder.SendAsync(message, DefaultSendTimeout).ConfigureAwait(false);
                             }
                             finally
                             {
@@ -646,7 +646,7 @@ namespace System.ServiceModel.Channels
 
         private async Task OnAcknowledgementTimeoutElapsedAsync(object state)
         {
-            await using (await ThisAsyncLock.TakeLockAsync())
+            await using (await ThisAsyncLock.TakeLockAsync().ConfigureAwait(false))
             {
                 _acknowledgementScheduled = false;
                 _pendingAcknowledgements = 0;
@@ -663,7 +663,7 @@ namespace System.ServiceModel.Channels
                 {
                     using (Message message = CreateAcknowledgmentMessage())
                     {
-                        await Binder.SendAsync(message, DefaultSendTimeout);
+                        await Binder.SendAsync(message, DefaultSendTimeout).ConfigureAwait(false);
                     }
                 }
                 finally
@@ -721,20 +721,20 @@ namespace System.ServiceModel.Channels
             {
                 if (_closeOutputWaitObject != null)
                 {
-                    await _closeOutputWaitObject.WaitAsync(timeoutHelper.RemainingTime());
+                    await _closeOutputWaitObject.WaitAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 else
                 {
-                    await InternalCloseOutputSessionAsync(timeoutHelper.RemainingTime());
+                    await InternalCloseOutputSessionAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
 
-                await _inputConnection.CloseAsync(timeoutHelper.RemainingTime());
+                await _inputConnection.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
-            await _guard.CloseAsync(timeoutHelper.RemainingTime());
-            await ReliableSession.CloseAsync(timeoutHelper.RemainingTime());
-            await Binder.CloseAsync(timeoutHelper.RemainingTime(), MaskingMode.Handled);
-            await base.OnCloseAsync(timeoutHelper.RemainingTime());
+            await _guard.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await ReliableSession.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await Binder.CloseAsync(timeoutHelper.RemainingTime(), MaskingMode.Handled).ConfigureAwait(false);
+            await base.OnCloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
 
@@ -767,7 +767,7 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                await InternalCloseOutputSessionAsync(timeout);
+                await InternalCloseOutputSessionAsync(timeout).ConfigureAwait(false);
                 throwing = false;
             }
             finally
@@ -823,7 +823,7 @@ namespace System.ServiceModel.Channels
 
         protected override async Task OnSendAsync(Message message, TimeSpan timeout)
         {
-            if (!await OutputConnection.AddMessageAsync(message, timeout, null))
+            if (!await OutputConnection.AddMessageAsync(message, timeout, null).ConfigureAwait(false))
                 ThrowInvalidAddException();
         }
 
@@ -846,13 +846,13 @@ namespace System.ServiceModel.Channels
                     if (attemptInfo.RetryCount < Settings.MaxRetryCount)
                     {
                         maskingMode |= MaskingMode.Handled;
-                        await Binder.SendAsync(attemptInfo.Message, timeout, maskingMode);
+                        await Binder.SendAsync(attemptInfo.Message, timeout, maskingMode).ConfigureAwait(false);
                     }
                     else
                     {
                         try
                         {
-                            await Binder.SendAsync(attemptInfo.Message, timeout, maskingMode);
+                            await Binder.SendAsync(attemptInfo.Message, timeout, maskingMode).ConfigureAwait(false);
                         }
                         catch (Exception e)
                         {
@@ -879,7 +879,7 @@ namespace System.ServiceModel.Channels
             using (Message message = WsrmUtilities.CreateAckRequestedMessage(Settings.MessageVersion,
                 Settings.ReliableMessagingVersion, ReliableSession.OutputID))
             {
-                await Binder.SendAsync(message, timeout, MaskingMode.Handled);
+                await Binder.SendAsync(message, timeout, MaskingMode.Handled).ConfigureAwait(false);
             }
         }
 
@@ -932,7 +932,7 @@ namespace System.ServiceModel.Channels
             {
                 while (true)
                 {
-                    (bool success, RequestContext context) = await Binder.TryReceiveAsync(TimeSpan.MaxValue);
+                    (bool success, RequestContext context) = await Binder.TryReceiveAsync(TimeSpan.MaxValue).ConfigureAwait(false);
                     if (success)
                     {
                         if (context == null)
@@ -991,12 +991,12 @@ namespace System.ServiceModel.Channels
 
                 Message message = WsrmUtilities.CreateTerminateMessage(Settings.MessageVersion,
                     reliableMessagingVersion, ReliableSession.OutputID);
-                await Binder.SendAsync(message, timeout, MaskingMode.Handled);
+                await Binder.SendAsync(message, timeout, MaskingMode.Handled).ConfigureAwait(false);
             }
             else if (reliableMessagingVersion == ReliableMessagingVersion.WSReliableMessaging11)
             {
                 CreateTerminateRequestor();
-                await _terminateRequestor.RequestAsync(timeout);
+                await _terminateRequestor.RequestAsync(timeout).ConfigureAwait(false);
                 // reply came from receive loop, receive loop owns verified message so nothing more to do.
             }
             else
@@ -1125,7 +1125,7 @@ namespace System.ServiceModel.Channels
 
         private async void OnConnectionLost(object sender, EventArgs args)
         {
-            await using (await ThisAsyncLock.TakeLockAsync())
+            await using (await ThisAsyncLock.TakeLockAsync().ConfigureAwait(false))
             {
                 if ((State == CommunicationState.Opened || State == CommunicationState.Closing) &&
                     !Binder.Connected && _clientSession.StopPolling())
@@ -1136,7 +1136,7 @@ namespace System.ServiceModel.Channels
                         WcfEventSource.Instance.ClientReliableSessionReconnect(_clientSession.Id);
                     }
 
-                    await ReconnectAsync();
+                    await ReconnectAsync().ConfigureAwait(false);
                 }
             }
         }
@@ -1153,15 +1153,15 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                await Binder.OpenAsync(timeoutHelper.RemainingTime());
-                await ReliableSession.OpenAsync(timeoutHelper.RemainingTime());
+                await Binder.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                await ReliableSession.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 throwing = false;
             }
             finally
             {
                 if (throwing)
                 {
-                    await Binder.CloseAsync(timeoutHelper.RemainingTime());
+                    await Binder.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
             }
         }
@@ -1181,12 +1181,12 @@ namespace System.ServiceModel.Channels
         private static async Task OnReconnectTimerElapsed(object state)
         {
             ClientReliableDuplexSessionChannel channel = (ClientReliableDuplexSessionChannel)state;
-            await using (await channel.ThisAsyncLock.TakeLockAsync())
+            await using (await channel.ThisAsyncLock.TakeLockAsync().ConfigureAwait(false))
             {
                 if ((channel.State == CommunicationState.Opened || channel.State == CommunicationState.Closing) &&
                     !channel.Binder.Connected)
                 {
-                    await channel.ReconnectAsync();
+                    await channel.ReconnectAsync().ConfigureAwait(false);
                 }
                 else
                 {
@@ -1205,7 +1205,7 @@ namespace System.ServiceModel.Channels
             using (Message message = WsrmUtilities.CreateAckRequestedMessage(Settings.MessageVersion,
                 Settings.ReliableMessagingVersion, ReliableSession.OutputID))
             {
-                await Binder.SendAsync(message, DefaultSendTimeout);
+                await Binder.SendAsync(message, DefaultSendTimeout).ConfigureAwait(false);
             }
         }
 
@@ -1229,7 +1229,7 @@ namespace System.ServiceModel.Channels
                 Message message = WsrmUtilities.CreateAckRequestedMessage(Settings.MessageVersion,
                     Settings.ReliableMessagingVersion, ReliableSession.OutputID);
                 TimeSpan timeout = _closing ? _closeTimeoutHelper.RemainingTime() : DefaultCloseTimeout;
-                await Binder.SendAsync(message, timeout);
+                await Binder.SendAsync(message, timeout).ConfigureAwait(false);
                 handleException = false;
 
                 using (ThisAsyncLock.TakeLock())

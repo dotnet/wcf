@@ -24,7 +24,7 @@ namespace System.ServiceModel.Channels
         public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             count = PrepareRead(count);
-            int bytesRead = await base.ReadAsync(buffer, offset, count, cancellationToken);
+            int bytesRead = await base.ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
             return FinishRead(bytesRead);
         }
 
@@ -35,7 +35,7 @@ namespace System.ServiceModel.Channels
             {
                 buffer = buffer.Slice(0, readCount);
             }
-            int bytesRead = await base.ReadAsync(buffer, cancellationToken);
+            int bytesRead = await base.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
             return FinishRead(bytesRead);
         }
 

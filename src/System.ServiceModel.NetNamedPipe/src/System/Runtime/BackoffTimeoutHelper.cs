@@ -63,7 +63,7 @@ namespace System.Runtime
 
         public async Task WaitAndBackoffAsync()
         {
-            await Task.Delay(WaitTimeWithDrift());
+            await Task.Delay(WaitTimeWithDrift()).ConfigureAwait(false);
             Backoff();
         }
 

@@ -288,7 +288,7 @@ namespace System.ServiceModel.Security
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.Format(SRP.SecurityAlgorithmSuiteNotSet, GetType())));
             }
             InitializeFactories();
-            await _rstChannelFactory.OpenHelperAsync(timeoutHelper.RemainingTime());
+            await _rstChannelFactory.OpenHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             _sctUri = StandardsManager.SecureConversationDriver.TokenTypeUri;
         }
 
@@ -310,7 +310,7 @@ namespace System.ServiceModel.Security
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             if (_rstChannelFactory != null)
             {
-                await _rstChannelFactory.CloseHelperAsync(timeoutHelper.RemainingTime());
+                await _rstChannelFactory.CloseHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 _rstChannelFactory = null;
             }
             FreeCredentialsHandle();
@@ -506,7 +506,7 @@ namespace System.ServiceModel.Security
                 channel = CreateChannel(operation, target, via);
 
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                await channel.OpenAsync(timeoutHelper.RemainingTime());
+                await channel.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 object requestState;
                 GenericXmlSecurityToken issuedToken;
 
@@ -516,7 +516,7 @@ namespace System.ServiceModel.Security
 
                     TraceUtility.ProcessOutgoingMessage(requestMessage, eventTraceActivity);
 
-                    using (Message reply = await channel.RequestAsync(requestMessage, timeoutHelper.RemainingTime()))
+                    using (Message reply = await channel.RequestAsync(requestMessage, timeoutHelper.RemainingTime()).ConfigureAwait(false))
                     {
                         if (reply == null)
                         {
@@ -529,7 +529,7 @@ namespace System.ServiceModel.Security
                         ValidateKeySize(issuedToken);
                     }
                 }
-                await channel.CloseAsync(timeoutHelper.RemainingTime());
+                await channel.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 OnOperationSuccess(operation, target, issuedToken, currentToken);
                 return issuedToken;
             }
@@ -753,8 +753,8 @@ namespace System.ServiceModel.Security
 
             protected internal override async Task OnCloseAsync(TimeSpan timeout)
             {
-                await base.OnCloseAsync(timeout);
-                await _serviceChannelFactory.CloseHelperAsync(timeout);
+                await base.OnCloseAsync(timeout).ConfigureAwait(false);
+                await _serviceChannelFactory.CloseHelperAsync(timeout).ConfigureAwait(false);
             }
 
             protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)

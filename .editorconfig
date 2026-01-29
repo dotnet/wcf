@@ -29,6 +29,10 @@ csharp_new_line_between_query_expression_clauses = true
 # IDE1006: Naming Styles
 dotnet_diagnostic.IDE1006.severity = error
 
+# CA2007: Consider calling ConfigureAwait on the awaited task
+[src/System.ServiceModel*/**/*.cs]
+dotnet_diagnostic.CA2007.severity = error
+
 # Indentation preferences
 csharp_indent_block_contents = true
 csharp_indent_braces = false

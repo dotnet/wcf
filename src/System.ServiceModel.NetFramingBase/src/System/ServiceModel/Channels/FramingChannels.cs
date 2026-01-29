@@ -58,7 +58,7 @@ namespace System.ServiceModel.Channels
             messageData = EncodeMessage(message);
 
             await TaskHelpers.EnsureDefaultTaskScheduler();
-            await Connection.WriteAsync(messageData, !allowOutputBatching, timeout);
+            await Connection.WriteAsync(messageData, !allowOutputBatching, timeout).ConfigureAwait(false);
             BufferManager.ReturnBuffer(messageData.Array);
         }
 
@@ -214,7 +214,7 @@ namespace System.ServiceModel.Channels
             _decoder = new ClientDuplexDecoder(0);
             byte[] ackBuffer = new byte[1];
 
-            if (!await SendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
+            if (!await SendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)).ConfigureAwait(false))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
                                                 SR.Format(SR.CloseTimedOut, timeout),
@@ -223,19 +223,19 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                await connection.WriteAsync(preamble, true, timeoutHelper.RemainingTime());
+                await connection.WriteAsync(preamble, true, timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
                 if (_upgrade != null)
                 {
                     IStreamUpgradeChannelBindingProvider channelBindingProvider = _upgrade.GetProperty<IStreamUpgradeChannelBindingProvider>();
                     StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(RemoteAddress, Via);
 
-                    await upgradeInitiator.OpenAsync(timeoutHelper.RemainingTime());
+                    await upgradeInitiator.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     bool upgradeInitiated;
-                    (upgradeInitiated, connection) = await ConnectionUpgradeHelper.InitiateUpgradeAsync(upgradeInitiator, connection, _decoder, this, timeoutHelper.RemainingTime());
+                    (upgradeInitiated, connection) = await ConnectionUpgradeHelper.InitiateUpgradeAsync(upgradeInitiator, connection, _decoder, this, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     if (!upgradeInitiated)
                     {
-                        await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, Via, MessageEncoder.ContentType, timeoutHelper.RemainingTime());
+                        await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, Via, MessageEncoder.ContentType, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     }
 
                     if (channelBindingProvider != null && channelBindingProvider.IsChannelBindingSupportEnabled)
@@ -244,17 +244,17 @@ namespace System.ServiceModel.Channels
                     }
 
                     SetRemoteSecurity(upgradeInitiator);
-                    await upgradeInitiator.CloseAsync(timeoutHelper.RemainingTime());
+                    await upgradeInitiator.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
-                    await connection.WriteAsync(SessionEncoder.PreambleEndBytes, true, timeoutHelper.RemainingTime());
+                    await connection.WriteAsync(SessionEncoder.PreambleEndBytes, true, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
 
-                int ackBytesRead = await connection.ReadAsync(ackBuffer, timeoutHelper.RemainingTime());
+                int ackBytesRead = await connection.ReadAsync(ackBuffer, timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
                 if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, _decoder, Via))
                 {
                     await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, Via,
-                        MessageEncoder.ContentType, timeoutHelper.RemainingTime());
+                        MessageEncoder.ContentType, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
 
                 return connection;
@@ -272,7 +272,7 @@ namespace System.ServiceModel.Channels
             {
                 using (TaskHelpers.RunTaskContinuationsOnOurThreads())
                 {
-                    connection = await _connectionPoolHelper.EstablishConnectionAsync(timeout);
+                    connection = await _connectionPoolHelper.EstablishConnectionAsync(timeout).ConfigureAwait(false);
                 }
             }
             catch (TimeoutException exception)
@@ -380,7 +380,7 @@ namespace System.ServiceModel.Channels
             byte[] faultBuffer = ArrayPool<byte>.Shared.Rent(FaultStringDecoder.FaultSizeQuota);
             int size = await connection.ReadAsync(new Memory<byte>(faultBuffer,0,
                 Math.Min(FaultStringDecoder.FaultSizeQuota, connection.ConnectionBufferSize)),
-                timeoutHelper.RemainingTime());
+                timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             int offset = 0;
             while (size > 0)
@@ -391,7 +391,7 @@ namespace System.ServiceModel.Channels
 
                 if (decoder.CurrentState == ClientFramingDecoderState.Fault)
                 {
-                    await ConnectionUtilities.CloseNoThrowAsync(connection, timeoutHelper.RemainingTime());
+                    await ConnectionUtilities.CloseNoThrowAsync(connection, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                         FaultStringDecoder.GetFaultException(decoder.Fault, via.ToString(), contentType));
                 }
@@ -406,7 +406,7 @@ namespace System.ServiceModel.Channels
                         offset = 0;
                         size = await connection.ReadAsync(new Memory<byte>(faultBuffer, 0,
                             Math.Min(FaultStringDecoder.FaultSizeQuota, connection.ConnectionBufferSize)),
-                            timeoutHelper.RemainingTime());
+                            timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     }
                 }
             }
@@ -424,11 +424,11 @@ namespace System.ServiceModel.Channels
             {
                 EncodedUpgrade encodedUpgrade = new EncodedUpgrade(upgradeContentType);
                 // write upgrade request framing for synchronization
-                await connection.WriteAsync(encodedUpgrade.EncodedBytes, true, timeout);
+                await connection.WriteAsync(encodedUpgrade.EncodedBytes, true, timeout).ConfigureAwait(false);
                 byte[] buffer = new byte[1];
 
                 // read upgrade response framing 
-                int size = await connection.ReadAsync(buffer, timeout);
+                int size = await connection.ReadAsync(buffer, timeout).ConfigureAwait(false);
 
                 if (!ValidateUpgradeResponse(buffer, size, decoder)) // we have a problem
                 {
@@ -437,7 +437,7 @@ namespace System.ServiceModel.Channels
 
                 // initiate wire upgrade
                 ConnectionStream connectionStream = new ConnectionStream(connection, defaultTimeouts);
-                Stream upgradedStream = await upgradeInitiator.InitiateUpgradeAsync(connectionStream);
+                Stream upgradedStream = await upgradeInitiator.InitiateUpgradeAsync(connectionStream).ConfigureAwait(false);
 
                 // and re-wrap connection
                 connection = new StreamConnection(upgradedStream, connectionStream);

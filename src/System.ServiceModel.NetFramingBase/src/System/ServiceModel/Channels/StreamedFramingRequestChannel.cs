@@ -70,7 +70,7 @@ namespace System.ServiceModel.Channels
         internal async Task<(IConnection connection, SecurityMessageProperty remoteSecurity)> SendPreambleAsync(IConnection connection, TimeoutHelper timeoutHelper, ClientFramingDecoder decoder)
         {
             SecurityMessageProperty remoteSecurity = null;
-            await connection.WriteAsync(Preamble, true, timeoutHelper.RemainingTime());
+            await connection.WriteAsync(Preamble, true, timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             if (_upgrade != null)
             {
@@ -78,10 +78,10 @@ namespace System.ServiceModel.Channels
                 StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(RemoteAddress, Via);
 
                 bool upgradeInitiated;
-                (upgradeInitiated, connection)= await ConnectionUpgradeHelper.InitiateUpgradeAsync(upgradeInitiator, connection, decoder, this, timeoutHelper.RemainingTime());
+                (upgradeInitiated, connection)= await ConnectionUpgradeHelper.InitiateUpgradeAsync(upgradeInitiator, connection, decoder, this, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 if (!upgradeInitiated)
                 {
-                    await ConnectionUpgradeHelper.DecodeFramingFaultAsync(decoder, connection, Via, _messageEncoder.ContentType, timeoutHelper.RemainingTime());
+                    await ConnectionUpgradeHelper.DecodeFramingFaultAsync(decoder, connection, Via, _messageEncoder.ContentType, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
 
                 if (channelBindingProvider != null && channelBindingProvider.IsChannelBindingSupportEnabled)
@@ -90,16 +90,16 @@ namespace System.ServiceModel.Channels
                 }
 
                 remoteSecurity = StreamSecurityUpgradeInitiator.GetRemoteSecurity(upgradeInitiator);
-                await connection.WriteAsync(ClientSingletonEncoder.PreambleEndBytes, true, timeoutHelper.RemainingTime());
+                await connection.WriteAsync(ClientSingletonEncoder.PreambleEndBytes, true, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             byte[] ackBuffer = new byte[1];
-            int ackBytesRead = await connection.ReadAsync(ackBuffer, timeoutHelper.RemainingTime());
+            int ackBytesRead = await connection.ReadAsync(ackBuffer, timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, decoder, Via))
             {
                 await ConnectionUpgradeHelper.DecodeFramingFaultAsync(decoder, connection, Via,
-                    _messageEncoder.ContentType, timeoutHelper.RemainingTime());
+                    _messageEncoder.ContentType, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             return (connection, remoteSecurity);
@@ -145,7 +145,7 @@ namespace System.ServiceModel.Channels
             protected override async Task<IConnection> AcceptPooledConnectionAsync(IConnection connection, TimeoutHelper timeoutHelper)
             {
                 Decoder = new ClientSingletonDecoder(0);
-                (connection, _remoteSecurity) = await _channel.SendPreambleAsync(connection, timeoutHelper, Decoder);
+                (connection, _remoteSecurity) = await _channel.SendPreambleAsync(connection, timeoutHelper, Decoder).ConfigureAwait(false);
                 return connection;
             }
 
@@ -220,10 +220,10 @@ namespace System.ServiceModel.Channels
                     {
                         try
                         {
-                            _connection = await _connectionPoolHelper.EstablishConnectionAsync(timeoutHelper.RemainingTime());
+                            _connection = await _connectionPoolHelper.EstablishConnectionAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
                             ChannelBindingUtility.TryAddToMessage(_channel._channelBindingToken, _message, false);
-                            await StreamingConnectionHelper.WriteMessageAsync(_message, _connection, true, _channel._settings, timeoutHelper);
+                            await StreamingConnectionHelper.WriteMessageAsync(_message, _connection, true, _channel._settings, timeoutHelper).ConfigureAwait(false);
                         }
                         catch (TimeoutException exception)
                         {
@@ -259,7 +259,7 @@ namespace System.ServiceModel.Channels
                     {
                         _connectionReader = new ClientSingletonConnectionReader(_connection, _connectionPoolHelper, _channel._settings);
                         _connectionReader.DoneSending(TimeSpan.Zero);
-                        Message message = await _connectionReader.ReceiveAsync(timeoutHelper);
+                        Message message = await _connectionReader.ReceiveAsync(timeoutHelper).ConfigureAwait(false);
                         if (message != null)
                         {
                             ChannelBindingUtility.TryAddToMessage(_channel._channelBindingToken, message, false);

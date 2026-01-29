@@ -294,7 +294,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 SetReadTimeout(timeout);
-                return await Stream.ReadAsync(buffer);
+                return await Stream.ReadAsync(buffer).ConfigureAwait(false);
             }
             catch (IOException ioException)
             {
@@ -308,7 +308,7 @@ namespace System.ServiceModel.Channels
             {
                 _innerStream.Immediate = immediate;
                 SetWriteTimeout(timeout);
-                await Stream.WriteAsync(buffer);
+                await Stream.WriteAsync(buffer).ConfigureAwait(false);
             }
             catch (IOException ioException)
             {
@@ -322,7 +322,7 @@ namespace System.ServiceModel.Channels
             _innerStream.CloseTimeout = timeout;
             try
             {
-                await Stream.DisposeAsync();
+                await Stream.DisposeAsync().ConfigureAwait(false);
             }
             catch (IOException ioException)
             {

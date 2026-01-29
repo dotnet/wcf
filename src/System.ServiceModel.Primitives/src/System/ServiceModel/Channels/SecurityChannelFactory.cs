@@ -124,11 +124,11 @@ namespace System.ServiceModel.Channels
         protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await base.OnCloseAsync(timeout);
-            await CloseProtocolFactoryAsync(false, timeoutHelper.RemainingTime());
+            await base.OnCloseAsync(timeout).ConfigureAwait(false);
+            await CloseProtocolFactoryAsync(false, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             if (_sessionClientSettings != null)
             {
-                await _sessionClientSettings.CloseAsync(timeoutHelper.RemainingTime());
+                await _sessionClientSettings.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
         }
 
@@ -173,8 +173,8 @@ namespace System.ServiceModel.Channels
         protected internal override async Task OnOpenAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await OnOpenCoreAsync(timeoutHelper.RemainingTime());
-            await base.OnOpenAsync(timeoutHelper.RemainingTime());
+            await OnOpenCoreAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await base.OnOpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             SetBufferManager();
         }
 
@@ -288,8 +288,8 @@ namespace System.ServiceModel.Channels
                     typeof(TChannel) == typeof(IRequestChannel),
                     timeoutHelper.RemainingTime());
                 OnProtocolCreationComplete(securityProtocol);
-                await SecurityProtocol.OpenAsync(timeoutHelper.RemainingTime());
-                await base.OnOpenAsync(timeoutHelper.RemainingTime());
+                await SecurityProtocol.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                await base.OnOpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             private void EnableChannelBindingSupport()
@@ -364,14 +364,14 @@ namespace System.ServiceModel.Channels
                 ThrowIfFaulted();
                 ThrowIfDisposedOrNotOpen(message);
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                message = await SecurityProtocol.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime());
+                message = await SecurityProtocol.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 if (InnerChannel is IAsyncOutputChannel asyncOutputChannel)
                 {
-                    await asyncOutputChannel.SendAsync(message, timeoutHelper.RemainingTime());
+                    await asyncOutputChannel.SendAsync(message, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 else
                 {
-                    await Task.Factory.FromAsync(InnerChannel.BeginSend, InnerChannel.EndSend, message, timeoutHelper.RemainingTime(), null);
+                    await Task.Factory.FromAsync(InnerChannel.BeginSend, InnerChannel.EndSend, message, timeoutHelper.RemainingTime(), null).ConfigureAwait(false);
                 }
             }
 
@@ -467,8 +467,8 @@ namespace System.ServiceModel.Channels
                 ThrowIfDisposedOrNotOpen(message);
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SecurityProtocolCorrelationState correlationState;
-                (correlationState, message) = await SecurityProtocol.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime(), null);
-                Message reply = await Task.Factory.FromAsync(InnerChannel.BeginRequest, InnerChannel.EndRequest, message, timeoutHelper.RemainingTime(), null);
+                (correlationState, message) = await SecurityProtocol.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime(), null).ConfigureAwait(false);
+                Message reply = await Task.Factory.FromAsync(InnerChannel.BeginRequest, InnerChannel.EndRequest, message, timeoutHelper.RemainingTime(), null).ConfigureAwait(false);
 
                 return ProcessReply(reply, correlationState, timeoutHelper.RemainingTime());
             }
@@ -476,7 +476,7 @@ namespace System.ServiceModel.Channels
             private async Task<Message> RequestAsyncInternal(Message message, TimeSpan timeout)
             {
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                return await RequestAsync(message, timeout);
+                return await RequestAsync(message, timeout).ConfigureAwait(false);
             }
 
             public Message Request(Message message, TimeSpan timeout)
@@ -616,11 +616,11 @@ namespace System.ServiceModel.Channels
                 Message message;
                 if (InnerDuplexChannel is IAsyncDuplexChannel asyncDuplexChannel)
                 {
-                    (success, message) = await asyncDuplexChannel.TryReceiveAsync(timeoutHelper.RemainingTime());
+                    (success, message) = await asyncDuplexChannel.TryReceiveAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 else
                 {
-                    (success, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(InnerDuplexChannel.BeginTryReceive, InnerDuplexChannel.EndTryReceive, timeout, null);
+                    (success, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(InnerDuplexChannel.BeginTryReceive, InnerDuplexChannel.EndTryReceive, timeout, null).ConfigureAwait(false);
                 }
                 if (success)
                 {

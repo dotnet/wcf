@@ -563,16 +563,16 @@ namespace System.ServiceModel.Channels
             XmlDictionaryWriter xmlWriter = _factory.TakeStreamedWriter(stream, startInfo, boundary, startUri, writeMessageHeaders);
             if (_writeEncoding.WebName == "utf-8")
             {
-                await message.WriteMessageAsync(xmlWriter);
+                await message.WriteMessageAsync(xmlWriter).ConfigureAwait(false);
             }
             else
             {
-                await xmlWriter.WriteStartDocumentAsync();
-                await message.WriteMessageAsync(xmlWriter);
-                await xmlWriter.WriteEndDocumentAsync();
+                await xmlWriter.WriteStartDocumentAsync().ConfigureAwait(false);
+                await message.WriteMessageAsync(xmlWriter).ConfigureAwait(false);
+                await xmlWriter.WriteEndDocumentAsync().ConfigureAwait(false);
             }
 
-            await xmlWriter.FlushAsync();
+            await xmlWriter.FlushAsync().ConfigureAwait(false);
             _factory.ReturnStreamedWriter(xmlWriter);
 
             if (WcfEventSource.Instance.StreamedMessageWrittenByEncoderIsEnabled())

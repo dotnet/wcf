@@ -316,10 +316,10 @@ namespace System.ServiceModel
             await TaskHelpers.EnsureDefaultTaskScheduler();
             if (!_useCachedFactory)
             {
-                await GetChannelFactory().OpenHelperAsync(timeoutHelper.RemainingTime());
+                await GetChannelFactory().OpenHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
-            await InnerChannel.OpenHelperAsync(timeoutHelper.RemainingTime());
+            await InnerChannel.OpenHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         public void Abort()
@@ -377,7 +377,7 @@ namespace System.ServiceModel
                 await TaskHelpers.EnsureDefaultTaskScheduler();
                 if (_channel != null)
                 {
-                    await InnerChannel.CloseHelperAsync(timeoutHelper.RemainingTime());
+                    await InnerChannel.CloseHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
 
                 if (!_channelFactoryRefReleased)
@@ -404,7 +404,7 @@ namespace System.ServiceModel
                         }
                         else
                         {
-                            await GetChannelFactory().CloseHelperAsync(timeoutHelper.RemainingTime());
+                            await GetChannelFactory().CloseHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                         }
                     }
                 }
@@ -476,7 +476,7 @@ namespace System.ServiceModel
                 // Only want to call Close if it is in the Opened state
                 if (State == CommunicationState.Opened)
                 {
-                    await CloseAsync();
+                    await CloseAsync().ConfigureAwait(false);
                 }
                 // Anything not closed by this point should be aborted
                 if (State != CommunicationState.Closed)

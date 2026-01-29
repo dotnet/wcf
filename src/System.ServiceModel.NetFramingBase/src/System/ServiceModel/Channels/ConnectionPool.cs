@@ -51,7 +51,7 @@ namespace System.ServiceModel.Channels
 
         public async ValueTask<bool> CloseAsync(TimeSpan timeout)
         {
-            await ThisLock.WaitAsync();
+            await ThisLock.WaitAsync().ConfigureAwait(false);
             try
             {
                 if (OpenCount <= 0)
@@ -63,7 +63,7 @@ namespace System.ServiceModel.Channels
 
                 if (OpenCount == 0)
                 {
-                    await OnCloseAsync(timeout);
+                    await OnCloseAsync(timeout).ConfigureAwait(false);
                     return true;
                 }
 
@@ -174,7 +174,7 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    await pool.CloseAsync(timeoutHelper.RemainingTime());
+                    await pool.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 catch (CommunicationException)
                 {
@@ -337,7 +337,7 @@ namespace System.ServiceModel.Channels
                     }
                     try
                     {
-                        await Task.WhenAll(closeTasks);
+                        await Task.WhenAll(closeTasks).ConfigureAwait(false);
                     }
                     catch(AggregateException ae)
                     {
@@ -636,7 +636,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                await item.CloseAsync(timeout);
+                await item.CloseAsync(timeout).ConfigureAwait(false);
             }
             catch (Exception) { }
         }

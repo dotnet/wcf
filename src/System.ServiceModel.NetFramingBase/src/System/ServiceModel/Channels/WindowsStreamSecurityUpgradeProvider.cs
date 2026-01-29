@@ -130,17 +130,17 @@ namespace System.ServiceModel.Channels
             internal override async ValueTask OpenAsync(TimeSpan timeout)
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                await base.OpenAsync(timeoutHelper.RemainingTime());
-                await SecurityUtils.OpenTokenProviderIfRequiredAsync(_clientTokenProvider, timeoutHelper.RemainingTime());
-                (_credential, _impersonationLevel, _allowNtlm) = await WindowsStreamTransportSecurityHelpers.GetSspiCredentialAsync(_clientTokenProvider, timeoutHelper.RemainingTime());
+                await base.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                await SecurityUtils.OpenTokenProviderIfRequiredAsync(_clientTokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                (_credential, _impersonationLevel, _allowNtlm) = await WindowsStreamTransportSecurityHelpers.GetSspiCredentialAsync(_clientTokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 return;
             }
 
             internal override async ValueTask CloseAsync(TimeSpan timeout)
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                await base.CloseAsync(timeoutHelper.RemainingTime());
-                await SecurityUtils.CloseTokenProviderIfRequiredAsync(_clientTokenProvider, timeoutHelper.RemainingTime());
+                await base.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                await SecurityUtils.CloseTokenProviderIfRequiredAsync(_clientTokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             private static SecurityMessageProperty CreateServerSecurity(NegotiateStream negotiateStream)
@@ -179,7 +179,7 @@ namespace System.ServiceModel.Channels
                 // authenticate
                 try
                 {
-                    await negotiateStream.AuthenticateAsClientAsync(_credential, targetName, _parent.ProtectionLevel, _impersonationLevel);
+                    await negotiateStream.AuthenticateAsClientAsync(_credential, targetName, _parent.ProtectionLevel, _impersonationLevel).ConfigureAwait(false);
                 }
                 catch (AuthenticationException exception)
                 {

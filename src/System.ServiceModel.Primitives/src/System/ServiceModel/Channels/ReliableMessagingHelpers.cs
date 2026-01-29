@@ -52,7 +52,7 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    if (!await _tcs.Task.AwaitWithTimeout(timeout))
+                    if (!await _tcs.Task.AwaitWithTimeout(timeout).ConfigureAwait(false))
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SRP.Format(SRP.TimeoutOnOperation, timeout)));
                 }
                 finally
@@ -396,7 +396,7 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                if (!await _tcs.Task.AwaitWithTimeout(timeout))
+                if (!await _tcs.Task.AwaitWithTimeout(timeout).ConfigureAwait(false))
                 {
                     if (throwTimeoutException)
                     {
@@ -532,7 +532,7 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    await binder.CloseAsync(_defaultCloseTimeout);
+                    await binder.CloseAsync(_defaultCloseTimeout).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -575,7 +575,7 @@ namespace System.ServiceModel.Channels
             if (BeforeClose())
                 return;
 
-            await _closeHandle.WaitAsync(timeout);
+            await _closeHandle.WaitAsync(timeout).ConfigureAwait(false);
             AfterClose();
         }
 
@@ -610,8 +610,8 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                await SendFaultAsync(binder, state, _defaultSendTimeout);
-                await AsyncCloseBinder(binder);
+                await SendFaultAsync(binder, state, _defaultSendTimeout).ConfigureAwait(false);
+                await AsyncCloseBinder(binder).ConfigureAwait(false);
                 throwing = false;
             }
             finally
@@ -647,7 +647,7 @@ namespace System.ServiceModel.Channels
                 }
 
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                await SendFaultAsync(binder, state);
+                await SendFaultAsync(binder, state).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -694,7 +694,7 @@ namespace System.ServiceModel.Channels
         protected override async Task SendFaultAsync(IReliableChannelBinder binder, FaultState faultState, TimeSpan timeout)
         {
             var context = faultState.RequestContext;
-            await Task.Factory.FromAsync(context.BeginReply, context.EndReply, faultState.FaultMessage, timeout, null);
+            await Task.Factory.FromAsync(context.BeginReply, context.EndReply, faultState.FaultMessage, timeout, null).ConfigureAwait(false);
             faultState.FaultMessage.Close();
         }
 
@@ -723,7 +723,7 @@ namespace System.ServiceModel.Channels
 
         protected override async Task SendFaultAsync(IReliableChannelBinder binder, Message message, TimeSpan timeout)
         {
-            await binder.SendAsync(message, timeout);
+            await binder.SendAsync(message, timeout).ConfigureAwait(false);
             message.Close();
         }
 
@@ -928,10 +928,10 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    if (await EnsureChannelAsync())
+                    if (await EnsureChannelAsync().ConfigureAwait(false))
                     {
                         request = CreateRequestMessage();
-                        reply = await OnRequestAsync(request, requestTimeout, lastIteration);
+                        reply = await OnRequestAsync(request, requestTimeout, lastIteration).ConfigureAwait(false);
                         requestCompleted = true;
                     }
                 }
@@ -963,7 +963,7 @@ namespace System.ServiceModel.Channels
                 if (lastIteration)
                     break;
 
-                await abortHandle.WaitAsync(iterationTimeoutHelper.RemainingTime());
+                await abortHandle.WaitAsync(iterationTimeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             ThrowTimeoutException();
@@ -1041,7 +1041,7 @@ namespace System.ServiceModel.Channels
 
         protected override async Task<Message> OnRequestAsync(Message request, TimeSpan timeout, bool last)
         {
-            return GetReply(await ClientBinder.RequestAsync(request, timeout, MaskingMode.None), last);
+            return GetReply(await ClientBinder.RequestAsync(request, timeout, MaskingMode.None).ConfigureAwait(false), last);
         }
 
         public override void SetInfo(WsrmMessageInfo info)
@@ -1086,11 +1086,11 @@ namespace System.ServiceModel.Channels
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
-            await Binder.SendAsync(request, timeoutHelper.RemainingTime(), MaskingMode.None);
+            await Binder.SendAsync(request, timeoutHelper.RemainingTime(), MaskingMode.None).ConfigureAwait(false);
             TimeSpan receiveTimeout = GetReceiveTimeout(timeoutHelper.RemainingTime());
 
             RequestContext requestContext;
-            (_, requestContext) = await Binder.TryReceiveAsync(receiveTimeout, MaskingMode.None);
+            (_, requestContext) = await Binder.TryReceiveAsync(receiveTimeout, MaskingMode.None).ConfigureAwait(false);
             return requestContext?.RequestMessage;
         }
 
@@ -1157,9 +1157,9 @@ namespace System.ServiceModel.Channels
         protected override async Task<Message> OnRequestAsync(Message request, TimeSpan timeout, bool last)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await Binder.SendAsync(request, timeoutHelper.RemainingTime(), MaskingMode.None);
+            await Binder.SendAsync(request, timeoutHelper.RemainingTime(), MaskingMode.None).ConfigureAwait(false);
             TimeSpan waitTimeout = GetWaitTimeout(timeoutHelper.RemainingTime());
-            await replyHandle.WaitAsync(waitTimeout);
+            await replyHandle.WaitAsync(waitTimeout).ConfigureAwait(false);
             return GetReply(last);
         }
 

@@ -63,10 +63,10 @@ namespace System.ServiceModel.Dispatcher
 
         internal async Task SerializeAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
         {
-            Stream streamValue = await GetStreamAndWriteStartWrapperIfNecessaryAsync(writer, parameters, returnValue);
+            Stream streamValue = await GetStreamAndWriteStartWrapperIfNecessaryAsync(writer, parameters, returnValue).ConfigureAwait(false);
             var streamProvider = new OperationStreamProvider(streamValue);
-            await writer.WriteValueAsync(streamProvider);
-            await WriteEndWrapperIfNecessaryAsync(writer);
+            await writer.WriteValueAsync(streamProvider).ConfigureAwait(false);
+            await WriteEndWrapperIfNecessaryAsync(writer).ConfigureAwait(false);
         }
 
         private Stream GetStreamAndWriteStartWrapperIfNecessary(XmlDictionaryWriter writer, object[] parameters, object returnValue)
@@ -96,10 +96,10 @@ namespace System.ServiceModel.Dispatcher
 
             if (WrapperName != null)
             {
-                await writer.WriteStartElementAsync(null, WrapperName, WrapperNamespace);
+                await writer.WriteStartElementAsync(null, WrapperName, WrapperNamespace).ConfigureAwait(false);
             }
 
-            await writer.WriteStartElementAsync(null, PartName, PartNamespace);
+            await writer.WriteStartElementAsync(null, PartName, PartNamespace).ConfigureAwait(false);
             return streamValue;
         }
 
@@ -114,10 +114,10 @@ namespace System.ServiceModel.Dispatcher
 
         private async Task WriteEndWrapperIfNecessaryAsync(XmlDictionaryWriter writer)
         {
-            await writer.WriteEndElementAsync();
+            await writer.WriteEndElementAsync().ConfigureAwait(false);
             if (WrapperName != null)
             {
-                await writer.WriteEndElementAsync();
+                await writer.WriteEndElementAsync().ConfigureAwait(false);
             }
         }
 
@@ -316,7 +316,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     if (_bufferedReadStream != null)
                     {
-                        await _bufferedReadStream.PreReadBufferAsync(cancellationToken);
+                        await _bufferedReadStream.PreReadBufferAsync(cancellationToken).ConfigureAwait(false);
                     }
 
                     return Read(buffer, offset, count);

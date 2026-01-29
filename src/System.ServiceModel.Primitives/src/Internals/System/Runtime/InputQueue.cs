@@ -152,7 +152,7 @@ namespace System.Runtime
 
         public async Task<T> DequeueAsync(TimeSpan timeout)
         {
-            (bool success, T value) = await TryDequeueAsync(timeout);
+            (bool success, T value) = await TryDequeueAsync(timeout).ConfigureAwait(false);
 
             if (!success)
             {
@@ -205,7 +205,7 @@ namespace System.Runtime
 
             if (reader != null)
             {
-                return await reader.WaitAsync(timeout);
+                return await reader.WaitAsync(timeout).ConfigureAwait(false);
             }
             else
             {
@@ -1165,7 +1165,7 @@ namespace System.Runtime
 
             public async Task<(bool, T)> WaitAsync(TimeSpan timeout)
             {
-                if (!await _tcs.Task.AwaitWithTimeout(timeout))
+                if (!await _tcs.Task.AwaitWithTimeout(timeout).ConfigureAwait(false))
                 {
                     if (_inputQueue.RemoveReader(this))
                     {
@@ -1173,11 +1173,11 @@ namespace System.Runtime
                     }
                     else
                     {
-                        await _tcs.Task;
+                        await _tcs.Task.ConfigureAwait(false);
                     }
                 }
 
-                return (true, await _tcs.Task);
+                return (true, await _tcs.Task.ConfigureAwait(false));
             }
         }
 
@@ -1231,12 +1231,12 @@ namespace System.Runtime
 
             public async Task<bool> WaitAsync(TimeSpan timeout)
             {
-                if (!await _tcs.Task.AwaitWithTimeout(timeout))
+                if (!await _tcs.Task.AwaitWithTimeout(timeout).ConfigureAwait(false))
                 {
                     return false;
                 }
 
-                return await _tcs.Task;
+                return await _tcs.Task.ConfigureAwait(false);
             }
         }
     }

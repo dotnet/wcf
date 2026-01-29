@@ -252,11 +252,11 @@ namespace System.ServiceModel.Channels
             try
             {
                 OnShutdown();
-                await OnCloseAsync(timeoutHelper.RemainingTime());
+                await OnCloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
                 if (channel != null)
                 {
-                    await CloseChannelAsync(channel, timeoutHelper.RemainingTime());
+                    await CloseChannelAsync(channel, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
 
                 TransitionToClosed();
@@ -562,7 +562,7 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                await OnOpenAsync(timeout);
+                await OnOpenAsync(timeout).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -584,7 +584,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            await Synchronizer.StartSynchronizingAsync();
+            await Synchronizer.StartSynchronizingAsync().ConfigureAwait(false);
             OnOpened();
         }
 
@@ -615,7 +615,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                (bool success, TChannel channel) = await Synchronizer.TryGetChannelForOutputAsync(timeoutHelper.RemainingTime(), maskingMode);
+                (bool success, TChannel channel) = await Synchronizer.TryGetChannelForOutputAsync(timeoutHelper.RemainingTime(), maskingMode).ConfigureAwait(false);
                 if (!success)
                 {
                     if (!ReliableChannelBinderHelper.MaskHandled(maskingMode))
@@ -636,7 +636,7 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    await OnSendAsync(channel, message, timeoutHelper.RemainingTime());
+                    await OnSendAsync(channel, message, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -748,7 +748,7 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     (bool success, TChannel channel) = await Synchronizer.TryGetChannelForInputAsync(
-                        CanGetChannelForReceive, timeoutHelper.RemainingTime());
+                        CanGetChannelForReceive, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     success = !success;
 
                     // the synchronizer is faulted and not reestablishing or closed, or the call timed
@@ -761,7 +761,7 @@ namespace System.ServiceModel.Channels
                     try
                     {
                         RequestContext requestContext;
-                        (success, requestContext) = await OnTryReceiveAsync(channel, timeoutHelper.RemainingTime());
+                        (success, requestContext) = await OnTryReceiveAsync(channel, timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
                         // timed out || got message, return immediately
                         if (!success || (requestContext != null))
@@ -999,7 +999,7 @@ namespace System.ServiceModel.Channels
             {
                 bool fault = false;
 
-                await using (await ThisLock.TakeLockAsync())
+                await using (await ThisLock.TakeLockAsync().ConfigureAwait(false))
                 {
                     if (ValidateOpened())
                     {
@@ -1026,7 +1026,7 @@ namespace System.ServiceModel.Channels
                                 return true;
                             }
 
-                            if (await _binder.TryGetChannelAsync(TimeSpan.Zero))
+                            if (await _binder.TryGetChannelAsync(TimeSpan.Zero).ConfigureAwait(false))
                             {
                                 if (CurrentChannel == null)
                                 {
@@ -1448,7 +1448,7 @@ namespace System.ServiceModel.Channels
 
             public async Task StartSynchronizingAsync()
             {
-                await using (await ThisLock.TakeLockAsync())
+                await using (await ThisLock.TakeLockAsync().ConfigureAwait(false))
                 {
                     if (_state == State.Created)
                     {
@@ -1466,7 +1466,7 @@ namespace System.ServiceModel.Channels
 
                     if (CurrentChannel == null)
                     {
-                        if (!await _binder.TryGetChannelAsync(TimeSpan.Zero))
+                        if (!await _binder.TryGetChannelAsync(TimeSpan.Zero).ConfigureAwait(false))
                         {
                             return;
                         }
@@ -1549,7 +1549,7 @@ namespace System.ServiceModel.Channels
                 bool faulted = false;
                 bool getChannel = false;
 
-                await using (await ThisLock.TakeLockAsync())
+                await using (await ThisLock.TakeLockAsync().ConfigureAwait(false))
                 {
                     if (!ThrowIfNecessary(maskingMode))
                     {
@@ -1612,7 +1612,7 @@ namespace System.ServiceModel.Channels
                     waiter.GetChannel(true);
                 }
 
-                return await waiter.TryWaitAsync();
+                return await waiter.TryWaitAsync().ConfigureAwait(false);
             }
 
             public void UnblockWaiters()
@@ -1664,7 +1664,7 @@ namespace System.ServiceModel.Channels
 
             public async Task WaitForPendingOperationsAsync(TimeSpan timeout)
             {
-                await using (await ThisLock.TakeLockAsync())
+                await using (await ThisLock.TakeLockAsync().ConfigureAwait(false))
                 {
                     if (_drainEvent != null)
                     {
@@ -1679,7 +1679,7 @@ namespace System.ServiceModel.Channels
 
                 if (_drainEvent != null)
                 {
-                    await _drainEvent.WaitAsync(timeout);
+                    await _drainEvent.WaitAsync(timeout).ConfigureAwait(false);
                 }
             }
 
@@ -1783,7 +1783,7 @@ namespace System.ServiceModel.Channels
                         channel = _channel;
                     }
                     else if (await _synchronizer._binder.TryGetChannelAsync(
-                        _timeoutHelper.RemainingTime()))
+                        _timeoutHelper.RemainingTime()).ConfigureAwait(false))
                     {
                         if (!_synchronizer.CompleteSetChannel(this, out channel))
                         {
@@ -1807,7 +1807,7 @@ namespace System.ServiceModel.Channels
 
                         try
                         {
-                            await channel.OpenHelperAsync(_timeoutHelper.RemainingTime());
+                            await channel.OpenHelperAsync(_timeoutHelper.RemainingTime()).ConfigureAwait(false);
                             throwing = false;
                         }
                         finally
@@ -1830,11 +1830,11 @@ namespace System.ServiceModel.Channels
 
                 public async Task<(bool success, TChannel channel)> TryWaitAsync()
                 {
-                    if (!await WaitAsync())
+                    if (!await WaitAsync().ConfigureAwait(false))
                     {
                         return (false, null);
                     }
-                    else if (_getChannel && !await TryGetChannelAsync())
+                    else if (_getChannel && !await TryGetChannelAsync().ConfigureAwait(false))
                     {
                         return (false, null);
                     }
@@ -1846,7 +1846,7 @@ namespace System.ServiceModel.Channels
                             throw Fx.AssertAndThrow("User of IWaiter called both Set and Fault or Close.");
                         }
 
-                        await _tcs.Task;
+                        await _tcs.Task.ConfigureAwait(false);
                     }
 
                     return (true, _channel);
@@ -1854,7 +1854,7 @@ namespace System.ServiceModel.Channels
 
                 private async Task<bool> WaitAsync()
                 {
-                    if (!await _tcs.Task.AwaitWithTimeout(_timeoutHelper.RemainingTime()))
+                    if (!await _tcs.Task.AwaitWithTimeout(_timeoutHelper.RemainingTime()).ConfigureAwait(false))
                     {
                         if (_synchronizer.RemoveWaiter(this))
                         {
@@ -1862,7 +1862,7 @@ namespace System.ServiceModel.Channels
                         }
                         else
                         {
-                            await _tcs.Task;
+                            await _tcs.Task.ConfigureAwait(false);
                         }
                     }
 
@@ -1973,7 +1973,7 @@ namespace System.ServiceModel.Channels
                         Binder.AddOutputHeaders(message);
                     }
 
-                    await Task.Factory.FromAsync(_innerContext.BeginReply, _innerContext.EndReply, message, timeout, null);
+                    await Task.Factory.FromAsync(_innerContext.BeginReply, _innerContext.EndReply, message, timeout, null).ConfigureAwait(false);
                 }
                 catch (ObjectDisposedException) { }
                 catch (Exception e)
@@ -2006,8 +2006,8 @@ namespace System.ServiceModel.Channels
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
-            await ((ISessionChannel<IAsyncDuplexSession>)channel).Session.CloseOutputSessionAsync(timeoutHelper.RemainingTime());
-            await binder.WaitForPendingOperationsAsync(timeoutHelper.RemainingTime());
+            await ((ISessionChannel<IAsyncDuplexSession>)channel).Session.CloseOutputSessionAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await binder.WaitForPendingOperationsAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             TimeSpan iterationTimeout = timeoutHelper.RemainingTime();
             bool lastIteration = (iterationTimeout == TimeSpan.Zero);
@@ -2022,17 +2022,17 @@ namespace System.ServiceModel.Channels
                     bool success;
                     if (channel is IAsyncDuplexSessionChannel)
                     {
-                        (success, message) = await ((IAsyncDuplexSessionChannel)channel).TryReceiveAsync(timeout);
+                        (success, message) = await ((IAsyncDuplexSessionChannel)channel).TryReceiveAsync(timeout).ConfigureAwait(false);
                     }
                     else
                     {
-                        (success, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(channel.BeginTryReceive, channel.EndTryReceive, timeout, null);
+                        (success, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(channel.BeginTryReceive, channel.EndTryReceive, timeout, null).ConfigureAwait(false);
                     }
 
                     receiveThrowing = false;
                     if (success && message == null)
                     {
-                        await channel.CloseHelperAsync(timeoutHelper.RemainingTime());
+                        await channel.CloseHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                         return;
                     }
                 }
@@ -2088,7 +2088,7 @@ namespace System.ServiceModel.Channels
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
-            await binder.WaitForPendingOperationsAsync(timeoutHelper.RemainingTime());
+            await binder.WaitForPendingOperationsAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             TimeSpan iterationTimeout = timeoutHelper.RemainingTime();
             bool lastIteration = (iterationTimeout == TimeSpan.Zero);
@@ -2101,12 +2101,12 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     bool success;
-                    (success, context) = await TaskHelpers.FromAsync<TimeSpan, bool, RequestContext>(channel.BeginTryReceiveRequest, channel.EndTryReceiveRequest, iterationTimeout, null);
+                    (success, context) = await TaskHelpers.FromAsync<TimeSpan, bool, RequestContext>(channel.BeginTryReceiveRequest, channel.EndTryReceiveRequest, iterationTimeout, null).ConfigureAwait(false);
 
                     receiveThrowing = false;
                     if (success && context == null)
                     {
-                        await channel.CloseHelperAsync(timeoutHelper.RemainingTime());
+                        await channel.CloseHelperAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                         return;
                     }
                 }

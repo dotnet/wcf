@@ -12,7 +12,7 @@ namespace System.ServiceModel.Channels
             bool success = false;
             try
             {
-                await connection.CloseAsync(timeout);
+                await connection.CloseAsync(timeout).ConfigureAwait(false);
                 success = true;
             }
             catch (TimeoutException)

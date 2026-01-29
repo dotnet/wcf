@@ -116,7 +116,7 @@ namespace System.ServiceModel
 
             if (activityWaiter != null)
             {
-                CommunicationWaitResult result = await activityWaiter.WaitAsync(timeout, false);
+                CommunicationWaitResult result = await activityWaiter.WaitAsync(timeout, false).ConfigureAwait(false);
                 if (Interlocked.Decrement(ref _activityWaiterCount) == 0)
                 {
                     activityWaiter.Dispose();
@@ -255,8 +255,8 @@ namespace System.ServiceModel
         protected override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await CloseInputAsync(timeoutHelper.RemainingTime());
-            await base.OnCloseAsync(timeoutHelper.RemainingTime());
+            await CloseInputAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await base.OnCloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         protected override void OnEndClose(IAsyncResult result)

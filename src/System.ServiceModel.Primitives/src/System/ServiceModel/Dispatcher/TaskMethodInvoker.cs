@@ -217,7 +217,7 @@ namespace System.ServiceModel.Dispatcher
                     if (returnValueTask != null)
                     {
                         // Only return once the task has completed
-                        await returnValueTask;
+                        await returnValueTask.ConfigureAwait(false);
                     }
 
                     callSucceeded = true;

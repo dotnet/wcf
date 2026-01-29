@@ -114,7 +114,7 @@ namespace System.ServiceModel.Channels
         public async ValueTask<int> ReadAsync(Memory<byte> buffer, TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
+            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync().ConfigureAwait(false);
 
             lock (_readLock)
             {
@@ -129,7 +129,7 @@ namespace System.ServiceModel.Channels
                     return 0;
                 }
 
-                int bytesRead = await _pipe.ReadAsync(buffer, cancellationToken);
+                int bytesRead = await _pipe.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
                 if (!buffer.IsEmpty && bytesRead == 0)
                 {
                     _isAtEOF = true;
@@ -161,7 +161,7 @@ namespace System.ServiceModel.Channels
         {
             ValidateBufferBounds(buffer);
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
+            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync().ConfigureAwait(false);
 
             lock (_writeLock)
             {
@@ -171,7 +171,7 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                await _pipe.WriteAsync(buffer, cancellationToken);
+                await _pipe.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
 
                 if (_closeState == CloseState.PipeClosed)
                 {
@@ -196,7 +196,7 @@ namespace System.ServiceModel.Channels
         {
             bool existingReadIsPending = false;
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
+            var cancellationToken = await timeoutHelper.GetCancellationTokenAsync().ConfigureAwait(false);
 
             bool shouldClosePipe = false;
             try
@@ -261,7 +261,7 @@ namespace System.ServiceModel.Channels
                 {
                     try
                     {
-                        await WaitForWriteZero(writeValueTask, timeout, true);
+                        await WaitForWriteZero(writeValueTask, timeout, true).ConfigureAwait(false);
                     }
                     catch (TimeoutException e)
                     {
@@ -275,7 +275,7 @@ namespace System.ServiceModel.Channels
                 {
                     try
                     {
-                        await WaitForReadZero(readValueTask, timeout, true);
+                        await WaitForReadZero(readValueTask, timeout, true).ConfigureAwait(false);
                     }
                     catch (TimeoutException e)
                     {
@@ -285,7 +285,7 @@ namespace System.ServiceModel.Channels
                 }
                 else if (existingReadIsPending)
                 {
-                    if (!await _atEOFTask.Task.AwaitWithTimeout(timeoutHelper.RemainingTime()))
+                    if (!await _atEOFTask.Task.AwaitWithTimeout(timeoutHelper.RemainingTime()).ConfigureAwait(false))
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelper(
                             new TimeoutException(SR.PipeShutdownReadError), ExceptionEventType);
@@ -303,10 +303,10 @@ namespace System.ServiceModel.Channels
                     readValueTask = StartReadZeroAsync(cancellationToken);
 
                     // wait for write to complete/fail
-                    await WaitForWriteZero(writeValueTask, timeout, false);
+                    await WaitForWriteZero(writeValueTask, timeout, false).ConfigureAwait(false);
 
                     // wait for read to complete/fail
-                    await WaitForReadZero(readValueTask, timeout, false);
+                    await WaitForReadZero(readValueTask, timeout, false).ConfigureAwait(false);
                 }
                 catch (PipeException e)
                 {
@@ -443,7 +443,7 @@ namespace System.ServiceModel.Channels
             int bytesRead = -1;
             try
             {
-                bytesRead = await readTask;
+                bytesRead = await readTask.ConfigureAwait(false);
                 success = true;
             }
             finally
@@ -478,7 +478,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                await writeTask;
+                await writeTask.ConfigureAwait(false);
             }
             catch(Exception)
             {
