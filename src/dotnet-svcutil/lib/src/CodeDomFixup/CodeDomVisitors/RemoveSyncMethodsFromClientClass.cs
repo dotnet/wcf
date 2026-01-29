@@ -4,7 +4,7 @@
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-    using Microsoft.CodeDom;
+    using System.CodeDom;
 
     internal class RemoveSyncMethodsFromClientClass : ClientClassVisitor
     {

@@ -6,14 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <WarningsAsErrors />
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="dotnet-svcutil-lib">
       <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
-    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/net9.0/net6.0/**" Link="net6.0/%(RecursiveDir)%(Filename)%(Extension)" />
-    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/net9.0/net8.0/**" Link="net8.0/%(RecursiveDir)%(Filename)%(Extension)" />
-    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/net9.0/net462/**" Link="net462/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Reference Include="System.CodeDom">
+      <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/net10.0/System.CodeDom.dll</HintPath>
+    </Reference>
+    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/net10.0/net8.0/**" Link="net8.0/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/net10.0/net462/**" Link="net462/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="*" />

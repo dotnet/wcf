@@ -551,11 +551,25 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if(copyInternalAssets && dependency.AssemblyName == "dotnet-svcutil-lib")
                 {
                     string basePath;
+                    // These framework folders are used by the tool for namedpipe binding proxy generation (reflection over assets).
+                    // Keep them explicitly copied as separate from the bootstrapper's own runtime dependency set.
                     string[] frameworks = { "net8.0", "net462" };
                     switch (dependency.DependencyType)
                     {
                         case ProjectDependencyType.Binary:
                             basePath = dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar));
+
+                            // The bootstrapper references dotnet-svcutil-lib by path, so it doesn't automatically carry over
+                            // dotnet-svcutil's tool-folder runtime closure. For global-tool installs, System.CodeDom.dll lives
+                            // next to dotnet-svcutil-lib.dll; reference it directly so we don't require a separate NuGet restore.
+                            var systemCodeDomPath = Path.Combine(basePath, "System.CodeDom.dll");
+                            if (File.Exists(systemCodeDomPath))
+                            {
+                                this.ReferenceGroup.Add(new XElement("Reference",
+                                    new XAttribute("Include", "System.CodeDom"),
+                                    new XElement("HintPath", systemCodeDomPath)));
+                            }
+
                             foreach (var framework in frameworks)
                             {
                                 this.ReferenceGroup.Add(new XElement("Content",
