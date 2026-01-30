@@ -25,7 +25,8 @@ namespace System.ServiceModel.Channels
             }
             catch (ObjectDisposedException)
             {
-                // ignore
+                // CancellationTokenSource may have been disposed by the time this callback executes
+                // due to a race condition between timeout/abort and cleanup
             }
         };
 
@@ -53,11 +54,11 @@ namespace System.ServiceModel.Channels
         {
             // If we have an httpSendCts, register the timeout token to cancel it
             // This allows both timeout and abort to cancel stream operations
-            CancellationTokenRegistration? registration = null;
+            CancellationTokenRegistration? timeoutCancellationRegistration = null;
             if (_httpSendCts != null)
             {
                 var timeoutToken = await timeoutHelper.GetCancellationTokenAsync();
-                registration = timeoutToken.UnsafeRegister(s_cancelCts, _httpSendCts);
+                timeoutCancellationRegistration = timeoutToken.UnsafeRegister(s_cancelCts, _httpSendCts);
             }
 
             try
@@ -90,8 +91,8 @@ namespace System.ServiceModel.Channels
             }
             finally
             {
-                // Dispose the registration when we're done
-                registration?.Dispose();
+                // Unregister the timeout callback to prevent memory leaks and avoid canceling after completion
+                timeoutCancellationRegistration?.Dispose();
             }
         }
 
