@@ -91,7 +91,7 @@ namespace System.ServiceModel.Channels
             }
             finally
             {
-                // Unregister the timeout callback to prevent memory leaks and avoid canceling after completion
+                // Unregister the timeout callback to prevent memory leaks and avoid invoking the callback after the operation completes
                 timeoutCancellationRegistration?.Dispose();
             }
         }
