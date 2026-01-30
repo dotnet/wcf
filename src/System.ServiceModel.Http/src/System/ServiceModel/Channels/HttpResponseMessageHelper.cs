@@ -17,17 +17,27 @@ namespace System.ServiceModel.Channels
 {
     internal class HttpResponseMessageHelper
     {
+        private static readonly Action<object> s_cancelCts = state =>
+        {
+            try
+            {
+                ((CancellationTokenSource)state).Cancel();
+            }
+            catch (ObjectDisposedException)
+            {
+                // ignore
+            }
+        };
+
         private readonly HttpChannelFactory<IRequestChannel> _factory;
         private readonly MessageEncoder _encoder;
         private readonly HttpRequestMessage _httpRequestMessage;
         private readonly HttpResponseMessage _httpResponseMessage;
-        private readonly CancellationToken _abortToken;
+        private readonly CancellationTokenSource _httpSendCts;
         private string _contentType;
         private long _contentLength;
-        private CancellationTokenSource _linkedCts;
-        private CancellationToken? _cachedCombinedToken;
 
-        public HttpResponseMessageHelper(HttpResponseMessage httpResponseMessage, HttpChannelFactory<IRequestChannel> factory, CancellationToken abortToken = default)
+        public HttpResponseMessageHelper(HttpResponseMessage httpResponseMessage, HttpChannelFactory<IRequestChannel> factory, CancellationTokenSource httpSendCts = null)
         {
             Contract.Assert(httpResponseMessage != null);
             Contract.Assert(httpResponseMessage.RequestMessage != null);
@@ -36,36 +46,53 @@ namespace System.ServiceModel.Channels
             _httpRequestMessage = httpResponseMessage.RequestMessage;
             _factory = factory;
             _encoder = factory.MessageEncoderFactory.Encoder;
-            _abortToken = abortToken;
+            _httpSendCts = httpSendCts;
         }
 
         internal async Task<Message> ParseIncomingResponse(TimeoutHelper timeoutHelper)
         {
-            ValidateAuthentication();
-            ValidateResponseStatusCode();
-            bool hasContent = await ValidateContentTypeAsync(timeoutHelper);
-            Message message = null;
-
-            if (!hasContent)
+            // If we have an httpSendCts, register the timeout token to cancel it
+            // This allows both timeout and abort to cancel stream operations
+            CancellationTokenRegistration? registration = null;
+            if (_httpSendCts != null)
             {
-                if (_encoder.MessageVersion == MessageVersion.None)
+                var timeoutToken = await timeoutHelper.GetCancellationTokenAsync();
+                registration = timeoutToken.UnsafeRegister(s_cancelCts, _httpSendCts);
+            }
+
+            try
+            {
+                ValidateAuthentication();
+                ValidateResponseStatusCode();
+                bool hasContent = await ValidateContentTypeAsync(timeoutHelper);
+                Message message = null;
+
+                if (!hasContent)
                 {
-                    message = new NullMessage();
+                    if (_encoder.MessageVersion == MessageVersion.None)
+                    {
+                        message = new NullMessage();
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else
                 {
-                    return null;
+                    message = await ReadStreamAsMessageAsync(timeoutHelper);
                 }
+
+                var exception = ProcessHttpAddressing(message);
+                Contract.Assert(exception == null, "ProcessHttpAddressing should not set an exception after parsing a response message.");
+
+                return message;
             }
-            else
+            finally
             {
-                message = await ReadStreamAsMessageAsync(timeoutHelper);
+                // Dispose the registration when we're done
+                registration?.Dispose();
             }
-
-            var exception = ProcessHttpAddressing(message);
-            Contract.Assert(exception == null, "ProcessHttpAddressing should not set an exception after parsing a response message.");
-
-            return message;
         }
 
         private Exception ProcessHttpAddressing(Message message)
@@ -192,7 +219,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                return await _encoder.ReadMessageAsync(await inputStreamTask, _factory.BufferManager, _factory.MaxBufferSize, _contentType, await GetCombinedCancellationTokenAsync(timeoutHelper));
+                return await _encoder.ReadMessageAsync(await inputStreamTask, _factory.BufferManager, _factory.MaxBufferSize, _contentType, await GetCancellationTokenAsync(timeoutHelper));
             }
             catch (XmlException xmlException)
             {
@@ -216,7 +243,7 @@ namespace System.ServiceModel.Channels
             byte[] buffer = messageBuffer.Array;
             int offset = 0;
             int count = messageBuffer.Count;
-            var ct = await GetCombinedCancellationTokenAsync(timeoutHelper);
+            var ct = await GetCancellationTokenAsync(timeoutHelper);
 
             while (count > 0)
             {
@@ -277,7 +304,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                var ct = await GetCombinedCancellationTokenAsync(timeoutHelper);
+                var ct = await GetCancellationTokenAsync(timeoutHelper);
                 // if we're chunked, make sure we've consumed the whole body
                 if (_contentLength == -1 && buffer.Count == _factory.MaxReceivedMessageSize)
                 {
@@ -308,35 +335,16 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private async Task<CancellationToken> GetCombinedCancellationTokenAsync(TimeoutHelper timeoutHelper)
+        private async Task<CancellationToken> GetCancellationTokenAsync(TimeoutHelper timeoutHelper)
         {
-            // If we've already computed the combined token, return it
-            if (_cachedCombinedToken.HasValue)
+            // If no httpSendCts is provided, just use the timeout token
+            if (_httpSendCts == null)
             {
-                return _cachedCombinedToken.Value;
+                return await timeoutHelper.GetCancellationTokenAsync();
             }
 
-            var timeoutToken = await timeoutHelper.GetCancellationTokenAsync();
-            
-            // If no abort token is provided or it can't be cancelled, just use the timeout token
-            if (!_abortToken.CanBeCanceled)
-            {
-                _cachedCombinedToken = timeoutToken;
-                return timeoutToken;
-            }
-
-            // If the timeout token can't be cancelled, just use the abort token
-            if (!timeoutToken.CanBeCanceled)
-            {
-                _cachedCombinedToken = _abortToken;
-                return _abortToken;
-            }
-
-            // Both tokens can be cancelled, so create a linked token source
-            // Store the CTS so we can dispose it later if needed
-            _linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutToken, _abortToken);
-            _cachedCombinedToken = _linkedCts.Token;
-            return _linkedCts.Token;
+            // Use the _httpSendCts.Token for all operations
+            return _httpSendCts.Token;
         }
 
         private async Task<Stream> GetStreamAsync(TimeoutHelper timeoutHelper)
@@ -348,7 +356,7 @@ namespace System.ServiceModel.Channels
             {
                 contentStream = await content.ReadAsStreamAsync();
                 _contentLength = content.Headers.ContentLength.HasValue ? content.Headers.ContentLength.Value : -1;
-                var cancellationToken = await GetCombinedCancellationTokenAsync(timeoutHelper);
+                var cancellationToken = await GetCancellationTokenAsync(timeoutHelper);
                 if (_contentLength <= 0)
                 {
                     var preReadBuffer = new byte[1];

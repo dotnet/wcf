@@ -1131,7 +1131,7 @@ namespace System.ServiceModel.Channels
                     try
                     {
                         _timeoutHelper = timeoutHelper;
-                        var responseHelper = new HttpResponseMessageHelper(_httpResponseMessage, _factory, _httpSendCts.Token);
+                        var responseHelper = new HttpResponseMessageHelper(_httpResponseMessage, _factory, _httpSendCts);
                         var replyMessage = await responseHelper.ParseIncomingResponse(timeoutHelper);
                         TryCompleteHttpRequest(_httpRequestMessage);
                         return replyMessage;
