@@ -446,8 +446,8 @@ namespace System.ServiceModel.Security
                     Fx.Assert("Security protocol must be IInitiatorSecuritySessionProtocol.");
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.Format(SRP.ProtocolMisMatch, nameof(IInitiatorSecuritySessionProtocol), GetType().ToString())));
                 }
-                await _securityProtocol.OpenAsync(timeoutHelper.RemainingTime());
-                await ChannelBinder.OpenAsync(timeoutHelper.RemainingTime());
+                await _securityProtocol.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                await ChannelBinder.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 InitializeSecurityState(sessionToken);
             }
 
@@ -479,14 +479,14 @@ namespace System.ServiceModel.Security
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SetupSessionTokenProvider();
-                await SecurityUtils.OpenTokenProviderIfRequiredAsync(_sessionTokenProvider, timeoutHelper.RemainingTime());
+                await SecurityUtils.OpenTokenProviderIfRequiredAsync(_sessionTokenProvider, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 using (ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ?
                     ServiceModelActivity.CreateBoundedActivity() : null)
                 {
-                    SecurityToken sessionToken = await _sessionTokenProvider.GetTokenAsync(timeoutHelper.RemainingTime());
+                    SecurityToken sessionToken = await _sessionTokenProvider.GetTokenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     // Token was issued, do send cancel on close;
                     SendCloseHandshake = true;
-                    await OpenCoreAsync(sessionToken, timeoutHelper.RemainingTime());
+                    await OpenCoreAsync(sessionToken, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
             }
 
@@ -621,8 +621,8 @@ namespace System.ServiceModel.Security
                 Message closeMessage = PrepareCloseMessage();
                 try
                 {
-                    (closeCorrelationState, closeMessage) = await _securityProtocol.SecureOutgoingMessageAsync(closeMessage, timeoutHelper.RemainingTime(), null);
-                    await ChannelBinder.SendAsync(closeMessage, timeoutHelper.RemainingTime());
+                    (closeCorrelationState, closeMessage) = await _securityProtocol.SecureOutgoingMessageAsync(closeMessage, timeoutHelper.RemainingTime(), null).ConfigureAwait(false);
+                    await ChannelBinder.SendAsync(closeMessage, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -641,8 +641,8 @@ namespace System.ServiceModel.Security
                 {
                     message = _closeResponse;
                     SecurityProtocolCorrelationState dummy;
-                    (dummy, message) = await _securityProtocol.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime(), null);
-                    await ChannelBinder.SendAsync(message, timeoutHelper.RemainingTime());
+                    (dummy, message) = await _securityProtocol.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime(), null).ConfigureAwait(false);
+                    await ChannelBinder.SendAsync(message, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -1025,7 +1025,7 @@ namespace System.ServiceModel.Security
                         using (ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ?
                             ServiceModelActivity.CreateBoundedActivity() : null)
                         {
-                            SecurityToken renewedToken = await _sessionTokenProvider.RenewTokenAsync(timeout, _currentSessionToken);
+                            SecurityToken renewedToken = await _sessionTokenProvider.RenewTokenAsync(timeout, _currentSessionToken).ConfigureAwait(false);
                             UpdateSessionTokens(renewedToken);
                         }
                     }
@@ -1040,7 +1040,7 @@ namespace System.ServiceModel.Security
                 }
                 else
                 {
-                    await _keyRenewalCompletedEvent.WaitAsync(timeout);
+                    await _keyRenewalCompletedEvent.WaitAsync(timeout).ConfigureAwait(false);
                     lock (ThisLock)
                     {
                         if (IsKeyRenewalNeeded())
@@ -1069,9 +1069,9 @@ namespace System.ServiceModel.Security
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 if (doKeyRenewal)
                 {
-                    await RenewKeyAsync(timeoutHelper.RemainingTime());
+                    await RenewKeyAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
-                return await _securityProtocol.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime(), null);
+                return await _securityProtocol.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime(), null).ConfigureAwait(false);
             }
 
             protected void VerifyIncomingMessage(ref Message message, TimeSpan timeout, SecurityProtocolCorrelationState correlationState)
@@ -1099,7 +1099,7 @@ namespace System.ServiceModel.Security
                 {
                     if (ChannelBinder != null)
                     {
-                        await ChannelBinder.CloseAsync(timeoutHelper.RemainingTime());
+                        await ChannelBinder.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     }
                     if (_sessionTokenProvider != null)
                     {
@@ -1122,7 +1122,7 @@ namespace System.ServiceModel.Security
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 while (!_isInputClosed)
                 {
-                    (bool success, RequestContext requestContext) = await ChannelBinder.TryReceiveAsync(timeoutHelper.RemainingTime());
+                    (bool success, RequestContext requestContext) = await ChannelBinder.TryReceiveAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                     if (success)
                     {
                         if (requestContext == null)
@@ -1163,8 +1163,8 @@ namespace System.ServiceModel.Security
                     wasAborted = false;
                     try
                     {
-                        await CloseOutputSessionAsync(timeoutHelper.RemainingTime());
-                        bool sessionClosed = await _inputSessionClosedHandle.WaitAsync(timeoutHelper.RemainingTime(), false);
+                        await CloseOutputSessionAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                        bool sessionClosed = await _inputSessionClosedHandle.WaitAsync(timeoutHelper.RemainingTime(), false).ConfigureAwait(false);
                         return (sessionClosed, wasAborted);
                     }
                     catch (CommunicationObjectAbortedException)
@@ -1219,11 +1219,11 @@ namespace System.ServiceModel.Security
                     {
                         if (sendClose)
                         {
-                            return await SendCloseMessageAsync(timeout);
+                            return await SendCloseMessageAsync(timeout).ConfigureAwait(false);
                         }
                         else
                         {
-                            await SendCloseResponseMessageAsync(timeout);
+                            await SendCloseResponseMessageAsync(timeout).ConfigureAwait(false);
                             return null;
                         }
                     }
@@ -1264,7 +1264,7 @@ namespace System.ServiceModel.Security
                 if (SendCloseHandshake)
                 {
                     bool wasAborted, wasSessionClosed;
-                    (wasSessionClosed, wasAborted) = await CloseSessionAsync(timeout);
+                    (wasSessionClosed, wasAborted) = await CloseSessionAsync(timeout).ConfigureAwait(false);
                     if (wasAborted)
                     {
                         return;
@@ -1278,7 +1278,7 @@ namespace System.ServiceModel.Security
                     // wait for any concurrent output session close to finish
                     try
                     {
-                        if (!await _outputSessionCloseHandle.WaitAsync(timeoutHelper.RemainingTime(), false))
+                        if (!await _outputSessionCloseHandle.WaitAsync(timeoutHelper.RemainingTime(), false).ConfigureAwait(false))
                         {
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new TimeoutException(SRP.Format(SRP.ClientSecurityOutputSessionCloseTimeout, timeoutHelper.OriginalTimeout)));
                         }
@@ -1296,7 +1296,7 @@ namespace System.ServiceModel.Security
                     }
                 }
 
-                await CloseCoreAsync(timeoutHelper.RemainingTime());
+                await CloseCoreAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             protected override void OnClose(TimeSpan timeout)
@@ -1444,9 +1444,9 @@ namespace System.ServiceModel.Security
             {
                 ThrowIfFaulted();
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                SecurityProtocolCorrelationState correlationState = await base.CloseOutputSessionAsync(timeoutHelper.RemainingTime());
+                SecurityProtocolCorrelationState correlationState = await base.CloseOutputSessionAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
-                Message message = await ReceiveInternalAsync(timeoutHelper.RemainingTime(), correlationState);
+                Message message = await ReceiveInternalAsync(timeoutHelper.RemainingTime(), correlationState).ConfigureAwait(false);
 
                 if (message != null)
                 {
@@ -1522,8 +1522,8 @@ namespace System.ServiceModel.Security
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SecurityProtocolCorrelationState correlationState;
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                (correlationState, message) = await SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime());
-                Message reply = await ChannelBinder.RequestAsync(message, timeoutHelper.RemainingTime());
+                (correlationState, message) = await SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                Message reply = await ChannelBinder.RequestAsync(message, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 return ProcessReply(reply, timeoutHelper.RemainingTime(), correlationState);
             }
         }
@@ -1614,7 +1614,7 @@ namespace System.ServiceModel.Security
             {
                 ThrowIfFaulted();
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                (bool wasDequeued, Message message) = await _queue.TryDequeueAsync(timeout);
+                (bool wasDequeued, Message message) = await _queue.TryDequeueAsync(timeout).ConfigureAwait(false);
                 if (message == null)
                 {
                     // the channel could have faulted, shutting down the input queue
@@ -1636,8 +1636,8 @@ namespace System.ServiceModel.Security
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SecurityProtocolCorrelationState dummy;
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                (dummy, message) = await SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime());
-                await ChannelBinder.SendAsync(message, timeoutHelper.RemainingTime());
+                (dummy, message) = await SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                await ChannelBinder.SendAsync(message, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             public IAsyncResult BeginSend(Message message, AsyncCallback callback, object state) => SendAsync(message).ToApm(callback, state);
@@ -1662,7 +1662,7 @@ namespace System.ServiceModel.Security
                     }
                     try
                     {
-                        Message message = await ReceiveInternalAsync(TimeSpan.MaxValue, null);
+                        Message message = await ReceiveInternalAsync(TimeSpan.MaxValue, null).ConfigureAwait(false);
                         if (message != null)
                         {
                             ActionItem.Schedule(Fx.ThunkCallback<object>(state =>
@@ -1792,7 +1792,7 @@ namespace System.ServiceModel.Security
                     Exception pendingException = null;
                     try
                     {
-                        await _channel.CloseOutputSessionAsync(timeout);
+                        await _channel.CloseOutputSessionAsync(timeout).ConfigureAwait(false);
                     }
                     catch (CommunicationObjectAbortedException)
                     {

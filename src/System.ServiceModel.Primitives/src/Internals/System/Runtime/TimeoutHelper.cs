@@ -48,7 +48,7 @@ namespace System.Runtime
                 }
                 else if (timeout > TimeSpan.Zero)
                 {
-                    _cancellationToken = await TimeoutTokenSource.FromTimeoutAsync((int)timeout.TotalMilliseconds);
+                    _cancellationToken = await TimeoutTokenSource.FromTimeoutAsync((int)timeout.TotalMilliseconds).ConfigureAwait(false);
                 }
                 else
                 {

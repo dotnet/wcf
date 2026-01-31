@@ -133,7 +133,7 @@ namespace System.Runtime
 
             private static async Task InvokeAsyncCallback(object state)
             {
-                await ((ActionItem)state).InvokeAsync();
+                await ((ActionItem)state).InvokeAsync().ConfigureAwait(false);
                 ((ActionItem)state)._isScheduled = false;
             }
         }
@@ -266,7 +266,7 @@ namespace System.Runtime
                     try
                     {
                         EtwDiagnosticTrace.ActivityId = _activityId;
-                        await _asyncCallback(_state);
+                        await _asyncCallback(_state).ConfigureAwait(false);
                     }
                     finally
                     {
@@ -290,7 +290,7 @@ namespace System.Runtime
                             }
                         }
 
-                        await _asyncCallback(_state);
+                        await _asyncCallback(_state).ConfigureAwait(false);
                     }
                     finally
                     {

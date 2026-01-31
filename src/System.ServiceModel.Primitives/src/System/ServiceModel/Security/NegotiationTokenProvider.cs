@@ -78,11 +78,11 @@ namespace System.ServiceModel.Security
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             if (_rstChannelFactory != null)
             {
-                await _rstChannelFactory.CloseHelperAsync(timeout);
+                await _rstChannelFactory.CloseHelperAsync(timeout).ConfigureAwait(false);
                 _rstChannelFactory = null;
             }
 
-            await base.OnCloseAsync(timeoutHelper.RemainingTime());
+            await base.OnCloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         public override void OnAbort()
@@ -103,8 +103,8 @@ namespace System.ServiceModel.Security
             }
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             SetupRstChannelFactory();
-            await _rstChannelFactory.OpenHelperAsync(timeout);
-            await base.OnOpenAsync(timeoutHelper.RemainingTime());
+            await _rstChannelFactory.OpenHelperAsync(timeout).ConfigureAwait(false);
+            await base.OnOpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         protected abstract IChannelFactory<IAsyncRequestChannel> GetNegotiationChannelFactory(IChannelFactory<IAsyncRequestChannel> transportChannelFactory, ChannelBuilder channelBuilder);

@@ -146,7 +146,7 @@ namespace System.ServiceModel.Channels
 
         protected internal override async Task OnOpenAsync(TimeSpan timeout)
         {
-            await base.OnOpenAsync(timeout);
+            await base.OnOpenAsync(timeout).ConfigureAwait(false);
             OnOpenCore();
         }
 
@@ -159,7 +159,7 @@ namespace System.ServiceModel.Channels
 
             SecurityTokenProvider certificateProvider = TransportSecurityHelpers.GetCertificateTokenProvider(
                 SecurityTokenManager, target, via, Scheme, channelParameters);
-            await SecurityUtils.OpenTokenProviderIfRequiredAsync(certificateProvider, timeout);
+            await SecurityUtils.OpenTokenProviderIfRequiredAsync(certificateProvider, timeout).ConfigureAwait(false);
             return certificateProvider;
         }
 
@@ -171,7 +171,7 @@ namespace System.ServiceModel.Channels
             SecurityTokenProvider requestCertificateProvider;
             if (ManualAddressing && RequireClientCertificate)
             {
-                requestCertificateProvider = await CreateAndOpenCertificateTokenProviderAsync(to, via, channelParameters, timeoutHelper.RemainingTime());
+                requestCertificateProvider = await CreateAndOpenCertificateTokenProviderAsync(to, via, channelParameters, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
             else
             {
@@ -180,7 +180,7 @@ namespace System.ServiceModel.Channels
 
             if (requestCertificateProvider != null)
             {
-                token = await requestCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime());
+                token = await requestCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             if (ManualAddressing && RequireClientCertificate)
@@ -322,7 +322,7 @@ namespace System.ServiceModel.Channels
             {
                 if (!ManualAddressing && Factory.RequireClientCertificate)
                 {
-                    _certificateProvider = await Factory.CreateAndOpenCertificateTokenProviderAsync(RemoteAddress, Via, ChannelParameters, timeout);
+                    _certificateProvider = await Factory.CreateAndOpenCertificateTokenProviderAsync(RemoteAddress, Via, ChannelParameters, timeout).ConfigureAwait(false);
                 }
             }
 
@@ -360,8 +360,8 @@ namespace System.ServiceModel.Channels
             internal protected override async Task OnOpenAsync(TimeSpan timeout)
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                await CreateAndOpenTokenProviderAsync(timeoutHelper.RemainingTime());
-                await base.OnOpenAsync(timeoutHelper.RemainingTime());
+                await CreateAndOpenTokenProviderAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                await base.OnOpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             protected override void OnAbort()
@@ -390,8 +390,8 @@ namespace System.ServiceModel.Channels
 
             internal override async Task<HttpClient> GetHttpClientAsync(EndpointAddress to, Uri via, TimeoutHelper timeoutHelper)
             {
-                SecurityTokenContainer clientCertificateToken = await Factory.GetCertificateSecurityTokenAsync(_certificateProvider, to, via, ChannelParameters, timeoutHelper);
-                HttpClient httpClient = await GetHttpClientAsync(to, via, clientCertificateToken, timeoutHelper);
+                SecurityTokenContainer clientCertificateToken = await Factory.GetCertificateSecurityTokenAsync(_certificateProvider, to, via, ChannelParameters, timeoutHelper).ConfigureAwait(false);
+                HttpClient httpClient = await GetHttpClientAsync(to, via, clientCertificateToken, timeoutHelper).ConfigureAwait(false);
                 return httpClient;
             }
         }

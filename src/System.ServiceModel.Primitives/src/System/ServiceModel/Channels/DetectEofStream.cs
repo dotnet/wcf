@@ -25,7 +25,7 @@ namespace System.ServiceModel.Channels
             {
                 return 0;
             }
-            int returnValue = await base.ReadAsync(buffer, offset, count, cancellationToken);
+            int returnValue = await base.ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
             if (count != 0 && returnValue == 0)
             {
                 ReceivedEof();
@@ -39,7 +39,7 @@ namespace System.ServiceModel.Channels
             {
                 return 0;
             }
-            int returnValue = await base.ReadAsync(buffer, cancellationToken);
+            int returnValue = await base.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
             if (!buffer.IsEmpty && returnValue == 0)
             {
                 ReceivedEof();

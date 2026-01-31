@@ -77,7 +77,7 @@ namespace System.ServiceModel.Channels
         private async Task CloseSequenceAsync(TimeSpan timeout)
         {
             CreateCloseRequestor();
-            Message closeReply = await closeRequestor.RequestAsync(timeout);
+            Message closeReply = await closeRequestor.RequestAsync(timeout).ConfigureAwait(false);
             ProcessCloseOrTerminateReply(true, closeReply);
         }
 
@@ -248,17 +248,17 @@ namespace System.ServiceModel.Channels
         protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await connection.CloseAsync(timeoutHelper.RemainingTime());
-            await WaitForShutdownAsync(timeoutHelper.RemainingTime());
+            await connection.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await WaitForShutdownAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             if (settings.ReliableMessagingVersion == ReliableMessagingVersion.WSReliableMessaging11)
             {
-                await CloseSequenceAsync(timeoutHelper.RemainingTime());
+                await CloseSequenceAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
-            await TerminateSequenceAsync(timeoutHelper.RemainingTime());
-            await session.CloseAsync(timeoutHelper.RemainingTime());
-            await binder.CloseAsync(timeoutHelper.RemainingTime(), MaskingMode.Handled);
+            await TerminateSequenceAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await session.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await binder.CloseAsync(timeoutHelper.RemainingTime(), MaskingMode.Handled).ConfigureAwait(false);
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -296,13 +296,13 @@ namespace System.ServiceModel.Channels
                 if (attemptInfo.RetryCount < settings.MaxRetryCount)
                 {
                     maskingMode |= MaskingMode.Handled;
-                    reply = await binder.RequestAsync(attemptInfo.Message, timeout, maskingMode);
+                    reply = await binder.RequestAsync(attemptInfo.Message, timeout, maskingMode).ConfigureAwait(false);
                 }
                 else
                 {
                     try
                     {
-                        reply = await binder.RequestAsync(attemptInfo.Message, timeout, maskingMode);
+                        reply = await binder.RequestAsync(attemptInfo.Message, timeout, maskingMode).ConfigureAwait(false);
                     }
                     catch (Exception e)
                     {
@@ -365,15 +365,15 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                await binder.OpenAsync(timeoutHelper.RemainingTime());
-                await session.OpenAsync(timeoutHelper.RemainingTime());
+                await binder.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+                await session.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 throwing = false;
             }
             finally
             {
                 if (throwing)
                 {
-                    await binder.CloseAsync(timeoutHelper.RemainingTime());
+                    await binder.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
             }
         }
@@ -398,7 +398,7 @@ namespace System.ServiceModel.Channels
         private async Task PollingCallback()
         {
             var message = CreateAckRequestedMessage();
-            var reply = await binder.RequestAsync(message, DefaultSendTimeout, MaskingMode.All);
+            var reply = await binder.RequestAsync(message, DefaultSendTimeout, MaskingMode.All).ConfigureAwait(false);
             if (reply != null)
             {
                 ProcessReply(reply, null, 0);
@@ -631,7 +631,7 @@ namespace System.ServiceModel.Channels
         private async Task TerminateSequenceAsync(TimeSpan timeout)
         {
             CreateTerminateRequestor();
-            Message terminateReply = await terminateRequestor.RequestAsync(timeout);
+            Message terminateReply = await terminateRequestor.RequestAsync(timeout).ConfigureAwait(false);
 
             if (terminateReply != null)
             {
@@ -742,7 +742,7 @@ namespace System.ServiceModel.Channels
             public async Task SendRequestAsync(Message message, TimeoutHelper timeoutHelper)
             {
                 _originalTimeout = timeoutHelper.OriginalTimeout;
-                if (!await _parent.connection.AddMessageAsync(message, timeoutHelper.RemainingTime(), this))
+                if (!await _parent.connection.AddMessageAsync(message, timeoutHelper.RemainingTime(), this).ConfigureAwait(false))
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(_parent.GetInvalidAddException());
             }
 
@@ -788,7 +788,7 @@ namespace System.ServiceModel.Channels
 
                         if (wait)
                         {
-                            expired = !await TaskHelpers.AwaitWithTimeout(_tcs.Task, timeoutHelper.RemainingTime());
+                            expired = !await TaskHelpers.AwaitWithTimeout(_tcs.Task, timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
                             lock (ThisLock)
                             {

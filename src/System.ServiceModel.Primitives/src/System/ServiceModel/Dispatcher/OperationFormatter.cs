@@ -379,11 +379,11 @@ namespace System.ServiceModel.Dispatcher
 
             if (streamFormatter != null)
             {
-                await streamFormatter.SerializeAsync(writer, parameters, returnValue);
+                await streamFormatter.SerializeAsync(writer, parameters, returnValue).ConfigureAwait(false);
                 return;
             }
 
-            await SerializeBodyAsync(writer, version, RequestAction, messageDescription, returnValue, parameters, isRequest);
+            await SerializeBodyAsync(writer, version, RequestAction, messageDescription, returnValue, parameters, isRequest).ConfigureAwait(false);
         }
 
         private IAsyncResult BeginSerializeBodyContents(XmlDictionaryWriter writer, MessageVersion version, object[] parameters, object returnValue, bool isRequest,

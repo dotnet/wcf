@@ -210,9 +210,9 @@ namespace System.Xml
 
         public override async Task WriteStartElementAsync(string prefix, string localName, string ns)
         {
-            await WriteBase64InlineIfPresentAsync();
+            await WriteBase64InlineIfPresentAsync().ConfigureAwait(false);
             ThrowIfElementIsXOPInclude(prefix, localName, ns);
-            await Writer.WriteStartElementAsync(prefix, localName, ns);
+            await Writer.WriteStartElementAsync(prefix, localName, ns).ConfigureAwait(false);
             _depth++;
         }
 
@@ -254,10 +254,10 @@ namespace System.Xml
 
         public override async Task WriteEndElementAsync()
         {
-            await WriteXOPIncludeAsync();
-            await Writer.WriteEndElementAsync();
+            await WriteXOPIncludeAsync().ConfigureAwait(false);
+            await Writer.WriteEndElementAsync().ConfigureAwait(false);
             _depth--;
-            await WriteXOPBinaryPartsAsync();
+            await WriteXOPBinaryPartsAsync().ConfigureAwait(false);
         }
 
         public override void WriteFullEndElement()
@@ -389,11 +389,11 @@ namespace System.Xml
             {
                 if (data.type == MtomBinaryDataType.Provider)
                 {
-                    await Writer.WriteValueAsync(data.provider);
+                    await Writer.WriteValueAsync(data.provider).ConfigureAwait(false);
                 }
                 else
                 {
-                    await Writer.WriteBase64Async(data.chunk, 0, data.chunk.Length);
+                    await Writer.WriteBase64Async(data.chunk, 0, data.chunk.Length).ConfigureAwait(false);
                 }
             }
             _sizeOfBufferedBinaryData = 0;
@@ -464,7 +464,7 @@ namespace System.Xml
             }
 
             if (inline)
-                await WriteBase64InlineAsync();
+                await WriteBase64InlineAsync().ConfigureAwait(false);
             else
             {
                 if (_mimeParts == null)
@@ -476,11 +476,11 @@ namespace System.Xml
                 _totalSizeOfMimeParts += ValidateSizeOfMessage(_maxSizeInBytes, _totalSizeOfMimeParts, mimePart.sizeInBytes);
                 _totalSizeOfMimeParts += ValidateSizeOfMessage(_maxSizeInBytes, _totalSizeOfMimeParts, _mimeWriter.GetBoundarySize());
 
-                await Writer.WriteStartElementAsync(MtomGlobals.XopIncludePrefix, MtomGlobals.XopIncludeLocalName, MtomGlobals.XopIncludeNamespace);
+                await Writer.WriteStartElementAsync(MtomGlobals.XopIncludePrefix, MtomGlobals.XopIncludeLocalName, MtomGlobals.XopIncludeNamespace).ConfigureAwait(false);
                 Writer.WriteStartAttribute(MtomGlobals.XopIncludeHrefLocalName, MtomGlobals.XopIncludeHrefNamespace);
                 Writer.WriteString(string.Format(CultureInfo.InvariantCulture, "{0}{1}", MimeGlobals.ContentIDScheme, _contentID));
                 Writer.WriteEndAttribute();
-                await Writer.WriteEndElementAsync();
+                await Writer.WriteEndElementAsync().ConfigureAwait(false);
                 _binaryDataChunks = null;
                 _sizeOfBufferedBinaryData = 0;
                 _contentType = null;
@@ -518,7 +518,7 @@ namespace System.Xml
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRP.XmlInvalidStream));
 
                             stream.CopyTo(s, bufferSize);
-                            
+
                             data.provider.ReleaseStream(stream);
                         }
                         else
@@ -538,14 +538,14 @@ namespace System.Xml
                 return;
 
             if (Writer.WriteState != WriteState.Closed)
-                await Writer.FlushAsync();
+                await Writer.FlushAsync().ConfigureAwait(false);
 
             if (_mimeParts != null)
             {
                 foreach (MimePart part in _mimeParts)
                 {
-                    await WriteMimeHeadersAsync(part.contentID, part.contentType, part.contentTransferEncoding);
-                    Stream s = await _mimeWriter.GetContentStreamAsync();
+                    await WriteMimeHeadersAsync(part.contentID, part.contentType, part.contentTransferEncoding).ConfigureAwait(false);
+                    Stream s = await _mimeWriter.GetContentStreamAsync().ConfigureAwait(false);
                     int bufferSize = 65536;
                     Stream stream = null;
                     foreach (MtomBinaryData data in part.binaryData)
@@ -556,19 +556,19 @@ namespace System.Xml
                             if (stream == null)
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRP.XmlInvalidStream));
 
-                            await stream.CopyToAsync(s, bufferSize);
+                            await stream.CopyToAsync(s, bufferSize).ConfigureAwait(false);
 
                             data.provider.ReleaseStream(stream);
                         }
                         else
                         {
-                            await s.WriteAsync(data.chunk, 0, data.chunk.Length);
+                            await s.WriteAsync(data.chunk, 0, data.chunk.Length).ConfigureAwait(false);
                         }
                     }
                 }
                 _mimeParts.Clear();
             }
-            await _mimeWriter.CloseAsync();
+            await _mimeWriter.CloseAsync().ConfigureAwait(false);
         }
 
         private void WriteMimeHeaders(string contentID, string contentType, string contentTransferEncoding)
@@ -584,7 +584,7 @@ namespace System.Xml
 
         private async Task WriteMimeHeadersAsync(string contentID, string contentType, string contentTransferEncoding)
         {
-            await _mimeWriter.StartPartAsync();
+            await _mimeWriter.StartPartAsync().ConfigureAwait(false);
             if (contentID != null)
                 _mimeWriter.WriteHeader(MimeGlobals.ContentIDHeader, string.Format(CultureInfo.InvariantCulture, "<{0}>", contentID));
             if (contentTransferEncoding != null)
@@ -1247,7 +1247,7 @@ namespace System.Xml
 
             if (contentStream != null)
             {
-                await contentStream.FlushAsync();
+                await contentStream.FlushAsync().ConfigureAwait(false);
                 contentStream = null;
             }
 
@@ -1294,7 +1294,7 @@ namespace System.Xml
 
             if (contentStream != null)
             {
-                await contentStream.FlushAsync();
+                await contentStream.FlushAsync().ConfigureAwait(false);
                 contentStream = null;
             }
 
@@ -1302,7 +1302,7 @@ namespace System.Xml
             bufferedWrite.Write(MimeGlobals.DASHDASH);
             bufferedWrite.Write(MimeGlobals.CRLF);
 
-            await FlushAsync();
+            await FlushAsync().ConfigureAwait(false);
         }
 
         private void Flush()
@@ -1318,7 +1318,7 @@ namespace System.Xml
         {
             if (bufferedWrite.Length > 0)
             {
-                await stream.WriteAsync(bufferedWrite.GetBuffer(), 0, bufferedWrite.Length);
+                await stream.WriteAsync(bufferedWrite.GetBuffer(), 0, bufferedWrite.Length).ConfigureAwait(false);
                 bufferedWrite.Reset();
             }
         }
@@ -1381,7 +1381,7 @@ namespace System.Xml
 
             state = MimeWriterState.Content;
             bufferedWrite.Write(MimeGlobals.CRLF);
-            await FlushAsync();
+            await FlushAsync().ConfigureAwait(false);
             contentStream = stream;
             return contentStream;
         }

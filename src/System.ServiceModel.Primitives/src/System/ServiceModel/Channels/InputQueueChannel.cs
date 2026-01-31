@@ -94,7 +94,7 @@ namespace System.ServiceModel.Channels
         protected async Task<(bool dequeued, TDisposable item)> DequeueAsync(TimeSpan timeout)
         {
             ThrowIfNotOpened();
-            (bool dequeued, TDisposable item) = await _inputQueue.TryDequeueAsync(timeout);
+            (bool dequeued, TDisposable item) = await _inputQueue.TryDequeueAsync(timeout).ConfigureAwait(false);
 
             if (item == null)
             {
@@ -108,7 +108,7 @@ namespace System.ServiceModel.Channels
         protected async Task<bool> WaitForItemAsync(TimeSpan timeout)
         {
             ThrowIfNotOpened();
-            bool dequeued = await _inputQueue.WaitForItemAsync(timeout);
+            bool dequeued = await _inputQueue.WaitForItemAsync(timeout).ConfigureAwait(false);
 
             ThrowIfFaulted();
             ThrowIfAborted();

@@ -75,18 +75,18 @@ namespace System.ServiceModel.Channels
             switch (authenticationScheme)
             {
                 case AuthenticationSchemes.Basic:
-                    var userNameCreds = await TransportSecurityHelpers.GetUserNameCredentialAsync(credentialProvider, timeout);
+                    var userNameCreds = await TransportSecurityHelpers.GetUserNameCredentialAsync(credentialProvider, timeout).ConfigureAwait(false);
                     return (userNameCreds, TokenImpersonationLevel.Delegation, AuthenticationLevel.None);
 
                 case AuthenticationSchemes.Digest:
-                    return await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider, timeout);
+                    return await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider, timeout).ConfigureAwait(false);
 
                 case AuthenticationSchemes.Negotiate:
-                    return await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider, timeout);
+                    return await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider, timeout).ConfigureAwait(false);
 
                 case AuthenticationSchemes.Ntlm:
                 case AuthenticationSchemes.IntegratedWindowsAuthentication: // IWA could use NTLM
-                    var result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider, timeout);
+                    var result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider, timeout).ConfigureAwait(false);
                     if (result.authenticationLevel == AuthenticationLevel.MutualAuthRequired)
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(

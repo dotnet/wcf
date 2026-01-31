@@ -106,7 +106,7 @@ namespace System.ServiceModel.Channels
             get { return _state; }
         }
 
-        protected object ThisLock { 
+        protected object ThisLock {
             get
             {
 #if DEBUG
@@ -223,7 +223,7 @@ namespace System.ServiceModel.Channels
         private async Task CloseAsyncInternal(TimeSpan timeout)
         {
             await TaskHelpers.EnsureDefaultTaskScheduler();
-            await ((IAsyncCommunicationObject)this).CloseAsync(timeout);
+            await ((IAsyncCommunicationObject)this).CloseAsync(timeout).ConfigureAwait(false);
         }
 
         async Task IAsyncCommunicationObject.CloseAsync(TimeSpan timeout)
@@ -271,7 +271,7 @@ namespace System.ServiceModel.Channels
                                 throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException("OnClosing"), Guid.Empty, this);
                             }
 
-                            await OnCloseAsyncInternal(actualTimeout.RemainingTime());
+                            await OnCloseAsyncInternal(actualTimeout.RemainingTime()).ConfigureAwait(false);
 
                             OnClosed();
                             if (!_onClosedCalled)
@@ -310,7 +310,7 @@ namespace System.ServiceModel.Channels
             if (SupportsAsyncOpenClose)
             {
                 // The class supports OnCloseAsync(), so use it
-                await OnCloseAsync(timeout);
+                await OnCloseAsync(timeout).ConfigureAwait(false);
             }
             else
             {
@@ -318,13 +318,13 @@ namespace System.ServiceModel.Channels
                 // If this is a synchronous close, invoke the synchronous OnClose.
                 if (_isSynchronousClose)
                 {
-                    await TaskHelpers.CallActionAsync(OnClose, timeout);
+                    await TaskHelpers.CallActionAsync(OnClose, timeout).ConfigureAwait(false);
                 }
                 else
                 {
                     // The class does not support OnCloseAsync, and this is an asynchronous
                     // close, so use the Begin/End pattern
-                    await Task.Factory.FromAsync(OnBeginClose, OnEndClose, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
+                    await Task.Factory.FromAsync(OnBeginClose, OnEndClose, timeout, TaskCreationOptions.RunContinuationsAsynchronously).ConfigureAwait(false);
                 }
             }
         }
@@ -531,7 +531,7 @@ namespace System.ServiceModel.Channels
                 // EnsureDefaultTaskScheduler must be called after OnOpening to ensure that any SynchronizationContext
                 // is captured by the DispatchRuntime
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                await OnOpenAsyncInternal(actualTimeout.RemainingTime());
+                await OnOpenAsyncInternal(actualTimeout.RemainingTime()).ConfigureAwait(false);
 
                 OnOpened();
                 if (!_onOpenedCalled)
@@ -560,7 +560,7 @@ namespace System.ServiceModel.Channels
             if (SupportsAsyncOpenClose)
             {
                 // The class supports OnOpenAsync(), so use it
-                await OnOpenAsync(timeout);
+                await OnOpenAsync(timeout).ConfigureAwait(false);
             }
             else
             {
@@ -568,12 +568,12 @@ namespace System.ServiceModel.Channels
                 // If this is a synchronous open, invoke the synchronous OnOpen
                 if (_isSynchronousOpen)
                 {
-                    await TaskHelpers.CallActionAsync(OnOpen, timeout);
+                    await TaskHelpers.CallActionAsync(OnOpen, timeout).ConfigureAwait(false);
                 }
                 else
                 {
                     // The class does not support OnOpenAsync, so use the Begin/End pattern
-                    await Task.Factory.FromAsync(OnBeginOpen, OnEndOpen, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
+                    await Task.Factory.FromAsync(OnBeginOpen, OnEndOpen, timeout, TaskCreationOptions.RunContinuationsAsynchronously).ConfigureAwait(false);
                 }
             }
         }
@@ -1025,7 +1025,7 @@ namespace System.ServiceModel.Channels
                 communicationObject._isSynchronousOpen = _isSynchronousOpen;
                 return ((IAsyncCommunicationObject)communicationObject).OpenAsync(timeout);
             }
-            
+
             // Other object isn't an internal implementation so we need to match calling the
             // sync/async pattern of the Open call that was initially made.
             // If the current object is being opened synchronously, use the synchronous
@@ -1171,13 +1171,13 @@ namespace System.ServiceModel.Channels
         public static async Task OnCloseAsyncInternal(CommunicationObject communicationObject, TimeSpan timeout)
         {
             await TaskHelpers.EnsureDefaultTaskScheduler();
-            await communicationObject.OnCloseAsync(timeout);
+            await communicationObject.OnCloseAsync(timeout).ConfigureAwait(false);
         }
 
         public static async Task OnOpenAsyncInternal(CommunicationObject communicationObject, TimeSpan timeout)
         {
             await TaskHelpers.EnsureDefaultTaskScheduler();
-            await communicationObject.OnOpenAsync(timeout);
+            await communicationObject.OnOpenAsync(timeout).ConfigureAwait(false);
         }
     }
 }

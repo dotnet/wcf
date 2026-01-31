@@ -47,7 +47,7 @@ namespace System.ServiceModel.Channels
                 connection =  TryConnect(remoteUri, resolvedAddress, backoffHelper);
                 if (connection == null)
                 {
-                    await backoffHelper.WaitAndBackoffAsync();
+                    await backoffHelper.WaitAndBackoffAsync().ConfigureAwait(false);
                     if (DiagnosticUtility.ShouldTraceInformation)
                     {
                         TraceUtility.TraceEvent(

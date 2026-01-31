@@ -220,8 +220,8 @@ namespace System.ServiceModel.Channels
         public async Task CloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await _shutdownWaitObject.WaitAsync(timeoutHelper.RemainingTime());
-            await _terminateWaitObject.WaitAsync(timeoutHelper.RemainingTime());
+            await _shutdownWaitObject.WaitAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
+            await _terminateWaitObject.WaitAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
     }
 }

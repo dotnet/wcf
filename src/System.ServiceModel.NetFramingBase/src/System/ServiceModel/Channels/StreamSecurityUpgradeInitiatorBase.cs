@@ -51,24 +51,24 @@ namespace System.ServiceModel.Channels
 
             if (!_isOpen)
             {
-                await OpenAsync(TimeSpan.Zero);
+                await OpenAsync(TimeSpan.Zero).ConfigureAwait(false);
             }
 
             Stream result;
-            (result, _remoteSecurity) = await OnInitiateUpgradeAsync(stream);
+            (result, _remoteSecurity) = await OnInitiateUpgradeAsync(stream).ConfigureAwait(false);
             _securityUpgraded = true;
             return result;
         }
 
         internal override async ValueTask OpenAsync(TimeSpan timeout)
         {
-            await base.OpenAsync(timeout);
+            await base.OpenAsync(timeout).ConfigureAwait(false);
             _isOpen = true;
         }
 
         internal override async ValueTask CloseAsync(TimeSpan timeout)
         {
-            await base.CloseAsync(timeout);
+            await base.CloseAsync(timeout).ConfigureAwait(false);
             _isOpen = false;
         }
 

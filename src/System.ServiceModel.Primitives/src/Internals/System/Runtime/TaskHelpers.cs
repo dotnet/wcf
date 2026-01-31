@@ -17,7 +17,7 @@ namespace System.Runtime
         {
             try
             {
-                await task;
+                await task.ConfigureAwait(false);
             }
             catch
             {
@@ -25,7 +25,7 @@ namespace System.Runtime
             }
         }
 
-        // Helper method when implementing an APM wrapper around a Task based async method which returns a result. 
+        // Helper method when implementing an APM wrapper around a Task based async method which returns a result.
         // In the BeginMethod method, you would call use ToApm to wrap a call to MethodAsync:
         //     return MethodAsync(params).ToApm(callback, state);
         // In the EndMethod, you would use ToApmEnd<TResult> to ensure the correct exception handling
@@ -79,7 +79,7 @@ namespace System.Runtime
             return tcs.Task;
         }
 
-        // Helper method when implementing an APM wrapper around a Task based async method which returns a result. 
+        // Helper method when implementing an APM wrapper around a Task based async method which returns a result.
         // In the BeginMethod method, you would call use ToApm to wrap a call to MethodAsync:
         //     return MethodAsync(params).ToApm(callback, state);
         // In the EndMethod, you would use ToApmEnd to ensure the correct exception handling
@@ -225,13 +225,13 @@ namespace System.Runtime
 
             if (timeout == TimeSpan.MaxValue || timeout == Timeout.InfiniteTimeSpan)
             {
-                await task;
+                await task.ConfigureAwait(false);
                 return true;
             }
 
             using (CancellationTokenSource cts = new CancellationTokenSource())
             {
-                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, cts.Token));
+                var completedTask = await Task.WhenAny(task, Task.Delay(timeout, cts.Token)).ConfigureAwait(false);
                 if (completedTask == task)
                 {
                     cts.Cancel();

@@ -208,14 +208,14 @@ namespace System.ServiceModel.Channels
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             foreach (IChannel channel in currentChannels)
             {
-                await CloseOtherAsync(channel, timeoutHelper.RemainingTime());
+                await CloseOtherAsync(channel, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             // CommunicationObjectManager (_channels) is not a CommunicationObject,
             // and it's close method waits for it to not be busy. Calling CloseAsync
             // is the correct option here as there's no need to block this thread
             // waiting on a signal from another thread to notify it's no longer busy.
-            await _channels.CloseAsync(timeoutHelper.RemainingTime());
+            await _channels.CloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
     }
 }

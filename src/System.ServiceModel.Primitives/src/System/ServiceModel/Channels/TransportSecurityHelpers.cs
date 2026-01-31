@@ -20,7 +20,7 @@ namespace System.ServiceModel.Channels
         public static async ValueTask<(NetworkCredential credential, TokenImpersonationLevel impersonationLevel, AuthenticationLevel authenticationLevel)> GetSspiCredentialAsync(
             SecurityTokenProviderContainer tokenProvider, TimeSpan timeout)
         {
-            var result = await GetSspiCredentialCoreAsync(tokenProvider.TokenProvider as SspiSecurityTokenProvider, timeout);
+            var result = await GetSspiCredentialCoreAsync(tokenProvider.TokenProvider as SspiSecurityTokenProvider, timeout).ConfigureAwait(false);
             AuthenticationLevel authenticationLevel =  result.allowNtlm ? AuthenticationLevel.MutualAuthRequested : AuthenticationLevel.MutualAuthRequired;
             return (result.credential, result.impersonationLevel, authenticationLevel);
         }
@@ -37,7 +37,7 @@ namespace System.ServiceModel.Channels
 
             if (tokenProvider != null)
             {
-                SspiSecurityToken token = await TransportSecurityHelpers.GetTokenAsync<SspiSecurityToken>(tokenProvider, timeout);
+                SspiSecurityToken token = await TransportSecurityHelpers.GetTokenAsync<SspiSecurityToken>(tokenProvider, timeout).ConfigureAwait(false);
                 if (token != null)
                 {
                     result.extractGroupsForWindowsAccounts = token.ExtractGroupsForWindowsAccounts;
@@ -137,7 +137,7 @@ namespace System.ServiceModel.Channels
         private static async Task<T> GetTokenAsync<T>(SecurityTokenProvider tokenProvider, TimeSpan timeout)
             where T : SecurityToken
         {
-            SecurityToken result = await tokenProvider.GetTokenAsync(timeout);
+            SecurityToken result = await tokenProvider.GetTokenAsync(timeout).ConfigureAwait(false);
             if ((result != null) && !(result is T))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.Format(
@@ -152,7 +152,7 @@ namespace System.ServiceModel.Channels
 
             if (tokenProvider != null && tokenProvider.TokenProvider != null)
             {
-                UserNameSecurityToken token = await GetTokenAsync<UserNameSecurityToken>(tokenProvider.TokenProvider, timeout);
+                UserNameSecurityToken token = await GetTokenAsync<UserNameSecurityToken>(tokenProvider.TokenProvider, timeout).ConfigureAwait(false);
                 if (token != null)
                 {
                     result = new NetworkCredential(token.UserName, token.Password);

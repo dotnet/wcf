@@ -349,12 +349,12 @@ namespace System.ServiceModel.Channels
 
                 if (localConnectionPool != null)
                 {
-                    await ReleaseConnectionPoolAsync(localConnectionPool, timeoutHelper.RemainingTime());
+                    await ReleaseConnectionPoolAsync(localConnectionPool, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
 
                 if (localUpgrade != null)
                 {
-                    await Task.Factory.FromAsync(localUpgrade.BeginClose, localUpgrade.EndClose, timeoutHelper.RemainingTime(), null);
+                    await Task.Factory.FromAsync(localUpgrade.BeginClose, localUpgrade.EndClose, timeoutHelper.RemainingTime(), null).ConfigureAwait(false);
                 }
             }
         }

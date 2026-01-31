@@ -59,7 +59,7 @@ namespace System.IdentityModel.Selectors
 
         public async Task<SecurityToken> GetTokenAsync(TimeSpan timeout)
         {
-            SecurityToken token = await GetTokenCoreAsync(timeout);
+            SecurityToken token = await GetTokenCoreAsync(timeout).ConfigureAwait(false);
             if (token == null)
             {
                 throw Fx.Exception.AsError(new SecurityTokenException(SRP.Format(SRP.TokenProviderUnableToGetToken, this)));
@@ -144,7 +144,7 @@ namespace System.IdentityModel.Selectors
                 throw Fx.Exception.ArgumentNull(nameof(tokenToBeRenewed));
             }
 
-            SecurityToken token = await RenewTokenCoreAsync(timeout, tokenToBeRenewed);
+            SecurityToken token = await RenewTokenCoreAsync(timeout, tokenToBeRenewed).ConfigureAwait(false);
             if (token == null)
             {
                 throw Fx.Exception.AsError(new SecurityTokenException(SRP.Format(SRP.TokenProviderUnableToRenewToken, this)));
@@ -217,7 +217,7 @@ namespace System.IdentityModel.Selectors
                 throw Fx.Exception.ArgumentNull(nameof(token));
             }
 
-            await CancelTokenCoreAsync(timeout, token);
+            await CancelTokenCoreAsync(timeout, token).ConfigureAwait(false);
         }
 
         protected virtual void CancelTokenCore(TimeSpan timeout, SecurityToken token)

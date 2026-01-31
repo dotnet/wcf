@@ -68,7 +68,7 @@ namespace System.ServiceModel.Channels
                     bool preambleSuccess = false;
                     try
                     {
-                        localUpgradedConnection = await AcceptPooledConnectionAsync(localRawConnection, timeoutHelper);
+                        localUpgradedConnection = await AcceptPooledConnectionAsync(localRawConnection, timeoutHelper).ConfigureAwait(false);
                         preambleSuccess = true;
                         break;
                     }
@@ -100,7 +100,7 @@ namespace System.ServiceModel.Channels
                 {
                     try
                     {
-                        localRawConnection = await _connectionInitiator.ConnectAsync(_via, connectTimeout);
+                        localRawConnection = await _connectionInitiator.ConnectAsync(_via, connectTimeout).ConfigureAwait(false);
                     }
                     catch (TimeoutException e)
                     {
@@ -109,7 +109,7 @@ namespace System.ServiceModel.Channels
                     }
 
                     _connectionInitiator = null;
-                    localUpgradedConnection = await AcceptPooledConnectionAsync(localRawConnection, timeoutHelper);
+                    localUpgradedConnection = await AcceptPooledConnectionAsync(localRawConnection, timeoutHelper).ConfigureAwait(false);
                     success = true;
                 }
                 finally

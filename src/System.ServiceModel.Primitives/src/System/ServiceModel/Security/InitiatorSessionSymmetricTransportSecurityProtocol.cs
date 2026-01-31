@@ -129,7 +129,7 @@ namespace System.ServiceModel.Security
             SecurityTokenParameters tokenParameters;
             GetTokensForOutgoingMessages(out signingToken, out sourceToken, out tokenParameters);
             IList<SupportingTokenSpecification> supportingTokens;
-            supportingTokens = await TryGetSupportingTokensAsync(SecurityProtocolFactory, Target, Via, message, timeout);
+            supportingTokens = await TryGetSupportingTokensAsync(SecurityProtocolFactory, Target, Via, message, timeout).ConfigureAwait(false);
             SetupDelayedSecurityExecution(actor, ref message, signingToken, sourceToken, tokenParameters, supportingTokens);
             return message;
         }

@@ -10,7 +10,7 @@ namespace System.ServiceModel.Channels
     {
         internal static async Task<Message> HelpReceiveAsync(IAsyncInputChannel channel, TimeSpan timeout)
         {
-            (bool success, Message message) = await channel.TryReceiveAsync(timeout);
+            (bool success, Message message) = await channel.TryReceiveAsync(timeout).ConfigureAwait(false);
 
             if (success)
             {

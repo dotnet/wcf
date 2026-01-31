@@ -1308,12 +1308,12 @@ namespace System.ServiceModel.Channels
 
             if (_closeBinder)
             {
-                await CloseOtherAsync(InnerChannel, timeoutHelper.RemainingTime());
+                await CloseOtherAsync(InnerChannel, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             if (CloseFactory)
             {
-                await CloseOtherAsync(Factory, timeoutHelper.RemainingTime());
+                await CloseOtherAsync(Factory, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
             CleanupChannelCollections();
@@ -1348,7 +1348,7 @@ namespace System.ServiceModel.Channels
 
             if (_openBinder)
             {
-                await OpenOtherAsync(InnerChannel, timeout);
+                await OpenOtherAsync(InnerChannel, timeout).ConfigureAwait(false);
             }
 
             BindDuplexCallbacks();
@@ -1612,7 +1612,7 @@ namespace System.ServiceModel.Channels
                 // Only want to call Close if it is in the Opened state
                 if (State == CommunicationState.Opened)
                 {
-                    await ((IAsyncCommunicationObject)this).CloseAsync(DefaultCloseTimeout);
+                    await ((IAsyncCommunicationObject)this).CloseAsync(DefaultCloseTimeout).ConfigureAwait(false);
                 }
                 // Anything not closed by this point should be aborted
                 if (State != CommunicationState.Closed)

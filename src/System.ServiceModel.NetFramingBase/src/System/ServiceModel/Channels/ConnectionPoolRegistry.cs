@@ -76,10 +76,10 @@ namespace System.ServiceModel.Channels
 
         public async ValueTask ReleaseAsync(ConnectionPool pool, TimeSpan timeout)
         {
-            await ThisLock.WaitAsync();
+            await ThisLock.WaitAsync().ConfigureAwait(false);
             try
             {
-                if (await pool.CloseAsync(timeout))
+                if (await pool.CloseAsync(timeout).ConfigureAwait(false))
                 {
                     List<ConnectionPool> registryEntry = _registry[pool.Name];
                     for (int i = 0; i < registryEntry.Count; i++)

@@ -130,7 +130,7 @@ namespace System.ServiceModel.Channels
 
         public virtual async Task CloseAsync(TimeSpan timeout)
         {
-            await Guard.CloseAsync(timeout);
+            await Guard.CloseAsync(timeout).ConfigureAwait(false);
             _inactivityTimer.Abort();
         }
 
@@ -605,7 +605,7 @@ namespace System.ServiceModel.Channels
             }
 
             var start = DateTime.UtcNow;
-            Message response = await _requestor.RequestAsync(timeout);
+            Message response = await _requestor.RequestAsync(timeout).ConfigureAwait(false);
             ProcessCreateSequenceResponse(response, start);
             _requestor = null;
         }
@@ -622,7 +622,7 @@ namespace System.ServiceModel.Channels
 
         public override async Task CloseAsync(TimeSpan timeout)
         {
-            await base.CloseAsync(timeout);
+            await base.CloseAsync(timeout).ConfigureAwait(false);
             _pollingTimer.Abort();
         }
 
@@ -684,7 +684,7 @@ namespace System.ServiceModel.Channels
                             _pollingMode = PollingMode.KeepAlive;
                     }
 
-                    await _pollingHandler();
+                    await _pollingHandler().ConfigureAwait(false);
                     _pollingTimer.Set(GetPollingInterval());
                 }
                 finally

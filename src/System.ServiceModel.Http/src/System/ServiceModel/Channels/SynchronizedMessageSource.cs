@@ -28,7 +28,7 @@ namespace System.ServiceModel.Channels
             // SemaphoreSlim doesn't accept timeouts > Int32.MaxValue.
             // Using TimeoutHelper.RemainingTime() would yield a value less than TimeSpan.MaxValue
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
-            if (!await _sourceLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
+            if (!await _sourceLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)).ConfigureAwait(false))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     new TimeoutException(SRP.Format(SRP.WaitForMessageTimedOut, timeout),
@@ -36,7 +36,7 @@ namespace System.ServiceModel.Channels
             }
             try
             {
-                return await _source.WaitForMessageAsync(timeoutHelper.RemainingTime());
+                return await _source.WaitForMessageAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
             finally
             {
@@ -52,7 +52,7 @@ namespace System.ServiceModel.Channels
             // SemaphoreSlim doesn't accept timeouts > Int32.MaxValue.
             // Using TimeoutHelper.RemainingTime() would yield a value less than TimeSpan.MaxValue
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
-            if (!await _sourceLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
+            if (!await _sourceLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)).ConfigureAwait(false))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     new TimeoutException(SRP.Format(SRP.ReceiveTimedOut2, timeout),
@@ -61,7 +61,7 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                return await _source.ReceiveAsync(timeoutHelper.RemainingTime());
+                return await _source.ReceiveAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
             finally
             {

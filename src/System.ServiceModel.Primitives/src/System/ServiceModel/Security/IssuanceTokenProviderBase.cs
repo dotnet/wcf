@@ -447,11 +447,11 @@ namespace System.ServiceModel.Security
             int legs = 1;
             try
             {
-                negotiationState = await CreateNegotiationStateAsync(_targetAddress, _via, timeoutHelper.RemainingTime());
+                negotiationState = await CreateNegotiationStateAsync(_targetAddress, _via, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 InitializeNegotiationState(negotiationState);
-                await InitializeChannelFactoriesAsync(negotiationState.RemoteAddress, timeoutHelper.RemainingTime());
+                await InitializeChannelFactoriesAsync(negotiationState.RemoteAddress, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 rstChannel = CreateClientChannel(negotiationState.RemoteAddress, _via);
-                await rstChannel.OpenAsync(timeoutHelper.RemainingTime());
+                await rstChannel.OpenAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 Message nextOutgoingMessage = null;
                 Message incomingMessage = null;
                 SecurityToken serviceToken = null;
@@ -468,7 +468,7 @@ namespace System.ServiceModel.Security
                         using (nextOutgoingMessage)
                         {
                             timeLeft = timeoutHelper.RemainingTime();
-                            incomingMessage = await rstChannel.RequestAsync(nextOutgoingMessage, timeLeft);
+                            incomingMessage = await rstChannel.RequestAsync(nextOutgoingMessage, timeLeft).ConfigureAwait(false);
                             if (incomingMessage == null)
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(SRP.FailToReceiveReplyFromNegotiation));

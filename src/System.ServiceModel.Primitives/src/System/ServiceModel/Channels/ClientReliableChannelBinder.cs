@@ -150,7 +150,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                (bool success, TChannel channel) = await Synchronizer.TryGetChannelForOutputAsync(timeoutHelper.RemainingTime(), maskingMode);
+                (bool success, TChannel channel) = await Synchronizer.TryGetChannelForOutputAsync(timeoutHelper.RemainingTime(), maskingMode).ConfigureAwait(false);
 
                 if (!success)
                 {
@@ -171,7 +171,7 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     return await OnRequestAsync(channel, message, timeoutHelper.RemainingTime(),
-                        maskingMode);
+                        maskingMode).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -288,11 +288,11 @@ namespace System.ServiceModel.Channels
                 Message message;
                 if (channel is IAsyncDuplexSessionChannel)
                 {
-                    (success, message) = await ((IAsyncDuplexSessionChannel)channel).TryReceiveAsync(timeout);
+                    (success, message) = await ((IAsyncDuplexSessionChannel)channel).TryReceiveAsync(timeout).ConfigureAwait(false);
                 }
                 else
                 {
-                    (success, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(channel.BeginTryReceive, channel.EndTryReceive, timeout, null);
+                    (success, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(channel.BeginTryReceive, channel.EndTryReceive, timeout, null).ConfigureAwait(false);
                 }
 
                 if (success && message == null)
@@ -462,7 +462,7 @@ namespace System.ServiceModel.Channels
             protected override async Task OnSendAsync(TRequestChannel channel, Message message,
                 TimeSpan timeout)
             {
-                message = await OnRequestAsync(channel, message, timeout, DefaultMaskingMode);
+                message = await OnRequestAsync(channel, message, timeout, DefaultMaskingMode).ConfigureAwait(false);
                 EnqueueMessageIfNotNull(message);
             }
 
@@ -476,7 +476,7 @@ namespace System.ServiceModel.Channels
 
             public override async Task<(bool, RequestContext)> TryReceiveAsync(TimeSpan timeout)
             {
-                (bool success, Message message) = await GetInputMessages().TryDequeueAsync(timeout);
+                (bool success, Message message) = await GetInputMessages().TryDequeueAsync(timeout).ConfigureAwait(false);
                 RequestContext requestContext = WrapMessage(message);
                 return (success, requestContext);
             }

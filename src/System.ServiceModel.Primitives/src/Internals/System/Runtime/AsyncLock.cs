@@ -36,7 +36,7 @@ namespace System.Runtime
 
         private async Task<IAsyncDisposable> TakeLockCoreAsync(SemaphoreSlim currentSemaphore, SafeSemaphoreRelease safeSemaphoreRelease)
         {
-            await currentSemaphore.WaitAsync();
+            await currentSemaphore.WaitAsync().ConfigureAwait(false);
             return safeSemaphoreRelease;
         }
 
@@ -61,7 +61,7 @@ namespace System.Runtime
             _isDisposed = true;
             // Ensure the lock isn't held. If it is, wait for it to be released
             // before completing the dispose.
-            await _topLevelSemaphore.WaitAsync();
+            await _topLevelSemaphore.WaitAsync().ConfigureAwait(false);
             _topLevelSemaphore.Release();
             s_semaphorePool.Return(_topLevelSemaphore);
             _topLevelSemaphore = null;
@@ -101,7 +101,7 @@ namespace System.Runtime
 
             private async ValueTask DisposeCoreAsync()
             {
-                await _nextSemaphore.WaitAsync();
+                await _nextSemaphore.WaitAsync().ConfigureAwait(false);
                 _currentSemaphore.Release();
                 _nextSemaphore.Release();
                 s_semaphorePool.Return(_nextSemaphore);

@@ -270,7 +270,7 @@ namespace System.ServiceModel.Channels
         {
             Contract.Assert(_readPos == _readLen, "Buffer must be empty");
             _buffer[0] = preBufferedByte;
-            _readLen = 1 + await _stream.ReadAsync(_buffer, 1, _bufferSize - 1, cancellationToken);
+            _readLen = 1 + await _stream.ReadAsync(_buffer, 1, _bufferSize - 1, cancellationToken).ConfigureAwait(false);
             _readPos = 0;
         }
 
@@ -289,12 +289,12 @@ namespace System.ServiceModel.Channels
             Contract.Assert(IsBufferEmpty || _readLen < _bufferSize);
             if (IsBufferEmpty)
             {
-                _readLen = await _stream.ReadAsync(_buffer, 0, _bufferSize, cancellationToken);
+                _readLen = await _stream.ReadAsync(_buffer, 0, _bufferSize, cancellationToken).ConfigureAwait(false);
                 _readPos = 0;
             }
             else
             {
-                _readLen += await _stream.ReadAsync(_buffer, _readLen, _bufferSize - _readLen, cancellationToken);
+                _readLen += await _stream.ReadAsync(_buffer, _readLen, _bufferSize - _readLen, cancellationToken).ConfigureAwait(false);
             }
         }
 

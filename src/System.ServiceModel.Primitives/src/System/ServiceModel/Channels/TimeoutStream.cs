@@ -54,21 +54,21 @@ namespace System.ServiceModel.Channels
         public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             // Supporting a passed in cancellationToken as well as honoring the timeout token in this class would require
-            // creating a linked token source on every call which is extra allocation and needs disposal. As this is an 
+            // creating a linked token source on every call which is extra allocation and needs disposal. As this is an
             // internal classs, it's okay to add this extra constraint to usage of this method.
             Fx.Assert(!cancellationToken.CanBeCanceled, "cancellationToken shouldn't be cancellable");
-            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync();
-            return await base.ReadAsync(buffer, offset, count, cancelToken);
+            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync().ConfigureAwait(false);
+            return await base.ReadAsync(buffer, offset, count, cancelToken).ConfigureAwait(false);
         }
 
         public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
             // Supporting a passed in cancellationToken as well as honoring the timeout token in this class would require
-            // creating a linked token source on every call which is extra allocation and needs disposal. As this is an 
+            // creating a linked token source on every call which is extra allocation and needs disposal. As this is an
             // internal classs, it's okay to add this extra constraint to usage of this method.
             Fx.Assert(!cancellationToken.CanBeCanceled, "cancellationToken shouldn't be cancellable");
-            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync();
-            return await base.ReadAsync(buffer, cancelToken);
+            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync().ConfigureAwait(false);
+            return await base.ReadAsync(buffer, cancelToken).ConfigureAwait(false);
         }
 
         private async ValueTask<int> ReadAsyncInternal(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
@@ -76,7 +76,7 @@ namespace System.ServiceModel.Channels
             await TaskHelpers.EnsureDefaultTaskScheduler();
             // Using the ReadAsync overload which takes Memory<byte> as it returns a ValueTask which avoids
             // allocation when the read completes synchronously.
-            return await ReadAsync(new Memory<byte>(buffer, offset, count), cancellationToken);
+            return await ReadAsync(new Memory<byte>(buffer, offset, count), cancellationToken).ConfigureAwait(false);
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -97,21 +97,21 @@ namespace System.ServiceModel.Channels
         public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             // Supporting a passed in cancellationToken as well as honoring the timeout token in this class would require
-            // creating a linked token source on every call which is extra allocation and needs disposal. As this is an 
+            // creating a linked token source on every call which is extra allocation and needs disposal. As this is an
             // internal classs, it's okay to add this extra constraint to usage of this method.
             Fx.Assert(!cancellationToken.CanBeCanceled, "cancellationToken shouldn't be cancellable");
-            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync();
-            await base.WriteAsync(buffer, offset, count, cancelToken);
+            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync().ConfigureAwait(false);
+            await base.WriteAsync(buffer, offset, count, cancelToken).ConfigureAwait(false);
         }
 
         public override async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
         {
             // Supporting a passed in cancellationToken as well as honoring the timeout token in this class would require
-            // creating a linked token source on every call which is extra allocation and needs disposal. As this is an 
+            // creating a linked token source on every call which is extra allocation and needs disposal. As this is an
             // internal classs, it's okay to add this extra constraint to usage of this method.
             Fx.Assert(!cancellationToken.CanBeCanceled, "cancellationToken shouldn't be cancellable");
-            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync();
-            await base.WriteAsync(buffer, cancelToken);
+            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync().ConfigureAwait(false);
+            await base.WriteAsync(buffer, cancelToken).ConfigureAwait(false);
         }
 
         private async ValueTask WriteAsyncInternal(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
@@ -119,7 +119,7 @@ namespace System.ServiceModel.Channels
             await TaskHelpers.EnsureDefaultTaskScheduler();
             // Using the ReadAsync overload which takes Memory<byte> as it returns a ValueTask which avoids
             // allocation when the read completes synchronously.
-            await WriteAsync(new Memory<byte>(buffer, offset, count), cancellationToken);
+            await WriteAsync(new Memory<byte>(buffer, offset, count), cancellationToken).ConfigureAwait(false);
         }
 
         protected override void Dispose(bool disposing)

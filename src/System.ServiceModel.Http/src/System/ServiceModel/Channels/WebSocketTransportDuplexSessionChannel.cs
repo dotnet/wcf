@@ -113,10 +113,10 @@ namespace System.ServiceModel.Channels
             }
 
             var helper = new TimeoutHelper(timeout);
-            var cancelToken = await helper.GetCancellationTokenAsync();
+            var cancelToken = await helper.GetCancellationTokenAsync().ConfigureAwait(false);
             try
             {
-                await CloseOutputAsync(cancelToken);
+                await CloseOutputAsync(cancelToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -150,7 +150,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                await base.OnCloseAsync(timeout);
+                await base.OnCloseAsync(timeout).ConfigureAwait(false);
             }
             finally
             {
@@ -381,7 +381,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                await task;
+                await task.ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -397,7 +397,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                await task;
+                await task.ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -499,7 +499,7 @@ namespace System.ServiceModel.Channels
 
             public async Task<Message> ReceiveAsync(TimeSpan timeout)
             {
-                bool waitingResult = await _receiveTask.Task.AwaitWithTimeout(timeout);
+                bool waitingResult = await _receiveTask.Task.AwaitWithTimeout(timeout).ConfigureAwait(false);
                 ThrowOnPendingException(ref _pendingException);
 
                 if (!waitingResult)
@@ -527,7 +527,7 @@ namespace System.ServiceModel.Channels
             private async Task<Message> ReceiveAsyncInternal(TimeSpan timeout)
             {
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                return await ReceiveAsync(timeout);
+                return await ReceiveAsync(timeout).ConfigureAwait(false);
             }
 
             private async Task ReadBufferedMessageAsync()
@@ -551,7 +551,7 @@ namespace System.ServiceModel.Channels
 
                             result = await _webSocket.ReceiveAsync(
                                                 new ArraySegment<byte>(internalBuffer, receivedByteCount, internalBuffer.Length - receivedByteCount),
-                                                CancellationToken.None);
+                                                CancellationToken.None).ConfigureAwait(false);
 
                             CheckCloseStatus(result);
                             endOfMessage = result.EndOfMessage;
@@ -645,10 +645,10 @@ namespace System.ServiceModel.Channels
 
             public async Task<bool> WaitForMessageAsync(TimeSpan timeout)
             {
-                bool waitingResult = await _receiveTask.Task.AwaitWithTimeout(timeout);
+                bool waitingResult = await _receiveTask.Task.AwaitWithTimeout(timeout).ConfigureAwait(false);
                 if (waitingResult)
                 {
-                    Message message = await ReceiveAsync(timeout);
+                    Message message = await ReceiveAsync(timeout).ConfigureAwait(false);
                     _pendingMessage = message;
                     return true;
                 }
@@ -708,7 +708,7 @@ namespace System.ServiceModel.Channels
                         if (_streamWaitTask != null)
                         {
                             //// Wait until the previous stream message finished.
-                            await _streamWaitTask.Task;
+                            await _streamWaitTask.Task.ConfigureAwait(false);
                         }
 
                         _streamWaitTask = new TaskCompletionSource<object>();
@@ -718,7 +718,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (!_useStreaming)
                         {
-                            await ReadBufferedMessageAsync();
+                            await ReadBufferedMessageAsync().ConfigureAwait(false);
                         }
                         else
                         {
@@ -735,8 +735,8 @@ namespace System.ServiceModel.Channels
                                 {
                                     WebSocketReceiveResult result;
                                     TimeoutHelper helper = new TimeoutHelper(_asyncReceiveTimeout);
-                                    var cancelToken = await helper.GetCancellationTokenAsync();
-                                    result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, _receiveBufferSize), cancelToken);
+                                    var cancelToken = await helper.GetCancellationTokenAsync().ConfigureAwait(false);
+                                    result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, _receiveBufferSize), cancelToken).ConfigureAwait(false);
                                     CheckCloseStatus(result);
                                     _pendingMessage = PrepareMessage(result, buffer, result.Count);
 
@@ -1029,7 +1029,7 @@ namespace System.ServiceModel.Channels
                 WebSocketReceiveResult result;
                 try
                 {
-                    result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, offset, count), cancellationToken);
+                    result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, offset, count), cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -1109,7 +1109,7 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    await _webSocket.SendAsync(new ArraySegment<byte>(buffer, offset, count), _outgoingMessageType, false, cancellationToken);
+                    await _webSocket.SendAsync(new ArraySegment<byte>(buffer, offset, count), _outgoingMessageType, false, cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -1135,7 +1135,7 @@ namespace System.ServiceModel.Channels
             private async Task WriteAsyncInternal(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
             {
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                await WriteAsync(buffer, offset, count, cancellationToken);
+                await WriteAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
             }
 
             public void WriteEndOfMessage()
@@ -1177,8 +1177,8 @@ namespace System.ServiceModel.Channels
                 var cancelTokenTask = timeoutHelper.GetCancellationTokenAsync();
                 try
                 {
-                    var cancelToken = await cancelTokenTask;
-                    await _webSocket.SendAsync(new ArraySegment<byte>(Array.Empty<byte>(), 0, 0), _outgoingMessageType, true, cancelToken);
+                    var cancelToken = await cancelTokenTask.ConfigureAwait(false);
+                    await _webSocket.SendAsync(new ArraySegment<byte>(Array.Empty<byte>(), 0, 0), _outgoingMessageType, true, cancelToken).ConfigureAwait(false);
 
                     if (WcfEventSource.Instance.WebSocketAsyncWriteStopIsEnabled())
                     {

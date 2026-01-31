@@ -81,7 +81,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                message = await MessageSource.ReceiveAsync(timeout);
+                message = await MessageSource.ReceiveAsync(timeout).ConfigureAwait(false);
                 OnReceiveMessage(message);
                 shouldFault = false;
                 return message;
@@ -145,7 +145,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                return (true, await ReceiveAsync(timeout));
+                return (true, await ReceiveAsync(timeout).ConfigureAwait(false));
             }
             catch(TimeoutException e)
             {
@@ -187,7 +187,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                bool success = await MessageSource.WaitForMessageAsync(timeout);
+                bool success = await MessageSource.WaitForMessageAsync(timeout).ConfigureAwait(false);
                 shouldFault = !success; // need to fault if we've timed out because we're now toast
                 return success;
             }
@@ -234,7 +234,7 @@ namespace System.ServiceModel.Channels
             // SemaphoreSlim doesn't accept timeouts > Int32.MaxValue.
             // Using TimeoutHelper.RemainingTime() would yield a value less than TimeSpan.MaxValue
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
-            if (!await SendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
+            if (!await SendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)).ConfigureAwait(false))
             {
                 if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                 {
@@ -261,7 +261,7 @@ namespace System.ServiceModel.Channels
                 bool shouldFault = true;
                 try
                 {
-                    await CloseOutputSessionCoreAsync(timeout);
+                    await CloseOutputSessionCoreAsync(timeout).ConfigureAwait(false);
                     OnOutputSessionClosed(ref timeoutHelper);
                     shouldFault = false;
                 }
@@ -351,12 +351,12 @@ namespace System.ServiceModel.Channels
         protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await CloseOutputSessionAsync(timeoutHelper.RemainingTime());
+            await CloseOutputSessionAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
 
             // close input session if necessary
             if (!_isInputSessionClosed)
             {
-                await EnsureInputClosedAsync(timeoutHelper.RemainingTime());
+                await EnsureInputClosedAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 OnInputSessionClosed();
             }
 
@@ -452,7 +452,7 @@ namespace System.ServiceModel.Channels
             // SemaphoreSlim doesn't accept timeouts > Int32.MaxValue.
             // Using TimeoutHelper.RemainingTime() would yield a value less than TimeSpan.MaxValue
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
-            if (!await SendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
+            if (!await SendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)).ConfigureAwait(false))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
                                             SRP.Format(SRP.SendToViaTimedOut, Via, timeout),
@@ -501,7 +501,7 @@ namespace System.ServiceModel.Channels
                         tcs.TrySetResult(true);
                     }
 
-                    await tcs.Task;
+                    await tcs.Task.ConfigureAwait(false);
 
                     FinishWritingMessage();
 
@@ -611,7 +611,7 @@ namespace System.ServiceModel.Channels
 
         private async Task EnsureInputClosedAsync(TimeSpan timeout)
         {
-            Message message = await MessageSource.ReceiveAsync(timeout);
+            Message message = await MessageSource.ReceiveAsync(timeout).ConfigureAwait(false);
             if (message != null)
             {
                 using (message)

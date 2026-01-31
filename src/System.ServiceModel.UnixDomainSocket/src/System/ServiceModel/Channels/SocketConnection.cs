@@ -191,7 +191,7 @@ namespace System.ServiceModel.Channels
                     restoreFlow = false;
                     ExecutionContext.RestoreFlow();
                 }
-                bytesRead = await resultTask;
+                bytesRead = await resultTask.ConfigureAwait(false);
                 abortRead = false;
                 if (WcfEventSource.Instance.SocketReadStopIsEnabled())
                 {
@@ -274,7 +274,7 @@ namespace System.ServiceModel.Channels
                     ExecutionContext.RestoreFlow();
                 }
 
-                await resultTask;
+                await resultTask.ConfigureAwait(false);
                 abortWrite = false;
             }
             catch (SocketException socketException)
@@ -333,7 +333,7 @@ namespace System.ServiceModel.Channels
                 // host to send a FIN back. A pending read on a socket will complete returning zero bytes when a FIN
                 // packet is received.
                 byte[] dummy = Fx.AllocateByteArray(1);
-                int bytesRead = await ReadCoreAsync(dummy, _readFinTimeout, true);
+                int bytesRead = await ReadCoreAsync(dummy, _readFinTimeout, true).ConfigureAwait(false);
 
                 if (bytesRead > 0)
                 {
@@ -351,7 +351,7 @@ namespace System.ServiceModel.Channels
 
             lock (ThisLock)
             {
-                // Abort could have been called on a separate thread and cleaned up 
+                // Abort could have been called on a separate thread and cleaned up
                 // our buffers/completion here
                 if (_closeState != CloseState.Closed)
                 {
@@ -777,7 +777,7 @@ namespace System.ServiceModel.Channels
                 AddressFamily addressFamily = AddressFamily.Unix;
                 socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.IP);
                 var endpoint = new UnixDomainSocketEndPoint(uriPath.LocalPath);
-                await socket.ConnectAsync(endpoint);
+                await socket.ConnectAsync(endpoint).ConfigureAwait(false);
                 return new SocketConnection(socket, _bufferSize);
             }
             catch
@@ -833,7 +833,7 @@ namespace System.ServiceModel.Channels
                 }
             }
         }
-      
+
         private static TimeoutException CreateTimeoutException(Uri uri, TimeSpan timeout, SocketException innerException)
         {
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException("Timed out while connecting to Unix domain socket", innerException));
@@ -853,7 +853,7 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                socketConnection = await CreateConnectionAsync(uri);
+                socketConnection = await CreateConnectionAsync(uri).ConfigureAwait(false);
             }
             catch (SocketException socketException)
             {

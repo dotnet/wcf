@@ -547,7 +547,7 @@ namespace System.ServiceModel.Channels
             private async Task WriteMessageAsyncInternal(Message message, Stream stream)
             {
                 await TaskHelpers.EnsureDefaultTaskScheduler();
-                await WriteMessageAsync(message, stream);
+                await WriteMessageAsync(message, stream).ConfigureAwait(false);
             }
 
             public override async ValueTask WriteMessageAsync(Message message, Stream stream)
@@ -575,16 +575,16 @@ namespace System.ServiceModel.Channels
                 XmlDictionaryWriter xmlWriter = TakeStreamedWriter(stream);
                 if (_optimizeWriteForUTF8)
                 {
-                    await message.WriteMessageAsync(xmlWriter);
+                    await message.WriteMessageAsync(xmlWriter).ConfigureAwait(false);
                 }
                 else
                 {
                     xmlWriter.WriteStartDocument();
-                    await message.WriteMessageAsync(xmlWriter);
+                    await message.WriteMessageAsync(xmlWriter).ConfigureAwait(false);
                     xmlWriter.WriteEndDocument();
                 }
 
-                await xmlWriter.FlushAsync();
+                await xmlWriter.FlushAsync().ConfigureAwait(false);
                 ReturnStreamedWriter(xmlWriter);
 
                 if (WcfEventSource.Instance.StreamedMessageWrittenByEncoderIsEnabled())

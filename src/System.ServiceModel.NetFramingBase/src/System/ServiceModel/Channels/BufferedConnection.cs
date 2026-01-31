@@ -40,10 +40,10 @@ namespace System.ServiceModel.Channels
         {
             ThrowPendingWriteException();
 
-            await ThisLock.WaitAsync();
+            await ThisLock.WaitAsync().ConfigureAwait(false);
             try
             {
-                await FlushCoreAsync(timeout);
+                await FlushCoreAsync(timeout).ConfigureAwait(false);
             }
             finally
             {
@@ -55,7 +55,7 @@ namespace System.ServiceModel.Channels
         {
             if (_pendingWriteSize > 0)
             {
-                await Connection.WriteAsync(_writeBuffer.Slice(0, _pendingWriteSize), false, timeout);
+                await Connection.WriteAsync(_writeBuffer.Slice(0, _pendingWriteSize), false, timeout).ConfigureAwait(false);
                 _pendingWriteSize = 0;
             }
         }
@@ -68,12 +68,12 @@ namespace System.ServiceModel.Channels
 
         private async void OnFlushTimerCore()
         {
-            await ThisLock.WaitAsync();
+            await ThisLock.WaitAsync().ConfigureAwait(false);
             try
             {
                 try
                 {
-                    await FlushCoreAsync(_pendingTimeout);
+                    await FlushCoreAsync(_pendingTimeout).ConfigureAwait(false);
                     _pendingTimeout = TimeSpan.Zero;
                 }
                 catch (Exception e)
@@ -128,7 +128,7 @@ namespace System.ServiceModel.Channels
 
         private async ValueTask WriteNowAsync(ReadOnlyMemory<byte> buffer, TimeSpan timeout)
         {
-            await ThisLock.WaitAsync();
+            await ThisLock.WaitAsync().ConfigureAwait(false);
             try
             {
                 if (_pendingWriteSize > 0)
@@ -139,18 +139,18 @@ namespace System.ServiceModel.Channels
                     {
                         buffer.CopyTo(_writeBuffer.Slice(_pendingWriteSize));
                         _pendingWriteSize += buffer.Length;
-                        await FlushCoreAsync(timeout);
+                        await FlushCoreAsync(timeout).ConfigureAwait(false);
                         return;
                     }
                     else
                     {
                         TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                        await FlushCoreAsync(timeoutHelper.RemainingTime());
+                        await FlushCoreAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                         timeout = timeoutHelper.RemainingTime();
                     }
                 }
 
-                await Connection.WriteAsync(buffer, true, timeout);
+                await Connection.WriteAsync(buffer, true, timeout).ConfigureAwait(false);
             }
             finally
             {
@@ -160,7 +160,7 @@ namespace System.ServiceModel.Channels
 
         private async ValueTask WriteLaterAsync(ReadOnlyMemory<byte> buffer, TimeSpan timeout)
         {
-            await ThisLock.WaitAsync();
+            await ThisLock.WaitAsync().ConfigureAwait(false);
             try
             {
                 bool setTimer = _pendingWriteSize == 0;
@@ -170,7 +170,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (buffer.Length >= _writeBufferSize && _pendingWriteSize == 0)
                     {
-                        await Connection.WriteAsync(buffer, false, timeoutHelper.RemainingTime());
+                        await Connection.WriteAsync(buffer, false, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                         buffer = default;
                     }
                     else
@@ -191,7 +191,7 @@ namespace System.ServiceModel.Channels
                         _pendingWriteSize += copySize;
                         if (_pendingWriteSize == _writeBufferSize)
                         {
-                            await FlushCoreAsync(timeoutHelper.RemainingTime());
+                            await FlushCoreAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
                             setTimer = true;
                         }
                         buffer = buffer.Slice(copySize);
@@ -252,7 +252,7 @@ namespace System.ServiceModel.Channels
 
         public async ValueTask<IConnection> ConnectAsync(Uri uri, TimeSpan timeout)
         {
-            return new BufferedConnection(await _connectionInitiator.ConnectAsync(uri, timeout), _flushTimeout, _writeBufferSize);
+            return new BufferedConnection(await _connectionInitiator.ConnectAsync(uri, timeout).ConfigureAwait(false), _flushTimeout, _writeBufferSize);
         }
     }
 }

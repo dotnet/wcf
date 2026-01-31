@@ -209,7 +209,7 @@ namespace System.ServiceModel.Channels
                     restoreFlow = false;
                     ExecutionContext.RestoreFlow();
                 }
-                bytesRead = await resultTask;
+                bytesRead = await resultTask.ConfigureAwait(false);
                 abortRead = false;
                 if (WcfEventSource.Instance.SocketReadStopIsEnabled())
                 {
@@ -295,7 +295,7 @@ namespace System.ServiceModel.Channels
                     ExecutionContext.RestoreFlow();
                 }
 
-                await resultTask;
+                await resultTask.ConfigureAwait(false);
                 abortWrite = false;
             }
             catch (SocketException socketException)
@@ -354,7 +354,7 @@ namespace System.ServiceModel.Channels
                 // host to send a FIN back. A pending read on a socket will complete returning zero bytes when a FIN
                 // packet is received.
                 byte[] dummy = Fx.AllocateByteArray(1);
-                int bytesRead = await ReadCoreAsync(dummy, _readFinTimeout, true);
+                int bytesRead = await ReadCoreAsync(dummy, _readFinTimeout, true).ConfigureAwait(false);
 
                 if (bytesRead > 0)
                 {
@@ -812,7 +812,7 @@ namespace System.ServiceModel.Channels
             {
                 AddressFamily addressFamily = address.AddressFamily;
                 socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
-                await socket.ConnectAsync(new IPEndPoint(address, port));
+                await socket.ConnectAsync(new IPEndPoint(address, port)).ConfigureAwait(false);
                 return new SocketConnection(socket, _bufferSize);
             }
             catch
@@ -894,7 +894,7 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                addresses = await DnsCache.ResolveAsync(uri);
+                addresses = await DnsCache.ResolveAsync(uri).ConfigureAwait(false);
             }
             catch (SocketException socketException)
             {
@@ -937,7 +937,7 @@ namespace System.ServiceModel.Channels
         public async ValueTask<IConnection> ConnectAsync(Uri uri, TimeSpan timeout)
         {
             int port = uri.Port;
-            IPAddress[] addresses = await GetIPAddressesAsync(uri);
+            IPAddress[] addresses = await GetIPAddressesAsync(uri).ConfigureAwait(false);
             IConnection socketConnection = null;
             SocketException lastException = null;
 
@@ -958,7 +958,7 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    socketConnection = await CreateConnectionAsync(addresses[i], port);
+                    socketConnection = await CreateConnectionAsync(addresses[i], port).ConfigureAwait(false);
                     lastException = null;
                     break;
                 }

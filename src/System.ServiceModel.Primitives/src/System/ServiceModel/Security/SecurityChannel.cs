@@ -63,10 +63,10 @@ namespace System.ServiceModel.Security
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             if (_securityProtocol != null)
             {
-                await _securityProtocol.CloseAsync(false, timeoutHelper.RemainingTime());
+                await _securityProtocol.CloseAsync(false, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
 
-            await base.OnCloseAsync(timeoutHelper.RemainingTime());
+            await base.OnCloseAsync(timeoutHelper.RemainingTime()).ConfigureAwait(false);
         }
 
         protected void ThrowIfDisposedOrNotOpen(Message message)

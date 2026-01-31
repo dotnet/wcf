@@ -46,12 +46,12 @@ namespace System.ServiceModel.Channels
         {
             if (!_disposed)
             {
-                await BaseStream.DisposeAsync();
+                await BaseStream.DisposeAsync().ConfigureAwait(false);
                 GC.SuppressFinalize(this);
                 _disposed = true;
             }
 
-            await base.DisposeAsync();
+            await base.DisposeAsync().ConfigureAwait(false);
         }
 
         public override long Position

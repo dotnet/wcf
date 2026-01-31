@@ -84,7 +84,7 @@ namespace System.ServiceModel.Channels
                 SocketException dnsException = null;
                 try
                 {
-                    hostAddresses = await LookupHostName(hostName);
+                    hostAddresses = await LookupHostName(hostName).ConfigureAwait(false);
                 }
                 catch (SocketException e)
                 {
@@ -110,7 +110,7 @@ namespace System.ServiceModel.Channels
 
         internal static async Task<IPAddress[]> LookupHostName(string hostName)
         {
-            return (await Dns.GetHostEntryAsync(hostName)).AddressList;
+            return (await Dns.GetHostEntryAsync(hostName).ConfigureAwait(false)).AddressList;
         }
 
         internal class DnsCacheEntry

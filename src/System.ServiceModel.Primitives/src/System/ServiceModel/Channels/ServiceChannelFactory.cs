@@ -410,7 +410,7 @@ namespace System.ServiceModel.Channels
                     channel = _channelsList[0];
                 }
 
-                await CloseOtherAsync(channel, timeoutHelper.RemainingTime());
+                await CloseOtherAsync(channel, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
         }
 
@@ -497,14 +497,14 @@ namespace System.ServiceModel.Channels
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 if (_isSynchronousClose)
                 {
-                    await TaskHelpers.CallActionAsync(base.OnClose, timeoutHelper.RemainingTime());
+                    await TaskHelpers.CallActionAsync(base.OnClose, timeoutHelper.RemainingTime()).ConfigureAwait(false);
                 }
                 else
                 {
-                    await Task.Factory.FromAsync(base.OnBeginClose, base.OnEndClose, timeoutHelper.RemainingTime(), TaskCreationOptions.None);
+                    await Task.Factory.FromAsync(base.OnBeginClose, base.OnEndClose, timeoutHelper.RemainingTime(), TaskCreationOptions.None).ConfigureAwait(false);
                 }
 
-                await CloseOtherAsync(InnerChannelFactory, timeoutHelper.RemainingTime());
+                await CloseOtherAsync(InnerChannelFactory, timeoutHelper.RemainingTime()).ConfigureAwait(false);
             }
         }
 
