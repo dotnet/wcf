@@ -7,30 +7,55 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TypeReuse60_NS
+namespace ServiceReference
 {
+    using System.Runtime.Serialization;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BinLibrary", Namespace="http://schemas.datacontract.org/2004/07/BinLib")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class BinLibrary : object
+    {
+        
+        private string ValueField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Value
+        {
+            get
+            {
+                return this.ValueField;
+            }
+            set
+            {
+                this.ValueField = value;
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TypeReuse60_NS.ITypeReuseSvc")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.ITypeReuseSvc")]
     public interface ITypeReuseSvc
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetData", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataResponse")]
-        System.Threading.Tasks.Task<BinLib.BinLibrary> GetDataAsync(int value);
+        System.Threading.Tasks.Task<ServiceReference.BinLibrary> GetDataAsync(int value);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContract", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContractResponse")]
         System.Threading.Tasks.Task<TypesLib.TypeReuseCompositeType> GetDataUsingDataContractAsync(TypesLib.TypeReuseCompositeType composite);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface ITypeReuseSvcChannel : TypeReuse60_NS.ITypeReuseSvc, System.ServiceModel.IClientChannel
+    public interface ITypeReuseSvcChannel : ServiceReference.ITypeReuseSvc, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<TypeReuse60_NS.ITypeReuseSvc>, TypeReuse60_NS.ITypeReuseSvc
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<ServiceReference.ITypeReuseSvc>, ServiceReference.ITypeReuseSvc
     {
         
         /// <summary>
@@ -73,7 +98,7 @@ namespace TypeReuse60_NS
         {
         }
         
-        public System.Threading.Tasks.Task<BinLib.BinLibrary> GetDataAsync(int value)
+        public System.Threading.Tasks.Task<ServiceReference.BinLibrary> GetDataAsync(int value)
         {
             return base.Channel.GetDataAsync(value);
         }
@@ -88,10 +113,12 @@ namespace TypeReuse60_NS
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
         
+        #if !NET6_0_OR_GREATER
         public virtual System.Threading.Tasks.Task CloseAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
+        #endif
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
