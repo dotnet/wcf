@@ -30,6 +30,7 @@ namespace TypeReuse_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<TypeReuse_NS.ITypeReuseSvc>, TypeReuse_NS.ITypeReuseSvc
     {
         
