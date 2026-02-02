@@ -5,7 +5,7 @@ using System.Text;
 using Infrastructure.Common;
 using Xunit;
 
-public static class Binding_Http_WSHttpBindingTests
+public class Binding_Http_WSHttpBindingTests : ConditionalWcfTest
 {
     [WcfTheory]
     [InlineData(WSMessageEncoding.Text)]
