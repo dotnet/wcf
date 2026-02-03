@@ -339,9 +339,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (options.EnableDataBinding == true)
                     importOptions.WebReferenceOptions.CodeGenerationOptions |= CodeGenerationOptions.EnableDataBinding;
 
-                // Right now System.Data API not available in DNX. If it comes available we could consider uncommenting these.
-                // importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(TypedDataSetSchemaImporterExtensionFx35).AssemblyQualifiedName);
-                // importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
+                // Enable a minimal schema importer extension for DataSet/DataTable when the *target project's* framework supports it.
+                // This avoids generating placeholder IXmlSerializable + ArrayOfXElement types for common DataSet patterns.
+                // Note: We don't generate typed datasets; we only map schema patterns to System.Data.DataSet/DataTable.
+                //
+                // Even though the dotnet-svcutil tool itself runs on modern .NET, it can generate code for older target frameworks.
+                // For netstandard1.x and netcoreapp1.x targets, System.Data.DataSet/DataTable are not available, so mapping those
+                // patterns would produce code that can't compile for the requested TFM.
+                var tfm = options?.TargetFramework;
+                bool enableDataSetMappings = tfm != null && (!tfm.IsDnx || tfm.Version >= new Version(2, 0));
+
+                if (enableDataSetMappings)
+                {
+                    importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
+                }
 
                 importOptions.CodeProvider = options.CodeProvider;
 

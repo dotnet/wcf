@@ -28,6 +28,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new EnsureAdditionalAssemblyReference(),
                         new CreateCallbackImpl((generator.Options & ServiceContractGenerationOptions.TaskBasedAsynchronousMethod) == ServiceContractGenerationOptions.TaskBasedAsynchronousMethod, generator),
                         new AddAsyncOpenClose(isVisualBasic), // this one need to run after CreateCallbakImpl which provide name of VerifyCallbackEvents method
+                        new InternalTypeVisibilityFixer(options != null && options.InternalTypeAccess == true),
                         new TypeNameFixup()
                     };
 
