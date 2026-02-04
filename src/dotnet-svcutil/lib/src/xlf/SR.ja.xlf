@@ -617,6 +617,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">サービス コントラクトのコードを生成します。クライアント クラスは生成されません。(短い形式: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSeparateFiles">
+        <source>Creates separate files for each type in the specified output directory. (Short Form: -{0})</source>
+        <target state="new">Creates separate files for each type in the specified output directory. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">非同期のものに加えて、操作の同期メソッドを生成します。(短縮形: -{0})</target>
