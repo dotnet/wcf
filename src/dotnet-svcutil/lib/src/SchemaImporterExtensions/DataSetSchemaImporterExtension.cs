@@ -20,7 +20,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     /// This intentionally avoids any dependency on System.Data internals and does not attempt to generate
     /// typed datasets; it only returns the CLR type name to use.
     /// </summary>
-    public sealed class DataSetSchemaImporterExtension : SchemaImporterExtension
+    internal sealed class DataSetSchemaImporterExtension : SchemaImporterExtension
     {
         private const string MsDataNamespace = "urn:schemas-microsoft-com:xml-msdata";
         private const string DiffgramNamespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
@@ -40,6 +40,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         // Keep strings to avoid compile-time references to System.Data assemblies.
         private const string DataSetClrTypeName = "System.Data.DataSet";
         private const string DataTableClrTypeName = "System.Data.DataTable";
+
+        // Note: SchemaImporterExtensionCollection creates extensions via Activator.CreateInstance(type),
+        // so we keep a public parameterless constructor even though the type itself is internal.
+        public DataSetSchemaImporterExtension()
+        {
+        }
 
         public override string ImportSchemaType(
             string name,

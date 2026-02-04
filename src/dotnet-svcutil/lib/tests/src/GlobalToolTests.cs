@@ -57,6 +57,23 @@ namespace SvcutilTest
             TestGlobalSvcutil(options);
         }
 
+        [Trait("Category", "Test")]
+        [Fact]
+        public void InternalTypes_DataSetWrapper()
+        {
+            // Regression test for common DataSet-shaped schemas (schema + any wrappers) under --internal.
+            this_TestCaseName = "InternalTypes_DataSetWrapper";
+            TestFixture();
+
+            InitializeGlobal(this_TestCaseName);
+
+            var wsdlFile = Path.Combine(g_TestCasesDir, "wsdl", "InternalTypes_DataSetWrapper.wsdl");
+
+            // Do not force a serializer. This matches real user behavior and validates the default code path.
+            var options = $"\"{wsdlFile}\" -i -nl";
+            TestGlobalSvcutil(AppendCommonOptions(options));
+        }
+
         [Theory]
         [Trait("Category", "BVT")]
         [InlineData("Project", "--toolContext Project -ntr -tf netcoreapp2.0 -nb")]
