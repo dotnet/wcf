@@ -617,6 +617,11 @@ Belge Tanımlayıcısı: '{0}'.</target>
         <target state="translated">Hizmet Sözleşmeleri için kod oluşturun. İstemci sınıfı oluşturulmaz. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSeparateFiles">
+        <source>Creates separate files for each type in the specified output directory. (Short Form: -{0})</source>
+        <target state="new">Creates separate files for each type in the specified output directory. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">İşlemler için zaman uyumsuz yöntemlerin yanı sıra zaman uyumlu yöntemler oluştur. (Kısa Biçim: -{0})</target>
