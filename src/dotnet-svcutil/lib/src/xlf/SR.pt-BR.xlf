@@ -827,6 +827,11 @@ Se você estava tentando gerar um cliente, isso pode ter acontecido porque os do
         <target state="translated">O ponto de extremidade '{0}' no endereço '{1}' contém uma ou mais associações não compatíveis com os aplicativos .Net Core. Ignorando...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
         <target state="translated">A estrutura de destino '{0}' está sem suporte e não receberá atualizações de segurança no futuro.</target>

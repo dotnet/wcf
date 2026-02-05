@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Linq;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using System.Threading;
 
 using DcNS = System.Runtime.Serialization;
 using WsdlNS = System.Web.Services.Description;
@@ -24,6 +25,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal partial class ImportModule
     {
+        private static int s_internalWithXmlSerializerWarningEmitted;
+
         private readonly CodeCompileUnit _codeCompileUnit;
         private readonly WsdlImporter _wsdlImporter;
         private readonly ServiceContractGenerator _contractGenerator;
@@ -125,6 +128,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             try
             {
+                if (_options.InternalTypeAccess == true && UsesXmlSerializer(serviceDescriptor, _options))
+                {
+                    EmitInternalWithXmlSerializerWarningOnce();
+                }
+
                 // Convert errors to warnings to workaround the issue that many validation errors from XSD compiler
                 // can be ignored.
                 for (int idx = _wsdlImporter.Errors.Count - 1; idx >= _nonWsdlImportErrors; idx--)
@@ -174,6 +182,46 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             // on false, ServiceDescriptor will attempt to use a different contract serializer.
             return contractsResolved;
+        }
+
+        private static bool UsesXmlSerializer(ServiceDescriptor serviceDescriptor, CommandProcessorOptions options)
+        {
+            if (options?.SerializerMode == SerializerMode.XmlSerializer)
+            {
+                return true;
+            }
+
+            if (serviceDescriptor?.Contracts == null)
+            {
+                return false;
+            }
+
+            foreach (ContractDescription contract in serviceDescriptor.Contracts)
+            {
+                if (contract?.Operations == null)
+                {
+                    continue;
+                }
+
+                foreach (OperationDescription operation in contract.Operations)
+                {
+                    // Presence of this behavior indicates the operation will use XmlSerializer at runtime.
+                    if (operation?.Behaviors?.Find<XmlSerializerOperationBehavior>() != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static void EmitInternalWithXmlSerializerWarningOnce()
+        {
+            if (Interlocked.Exchange(ref s_internalWithXmlSerializerWarningEmitted, 1) == 0)
+            {
+                ToolConsole.WriteWarning(SR.WrnInternalOptionPartiallyAppliedWithXmlSerializer);
+            }
         }
 
         private static bool ContractsResolved(ServiceDescriptor serviceDescriptor, CodeCompileUnit codeCompileUnit)

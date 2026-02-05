@@ -827,6 +827,11 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
         <target state="translated">Koncový bod {0} na adrese {1} obsahuje nejméně jednu vazbu, která není kompatibilní s aplikacemi .NET Core. Přeskakování...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
         <target state="translated">Cílová architektura {0} se nepodporuje a v budoucnu už nebude dostávat aktualizace zabezpečení.</target>

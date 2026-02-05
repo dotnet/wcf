@@ -827,6 +827,11 @@ Wenn Sie versucht haben, einen Client zu generieren, könnte die Ursache hierfü
         <target state="translated">Der Endpunkt "{0}" an der Adresse "{1}" enthält mindestens eine Bindung, die nicht mit .NET Core-Apps kompatibel ist. Wird übersprungen...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
         <target state="translated">Das Zielframework "{0}" wird nicht mehr unterstützt und erhält in Zukunft keine Sicherheitsupdates mehr.</target>
