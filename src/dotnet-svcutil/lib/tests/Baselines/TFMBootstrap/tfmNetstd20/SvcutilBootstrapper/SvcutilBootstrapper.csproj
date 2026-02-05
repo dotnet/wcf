@@ -13,10 +13,10 @@
       <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmNetstd20/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
     <Reference Include="System.CodeDom">
-      <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmNetstd20/bin/Debug/net10.0/System.CodeDom.dll</HintPath>
+      <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmNetstd20/bin/Debug/DOTNET_VERSION/System.CodeDom.dll</HintPath>
     </Reference>
-    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd20/bin/Debug/net10.0/net8.0/**" Link="net8.0/%(RecursiveDir)%(Filename)%(Extension)" />
-    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd20/bin/Debug/net10.0/net462/**" Link="net462/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd20/bin/Debug/DOTNET_VERSION/net8.0/**" Link="net8.0/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd20/bin/Debug/DOTNET_VERSION/net462/**" Link="net462/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="*" />
