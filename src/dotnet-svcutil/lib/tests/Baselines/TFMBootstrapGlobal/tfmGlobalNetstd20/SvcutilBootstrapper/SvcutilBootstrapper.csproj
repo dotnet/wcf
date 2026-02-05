@@ -13,7 +13,7 @@
       <HintPath>$USERPROFILE$/.dotnet/tools/.store/dotnet-svcutil/99.99.99/dotnet-svcutil/99.99.99/tools/DOTNET_VERSION/any/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
     <Reference Include="System.CodeDom">
-      <HintPath>$USERPROFILE$/.dotnet/tools/.store/dotnet-svcutil/99.99.99/dotnet-svcutil/99.99.99/tools/net9.0/any/System.CodeDom.dll</HintPath>
+      <HintPath>$USERPROFILE$/.dotnet/tools/.store/dotnet-svcutil/99.99.99/dotnet-svcutil/99.99.99/tools/DOTNET_VERSION/any/System.CodeDom.dll</HintPath>
     </Reference>
     <Content CopyToOutputDirectory="always" Include="$USERPROFILE$/.dotnet/tools/.store/dotnet-svcutil/99.99.99/dotnet-svcutil/99.99.99/tools/net9.0/any/net8.0/**" Link="net8.0/%(RecursiveDir)%(Filename)%(Extension)" />
     <Content CopyToOutputDirectory="always" Include="$USERPROFILE$/.dotnet/tools/.store/dotnet-svcutil/99.99.99/dotnet-svcutil/99.99.99/tools/net9.0/any/net462/**" Link="net462/%(RecursiveDir)%(Filename)%(Extension)" />
