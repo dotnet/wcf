@@ -12,7 +12,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     {
         private static CodeDomVisitor[] GetVisitors(ServiceContractGenerator generator, CommandProcessorOptions options)
         {
-            ArrayOfXElementTypeHelper arrayOfXElementTypeHelper = new ArrayOfXElementTypeHelper((generator.Options & ServiceContractGenerationOptions.InternalTypes) == ServiceContractGenerationOptions.InternalTypes, generator.TargetCompileUnit);
+            // Keep the ArrayOfXElement helper public even under --internal.
+            // WCF's XmlSerializer operation behavior generates serializer assemblies at runtime; those assemblies cannot
+            // reference internal types, so internal schema/message types can fail at runtime. Keeping this helper public
+            // avoids inconsistent accessibility without breaking XmlSerializer runtime behavior.
+            ArrayOfXElementTypeHelper arrayOfXElementTypeHelper = new ArrayOfXElementTypeHelper(isInternal: false, generator.TargetCompileUnit);
             bool isVisualBasic = IsVisualBasicLanguage(options?.Language);
 
             CodeDomVisitor[] visitors = new CodeDomVisitor[]

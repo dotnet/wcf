@@ -827,6 +827,11 @@ If you were trying to generate a client, this could be because the metadata docu
         <target state="translated">地址“{1}”处的终结点“{0}”包含一个或多个与 .Net Core 应用不兼容的绑定，正在跳过...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
         <target state="translated">目标框架“{0}”已失去支持，并且将来不会收到安全更新。</target>
