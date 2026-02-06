@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using Microsoft.CodeDom;
+using System.CodeDom;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {

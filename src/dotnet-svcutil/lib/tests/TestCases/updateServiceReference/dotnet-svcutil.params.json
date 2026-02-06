@@ -13,6 +13,6 @@
       "System.Array, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
       "System.DateTime"
     ],
-    "targetFramework": "net5.0"
+    "targetFramework": "net10.0"
   }
 }

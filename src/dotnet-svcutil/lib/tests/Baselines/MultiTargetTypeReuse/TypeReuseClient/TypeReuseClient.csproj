@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BinLib">
@@ -10,8 +10,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
-    <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">
     <PackageReference Include="System.ServiceModel.*", Version="N.N.N">

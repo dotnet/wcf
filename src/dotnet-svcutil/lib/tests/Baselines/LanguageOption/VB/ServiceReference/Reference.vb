@@ -7,6 +7,8 @@
 ' </auto-generated>
 '------------------------------------------------------------------------------
 
+Option Strict Off
+Option Explicit On
 
 Imports System.Runtime.Serialization
 
