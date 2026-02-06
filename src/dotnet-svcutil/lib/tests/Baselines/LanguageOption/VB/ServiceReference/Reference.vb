@@ -18,8 +18,20 @@ Namespace ServiceReference
      System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()>  _
     Partial Public Class BinLibrary
         Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject
+        
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
         
         Private ValueField As String
+        
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
         
         <System.Runtime.Serialization.DataMemberAttribute()>  _
         Public Property Value() As String
@@ -38,10 +50,22 @@ Namespace ServiceReference
      System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()>  _
     Partial Public Class TypeReuseCompositeType
         Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject
+        
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
         
         Private BoolValueField As Boolean
         
         Private StringValueField As String
+        
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
         
         <System.Runtime.Serialization.DataMemberAttribute()>  _
         Public Property BoolValue() As Boolean
