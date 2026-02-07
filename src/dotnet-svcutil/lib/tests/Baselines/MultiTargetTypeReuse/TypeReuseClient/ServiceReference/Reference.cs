@@ -16,12 +16,26 @@ namespace ServiceReference
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="TypeReuseCompositeType", Namespace="http://schemas.datacontract.org/2004/07/TypesLib")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    public partial class TypeReuseCompositeType : object
+    public partial class TypeReuseCompositeType : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
         private string StringValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
