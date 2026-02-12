@@ -12,7 +12,7 @@ namespace System.ServiceModel.Security
     using System.Security.Cryptography;
     using System.ServiceModel.Security.Tokens;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
 
     internal sealed class NonceToken : BinarySecretSecurityToken
     {

@@ -10,7 +10,7 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -365,7 +365,7 @@ namespace System.ServiceModel.Dispatcher
         internal class StreamFormatterHelper
         {
             // The method was duplicated from the desktop implementation of
-            // Microsoft.Xml.XmlDictionaryWriter.WriteValue(IStreamProvider)
+            // System.Xml.XmlDictionaryWriter.WriteValue(IStreamProvider)
             public static void WriteValue(XmlDictionaryWriter writer, OperationStreamProvider value)
             {
                 if (value == null)

@@ -63,7 +63,7 @@ namespace System.ServiceModel.Diagnostics
             throw NotImplemented.ByDesign;
         }
 
-        internal static void LogMessage(ref Channels.Message message, Microsoft.Xml.XmlDictionaryReader xmlDictionaryReader, MessageLoggingSource messageLoggingSource)
+        internal static void LogMessage(ref Channels.Message message, System.Xml.XmlDictionaryReader xmlDictionaryReader, MessageLoggingSource messageLoggingSource)
         {
             throw NotImplemented.ByDesign;
         }

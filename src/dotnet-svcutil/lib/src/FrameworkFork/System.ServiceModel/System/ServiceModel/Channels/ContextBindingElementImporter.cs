@@ -9,8 +9,8 @@ namespace System.ServiceModel.Channels
     using System.Runtime.CompilerServices;
     using System.ServiceModel.Description;
     using System.Web.Services.Description;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using System.Xml.Schema;
 
     public class ContextBindingElementImporter : IPolicyImportExtension, IWsdlImportExtension
     {

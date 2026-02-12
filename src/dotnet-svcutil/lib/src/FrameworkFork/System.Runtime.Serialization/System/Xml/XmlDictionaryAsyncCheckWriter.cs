@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     internal class XmlDictionaryAsyncCheckWriter : XmlDictionaryWriter
     {

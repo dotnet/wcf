@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Tokens;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Security.Tokens
 {

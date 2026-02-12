@@ -3,7 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
 

@@ -18,9 +18,9 @@ namespace System.ServiceModel.Description
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using System.ServiceModel.Diagnostics;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml.Serialization;
+    using System.Xml;
+    using System.Xml.Schema;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
     using WsdlNS = System.Web.Services.Description;
 
     internal class MessageContractImporter
@@ -840,9 +840,9 @@ namespace System.ServiceModel.Description
 
             foreach (WsdlNS.ServiceDescription wsdl in importer.WsdlDocuments)
             {
-                XmlQualifiedName[] wsdlPrefixNsPairs = wsdl.Namespaces.ToArray();
                 if (wsdl.Types != null && wsdl.Types.Schemas != null)
                 {
+                    XmlQualifiedName[] wsdlPrefixNsPairs = wsdl.Namespaces.ToArray();
                     foreach (XmlSchema xsd in wsdl.Types.Schemas)
                     {
                         XmlSerializerNamespaces xsdNamespaces = xsd.Namespaces;
@@ -853,19 +853,19 @@ namespace System.ServiceModel.Description
                         foreach (XmlQualifiedName pair in wsdlPrefixNsPairs)
                             if (!prefixesUsed.ContainsKey(pair.Name))
                                 xsdNamespaces.Add(pair.Name, pair.Namespace);
-                        if (xsd.Items.Count > 0)
+                        
+                        if (xsd.Items.Count > 0 || (xsd.TargetNamespace != null && xsd.TargetNamespace.Length > 0))
                         {
                             schemaSet.Add(xsd);
                         }
-                        else
+                        
+                        // only add include schemas
+                        foreach (XmlSchemaExternal include in xsd.Includes)
                         {
-                            // only add include schemas
-                            foreach (XmlSchemaExternal include in xsd.Includes)
+                            if (include.Schema != null)
                             {
-                                if (include.Schema != null)
-                                {
-                                    schemaSet.Add(include.Schema);
-                                }
+                                Console.WriteLine("DEBUG: Adding Included Schema: " + include.Schema.TargetNamespace);
+                                schemaSet.Add(include.Schema);
                             }
                         }
                     }

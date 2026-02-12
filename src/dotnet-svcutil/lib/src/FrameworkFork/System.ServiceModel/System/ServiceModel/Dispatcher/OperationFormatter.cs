@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Reflection;
-using Microsoft.Xml;
+using System.Xml;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Channels;
 using System.Runtime.Diagnostics;

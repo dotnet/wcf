@@ -12,7 +12,7 @@ namespace System.IdentityModel.Tokens
     using System.ServiceModel.Security;
     using System.ServiceModel.Security.Tokens;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
     //using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
     using KeyIdentifierClauseEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.KeyIdentifierClauseEntry;
     using StrEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.StrEntry;

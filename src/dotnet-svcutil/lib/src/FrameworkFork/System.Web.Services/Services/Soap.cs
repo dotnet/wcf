@@ -5,7 +5,7 @@
 namespace System.Web.Services
 {
     using System;
-    using Microsoft.Xml;
+    using System.Xml;
 
     internal class Soap
     {

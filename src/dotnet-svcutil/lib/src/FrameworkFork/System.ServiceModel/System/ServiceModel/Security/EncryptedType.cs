@@ -6,7 +6,7 @@ namespace System.ServiceModel.Security
 {
     using System.IdentityModel;
     using System.Runtime.CompilerServices;
-    using Microsoft.Xml;
+    using System.Xml;
 
     [TypeForwardedFrom("System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")]
     internal sealed class EncryptedKey : EncryptedType

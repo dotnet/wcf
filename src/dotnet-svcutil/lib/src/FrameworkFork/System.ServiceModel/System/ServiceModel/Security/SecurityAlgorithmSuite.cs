@@ -15,7 +15,7 @@ using System.ServiceModel.Security.Tokens;
 
 using System.Text;
 using System.Runtime.Serialization;
-using Microsoft.Xml;
+using System.Xml;
 using System.ComponentModel;
 
 namespace System.ServiceModel.Security

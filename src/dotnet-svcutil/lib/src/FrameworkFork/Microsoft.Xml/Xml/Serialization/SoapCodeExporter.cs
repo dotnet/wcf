@@ -2,17 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.Collections;
     using System.IO;
     using System.ComponentModel;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using Microsoft.CodeDom;
     using Microsoft.CodeDom.Compiler;
     using System.Reflection;
     using System.Diagnostics;
+    using SysXmlSerialization = System.Xml.Serialization;
     // using System.Security.Permissions;
 
     /// <include file='doc\SoapCodeExporter.uex' path='docs/doc[@for="SoapCodeExporter"]/*' />
@@ -93,7 +95,7 @@ namespace Microsoft.Xml.Serialization
                 ExportedMappings.Add(mapping, mapping);
                 if (mapping is EnumMapping)
                 {
-                    codeClass = ExportEnum((EnumMapping)mapping, typeof(SoapEnumAttribute));
+                    codeClass = ExportEnum((EnumMapping)mapping, typeof(SysXmlSerialization.SoapEnumAttribute));
                 }
                 else if (mapping is StructMapping)
                 {
@@ -113,7 +115,7 @@ namespace Microsoft.Xml.Serialization
                         // Add [DebuggerStepThrough]
                         codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(DebuggerStepThroughAttribute).FullName));
                     }
-                    AddTypeMetadata(codeClass.CustomAttributes, typeof(SoapTypeAttribute), mapping.TypeDesc.Name, Accessor.UnescapeName(mapping.TypeName), mapping.Namespace, mapping.IncludeInSchema);
+                    AddTypeMetadata(codeClass.CustomAttributes, typeof(SysXmlSerialization.SoapTypeAttribute), mapping.TypeDesc.Name, Accessor.UnescapeName(mapping.TypeName), mapping.Namespace, mapping.IncludeInSchema);
                     ExportedClasses.Add(mapping, codeClass);
                 }
             }
@@ -123,7 +125,7 @@ namespace Microsoft.Xml.Serialization
         {
             if (mapping.TypeDesc.IsRoot)
             {
-                ExportRoot(mapping, typeof(SoapIncludeAttribute));
+                ExportRoot(mapping, typeof(SysXmlSerialization.SoapIncludeAttribute));
                 return null;
             }
             if (!mapping.IncludeInSchema)
@@ -138,8 +140,10 @@ namespace Microsoft.Xml.Serialization
 
             CodeNamespace.Types.Add(codeClass);
 
-            if (baseName != null && baseName.Length > 0)
+            if (baseName != null && baseName.Length > 0 && baseName != "Object")
             {
+                // [Fix: Redundant Inheritance]
+                // Explicitly skip 'Object' to avoid generating "public class MyType : Object".
                 codeClass.BaseTypes.Add(baseName);
             }
             else
@@ -149,7 +153,7 @@ namespace Microsoft.Xml.Serialization
             if (mapping.TypeDesc.IsAbstract)
                 codeClass.TypeAttributes |= TypeAttributes.Abstract;
 
-            CodeExporter.AddIncludeMetadata(codeClass.CustomAttributes, mapping, typeof(SoapIncludeAttribute));
+            CodeExporter.AddIncludeMetadata(codeClass.CustomAttributes, mapping, typeof(SysXmlSerialization.SoapIncludeAttribute));
 
             if (GenerateProperties)
             {
@@ -205,7 +209,7 @@ namespace Microsoft.Xml.Serialization
 
         private void AddElementMetadata(CodeAttributeDeclarationCollection metadata, string elementName, TypeDesc typeDesc, bool isNullable)
         {
-            CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SoapElementAttribute).FullName);
+            CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.SoapElementAttribute).FullName);
             if (elementName != null)
             {
                 attribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(elementName)));
@@ -249,7 +253,7 @@ namespace Microsoft.Xml.Serialization
                 field = new CodeMemberField(typeof(bool).FullName, member.Name + "Specified");
                 field.Attributes = (field.Attributes & ~MemberAttributes.AccessMask) | MemberAttributes.Public;
                 field.Comments.Add(new CodeCommentStatement(ResXml.XmlRemarks, true));
-                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SoapIgnoreAttribute).FullName);
+                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.SoapIgnoreAttribute).FullName);
                 field.CustomAttributes.Add(attribute);
                 codeClass.Members.Add(field);
             }
@@ -277,7 +281,7 @@ namespace Microsoft.Xml.Serialization
 
                 prop = CreatePropertyDeclaration(field, member.Name + "Specified", typeof(bool).FullName);
                 prop.Comments.Add(new CodeCommentStatement(ResXml.XmlRemarks, true));
-                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SoapIgnoreAttribute).FullName);
+                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.SoapIgnoreAttribute).FullName);
                 prop.CustomAttributes.Add(attribute);
                 codeClass.Members.Add(prop);
             }

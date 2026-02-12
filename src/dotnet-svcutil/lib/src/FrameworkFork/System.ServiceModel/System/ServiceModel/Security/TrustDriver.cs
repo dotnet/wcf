@@ -18,7 +18,7 @@ using System.Security.Principal;
 using System.Security.Cryptography;
 using System.ServiceModel.Security.Tokens;
 
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Security
 {

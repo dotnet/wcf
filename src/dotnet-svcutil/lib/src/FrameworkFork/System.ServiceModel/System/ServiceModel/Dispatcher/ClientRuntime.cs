@@ -11,7 +11,7 @@ using System.Net;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Dispatcher
 {

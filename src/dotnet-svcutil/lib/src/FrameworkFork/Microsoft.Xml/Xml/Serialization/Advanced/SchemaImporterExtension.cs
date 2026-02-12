@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization.Advanced
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer.Advanced
 {
     using System;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml;
+    using System.Xml.Schema;
+    using System.Xml;
     using System.Collections;
     using System.Collections.Specialized;
     using Microsoft.CodeDom;
     using Microsoft.CodeDom.Compiler;
-    using Microsoft.Xml.Serialization;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
     using System.Reflection;
 
     /// <include file='doc\SchemaImporterExtension.uex' path='docs/doc[@for="SchemaImporterExtension"]/*' />
