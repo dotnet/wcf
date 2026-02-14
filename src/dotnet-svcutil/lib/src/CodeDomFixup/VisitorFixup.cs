@@ -22,7 +22,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new ConstructorFixer(),
                         // Visitors to remove sync methods if !options.Sync
                         new MakeOldAsyncMethodsPrivate(),
-                        new RemoveExtensibleDataObjectImpl(),
                         new XmlDomAttributeFixer(),
                         new SpecialIXmlSerializableRemapper(arrayOfXElementTypeHelper),
                         new EnsureAdditionalAssemblyReference(),
