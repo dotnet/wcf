@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.Tools.ServiceModel.Svcutil.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +12,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeDom;
+using Microsoft.Tools.ServiceModel.Svcutil.Metadata;
 using DcNS = System.Runtime.Serialization;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
@@ -244,12 +245,31 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             using (await SafeLogger.WriteStartOperationAsync(options.Logger, "Processing Code DOM ...").ConfigureAwait(false))
             {
                 ToolConsole.WriteLine(SR.GeneratingFiles);
+                if (options.SeparateFiles == true)
+                {
+                    foreach (CodeNamespace @namespace in importModule.CodeCompileUnit.Namespaces)
+                    {
+                        foreach (CodeTypeDeclaration type in @namespace.Types)
+                        {
+                            options.OutputFile = new FileInfo(Path.Combine(options.OutputDir.FullName, $"{type.Name}{CodeSerializer.GetOutputFileExtension(options)}"));
+                            CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
+                            CodeCompileUnit compileUnit = new CodeCompileUnit();
+                            CodeNamespace splitNamespace = new CodeNamespace(@namespace.Name);
+                            compileUnit.Namespaces.Add(splitNamespace);
+                            splitNamespace.Types.Add(type);
+                            var filePath = codeSerializer.Save(compileUnit);
+                            ToolConsole.WriteLine(filePath, LogTag.Important);
+                        }
+                    }
+                }
+                else
+                {
+                    CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
+                    var filePath = codeSerializer.Save(importModule.CodeCompileUnit);
 
-                CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
-                var filePath = codeSerializer.Save(importModule.CodeCompileUnit);
-
-                // When in Infrastructure mode (WCF CS) it is assumed the output file path have been provided so no need to display it.
-                ToolConsole.WriteLineIf(options.ToolContext != OperationalContext.Infrastructure, filePath, LogTag.Important);
+                    // When in Infrastructure mode (WCF CS) it is assumed the output file path have been provided so no need to display it.
+                    ToolConsole.WriteLineIf(options.ToolContext != OperationalContext.Infrastructure, filePath, LogTag.Important);
+                }
             }
 
             return ToolConsole.ExitCode;
