@@ -5,7 +5,7 @@
 namespace System.ServiceModel.Channels
 {
     using System.ServiceModel.Description;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public sealed class UseManagedPresentationBindingElement : BindingElement, IPolicyExportExtension
     {

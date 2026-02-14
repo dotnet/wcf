@@ -4,7 +4,7 @@
 
 namespace System.Web.Services.Description
 {
-    using Microsoft.Xml.Serialization;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
     using System.Collections;
     using System.ComponentModel;
     using System.Web.Services.Configuration;

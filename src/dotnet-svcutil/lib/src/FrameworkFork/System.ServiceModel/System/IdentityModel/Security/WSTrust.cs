@@ -11,7 +11,7 @@ namespace System.IdentityModel.Security
     using System.IdentityModel.Tokens;
     using System.ServiceModel.Security;
     using System.ServiceModel.Security.Tokens;
-    using Microsoft.Xml;
+    using System.Xml;
     using KeyIdentifierClauseEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.KeyIdentifierClauseEntry;
 
     internal class WSTrust : SecurityTokenSerializer.SerializerEntries

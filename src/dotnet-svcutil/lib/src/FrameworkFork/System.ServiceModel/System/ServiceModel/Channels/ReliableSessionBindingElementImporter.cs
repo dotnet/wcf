@@ -9,7 +9,7 @@ namespace System.ServiceModel.Channels
     using System.Runtime;
     using System.ServiceModel;
     using System.ServiceModel.Description;
-    using Microsoft.Xml;
+    using System.Xml;
 
     internal static class ReliableSessionPolicyStrings
     {

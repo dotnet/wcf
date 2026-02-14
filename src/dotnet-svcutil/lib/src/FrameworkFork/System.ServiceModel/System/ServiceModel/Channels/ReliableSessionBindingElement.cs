@@ -10,7 +10,7 @@ namespace System.ServiceModel.Channels
     using System.ServiceModel.Description;
     using System.ServiceModel.Dispatcher;
     using System.ServiceModel.Security;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public sealed class ReliableSessionBindingElement : BindingElement, IPolicyExportExtension
     {

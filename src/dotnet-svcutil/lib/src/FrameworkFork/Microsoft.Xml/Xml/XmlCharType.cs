@@ -6,7 +6,7 @@
 #endif
 
 
-//#define XMLCHARTYPE_USE_RESOURCE    // load the character properties from resources (XmlCharType.bin must be linked to Microsoft.Xml.dll)
+//#define XMLCHARTYPE_USE_RESOURCE    // load the character properties from resources (XmlCharType.bin must be linked to System.Xml.dll)
 //#define XMLCHARTYPE_GEN_RESOURCE    // generate the character properties into XmlCharType.bin
 
 #if XMLCHARTYPE_GEN_RESOURCE || XMLCHARTYPE_USE_RESOURCE
@@ -16,7 +16,7 @@ using System.Reflection;
 using System.Threading;
 using System.Diagnostics;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

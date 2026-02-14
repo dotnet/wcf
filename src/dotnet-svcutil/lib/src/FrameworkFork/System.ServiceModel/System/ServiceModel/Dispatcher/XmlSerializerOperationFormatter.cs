@@ -11,11 +11,11 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Reflection;
-using Microsoft.Xml;
-using Microsoft.Xml.Serialization;
+using System.Xml;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 using System.ServiceModel.Diagnostics;
 using System.IO;
-using Microsoft.Xml.Schema;
+using System.Xml.Schema;
 
 namespace System.ServiceModel.Dispatcher
 {

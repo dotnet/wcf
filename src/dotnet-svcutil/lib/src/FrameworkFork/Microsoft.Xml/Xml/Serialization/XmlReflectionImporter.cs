@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System.Reflection;
     using System;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -545,7 +546,7 @@ namespace Microsoft.Xml.Serialization
                         {
                             XmlSchemaType xsdType = serializableMapping.XsdType;
                             if (xsdType != null)
-                                SetBase(serializableMapping, xsdType.DerivedFrom);
+                                SetBase(serializableMapping, xsdType.BaseXmlSchemaType.QualifiedName);
                             _serializables[qname] = serializableMapping;
                         }
                         serializableMapping.TypeName = qname.Name;
@@ -600,12 +601,12 @@ namespace Microsoft.Xml.Serialization
             XmlSchema s = (XmlSchema)srcSchemas[0];
 
             XmlSchemaType t = (XmlSchemaType)s.SchemaTypes[baseQname];
-            t = t.Redefined != null ? t.Redefined : t;
+            //t = t.Redefined != null ? t.Redefined : t;
 
             if (_serializables[baseQname] == null)
             {
                 SerializableMapping baseMapping = new SerializableMapping(baseQname, schemas);
-                SetBase(baseMapping, t.DerivedFrom);
+                SetBase(baseMapping, t.BaseXmlSchemaType.QualifiedName);
                 _serializables.Add(baseQname, baseMapping);
             }
             mapping.SetBaseMapping((SerializableMapping)_serializables[baseQname]);
@@ -1375,7 +1376,7 @@ namespace Microsoft.Xml.Serialization
             FieldModel model = new FieldModel(xmlReflectionMember.MemberName, xmlReflectionMember.MemberType, _typeScope.GetTypeDesc(xmlReflectionMember.MemberType), checkSpecified, false);
             member.CheckShouldPersist = model.CheckShouldPersist;
             member.CheckSpecified = model.CheckSpecified;
-            member.ReadOnly = model.ReadOnly; // || !model.FieldTypeDesc.HasDefaultConstructor;
+            member.ReadOnly = model.ReadOnly; // || !model.FieldTypeDesc.DefaultValue != nullConstructor;
 
             Type choiceIdentifierType = null;
             if (a.XmlChoiceIdentifier != null)
@@ -1405,7 +1406,7 @@ namespace Microsoft.Xml.Serialization
             member.MemberInfo = model.MemberInfo;
             member.CheckSpecifiedMemberInfo = model.CheckSpecifiedMemberInfo;
             member.CheckShouldPersistMethodInfo = model.CheckShouldPersistMethodInfo;
-            member.ReadOnly = model.ReadOnly; // || !model.FieldTypeDesc.HasDefaultConstructor;
+            member.ReadOnly = model.ReadOnly; // || !model.FieldTypeDesc.DefaultValue != nullConstructor;
             Type choiceIdentifierType = null;
             if (a.XmlChoiceIdentifier != null)
             {

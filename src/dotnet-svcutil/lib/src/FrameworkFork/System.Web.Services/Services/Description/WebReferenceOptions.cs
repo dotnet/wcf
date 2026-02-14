@@ -8,9 +8,9 @@ namespace System.Web.Services.Description
     using System.Globalization;
     using System.IO;
     using System.ComponentModel;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml.Serialization;
+    using System.Xml;
+    using System.Xml.Schema;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
     using System.Collections;
     using System.Collections.Specialized;
 
@@ -182,26 +182,26 @@ namespace System.Web.Services.Description
 
     internal class WebReferenceOptionsSerializationWriter : XmlSerializationWriter
     {
-        private string Write1_CodeGenerationOptions(Microsoft.Xml.Serialization.CodeGenerationOptions v)
+        private string Write1_CodeGenerationOptions(System.Xml.Serialization.CodeGenerationOptions v)
         {
             string s = null;
             switch (v)
             {
-                case Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateProperties: s = @"properties"; break;
-                case Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateNewAsync: s = @"newAsync"; break;
-                case Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateOldAsync: s = @"oldAsync"; break;
-                case Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateOrder: s = @"order"; break;
-                case Microsoft.Xml.Serialization.CodeGenerationOptions.@EnableDataBinding: s = @"enableDataBinding"; break;
+                case System.Xml.Serialization.CodeGenerationOptions.@GenerateProperties: s = @"properties"; break;
+                case System.Xml.Serialization.CodeGenerationOptions.@GenerateNewAsync: s = @"newAsync"; break;
+                case System.Xml.Serialization.CodeGenerationOptions.@GenerateOldAsync: s = @"oldAsync"; break;
+                case System.Xml.Serialization.CodeGenerationOptions.@GenerateOrder: s = @"order"; break;
+                case System.Xml.Serialization.CodeGenerationOptions.@EnableDataBinding: s = @"enableDataBinding"; break;
                 default:
                     s = FromEnum(((System.Int64)v), new string[] { @"properties",
                     @"newAsync",
                     @"oldAsync",
                     @"order",
-                    @"enableDataBinding" }, new System.Int64[] { (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateProperties,
-                    (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateNewAsync,
-                    (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateOldAsync,
-                    (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateOrder,
-                    (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@EnableDataBinding }, @"System.Xml.Serialization.CodeGenerationOptions"); break;
+                    @"enableDataBinding" }, new System.Int64[] { (long)System.Xml.Serialization.CodeGenerationOptions.@GenerateProperties,
+                    (long)System.Xml.Serialization.CodeGenerationOptions.@GenerateNewAsync,
+                    (long)System.Xml.Serialization.CodeGenerationOptions.@GenerateOldAsync,
+                    (long)System.Xml.Serialization.CodeGenerationOptions.@GenerateOrder,
+                    (long)System.Xml.Serialization.CodeGenerationOptions.@EnableDataBinding }, @"System.Xml.Serialization.CodeGenerationOptions"); break;
             }
             return s;
         }
@@ -242,7 +242,7 @@ namespace System.Web.Services.Description
             if (needType) WriteXsiType(@"webReferenceOptions", @"http://microsoft.com/webReference/");
             if (((CodeGenerationOptions)o.@CodeGenerationOptions) != (CodeGenerationOptions.@GenerateOldAsync))
             {
-                WriteElementString(@"codeGenerationOptions", @"http://microsoft.com/webReference/", Write1_CodeGenerationOptions(((CodeGenerationOptions)o.@CodeGenerationOptions)));
+                WriteElementString(@"codeGenerationOptions", @"http://microsoft.com/webReference/", Write1_CodeGenerationOptions((System.Xml.Serialization.CodeGenerationOptions)(long)o.@CodeGenerationOptions));
             }
             {
                 System.Collections.Specialized.StringCollection a = (System.Collections.Specialized.StringCollection)((System.Collections.Specialized.StringCollection)o.@SchemaImporterExtensions);
@@ -260,7 +260,7 @@ namespace System.Web.Services.Description
             {
                 WriteElementString(@"style", @"http://microsoft.com/webReference/", Write2_ServiceDescriptionImportStyle(((System.Web.Services.Description.ServiceDescriptionImportStyle)o.@Style)));
             }
-            WriteElementStringRaw(@"verbose", @"http://microsoft.com/webReference/", Microsoft.Xml.XmlConvert.ToString((System.Boolean)((System.Boolean)o.@Verbose)));
+            WriteElementStringRaw(@"verbose", @"http://microsoft.com/webReference/", System.Xml.XmlConvert.ToString((System.Boolean)((System.Boolean)o.@Verbose)));
             WriteEndElement(o);
         }
 
@@ -292,20 +292,20 @@ namespace System.Web.Services.Description
                 if ((object)_CodeGenerationOptionsValues == null)
                 {
                     System.Collections.Hashtable h = new System.Collections.Hashtable();
-                    h.Add(@"properties", (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateProperties);
-                    h.Add(@"newAsync", (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateNewAsync);
-                    h.Add(@"oldAsync", (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateOldAsync);
-                    h.Add(@"order", (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@GenerateOrder);
-                    h.Add(@"enableDataBinding", (long)Microsoft.Xml.Serialization.CodeGenerationOptions.@EnableDataBinding);
+                    h.Add(@"properties", (long)System.Xml.Serialization.CodeGenerationOptions.@GenerateProperties);
+                    h.Add(@"newAsync", (long)System.Xml.Serialization.CodeGenerationOptions.@GenerateNewAsync);
+                    h.Add(@"oldAsync", (long)System.Xml.Serialization.CodeGenerationOptions.@GenerateOldAsync);
+                    h.Add(@"order", (long)System.Xml.Serialization.CodeGenerationOptions.@GenerateOrder);
+                    h.Add(@"enableDataBinding", (long)System.Xml.Serialization.CodeGenerationOptions.@EnableDataBinding);
                     _CodeGenerationOptionsValues = h;
                 }
                 return _CodeGenerationOptionsValues;
             }
         }
 
-        private Microsoft.Xml.Serialization.CodeGenerationOptions Read1_CodeGenerationOptions(string s)
+        private System.Xml.Serialization.CodeGenerationOptions Read1_CodeGenerationOptions(string s)
         {
-            return (Microsoft.Xml.Serialization.CodeGenerationOptions)ToEnum(s, CodeGenerationOptionsValues, @"System.Xml.Serialization.CodeGenerationOptions");
+            return (System.Xml.Serialization.CodeGenerationOptions)ToEnum(s, CodeGenerationOptionsValues, @"System.Xml.Serialization.CodeGenerationOptions");
         }
 
         private System.Web.Services.Description.ServiceDescriptionImportStyle Read2_ServiceDescriptionImportStyle(string s)
@@ -321,16 +321,16 @@ namespace System.Web.Services.Description
 
         private System.Web.Services.Description.WebReferenceOptions Read4_WebReferenceOptions(bool isNullable, bool checkType)
         {
-            Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
+            System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id1_webReferenceOptions && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
+                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)_id1_webReferenceOptions && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
-                    throw CreateUnknownTypeException((Microsoft.Xml.XmlQualifiedName)xsiType);
+                    throw CreateUnknownTypeException((System.Xml.XmlQualifiedName)xsiType);
             }
             if (isNull) return null;
             System.Web.Services.Description.WebReferenceOptions o;
@@ -354,9 +354,9 @@ namespace System.Web.Services.Description
             Reader.MoveToContent();
             int whileIterations0 = 0;
             int readerCount0 = ReaderCount;
-            while (Reader.NodeType != Microsoft.Xml.XmlNodeType.EndElement && Reader.NodeType != Microsoft.Xml.XmlNodeType.None)
+            while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
             {
-                if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
+                if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                 {
                     if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id3_codeGenerationOptions && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
@@ -366,7 +366,7 @@ namespace System.Web.Services.Description
                         }
                         else
                         {
-                            o.@CodeGenerationOptions = Read1_CodeGenerationOptions(Reader.ReadElementString());
+                            o.@CodeGenerationOptions = (CodeGenerationOptions)(long)Read1_CodeGenerationOptions(Reader.ReadElementString());
                         }
                         paramsRead[0] = true;
                     }
@@ -385,9 +385,9 @@ namespace System.Web.Services.Description
                                 Reader.MoveToContent();
                                 int whileIterations1 = 0;
                                 int readerCount1 = ReaderCount;
-                                while (Reader.NodeType != Microsoft.Xml.XmlNodeType.EndElement && Reader.NodeType != Microsoft.Xml.XmlNodeType.None)
+                                while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
                                 {
-                                    if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
+                                    if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                                     {
                                         if (((object)Reader.LocalName == (object)_id5_type && (object)Reader.NamespaceURI == (object)_id2_Item))
                                         {
@@ -431,7 +431,7 @@ namespace System.Web.Services.Description
                     else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id7_verbose && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         {
-                            o.@Verbose = Microsoft.Xml.XmlConvert.ToBoolean(Reader.ReadElementString());
+                            o.@Verbose = System.Xml.XmlConvert.ToBoolean(Reader.ReadElementString());
                         }
                         paramsRead[3] = true;
                     }
@@ -459,7 +459,7 @@ namespace System.Web.Services.Description
         {
             object o = null;
             Reader.MoveToContent();
-            if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
+            if (Reader.NodeType == System.Xml.XmlNodeType.Element)
             {
                 if (((object)Reader.LocalName == (object)_id1_webReferenceOptions && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
@@ -507,7 +507,7 @@ namespace System.Web.Services.Description
         {
             return new WebReferenceOptionsSerializationWriter();
         }
-        public override System.Boolean CanDeserialize(Microsoft.Xml.XmlReader xmlReader)
+        public override System.Boolean CanDeserialize(System.Xml.XmlReader xmlReader)
         {
             return true;
         }

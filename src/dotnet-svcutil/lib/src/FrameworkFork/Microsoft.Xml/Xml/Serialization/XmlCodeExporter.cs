@@ -2,20 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.Collections;
     using System.IO;
     using System.ComponentModel;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using Microsoft.CodeDom;
     using Microsoft.CodeDom.Compiler;
     using System.Reflection;
     using System.Globalization;
     using System.Diagnostics;
+    using SysXmlSerialization = System.Xml.Serialization;
     // using System.Security.Permissions;
-    using Microsoft.Xml.Serialization.Advanced;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer.Advanced;
 
     /// <include file='doc\XmlCodeExporter.uex' path='docs/doc[@for="XmlCodeExporter"]/*' />
     ///<internalonly/>
@@ -138,7 +140,7 @@ namespace Microsoft.Xml.Serialization
                 }
                 else if (mapping is EnumMapping)
                 {
-                    codeClass = ExportEnum((EnumMapping)mapping, typeof(XmlEnumAttribute));
+                    codeClass = ExportEnum((EnumMapping)mapping, typeof(SysXmlSerialization.XmlEnumAttribute));
                 }
                 else if (mapping is StructMapping)
                 {
@@ -161,7 +163,7 @@ namespace Microsoft.Xml.Serialization
                             codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(DebuggerStepThroughAttribute).FullName));
                             // Add [DesignerCategory("code")]
                         }
-                        AddTypeMetadata(codeClass.CustomAttributes, typeof(XmlTypeAttribute), mapping.TypeDesc.Name, Accessor.UnescapeName(mapping.TypeName), mapping.Namespace, mapping.IncludeInSchema);
+                        AddTypeMetadata(codeClass.CustomAttributes, typeof(SysXmlSerialization.XmlTypeAttribute), mapping.TypeDesc.Name, Accessor.UnescapeName(mapping.TypeName), mapping.Namespace, mapping.IncludeInSchema);
                     }
                     else if (FindAttributeDeclaration(typeof(GeneratedCodeAttribute), codeClass.CustomAttributes) == null)
                     {
@@ -180,7 +182,7 @@ namespace Microsoft.Xml.Serialization
 
         private void AddRootMetadata(CodeAttributeDeclarationCollection metadata, TypeMapping typeMapping, string name, string ns, ElementAccessor rootElement)
         {
-            string rootAttrName = typeof(XmlRootAttribute).FullName;
+            string rootAttrName = typeof(SysXmlSerialization.XmlRootAttribute).FullName;
 
             // check that we haven't already added a root attribute since we can only add one
             foreach (CodeAttributeDeclaration attr in metadata)
@@ -407,7 +409,7 @@ namespace Microsoft.Xml.Serialization
             }
             else
             {
-                if (pm.TypeDesc.HasDefaultSupport)
+                if (pm.TypeDesc.DefaultValue != null)
                 {
                     return XmlCustomFormatter.ToDefaultValue(defaultValue, pm.TypeDesc.FormatterName);
                 }
@@ -418,7 +420,7 @@ namespace Microsoft.Xml.Serialization
         private void AddDefaultValueAttribute(CodeMemberField field, CodeAttributeDeclarationCollection metadata, object defaultValue, TypeMapping mapping, CodeCommentStatementCollection comments, TypeDesc memberTypeDesc, Accessor accessor, CodeConstructor ctor)
         {
             string attributeName = accessor.IsFixed ? "fixed" : "default";
-            if (!memberTypeDesc.HasDefaultSupport)
+            if (memberTypeDesc.DefaultValue == null)
             {
                 if (comments != null && defaultValue is string)
                 {
@@ -481,7 +483,7 @@ namespace Microsoft.Xml.Serialization
             }
             PrimitiveMapping pm = (PrimitiveMapping)mapping;
 
-            if (comments != null && !pm.TypeDesc.HasDefaultSupport && pm.TypeDesc.IsMappedType)
+            if (comments != null && pm.TypeDesc.DefaultValue == null && pm.TypeDesc.IsMappedType)
             {
                 // do not generate intializers for the user prefered types if they do not have default capability
                 DropDefaultAttribute(accessor, comments, pm.TypeDesc.FullName);
@@ -529,7 +531,7 @@ namespace Microsoft.Xml.Serialization
                     field.InitExpression = initExpression;
                 }
             }
-            if (arguments != null && pm.TypeDesc.HasDefaultSupport && accessor.IsOptional && !accessor.IsFixed)
+            if (arguments != null && pm.TypeDesc.DefaultValue != null && accessor.IsOptional && !accessor.IsFixed)
             {
                 // Add [DefaultValueAttribute]
                 CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(DefaultValueAttribute).FullName, arguments);
@@ -561,7 +563,7 @@ namespace Microsoft.Xml.Serialization
         {
             if (mapping.TypeDesc.IsRoot)
             {
-                ExportRoot(mapping, typeof(XmlIncludeAttribute));
+                ExportRoot(mapping, typeof(SysXmlSerialization.XmlIncludeAttribute));
                 return null;
             }
 
@@ -595,7 +597,7 @@ namespace Microsoft.Xml.Serialization
                 codeClass.TypeAttributes |= TypeAttributes.Abstract;
             }
 
-            AddIncludeMetadata(codeClass.CustomAttributes, mapping, typeof(XmlIncludeAttribute));
+            AddIncludeMetadata(codeClass.CustomAttributes, mapping, typeof(SysXmlSerialization.XmlIncludeAttribute));
 
             if (mapping.IsSequence)
             {
@@ -704,7 +706,7 @@ namespace Microsoft.Xml.Serialization
         {
             if (member.Xmlns != null)
             {
-                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(XmlNamespaceDeclarationsAttribute).FullName);
+                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.XmlNamespaceDeclarationsAttribute).FullName);
                 metadata.Add(attribute);
             }
             else if (member.Attribute != null)
@@ -794,13 +796,13 @@ namespace Microsoft.Xml.Serialization
                 }
                 if (member.ChoiceIdentifier != null)
                 {
-                    CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(XmlChoiceIdentifierAttribute).FullName);
+                    CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.XmlChoiceIdentifierAttribute).FullName);
                     attribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(member.ChoiceIdentifier.MemberName)));
                     metadata.Add(attribute);
                 }
                 if (member.Ignore)
                 {
-                    CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(XmlIgnoreAttribute).FullName);
+                    CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.XmlIgnoreAttribute).FullName);
                     metadata.Add(attribute);
                 }
             }
@@ -820,7 +822,7 @@ namespace Microsoft.Xml.Serialization
                 field = new CodeMemberField(typeof(bool).FullName, member.Name + "Specified");
                 field.Attributes = (field.Attributes & ~MemberAttributes.AccessMask) | MemberAttributes.Public;
                 field.Comments.Add(new CodeCommentStatement(ResXml.XmlRemarks, true));
-                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(XmlIgnoreAttribute).FullName);
+                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.XmlIgnoreAttribute).FullName);
                 field.CustomAttributes.Add(attribute);
                 codeClass.Members.Add(field);
             }
@@ -848,7 +850,7 @@ namespace Microsoft.Xml.Serialization
 
                 prop = CreatePropertyDeclaration(field, member.Name + "Specified", typeof(bool).FullName);
                 prop.Comments.Add(new CodeCommentStatement(ResXml.XmlRemarks, true));
-                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(XmlIgnoreAttribute).FullName);
+                CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.XmlIgnoreAttribute).FullName);
                 prop.CustomAttributes.Add(attribute);
                 codeClass.Members.Add(prop);
             }
@@ -856,7 +858,7 @@ namespace Microsoft.Xml.Serialization
 
         private void ExportText(CodeAttributeDeclarationCollection metadata, TypeDesc typeDesc, string dataType)
         {
-            CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(XmlTextAttribute).FullName);
+            CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.XmlTextAttribute).FullName);
             if (typeDesc != null)
             {
                 attribute.Arguments.Add(new CodeAttributeArgument(new CodeTypeOfExpression(typeDesc.FullName)));
@@ -870,22 +872,22 @@ namespace Microsoft.Xml.Serialization
 
         private void ExportAttribute(CodeAttributeDeclarationCollection metadata, string name, string ns, TypeDesc typeDesc, TypeDesc dataTypeDesc, XmlSchemaForm form)
         {
-            ExportMetadata(metadata, typeof(XmlAttributeAttribute), name, ns, typeDesc, dataTypeDesc, null, form, 0, -1);
+            ExportMetadata(metadata, typeof(SysXmlSerialization.XmlAttributeAttribute), name, ns, typeDesc, dataTypeDesc, null, form, 0, -1);
         }
 
         private void ExportArrayItem(CodeAttributeDeclarationCollection metadata, string name, string ns, TypeDesc typeDesc, TypeDesc dataTypeDesc, bool isNullable, XmlSchemaForm form, int nestingLevel)
         {
-            ExportMetadata(metadata, typeof(XmlArrayItemAttribute), name, ns, typeDesc, dataTypeDesc, isNullable ? null : (object)false, form, nestingLevel, -1);
+            ExportMetadata(metadata, typeof(SysXmlSerialization.XmlArrayItemAttribute), name, ns, typeDesc, dataTypeDesc, isNullable ? null : (object)false, form, nestingLevel, -1);
         }
 
         private void ExportElement(CodeAttributeDeclarationCollection metadata, string name, string ns, TypeDesc typeDesc, TypeDesc dataTypeDesc, bool isNullable, XmlSchemaForm form, int sequenceId)
         {
-            ExportMetadata(metadata, typeof(XmlElementAttribute), name, ns, typeDesc, dataTypeDesc, isNullable ? (object)true : null, form, 0, sequenceId);
+            ExportMetadata(metadata, typeof(SysXmlSerialization.XmlElementAttribute), name, ns, typeDesc, dataTypeDesc, isNullable ? (object)true : null, form, 0, sequenceId);
         }
 
         private void ExportArray(CodeAttributeDeclarationCollection metadata, string name, string ns, bool isNullable, XmlSchemaForm form, int sequenceId)
         {
-            ExportMetadata(metadata, typeof(XmlArrayAttribute), name, ns, null, null, isNullable ? (object)true : null, form, 0, sequenceId);
+            ExportMetadata(metadata, typeof(SysXmlSerialization.XmlArrayAttribute), name, ns, null, null, isNullable ? (object)true : null, form, 0, sequenceId);
         }
 
         private void ExportMetadata(CodeAttributeDeclarationCollection metadata, Type attributeType, string name, string ns, TypeDesc typeDesc, TypeDesc dataTypeDesc, object isNullable, XmlSchemaForm form, int nestingLevel, int sequenceId)
@@ -936,13 +938,13 @@ namespace Microsoft.Xml.Serialization
             {
                 attribute.Arguments.Add(new CodeAttributeArgument("Order", new CodePrimitiveExpression(sequenceId)));
             }
-            if (attribute.Arguments.Count == 0 && attributeType == typeof(XmlElementAttribute)) return;
+            if (attribute.Arguments.Count == 0 && attributeType == typeof(SysXmlSerialization.XmlElementAttribute)) return;
             metadata.Add(attribute);
         }
 
         private void ExportAnyElement(CodeAttributeDeclarationCollection metadata, string name, string ns, int sequenceId)
         {
-            CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(XmlAnyElementAttribute).FullName);
+            CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SysXmlSerialization.XmlAnyElementAttribute).FullName);
             if (name != null && name.Length > 0)
             {
                 attribute.Arguments.Add(new CodeAttributeArgument("Name", new CodePrimitiveExpression(name)));
@@ -960,7 +962,7 @@ namespace Microsoft.Xml.Serialization
 
         private void ExportAnyAttribute(CodeAttributeDeclarationCollection metadata)
         {
-            metadata.Add(new CodeAttributeDeclaration(typeof(XmlAnyAttributeAttribute).FullName));
+            metadata.Add(new CodeAttributeDeclaration(typeof(SysXmlSerialization.XmlAnyAttributeAttribute).FullName));
         }
 
         internal override void EnsureTypesExported(Accessor[] accessors, string ns)

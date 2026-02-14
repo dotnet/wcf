@@ -3,9 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using Microsoft.Xml;
+using System.Xml;
 using System.ServiceModel;
-using Microsoft.Xml.Serialization;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel.Description;

@@ -72,7 +72,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             foreach (CodeTypeReference typeRef in typeDecl.BaseTypes)
             {
-                if (CodeDomHelpers.MatchType<Microsoft.Xml.Serialization.IXmlSerializable>(typeRef))
+                if (CodeDomHelpers.MatchType<System.Xml.Serialization.IXmlSerializable>(typeRef))
                     return true;
             }
             return false;

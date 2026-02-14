@@ -9,8 +9,8 @@ namespace System.Runtime.Serialization
     using System.Collections.Generic;
     using System.Reflection;
     using System.Text;
-    using Microsoft.Xml;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
+    using System.Xml;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
 
     internal class DataContractSet
     {

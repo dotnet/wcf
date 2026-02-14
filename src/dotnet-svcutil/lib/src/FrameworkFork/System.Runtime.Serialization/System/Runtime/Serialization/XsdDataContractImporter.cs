@@ -8,9 +8,9 @@ namespace System.Runtime.Serialization
     using Microsoft.CodeDom;
     using System.Collections.Generic;
     using System.Security;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Serialization;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
+    using System.Xml.Schema;
 
     public class XsdDataContractImporter
     {

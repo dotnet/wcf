@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

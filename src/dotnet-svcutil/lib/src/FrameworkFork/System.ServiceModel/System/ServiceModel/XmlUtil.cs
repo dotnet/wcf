@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel
 {

@@ -12,7 +12,7 @@ namespace System.ServiceModel.Channels
     using System.ServiceModel.Security;
     using System.ComponentModel;
     //using System.ServiceModel.Transactions;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public sealed class TransactionFlowBindingElement : BindingElement
     {

@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens;
 using System.Runtime;
 using System.ServiceModel;
 using System.ServiceModel.Security.Tokens;
-using Microsoft.Xml;
+using System.Xml;
 using System.ServiceModel.Diagnostics;
 using System.Diagnostics;
 

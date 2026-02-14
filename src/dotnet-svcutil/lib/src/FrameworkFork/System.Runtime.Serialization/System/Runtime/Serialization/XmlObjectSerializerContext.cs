@@ -9,8 +9,8 @@ namespace System.Runtime.Serialization
     using System.Diagnostics;
     using System.Reflection;
     using System.Security;
-    using Microsoft.Xml;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
+    using System.Xml;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
 
 #if USE_REFEMIT || NET_NATIVE
     public class XmlObjectSerializerContext

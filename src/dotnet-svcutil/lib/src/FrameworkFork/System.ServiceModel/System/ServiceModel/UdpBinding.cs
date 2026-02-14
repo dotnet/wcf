@@ -9,7 +9,7 @@ namespace System.ServiceModel
     using System.Runtime;
     using System.ServiceModel.Channels;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public class UdpBinding : Binding, IBindingRuntimePreferences
     {

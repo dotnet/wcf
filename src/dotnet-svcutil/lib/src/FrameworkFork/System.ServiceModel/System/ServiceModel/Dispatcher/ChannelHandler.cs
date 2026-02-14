@@ -10,7 +10,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
 using System.Threading;
-using Microsoft.Xml;
+using System.Xml;
 using SessionIdleManager = System.ServiceModel.Channels.ServiceChannel.SessionIdleManager;
 
 namespace System.ServiceModel.Dispatcher

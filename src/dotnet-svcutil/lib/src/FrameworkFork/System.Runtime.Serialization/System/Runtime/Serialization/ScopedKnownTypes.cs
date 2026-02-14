@@ -5,8 +5,8 @@
 namespace System.Runtime.Serialization
 {
     using System;
-    using Microsoft.Xml;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
+    using System.Xml;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
 
     internal struct ScopedKnownTypes
     {

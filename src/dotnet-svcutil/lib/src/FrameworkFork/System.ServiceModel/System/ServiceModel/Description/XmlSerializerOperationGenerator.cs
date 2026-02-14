@@ -9,7 +9,7 @@ using System.ServiceModel.Dispatcher;
 using Microsoft.CodeDom;
 using System.Globalization;
 using System.Text;
-using Microsoft.Xml.Serialization;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 using Microsoft.CodeDom.Compiler;
 using System.Runtime.Serialization;
 using System.Reflection;
@@ -143,7 +143,7 @@ namespace System.ServiceModel.Description
             XmlSerializerFormatAttribute xmlSerializerFormatAttribute = (xmlSerializerOperationBehavior == null) ? new XmlSerializerFormatAttribute() : xmlSerializerOperationBehavior.XmlSerializerFormatAttribute;
             OperationFormatStyle style = xmlSerializerFormatAttribute.Style;
             _operationGenerator.GenerateOperation(context, ref style, xmlSerializerFormatAttribute.IsEncoded, new WrappedBodyTypeGenerator(context), new Dictionary<MessagePartDescription, ICollection<CodeTypeReference>>());
-            context.ServiceContractGenerator.AddReferencedAssembly(typeof(Microsoft.Xml.Serialization.XmlTypeAttribute).GetTypeInfo().Assembly);
+            context.ServiceContractGenerator.AddReferencedAssembly(typeof(System.Xml.Serialization.XmlTypeAttribute).GetTypeInfo().Assembly);
             xmlSerializerFormatAttribute.Style = style;
             context.SyncMethod.CustomAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(context.Contract.ServiceContractGenerator, xmlSerializerFormatAttribute));
             AddKnownTypes(context.SyncMethod.CustomAttributes, xmlSerializerFormatAttribute.IsEncoded ? SoapExporter.IncludeMetadata : XmlExporter.IncludeMetadata);
@@ -165,7 +165,12 @@ namespace System.ServiceModel.Description
         // Convert [XmlInclude] or [SoapInclude] attribute to [KnownType] attribute
         private CodeAttributeDeclaration ToKnownType(CodeAttributeDeclaration include)
         {
-            if (include.Name == typeof(SoapIncludeAttribute).FullName || include.Name == typeof(XmlIncludeAttribute).FullName)
+            // [Fix: Attribute Namespace Recognition]
+            // The SoapImporter now uses standard System.Xml types, so it generates attributes with standard namespaces.
+            // We must explicitly check for "System.Xml.Serialization.*" strings to recognize them, in addition to the 
+            // internal fork types (which might resolve to Microsoft.Tools... depending on using directives).
+            if (include.Name == "System.Xml.Serialization.SoapIncludeAttribute" || include.Name == "System.Xml.Serialization.XmlIncludeAttribute" || 
+                include.Name == typeof(SoapIncludeAttribute).FullName || include.Name == typeof(XmlIncludeAttribute).FullName)
             {
                 CodeAttributeDeclaration knownType = new CodeAttributeDeclaration(new CodeTypeReference(typeof(ServiceKnownTypeAttribute)));
                 foreach (CodeAttributeArgument argument in include.Arguments)

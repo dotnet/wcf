@@ -16,7 +16,7 @@ namespace System.ServiceModel
     using System.Security.Principal;
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public class WSHttpBinding : WSHttpBindingBase
     {

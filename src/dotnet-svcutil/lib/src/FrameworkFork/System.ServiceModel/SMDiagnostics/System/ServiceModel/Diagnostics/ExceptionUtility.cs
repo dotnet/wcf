@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Runtime;
 using System.Runtime.Diagnostics;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System
 {

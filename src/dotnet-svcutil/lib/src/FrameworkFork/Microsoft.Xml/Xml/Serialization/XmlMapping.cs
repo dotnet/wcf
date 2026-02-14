@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.Reflection;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
-    using Microsoft.Xml;
+    using System.Xml;
 
     [Flags]
     public enum XmlMappingAccess
@@ -62,7 +62,7 @@ namespace Microsoft.Xml.Serialization
         /// </devdoc>
         public string ElementName
         {
-            get { return Microsoft.Xml.Serialization.Accessor.UnescapeName(Accessor.Name); }
+            get { return Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer.Accessor.UnescapeName(Accessor.Name); }
         }
 
         /// <include file='doc\XmlMapping.uex' path='docs/doc[@for="XmlMapping.XsdElementName"]/*' />

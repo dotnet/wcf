@@ -5,7 +5,7 @@
 namespace System.Web.Services.Description
 {
     using System;
-    using Microsoft.Xml;
+    using System.Xml;
 
     /// <include file='doc\ServiceDescriptions.uex' path='docs/doc[@for="ServiceDescriptionCollection"]/*' />
     /// <devdoc>

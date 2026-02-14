@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.Collections;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System.ComponentModel;
     using System.Diagnostics;
 
@@ -252,7 +253,7 @@ namespace Microsoft.Xml.Serialization
                 //<attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:float[]"/> 
                 XmlSchemaAttribute attr = new XmlSchemaAttribute();
                 attr.RefName = s_arrayTypeQName;
-                XmlAttribute attribute = new XmlAttribute("wsdl", Wsdl.ArrayType, Wsdl.Namespace, Document);
+                XmlAttribute attribute = Document.CreateAttribute("wsdl", Wsdl.ArrayType, Wsdl.Namespace);
                 attribute.Value = qname.Namespace + ":" + qname.Name + "[]";
 
                 attr.UnhandledAttributes = new XmlAttribute[] { attribute };
