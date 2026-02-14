@@ -827,6 +827,11 @@ Jeśli próbowano wygenerować klienta, może być to spowodowane przez dokument
         <target state="translated">Punkt końcowy „{0}” pod adresem „{1}” zawiera co najmniej jedno powiązanie, które nie jest zgodne z aplikacjami .Net Core. Są one pomijane...</target>
         <note />
       </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
         <source>The target framework '{0}' is out of support and will not receive security updates in the future.</source>
         <target state="translated">Platforma docelowa „{0}” nie jest obsługiwana i w przyszłości nie będzie otrzymywać aktualizacji zabezpieczeń.</target>
