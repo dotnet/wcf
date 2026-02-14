@@ -5,8 +5,8 @@
 namespace System.Runtime.Serialization
 {
     using System;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -297,7 +297,7 @@ namespace System.Runtime.Serialization
             }
             finally
             {
-                Microsoft.CodeDom.Compiler.CodeGenerator.ValidateIdentifiers(_codeCompileUnit);
+                System.CodeDom.Compiler.CodeGenerator.ValidateIdentifiers(_codeCompileUnit);
             }
         }
 
@@ -1325,7 +1325,7 @@ namespace System.Runtime.Serialization
         [SecuritySafeCritical]
         private static string GetClrIdentifier(string identifier, string defaultIdentifier)
         {
-            if (identifier.Length <= MaxIdentifierLength && Microsoft.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(identifier))
+            if (identifier.Length <= MaxIdentifierLength && System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(identifier))
                 return identifier;
 
             bool isStart = true;

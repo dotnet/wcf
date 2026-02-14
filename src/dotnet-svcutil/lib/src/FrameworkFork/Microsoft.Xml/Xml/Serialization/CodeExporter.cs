@@ -9,8 +9,8 @@ namespace Microsoft.Xml.Serialization
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Reflection;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
 
     /// <include file='doc\CodeExporter.uex' path='docs/doc[@for="CodeExporter"]/*' />
     ///<internalonly/>

@@ -88,6 +88,17 @@ namespace SvcutilTest
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+\\dotnet-svcutil-lib.dll", "DOTNET_VERSION\\dotnet-svcutil-lib.dll") { UseRegex = true }); //for windows
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+/any/dotnet-svcutil-lib.dll", "DOTNET_VERSION/any/dotnet-svcutil-lib.dll") { UseRegex = true }); //for linux
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+\\any\\dotnet-svcutil-lib.dll", "DOTNET_VERSION\\any\\dotnet-svcutil-lib.dll") { UseRegex = true }); //for windows
+
+            // Normalize the .NET SDK output TFM folder (net9.0/net10.0/net11.0/...) used in test bootstrapping
+            // projects so baselines remain stable across SDK updates.
+            _replacements.Add(new ReplaceInfo(@"bin/Debug/net\d+\.\d+(-[A-Za-z0-9\.]+)?/", "bin/Debug/DOTNET_VERSION/") { UseRegex = true }); // for linux/mac-style paths
+            _replacements.Add(new ReplaceInfo(@"bin\\Debug\\net\d+\.\d+(-[A-Za-z0-9\.]+)?\\", "bin\\Debug\\DOTNET_VERSION\\") { UseRegex = true }); // for windows-style paths
+            _replacements.Add(new ReplaceInfo(@"tools/net\d+\.\d+(-[A-Za-z0-9\.]+)?/any/", "tools/DOTNET_VERSION/any/") { UseRegex = true }); // for global tool store paths (linux/mac)
+            _replacements.Add(new ReplaceInfo(@"tools\\net\d+\.\d+(-[A-Za-z0-9\.]+)?\\any\\", "tools\\DOTNET_VERSION\\any\\") { UseRegex = true }); // for global tool store paths (windows)
+
+            // System.CodeDom can also be referenced from the SDK output folder.
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+(-[A-Za-z0-9\.]+)?/System\.CodeDom\.dll", "DOTNET_VERSION/System.CodeDom.dll") { UseRegex = true }); // for linux
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+(-[A-Za-z0-9\.]+)?\\System\.CodeDom\.dll", "DOTNET_VERSION\\System.CodeDom.dll") { UseRegex = true }); // for windows
             _replacements.Add(new ReplaceInfo(@"Release\Shipping", @"RelType/ShipType"));
             _replacements.Add(new ReplaceInfo(@"Release\NonShipping", @"RelType/ShipType"));
             _replacements.Add(new ReplaceInfo(@"Debug\Shipping", @"RelType/ShipType"));
