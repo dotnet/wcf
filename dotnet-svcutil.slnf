@@ -1,0 +1,11 @@
+{
+  "solution": {
+    "path": "AllProjects.slnx",
+	"projects": [
+		"src/dotnet-svcutil/lib/Microsoft.Svcutil.NamedPipeMetadataImporter/Microsoft.Svcutil.NamedPipeMetadataImporter.csproj",
+		"src/dotnet-svcutil/lib/src/dotnet-svcutil-lib.csproj",
+		"src/dotnet-svcutil/lib/tests/src/dotnet-svcutil-lib.Tests.csproj",
+		"src/dotnet-svcutil/src/dotnet-svcutil.csproj"
+	]
+  }
+}
