@@ -116,7 +116,7 @@ namespace SvcutilTest
             var uri = Path.Combine(g_TestCasesDir, "wsdl", "WcfProjectNService", "tempuri.org.wsdl");
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
             var options = $"{uri} -nl -d {outDir} -tf netcoreapp1.0";
-            
+
             TestGlobalSvcutil(options, expectSuccess: true);
         }
 
@@ -136,12 +136,12 @@ namespace SvcutilTest
             this_TestGroupOutputDir = Path.Combine(Path.GetTempPath(), this_TestCaseName);
             this_TestCaseLogFile = Path.Combine(this_TestGroupOutputDir, $"{testCaseName}.log");
             this_TestCaseOutputDir = Path.Combine(this_TestGroupOutputDir, testCaseName);
-            FileUtil.TryDeleteDirectory(this_TestCaseOutputDir);            
+            FileUtil.TryDeleteDirectory(this_TestCaseOutputDir);
             Directory.CreateDirectory(this_TestCaseOutputDir);
             File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, "Program.cs"), Path.Combine(this_TestCaseOutputDir, "Program.cs"), true);
             File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, $"{testCaseName}.csproj"), Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), true);
             this_TestCaseProject = await MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), null, CancellationToken.None);
-            
+
             this_FixupUtil = new FixupUtil();
             this_FixupUtil.Init(g_TestResultsDir, g_TestCasesDir, this_TestCaseOutputDir, g_ServiceUrl, g_ServiceId, g_RepositoryRoot);
 
@@ -181,27 +181,55 @@ namespace SvcutilTest
 
             TestGlobalSvcutil(options, expectSuccess: true);
         }
+        [Trait("Category", "BVT")]
+        [Fact]
+        public async Task NetStandard20TypeReuse()
+        {
+            this_TestCaseName = "NetStandard20TypeReuse";
+            TestFixture();
+            string testClientFolder = "TypeReuseClient";
+            this_TestCaseBaselinesDir = Path.Combine(this_TestGroupBaselinesDir, testClientFolder);
+            Directory.CreateDirectory(this_TestCaseBaselinesDir);
+
+            this_TestGroupOutputDir = Path.Combine(Path.GetTempPath(), this_TestCaseName);
+            this_TestCaseLogFile = Path.Combine(this_TestGroupOutputDir, $"{this_TestCaseName}.log");
+            this_TestCaseOutputDir = Path.Combine(this_TestGroupOutputDir, testClientFolder);
+            FileUtil.TryDeleteDirectory(this_TestCaseOutputDir);
+            Directory.CreateDirectory(this_TestCaseOutputDir);
+            FileUtil.CopyDirectory(Path.Combine(g_TestCasesDir, this_TestCaseName), this_TestGroupOutputDir, true);
+            this_TestCaseProject = await MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testClientFolder}.csproj"), null, CancellationToken.None);
+            ProcessRunner.ProcessResult ret = await this_TestCaseProject.BuildAsync(true, this_TestCaseLogger, CancellationToken.None);
+            Assert.True(ret.ExitCode == 0, ret.OutputText);
+
+            this_FixupUtil = new FixupUtil();
+            this_FixupUtil.Init(g_TestResultsDir, g_TestCasesDir, this_TestCaseOutputDir, g_ServiceUrl, g_ServiceId, g_RepositoryRoot);
+
+            var uri = Path.Combine(g_TestCasesDir, "wsdl", "TypeReuseSvc.wsdl");
+            var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
+            var options = $"{uri} -nl --outputDir {outDir}";
+
+            TestGlobalSvcutil(options, expectSuccess: true);
+        }
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("net6.0", "-elm")]
-        public async Task ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
+        [InlineData("-elm")]
+        public async Task ParamsFiles(string extraOptions)
         {
-            this_TestCaseName = "ParamsFiles_SDK_TFM";
+            this_TestCaseName = "ParamsFiles";
             TestFixture();
-            var testCaseName = $"TF{targetFramework}".Replace(".", "_");
-            InitializeGlobal(testCaseName, targetFramework: "net6.0", g_SdkVersion);
-            this_TestCaseProject.TargetFramework = targetFramework;
+            var testCaseName = extraOptions.Substring(1);
+            InitializeGlobal(testCaseName);
             await this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None);
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
-            var ns = testCaseName.Replace(".", "_") + "_NS";
+            var ns = testCaseName + "_NS";
 
             // generate params file from options
             var paramsFilePath = Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.params.json");
             var options = new Microsoft.Tools.ServiceModel.Svcutil.SvcutilOptions();
             options.Inputs.Add(new Uri(url));
-            options.References.Add(Microsoft.Tools.ServiceModel.Svcutil.ProjectDependency.FromPackage("Newtonsoft.Json", "13.0.1"));
+            options.References.Add(Microsoft.Tools.ServiceModel.Svcutil.ProjectDependency.FromPackage("Newtonsoft.Json", "13.0.2"));
             options.OutputDir = new DirectoryInfo(this_TestCaseOutputDir);
             options.BootstrapPath = new DirectoryInfo(this_TestCaseBootstrapDir);
             options.NamespaceMappings.Add(new System.Collections.Generic.KeyValuePair<string, string>("*", ns));
