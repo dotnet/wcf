@@ -559,16 +559,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         case ProjectDependencyType.Binary:
                             basePath = dependency.FullPath.Substring(0, dependency.FullPath.LastIndexOf(Path.DirectorySeparatorChar));
 
-                            // The bootstrapper references dotnet-svcutil-lib by path, so it doesn't automatically carry over
-                            // dotnet-svcutil's tool-folder runtime closure. For global-tool installs, System.CodeDom.dll lives
-                            // next to dotnet-svcutil-lib.dll; reference it directly so we don't require a separate NuGet restore.
-                            var systemCodeDomPath = Path.Combine(basePath, "System.CodeDom.dll");
-                            if (File.Exists(systemCodeDomPath))
-                            {
-                                this.ReferenceGroup.Add(new XElement("Reference",
-                                    new XAttribute("Include", "System.CodeDom"),
-                                    new XElement("HintPath", systemCodeDomPath)));
-                            }
+                            // dotnet-svcutil-lib is referenced via HintPath. Its runtime dependencies are expected to be
+                            // resolved from the same tool folder/output path during build/publish.
 
                             foreach (var framework in frameworks)
                             {
