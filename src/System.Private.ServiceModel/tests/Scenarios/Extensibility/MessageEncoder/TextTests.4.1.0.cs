@@ -13,7 +13,7 @@ using Extensibility.MessageEncoder.Tests;
 using Infrastructure.Common;
 using Xunit;
 
-public static class TextTests
+public class TextTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 using Infrastructure.Common;
 using Xunit;
 
-public class WcfFactTests
+public class WcfFactTests : ConditionalWcfTest
 {
     // Tests that do not skip are allowed to run to test [WcfFact]
     // This also triggers lazy initialization of all the skippable

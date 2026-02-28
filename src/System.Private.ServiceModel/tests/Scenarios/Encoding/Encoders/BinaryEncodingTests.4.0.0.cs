@@ -10,7 +10,7 @@ using System.Text;
 using Infrastructure.Common;
 using Xunit;
 
-public static class BinaryEncodingTests
+public class BinaryEncodingTests : ConditionalWcfTest
 {
     // Client and Server bindings setup exactly the same using Binary Message encoder
     // and exchanging a basic message
