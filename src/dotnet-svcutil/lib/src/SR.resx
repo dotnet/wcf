@@ -637,4 +637,7 @@ Your credentials will be sent to the server in clear text.</value>
   <data name="HelpLanguage" xml:space="preserve">
     <value>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</value>
   </data>
+  <data name="HelpSeparateFiles" xml:space="preserve">
+    <value>Creates separate files for each type in the specified output directory. (Short Form: -{0})</value>
+  </data>
 </root>
