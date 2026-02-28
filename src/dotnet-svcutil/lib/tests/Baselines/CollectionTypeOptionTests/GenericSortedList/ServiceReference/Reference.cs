@@ -16,14 +16,28 @@ namespace GenericSortedList_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CollectionContainer", Namespace="http://schemas.datacontract.org/2004/07/CollectionTestService")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    public partial class CollectionContainer : object
+    public partial class CollectionContainer : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private System.Collections.Generic.LinkedList<string> NamesField;
         
         private System.Collections.Generic.LinkedList<int> NumbersField;
         
         private System.Collections.Generic.LinkedList<double> ValuesField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.Generic.LinkedList<string> Names
@@ -69,12 +83,26 @@ namespace GenericSortedList_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="DictionaryContainer", Namespace="http://schemas.datacontract.org/2004/07/CollectionTestService")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    public partial class DictionaryContainer : object
+    public partial class DictionaryContainer : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private System.Collections.Generic.SortedList<int, string> ReverseLookupField;
         
         private System.Collections.Generic.SortedList<string, int> ScoresField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.Generic.SortedList<int, string> ReverseLookup

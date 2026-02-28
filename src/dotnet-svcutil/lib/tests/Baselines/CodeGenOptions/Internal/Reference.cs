@@ -16,8 +16,10 @@ namespace Internal_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ComplexCompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    internal partial class ComplexCompositeType : object
+    internal partial class ComplexCompositeType : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
@@ -56,6 +58,18 @@ namespace Internal_NS
         private ulong UlongValueField;
         
         private ushort UshortValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         internal bool BoolValue
@@ -309,10 +323,24 @@ namespace Internal_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="FaultDetail", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    internal partial class FaultDetail : object
+    internal partial class FaultDetail : object, System.Runtime.Serialization.IExtensibleDataObject
     {
         
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
         private string MessageField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         internal string Message
@@ -332,12 +360,26 @@ namespace Internal_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    internal partial class CompositeType : object
+    internal partial class CompositeType : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
         private string StringValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         internal bool BoolValue
@@ -370,8 +412,10 @@ namespace Internal_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultOfstring", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    internal partial class ResultOfstring : object
+    internal partial class ResultOfstring : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private int ErrorCodeField;
         
@@ -380,6 +424,18 @@ namespace Internal_NS
         private System.Net.HttpStatusCode HttpStatusCodeField;
         
         private string ResultField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         internal int ErrorCode
@@ -438,8 +494,10 @@ namespace Internal_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultOfArrayOfUserGamePlay", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    internal partial class ResultOfArrayOfUserGamePlay : object
+    internal partial class ResultOfArrayOfUserGamePlay : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private int ErrorCodeField;
         
@@ -448,6 +506,18 @@ namespace Internal_NS
         private System.Net.HttpStatusCode HttpStatusCodeField;
         
         private Internal_NS.UserGamePlay[] ResultField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         internal int ErrorCode
@@ -506,8 +576,10 @@ namespace Internal_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserGamePlay", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    internal partial class UserGamePlay : object
+    internal partial class UserGamePlay : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private string GameKeyField;
         
@@ -518,6 +590,18 @@ namespace Internal_NS
         private string UserIdField;
         
         private string ValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         internal string GameKey
@@ -589,8 +673,10 @@ namespace Internal_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="TestHttpRequestMessageProperty", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    internal partial class TestHttpRequestMessageProperty : object
+    internal partial class TestHttpRequestMessageProperty : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private System.Collections.Generic.Dictionary<string, string> HeadersField;
         
@@ -599,6 +685,18 @@ namespace Internal_NS
         private string QueryStringField;
         
         private bool SuppressEntityBodyField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         internal System.Collections.Generic.Dictionary<string, string> Headers
