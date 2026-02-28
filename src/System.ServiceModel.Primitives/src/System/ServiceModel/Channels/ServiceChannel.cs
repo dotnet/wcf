@@ -374,6 +374,7 @@ namespace System.ServiceModel.Channels
             // NullReferenceException in this method or in the OnInnerChannelFaulted method; 
             // because this method accesses this.binder and OnInnerChannelFaulted accesses this.clientRuntime.
             Binder.Channel.Faulted += OnInnerChannelFaulted;
+            Binder.Channel.Closed += OnInnerChannelClosed;
         }
 
         private void BindDuplexCallbacks()
@@ -1167,6 +1168,16 @@ namespace System.ServiceModel.Channels
             {
                 Abort();
             }
+        }
+
+        private void OnInnerChannelClosed(object sender, EventArgs e)
+        {
+            if (HasSession)
+            {
+                DispatchRuntime dispatchRuntime = ClientRuntime.DispatchRuntime;
+            }
+
+            Abort();
         }
 
         private void AddMessageProperties(Message message, OperationContext context)
