@@ -93,7 +93,7 @@
             <xs:attribute name="Id" type="xs:ID"/>
             <xs:attribute name="Ref" type="xs:IDREF"/>
         </xs:schema>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/CommonTypes" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CommonTypes">
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/CommonTypes" xmlns:ctex="http://www.example.com/Schemas/CommonTypes" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CommonTypes">
             <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
             <xs:complexType name="SomeSharedType">
                 <xs:annotation>
@@ -115,6 +115,7 @@
                 <xs:sequence>
                     <xs:element minOccurs="0" name="SomeProperty" type="xs:int"/>
                     <xs:element minOccurs="0" name="SomeXmlSerializableType" type="tns:CustomSerializableType"/>
+                    <xs:element minOccurs="0" name="SomeXmlSerializableTypeWithNs" type="ctex:CustomSerializableTypeWithNs"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:element name="AnotherSharedType" nillable="true" type="tns:AnotherSharedType"/>
@@ -129,6 +130,20 @@
                 </xs:sequence>
             </xs:complexType>
             <xs:element name="CustomSerializableType" nillable="true" type="tns:CustomSerializableType"/>
+        </xs:schema>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.com/Schemas/CommonTypes" elementFormDefault="qualified" targetNamespace="http://www.example.com/Schemas/CommonTypes">
+            <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+            <xs:complexType name="CustomSerializableTypeWithNs">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+                    </xs:appinfo>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:any namespace=""/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="CustomSerializableTypeWithNs" nillable="true" type="tns:CustomSerializableTypeWithNs"/>
         </xs:schema>
         <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" id="CustomSerializableTypeSchema">
             <xs:simpleType name="BigIntegerString">

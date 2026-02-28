@@ -514,7 +514,7 @@ namespace System.Runtime.Serialization
             get
             {
                 if (s_typeOfXmlSchemaProviderAttribute == null)
-                    s_typeOfXmlSchemaProviderAttribute = typeof(XmlSchemaProviderAttribute);
+                    s_typeOfXmlSchemaProviderAttribute = typeof(System.Xml.Serialization.XmlSchemaProviderAttribute);
                 return s_typeOfXmlSchemaProviderAttribute;
             }
         }
