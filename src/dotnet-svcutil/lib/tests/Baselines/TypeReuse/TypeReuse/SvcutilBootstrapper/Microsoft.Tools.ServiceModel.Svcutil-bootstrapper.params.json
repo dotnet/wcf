@@ -1,16 +1,24 @@
 {
-  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil-bootstrap",
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/WcfProjectNService/tempuri.org.wsdl"
+      "$resultPath$/TestResults/TypeReuse/TypeReuseSvc.wsdl"
     ],
+    "bootstrapPath": "$resultPath$/TestResults/TypeReuse/TypeReuse",
     "namespaceMappings": [
-      "*, TestNamespace"
+      "*, TypeReuse_NS"
     ],
-    "outputFile": "Reference.cs",
+    "noBootstrapping": true,
+    "noLogo": true,
+    "noProjectUpdates": true,
+    "outputDir": "$resultPath$/TestResults/TypeReuse/TypeReuse/ServiceReference",
+    "outputFile": "$resultPath$/TestResults/TypeReuse/TypeReuse/ServiceReference/Reference.cs",
+    "projectFile": "$resultPath$/TestResults/TypeReuse/TypeReuse/TypeReuse.csproj",
     "references": [
       "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//DOTNET_VERSION//BinLib.dll",
+      "$resultPath$//TestResults//TypeReuse//TypeReuse//bin//Debug//DOTNET_VERSION//TypesLib.dll",
       "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
       "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",
       "Newtonsoft.Json, {Newtonsoft.Json, 99.99.99}",
@@ -27,6 +35,8 @@
       "System.Security.Cryptography.ProtectedData, {System.Security.Cryptography.ProtectedData, 99.99.99}"
     ],
     "targetFramework": "N.N",
-    "typeReuseMode": "All"
+    "toolContext": "Bootstrapper",
+    "typeReuseMode": "All",
+    "verbosity": "Minimal"
   }
 }
