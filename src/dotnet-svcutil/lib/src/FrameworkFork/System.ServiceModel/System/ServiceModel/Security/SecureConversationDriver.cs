@@ -9,7 +9,7 @@ using System.IdentityModel.Policy;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Xml;
+using System.Xml;
 using System.Security.Principal;
 
 namespace System.ServiceModel.Security

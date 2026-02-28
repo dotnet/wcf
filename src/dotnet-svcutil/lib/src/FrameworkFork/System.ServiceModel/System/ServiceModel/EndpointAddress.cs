@@ -9,7 +9,7 @@ namespace System.ServiceModel
     using System.ComponentModel;
     using System.Runtime;
     using System.ServiceModel.Channels;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public class EndpointAddress
     {

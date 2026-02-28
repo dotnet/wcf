@@ -10,7 +10,7 @@ using System.ServiceModel;
 using System.ServiceModel.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {

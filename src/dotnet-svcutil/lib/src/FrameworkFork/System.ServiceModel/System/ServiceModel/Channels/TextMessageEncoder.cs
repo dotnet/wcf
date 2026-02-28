@@ -8,7 +8,7 @@ using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.ServiceModel.Diagnostics;
 using System.Text;
-using Microsoft.Xml;
+using System.Xml;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;

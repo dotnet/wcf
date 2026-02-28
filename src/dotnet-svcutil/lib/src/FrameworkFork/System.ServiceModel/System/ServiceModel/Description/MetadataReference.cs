@@ -8,8 +8,8 @@ namespace System.ServiceModel.Description
     using System.ServiceModel;
     using System.Collections.Generic;
     using System.Text;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Serialization;
+    using System.Xml;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
     using System.Collections.ObjectModel;
     using WsdlNS = System.Web.Services.Description;
     using System.ServiceModel.Channels;
@@ -44,7 +44,7 @@ namespace System.ServiceModel.Description
             set { _addressVersion = value; }
         }
 
-        Microsoft.Xml.Schema.XmlSchema IXmlSerializable.GetSchema()
+        System.Xml.Schema.XmlSchema IXmlSerializable.GetSchema()
         {
             return null;
         }

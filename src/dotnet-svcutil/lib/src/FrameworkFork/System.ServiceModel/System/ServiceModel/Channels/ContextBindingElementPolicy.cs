@@ -7,7 +7,7 @@ namespace System.ServiceModel.Channels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.ServiceModel.Description;
     using System.Net.Security;
 

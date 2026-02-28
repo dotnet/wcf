@@ -5,11 +5,11 @@
 namespace System.Runtime.Serialization
 {
     using System;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using System.Xml.Schema;
     using System.Collections;
     using System.Collections.Generic;
-    using SchemaObjectDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, SchemaObjectInfo>;
+    using SchemaObjectDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, SchemaObjectInfo>;
 
     internal class SchemaObjectInfo
     {

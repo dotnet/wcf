@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.Xml.Serialization;
-using Microsoft.Xml.Schema;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
+using System.Xml.Schema;
 using System.Collections;
 using System.Collections.Specialized;
 using System;
-using Microsoft.Xml;
+using System.Xml;
 using System.IO;
 using System.Reflection;
 using System.ComponentModel;
@@ -248,7 +248,7 @@ namespace System.Web.Services.Description
             {
                 return new ServiceDescriptionSerializationWriter();
             }
-            public override bool CanDeserialize(Microsoft.Xml.XmlReader xmlReader)
+            public override bool CanDeserialize(System.Xml.XmlReader xmlReader)
             {
                 return xmlReader.IsStartElement("definitions", ServiceDescription.Namespace);
             }
@@ -674,7 +674,7 @@ namespace System.Web.Services.Description
         }
 
         [XmlAnyAttribute]
-        public Microsoft.Xml.XmlAttribute[] ExtensibleAttributes
+        public System.Xml.XmlAttribute[] ExtensibleAttributes
         {
             get
             {

@@ -9,7 +9,7 @@ namespace System.Web.Services.Configuration
     using System.Collections.Generic;
     using System.Reflection;
     using System.Web.Services.Description;
-    using Microsoft.Xml.Serialization;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 
     public sealed class WebServicesSection
     {

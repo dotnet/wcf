@@ -4,9 +4,9 @@
 
 using Microsoft.CodeDom;
 using Microsoft.Tools.ServiceModel.Svcutil.Metadata;
-using Microsoft.Xml;
-using Microsoft.Xml.Schema;
-using Microsoft.Xml.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 
 using System;
 using System.Collections.Generic;

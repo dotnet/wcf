@@ -82,6 +82,7 @@
       <GenerateSource>true</GenerateSource>
       <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
       <ClassName>ResXml</ClassName>
+      <LogicalName>Microsoft.Tools.ServiceModel.Svcutil.FrameworkFork.Microsoft.Xml.ResXml.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Update="FrameworkFork\System.ServiceModel\Resources\SRServiceModel.resx">
       <GenerateSource>true</GenerateSource>

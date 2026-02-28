@@ -2,7 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.Collections;
@@ -14,7 +15,7 @@ namespace Microsoft.Xml.Serialization
     internal class SourceInfo
     {
         //a[ia]
-        //((global::Microsoft.Xml.Serialization.XmlSerializerNamespaces)p[0])
+        //((global::System.Xml.Serialization.XmlSerializerNamespaces)p[0])
         private static Regex s_regex = new Regex("([(][(](?<t>[^)]+)[)])?(?<a>[^[]+)[[](?<ia>.+)[]][)]?");
         //((global::Microsoft.CFx.Test.Common.TypeLibrary.IXSType_9)o), @"IXSType_9", @"", true, true);
         private static Regex s_regex2 = new Regex("[(][(](?<cast>[^)]+)[)](?<arg>[^)]+)[)]");

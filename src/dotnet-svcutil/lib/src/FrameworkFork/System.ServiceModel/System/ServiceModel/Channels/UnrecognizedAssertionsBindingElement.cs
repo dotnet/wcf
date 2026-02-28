@@ -9,7 +9,7 @@ namespace System.ServiceModel.Channels
     using System.Collections.ObjectModel;
     using System.Runtime;
     using System.ServiceModel.Description;
-    using Microsoft.Xml;
+    using System.Xml;
 
     internal class UnrecognizedAssertionsBindingElement : BindingElement
     {

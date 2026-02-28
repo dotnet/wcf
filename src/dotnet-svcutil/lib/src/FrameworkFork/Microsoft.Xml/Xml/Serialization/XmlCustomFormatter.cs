@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.Globalization;
     using System.ComponentModel;
     using System.Diagnostics;
@@ -122,13 +122,34 @@ namespace Microsoft.Xml.Serialization
             writer.WriteBase64(inData, start, count);
         }
 
+        
+        internal static string ToBinHexString(byte[] value)
+        {
+            return BitConverter.ToString(value).Replace("-", "");
+        }
+
+        internal static byte[] FromBinHexString(string value)
+        {
+            if (value == null) return null;
+            value = value.Trim();
+            int length = value.Length;
+            if (length == 0) return new byte[0];
+            if ((length % 2) != 0) throw new ArgumentException("Invalid BinHex value.", "value");
+            byte[] bytes = new byte[length / 2];
+            for (int i = 0; i < length; i += 2)
+            {
+                bytes[i / 2] = Convert.ToByte(value.Substring(i, 2), 16);
+            }
+            return bytes;
+        }
+
         internal static string FromByteArrayHex(byte[] value)
         {
             if (value == null)
                 return null;
             if (value.Length == 0)
                 return "";
-            return XmlConvert.ToBinHexString(value);
+            return ToBinHexString(value);
         }
 
         internal static string FromEnum(long val, string[] vals, long[] ids, string typeName)
@@ -381,7 +402,7 @@ namespace Microsoft.Xml.Serialization
         {
             if (value == null) return null;
             value = value.Trim();
-            return XmlConvert.FromBinHexString(value);
+            return FromBinHexString(value);
         }
 
         internal static long ToEnum(string val, Hashtable vals, string typeName, bool validate)

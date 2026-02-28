@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.Collections;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Globalization;
     using System.Reflection;
-    using Microsoft.Xml;
+    using System.Xml;
 
     /// <include file='doc\XmlSchemaExporter.uex' path='docs/doc[@for="XmlSchemaExporter"]/*' />
     ///<internalonly/>
@@ -149,7 +149,7 @@ namespace Microsoft.Xml.Serialization
                     if (sequence.Items.Count == 1 && sequence.Items[0] is XmlSchemaAny)
                     {
                         XmlSchemaAny any = (XmlSchemaAny)sequence.Items[0];
-                        return (unbounded == any.IsMultipleOccurrence);
+                        return (unbounded == any.MaxOccurs > 1);
                     }
                 }
             }
@@ -765,7 +765,7 @@ namespace Microsoft.Xml.Serialization
             {
                 XmlSchemaAttribute attribute = new XmlSchemaAttribute();
                 attribute.Use = XmlSchemaUse.None;
-                if (!accessor.HasDefault && !valueTypeOptional && accessor.Mapping.TypeDesc.IsValueType)
+                if (accessor.Default == null && !valueTypeOptional && accessor.Mapping.TypeDesc.IsValueType)
                 {
                     attribute.Use = XmlSchemaUse.Required;
                 }
@@ -832,7 +832,7 @@ namespace Microsoft.Xml.Serialization
                 else if (!(accessor.Mapping is SpecialMapping))
                     throw new InvalidOperationException(ResXml.XmlInternalError);
 
-                if (accessor.HasDefault)
+                if (accessor.Default != null)
                 {
                     attribute.DefaultValue = ExportDefaultValue(accessor.Mapping, accessor.Default);
                 }
@@ -853,7 +853,7 @@ namespace Microsoft.Xml.Serialization
             else
             {
                 XmlSchemaElement element = (XmlSchemaElement)_elements[accessor];
-                int minOccurs = repeats || accessor.HasDefault || (!accessor.IsNullable && !accessor.Mapping.TypeDesc.IsValueType) || valueTypeOptional ? 0 : 1;
+                int minOccurs = repeats || accessor.Default != null || (!accessor.IsNullable && !accessor.Mapping.TypeDesc.IsValueType) || valueTypeOptional ? 0 : 1;
                 decimal maxOccurs = repeats || accessor.IsUnbounded ? decimal.MaxValue : 1;
 
                 if (element == null)
@@ -861,7 +861,7 @@ namespace Microsoft.Xml.Serialization
                     element = new XmlSchemaElement();
                     element.IsNillable = accessor.IsNullable;
                     element.Name = accessor.Name;
-                    if (accessor.HasDefault)
+                    if (accessor.Default != null)
                         element.DefaultValue = ExportDefaultValue(accessor.Mapping, accessor.Default);
 
                     if (accessor.IsTopLevelInSchema)

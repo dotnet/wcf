@@ -2,21 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Reflection;
-    //using Microsoft.Xml.Serialization.Configuration;
+    //using System.Xml.Serialization.Configuration;
     using Microsoft.CodeDom;
     using Microsoft.CodeDom.Compiler;
     using System.Collections.Specialized;
     using System.Globalization;
     // using System.Security.Permissions;
-    using Microsoft.Xml.Serialization.Advanced;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer.Advanced;
 
 #if DEBUG
     using System.Diagnostics;
@@ -316,7 +317,7 @@ namespace Microsoft.Xml.Serialization
             {
                 // we cannot re-use the accessor for the element refs
                 ElementAccessor topAccessor = ImportElement(element.RefName, desiredMappingType, baseType);
-                if (element.IsMultipleOccurrence && topAccessor.Mapping is ArrayMapping)
+                if (element.MaxOccurs > 1 && topAccessor.Mapping is ArrayMapping)
                 {
                     ElementAccessor refAccessor = topAccessor.Clone();
                     refAccessor.IsTopLevelInSchema = false;
@@ -514,7 +515,7 @@ namespace Microsoft.Xml.Serialization
                     if (item is XmlSchemaType)
                     {
                         XmlSchemaType type = (XmlSchemaType)item;
-                        if (type.DerivedFrom == baseName && TypesInUse[type.Name, schema.TargetNamespace] == null)
+                        if (type.BaseXmlSchemaType?.QualifiedName == baseName && TypesInUse[type.Name, schema.TargetNamespace] == null)
                         {
                             ImportType(type.QualifiedName, typeof(TypeMapping), null, TypeFlags.CanBeElementValue, false);
                         }
@@ -552,7 +553,7 @@ namespace Microsoft.Xml.Serialization
 
         private TypeMapping ImportType(XmlSchemaComplexType type, string typeNs, string identifier, Type desiredMappingType, Type baseType, TypeFlags flags)
         {
-            if (type.Redefined != null)
+            if (false /*type.Redefined != null*/)
             {
                 // we do not support redefine in the current version
                 throw new NotSupportedException(string.Format(ResXml.XmlUnsupportedRedefine, type.Name, typeNs));
@@ -585,7 +586,7 @@ namespace Microsoft.Xml.Serialization
 
         private MembersMapping ImportMembersType(XmlSchemaType type, string typeNs, string identifier)
         {
-            if (!type.DerivedFrom.IsEmpty) throw new InvalidOperationException(ResXml.XmlMembersDeriveError);
+            // if (type.BaseXmlSchemaType == null) throw new InvalidOperationException(ResXml.XmlMembersDeriveError);
             CodeIdentifiers memberScope = new CodeIdentifiers();
             memberScope.UseCamelCasing = true;
             bool needExplicitOrder = false;
@@ -603,9 +604,9 @@ namespace Microsoft.Xml.Serialization
             TypeMapping baseMapping = null;
 
             bool isRootType = false;
-            if (!type.DerivedFrom.IsEmpty)
+            if (type.BaseXmlSchemaType != null)
             {
-                baseMapping = ImportType(type.DerivedFrom, typeof(TypeMapping), null, TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue, false);
+                baseMapping = ImportType(type.BaseXmlSchemaType.QualifiedName, typeof(TypeMapping), null, TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue, false);
 
                 if (baseMapping is StructMapping)
                     baseTypeDesc = ((StructMapping)baseMapping).TypeDesc;
@@ -745,9 +746,9 @@ namespace Microsoft.Xml.Serialization
             {
                 // check if we can transfer the attribute to the base class
                 XmlSchemaType t = type;
-                while (!t.DerivedFrom.IsEmpty)
+                while (t.BaseXmlSchemaType != null)
                 {
-                    t = FindType(t.DerivedFrom, TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue);
+                    t = FindType(t.BaseXmlSchemaType.QualifiedName, TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue);
                     if (IsMixed(t))
                     {
                         // keep the mixed attribute on the base class
@@ -843,12 +844,12 @@ namespace Microsoft.Xml.Serialization
                 {
                     XmlSchemaGroupRef refGroup = (XmlSchemaGroupRef)particle;
                     items.Particle = FindGroup(refGroup.RefName).Particle;
-                    items.IsUnbounded = particle.IsMultipleOccurrence;
+                    items.IsUnbounded = particle.MaxOccurs > 1;
                 }
                 else if (particle is XmlSchemaGroupBase)
                 {
                     items.Particle = (XmlSchemaGroupBase)particle;
-                    items.IsUnbounded = particle.IsMultipleOccurrence;
+                    items.IsUnbounded = particle.MaxOccurs > 1;
                 }
             }
             return items;
@@ -1032,7 +1033,7 @@ namespace Microsoft.Xml.Serialization
             else if (particle is XmlSchemaGroupBase)
             {
                 XmlSchemaGroupBase group = (XmlSchemaGroupBase)particle;
-                bool groupRepeats = group.IsMultipleOccurrence;
+                bool groupRepeats = group.MaxOccurs > 1;
                 XmlSchemaAny any = null;
                 bool duplicateElements = false;
                 for (int i = 0; i < group.Items.Count; i++)
@@ -1063,11 +1064,11 @@ namespace Microsoft.Xml.Serialization
                             XmlSchemaElement[] elements = GetEquivalentElements(headElement);
                             for (int j = 0; j < elements.Length; j++)
                             {
-                                if (elements[j].IsMultipleOccurrence) groupRepeats = true;
+                                if (elements[j].MaxOccurs > 1) groupRepeats = true;
                                 AddScopeElement(choiceElements, ImportElement(elements[j], identifier, typeof(TypeMapping), null, elements[j].QualifiedName.Namespace, true), ref duplicateElements, allowDuplicates);
                             }
                         }
-                        if (element.IsMultipleOccurrence) groupRepeats = true;
+                        if (element.MaxOccurs > 1) groupRepeats = true;
                         AddScopeElement(choiceElements, ImportElement(element, identifier, typeof(TypeMapping), null, element.QualifiedName.Namespace, false), ref duplicateElements, allowDuplicates);
                     }
                 }
@@ -1124,7 +1125,7 @@ namespace Microsoft.Xml.Serialization
                 if (!refGroup.RefName.IsEmpty)
                 {
                     AddReference(refGroup.RefName, GroupsInUse, ResXml.XmlCircularGroupReference);
-                    ImportGroupMembers(FindGroup(refGroup.RefName).Particle, identifier, members, membersScope, elementsScope, refGroup.RefName.Namespace, groupRepeats | refGroup.IsMultipleOccurrence, ref mixed, ref needExplicitOrder, allowDuplicates, allowUnboundedElements);
+                    ImportGroupMembers(FindGroup(refGroup.RefName).Particle, identifier, members, membersScope, elementsScope, refGroup.RefName.Namespace, groupRepeats | refGroup.MaxOccurs > 1, ref mixed, ref needExplicitOrder, allowDuplicates, allowUnboundedElements);
                     RemoveReference(refGroup.RefName, GroupsInUse);
                 }
             }
@@ -1132,7 +1133,7 @@ namespace Microsoft.Xml.Serialization
             {
                 XmlSchemaGroupBase group = (XmlSchemaGroupBase)particle;
 
-                if (group.IsMultipleOccurrence)
+                if (group.MaxOccurs > 1)
                     groupRepeats = true;
 
                 if (GenerateOrder && groupRepeats && group.Items.Count > 1)
@@ -1275,7 +1276,7 @@ namespace Microsoft.Xml.Serialization
             members.Add(member.Name, member);
             member.TypeDesc = ((TypeMapping)accessors[0].Mapping).TypeDesc;
 
-            bool repeats = any.IsMultipleOccurrence;
+            bool repeats = any.MaxOccurs > 1;
 
             if (mixed)
             {
@@ -1345,7 +1346,7 @@ namespace Microsoft.Xml.Serialization
         {
             if (repeats) return null;
             if (element.SchemaType == null) return null;
-            if (element.IsMultipleOccurrence) return null;
+            if (element.MaxOccurs > 1) return null;
             XmlSchemaType type = element.SchemaType;
             ArrayMapping arrayMapping = ImportArrayMapping(type, identifier, ns, repeats);
             if (arrayMapping == null) return null;
@@ -1362,7 +1363,19 @@ namespace Microsoft.Xml.Serialization
         private ArrayMapping ImportArrayMapping(XmlSchemaType type, string identifier, string ns, bool repeats)
         {
             if (!(type is XmlSchemaComplexType)) return null;
-            if (!type.DerivedFrom.IsEmpty) return null;
+            // [Fix: Polymorphism/Inheritance]
+            // We only disqualify the type from being an Array if it *explicitly* extends another type via ContentModel.
+            // Implicit inheritance from 'anyType' (where BaseXmlSchemaType is non-null but ContentModel is null) 
+            // is standard for Arrays and must be allowed.
+            if (type is XmlSchemaComplexType complexType && complexType.ContentModel != null)
+            {
+                 if (complexType.ContentModel.Content is XmlSchemaComplexContentExtension || 
+                     complexType.ContentModel.Content is XmlSchemaSimpleContentExtension)
+                 {
+                     return null;
+                 }
+            }
+
             if (IsMixed(type)) return null;
 
             Mapping previousMapping = (Mapping)ImportedMappings[type];
@@ -1389,7 +1402,7 @@ namespace Microsoft.Xml.Serialization
             if (item is XmlSchemaChoice)
             {
                 XmlSchemaChoice choice = (XmlSchemaChoice)item;
-                if (!choice.IsMultipleOccurrence)
+                if (choice.MaxOccurs <= 1)
                     return null;
                 bool needExplicitOrder = false;
                 MemberMapping choiceMember = ImportChoiceGroup(choice, identifier, null, null, null, ns, true, ref needExplicitOrder, false);
@@ -1402,15 +1415,15 @@ namespace Microsoft.Xml.Serialization
             {
                 if (item.Items.Count != 1 || !(item.Items[0] is XmlSchemaElement)) return null;
                 XmlSchemaElement itemElement = (XmlSchemaElement)item.Items[0];
-                if (!itemElement.IsMultipleOccurrence) return null;
-                if (IsCyclicReferencedType(itemElement, new List<string>(1) { identifier }))
+                if (itemElement.MaxOccurs <= 1) return null;
+                /*if (IsCyclicReferencedType(itemElement, new List<string>(1) { identifier }))
                 {
                     return null;
-                }
+                }*/
 
                 ElementAccessor itemAccessor = ImportElement(itemElement, identifier, typeof(TypeMapping), null, ns, false);
-                if (itemAccessor.Any)
-                    return null;
+                // if (itemAccessor.Any)
+                //    return null;
                 arrayMapping.Elements = new ElementAccessor[] { itemAccessor };
                 arrayMapping.TypeDesc = ((TypeMapping)itemAccessor.Mapping).TypeDesc.CreateArrayTypeDesc();
                 arrayMapping.TypeName = (type.Name == null || type.Name.Length == 0) ? "ArrayOf" + CodeIdentifier.MakePascal(itemAccessor.Mapping.TypeDesc.Name) : type.Name;
@@ -1453,7 +1466,7 @@ namespace Microsoft.Xml.Serialization
                     if ((items.Particle is XmlSchemaSequence || items.Particle is XmlSchemaAll) && items.Particle.Items.Count == 1 && items.Particle.Items[0] is XmlSchemaElement)
                     {
                         XmlSchemaElement innerRefElement = (XmlSchemaElement)items.Particle.Items[0];
-                        if (innerRefElement.IsMultipleOccurrence)
+                        if (innerRefElement.MaxOccurs > 1)
                         {
                             return IsCyclicReferencedType(innerRefElement, identifiers);
                         }
@@ -1466,7 +1479,7 @@ namespace Microsoft.Xml.Serialization
         private SpecialMapping ImportAnyMapping(XmlSchemaType type, string identifier, string ns, bool repeats)
         {
             if (type == null) return null;
-            if (!type.DerivedFrom.IsEmpty) return null;
+            if (type.BaseXmlSchemaType != null) return null;
 
             bool mixed = IsMixed(type);
             TypeItems items = GetTypeItems(type);
@@ -1480,12 +1493,12 @@ namespace Microsoft.Xml.Serialization
 
             SpecialMapping mapping = new SpecialMapping();
             // check for special named any case
-            if (items.AnyAttribute != null && any.IsMultipleOccurrence && mixed)
+            if (items.AnyAttribute != null && any.MaxOccurs > 1 && mixed)
             {
                 mapping.NamedAny = true;
                 mapping.TypeDesc = Scope.GetTypeDesc(typeof(XmlElement));
             }
-            else if (items.AnyAttribute != null || any.IsMultipleOccurrence)
+            else if (items.AnyAttribute != null || any.MaxOccurs > 1)
             {
                 // these only work for named any case -- otherwise import as struct
                 return null;
@@ -1511,7 +1524,7 @@ namespace Microsoft.Xml.Serialization
 
         private void ImportElementMember(XmlSchemaElement element, string identifier, CodeIdentifiers members, CodeIdentifiers membersScope, INameScope elementsScope, string ns, bool repeats, ref bool needExplicitOrder, bool allowDuplicates, bool allowUnboundedElements)
         {
-            repeats = repeats | element.IsMultipleOccurrence;
+            repeats = repeats | element.MaxOccurs > 1;
             XmlSchemaElement headElement = GetTopLevelElement(element);
             if (headElement != null && ImportSubstitutionGroupMember(headElement, identifier, members, membersScope, ns, repeats, ref needExplicitOrder, allowDuplicates))
             {
@@ -1548,7 +1561,7 @@ namespace Microsoft.Xml.Serialization
             AddScopeElement(elementsScope, accessor, ref needExplicitOrder, allowDuplicates);
             member.Elements = new ElementAccessor[] { accessor };
 
-            if (element.IsMultipleOccurrence || repeats)
+            if (element.MaxOccurs > 1 || repeats)
             {
                 if (!allowUnboundedElements && accessor.Mapping is ArrayMapping)
                 {
@@ -1559,7 +1572,7 @@ namespace Microsoft.Xml.Serialization
                 member.TypeDesc = accessor.Mapping.TypeDesc.CreateArrayTypeDesc();
             }
 
-            if (element.MinOccurs == 0 && member.TypeDesc.IsValueType && !element.HasDefault && !member.TypeDesc.HasIsEmpty)
+            if (element.MinOccurs == 0 && member.TypeDesc.IsValueType && element.DefaultValue == null && !member.TypeDesc.HasIsEmpty)
             {
                 member.CheckSpecified = SpecifiedAccessor.ReadWrite;
             }
@@ -1583,7 +1596,7 @@ namespace Microsoft.Xml.Serialization
             members.Add(member.Name, member);
             member.TypeDesc = accessor.IsList ? accessor.Mapping.TypeDesc.CreateArrayTypeDesc() : accessor.Mapping.TypeDesc;
 
-            if ((attribute.Use == XmlSchemaUse.Optional || attribute.Use == XmlSchemaUse.None) && member.TypeDesc.IsValueType && !attribute.HasDefault && !member.TypeDesc.HasIsEmpty)
+            if ((attribute.Use == XmlSchemaUse.Optional || attribute.Use == XmlSchemaUse.None) && member.TypeDesc.IsValueType && attribute.DefaultValue == null && !member.TypeDesc.HasIsEmpty)
             {
                 member.CheckSpecified = SpecifiedAccessor.ReadWrite;
             }
@@ -1631,9 +1644,9 @@ namespace Microsoft.Xml.Serialization
                                 XmlElement e = (XmlElement)node;
                                 if (e.Name == "keepNamespaceDeclarations")
                                 {
-                                    if (e.LastNode is XmlText)
+                                    if (e.LastChild is XmlText)
                                     {
-                                        xmlnsMemberName = (((XmlText)e.LastNode).Value).Trim(null);
+                                        xmlnsMemberName = (((XmlText)e.LastChild).Value).Trim(null);
                                     }
                                     return true;
                                 }
@@ -1831,9 +1844,9 @@ namespace Microsoft.Xml.Serialization
                 return mapping;
 
             XmlSchemaType sourceType = dataType;
-            while (!sourceType.DerivedFrom.IsEmpty)
+            while (sourceType.BaseXmlSchemaType != null)
             {
-                sourceType = FindType(sourceType.DerivedFrom, TypeFlags.CanBeElementValue | TypeFlags.CanBeAttributeValue);
+                sourceType = FindType(sourceType.BaseXmlSchemaType.QualifiedName, TypeFlags.CanBeElementValue | TypeFlags.CanBeAttributeValue);
             }
             if (sourceType is XmlSchemaComplexType) return null;
             TypeDesc sourceTypeDesc = Scope.GetTypeDesc((XmlSchemaSimpleType)sourceType);

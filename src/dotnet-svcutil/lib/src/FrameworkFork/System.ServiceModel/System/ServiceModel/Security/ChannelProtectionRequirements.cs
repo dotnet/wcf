@@ -6,7 +6,7 @@ using System.Net.Security;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Security
 {

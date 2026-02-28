@@ -6,8 +6,8 @@ namespace System.Web.Services.Description
 {
     using System.Web.Services;
     using System.Web.Services.Protocols;
-    using Microsoft.Xml.Serialization;
-    using Microsoft.Xml.Schema;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
+    using System.Xml.Schema;
     using System.Collections;
     using System.Collections.Specialized;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace System.Web.Services.Description
     using System.Reflection;
     using Microsoft.CodeDom.Compiler;
     using System.Web.Services.Configuration;
-    using Microsoft.Xml;
+    using System.Xml;
     using Microsoft.CodeDom;
     using System.Globalization;
     using System.Runtime.InteropServices;

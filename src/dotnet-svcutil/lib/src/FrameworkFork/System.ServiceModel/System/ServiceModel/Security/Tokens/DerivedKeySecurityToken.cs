@@ -14,7 +14,7 @@ using System.IdentityModel.Tokens;
 using System.IdentityModel.Selectors;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Security.Tokens
 {

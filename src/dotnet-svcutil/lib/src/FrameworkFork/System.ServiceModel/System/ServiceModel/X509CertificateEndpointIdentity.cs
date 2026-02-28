@@ -9,8 +9,8 @@ namespace System.ServiceModel
     using System.IdentityModel.Policy;
     using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Serialization;
+    using System.Xml;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 
     public class X509CertificateEndpointIdentity : EndpointIdentity
     {

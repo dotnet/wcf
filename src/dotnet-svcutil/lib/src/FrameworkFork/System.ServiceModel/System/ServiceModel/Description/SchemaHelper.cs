@@ -8,8 +8,8 @@ namespace System.ServiceModel.Description
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Runtime;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using System.Xml.Schema;
 
     internal static class SchemaHelper
     {
