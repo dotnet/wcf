@@ -504,6 +504,17 @@ namespace SvcutilTest
 
         [Trait("Category", "Test")]
         [Fact]
+        public void MessageContractMemberNamedSystem()
+        {
+            this_TestCaseName = "MessageContractMemberNamedSystem";
+            TestFixture();
+            InitializeE2E(this_TestCaseName);
+            string wsdlFile = Path.Combine(g_TestCasesDir, "wsdl", "mcMemberNamedSystem.wsdl");
+            TestSvcutil(AppendCommonOptions(wsdlFile));
+        }
+
+        [Trait("Category", "Test")]
+        [Fact]
         public void ContractTypeNamedReservedKeyword()
         {
             this_TestCaseName = "ContractTypeNamedReservedKeyword";
