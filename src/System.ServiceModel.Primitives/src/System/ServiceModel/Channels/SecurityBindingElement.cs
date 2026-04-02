@@ -247,7 +247,8 @@ namespace System.ServiceModel.Channels
 
         internal bool RequiresChannelDemuxer(SecurityTokenParameters parameters)
         {
-            return (parameters is SecureConversationSecurityTokenParameters);
+            return (parameters is SecureConversationSecurityTokenParameters)
+                    || (parameters is SspiSecurityTokenParameters);
         }
 
         internal virtual bool RequiresChannelDemuxer()

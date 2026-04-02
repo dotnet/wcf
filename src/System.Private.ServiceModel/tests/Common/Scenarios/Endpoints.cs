@@ -466,6 +466,22 @@ public static partial class Endpoints
         }
     }
 
+    public static string Https_SecModeTransWithMessCred_ClientCredTypeWindows
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsWindows.svc/https-message-credentials-windows", protocol: "https");
+        }
+    }
+
+    public static string Https_SecModeTransWithMessCred_ClientCredTypeWindows_NoSecureConversation
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsWindows.svc/https-message-credentials-windows-nosc", protocol: "https");
+        }
+    }
+
     public static string WSFederationAuthorityLocalSTS
     {
         get
