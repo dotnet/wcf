@@ -147,6 +147,16 @@
         <target state="translated">Была предпринята попытка получить тип контракта для {0}, однако этот тип не ServiceContract и не наследует ServiceContract.</target>
         <note />
       </trans-unit>
+      <trans-unit id="AuthenticationOfClientFailed">
+        <source>Authentication of the client by the service failed.</source>
+        <target state="new">Authentication of the client by the service failed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticatorNotPresentInRSTRCollection">
+        <source>The authenticator RSTR was not found in the RSTR collection.</source>
+        <target state="new">The authenticator RSTR was not found in the RSTR collection.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BadCloseTarget">
         <source>The CloseTarget specified '{0}' does not identify the security token that signed the message.</source>
         <target state="translated">"{0}", указанный методом CloseTarget, не идентифицирует токен безопасности, которым подписано сообщение.</target>
@@ -155,6 +165,11 @@
       <trans-unit id="BadIssuedTokenType">
         <source>The issued token is of unexpected type '{0}'. Expected token type '{1}'.</source>
         <target state="translated">Выданный маркер имеет неожиданный тип "{0}". Ожидаемый тип маркера — "{1}".</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BadKeyEncryptionAlgorithm">
+        <source>Invalid key encryption algorithm {0}.</source>
+        <target state="new">Invalid key encryption algorithm {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BadSecurityNegotiationContext">
@@ -367,6 +382,11 @@
         <target state="translated">Невозможно добавить два элемента с одинаковым ключом в SynchronizedKeyedCollection.</target>
         <note />
       </trans-unit>
+      <trans-unit id="CannotAuthenticateServer">
+        <source>The security negotiation could not be completed because mutual authentication was not achieved.</source>
+        <target state="new">The security negotiation could not be completed because mutual authentication was not achieved.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="CannotDetectAddressingVersion">
         <source>Cannot detect WS-Addressing version. EndpointReference does not start with an Element.</source>
         <target state="translated">Не удалось обнаружить версию WS-Addressing. В начале EndpointReference отсутствует Element.</target>
@@ -435,6 +455,11 @@
       <trans-unit id="CertificateUnsupportedForHttpTransportCredentialOnly">
         <source>Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</source>
         <target state="translated">Аутентификация клиентов на основе сертификатов не поддерживается в режиме безопасности TransportCredentialOnly. Выберите режим безопасности Transport.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelDemuxerBindingElementNotFound">
+        <source>The binding does not contain a ChannelDemuxerBindingElement.</source>
+        <target state="new">The binding does not contain a ChannelDemuxerBindingElement.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryCannotBeUsedToCreateChannels">
@@ -857,6 +882,11 @@
         <target state="translated">Невозможно получить XmlDictionaryReaderQuotas из Binding. Если указан особый элемент EncodingBindingElement, убедитесь, что EncodingBindingElement может обработать XmlDictionaryReaderQuotas с помощью своего метода GetProperty&lt;T&gt;().</target>
         <note />
       </trans-unit>
+      <trans-unit id="EncryptedKeyWasNotEncryptedWithTheRequiredEncryptingToken">
+        <source>The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</source>
+        <target state="new">The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EndMethodsCannotBeDecoratedWithOperationContractAttribute">
         <source>When using the IAsyncResult design pattern, the End method cannot be decorated with OperationContractAttribute. Only the corresponding Begin method can be decorated with OperationContractAttribute; that attribute will apply to the Begin-End pair of methods. Method '{0}' in type '{1}' violates this.</source>
         <target state="translated">При использовании конструктивного шаблона IAsyncResult метод End не может быть снабжен атрибутом OperationContractAttribute. Только соответствующий метод Begin может быть снабжен атрибутом OperationContractAttribute. Этот атрибут применяется к паре методов Begin-End. Метод "{0}" в типе "{1}" нарушает это правило.</target>
@@ -970,6 +1000,11 @@
       <trans-unit id="FailToReceiveReplyFromNegotiation">
         <source>Security negotiation failed because the remote party did not send back a reply in a timely manner. This may be because the underlying transport connection was aborted.</source>
         <target state="translated">Произошел сбой согласования безопасности, так как удаленная сторона вовремя не отправила ответ. Это может быть связано с тем, что выделенное подключение транспорта было прервано.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FailedSspiNegotiation">
+        <source>The SSPI negotiation failed with the server.</source>
+        <target state="new">The SSPI negotiation failed with the server.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToCreateTypedProxy">
@@ -1322,6 +1357,11 @@
         <target state="translated">Входящее двоичное согласование имеет недопустимый тип ValueType {0}.</target>
         <note />
       </trans-unit>
+      <trans-unit id="IncorrectSpnOrUpnSpecified">
+        <source>SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</source>
+        <target state="new">SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InnerChannelFactoryWasNotSet">
         <source>Cannot open ChannelFactory as the inner channel factory was not set during the initialization process.</source>
         <target state="translated">Невозможно открыть ChannelFactory, так как в ходе инициализации не была задана фабрика внутренних каналов.</target>
@@ -1370,6 +1410,11 @@
       <trans-unit id="InvalidBufferRemaining">
         <source>An acknowledgement was received indicating the remaining buffer space on the remote endpoint is {0}. This number cannot be less than zero. The reliable session was faulted.</source>
         <target state="translated">Получено уведомление, указывающее, что оставшееся буферное пространство на удаленном компьютере составляет {0}. Это число не может быть меньше нуля. Это привело к сбою надежного сеанса.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidClientCredentials">
+        <source>The client credentials are not valid.</source>
+        <target state="new">The client credentials are not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
@@ -1450,6 +1495,11 @@
       <trans-unit id="InvalidSequenceRange">
         <source>An acknowledgement range starting at {0} and ending at {1} was received. This is an invalid acknowledgement range. The reliable session was faulted.</source>
         <target state="translated">Получен диапазон подтверждения, имеющий начало {0} и конец {1}. Это недопустимый диапазон подтверждения. Сбой надежного сеанса.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidSspiNegotiation">
+        <source>The SSPI negotiation failed.</source>
+        <target state="new">The SSPI negotiation failed.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTokenProvided">
@@ -1862,6 +1912,11 @@
         <target state="translated">Удаленная сторона не включила окончательное подтверждение в ответ на запрос о закрытии последовательности. Это является нарушением протокола WS-ReliableMessaging. Сбой надежного сеанса.</target>
         <note />
       </trans-unit>
+      <trans-unit id="MissingKeyInfoInEncryptedKey">
+        <source>The KeyInfo clause is missing or empty in EncryptedKey.</source>
+        <target state="new">The KeyInfo clause is missing or empty in EncryptedKey.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="MissingMessageID">
         <source>Request Message is missing a MessageID header. One is required to correlate a reply.</source>
         <target state="translated">В сообщении запроса отсутствует заголовок MessageID. Этот заголовок требуется для корреляции ответа.</target>
@@ -2112,6 +2167,16 @@
         <target state="translated">Конечная точка обрабатывает сообщения только с помощью протокола WS-ReliableMessaging. Обработка отправленного в конечную точку сообщения невозможно, так как в нем не использовано каких-либо действий или заголовков по этому протоколу.</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoBinaryNegoToReceive">
+        <source>Security negotiation failed because no binary negotiation data was received from the other party.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data was received from the other party.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoBinaryNegoToSend">
+        <source>Security negotiation failed because no binary negotiation data is available to send.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data is available to send.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NoChannelBuilderAvailable">
         <source>The binding (Name={0}, Namespace={1}) cannot be used to create a ChannelFactory or a ChannelListener because it appears to be missing a TransportBindingElement.  Every binding must have at least one binding element that derives from TransportBindingElement.</source>
         <target state="translated">Невозможно использовать привязку (имя={0}, пространство имен={1}) для создания ChannelFactory или ChannelListener, так как, по-видимому, в ней пропущен элемент TransportBindingElement. В каждой привязке должен присутствовать по меньшей мере один элемент привязки, производный от TransportBindingElement.</target>
@@ -2130,6 +2195,11 @@
       <trans-unit id="NoEndMethodFoundForAsyncBeginMethod3">
         <source>OperationContract method '{0}' in type '{1}' does not properly implement the async pattern, as no corresponding method '{2}' could be found. Either provide a method called '{2}' or set the AsyncPattern property on method '{0}' to false.</source>
         <target state="translated">Метод OperationContract "{0}" в типе "{1}" не реализует должным образом асинхронный шаблон, поскольку не удалось найти соответствующий метод "{2}". Необходимо предоставить метод с именем "{2}" либо установить значение false для свойства AsyncPattern в методе "{0}".</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoInputIsSetForCanonicalization">
+        <source>No input is set for writing canonicalized output.</source>
+        <target state="new">No input is set for writing canonicalized output.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyIdentifierClauseFound">
@@ -2175,6 +2245,11 @@
       <trans-unit id="NoSecurityContextIdentifier">
         <source>The SecurityContextSecurityToken does not have a context-id.</source>
         <target state="translated">SecurityContextSecurityToken не имеет context-id.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoServiceTokenReceived">
+        <source>No service token was received as part of the security negotiation.</source>
+        <target state="new">No service token was received as part of the security negotiation.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoUserNameTokenProvided">
@@ -2332,6 +2407,11 @@
         <target state="translated">Алгоритм ключа для этого закрытого ключа не поддерживается.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ProofTokenWasNotWrappedCorrectly">
+        <source>The proof token was not wrapped with the correct algorithm.</source>
+        <target state="new">The proof token was not wrapped with the correct algorithm.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PropertySettingErrorOnProtocolFactory">
         <source>The required '{0}' property on the '{1}' security protocol factory is not set or has an invalid value.</source>
         <target state="translated">Требуемое свойство "{0}" в фабрике протокола безопасности "{1}" не задано или имеет недопустимое значение.</target>
@@ -2385,6 +2465,21 @@
       <trans-unit id="PublicKeyNotSupported">
         <source>The key algorithm for this public key is not supported.</source>
         <target state="translated">Алгоритм ключа для этого открытого ключа не поддерживается.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorHasBadContext">
+        <source>The authenticator RSTR has a different Context value than the negotiation RSTR.</source>
+        <target state="new">The authenticator RSTR has a different Context value than the negotiation RSTR.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorIncorrect">
+        <source>The authenticator in the server response was incorrect.</source>
+        <target state="new">The authenticator in the server response was incorrect.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorNotPresent">
+        <source>The authenticator was not present in the server response.</source>
+        <target state="new">The authenticator was not present in the server response.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadNotSupportedOnStream">
@@ -3872,6 +3967,11 @@
         <target state="translated">Пространство, необходимое для кодирования ({0} байт), превышает смещение кадров сообщения.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SpnegoImpersonationLevelCannotBeSetToNone">
+        <source>The impersonation level for SPNEGO negotiation cannot be set to None.</source>
+        <target state="new">The impersonation level for SPNEGO negotiation cannot be set to None.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StandardsManagerCannotWriteObject">
         <source>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</source>
         <target state="translated">Cериализатор маркеров не может сериализовать "{0}". Если используется особый тип, необходимо предоставить особый сериализатор.</target>
@@ -4255,6 +4355,11 @@
       <trans-unit id="UnableToResolveKeyInfoClauseInDerivedKeyToken">
         <source>Cannot resolve KeyInfo in derived key token for resolving source token: KeyInfoClause '{0}'.</source>
         <target state="translated">Не удается разрешить KeyInfo в токене производного ключа, чтобы разрешить токен источника: KeyInfoClause "{0}".</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveKeyInfoForUnwrappingToken">
+        <source>Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</source>
+        <target state="new">Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyReference">

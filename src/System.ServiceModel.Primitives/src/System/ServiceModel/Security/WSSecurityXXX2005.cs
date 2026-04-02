@@ -18,6 +18,14 @@ namespace System.ServiceModel.Security
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
         {
             PopulateJan2004TokenEntries(tokenEntryList);
+            tokenEntryList.Add(new WSSecurityXXX2005.WrappedKeyTokenEntry(WSSecurityTokenSerializer));
+        }
+
+        new class WrappedKeyTokenEntry : WSSecurityJan2004.WrappedKeyTokenEntry
+        {
+            public WrappedKeyTokenEntry(WSSecurityTokenSerializer tokenSerializer) : base(tokenSerializer) { }
+
+            public override string TokenTypeUri { get { return SecurityXXX2005Strings.EncryptedKeyTokenType; } }
         }
     }
 }

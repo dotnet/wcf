@@ -147,6 +147,16 @@
         <target state="translated">{0} için anlaşma türü alınmaya çalışıldı, ancak bu tür bir ServiceContract değil ya da ServiceContract devralmıyor.</target>
         <note />
       </trans-unit>
+      <trans-unit id="AuthenticationOfClientFailed">
+        <source>Authentication of the client by the service failed.</source>
+        <target state="new">Authentication of the client by the service failed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticatorNotPresentInRSTRCollection">
+        <source>The authenticator RSTR was not found in the RSTR collection.</source>
+        <target state="new">The authenticator RSTR was not found in the RSTR collection.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BadCloseTarget">
         <source>The CloseTarget specified '{0}' does not identify the security token that signed the message.</source>
         <target state="translated">Belirtilen '{0}' CloseTarget değeri, iletiyi imzalayan güvenlik belirtecini tanımlamıyor.</target>
@@ -155,6 +165,11 @@
       <trans-unit id="BadIssuedTokenType">
         <source>The issued token is of unexpected type '{0}'. Expected token type '{1}'.</source>
         <target state="translated">Verilen belirteç beklenmeyen '{0}' türünde. Beklenen belirteç türü: '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BadKeyEncryptionAlgorithm">
+        <source>Invalid key encryption algorithm {0}.</source>
+        <target state="new">Invalid key encryption algorithm {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BadSecurityNegotiationContext">
@@ -367,6 +382,11 @@
         <target state="translated">Aynı anahtarlı iki öğe SynchronizedKeyedCollection içine eklenemiyor.</target>
         <note />
       </trans-unit>
+      <trans-unit id="CannotAuthenticateServer">
+        <source>The security negotiation could not be completed because mutual authentication was not achieved.</source>
+        <target state="new">The security negotiation could not be completed because mutual authentication was not achieved.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="CannotDetectAddressingVersion">
         <source>Cannot detect WS-Addressing version. EndpointReference does not start with an Element.</source>
         <target state="translated">WS-Addressing sürümü algılanamıyor. EndpointReference, bir Element ile başlamıyor.</target>
@@ -435,6 +455,11 @@
       <trans-unit id="CertificateUnsupportedForHttpTransportCredentialOnly">
         <source>Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</source>
         <target state="translated">Sertifika temelli istemci kimlik doğrulaması, TransportCredentialOnly güvenlik modunda desteklenmez. Transport güvenlik modunu seçin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelDemuxerBindingElementNotFound">
+        <source>The binding does not contain a ChannelDemuxerBindingElement.</source>
+        <target state="new">The binding does not contain a ChannelDemuxerBindingElement.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryCannotBeUsedToCreateChannels">
@@ -857,6 +882,11 @@
         <target state="translated">Bağlamadan XmlDictionaryReaderQuotas alınamıyor. Özel bir EncodingBindingElement belirttiyseniz, EncodingBindingElement özniteliğinin GetProperty&lt;T&gt;() metodunda XmlDictionaryReaderQuotas öğesini işleyebileceğini doğrulayın.</target>
         <note />
       </trans-unit>
+      <trans-unit id="EncryptedKeyWasNotEncryptedWithTheRequiredEncryptingToken">
+        <source>The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</source>
+        <target state="new">The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EndMethodsCannotBeDecoratedWithOperationContractAttribute">
         <source>When using the IAsyncResult design pattern, the End method cannot be decorated with OperationContractAttribute. Only the corresponding Begin method can be decorated with OperationContractAttribute; that attribute will apply to the Begin-End pair of methods. Method '{0}' in type '{1}' violates this.</source>
         <target state="translated">IAsyncResult tasarım deseni kullanılırken, End metodu OperationContractAttribute ile birlikte olamaz. Yalnızca ilgili Begin metodu OperationContractAttribute ile kullanılabilir; bu öznitelik de Begin-End metot çiftine uygulanır. '{1}' türündeki '{0}' metodu bunu ihlal ediyor.</target>
@@ -970,6 +1000,11 @@
       <trans-unit id="FailToReceiveReplyFromNegotiation">
         <source>Security negotiation failed because the remote party did not send back a reply in a timely manner. This may be because the underlying transport connection was aborted.</source>
         <target state="translated">Uzak taraf zamanında bir yanıt göndermediği için güvenlik anlaşması başarısız oldu. Bunun nedeni arka plandaki taşıma bağlantısının iptal edilmesi olabilir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FailedSspiNegotiation">
+        <source>The SSPI negotiation failed with the server.</source>
+        <target state="new">The SSPI negotiation failed with the server.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToCreateTypedProxy">
@@ -1322,6 +1357,11 @@
         <target state="translated">Gelen ikili anlaşma geçersiz ValueType {0} öğesine sahip.</target>
         <note />
       </trans-unit>
+      <trans-unit id="IncorrectSpnOrUpnSpecified">
+        <source>SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</source>
+        <target state="new">SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InnerChannelFactoryWasNotSet">
         <source>Cannot open ChannelFactory as the inner channel factory was not set during the initialization process.</source>
         <target state="translated">İç kanal fabrikası başlatma işleminde ayarlanmadığından, ChannelFactory açılamıyor.</target>
@@ -1370,6 +1410,11 @@
       <trans-unit id="InvalidBufferRemaining">
         <source>An acknowledgement was received indicating the remaining buffer space on the remote endpoint is {0}. This number cannot be less than zero. The reliable session was faulted.</source>
         <target state="translated">Uzak bitiş noktasında kalan arabellek alanının {0} olduğunu belirten bir bildirim alındı. Bu sayı, sıfırdan küçük olamaz. Güvenilir oturum hatayla sonlandırıldı.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidClientCredentials">
+        <source>The client credentials are not valid.</source>
+        <target state="new">The client credentials are not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
@@ -1450,6 +1495,11 @@
       <trans-unit id="InvalidSequenceRange">
         <source>An acknowledgement range starting at {0} and ending at {1} was received. This is an invalid acknowledgement range. The reliable session was faulted.</source>
         <target state="translated">{0} değerinde başlayan ve {1} değerinde biten bir bildirim aralığı alındı. Bu, geçersiz bir bildirim aralığıdır. Güvenilir oturum hatayla sonlandırıldı.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidSspiNegotiation">
+        <source>The SSPI negotiation failed.</source>
+        <target state="new">The SSPI negotiation failed.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTokenProvided">
@@ -1862,6 +1912,11 @@
         <target state="translated">Uzak bitiş noktası kapatma sırası isteği iletisinin yanıtında son bir alındı bildirimi içermiyordu. Bu, WS-ReliableMessaging protokolünün ihlalidir. Güvenilir oturum hatayla sonlandırıldı.</target>
         <note />
       </trans-unit>
+      <trans-unit id="MissingKeyInfoInEncryptedKey">
+        <source>The KeyInfo clause is missing or empty in EncryptedKey.</source>
+        <target state="new">The KeyInfo clause is missing or empty in EncryptedKey.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="MissingMessageID">
         <source>Request Message is missing a MessageID header. One is required to correlate a reply.</source>
         <target state="translated">Request Message, MessageID üst bilgisine sahip değil. Bir yanıtla ilişkilendirmek için bir tane gerekir.</target>
@@ -2112,6 +2167,16 @@
         <target state="translated">Bitiş noktası yalnızca WS-ReliableMessaging protokolünü kullanan iletileri işler. Bitiş noktasına gönderilen iletide bir eylem ya da protokol tarafından kullanılan herhangi bir üst bilgi yok, bu nedenle ileti işlenemiyor.</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoBinaryNegoToReceive">
+        <source>Security negotiation failed because no binary negotiation data was received from the other party.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data was received from the other party.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoBinaryNegoToSend">
+        <source>Security negotiation failed because no binary negotiation data is available to send.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data is available to send.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NoChannelBuilderAvailable">
         <source>The binding (Name={0}, Namespace={1}) cannot be used to create a ChannelFactory or a ChannelListener because it appears to be missing a TransportBindingElement.  Every binding must have at least one binding element that derives from TransportBindingElement.</source>
         <target state="translated">Bir TransportBindingElement öğesi eksik olduğundan bağlama (Ad={0}, Ad Alanı={1}) bir ChannelFactory ya da ChannelListener oluşturmak için kullanılamıyor. Her bağlamanın, TransportBindingElement öğesinden türetilen en az bir bağlama öğesi bulunmalıdır.</target>
@@ -2130,6 +2195,11 @@
       <trans-unit id="NoEndMethodFoundForAsyncBeginMethod3">
         <source>OperationContract method '{0}' in type '{1}' does not properly implement the async pattern, as no corresponding method '{2}' could be found. Either provide a method called '{2}' or set the AsyncPattern property on method '{0}' to false.</source>
         <target state="translated">'{1}' türündeki '{0}' OperationContract metodu, karşılık gelen herhangi bir '{2}' metodu bulunamadığından, asenkron yapıyı düzgün uygulayamıyor. '{2}' adlı metodu sağlayın ya da '{0}' metodundaki AsyncPattern özelliğini false olarak ayarlayın.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoInputIsSetForCanonicalization">
+        <source>No input is set for writing canonicalized output.</source>
+        <target state="new">No input is set for writing canonicalized output.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyIdentifierClauseFound">
@@ -2175,6 +2245,11 @@
       <trans-unit id="NoSecurityContextIdentifier">
         <source>The SecurityContextSecurityToken does not have a context-id.</source>
         <target state="translated">SecurityContextSecurityToken bir bağlam kimliğine sahip değil.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoServiceTokenReceived">
+        <source>No service token was received as part of the security negotiation.</source>
+        <target state="new">No service token was received as part of the security negotiation.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoUserNameTokenProvided">
@@ -2332,6 +2407,11 @@
         <target state="translated">Bu özel anahtar için anahtar algoritması desteklenmiyor.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ProofTokenWasNotWrappedCorrectly">
+        <source>The proof token was not wrapped with the correct algorithm.</source>
+        <target state="new">The proof token was not wrapped with the correct algorithm.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PropertySettingErrorOnProtocolFactory">
         <source>The required '{0}' property on the '{1}' security protocol factory is not set or has an invalid value.</source>
         <target state="translated">'{1}' güvenlik protokolü fabrikasında gerekli olan '{0}' özelliği ayarlanmamış ya da geçersiz bir değere sahip.</target>
@@ -2385,6 +2465,21 @@
       <trans-unit id="PublicKeyNotSupported">
         <source>The key algorithm for this public key is not supported.</source>
         <target state="translated">Bu ortak anahtar için anahtar algoritması desteklenmiyor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorHasBadContext">
+        <source>The authenticator RSTR has a different Context value than the negotiation RSTR.</source>
+        <target state="new">The authenticator RSTR has a different Context value than the negotiation RSTR.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorIncorrect">
+        <source>The authenticator in the server response was incorrect.</source>
+        <target state="new">The authenticator in the server response was incorrect.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorNotPresent">
+        <source>The authenticator was not present in the server response.</source>
+        <target state="new">The authenticator was not present in the server response.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadNotSupportedOnStream">
@@ -3872,6 +3967,11 @@
         <target state="translated">Kodlama için gereken alan ({0} bayt) ileti çerçevesi uzaklığını aşıyor.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SpnegoImpersonationLevelCannotBeSetToNone">
+        <source>The impersonation level for SPNEGO negotiation cannot be set to None.</source>
+        <target state="new">The impersonation level for SPNEGO negotiation cannot be set to None.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StandardsManagerCannotWriteObject">
         <source>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</source>
         <target state="translated">Belirteç Serializer özelliği, '{0}' öğesini serileştiremiyor. Bu özel bir türse, özel bir serileştirici sağlamalısınız.</target>
@@ -4255,6 +4355,11 @@
       <trans-unit id="UnableToResolveKeyInfoClauseInDerivedKeyToken">
         <source>Cannot resolve KeyInfo in derived key token for resolving source token: KeyInfoClause '{0}'.</source>
         <target state="translated">Kaynak belirtecini çözümlemek için alınan anahtar belirtecindeki KeyInfo çözümlenemiyor: KeyInfoClause '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveKeyInfoForUnwrappingToken">
+        <source>Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</source>
+        <target state="new">Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyReference">

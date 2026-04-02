@@ -2991,4 +2991,67 @@
   <data name="TransactionFlowOnlySupportedOnWindows" xml:space="preserve">
     <value>Transaction flow is only supported on Windows.</value>
   </data>
+  <data name="NoBinaryNegoToSend" xml:space="preserve">
+    <value>Security negotiation failed because no binary negotiation data is available to send.</value>
+  </data>
+  <data name="NoBinaryNegoToReceive" xml:space="preserve">
+    <value>Security negotiation failed because no binary negotiation data was received from the other party.</value>
+  </data>
+  <data name="InvalidSspiNegotiation" xml:space="preserve">
+    <value>The SSPI negotiation failed.</value>
+  </data>
+  <data name="IncorrectSpnOrUpnSpecified" xml:space="preserve">
+    <value>SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</value>
+  </data>
+  <data name="CannotAuthenticateServer" xml:space="preserve">
+    <value>The security negotiation could not be completed because mutual authentication was not achieved.</value>
+  </data>
+  <data name="AuthenticationOfClientFailed" xml:space="preserve">
+    <value>Authentication of the client by the service failed.</value>
+  </data>
+  <data name="FailedSspiNegotiation" xml:space="preserve">
+    <value>The SSPI negotiation failed with the server.</value>
+  </data>
+  <data name="NoServiceTokenReceived" xml:space="preserve">
+    <value>No service token was received as part of the security negotiation.</value>
+  </data>
+  <data name="ProofTokenWasNotWrappedCorrectly" xml:space="preserve">
+    <value>The proof token was not wrapped with the correct algorithm.</value>
+  </data>
+  <data name="RSTRAuthenticatorNotPresent" xml:space="preserve">
+    <value>The authenticator was not present in the server response.</value>
+  </data>
+  <data name="RSTRAuthenticatorIncorrect" xml:space="preserve">
+    <value>The authenticator in the server response was incorrect.</value>
+  </data>
+  <data name="AuthenticatorNotPresentInRSTRCollection" xml:space="preserve">
+    <value>The authenticator RSTR was not found in the RSTR collection.</value>
+  </data>
+  <data name="RSTRAuthenticatorHasBadContext" xml:space="preserve">
+    <value>The authenticator RSTR has a different Context value than the negotiation RSTR.</value>
+  </data>
+  <data name="SpnegoImpersonationLevelCannotBeSetToNone" xml:space="preserve">
+    <value>The impersonation level for SPNEGO negotiation cannot be set to None.</value>
+  </data>
+  <data name="InvalidClientCredentials" xml:space="preserve">
+    <value>The client credentials are not valid.</value>
+  </data>
+  <data name="ChannelDemuxerBindingElementNotFound" xml:space="preserve">
+    <value>The binding does not contain a ChannelDemuxerBindingElement.</value>
+  </data>
+  <data name="NoInputIsSetForCanonicalization" xml:space="preserve">
+    <value>No input is set for writing canonicalized output.</value>
+  </data>
+  <data name="BadKeyEncryptionAlgorithm" xml:space="preserve">
+    <value>Invalid key encryption algorithm {0}.</value>
+  </data>
+  <data name="MissingKeyInfoInEncryptedKey" xml:space="preserve">
+    <value>The KeyInfo clause is missing or empty in EncryptedKey.</value>
+  </data>
+  <data name="EncryptedKeyWasNotEncryptedWithTheRequiredEncryptingToken" xml:space="preserve">
+    <value>The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</value>
+  </data>
+  <data name="UnableToResolveKeyInfoForUnwrappingToken" xml:space="preserve">
+    <value>Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</value>
+  </data>
 </root>

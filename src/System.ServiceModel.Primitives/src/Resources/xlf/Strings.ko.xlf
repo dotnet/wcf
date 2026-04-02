@@ -147,6 +147,16 @@
         <target state="translated">{0}에 대한 계약 형식을 가져오려고 했지만 해당 형식이 ServiceContract가 아니거나 ServiceContract를 상속하지 않습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="AuthenticationOfClientFailed">
+        <source>Authentication of the client by the service failed.</source>
+        <target state="new">Authentication of the client by the service failed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticatorNotPresentInRSTRCollection">
+        <source>The authenticator RSTR was not found in the RSTR collection.</source>
+        <target state="new">The authenticator RSTR was not found in the RSTR collection.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BadCloseTarget">
         <source>The CloseTarget specified '{0}' does not identify the security token that signed the message.</source>
         <target state="translated">지정된 CloseTarget '{0}'이(가) 메시지에 서명한 보안 토큰을 식별하지 않습니다.</target>
@@ -155,6 +165,11 @@
       <trans-unit id="BadIssuedTokenType">
         <source>The issued token is of unexpected type '{0}'. Expected token type '{1}'.</source>
         <target state="translated">발급된 토큰이 예기치 않은 '{0}' 형식입니다. '{1}' 토큰 형식이어야 합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BadKeyEncryptionAlgorithm">
+        <source>Invalid key encryption algorithm {0}.</source>
+        <target state="new">Invalid key encryption algorithm {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BadSecurityNegotiationContext">
@@ -367,6 +382,11 @@
         <target state="translated">동일한 키를 가진 두 개의 항목을 SynchronizedKeyedCollection에 추가할 수 없습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="CannotAuthenticateServer">
+        <source>The security negotiation could not be completed because mutual authentication was not achieved.</source>
+        <target state="new">The security negotiation could not be completed because mutual authentication was not achieved.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="CannotDetectAddressingVersion">
         <source>Cannot detect WS-Addressing version. EndpointReference does not start with an Element.</source>
         <target state="translated">WS-Addressing 버전을 검색할 수 없습니다. EndpointReference가 Element로 시작하지 않습니다.</target>
@@ -435,6 +455,11 @@
       <trans-unit id="CertificateUnsupportedForHttpTransportCredentialOnly">
         <source>Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</source>
         <target state="translated">인증서 기반 클라이언트 인증이 TransportCredentialOnly 보안 모드에서 지원되지 않습니다. Transport 보안 모드를 선택하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelDemuxerBindingElementNotFound">
+        <source>The binding does not contain a ChannelDemuxerBindingElement.</source>
+        <target state="new">The binding does not contain a ChannelDemuxerBindingElement.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryCannotBeUsedToCreateChannels">
@@ -857,6 +882,11 @@
         <target state="translated">바인딩에서 XmlDictionaryReaderQuotas를 가져올 수 없습니다. 사용자 지정 EncodingBindingElement를 지정한 경우 EncodingBindingElement가 GetProperty&lt;T&gt;() 메서드의 XmlDictionaryReaderQuotas를 처리할 수 있는지 확인하세요.</target>
         <note />
       </trans-unit>
+      <trans-unit id="EncryptedKeyWasNotEncryptedWithTheRequiredEncryptingToken">
+        <source>The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</source>
+        <target state="new">The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EndMethodsCannotBeDecoratedWithOperationContractAttribute">
         <source>When using the IAsyncResult design pattern, the End method cannot be decorated with OperationContractAttribute. Only the corresponding Begin method can be decorated with OperationContractAttribute; that attribute will apply to the Begin-End pair of methods. Method '{0}' in type '{1}' violates this.</source>
         <target state="translated">IAsyncResult 디자인 패턴을 사용할 경우 End 메서드를 OperationContractAttribute로 데코레이트할 수 없습니다. 해당 Begin 메서드만 OperationContractAttribute로 데코레이트할 수 있습니다. 해당 특성은 메서드의 Begin-End 쌍에 적용됩니다. 형식 '{1}'의 '{0}' 메서드가 이를 위반합니다.</target>
@@ -970,6 +1000,11 @@
       <trans-unit id="FailToReceiveReplyFromNegotiation">
         <source>Security negotiation failed because the remote party did not send back a reply in a timely manner. This may be because the underlying transport connection was aborted.</source>
         <target state="translated">원격 상대방이 적절한 시간 내에 회신을 보내지 않았기 때문에 보안 협상에 실패했습니다. 이것은 기본 전송 연결이 중단되었기 때문일 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FailedSspiNegotiation">
+        <source>The SSPI negotiation failed with the server.</source>
+        <target state="new">The SSPI negotiation failed with the server.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToCreateTypedProxy">
@@ -1322,6 +1357,11 @@
         <target state="translated">들어오는 이진 협상에 잘못된 ValueType {0}이(가) 있습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="IncorrectSpnOrUpnSpecified">
+        <source>SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</source>
+        <target state="new">SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InnerChannelFactoryWasNotSet">
         <source>Cannot open ChannelFactory as the inner channel factory was not set during the initialization process.</source>
         <target state="translated">내부 채널 팩터리가 초기화 프로세스 도중에 설정되지 않았으므로 ChannelFactory를 열 수 없습니다.</target>
@@ -1370,6 +1410,11 @@
       <trans-unit id="InvalidBufferRemaining">
         <source>An acknowledgement was received indicating the remaining buffer space on the remote endpoint is {0}. This number cannot be less than zero. The reliable session was faulted.</source>
         <target state="translated">원격 끝점의 나머지 버퍼 공간이 {0}(이)라는 것을 나타내는 승인을 수신했습니다. 이 숫자는 0보다 작을 수 없습니다. 신뢰할 수 있는 세션에 오류가 발생했습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidClientCredentials">
+        <source>The client credentials are not valid.</source>
+        <target state="new">The client credentials are not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
@@ -1450,6 +1495,11 @@
       <trans-unit id="InvalidSequenceRange">
         <source>An acknowledgement range starting at {0} and ending at {1} was received. This is an invalid acknowledgement range. The reliable session was faulted.</source>
         <target state="translated">{0}에서 시작하고 {1}에서 끝나는 승인 범위를 수신했습니다. 이것은 잘못된 승인 범위입니다. 신뢰할 수 있는 세션에 오류가 발생했습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidSspiNegotiation">
+        <source>The SSPI negotiation failed.</source>
+        <target state="new">The SSPI negotiation failed.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTokenProvided">
@@ -1862,6 +1912,11 @@
         <target state="translated">원격 끝점에 시퀀스 닫기 요청 메시지에 대한 회신의 최종 승인이 없습니다. 이것은 WS-ReliableMessaging 프로토콜 위반입니다. 신뢰할 수 있는 세션에 오류가 발생했습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="MissingKeyInfoInEncryptedKey">
+        <source>The KeyInfo clause is missing or empty in EncryptedKey.</source>
+        <target state="new">The KeyInfo clause is missing or empty in EncryptedKey.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="MissingMessageID">
         <source>Request Message is missing a MessageID header. One is required to correlate a reply.</source>
         <target state="translated">Request 메시지에 MessageID 헤더가 없습니다. 회신을 상호 연결하려면 이 헤더가 필요합니다.</target>
@@ -2112,6 +2167,16 @@
         <target state="translated">끝점은 단지 WS-ReliableMessaging 프로토콜을 사용하여 메시지를 처리합니다. 끝점에 보내진 메시지가 이 프로토콜에 사용되는 동작 또는 헤더가 없으므로 처리할 수 없습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoBinaryNegoToReceive">
+        <source>Security negotiation failed because no binary negotiation data was received from the other party.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data was received from the other party.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoBinaryNegoToSend">
+        <source>Security negotiation failed because no binary negotiation data is available to send.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data is available to send.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NoChannelBuilderAvailable">
         <source>The binding (Name={0}, Namespace={1}) cannot be used to create a ChannelFactory or a ChannelListener because it appears to be missing a TransportBindingElement.  Every binding must have at least one binding element that derives from TransportBindingElement.</source>
         <target state="translated">TransportBindingElement가 없는 것 같기 때문에 바인딩(이름={0}, 네임스페이스={1})을 사용하여 ChannelFactory 또는 ChannelListener를 만들 수 없습니다. 모든 바인딩은 TransportBindingElement에서 파생되는 최소한 하나 이상의 바인딩 요소를 가져야 합니다.</target>
@@ -2130,6 +2195,11 @@
       <trans-unit id="NoEndMethodFoundForAsyncBeginMethod3">
         <source>OperationContract method '{0}' in type '{1}' does not properly implement the async pattern, as no corresponding method '{2}' could be found. Either provide a method called '{2}' or set the AsyncPattern property on method '{0}' to false.</source>
         <target state="translated">해당 메서드 '{2}'을(를) 찾을 수 없으므로 형식 '{1}'의 OperationContract 메서드 '{0}'이(가) 비동기 패턴을 제대로 구현하지 않습니다. '{2}'(이)라는 메서드를 제공하거나 메서드 '{0}'에서 AsyncPattern 속성을 false로 설정하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoInputIsSetForCanonicalization">
+        <source>No input is set for writing canonicalized output.</source>
+        <target state="new">No input is set for writing canonicalized output.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyIdentifierClauseFound">
@@ -2175,6 +2245,11 @@
       <trans-unit id="NoSecurityContextIdentifier">
         <source>The SecurityContextSecurityToken does not have a context-id.</source>
         <target state="translated">SecurityContextSecurityToken에 context-id가 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoServiceTokenReceived">
+        <source>No service token was received as part of the security negotiation.</source>
+        <target state="new">No service token was received as part of the security negotiation.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoUserNameTokenProvided">
@@ -2332,6 +2407,11 @@
         <target state="translated">이 프라이빗 키에 대한 키 알고리즘은 지원되지 않습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ProofTokenWasNotWrappedCorrectly">
+        <source>The proof token was not wrapped with the correct algorithm.</source>
+        <target state="new">The proof token was not wrapped with the correct algorithm.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PropertySettingErrorOnProtocolFactory">
         <source>The required '{0}' property on the '{1}' security protocol factory is not set or has an invalid value.</source>
         <target state="translated">'{1}' 보안 프로토콜 팩터리의 필수 '{0}' 속성이 설정되지 않았거나 잘못된 값을 가집니다.</target>
@@ -2385,6 +2465,21 @@
       <trans-unit id="PublicKeyNotSupported">
         <source>The key algorithm for this public key is not supported.</source>
         <target state="translated">이 퍼블릭 키에 대한 키 알고리즘은 지원되지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorHasBadContext">
+        <source>The authenticator RSTR has a different Context value than the negotiation RSTR.</source>
+        <target state="new">The authenticator RSTR has a different Context value than the negotiation RSTR.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorIncorrect">
+        <source>The authenticator in the server response was incorrect.</source>
+        <target state="new">The authenticator in the server response was incorrect.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorNotPresent">
+        <source>The authenticator was not present in the server response.</source>
+        <target state="new">The authenticator was not present in the server response.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadNotSupportedOnStream">
@@ -3872,6 +3967,11 @@
         <target state="translated">인코딩에 필요한 공간({0}바이트)이 메시지 프레임 오프셋을 초과합니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SpnegoImpersonationLevelCannotBeSetToNone">
+        <source>The impersonation level for SPNEGO negotiation cannot be set to None.</source>
+        <target state="new">The impersonation level for SPNEGO negotiation cannot be set to None.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StandardsManagerCannotWriteObject">
         <source>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</source>
         <target state="translated">토큰 직렬 변환기가 '{0}'을(를) 직렬화할 수 없습니다. 사용자 지정 형식인 경우에는 사용자 지정 직렬 변환기를 제공해야 합니다.</target>
@@ -4255,6 +4355,11 @@
       <trans-unit id="UnableToResolveKeyInfoClauseInDerivedKeyToken">
         <source>Cannot resolve KeyInfo in derived key token for resolving source token: KeyInfoClause '{0}'.</source>
         <target state="translated">소스 토큰을 확인하기 위해 파생 키 토큰에서 KeyInfo를 확인할 수 없습니다. KeyInfoClause '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveKeyInfoForUnwrappingToken">
+        <source>Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</source>
+        <target state="new">Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyReference">

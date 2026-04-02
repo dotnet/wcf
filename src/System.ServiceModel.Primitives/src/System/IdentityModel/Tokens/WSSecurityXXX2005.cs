@@ -27,6 +27,7 @@ namespace System.IdentityModel.Tokens
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
         {
             PopulateJan2004TokenEntries(tokenEntryList);
+            tokenEntryList.Add(new WSSecurityXXX2005.WrappedKeyTokenEntry());
         }
 
         public override void PopulateKeyIdentifierClauseEntries(IList<KeyIdentifierClauseEntry> clauseEntries)
@@ -35,6 +36,11 @@ namespace System.IdentityModel.Tokens
             SecurityTokenSerializer.PopulateStrEntries(strEntries);
             SecurityTokenReferenceXXX2005ClauseEntry strClause = new SecurityTokenReferenceXXX2005ClauseEntry(SecurityTokenSerializer.EmitBspRequiredAttributes, strEntries);
             clauseEntries.Add(strClause);
+        }
+
+        new class WrappedKeyTokenEntry : WSSecurityJan2004.WrappedKeyTokenEntry
+        {
+            public override string TokenTypeUri { get { return SecurityXXX2005Strings.EncryptedKeyTokenType; } }
         }
 
         private class SecurityTokenReferenceXXX2005ClauseEntry : SecurityTokenReferenceJan2004ClauseEntry

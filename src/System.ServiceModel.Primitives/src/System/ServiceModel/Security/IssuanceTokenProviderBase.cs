@@ -6,8 +6,10 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IdentityModel.Tokens;
 using System.Runtime;
+using System.Security.Cryptography;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -19,9 +21,9 @@ namespace System.ServiceModel.Security
     internal abstract class IssuanceTokenProviderBase<T> : CommunicationObjectSecurityTokenProvider
         where T : IssuanceTokenProviderState
     {
-        internal const string defaultClientMaxTokenCachingTimeString = "10675199.02:48:05.4775807";
-        internal const bool defaultClientCacheTokens = true;
-        internal const int defaultServiceTokenValidityThresholdPercentage = 60;
+        internal const string DefaultClientMaxTokenCachingTimeString = "10675199.02:48:05.4775807";
+        internal const bool DefaultClientCacheTokens = true;
+        internal const int DefaultServiceTokenValidityThresholdPercentage = 60;
 
         // if an issuer is explicitly specified it will be used otherwise target is the issuer
         private EndpointAddress _issuerAddress;
@@ -30,9 +32,9 @@ namespace System.ServiceModel.Security
         private Uri _via = null;
 
         // This controls whether the token provider caches the service tokens it obtains
-        private bool _cacheServiceTokens = defaultClientCacheTokens;
+        private bool _cacheServiceTokens = DefaultClientCacheTokens;
         // This is a fudge factor that controls how long the client can use a service token
-        private int _serviceTokenValidityThresholdPercentage = defaultServiceTokenValidityThresholdPercentage;
+        private int _serviceTokenValidityThresholdPercentage = DefaultServiceTokenValidityThresholdPercentage;
         // the maximum time that the client is willing to cache service tokens
         private TimeSpan _maxServiceTokenCachingTime;
 
@@ -45,8 +47,8 @@ namespace System.ServiceModel.Security
         protected IssuanceTokenProviderBase()
             : base()
         {
-            _cacheServiceTokens = defaultClientCacheTokens;
-            _serviceTokenValidityThresholdPercentage = defaultServiceTokenValidityThresholdPercentage;
+            _cacheServiceTokens = DefaultClientCacheTokens;
+            _serviceTokenValidityThresholdPercentage = DefaultServiceTokenValidityThresholdPercentage;
             _maxServiceTokenCachingTime = DefaultClientMaxTokenCachingTime;
             _standardsManager = null;
         }
@@ -95,7 +97,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                Fx.Assert(TimeSpan.Parse(defaultClientMaxTokenCachingTimeString, CultureInfo.InvariantCulture) == TimeSpan.MaxValue, "TimeSpan value not correct");
+                Fx.Assert(TimeSpan.Parse(DefaultClientMaxTokenCachingTimeString, CultureInfo.InvariantCulture) == TimeSpan.MaxValue, "TimeSpan value not correct");
                 return TimeSpan.MaxValue;
             }
         }
@@ -402,7 +404,7 @@ namespace System.ServiceModel.Security
         protected abstract BodyWriter GetFirstOutgoingMessageBody(T negotiationState, out MessageProperties properties);
         protected abstract BodyWriter GetNextOutgoingMessageBody(Message incomingMessage, T negotiationState);
         protected abstract Task InitializeChannelFactoriesAsync(EndpointAddress target, TimeSpan timeout);
-        protected abstract IAsyncRequestChannel CreateClientChannel(EndpointAddress target, Uri via);
+        protected abstract IRequestChannel CreateClientChannel(EndpointAddress target, Uri via);
 
         private void PrepareRequest(Message nextMessage)
         {
@@ -426,12 +428,12 @@ namespace System.ServiceModel.Security
 
         /*
         *   Negotiation consists of the following steps (some may be async in the async case):
-        *   1. Create negotiation state 
-        *   2. Initialize channel factories 
-        *   3. Create an channel 
+        *   1. Create negotiation state
+        *   2. Initialize channel factories
+        *   3. Create an channel
         *   4. Open the channel
         *   5. Create the next message to send to server
-        *   6. Send the message and get reply 
+        *   6. Send the message and get reply
         *   8. Process incoming message and get next outgoing message.
         *   9. If no outgoing message, then negotiation is over. Go to step 11.
         *   10. Goto step 6
@@ -441,7 +443,8 @@ namespace System.ServiceModel.Security
         {
             ThrowIfClosedOrCreated();
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            IAsyncRequestChannel rstChannel = null;
+            IRequestChannel rstChannel = null;
+            IAsyncRequestChannel rstAsyncChannel = null;
             T negotiationState = null;
             TimeSpan timeLeft = timeout;
             int legs = 1;
@@ -451,7 +454,15 @@ namespace System.ServiceModel.Security
                 InitializeNegotiationState(negotiationState);
                 await InitializeChannelFactoriesAsync(negotiationState.RemoteAddress, timeoutHelper.RemainingTime());
                 rstChannel = CreateClientChannel(negotiationState.RemoteAddress, _via);
-                await rstChannel.OpenAsync(timeoutHelper.RemainingTime());
+                rstAsyncChannel = rstChannel as IAsyncRequestChannel;
+                if (rstAsyncChannel != null)
+                {
+                    await rstAsyncChannel.OpenAsync(timeoutHelper.RemainingTime());
+                }
+                else
+                {
+                    await Task.Factory.FromAsync(rstChannel.BeginOpen, rstChannel.EndOpen, timeoutHelper.RemainingTime(), null);
+                }
                 Message nextOutgoingMessage = null;
                 Message incomingMessage = null;
                 SecurityToken serviceToken = null;
@@ -468,7 +479,15 @@ namespace System.ServiceModel.Security
                         using (nextOutgoingMessage)
                         {
                             timeLeft = timeoutHelper.RemainingTime();
-                            incomingMessage = await rstChannel.RequestAsync(nextOutgoingMessage, timeLeft);
+                            if (rstAsyncChannel != null)
+                            {
+                                incomingMessage = await rstAsyncChannel.RequestAsync(nextOutgoingMessage, timeLeft);
+                            }
+                            else
+                            {
+                                incomingMessage = await Task.Factory.FromAsync(rstChannel.BeginRequest, rstChannel.EndRequest, nextOutgoingMessage, timeout, null);
+                            }
+
                             if (incomingMessage == null)
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(SRP.FailToReceiveReplyFromNegotiation));

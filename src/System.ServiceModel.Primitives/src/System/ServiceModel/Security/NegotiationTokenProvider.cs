@@ -16,7 +16,7 @@ namespace System.ServiceModel.Security
     internal abstract class NegotiationTokenProvider<T> : IssuanceTokenProviderBase<T>
         where T : IssuanceTokenProviderState
     {
-        private IChannelFactory<IAsyncRequestChannel> _rstChannelFactory;
+        private IChannelFactory<IRequestChannel> _rstChannelFactory;
         private bool _requiresManualReplyAddressing;
         private BindingContext _issuanceBindingContext;
         private MessageVersion _messageVersion;
@@ -107,17 +107,17 @@ namespace System.ServiceModel.Security
             await base.OnOpenAsync(timeoutHelper.RemainingTime());
         }
 
-        protected abstract IChannelFactory<IAsyncRequestChannel> GetNegotiationChannelFactory(IChannelFactory<IAsyncRequestChannel> transportChannelFactory, ChannelBuilder channelBuilder);
+        protected abstract IChannelFactory<IRequestChannel> GetNegotiationChannelFactory(IChannelFactory<IRequestChannel> transportChannelFactory, ChannelBuilder channelBuilder);
 
         private void SetupRstChannelFactory()
         {
-            IChannelFactory<IAsyncRequestChannel> innerChannelFactory = null;
+            IChannelFactory<IRequestChannel> innerChannelFactory = null;
             ChannelBuilder channelBuilder = new ChannelBuilder(IssuerBindingContext.Clone(), true);
             // if the underlying transport does not support request/reply, wrap it inside
             // a service channel factory.
-            if (channelBuilder.CanBuildChannelFactory<IAsyncRequestChannel>())
+            if (channelBuilder.CanBuildChannelFactory<IRequestChannel>())
             {
-                innerChannelFactory = channelBuilder.BuildChannelFactory<IAsyncRequestChannel>();
+                innerChannelFactory = channelBuilder.BuildChannelFactory<IRequestChannel>();
                 _requiresManualReplyAddressing = true;
             }
             else
@@ -153,7 +153,7 @@ namespace System.ServiceModel.Security
             return Task.CompletedTask;
         }
 
-        protected override IAsyncRequestChannel CreateClientChannel(EndpointAddress target, Uri via)
+        protected override IRequestChannel CreateClientChannel(EndpointAddress target, Uri via)
         {
             if (via != null)
             {

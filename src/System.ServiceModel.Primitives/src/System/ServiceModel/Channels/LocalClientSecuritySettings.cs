@@ -230,12 +230,12 @@ namespace System.ServiceModel.Channels
             ReplayWindow = SecurityProtocolFactory.defaultReplayWindow;
             MaxClockSkew = SecurityProtocolFactory.defaultMaxClockSkew;
             TimestampValidityDuration = SecurityProtocolFactory.defaultTimestampValidityDuration;
-            CacheCookies = IssuanceTokenProviderBase<IssuanceTokenProviderState>.defaultClientCacheTokens;
+            CacheCookies = IssuanceTokenProviderBase<IssuanceTokenProviderState>.DefaultClientCacheTokens;
             MaxCookieCachingTime = IssuanceTokenProviderBase<IssuanceTokenProviderState>.DefaultClientMaxTokenCachingTime;
             SessionKeyRenewalInterval = SecuritySessionClientSettings.s_defaultKeyRenewalInterval;
             SessionKeyRolloverInterval = SecuritySessionClientSettings.s_defaultKeyRolloverInterval;
             ReconnectTransportOnFailure = SecuritySessionClientSettings.DefaultTolerateTransportFailures;
-            CookieRenewalThresholdPercentage = AcceleratedTokenProvider.defaultServiceTokenValidityThresholdPercentage;
+            CookieRenewalThresholdPercentage = AcceleratedTokenProvider.DefaultServiceTokenValidityThresholdPercentage;
             IdentityVerifier = IdentityVerifier.CreateDefault();
             NonceCache = null;
         }

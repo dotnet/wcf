@@ -35,6 +35,7 @@ namespace System.ServiceModel.Security
         private object _appliesTo;
         private DataContractSerializer _appliesToSerializer;
         private Type _appliesToType;
+        private Action<ChannelBinding> _onGetBinaryNegotiation;
 #pragma warning restore CS0649 // Field is never assign to
 
         private object _thisLock = new Object();
@@ -362,8 +363,28 @@ namespace System.ServiceModel.Security
             {
                 return _standardsManager.TrustDriver.GetBinaryNegotiation(this);
             }
+            else if (_negotiationData == null && _onGetBinaryNegotiation != null)
+            {
+                _onGetBinaryNegotiation(GetChannelBinding());
+            }
 
             return _negotiationData;
+        }
+
+        internal void SetBinaryNegotiation(BinaryNegotiation negotiationData)
+        {
+            if (IsReadOnly)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.ObjectIsReadOnly));
+            }
+
+            _negotiationData = negotiationData ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(negotiationData));
+        }
+
+        internal Action<ChannelBinding> OnGetBinaryNegotiation
+        {
+            get { return _onGetBinaryNegotiation; }
+            set { _onGetBinaryNegotiation = value; }
         }
 
         public SecurityToken GetRequestorEntropy()

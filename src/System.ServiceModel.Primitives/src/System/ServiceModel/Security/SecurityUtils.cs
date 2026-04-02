@@ -18,6 +18,7 @@ using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security.Tokens;
 using System.Threading;
@@ -341,7 +342,7 @@ namespace System.ServiceModel.Security
         internal static byte[] GenerateDerivedKey(SecurityToken tokenToDerive, string derivationAlgorithm, byte[] label, byte[] nonce,
             int keySize, int offset)
         {
-            SymmetricSecurityKey symmetricSecurityKey = SecurityUtils.GetSecurityKey<SymmetricSecurityKey>(tokenToDerive);
+            SymmetricSecurityKey symmetricSecurityKey = GetSecurityKey<SymmetricSecurityKey>(tokenToDerive);
             if (symmetricSecurityKey == null || !symmetricSecurityKey.IsSupportedAlgorithm(derivationAlgorithm))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SRP.Format(SRP.CannotFindMatchingCrypto, derivationAlgorithm)));
@@ -439,7 +440,7 @@ namespace System.ServiceModel.Security
             claims.Add(primaryPrincipal);
 
             List<IAuthorizationPolicy> policies = new List<IAuthorizationPolicy>(1);
-            policies.Add(new UnconditionalPolicy(SecurityUtils.CreateIdentity(principalName), new DefaultClaimSet(ClaimSet.Anonymous, claims)));
+            policies.Add(new UnconditionalPolicy(CreateIdentity(principalName), new DefaultClaimSet(ClaimSet.Anonymous, claims)));
             return policies.AsReadOnly();
         }
 
@@ -1040,6 +1041,114 @@ namespace System.ServiceModel.Security
         {
             // Check that Dispose() and Reset() do the same thing
             certificate.Dispose();
+        }
+
+        internal static NetworkCredential GetCredentials(Binding binding, ClientCredentials clientCredentials)
+        {
+            SecurityBindingElement sbe = (binding == null) ? null : binding.CreateBindingElements().Find<SecurityBindingElement>();
+            return GetCredentials(sbe, clientCredentials);
+        }
+
+        internal static NetworkCredential GetCredentials(SecurityBindingElement sbe, BindingContext context)
+        {
+            ClientCredentials clientCredentials = (context == null) ? null : context.BindingParameters.Find<ClientCredentials>();
+            return GetCredentials(sbe, clientCredentials);
+        }
+
+        internal static NetworkCredential GetCredentials(SecurityBindingElement sbe, ClientCredentials clientCredentials)
+        {
+            if (sbe == null)
+            {
+                return null;
+            }
+
+            bool isSspi = false;
+            foreach (SecurityTokenParameters stp in new SecurityTokenParametersEnumerable(sbe, true))
+            {
+                if (stp is SecureConversationSecurityTokenParameters)
+                {
+                    NetworkCredential result = GetCredentials(((SecureConversationSecurityTokenParameters)stp).BootstrapSecurityBindingElement, clientCredentials);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    continue;
+                }
+                else if (stp is IssuedSecurityTokenParameters)
+                {
+                    NetworkCredential result = GetCredentials(((IssuedSecurityTokenParameters)stp).IssuerBinding, clientCredentials);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    continue;
+                }
+                else if (stp is SspiSecurityTokenParameters)
+                {
+                    isSspi = true;
+                    break;
+                }
+            }
+            if (!isSspi)
+            {
+                return null;
+            }
+
+            NetworkCredential credential = null;
+            if (clientCredentials != null)
+            {
+                credential = GetNetworkCredentialOrDefault(clientCredentials.Windows.ClientCredential);
+            }
+            else
+            {
+                credential = CredentialCache.DefaultNetworkCredentials;
+            }
+
+            return credential;
+        }
+
+        internal static byte[] EncryptKey(SecurityToken wrappingToken, string encryptionMethod, byte[] keyToWrap)
+        {
+            SecurityKey wrappingSecurityKey = null;
+            if (wrappingToken.SecurityKeys != null)
+            {
+                for (int i = 0; i < wrappingToken.SecurityKeys.Count; ++i)
+                {
+                    if (wrappingToken.SecurityKeys[i].IsSupportedAlgorithm(encryptionMethod))
+                    {
+                        wrappingSecurityKey = wrappingToken.SecurityKeys[i];
+                        break;
+                    }
+                }
+            }
+            if (wrappingSecurityKey == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRP.Format(SRP.CannotFindMatchingCrypto, encryptionMethod));
+            }
+
+            return wrappingSecurityKey.EncryptKey(encryptionMethod, keyToWrap);
+        }
+
+        internal static byte[] DecryptKey(SecurityToken unwrappingToken, string encryptionMethod, byte[] wrappedKey, out SecurityKey unwrappingSecurityKey)
+        {
+            unwrappingSecurityKey = null;
+            if (unwrappingToken.SecurityKeys != null)
+            {
+                for (int i = 0; i < unwrappingToken.SecurityKeys.Count; ++i)
+                {
+                    if (unwrappingToken.SecurityKeys[i].IsSupportedAlgorithm(encryptionMethod))
+                    {
+                        unwrappingSecurityKey = unwrappingToken.SecurityKeys[i];
+                        break;
+                    }
+                }
+            }
+            if (unwrappingSecurityKey == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SRP.Format(SRP.CannotFindMatchingCrypto, encryptionMethod)));
+            }
+
+            return unwrappingSecurityKey.DecryptKey(encryptionMethod, wrappedKey);
         }
     }
 

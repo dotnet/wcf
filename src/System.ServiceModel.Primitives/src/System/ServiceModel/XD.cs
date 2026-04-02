@@ -11,7 +11,7 @@ namespace System.ServiceModel
     // Static Xml Dictionary
     internal static class XD
     {
-        static public ServiceModelDictionary Dictionary { get { return ServiceModelDictionary.CurrentVersion; } }
+        public static ServiceModelDictionary Dictionary { get { return ServiceModelDictionary.CurrentVersion; } }
 
         private static ActivityIdFlowDictionary s_activityIdFlowDictionary;
         private static AddressingDictionary s_addressingDictionary;
@@ -26,12 +26,13 @@ namespace System.ServiceModel
         private static SecurityAlgorithmDictionary s_securityAlgorithmDictionary;
         private static SecurityJan2004Dictionary s_securityJan2004Dictionary;
         private static SecurityXXX2005Dictionary s_securityXXX2005Dictionary;
+        private static TrustApr2004Dictionary s_trustApr2004Dictionary;
         private static TrustFeb2005Dictionary s_trustFeb2005Dictionary;
         private static UtilityDictionary s_utilityDictionary;
         private static WsrmFeb2005Dictionary s_wsrmFeb2005Dictionary;
         private static XmlSignatureDictionary s_xmlSignatureDictionary;
 
-        static public ActivityIdFlowDictionary ActivityIdFlowDictionary
+        public static ActivityIdFlowDictionary ActivityIdFlowDictionary
         {
             get
             {
@@ -44,7 +45,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public AddressingDictionary AddressingDictionary
+        public static AddressingDictionary AddressingDictionary
         {
             get
             {
@@ -57,7 +58,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public Addressing10Dictionary Addressing10Dictionary
+        public static Addressing10Dictionary Addressing10Dictionary
         {
             get
             {
@@ -70,7 +71,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public Addressing200408Dictionary Addressing200408Dictionary
+        public static Addressing200408Dictionary Addressing200408Dictionary
         {
             get
             {
@@ -83,7 +84,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public AddressingNoneDictionary AddressingNoneDictionary
+        public static AddressingNoneDictionary AddressingNoneDictionary
         {
             get
             {
@@ -96,7 +97,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public DotNetSecurityDictionary DotNetSecurityDictionary
+        public static DotNetSecurityDictionary DotNetSecurityDictionary
         {
             get
             {
@@ -106,7 +107,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public MessageDictionary MessageDictionary
+        public static MessageDictionary MessageDictionary
         {
             get
             {
@@ -119,7 +120,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public Message11Dictionary Message11Dictionary
+        public static Message11Dictionary Message11Dictionary
         {
             get
             {
@@ -132,7 +133,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public Message12Dictionary Message12Dictionary
+        public static Message12Dictionary Message12Dictionary
         {
             get
             {
@@ -145,7 +146,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public SecureConversationFeb2005Dictionary SecureConversationFeb2005Dictionary
+        public static SecureConversationFeb2005Dictionary SecureConversationFeb2005Dictionary
         {
             get
             {
@@ -158,7 +159,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public SecurityAlgorithmDictionary SecurityAlgorithmDictionary
+        public static SecurityAlgorithmDictionary SecurityAlgorithmDictionary
         {
             get
             {
@@ -171,7 +172,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public SecurityJan2004Dictionary SecurityJan2004Dictionary
+        public static SecurityJan2004Dictionary SecurityJan2004Dictionary
         {
             get
             {
@@ -184,7 +185,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public SecurityXXX2005Dictionary SecurityXXX2005Dictionary
+        public static SecurityXXX2005Dictionary SecurityXXX2005Dictionary
         {
             get
             {
@@ -197,7 +198,20 @@ namespace System.ServiceModel
             }
         }
 
-        static public TrustFeb2005Dictionary TrustFeb2005Dictionary
+        public static TrustApr2004Dictionary TrustApr2004Dictionary
+        {
+            get
+            {
+                if (s_trustApr2004Dictionary == null)
+                {
+                    s_trustApr2004Dictionary = new TrustApr2004Dictionary(Dictionary);
+                }
+
+                return s_trustApr2004Dictionary;
+            }
+        }
+
+        public static TrustFeb2005Dictionary TrustFeb2005Dictionary
         {
             get
             {
@@ -210,7 +224,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public UtilityDictionary UtilityDictionary
+        public static UtilityDictionary UtilityDictionary
         {
             get
             {
@@ -223,7 +237,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public WsrmFeb2005Dictionary WsrmFeb2005Dictionary
+        public static WsrmFeb2005Dictionary WsrmFeb2005Dictionary
         {
             get
             {
@@ -233,7 +247,7 @@ namespace System.ServiceModel
             }
         }
 
-        static public XmlSignatureDictionary XmlSignatureDictionary
+        public static XmlSignatureDictionary XmlSignatureDictionary
         {
             get
             {
@@ -709,6 +723,57 @@ namespace System.ServiceModel
 
         public TrustDictionary(ServiceModelDictionary dictionary)
         {
+        }
+    }
+
+    internal class TrustApr2004Dictionary : TrustDictionary
+    {
+        public TrustApr2004Dictionary(ServiceModelDictionary dictionary)
+            : base(dictionary)
+        {
+            CombinedHashLabel = dictionary.CreateString(ServiceModelStringsVersion1.String194, 194);
+            RequestSecurityTokenResponse = dictionary.CreateString(ServiceModelStringsVersion1.String195, 195);
+            TokenType = dictionary.CreateString(ServiceModelStringsVersion1.String187, 187);
+            KeySize = dictionary.CreateString(ServiceModelStringsVersion1.String196, 196);
+            RequestedTokenReference = dictionary.CreateString(ServiceModelStringsVersion1.String197, 197);
+            AppliesTo = dictionary.CreateString(ServiceModelStringsVersion1.String198, 198);
+            Authenticator = dictionary.CreateString(ServiceModelStringsVersion1.String199, 199);
+            CombinedHash = dictionary.CreateString(ServiceModelStringsVersion1.String200, 200);
+            BinaryExchange = dictionary.CreateString(ServiceModelStringsVersion1.String201, 201);
+            Lifetime = dictionary.CreateString(ServiceModelStringsVersion1.String202, 202);
+            RequestedSecurityToken = dictionary.CreateString(ServiceModelStringsVersion1.String203, 203);
+            Entropy = dictionary.CreateString(ServiceModelStringsVersion1.String204, 204);
+            RequestedProofToken = dictionary.CreateString(ServiceModelStringsVersion1.String205, 205);
+            ComputedKey = dictionary.CreateString(ServiceModelStringsVersion1.String206, 206);
+            RequestSecurityToken = dictionary.CreateString(ServiceModelStringsVersion1.String207, 207);
+            RequestType = dictionary.CreateString(ServiceModelStringsVersion1.String208, 208);
+            RequestSecurityTokenResponseCollection = dictionary.CreateString(ServiceModelStringsVersion1.String62, 62);
+            Context = dictionary.CreateString(ServiceModelStringsVersion1.String209, 209);
+            BinarySecret = dictionary.CreateString(ServiceModelStringsVersion1.String210, 210);
+            Type = dictionary.CreateString(ServiceModelStringsVersion1.String59, 59);
+            SpnegoValueTypeUri = dictionary.CreateString(ServiceModelStringsVersion1.String211, 211);
+            TlsnegoValueTypeUri = dictionary.CreateString(ServiceModelStringsVersion1.String212, 212);
+            Prefix = dictionary.CreateString(ServiceModelStringsVersion1.String213, 213);
+            Namespace = dictionary.CreateString(ServiceModelStringsVersion1.String214, 214);
+            RequestSecurityTokenIssuance = dictionary.CreateString(ServiceModelStringsVersion1.String215, 215);
+            RequestSecurityTokenIssuanceResponse = dictionary.CreateString(ServiceModelStringsVersion1.String216, 216);
+            RequestTypeIssue = dictionary.CreateString(ServiceModelStringsVersion1.String217, 217);
+            Psha1ComputedKeyUri = dictionary.CreateString(ServiceModelStringsVersion1.String218, 218);
+            SymmetricKeyBinarySecret = dictionary.CreateString(ServiceModelStringsVersion1.String219, 219);
+            NonceBinarySecret = dictionary.CreateString(ServiceModelStringsVersion1.String220, 220);
+            KeyType = dictionary.CreateString(ServiceModelStringsVersion1.String221, 221);
+            SymmetricKeyType = dictionary.CreateString(ServiceModelStringsVersion1.String222, 222);
+            PublicKeyType = dictionary.CreateString(ServiceModelStringsVersion1.String223, 223);
+            Claims = dictionary.CreateString(ServiceModelStringsVersion1.String224, 224);
+            InvalidRequestFaultCode = dictionary.CreateString(ServiceModelStringsVersion1.String225, 225);
+            FailedAuthenticationFaultCode = dictionary.CreateString(ServiceModelStringsVersion1.String182, 182);
+            RequestFailedFaultCode = dictionary.CreateString(ServiceModelStringsVersion1.String226, 226);
+            SignWith = dictionary.CreateString(ServiceModelStringsVersion1.String227, 227);
+            EncryptWith = dictionary.CreateString(ServiceModelStringsVersion1.String228, 228);
+            EncryptionAlgorithm = dictionary.CreateString(ServiceModelStringsVersion1.String229, 229);
+            CanonicalizationAlgorithm = dictionary.CreateString(ServiceModelStringsVersion1.String230, 230);
+            ComputedKeyAlgorithm = dictionary.CreateString(ServiceModelStringsVersion1.String231, 231);
+            UseKey = dictionary.CreateString(ServiceModelStringsVersion1.String232, 232);
         }
     }
 

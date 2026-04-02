@@ -16,12 +16,12 @@ namespace System.ServiceModel.Channels
 {
     public abstract class SecurityBindingElement : BindingElement
     {
-        internal static readonly SecurityAlgorithmSuite defaultDefaultAlgorithmSuite = SecurityAlgorithmSuite.Default;
-        internal const bool defaultIncludeTimestamp = true;
-        internal const bool defaultAllowInsecureTransport = false;
-        internal const bool defaultRequireSignatureConfirmation = false;
-        internal const bool defaultEnableUnsecuredResponse = false;
-        internal const bool defaultProtectTokens = false;
+        internal static readonly SecurityAlgorithmSuite s_defaultDefaultAlgorithmSuite = SecurityAlgorithmSuite.Default;
+        internal const bool DefaultIncludeTimestamp = true;
+        internal const bool DefaultAllowInsecureTransport = false;
+        internal const bool DefaultRequireSignatureConfirmation = false;
+        internal const bool DefaultEnableUnsecuredResponse = false;
+        internal const bool DefaultProtectTokens = false;
 
         private SecurityAlgorithmSuite _defaultAlgorithmSuite;
         private SecurityKeyEntropyMode _keyEntropyMode;
@@ -29,15 +29,15 @@ namespace System.ServiceModel.Channels
         private Dictionary<string, SupportingTokenParameters> _optionalOperationSupportingTokenParameters;
         private MessageSecurityVersion _messageSecurityVersion;
         private SecurityHeaderLayout _securityHeaderLayout;
-        private bool _protectTokens = defaultProtectTokens;
+        private bool _protectTokens = DefaultProtectTokens;
 
         internal SecurityBindingElement()
             : base()
         {
             _messageSecurityVersion = MessageSecurityVersion.Default;
-            _keyEntropyMode = AcceleratedTokenProvider.defaultKeyEntropyMode;
-            IncludeTimestamp = defaultIncludeTimestamp;
-            _defaultAlgorithmSuite = defaultDefaultAlgorithmSuite;
+            _keyEntropyMode = AcceleratedTokenProvider.DefaultKeyEntropyMode;
+            IncludeTimestamp = DefaultIncludeTimestamp;
+            _defaultAlgorithmSuite = s_defaultDefaultAlgorithmSuite;
             LocalClientSettings = new LocalClientSecuritySettings();
             EndpointSupportingTokenParameters = new SupportingTokenParameters();
             OptionalEndpointSupportingTokenParameters = new SupportingTokenParameters();
@@ -66,13 +66,13 @@ namespace System.ServiceModel.Channels
             {
                 _operationSupportingTokenParameters[key] = elementToBeCloned._operationSupportingTokenParameters[key].Clone();
             }
-            
+
             _optionalOperationSupportingTokenParameters = new Dictionary<string, SupportingTokenParameters>();
             foreach (string key in elementToBeCloned._optionalOperationSupportingTokenParameters.Keys)
             {
                 _optionalOperationSupportingTokenParameters[key] = elementToBeCloned._optionalOperationSupportingTokenParameters[key].Clone();
             }
-            
+
             LocalClientSettings = elementToBeCloned.LocalClientSettings.Clone();
             MaxReceivedMessageSize = elementToBeCloned.MaxReceivedMessageSize;
             ReaderQuotas = elementToBeCloned.ReaderQuotas;
@@ -214,7 +214,10 @@ namespace System.ServiceModel.Channels
 
         protected static void SetIssuerBindingContextIfRequired(SecurityTokenParameters parameters, BindingContext issuerBindingContext)
         {
-            // Only needed for SslSecurityTokenParameters and SspiSecurityTokenParameters which aren't supported
+            if (parameters is SspiSecurityTokenParameters sspiParameters)
+            {
+                sspiParameters.IssuerBindingContext = CreateIssuerBindingContextForNegotiation(issuerBindingContext); ;
+            }
         }
 
         private static void SetIssuerBindingContextIfRequired(SupportingTokenParameters supportingParameters, BindingContext issuerBindingContext)
@@ -461,6 +464,37 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        private static BindingContext CreateIssuerBindingContextForNegotiation(BindingContext issuerBindingContext)
+        {
+            TransportBindingElement transport = issuerBindingContext.RemainingBindingElements.Find<TransportBindingElement>();
+            if (transport == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.TransportBindingElementNotFound));
+            }
+            ChannelDemuxerBindingElement demuxer = null;
+            // pick the demuxer above transport (i.e. the last demuxer in the array)
+            for (int i = 0; i < issuerBindingContext.RemainingBindingElements.Count; ++i)
+            {
+                if (issuerBindingContext.RemainingBindingElements[i] is ChannelDemuxerBindingElement)
+                {
+                    demuxer = (ChannelDemuxerBindingElement)issuerBindingContext.RemainingBindingElements[i];
+                }
+            }
+            if (demuxer == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.ChannelDemuxerBindingElementNotFound));
+            }
+            BindingElementCollection negotiationBindingElements = [demuxer.Clone(), transport.Clone()];
+            CustomBinding binding = new CustomBinding(negotiationBindingElements)
+            {
+                OpenTimeout = issuerBindingContext.Binding.OpenTimeout,
+                CloseTimeout = issuerBindingContext.Binding.CloseTimeout,
+                SendTimeout = issuerBindingContext.Binding.SendTimeout,
+                ReceiveTimeout = issuerBindingContext.Binding.ReceiveTimeout
+            };
+            return new BindingContext(binding, new BindingParameterCollection(issuerBindingContext.BindingParameters));
+        }
+
         internal void ApplyPropertiesOnDemuxer(ChannelBuilder builder, BindingContext context)
         {
             // Only used for services
@@ -531,6 +565,22 @@ namespace System.ServiceModel.Channels
             //result.LocalServiceSettings.DetectReplays = false;
             result.MessageSecurityVersion = version;
 
+            return result;
+        }
+
+        static public TransportSecurityBindingElement CreateSspiNegotiationOverTransportBindingElement()
+        {
+            return CreateSspiNegotiationOverTransportBindingElement(true);
+        }
+
+        static public TransportSecurityBindingElement CreateSspiNegotiationOverTransportBindingElement(bool requireCancellation)
+        {
+            TransportSecurityBindingElement result = new TransportSecurityBindingElement();
+            SspiSecurityTokenParameters sspiParameters = new SspiSecurityTokenParameters(requireCancellation);
+            sspiParameters.RequireDerivedKeys = false;
+            result.EndpointSupportingTokenParameters.Endorsing.Add(sspiParameters);
+            result.IncludeTimestamp = true;
+            result.LocalClientSettings.DetectReplays = false;
             return result;
         }
 
