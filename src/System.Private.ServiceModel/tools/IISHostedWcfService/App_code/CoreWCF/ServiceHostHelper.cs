@@ -9,6 +9,11 @@ namespace WcfService
 {
     public class ServiceHostHelper
     {
+        private static string GetTestHostUrl(string resource)
+        {
+            return new Uri(new Uri(TestDefinitionHelper.BaseAddresses[ServiceSchema.HTTP] + "/"), $"TestHost.svc/{resource}").ToString();
+        }
+
         public static async Task<bool> PingAsync(string url)
         {
             Console.WriteLine("Ping service host...");
@@ -72,7 +77,7 @@ namespace WcfService
 
         public static async Task ServiceBootstrap()
         {
-            _ = await ShutdownServiceAsync("http://localhost:8081/TestHost.svc/shutdown");
+            _ = await ShutdownServiceAsync(GetTestHostUrl("shutdown"));
 
             string processArgs = "";
             if (Process.GetCurrentProcess().ProcessName == "dotnet")
@@ -99,7 +104,7 @@ namespace WcfService
             Console.WriteLine($"Starting process in the background: {Path.GetFileName(process.ProcessName)}, ID: {process.Id}.");
 
             // Ping to make sure the service is started
-            bool result = await PingAsync("http://localhost:8081/TestHost.svc/Ping");
+            bool result = await PingAsync(GetTestHostUrl("Ping"));
             if (result)
             {
                 Environment.Exit(0);

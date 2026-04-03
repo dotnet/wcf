@@ -216,7 +216,7 @@ namespace System.ServiceModel.Channels
         {
             if (parameters is SspiSecurityTokenParameters sspiParameters)
             {
-                sspiParameters.IssuerBindingContext = CreateIssuerBindingContextForNegotiation(issuerBindingContext); ;
+                sspiParameters.IssuerBindingContext = CreateIssuerBindingContextForNegotiation(issuerBindingContext);
             }
         }
 

@@ -41,7 +41,7 @@ Machine certificates get installed into the machine My store
 
 A certificate revocation list is generated every time certificates are generated; the CRL is valid for the duration of the CA certificate. 
 
-Each certificate generated has a CRL Distribution Point of _base_address_/Crl - this is automatically set up when run using the scripts above, but if not using the scripts, then the endpoint need to be set up accordingly so that the CRL can be accessed. If this is not set up, certificates may fail to validate due to the CRL being inaccessible 
+Each certificate generated has a CRL Distribution Point of _base_address_/Crl. By default the CertificateGenerator uses HTTP port 80, but it can also be given an explicit HTTP port for hosting scenarios such as CoreWCF on Kestrel where port sharing is not available. This is automatically set up when run using the scripts above, but if not using the scripts, then the endpoint needs to be set up accordingly so that the CRL can be accessed. If this is not set up, certificates may fail to validate due to the CRL being inaccessible.
 
 ## Certificate validity
 

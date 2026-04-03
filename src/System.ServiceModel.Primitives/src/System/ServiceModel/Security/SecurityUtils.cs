@@ -1063,7 +1063,7 @@ namespace System.ServiceModel.Security
             }
 
             bool isSspi = false;
-            foreach (SecurityTokenParameters stp in new SecurityTokenParametersEnumerable(sbe, true))
+            foreach (SecurityTokenParameters stp in new SecurityTokenParametersEnumerable(sbe))
             {
                 if (stp is SecureConversationSecurityTokenParameters)
                 {

@@ -562,6 +562,11 @@ public static class ServiceUtilHelper
 
     private static string GetResourceAddress(string resource, string protocol = "http")
     {
+        if (ConditionalTestDetectors.IsRunWithCoreWCFService())
+        {
+            return new Uri(BuildBaseUri(protocol), $"{TestHostUtilitiesService}/{resource}").ToString();
+        }
+
         string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
         return string.Format(@"{0}://{1}/{2}/{3}", protocol, host, TestHostUtilitiesService, resource);
     }

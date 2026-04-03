@@ -485,7 +485,7 @@ namespace System.ServiceModel.Security
                             }
                             else
                             {
-                                incomingMessage = await Task.Factory.FromAsync(rstChannel.BeginRequest, rstChannel.EndRequest, nextOutgoingMessage, timeout, null);
+                                incomingMessage = await Task.Factory.FromAsync(rstChannel.BeginRequest, rstChannel.EndRequest, nextOutgoingMessage, timeLeft, null);
                             }
 
                             if (incomingMessage == null)

@@ -21,7 +21,7 @@ namespace System.ServiceModel.Security
 
         protected override bool IsReaderAtReferenceList(XmlDictionaryReader reader)
         {
-            return reader.IsStartElement(IdentityModel.XD.XmlEncryptionDictionary.ReferenceList, IdentityModel.XD.XmlEncryptionDictionary.ReferenceList);
+            return reader.IsStartElement(IdentityModel.XD.XmlEncryptionDictionary.ReferenceList, IdentityModel.XD.XmlEncryptionDictionary.Namespace);
         }
 
         protected override bool IsReaderAtSignature(XmlDictionaryReader reader)

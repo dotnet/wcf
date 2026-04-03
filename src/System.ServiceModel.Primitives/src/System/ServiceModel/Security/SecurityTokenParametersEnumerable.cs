@@ -10,15 +10,11 @@ namespace System.ServiceModel.Security
     class SecurityTokenParametersEnumerable : IEnumerable<SecurityTokenParameters>
     {
         SecurityBindingElement _sbe;
-        bool _clientTokensOnly;
 
-        public SecurityTokenParametersEnumerable(SecurityBindingElement sbe) : this(sbe, false) { }
-
-        public SecurityTokenParametersEnumerable(SecurityBindingElement sbe, bool clientTokensOnly)
+        public SecurityTokenParametersEnumerable(SecurityBindingElement sbe)
         {
             if (sbe == null) throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(sbe));
             _sbe = sbe;
-            _clientTokensOnly = clientTokensOnly;
         }
 
         public IEnumerator<SecurityTokenParameters> GetEnumerator()
