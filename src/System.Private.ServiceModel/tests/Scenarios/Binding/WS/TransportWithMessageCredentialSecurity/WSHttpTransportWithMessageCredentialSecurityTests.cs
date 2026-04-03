@@ -111,7 +111,8 @@ public class WSHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfT
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Root_Certificate_Installed),
-               nameof(SSL_Available))]
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void Https_SecModeTransWithMessCred_WindowsClientCredential_Succeeds()
     {
@@ -151,7 +152,8 @@ public class WSHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfT
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Root_Certificate_Installed),
-               nameof(SSL_Available))]
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void Https_SecModeTransWithMessCred_WindowsClientCredential_NoSecureConversation_Succeeds()
     {

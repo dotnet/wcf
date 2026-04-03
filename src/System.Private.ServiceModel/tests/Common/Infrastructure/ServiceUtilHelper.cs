@@ -494,7 +494,7 @@ public static class ServiceUtilHelper
         try
         {
             string serviceUri = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
-            
+
             // Split ServiceUri into host and path components
             // ServiceUri can be "hostname" or "hostname/path"
             int pathSeparatorIndex = serviceUri.IndexOf('/');
@@ -502,20 +502,20 @@ public static class ServiceUtilHelper
             {
                 builder.Host = serviceUri.Substring(0, pathSeparatorIndex);
                 string path = serviceUri.Substring(pathSeparatorIndex);
-                
+
                 // Ensure path has trailing slash
                 if (!path.EndsWith("/"))
                 {
                     path = path + "/";
                 }
-                
+
                 builder.Path = path;
             }
             else
             {
                 builder.Host = serviceUri;
             }
-            
+
             builder.Scheme = protocol;
 
             if (!IISHosted)
@@ -562,8 +562,8 @@ public static class ServiceUtilHelper
 
     private static string GetResourceAddress(string resource, string protocol = "http")
     {
-        var baseUri = BuildBaseUri(protocol);
-        return new Uri(baseUri, $"{TestHostUtilitiesService}/{resource}").ToString();
+        string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+        return string.Format(@"{0}://{1}/{2}/{3}", protocol, host, TestHostUtilitiesService, resource);
     }
 
     public static string GetResourceFromServiceAsString(string resource)

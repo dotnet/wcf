@@ -34,6 +34,7 @@
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\ReliableSessionTestServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\Saml2IssuedTokenTestServiceHost.cs" />
     <Compile Remove="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsWindowsTestServiceHost.cs" />
+    <Compile Remove="..\IISHostedWcfService\App_code\testhosts\TcpTransportSecurityMessageCredentialsWindowsTestServiceHost.cs" />
 
     <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\AcceptAnyUsernameSecurityTokenHandler.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\Federation\FederationSTSServiceHost.cs" />
@@ -44,6 +45,7 @@
     <None Include="..\IISHostedWcfService\App_code\testhosts\ReliableSessionTestServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\Saml2IssuedTokenTestServiceHost.cs" />
     <None Include="..\IISHostedWcfService\App_code\testhosts\HttpsTransportSecurityMessageCredentialsWindowsTestServiceHost.cs" />
+    <None Include="..\IISHostedWcfService\App_code\testhosts\TcpTransportSecurityMessageCredentialsWindowsTestServiceHost.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\IISHostedWcfService\Web.config">

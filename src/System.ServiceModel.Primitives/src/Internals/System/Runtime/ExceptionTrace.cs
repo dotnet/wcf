@@ -29,61 +29,81 @@ namespace System.Runtime
 
         public void TraceEtwException(Exception exception, EventLevel eventLevel)
         {
-            switch (eventLevel)
+            try
             {
-                case EventLevel.Error:
-                case EventLevel.Warning:
-                    if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
-                        WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
-                    break;
-                case EventLevel.Critical:
-                    if (WcfEventSource.Instance.EtwUnhandledExceptionIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
-                        WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
-                    break;
-                default:
-                    if (WcfEventSource.Instance.ThrowingEtwExceptionVerboseIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
-                        WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
+                switch (eventLevel)
+                {
+                    case EventLevel.Error:
+                    case EventLevel.Warning:
+                        if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
+                        {
+                            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
+                            WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
+                        }
+                        break;
+                    case EventLevel.Critical:
+                        if (WcfEventSource.Instance.EtwUnhandledExceptionIsEnabled())
+                        {
+                            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
+                            WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
+                        }
+                        break;
+                    default:
+                        if (WcfEventSource.Instance.ThrowingEtwExceptionVerboseIsEnabled())
+                        {
+                            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
+                            WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
+                        }
 
-                    break;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Fx.IsFatal(ex))
+                {
+                    throw;
+                }
             }
         }
 
         public void TraceEtwException(Exception exception, TraceEventType eventLevel)
         {
-            switch (eventLevel)
+            try
             {
-                case TraceEventType.Error:
-                case TraceEventType.Warning:
-                    if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
-                        WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
-                    break;
-                case TraceEventType.Critical:
-                    if (WcfEventSource.Instance.EtwUnhandledExceptionIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
-                        WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
-                    break;
-                default:
-                    if (WcfEventSource.Instance.ThrowingEtwExceptionVerboseIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
-                        WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
+                switch (eventLevel)
+                {
+                    case TraceEventType.Error:
+                    case TraceEventType.Warning:
+                        if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
+                        {
+                            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
+                            WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
+                        }
+                        break;
+                    case TraceEventType.Critical:
+                        if (WcfEventSource.Instance.EtwUnhandledExceptionIsEnabled())
+                        {
+                            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
+                            WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
+                        }
+                        break;
+                    default:
+                        if (WcfEventSource.Instance.ThrowingEtwExceptionVerboseIsEnabled())
+                        {
+                            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
+                            WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
+                        }
 
-                    break;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Fx.IsFatal(ex))
+                {
+                    throw;
+                }
             }
         }
 

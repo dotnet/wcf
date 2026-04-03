@@ -773,6 +773,16 @@ public static partial class Endpoints
         get { return GetEndpointAddress("TcpTransSecMessCredsUserName.svc/tcp-message-credentials-username", protocol: "net.tcp"); }
     }
 
+    public static string Tcp_SecModeTransWithMessCred_ClientCredTypeWindows
+    {
+        get { return GetEndpointAddress("TcpTransSecMessCredsWindows.svc/tcp-message-credentials-windows", protocol: "net.tcp"); }
+    }
+
+    public static string Tcp_SecModeTransWithMessCred_ClientCredTypeWindows_NoSecureConversation
+    {
+        get { return GetEndpointAddress("TcpTransSecMessCredsWindows.svc/tcp-message-credentials-windows-nosc", protocol: "net.tcp"); }
+    }
+
     public static string ReliableSession_NetTcp
     {
         get { return GetEndpointAddress("ReliableSessionService.svc/NetTcp", protocol: "net.tcp"); }
