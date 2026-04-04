@@ -26,6 +26,7 @@ parameters:
   enablePublishBuildArtifacts: false
   enablePublishBuildAssets: false
   enablePublishTestResults: false
+  enablePublishing: false
   enableBuildRetry: false
   mergeTestResults: false
   testRunTitle: ''

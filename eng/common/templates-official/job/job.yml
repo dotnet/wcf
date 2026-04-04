@@ -63,7 +63,8 @@ jobs:
       # V4 publishing: automatically publish staged artifacts as a pipeline artifact.
       # The artifact name matches the SDK's FutureArtifactName ($(System.PhaseName)_Artifacts),
       # which is encoded in the asset manifest for downstream publishing to discover.
-      - ${{ if eq(parameters.publishingVersion, 4) }}:
+      # Jobs can opt in by setting enablePublishing: true.
+      - ${{ if and(eq(parameters.publishingVersion, 4), eq(parameters.enablePublishing, 'true')) }}:
         - output: pipelineArtifact
           displayName: 'Publish V4 pipeline artifacts'
           targetPath: '$(Build.ArtifactStagingDirectory)/artifacts'
