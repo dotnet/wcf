@@ -23,8 +23,6 @@ pr:
 variables:  
   - name: _TeamName
     value: WcfCore
-  - name: _PublishUsingPipelines
-    value: true
   - name: _DotNetArtifactsCategory
     value: .NETCore
   - name: _RunAsPublic
@@ -58,7 +56,6 @@ stages:
       enableMicrobuild: true
       enablePublishBuildArtifacts: true
       enablePublishBuildAssets: true
-      enablePublishUsingPipelines: $(_PublishUsingPipelines)
       enableTelemetry: true
       helixRepo: dotnet/wcf
       jobs:

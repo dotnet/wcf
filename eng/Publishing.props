@@ -1,5 +1,5 @@
 <Project>
-    <PropertyGroup>
-       <ProducesDotNetReleaseShippingAssets>true</ProducesDotNetReleaseShippingAssets>
-    </PropertyGroup>
- </Project>
+  <PropertyGroup>
+    <PublishingVersion>4</PublishingVersion>
+  </PropertyGroup>
+</Project>
