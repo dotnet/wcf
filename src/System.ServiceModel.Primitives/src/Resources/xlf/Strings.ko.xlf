@@ -582,6 +582,11 @@
         <target state="translated">통신 개체 {0}은(는) WCF의 일부가 아니며 지원되지 않는 '{1}' 상태입니다. 이것은 해당 통신 개체의 구현에 내부 오류가 있다는 것을 나타냅니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ConfigInvalidTransactionFlowProtocolValue">
+        <source>The transaction protocol value '{0}' is not valid.</source>
+        <target state="new">The transaction protocol value '{0}' is not valid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ConfigurationFilesNotSupported">
         <source>Configuration files are not supported.</source>
         <target state="translated">구성 파일은 지원되지 않습니다.</target>
@@ -1412,6 +1417,11 @@
         <target state="translated">내부 오류가 발생했습니다. 잘못된 MessageState입니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidPropagationToken">
+        <source>The propagation token in the message is invalid.</source>
+        <target state="new">The propagation token in the message is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidQName">
         <source>The QName is invalid.</source>
         <target state="translated">QName이 잘못되었습니다.</target>
@@ -1490,6 +1500,11 @@
       <trans-unit id="IssuedSecurityTokenParametersNotSet">
         <source>The security token parameters to use for the issued token are not set on '{0}'.</source>
         <target state="translated">발급된 토큰에 사용할 보안 토큰 매개 변수가 '{0}'에 설정되지 않았습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IssuedTokenFlowNotAllowed">
+        <source>Issued token flow is not allowed by this binding.</source>
+        <target state="new">Issued token flow is not allowed by this binding.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuerBindingNotPresentInTokenRequirement">
@@ -2207,6 +2222,11 @@
         <target state="translated">지정된 오프셋이 버퍼 크기({0}바이트)를 초과합니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="OleTxHeaderCorrupt">
+        <source>The OleTx transaction header in the message is malformed.</source>
+        <target state="new">The OleTx transaction header in the message is malformed.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OneWayAndFaultsIncompatible2">
         <source>The method '{1}' in type '{0}' is marked IsOneWay=true and declares one or more FaultContractAttributes. One-way methods cannot declare FaultContractAttributes. To fix it, change IsOneWay to false or remove the FaultContractAttributes.</source>
         <target state="translated">형식 '{0}'의 '{1}' 메서드가 IsOneWay=true로 표시되었으며 하나 이상의 FaultContractAttributes를 선언합니다. 단방향 메서드는 FaultContractAttributes를 선언할 수 없습니다. 이것을 해결하려면 IsOneWay를 false로 변경하거나 FaultContractAttributes를 제거하세요.</target>
@@ -2550,6 +2570,11 @@
       <trans-unit id="SFxBadByValueParameterMetadata">
         <source>Method '{0}' in class '{1}' has bad parameter metadata: a pass-by-value parameter is marked with the 'out' parameter mode.</source>
         <target state="translated">'{1}' 클래스의 '{0}' 메서드에 잘못된 매개 변수 메타데이터가 있습니다. pass-by-value 매개 변수가 'out' 매개 변수 모드로 표시되어 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxBadTransactionProtocols">
+        <source>The specified transaction protocol is not valid.</source>
+        <target state="new">The specified transaction protocol is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBindingMustContainTransport2">
@@ -3392,6 +3417,26 @@
         <target state="translated">Int32.MaxValue TotalMilliseconds(약 24일)보다 큰 시간 제한은 허용되지 않습니다. 시간 제한을 사용하지 않으려면 TimeSpan.MaxValue를 지정하세요.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxTransactionDeserializationFailed">
+        <source>Transaction deserialization failed: {0}.</source>
+        <target state="new">Transaction deserialization failed: {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionFlowRequired">
+        <source>A transaction is required but was not flowed.</source>
+        <target state="new">A transaction is required but was not flowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionHeaderNotUnderstood">
+        <source>The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</source>
+        <target state="new">The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTryAddMultipleTransactionsOnMessage">
+        <source>Cannot add multiple transaction properties to a message.</source>
+        <target state="new">Cannot add multiple transaction properties to a message.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeNull">
         <source>Internal Error: The instance of the MessageContract cannot be null in {0}.</source>
         <target state="translated">내부 오류: MessageContract의 인스턴스는 {0}에서 null일 수 없습니다.</target>
@@ -4097,6 +4142,26 @@
         <target state="translated">신뢰할 수 있는 세션 인프라에서 시스템 시계 변경이 감지되었습니다. 이로 인해 일시적으로 덜 최적화된 메시지 재전송 전략이 사용됩니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="TransactionFlowBadOption">
+        <source>The specified TransactionFlowOption is not a valid value.</source>
+        <target state="new">The specified TransactionFlowOption is not a valid value.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowOnlySupportedOnWindows">
+        <source>Transaction flow is only supported on Windows.</source>
+        <target state="new">Transaction flow is only supported on Windows.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowRequiredIssuedTokens">
+        <source>Transaction flow is required, but issued tokens are not allowed.</source>
+        <target state="new">Transaction flow is required, but issued tokens are not allowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionsNotSupported">
+        <source>Distributed transactions are not supported on this platform.</source>
+        <target state="new">Distributed transactions are not supported on this platform.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="TransferModeNotSupported">
         <source>Transfer mode {0} is not supported by {1}.</source>
         <target state="translated">전송 모드 {0}을(를) {1}에서 지원하지 않습니다.</target>
@@ -4332,6 +4397,11 @@
         <target state="translated">토큰 처리를 위해 인식할 수 없는 토큰 인증자 '{0}'을(를) 사용했습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnmarshalTransactionFaulted">
+        <source>The transaction could not be unmarshaled.</source>
+        <target state="new">The transaction could not be unmarshaled.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnparsableCSResponse">
         <source>The remote endpoint replied to the request for a sequence with a response that could not be parsed. See inner exception for details. The channel could not be opened.</source>
         <target state="translated">원격 끝점이 구문 분석할 수 없는 응답의 시퀀스에 대한 요청에 회신했습니다. 자세한 내용은 내부 예외를 참조하십시오. 채널을 열 수 없습니다.</target>
@@ -4565,6 +4635,11 @@
       <trans-unit id="WrongIdentifierFault">
         <source>The remote endpoint has sent an fault message with an unexpected sequence identifier over a session. The fault may be intended for a different session. The fault reason is: {0} The reliable session was faulted.</source>
         <target state="translated">원격 끝점이 세션을 통해 필요하지 않은 시퀀스 식별자가 있는 오류 메시지를 보냈습니다. 오류는 다른 세션을 위한 것일 수 있습니다. 오류 원인은 {0}입니다. 신뢰 세션에 오류가 발생했습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WsatHeaderCorrupt">
+        <source>The WS-AtomicTransaction header in the message is malformed.</source>
+        <target state="new">The WS-AtomicTransaction header in the message is malformed.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsrmFaultReceived">

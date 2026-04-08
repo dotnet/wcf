@@ -582,6 +582,11 @@
         <target state="translated">通信对象 {0} 不是 WCF 的一部分并且处于不支持的状态“{1}”。这表明通信对象的实现中出现内部错误。</target>
         <note />
       </trans-unit>
+      <trans-unit id="ConfigInvalidTransactionFlowProtocolValue">
+        <source>The transaction protocol value '{0}' is not valid.</source>
+        <target state="new">The transaction protocol value '{0}' is not valid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ConfigurationFilesNotSupported">
         <source>Configuration files are not supported.</source>
         <target state="translated">不支持配置文件。</target>
@@ -1412,6 +1417,11 @@
         <target state="translated">发生内部错误。MessageState 无效。</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidPropagationToken">
+        <source>The propagation token in the message is invalid.</source>
+        <target state="new">The propagation token in the message is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidQName">
         <source>The QName is invalid.</source>
         <target state="translated">QName 无效。</target>
@@ -1490,6 +1500,11 @@
       <trans-unit id="IssuedSecurityTokenParametersNotSet">
         <source>The security token parameters to use for the issued token are not set on '{0}'.</source>
         <target state="translated">“{0}”上未设置用于颁发的令牌的安全令牌参数。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IssuedTokenFlowNotAllowed">
+        <source>Issued token flow is not allowed by this binding.</source>
+        <target state="new">Issued token flow is not allowed by this binding.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuerBindingNotPresentInTokenRequirement">
@@ -2207,6 +2222,11 @@
         <target state="translated">指定的偏移量超出了缓冲区大小({0} 个字节)。</target>
         <note />
       </trans-unit>
+      <trans-unit id="OleTxHeaderCorrupt">
+        <source>The OleTx transaction header in the message is malformed.</source>
+        <target state="new">The OleTx transaction header in the message is malformed.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OneWayAndFaultsIncompatible2">
         <source>The method '{1}' in type '{0}' is marked IsOneWay=true and declares one or more FaultContractAttributes. One-way methods cannot declare FaultContractAttributes. To fix it, change IsOneWay to false or remove the FaultContractAttributes.</source>
         <target state="translated">将类型“{0}”中的方法“{1}”标记为 IsOneWay=true 并且声明了一个或多个 FaultContractAttributes。单向方法不能声明 FaultContractAttributes。若要修复此问题，请将 IsOneWay 更改为 false 或删除 FaultContractAttributes。</target>
@@ -2550,6 +2570,11 @@
       <trans-unit id="SFxBadByValueParameterMetadata">
         <source>Method '{0}' in class '{1}' has bad parameter metadata: a pass-by-value parameter is marked with the 'out' parameter mode.</source>
         <target state="translated">类“{1}”中的方法“{0}”具有错误的参数元数据: 按值传递的参数使用 "out" 参数模式进行标记。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxBadTransactionProtocols">
+        <source>The specified transaction protocol is not valid.</source>
+        <target state="new">The specified transaction protocol is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBindingMustContainTransport2">
@@ -3392,6 +3417,26 @@
         <target state="translated">无法处理大于 Int32.MaxValue TotalMilliseconds (大约 24 天)的超时。要禁用超时，请指定 TimeSpan.MaxValue。</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxTransactionDeserializationFailed">
+        <source>Transaction deserialization failed: {0}.</source>
+        <target state="new">Transaction deserialization failed: {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionFlowRequired">
+        <source>A transaction is required but was not flowed.</source>
+        <target state="new">A transaction is required but was not flowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionHeaderNotUnderstood">
+        <source>The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</source>
+        <target state="new">The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTryAddMultipleTransactionsOnMessage">
+        <source>Cannot add multiple transaction properties to a message.</source>
+        <target state="new">Cannot add multiple transaction properties to a message.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeNull">
         <source>Internal Error: The instance of the MessageContract cannot be null in {0}.</source>
         <target state="translated">内部错误: MessageContract 的实例在 {0} 中不能为 null。</target>
@@ -4097,6 +4142,26 @@
         <target state="translated">可靠会话基础结构检测到系统时钟更改。这会暂时导致次优消息重试策略。</target>
         <note />
       </trans-unit>
+      <trans-unit id="TransactionFlowBadOption">
+        <source>The specified TransactionFlowOption is not a valid value.</source>
+        <target state="new">The specified TransactionFlowOption is not a valid value.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowOnlySupportedOnWindows">
+        <source>Transaction flow is only supported on Windows.</source>
+        <target state="new">Transaction flow is only supported on Windows.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowRequiredIssuedTokens">
+        <source>Transaction flow is required, but issued tokens are not allowed.</source>
+        <target state="new">Transaction flow is required, but issued tokens are not allowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionsNotSupported">
+        <source>Distributed transactions are not supported on this platform.</source>
+        <target state="new">Distributed transactions are not supported on this platform.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="TransferModeNotSupported">
         <source>Transfer mode {0} is not supported by {1}.</source>
         <target state="translated">{1} 不支持传输模式 {0}。</target>
@@ -4332,6 +4397,11 @@
         <target state="translated">无法识别的令牌身份验证器“{0}”被用于令牌处理。</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnmarshalTransactionFaulted">
+        <source>The transaction could not be unmarshaled.</source>
+        <target state="new">The transaction could not be unmarshaled.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnparsableCSResponse">
         <source>The remote endpoint replied to the request for a sequence with a response that could not be parsed. See inner exception for details. The channel could not be opened.</source>
         <target state="translated">远程终结点使用无法分析的响应回复了序列的请求。有关详细信息，请参见内部异常。无法打开通道。</target>
@@ -4565,6 +4635,11 @@
       <trans-unit id="WrongIdentifierFault">
         <source>The remote endpoint has sent an fault message with an unexpected sequence identifier over a session. The fault may be intended for a different session. The fault reason is: {0} The reliable session was faulted.</source>
         <target state="translated">远程终结点息通过会话发送了一条带有意外序列标识符的错误消。该错误可能是用于其他会话的。错误原因是: {0} 可靠会话出错。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WsatHeaderCorrupt">
+        <source>The WS-AtomicTransaction header in the message is malformed.</source>
+        <target state="new">The WS-AtomicTransaction header in the message is malformed.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsrmFaultReceived">

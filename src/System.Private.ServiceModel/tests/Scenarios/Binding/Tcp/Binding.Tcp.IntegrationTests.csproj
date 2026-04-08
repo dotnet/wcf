@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Exclude TransactionFlow subfolder; those tests live in Binding.Tcp.TransactionFlow.IntegrationTests -->
+    <Compile Remove="TransactionFlow\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <ProjectReference Include="..\..\..\..\..\System.ServiceModel.NetTcp\src\System.ServiceModel.NetTcp.csproj" />
     <ProjectReference Include='$(WcfScenarioTestCommonProj)' />

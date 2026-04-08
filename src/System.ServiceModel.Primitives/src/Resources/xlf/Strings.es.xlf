@@ -582,6 +582,11 @@
         <target state="translated">El objeto de comunicación, {0}, no forma parte de WCF y se encuentra en un estado incompatible "{1}". Esto indica la existencia de un error interno en la implementación de ese objeto de comunicación.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ConfigInvalidTransactionFlowProtocolValue">
+        <source>The transaction protocol value '{0}' is not valid.</source>
+        <target state="new">The transaction protocol value '{0}' is not valid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ConfigurationFilesNotSupported">
         <source>Configuration files are not supported.</source>
         <target state="translated">No se admiten los archivos de configuración.</target>
@@ -1412,6 +1417,11 @@
         <target state="translated">Error interno. MessageState no válido.</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidPropagationToken">
+        <source>The propagation token in the message is invalid.</source>
+        <target state="new">The propagation token in the message is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidQName">
         <source>The QName is invalid.</source>
         <target state="translated">QName no es válido.</target>
@@ -1490,6 +1500,11 @@
       <trans-unit id="IssuedSecurityTokenParametersNotSet">
         <source>The security token parameters to use for the issued token are not set on '{0}'.</source>
         <target state="translated">Los parámetros de token de seguridad que se deben usar para el token emitido no están establecidos en '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IssuedTokenFlowNotAllowed">
+        <source>Issued token flow is not allowed by this binding.</source>
+        <target state="new">Issued token flow is not allowed by this binding.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuerBindingNotPresentInTokenRequirement">
@@ -2207,6 +2222,11 @@
         <target state="translated">El desplazamiento especificado supera el tamaño del búfer ({0} bytes).</target>
         <note />
       </trans-unit>
+      <trans-unit id="OleTxHeaderCorrupt">
+        <source>The OleTx transaction header in the message is malformed.</source>
+        <target state="new">The OleTx transaction header in the message is malformed.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OneWayAndFaultsIncompatible2">
         <source>The method '{1}' in type '{0}' is marked IsOneWay=true and declares one or more FaultContractAttributes. One-way methods cannot declare FaultContractAttributes. To fix it, change IsOneWay to false or remove the FaultContractAttributes.</source>
         <target state="translated">El método "{1}" en el tipo "{0}" está marcado con IsOneWay=true y declara uno o varios atributos FaultContractAttribute. Los métodos unidireccionales no pueden declarar atributos FaultContractAttribute. Para corregirlo, cambie IsOneWay a false o quite los atributos FaultContractAttribute.</target>
@@ -2550,6 +2570,11 @@
       <trans-unit id="SFxBadByValueParameterMetadata">
         <source>Method '{0}' in class '{1}' has bad parameter metadata: a pass-by-value parameter is marked with the 'out' parameter mode.</source>
         <target state="translated">El método "{0}" de la clase "{1}" tiene metadatos de parámetro incorrectos: un parámetro de paso por valor está marcado con el modo de parámetro "out".</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxBadTransactionProtocols">
+        <source>The specified transaction protocol is not valid.</source>
+        <target state="new">The specified transaction protocol is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBindingMustContainTransport2">
@@ -3392,6 +3417,26 @@
         <target state="translated">No se pueden aceptar valores de tiempo de espera mayores que Int32.MaxValue TotalMilliseconds (aproximadamente 24 días). Para deshabilitar el tiempo de espera, especifique TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxTransactionDeserializationFailed">
+        <source>Transaction deserialization failed: {0}.</source>
+        <target state="new">Transaction deserialization failed: {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionFlowRequired">
+        <source>A transaction is required but was not flowed.</source>
+        <target state="new">A transaction is required but was not flowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionHeaderNotUnderstood">
+        <source>The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</source>
+        <target state="new">The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTryAddMultipleTransactionsOnMessage">
+        <source>Cannot add multiple transaction properties to a message.</source>
+        <target state="new">Cannot add multiple transaction properties to a message.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeNull">
         <source>Internal Error: The instance of the MessageContract cannot be null in {0}.</source>
         <target state="translated">Este error no proporcionó una traducción coincidente: {0}.</target>
@@ -4097,6 +4142,26 @@
         <target state="translated">La infraestructura de sesión de confianza detectó un cambio en el reloj del sistema. Esto dará lugar de forma provisional a una estrategia de reintento de mensaje menos eficaz.</target>
         <note />
       </trans-unit>
+      <trans-unit id="TransactionFlowBadOption">
+        <source>The specified TransactionFlowOption is not a valid value.</source>
+        <target state="new">The specified TransactionFlowOption is not a valid value.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowOnlySupportedOnWindows">
+        <source>Transaction flow is only supported on Windows.</source>
+        <target state="new">Transaction flow is only supported on Windows.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowRequiredIssuedTokens">
+        <source>Transaction flow is required, but issued tokens are not allowed.</source>
+        <target state="new">Transaction flow is required, but issued tokens are not allowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionsNotSupported">
+        <source>Distributed transactions are not supported on this platform.</source>
+        <target state="new">Distributed transactions are not supported on this platform.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="TransferModeNotSupported">
         <source>Transfer mode {0} is not supported by {1}.</source>
         <target state="translated">El modo de transferencia {0} no se admite en {1}.</target>
@@ -4332,6 +4397,11 @@
         <target state="translated">Se usó un autenticador de tokens no reconocido '{0}' para el procesamiento de tokens.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnmarshalTransactionFaulted">
+        <source>The transaction could not be unmarshaled.</source>
+        <target state="new">The transaction could not be unmarshaled.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UnparsableCSResponse">
         <source>The remote endpoint replied to the request for a sequence with a response that could not be parsed. See inner exception for details. The channel could not be opened.</source>
         <target state="translated">El extremo remoto respondió a la solicitud de una secuencia con una respuesta que no se pudo analizar. Consulte la excepción interna para obtener más información. No se pudo abrir el canal.</target>
@@ -4565,6 +4635,11 @@
       <trans-unit id="WrongIdentifierFault">
         <source>The remote endpoint has sent an fault message with an unexpected sequence identifier over a session. The fault may be intended for a different session. The fault reason is: {0} The reliable session was faulted.</source>
         <target state="translated">El extremo remoto envió un mensaje de error con un identificador de secuencia inesperado en una sesión. Es posible que el error corresponda a una sesión diferente. La razón del error es: {0}. Se generó un error en la sesión confiable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WsatHeaderCorrupt">
+        <source>The WS-AtomicTransaction header in the message is malformed.</source>
+        <target state="new">The WS-AtomicTransaction header in the message is malformed.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsrmFaultReceived">

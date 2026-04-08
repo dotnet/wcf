@@ -2946,4 +2946,49 @@
   <data name="SFxNullReplyFromExtension2" xml:space="preserve">
     <value>Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</value>
   </data>
+  <data name="ConfigInvalidTransactionFlowProtocolValue" xml:space="preserve">
+    <value>The transaction protocol value '{0}' is not valid.</value>
+  </data>
+  <data name="TransactionFlowBadOption" xml:space="preserve">
+    <value>The specified TransactionFlowOption is not a valid value.</value>
+  </data>
+  <data name="TransactionFlowRequiredIssuedTokens" xml:space="preserve">
+    <value>Transaction flow is required, but issued tokens are not allowed.</value>
+  </data>
+  <data name="SFxBadTransactionProtocols" xml:space="preserve">
+    <value>The specified transaction protocol is not valid.</value>
+  </data>
+  <data name="SFxTransactionFlowRequired" xml:space="preserve">
+    <value>A transaction is required but was not flowed.</value>
+  </data>
+  <data name="SFxTryAddMultipleTransactionsOnMessage" xml:space="preserve">
+    <value>Cannot add multiple transaction properties to a message.</value>
+  </data>
+  <data name="SFxTransactionDeserializationFailed" xml:space="preserve">
+    <value>Transaction deserialization failed: {0}.</value>
+  </data>
+  <data name="TransactionsNotSupported" xml:space="preserve">
+    <value>Distributed transactions are not supported on this platform.</value>
+  </data>
+  <data name="IssuedTokenFlowNotAllowed" xml:space="preserve">
+    <value>Issued token flow is not allowed by this binding.</value>
+  </data>
+  <data name="OleTxHeaderCorrupt" xml:space="preserve">
+    <value>The OleTx transaction header in the message is malformed.</value>
+  </data>
+  <data name="WsatHeaderCorrupt" xml:space="preserve">
+    <value>The WS-AtomicTransaction header in the message is malformed.</value>
+  </data>
+  <data name="InvalidPropagationToken" xml:space="preserve">
+    <value>The propagation token in the message is invalid.</value>
+  </data>
+  <data name="UnmarshalTransactionFaulted" xml:space="preserve">
+    <value>The transaction could not be unmarshaled.</value>
+  </data>
+  <data name="SFxTransactionHeaderNotUnderstood" xml:space="preserve">
+    <value>The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</value>
+  </data>
+  <data name="TransactionFlowOnlySupportedOnWindows" xml:space="preserve">
+    <value>Transaction flow is only supported on Windows.</value>
+  </data>
 </root>

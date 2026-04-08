@@ -7,12 +7,15 @@ namespace System.ServiceModel
 {
     public class WS2007HttpBinding : WSHttpBinding
     {
-        static readonly MessageSecurityVersion WS2007MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
+        private static readonly ReliableMessagingVersion s_ws2007ReliableMessagingVersion = ReliableMessagingVersion.WSReliableMessaging11;
+        private static readonly TransactionProtocol s_ws2007TransactionProtocol = TransactionProtocol.WSAtomicTransaction11;
+        private static readonly MessageSecurityVersion s_ws2007MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
 
-        public WS2007HttpBinding()
-            : base()
+        public WS2007HttpBinding() : base()
         {
-            HttpsTransport.MessageSecurityVersion = WS2007MessageSecurityVersion;
+            ReliableSessionBindingElement.ReliableMessagingVersion = s_ws2007ReliableMessagingVersion;
+            TransactionFlowBindingElement.TransactionProtocol = s_ws2007TransactionProtocol;
+            HttpsTransport.MessageSecurityVersion = s_ws2007MessageSecurityVersion;
         }
 
         public WS2007HttpBinding(SecurityMode securityMode)
@@ -23,18 +26,22 @@ namespace System.ServiceModel
         public WS2007HttpBinding(SecurityMode securityMode, bool reliableSessionEnabled)
             : base(securityMode, reliableSessionEnabled)
         {
-            HttpsTransport.MessageSecurityVersion = WS2007MessageSecurityVersion;
+            ReliableSessionBindingElement.ReliableMessagingVersion = s_ws2007ReliableMessagingVersion;
+            TransactionFlowBindingElement.TransactionProtocol = s_ws2007TransactionProtocol;
+            HttpsTransport.MessageSecurityVersion = s_ws2007MessageSecurityVersion;
         }
 
         internal WS2007HttpBinding(WSHttpSecurity security, bool reliableSessionEnabled)
             : base(security, reliableSessionEnabled)
         {
-            HttpsTransport.MessageSecurityVersion = WS2007MessageSecurityVersion;
+            ReliableSessionBindingElement.ReliableMessagingVersion = s_ws2007ReliableMessagingVersion;
+            TransactionFlowBindingElement.TransactionProtocol = s_ws2007TransactionProtocol;
+            HttpsTransport.MessageSecurityVersion = s_ws2007MessageSecurityVersion;
         }
 
         protected override SecurityBindingElement CreateMessageSecurity()
         {
-            return Security.CreateMessageSecurity(ReliableSession.Enabled, WS2007MessageSecurityVersion);
+            return Security.CreateMessageSecurity(ReliableSession.Enabled, s_ws2007MessageSecurityVersion);
         }
     }
 }

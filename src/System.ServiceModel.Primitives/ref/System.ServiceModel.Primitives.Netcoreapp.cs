@@ -17,6 +17,29 @@ namespace System.ServiceModel
         public System.Threading.Tasks.Task CloseAsync() { return default; }
         System.Threading.Tasks.ValueTask IAsyncDisposable.DisposeAsync() { return default; }
     }
+    public enum TransactionFlowOption
+    {
+        NotAllowed = 0,
+        Allowed = 1,
+        Mandatory = 2,
+    }
+    [System.AttributeUsageAttribute(System.AttributeTargets.Method)]
+    public sealed partial class TransactionFlowAttribute : System.Attribute, System.ServiceModel.Description.IOperationBehavior
+    {
+        public TransactionFlowAttribute(System.ServiceModel.TransactionFlowOption transactions) { }
+        public System.ServiceModel.TransactionFlowOption Transactions { get { return default; } }
+        void System.ServiceModel.Description.IOperationBehavior.AddBindingParameters(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Channels.BindingParameterCollection parameters) { }
+        void System.ServiceModel.Description.IOperationBehavior.ApplyClientBehavior(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Dispatcher.ClientOperation proxy) { }
+        void System.ServiceModel.Description.IOperationBehavior.ApplyDispatchBehavior(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Dispatcher.DispatchOperation dispatch) { }
+        void System.ServiceModel.Description.IOperationBehavior.Validate(System.ServiceModel.Description.OperationDescription description) { }
+    }
+    public abstract partial class TransactionProtocol
+    {
+        public static System.ServiceModel.TransactionProtocol Default { get { return default; } }
+        public static System.ServiceModel.TransactionProtocol OleTransactions { get { return default; } }
+        public static System.ServiceModel.TransactionProtocol WSAtomicTransaction11 { get { return default; } }
+        public static System.ServiceModel.TransactionProtocol WSAtomicTransactionOctober2004 { get { return default; } }
+    }
 }
 namespace System.ServiceModel.Channels
 {
@@ -30,6 +53,24 @@ namespace System.ServiceModel.Channels
     public interface ITransportCompressionSupport
     {
         bool IsCompressionFormatSupported(CompressionFormat compressionFormat);
+    }
+    public sealed partial class TransactionFlowBindingElement : System.ServiceModel.Channels.BindingElement
+    {
+        public TransactionFlowBindingElement() { }
+        public TransactionFlowBindingElement(System.ServiceModel.TransactionProtocol transactionProtocol) { }
+        public bool AllowWildcardAction { get { return default; } set { } }
+        public System.ServiceModel.TransactionProtocol TransactionProtocol { get { return default; } set { } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public override bool CanBuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public override System.ServiceModel.Channels.BindingElement Clone() { return default; }
+        public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public bool ShouldSerializeTransactionProtocol() { return default; }
+    }
+    public sealed partial class TransactionMessageProperty
+    {
+        internal TransactionMessageProperty() { }
+        public System.Transactions.Transaction Transaction { get { return default; } }
+        public static void Set(System.Transactions.Transaction transaction, System.ServiceModel.Channels.Message message) { }
     }
 }
 namespace System.ServiceModel.Description
