@@ -13,6 +13,7 @@ namespace System.ServiceModel
         // private BindingElements
         private TcpTransportBindingElement _transport;
         private BinaryMessageEncodingBindingElement _encoding;
+        private TransactionFlowBindingElement _txFlow;
         private ReliableSessionBindingElement _session;
         private NetTcpSecurity _security = new NetTcpSecurity();
 
@@ -30,6 +31,19 @@ namespace System.ServiceModel
         public NetTcpBinding(SecurityMode securityMode, bool reliableSessionEnabled) : this(securityMode)
         {
             ReliableSession.Enabled = reliableSessionEnabled;
+        }
+
+        [DefaultValue(false)]
+        public bool TransactionFlow
+        {
+            get { return _txFlow.Transactions; }
+            set { _txFlow.Transactions = value; }
+        }
+
+        public TransactionProtocol TransactionProtocol
+        {
+            get { return _txFlow.TransactionProtocol; }
+            set { _txFlow.TransactionProtocol = value; }
         }
 
         [DefaultValue(ConnectionOrientedTransportDefaults.TransferMode)]
@@ -112,10 +126,16 @@ namespace System.ServiceModel
             }
         }
 
+        private static TransactionFlowBindingElement GetDefaultTransactionFlowBindingElement()
+        {
+            return new TransactionFlowBindingElement(false);
+        }
+
         private void Initialize()
         {
             _transport = new TcpTransportBindingElement();
             _encoding = new BinaryMessageEncodingBindingElement();
+            _txFlow = GetDefaultTransactionFlowBindingElement();
             _session = new ReliableSessionBindingElement();
             _reliableSession = new OptionalReliableSession(_session);
         }
@@ -125,6 +145,8 @@ namespace System.ServiceModel
             // return collection of BindingElements
             BindingElementCollection bindingElements = new BindingElementCollection();
             // order of BindingElements is important
+            // add context (transaction flow)
+            bindingElements.Add(_txFlow);
             // add session
             if (_reliableSession.Enabled)
             {

@@ -10,15 +10,18 @@ namespace SelfHostedWCFService
     public class Parameters
     {
         public const string ServiceBootstrap = "bootstrap";
+        public const string HttpPort = "httpPort";
     }
 
     public class SelfHostedWCFService
     {
         private static bool s_serviceBootstrap = false;
+        private static int s_httpPort = 8081;
 
         public static async Task Main(string[] args)
         {
             ParseArgs(args);
+            Environment.SetEnvironmentVariable(Parameters.HttpPort, s_httpPort.ToString());
 
             if (s_serviceBootstrap)
             {
@@ -29,7 +32,6 @@ namespace SelfHostedWCFService
             Console.WriteLine("Installing certificates...");
             string testserverbase = string.Empty;
             TimeSpan validatePeriod = TimeSpan.FromDays(1);
-            int DefaultHttpPort = 8081;
             string crlFileLocation;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -40,7 +42,7 @@ namespace SelfHostedWCFService
                 crlFileLocation = Path.Combine(Environment.CurrentDirectory, "test.crl");
             }
 
-            CertificateGeneratorLibrary.SetupCerts(testserverbase, validatePeriod, crlFileLocation, DefaultHttpPort);
+            CertificateGeneratorLibrary.SetupCerts(testserverbase, validatePeriod, crlFileLocation, s_httpPort);
 
             Console.WriteLine("Starting services...");
             var webHost = await TestDefinitionHelper.StartHosts(false);
@@ -64,7 +66,7 @@ namespace SelfHostedWCFService
             {
                 //Linux and MacOS
                 Console.WriteLine("Use Shutdown endpoint to terminate the self service Host.");
-                Console.WriteLine("http://localhost:8081/TestHost.svc/shutdown");
+                Console.WriteLine($"http://localhost:{s_httpPort}/TestHost.svc/shutdown");
 
                 Thread.Sleep(Timeout.Infinite);
             }
@@ -75,6 +77,15 @@ namespace SelfHostedWCFService
 
         private static bool ParseArgs(string[] args)
         {
+            string httpPort = Environment.GetEnvironmentVariable(Parameters.HttpPort);
+            if (!string.IsNullOrWhiteSpace(httpPort))
+            {
+                if (!int.TryParse(httpPort, out s_httpPort) || s_httpPort < 1 || s_httpPort > 65535)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(args), $"Invalid HTTP port '{httpPort}'.");
+                }
+            }
+
             foreach (string s in args)
             {
                 string[] p = s.Split(new char[] { ':' }, count: 2);
@@ -83,10 +94,16 @@ namespace SelfHostedWCFService
                     continue;
                 }
 
-                switch (p[0].ToLower())
+                switch (p[0].ToLowerInvariant())
                 {
                     case Parameters.ServiceBootstrap:
                         bool.TryParse(p[1], out s_serviceBootstrap);
+                        break;
+                    case "httpport":
+                        if (!int.TryParse(p[1], out s_httpPort) || s_httpPort < 1 || s_httpPort > 65535)
+                        {
+                            throw new ArgumentOutOfRangeException(nameof(args), $"Invalid HTTP port '{p[1]}'.");
+                        }
                         break;
                     default:
                         Console.WriteLine("unknown argument: " + s);

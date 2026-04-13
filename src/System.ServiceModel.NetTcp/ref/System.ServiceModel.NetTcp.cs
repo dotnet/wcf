@@ -34,6 +34,9 @@ namespace System.ServiceModel
         public System.ServiceModel.OptionalReliableSession ReliableSession { get { throw null; } set { } }
         public override string Scheme { get { throw null; } }
         public System.ServiceModel.NetTcpSecurity Security { get { throw null; } set { } }
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool TransactionFlow { get { throw null; } set { } }
+        public System.ServiceModel.TransactionProtocol TransactionProtocol { get { throw null; } set { } }
         [System.ComponentModel.DefaultValueAttribute(System.ServiceModel.TransferMode.Buffered)]
         public System.ServiceModel.TransferMode TransferMode { get { throw null; } set { } }
         public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { throw null; }

@@ -39,5 +39,8 @@ namespace System.IdentityModel.Tokens
 
         public const string TripleDesEncryption = SecurityAlgorithmStrings.TripleDesEncryption;
         public const string TripleDesKeyWrap = SecurityAlgorithmStrings.TripleDesKeyWrap;
+
+        public const string TlsSspiKeyWrap = SecurityAlgorithmStrings.TlsSspiKeyWrap;
+        public const string WindowsSspiKeyWrap = SecurityAlgorithmStrings.WindowsSspiKeyWrap;
     }
 }

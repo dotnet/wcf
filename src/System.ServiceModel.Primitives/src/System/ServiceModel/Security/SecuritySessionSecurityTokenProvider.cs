@@ -26,6 +26,7 @@ namespace System.ServiceModel.Security
         private BindingContext _issuerBindingContext;
         private SecurityChannelFactory<IAsyncRequestChannel> _rstChannelFactory;
         private SecurityAlgorithmSuite _securityAlgorithmSuite;
+        private NetworkCredential _networkCredential;
         private SecurityStandardsManager _standardsManager;
         private Object _thisLock = new Object();
         private SecurityKeyEntropyMode _keyEntropyMode;
@@ -39,10 +40,12 @@ namespace System.ServiceModel.Security
         private int _privacyNoticeVersion;
         private EndpointAddress _localAddress;
         private ChannelParameterCollection _channelParameters;
+        private bool _ownCredentialsHandle;
 
-        public SecuritySessionSecurityTokenProvider()
+        public SecuritySessionSecurityTokenProvider(NetworkCredential networkCredential)
             : base()
         {
+            _networkCredential = networkCredential;
             _standardsManager = SecurityStandardsManager.DefaultInstance;
             _keyEntropyMode = SecurityKeyEntropyMode.CombinedEntropy;
         }
@@ -295,13 +298,20 @@ namespace System.ServiceModel.Security
         public override void OnOpening()
         {
             base.OnOpening();
-            if (IssuerBindingContext == null)
+            if (_networkCredential == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.Format(SRP.IssuerBuildContextNotSet, GetType())));
-            }
-            if (BootstrapSecurityBindingElement == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.Format(SRP.BootstrapSecurityBindingElementNotSet, GetType())));
+                if (IssuerBindingContext == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.Format(SRP.IssuerBuildContextNotSet, GetType())));
+                }
+
+                if (BootstrapSecurityBindingElement == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.Format(SRP.BootstrapSecurityBindingElementNotSet, GetType())));
+                }
+
+                _networkCredential = SecurityUtils.GetCredentials(_bootstrapSecurityBindingElement, _issuerBindingContext);
+                _ownCredentialsHandle = true;
             }
         }
 
@@ -318,6 +328,7 @@ namespace System.ServiceModel.Security
 
         private void FreeCredentialsHandle()
         {
+            _networkCredential = null;
         }
 
         private void InitializeFactories()
@@ -381,7 +392,7 @@ namespace System.ServiceModel.Security
             SecurityChannelFactory<IAsyncRequestChannel> securityChannelFactory = new SecurityChannelFactory<IAsyncRequestChannel>(
                 securityCapabilities, IssuerBindingContext, channelBuilder, securityProtocolFactory, innerChannelFactory);
 
-            // attach the ExtendedProtectionPolicy to the securityProtcolFactory so it will be 
+            // attach the ExtendedProtectionPolicy to the securityProtcolFactory so it will be
             // available when building the channel.
             if (transportBindingElement != null)
             {
@@ -439,6 +450,15 @@ namespace System.ServiceModel.Security
             if (_channelParameters != null)
             {
                 _channelParameters.PropagateChannelParameters(channel);
+            }
+
+            if (_ownCredentialsHandle)
+            {
+                ChannelParameterCollection newParameters = channel.GetProperty<ChannelParameterCollection>();
+                if (newParameters != null)
+                {
+                    newParameters.Add(new SspiIssuanceChannelParameter(true, _networkCredential));
+                }
             }
 
             return channel;

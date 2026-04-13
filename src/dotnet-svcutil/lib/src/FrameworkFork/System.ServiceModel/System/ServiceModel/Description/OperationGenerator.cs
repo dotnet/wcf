@@ -560,6 +560,13 @@ namespace System.ServiceModel.Description
 
                 CodeAttributeDeclarationCollection IPartCodeGenerator.AddPart(CodeTypeReference type, ref string name)
                 {
+                    // Keep generated member identifiers away from the CLR root namespace token.
+                    // This mirrors the XmlCodeExporter behavior for member/property generation.
+                    if (string.Equals(name, "System", StringComparison.Ordinal))
+                    {
+                        name = "SystemMember";
+                    }
+
                     CodeMemberField memberDecl = new CodeMemberField();
                     memberDecl.Name = name = _memberScope.AddUnique(name, "member");
                     memberDecl.Type = type;

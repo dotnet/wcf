@@ -20,7 +20,7 @@ namespace System.ServiceModel.Channels
     // This class is sealed because the constructor could call Abort, which is virtual
     // IAsyncDisposable is declared on ServiceChannel as placing it on IClientChannel along with IDisposable would be a breaking change. Any existing external implementations of
     // IClientChannel would be invalid as they don't implement IAsyncDisposable.
-    internal sealed class ServiceChannel : CommunicationObject, IChannel, IClientChannel, IDuplexContextChannel, IOutputChannel, IRequestChannel, IServiceChannel, IAsyncDisposable
+    internal sealed class ServiceChannel : CommunicationObject, IChannel, IClientChannel, IDuplexContextChannel, IOutputChannel, IRequestChannel, IAsyncRequestChannel, IServiceChannel, IAsyncDisposable
     {
         private int _activityCount = 0;
         private bool _allowInitializationUI = true;
@@ -370,8 +370,8 @@ namespace System.ServiceModel.Channels
 
         private void SetupInnerChannelFaultHandler()
         {
-            // need to call this method after this.binder and this.clientRuntime are set to prevent a potential 
-            // NullReferenceException in this method or in the OnInnerChannelFaulted method; 
+            // need to call this method after this.binder and this.clientRuntime are set to prevent a potential
+            // NullReferenceException in this method or in the OnInnerChannelFaulted method;
             // because this method accesses this.binder and OnInnerChannelFaulted accesses this.clientRuntime.
             Binder.Channel.Faulted += OnInnerChannelFaulted;
         }
@@ -1250,6 +1250,17 @@ namespace System.ServiceModel.Channels
         public Message EndRequest(IAsyncResult result)
         {
             return (Message)EndCall(MessageHeaders.WildcardAction, Array.Empty<object>(), result);
+        }
+
+        public Task<Message> RequestAsync(Message message)
+        {
+            return RequestAsync(message, OperationTimeout);
+        }
+
+        public async Task<Message> RequestAsync(Message message, TimeSpan timeout)
+        {
+            await TaskHelpers.EnsureDefaultTaskScheduler();
+            return await Task.Factory.FromAsync(BeginRequest, EndRequest, message, timeout, null);
         }
 
         protected override void OnAbort()

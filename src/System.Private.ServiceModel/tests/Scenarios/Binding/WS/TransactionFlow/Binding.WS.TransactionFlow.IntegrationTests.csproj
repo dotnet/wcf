@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
+  <PropertyGroup>
+    <TargetFrameworks>$(ScenarioTestTargetFrameworks)</TargetFrameworks>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
+    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+  </ItemGroup>
+</Project>

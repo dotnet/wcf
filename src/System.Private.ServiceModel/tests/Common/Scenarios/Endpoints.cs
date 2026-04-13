@@ -174,6 +174,21 @@ public static partial class Endpoints
         get { return GetEndpointAddress("WSHttp.svc/"); }
     }
 
+    public static string WSHttpTransactionFlowAddress
+    {
+        get { return GetEndpointAddress("WSHttpTransactionFlow.svc/TransactionFlow"); }
+    }
+
+    public static string WS2007HttpTransactionFlowAddress
+    {
+        get { return GetEndpointAddress("WS2007HttpTransactionFlow.svc/TransactionFlow"); }
+    }
+
+    public static string WSHttpTransactionFlowMandatoryAddress
+    {
+        get { return GetEndpointAddress("WSHttpTransactionFlowMandatory.svc/TransactionFlow"); }
+    }
+
     #region WebSocket Addresses
     public static string HttpBaseAddress_NetHttpWebSockets
     {
@@ -448,6 +463,22 @@ public static partial class Endpoints
         get
         {
             return GetEndpointAddress("BasicHttpsTransSecMessCredsUserName.svc/https-message-credentials-username", protocol: "https");
+        }
+    }
+
+    public static string Https_SecModeTransWithMessCred_ClientCredTypeWindows
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsWindows.svc/https-message-credentials-windows", protocol: "https");
+        }
+    }
+
+    public static string Https_SecModeTransWithMessCred_ClientCredTypeWindows_NoSecureConversation
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsWindows.svc/https-message-credentials-windows-nosc", protocol: "https");
         }
     }
 
@@ -742,6 +773,16 @@ public static partial class Endpoints
         get { return GetEndpointAddress("TcpTransSecMessCredsUserName.svc/tcp-message-credentials-username", protocol: "net.tcp"); }
     }
 
+    public static string Tcp_SecModeTransWithMessCred_ClientCredTypeWindows
+    {
+        get { return GetEndpointAddress("TcpTransSecMessCredsWindows.svc/tcp-message-credentials-windows", protocol: "net.tcp"); }
+    }
+
+    public static string Tcp_SecModeTransWithMessCred_ClientCredTypeWindows_NoSecureConversation
+    {
+        get { return GetEndpointAddress("TcpTransSecMessCredsWindows.svc/tcp-message-credentials-windows-nosc", protocol: "net.tcp"); }
+    }
+
     public static string ReliableSession_NetTcp
     {
         get { return GetEndpointAddress("ReliableSessionService.svc/NetTcp", protocol: "net.tcp"); }
@@ -770,6 +811,26 @@ public static partial class Endpoints
     public static string DuplexCallbackErrorHandler_Address
     {
         get { return GetEndpointAddress("DuplexCallbackErrorHandler.svc/tcp", protocol: "net.tcp"); }
+    }
+
+    public static string NetTcpTransactionFlowAddress
+    {
+        get { return GetEndpointAddress("NetTcpTransactionFlow.svc/TransactionFlow", protocol: "net.tcp"); }
+    }
+
+    public static string NetTcpTransactionFlowWSAT11Address
+    {
+        get { return GetEndpointAddress("NetTcpTransactionFlowWSAT11.svc/TransactionFlow", protocol: "net.tcp"); }
+    }
+
+    public static string NetTcpTransactionFlowWSATOct2004Address
+    {
+        get { return GetEndpointAddress("NetTcpTransactionFlowWSATOct2004.svc/TransactionFlow", protocol: "net.tcp"); }
+    }
+
+    public static string NetTcpTransactionFlowMandatoryAddress
+    {
+        get { return GetEndpointAddress("NetTcpTransactionFlowMandatory.svc/TransactionFlow", protocol: "net.tcp"); }
     }
     #endregion net.tcp Addresses
 

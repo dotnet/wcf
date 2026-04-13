@@ -46,6 +46,85 @@ namespace System.ServiceModel
             return SecurityUtils.GetSpnFromIdentity(identity, targetAddress);
         }
 
+        private SspiSecurityToken GetSpnegoClientCredential(InitiatorServiceModelSecurityTokenRequirement initiatorRequirement)
+        {
+            InitiatorServiceModelSecurityTokenRequirement sspiCredentialRequirement = new InitiatorServiceModelSecurityTokenRequirement();
+            sspiCredentialRequirement.TargetAddress = initiatorRequirement.TargetAddress;
+            sspiCredentialRequirement.TokenType = ServiceModelSecurityTokenTypes.SspiCredential;
+            sspiCredentialRequirement.Via = initiatorRequirement.Via;
+            sspiCredentialRequirement.RequireCryptographicToken = false;
+            sspiCredentialRequirement.SecurityBindingElement = initiatorRequirement.SecurityBindingElement;
+            sspiCredentialRequirement.MessageSecurityVersion = initiatorRequirement.MessageSecurityVersion;
+            ChannelParameterCollection parameters;
+            if (initiatorRequirement.TryGetProperty(ServiceModelSecurityTokenRequirement.ChannelParametersCollectionProperty, out parameters))
+            {
+                sspiCredentialRequirement.Properties[ServiceModelSecurityTokenRequirement.ChannelParametersCollectionProperty] = parameters;
+            }
+            SecurityTokenProvider sspiTokenProvider = CreateSecurityTokenProvider(sspiCredentialRequirement);
+            SecurityUtils.OpenTokenProviderIfRequiredAsync(sspiTokenProvider, TimeSpan.Zero).GetAwaiter().GetResult();
+            SspiSecurityToken sspiToken = (SspiSecurityToken)sspiTokenProvider.GetToken(TimeSpan.Zero);
+            SecurityUtils.AbortTokenProviderIfRequired(sspiTokenProvider);
+            return sspiToken;
+        }
+
+        private SecurityTokenProvider CreateSpnegoTokenProvider(InitiatorServiceModelSecurityTokenRequirement initiatorRequirement)
+        {
+            EndpointAddress targetAddress = initiatorRequirement.TargetAddress;
+            if (targetAddress == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRP.Format(SRP.TokenRequirementDoesNotSpecifyTargetAddress, initiatorRequirement));
+            }
+            SecurityBindingElement securityBindingElement = initiatorRequirement.SecurityBindingElement;
+            if (securityBindingElement == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRP.Format(SRP.TokenProviderRequiresSecurityBindingElement, initiatorRequirement));
+            }
+            SspiIssuanceChannelParameter sspiChannelParameter = GetSspiIssuanceChannelParameter(initiatorRequirement);
+            bool negotiateTokenOnOpen = sspiChannelParameter == null || sspiChannelParameter.GetTokenOnOpen;
+            LocalClientSecuritySettings localClientSettings = securityBindingElement.LocalClientSettings;
+            BindingContext issuerBindingContext = initiatorRequirement.GetProperty<BindingContext>(ServiceModelSecurityTokenRequirement.IssuerBindingContextProperty);
+            SpnegoTokenProvider spnegoTokenProvider = new SpnegoTokenProvider(sspiChannelParameter != null ? sspiChannelParameter.Credential : null, securityBindingElement);
+            SspiSecurityToken clientSspiToken = GetSpnegoClientCredential(initiatorRequirement);
+            spnegoTokenProvider.ClientCredential = clientSspiToken.NetworkCredential;
+            spnegoTokenProvider.IssuerAddress = initiatorRequirement.IssuerAddress;
+            spnegoTokenProvider.AllowedImpersonationLevel = ClientCredentials.Windows.AllowedImpersonationLevel;
+            spnegoTokenProvider.IdentityVerifier = localClientSettings.IdentityVerifier;
+            spnegoTokenProvider.SecurityAlgorithmSuite = initiatorRequirement.SecurityAlgorithmSuite;
+            spnegoTokenProvider.AuthenticateServer = !initiatorRequirement.Properties.ContainsKey(ServiceModelSecurityTokenRequirement.SupportingTokenAttachmentModeProperty);
+            spnegoTokenProvider.NegotiateTokenOnOpen = negotiateTokenOnOpen;
+            spnegoTokenProvider.CacheServiceTokens = negotiateTokenOnOpen || localClientSettings.CacheCookies;
+            spnegoTokenProvider.IssuerBindingContext = issuerBindingContext;
+            spnegoTokenProvider.MaxServiceTokenCachingTime = localClientSettings.MaxCookieCachingTime;
+            spnegoTokenProvider.ServiceTokenValidityThresholdPercentage = localClientSettings.CookieRenewalThresholdPercentage;
+            spnegoTokenProvider.StandardsManager = SecurityUtils.CreateSecurityStandardsManager(initiatorRequirement, this);
+            spnegoTokenProvider.TargetAddress = targetAddress;
+            spnegoTokenProvider.Via = initiatorRequirement.GetPropertyOrDefault<Uri>(ServiceModelSecurityTokenRequirement.ViaProperty, null);
+            spnegoTokenProvider.ApplicationProtectionRequirements = (issuerBindingContext != null) ? issuerBindingContext.BindingParameters.Find<ChannelProtectionRequirements>() : null;
+            // We don't support interactive SPNEGO logon, so InteractiveNegoExLogonEnabled is always false. If we decide to support it in the future,
+            // we can add back the property on ClientCredentials.Windows to control it.
+            // spnegoTokenProvider.InteractiveNegoExLogonEnabled = this.ClientCredentials.SupportInteractive;
+            return spnegoTokenProvider;
+        }
+
+        private SspiIssuanceChannelParameter GetSspiIssuanceChannelParameter(SecurityTokenRequirement initiatorRequirement)
+        {
+            ChannelParameterCollection channelParameters;
+            if (initiatorRequirement.TryGetProperty(ServiceModelSecurityTokenRequirement.ChannelParametersCollectionProperty, out channelParameters))
+            {
+                if (channelParameters != null)
+                {
+                    for (int i = 0; i < channelParameters.Count; ++i)
+                    {
+                        if (channelParameters[i] is SspiIssuanceChannelParameter sspiParam)
+                        {
+                            return sspiParam;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         private bool IsDigestAuthenticationScheme(SecurityTokenRequirement requirement)
         {
             if (requirement.Properties.ContainsKey(ServiceModelSecurityTokenRequirement.HttpAuthenticationSchemeProperty))
@@ -145,13 +224,16 @@ namespace System.ServiceModel
                     }
                     else
                     {
-#pragma warning disable 618   // to disable AllowNtlm obsolete warning.      
+#pragma warning disable 618   // to disable AllowNtlm obsolete warning.
                         result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(ClientCredentials.Windows.ClientCredential),
-
                             ClientCredentials.Windows.AllowNtlm,
                             ClientCredentials.Windows.AllowedImpersonationLevel);
 #pragma warning restore 618
                     }
+                }
+                else if (tokenType == ServiceModelSecurityTokenTypes.Spnego)
+                {
+                    result = CreateSpnegoTokenProvider(initiatorRequirement);
                 }
                 else if (tokenType == ServiceModelSecurityTokenTypes.SecureConversation)
                 {
@@ -203,7 +285,7 @@ namespace System.ServiceModel
             bool isSessionMode = initiatorRequirement.SupportSecurityContextCancellation;
             if (isSessionMode)
             {
-                SecuritySessionSecurityTokenProvider sessionTokenProvider = new SecuritySessionSecurityTokenProvider();
+                SecuritySessionSecurityTokenProvider sessionTokenProvider = new SecuritySessionSecurityTokenProvider(GetCredentials(initiatorRequirement));
                 sessionTokenProvider.BootstrapSecurityBindingElement = SecurityUtils.GetIssuerSecurityBindingElement(initiatorRequirement);
                 sessionTokenProvider.IssuedSecurityTokenParameters = initiatorRequirement.GetProperty<SecurityTokenParameters>(ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty);
                 sessionTokenProvider.IssuerBindingContext = issuerBindingContext;
@@ -314,7 +396,7 @@ namespace System.ServiceModel
                     || tokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego
                     || tokenType == ServiceModelSecurityTokenTypes.Spnego)
                 {
-                    throw ExceptionHelper.PlatformNotSupported("CreateSecurityTokenAuthenticator : GenericXmlSecurityTokenAuthenticator");
+                    result = new GenericXmlSecurityTokenAuthenticator();
                 }
             }
             else if ((tokenRequirement is RecipientServiceModelSecurityTokenRequirement) && tokenRequirement.TokenType == SecurityTokenTypes.X509Certificate)
@@ -329,6 +411,12 @@ namespace System.ServiceModel
             }
 
             return result;
+        }
+
+        private NetworkCredential GetCredentials(InitiatorServiceModelSecurityTokenRequirement initiatorRequirement)
+        {
+            SspiIssuanceChannelParameter sspiChannelParameter = GetSspiIssuanceChannelParameter(initiatorRequirement);
+            return sspiChannelParameter != null ? sspiChannelParameter.Credential : null;
         }
     }
 

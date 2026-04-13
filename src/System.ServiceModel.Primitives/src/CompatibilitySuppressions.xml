@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
 <Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Suppression>
@@ -4120,6 +4120,18 @@
     <IsBaselineSuppression>true</IsBaselineSuppression>
   </Suppression>
   <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:System.ServiceModel.Security.Tokens.SspiSecurityTokenParameters</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:System.ServiceModel.Security.Tokens.SspiSecurityTokenParameters</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
+    <Right>ref/net462/System.ServiceModel.Primitives.dll</Right>
+  </Suppression>
+  <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:System.ServiceModel.DuplexChannelFactory`1.#ctor(System.Object,System.ServiceModel.Channels.Binding,System.ServiceModel.EndpointAddress)</Target>
     <Left>lib/net8.0/System.ServiceModel.Duplex.dll</Left>
@@ -11867,6 +11879,12 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Security.Tokens.SspiSecurityTokenParameters.#ctor(System.ServiceModel.Security.Tokens.SspiSecurityTokenParameters)</Target>
+    <Left>ref/net10.0/System.ServiceModel.Primitives.dll</Left>
+    <Right>lib/net10.0/System.ServiceModel.Primitives.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:System.ServiceModel.Security.Tokens.SupportingTokenParameters.CloneCore</Target>
     <Left>ref/net10.0/System.ServiceModel.Primitives.dll</Left>
     <Right>lib/net10.0/System.ServiceModel.Primitives.dll</Right>
@@ -12658,6 +12676,30 @@
     <Target>M:System.ServiceModel.Channels.CommunicationObject.ThrowIfDisposedOrNotOpen</Target>
     <Left>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
     <Right>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement(System.Boolean)</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Primitives.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.Primitives.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Security.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.Security.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.ServiceModel.Channels.SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement(System.Boolean)</Target>
+    <Left>ref/netstandard2.0/System.ServiceModel.Security.dll</Left>
+    <Right>lib/netstandard2.0/System.ServiceModel.Security.dll</Right>
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0004</DiagnosticId>

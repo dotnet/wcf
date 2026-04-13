@@ -147,6 +147,16 @@
         <target state="translated">试图获取 {0} 的协定类型，但该类型不是 ServiceContract，或其未继承 ServiceContract。</target>
         <note />
       </trans-unit>
+      <trans-unit id="AuthenticationOfClientFailed">
+        <source>Authentication of the client by the service failed.</source>
+        <target state="new">Authentication of the client by the service failed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticatorNotPresentInRSTRCollection">
+        <source>The authenticator RSTR was not found in the RSTR collection.</source>
+        <target state="new">The authenticator RSTR was not found in the RSTR collection.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BadCloseTarget">
         <source>The CloseTarget specified '{0}' does not identify the security token that signed the message.</source>
         <target state="translated">CloseTarget 指定的“{0}”没有标识对消息进行签名的安全令牌。</target>
@@ -155,6 +165,11 @@
       <trans-unit id="BadIssuedTokenType">
         <source>The issued token is of unexpected type '{0}'. Expected token type '{1}'.</source>
         <target state="translated">颁发的令牌属于意外的类型“{0}”。令牌类型应为“{1}”。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BadKeyEncryptionAlgorithm">
+        <source>Invalid key encryption algorithm {0}.</source>
+        <target state="new">Invalid key encryption algorithm {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BadSecurityNegotiationContext">
@@ -367,6 +382,11 @@
         <target state="translated">无法将具有相同密钥的两个项目添加到 SynchronizedKeyedCollection 中。</target>
         <note />
       </trans-unit>
+      <trans-unit id="CannotAuthenticateServer">
+        <source>The security negotiation could not be completed because mutual authentication was not achieved.</source>
+        <target state="new">The security negotiation could not be completed because mutual authentication was not achieved.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="CannotDetectAddressingVersion">
         <source>Cannot detect WS-Addressing version. EndpointReference does not start with an Element.</source>
         <target state="translated">无法检测到 WS-Addressing 版本。EndpointReference 不是以 Element 开头。</target>
@@ -435,6 +455,11 @@
       <trans-unit id="CertificateUnsupportedForHttpTransportCredentialOnly">
         <source>Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</source>
         <target state="translated">TransportCredentialOnly 安全模式中不支持基于证书的客户端身份验证。请选择“传输安全性”模式。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelDemuxerBindingElementNotFound">
+        <source>The binding does not contain a ChannelDemuxerBindingElement.</source>
+        <target state="new">The binding does not contain a ChannelDemuxerBindingElement.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryCannotBeUsedToCreateChannels">
@@ -580,6 +605,11 @@
       <trans-unit id="CommunicationObjectInInvalidState">
         <source>The communication object, {0}, is not part of WCF and is in an unsupported state '{1}'.  This indicates an internal error in the implementation of that communication object.</source>
         <target state="translated">通信对象 {0} 不是 WCF 的一部分并且处于不支持的状态“{1}”。这表明通信对象的实现中出现内部错误。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ConfigInvalidTransactionFlowProtocolValue">
+        <source>The transaction protocol value '{0}' is not valid.</source>
+        <target state="new">The transaction protocol value '{0}' is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ConfigurationFilesNotSupported">
@@ -852,6 +882,11 @@
         <target state="translated">无法从绑定中获取 XmlDictionaryReaderQuota。如果已指定自定义 EncodingBindingElement，请验证 EncodingBindingElement 是否能够处理其 GetProperty&lt;T&gt;() 方法中的 XmlDictionaryReaderQuota。</target>
         <note />
       </trans-unit>
+      <trans-unit id="EncryptedKeyWasNotEncryptedWithTheRequiredEncryptingToken">
+        <source>The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</source>
+        <target state="new">The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EndMethodsCannotBeDecoratedWithOperationContractAttribute">
         <source>When using the IAsyncResult design pattern, the End method cannot be decorated with OperationContractAttribute. Only the corresponding Begin method can be decorated with OperationContractAttribute; that attribute will apply to the Begin-End pair of methods. Method '{0}' in type '{1}' violates this.</source>
         <target state="translated">使用 IAsyncResult 设计模式时，End 方法不能使用 OperationContractAttribute 进行修饰。只有相对应的 Begin 方法才能使用 OperationContractAttribute 进行修饰；该特性将应用到 Begin-End 方法对中。类型“{1}”中的方法“{0}”违反了此规则。</target>
@@ -965,6 +1000,11 @@
       <trans-unit id="FailToReceiveReplyFromNegotiation">
         <source>Security negotiation failed because the remote party did not send back a reply in a timely manner. This may be because the underlying transport connection was aborted.</source>
         <target state="translated">安全协商失败，因为远程方未及时发回答复。这可能是因为基础传输连接已中止。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FailedSspiNegotiation">
+        <source>The SSPI negotiation failed with the server.</source>
+        <target state="new">The SSPI negotiation failed with the server.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToCreateTypedProxy">
@@ -1317,6 +1357,11 @@
         <target state="translated">传入的二进制协商具有无效的 ValueType {0}。</target>
         <note />
       </trans-unit>
+      <trans-unit id="IncorrectSpnOrUpnSpecified">
+        <source>SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</source>
+        <target state="new">SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InnerChannelFactoryWasNotSet">
         <source>Cannot open ChannelFactory as the inner channel factory was not set during the initialization process.</source>
         <target state="translated">无法打开 ChannelFactory，因为初始化过程中未设置内部通道工厂。</target>
@@ -1367,6 +1412,11 @@
         <target state="translated">收到指示远程终结点上的缓冲区空间为 {0} 的确认。此数值不能小于零。该可靠的会话出错。</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidClientCredentials">
+        <source>The client credentials are not valid.</source>
+        <target state="new">The client credentials are not valid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
         <source>A security session close response was received with an invalid action '{0}'.</source>
         <target state="translated">已收到带有无效操作“{0}”的安全会话关闭响应</target>
@@ -1412,6 +1462,11 @@
         <target state="translated">发生内部错误。MessageState 无效。</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidPropagationToken">
+        <source>The propagation token in the message is invalid.</source>
+        <target state="new">The propagation token in the message is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidQName">
         <source>The QName is invalid.</source>
         <target state="translated">QName 无效。</target>
@@ -1440,6 +1495,11 @@
       <trans-unit id="InvalidSequenceRange">
         <source>An acknowledgement range starting at {0} and ending at {1} was received. This is an invalid acknowledgement range. The reliable session was faulted.</source>
         <target state="translated">收到开始于 {0} 以及结束于 {1} 的确认范围。这是无效的确认范围。该可靠的会话出错。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidSspiNegotiation">
+        <source>The SSPI negotiation failed.</source>
+        <target state="new">The SSPI negotiation failed.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTokenProvided">
@@ -1490,6 +1550,11 @@
       <trans-unit id="IssuedSecurityTokenParametersNotSet">
         <source>The security token parameters to use for the issued token are not set on '{0}'.</source>
         <target state="translated">“{0}”上未设置用于颁发的令牌的安全令牌参数。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IssuedTokenFlowNotAllowed">
+        <source>Issued token flow is not allowed by this binding.</source>
+        <target state="new">Issued token flow is not allowed by this binding.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuerBindingNotPresentInTokenRequirement">
@@ -1847,6 +1912,11 @@
         <target state="translated">远程终结点未在对关闭序列请求消息的答复中包含最终确认。这违反了 WS-ReliableMessaging 协议。可靠会话出错。</target>
         <note />
       </trans-unit>
+      <trans-unit id="MissingKeyInfoInEncryptedKey">
+        <source>The KeyInfo clause is missing or empty in EncryptedKey.</source>
+        <target state="new">The KeyInfo clause is missing or empty in EncryptedKey.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="MissingMessageID">
         <source>Request Message is missing a MessageID header. One is required to correlate a reply.</source>
         <target state="translated">请求消息缺少 MessageID 标头。需要 MessageID 标头以与回复相关。</target>
@@ -2097,6 +2167,16 @@
         <target state="translated">终结点仅使用 WS-ReliableMessaging 协议处理消息。发送到终结点的消息不具有该协议使用的操作或任何头，因而无法处理。</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoBinaryNegoToReceive">
+        <source>Security negotiation failed because no binary negotiation data was received from the other party.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data was received from the other party.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoBinaryNegoToSend">
+        <source>Security negotiation failed because no binary negotiation data is available to send.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data is available to send.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NoChannelBuilderAvailable">
         <source>The binding (Name={0}, Namespace={1}) cannot be used to create a ChannelFactory or a ChannelListener because it appears to be missing a TransportBindingElement.  Every binding must have at least one binding element that derives from TransportBindingElement.</source>
         <target state="translated">不能使用绑定(Name={0}，Namespace={1})创建 ChannelFactory 或 ChannelListener，因为似乎缺少 TransportBindingElement。每个绑定必须至少具有从 TransportBindingElement 派生的一个绑定元素。</target>
@@ -2115,6 +2195,11 @@
       <trans-unit id="NoEndMethodFoundForAsyncBeginMethod3">
         <source>OperationContract method '{0}' in type '{1}' does not properly implement the async pattern, as no corresponding method '{2}' could be found. Either provide a method called '{2}' or set the AsyncPattern property on method '{0}' to false.</source>
         <target state="translated">类型“{1}”中的 OperationContract 方法“{0}”无法正确实现异步模式，因为找不到相应方法“{2}”。请提供名为“{2}”的方法或将方法“{0}”上的 AsyncPattern 属性设置为 false。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoInputIsSetForCanonicalization">
+        <source>No input is set for writing canonicalized output.</source>
+        <target state="new">No input is set for writing canonicalized output.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyIdentifierClauseFound">
@@ -2162,6 +2247,11 @@
         <target state="translated">SecurityContextSecurityToken 没有上下文 ID。</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoServiceTokenReceived">
+        <source>No service token was received as part of the security negotiation.</source>
+        <target state="new">No service token was received as part of the security negotiation.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NoUserNameTokenProvided">
         <source>The required UserNameSecurityToken was not provided.</source>
         <target state="translated">未提供所需的 UserNameSecurityToken。</target>
@@ -2205,6 +2295,11 @@
       <trans-unit id="OffsetExceedsBufferSize">
         <source>The specified offset exceeds the buffer size ({0} bytes).</source>
         <target state="translated">指定的偏移量超出了缓冲区大小({0} 个字节)。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OleTxHeaderCorrupt">
+        <source>The OleTx transaction header in the message is malformed.</source>
+        <target state="new">The OleTx transaction header in the message is malformed.</target>
         <note />
       </trans-unit>
       <trans-unit id="OneWayAndFaultsIncompatible2">
@@ -2312,6 +2407,11 @@
         <target state="translated">不支持此私钥的密钥算法。</target>
         <note />
       </trans-unit>
+      <trans-unit id="ProofTokenWasNotWrappedCorrectly">
+        <source>The proof token was not wrapped with the correct algorithm.</source>
+        <target state="new">The proof token was not wrapped with the correct algorithm.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PropertySettingErrorOnProtocolFactory">
         <source>The required '{0}' property on the '{1}' security protocol factory is not set or has an invalid value.</source>
         <target state="translated">“{1}”安全协议工厂上必需的“{0}”属性尚未设置或具有无效的值。</target>
@@ -2365,6 +2465,21 @@
       <trans-unit id="PublicKeyNotSupported">
         <source>The key algorithm for this public key is not supported.</source>
         <target state="translated">不支持此公钥的密钥算法。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorHasBadContext">
+        <source>The authenticator RSTR has a different Context value than the negotiation RSTR.</source>
+        <target state="new">The authenticator RSTR has a different Context value than the negotiation RSTR.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorIncorrect">
+        <source>The authenticator in the server response was incorrect.</source>
+        <target state="new">The authenticator in the server response was incorrect.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorNotPresent">
+        <source>The authenticator was not present in the server response.</source>
+        <target state="new">The authenticator was not present in the server response.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadNotSupportedOnStream">
@@ -2550,6 +2665,11 @@
       <trans-unit id="SFxBadByValueParameterMetadata">
         <source>Method '{0}' in class '{1}' has bad parameter metadata: a pass-by-value parameter is marked with the 'out' parameter mode.</source>
         <target state="translated">类“{1}”中的方法“{0}”具有错误的参数元数据: 按值传递的参数使用 "out" 参数模式进行标记。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxBadTransactionProtocols">
+        <source>The specified transaction protocol is not valid.</source>
+        <target state="new">The specified transaction protocol is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBindingMustContainTransport2">
@@ -3392,6 +3512,26 @@
         <target state="translated">无法处理大于 Int32.MaxValue TotalMilliseconds (大约 24 天)的超时。要禁用超时，请指定 TimeSpan.MaxValue。</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxTransactionDeserializationFailed">
+        <source>Transaction deserialization failed: {0}.</source>
+        <target state="new">Transaction deserialization failed: {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionFlowRequired">
+        <source>A transaction is required but was not flowed.</source>
+        <target state="new">A transaction is required but was not flowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionHeaderNotUnderstood">
+        <source>The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</source>
+        <target state="new">The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTryAddMultipleTransactionsOnMessage">
+        <source>Cannot add multiple transaction properties to a message.</source>
+        <target state="new">Cannot add multiple transaction properties to a message.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeNull">
         <source>Internal Error: The instance of the MessageContract cannot be null in {0}.</source>
         <target state="translated">内部错误: MessageContract 的实例在 {0} 中不能为 null。</target>
@@ -3827,6 +3967,11 @@
         <target state="translated">编码所需的空间({0} 字节)超过了消息帧偏移量。</target>
         <note />
       </trans-unit>
+      <trans-unit id="SpnegoImpersonationLevelCannotBeSetToNone">
+        <source>The impersonation level for SPNEGO negotiation cannot be set to None.</source>
+        <target state="new">The impersonation level for SPNEGO negotiation cannot be set to None.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StandardsManagerCannotWriteObject">
         <source>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</source>
         <target state="translated">令牌序列化程序无法序列化“{0}”。如果这是自定义类型，则必须提供自定义序列化程序。</target>
@@ -4097,6 +4242,26 @@
         <target state="translated">可靠会话基础结构检测到系统时钟更改。这会暂时导致次优消息重试策略。</target>
         <note />
       </trans-unit>
+      <trans-unit id="TransactionFlowBadOption">
+        <source>The specified TransactionFlowOption is not a valid value.</source>
+        <target state="new">The specified TransactionFlowOption is not a valid value.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowOnlySupportedOnWindows">
+        <source>Transaction flow is only supported on Windows.</source>
+        <target state="new">Transaction flow is only supported on Windows.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowRequiredIssuedTokens">
+        <source>Transaction flow is required, but issued tokens are not allowed.</source>
+        <target state="new">Transaction flow is required, but issued tokens are not allowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionsNotSupported">
+        <source>Distributed transactions are not supported on this platform.</source>
+        <target state="new">Distributed transactions are not supported on this platform.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="TransferModeNotSupported">
         <source>Transfer mode {0} is not supported by {1}.</source>
         <target state="translated">{1} 不支持传输模式 {0}。</target>
@@ -4190,6 +4355,11 @@
       <trans-unit id="UnableToResolveKeyInfoClauseInDerivedKeyToken">
         <source>Cannot resolve KeyInfo in derived key token for resolving source token: KeyInfoClause '{0}'.</source>
         <target state="translated">无法为解析源令牌 KeyInfoClause“{0}”解析派生的密钥令牌中的 KeyInfo。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveKeyInfoForUnwrappingToken">
+        <source>Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</source>
+        <target state="new">Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyReference">
@@ -4330,6 +4500,11 @@
       <trans-unit id="UnknownTokenAuthenticatorUsedInTokenProcessing">
         <source>An unrecognized token authenticator '{0}' was used for token processing.</source>
         <target state="translated">无法识别的令牌身份验证器“{0}”被用于令牌处理。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnmarshalTransactionFaulted">
+        <source>The transaction could not be unmarshaled.</source>
+        <target state="new">The transaction could not be unmarshaled.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnparsableCSResponse">
@@ -4565,6 +4740,11 @@
       <trans-unit id="WrongIdentifierFault">
         <source>The remote endpoint has sent an fault message with an unexpected sequence identifier over a session. The fault may be intended for a different session. The fault reason is: {0} The reliable session was faulted.</source>
         <target state="translated">远程终结点息通过会话发送了一条带有意外序列标识符的错误消。该错误可能是用于其他会话的。错误原因是: {0} 可靠会话出错。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WsatHeaderCorrupt">
+        <source>The WS-AtomicTransaction header in the message is malformed.</source>
+        <target state="new">The WS-AtomicTransaction header in the message is malformed.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsrmFaultReceived">

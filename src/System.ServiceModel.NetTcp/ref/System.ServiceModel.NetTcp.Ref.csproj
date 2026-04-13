@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
     <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\ref\System.ServiceModel.NetFramingBase.Ref.csproj" />
   </ItemGroup>
 

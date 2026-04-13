@@ -906,3 +906,23 @@ public interface IWcfReliableDuplexService
     [OperationContract]
     Task<string> DuplexEchoAsync(string echo);
 }
+
+[ServiceContract]
+public interface IWcfTransactionService
+{
+    [OperationContract]
+    [TransactionFlow(TransactionFlowOption.Allowed)]
+    bool IsTransactionFlowed();
+
+    [OperationContract]
+    [TransactionFlow(TransactionFlowOption.Allowed)]
+    void ThrowDuringTransaction();
+}
+
+[ServiceContract]
+public interface IWcfTransactionMandatoryService
+{
+    [OperationContract]
+    [TransactionFlow(TransactionFlowOption.Mandatory)]
+    bool IsTransactionFlowed();
+}
