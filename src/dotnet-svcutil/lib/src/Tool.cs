@@ -269,7 +269,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                                 compileUnit.Namespaces.Add(splitNamespace);
                                 splitNamespace.Types.Add(type);
                                 var filePath = codeSerializer.Save(compileUnit);
-                                ToolConsole.WriteLine(filePath, LogTag.Important);
+                                ToolConsole.WriteLineIf(options.ToolContext != OperationalContext.Infrastructure, filePath, LogTag.Important);
                             }
                         }
                     }
