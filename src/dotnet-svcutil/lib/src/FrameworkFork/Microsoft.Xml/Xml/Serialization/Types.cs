@@ -13,8 +13,8 @@ namespace Microsoft.Xml.Serialization
     using Microsoft.Xml;
     using System.Text;
     using System.ComponentModel;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     using Microsoft.Xml.Serialization.Advanced;
     using System.Globalization;
     //using System.Security.Cryptography;

@@ -9,8 +9,8 @@ namespace Microsoft.Xml.Serialization.Advanced
     using Microsoft.Xml;
     using System.Collections;
     using System.Collections.Specialized;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     using Microsoft.Xml.Serialization;
     using System.Reflection;
 
