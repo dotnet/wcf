@@ -247,19 +247,27 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 ToolConsole.WriteLine(SR.GeneratingFiles);
                 if (options.SeparateFiles == true)
                 {
-                    foreach (CodeNamespace @namespace in importModule.CodeCompileUnit.Namespaces)
+                    var originalOutputFile = options.OutputFile;
+                    try
                     {
-                        foreach (CodeTypeDeclaration type in @namespace.Types)
+                        foreach (CodeNamespace @namespace in importModule.CodeCompileUnit.Namespaces)
                         {
-                            options.OutputFile = new FileInfo(Path.Combine(options.OutputDir.FullName, $"{type.Name}{CodeSerializer.GetOutputFileExtension(options)}"));
-                            CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
-                            CodeCompileUnit compileUnit = new CodeCompileUnit();
-                            CodeNamespace splitNamespace = new CodeNamespace(@namespace.Name);
-                            compileUnit.Namespaces.Add(splitNamespace);
-                            splitNamespace.Types.Add(type);
-                            var filePath = codeSerializer.Save(compileUnit);
-                            ToolConsole.WriteLine(filePath, LogTag.Important);
+                            foreach (CodeTypeDeclaration type in @namespace.Types)
+                            {
+                                options.OutputFile = new FileInfo(Path.Combine(options.OutputDir.FullName, $"{type.Name}{CodeSerializer.GetOutputFileExtension(options)}"));
+                                CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
+                                CodeCompileUnit compileUnit = new CodeCompileUnit();
+                                CodeNamespace splitNamespace = new CodeNamespace(@namespace.Name);
+                                compileUnit.Namespaces.Add(splitNamespace);
+                                splitNamespace.Types.Add(type);
+                                var filePath = codeSerializer.Save(compileUnit);
+                                ToolConsole.WriteLine(filePath, LogTag.Important);
+                            }
                         }
+                    }
+                    finally
+                    {
+                        options.OutputFile = originalOutputFile;
                     }
                 }
                 else
