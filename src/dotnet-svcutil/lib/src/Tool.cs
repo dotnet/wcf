@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -14,6 +15,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeDom;
 using Microsoft.Tools.ServiceModel.Svcutil.Metadata;
+using Newtonsoft.Json.Linq;
+using static System.ServiceModel.Channels.RequestReplyCorrelator;
 using DcNS = System.Runtime.Serialization;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
@@ -260,12 +263,25 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                                 var outputPath = Path.Combine(options.OutputDir.FullName, outputFileName);
                                 if (!generatedOutputPaths.Add(outputPath))
                                 {
-                                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "A generated output file collision was detected for type '{0}' in namespace '{1}'. The file path '{2}' is already assigned to another generated type.", type.Name, @namespace.Name, outputPath));
+                                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
+                                        "A generated output file collision was detected for type '{0}' in namespace '{1}'. The file path '{2}' is already assigned to another generated type.",
+                                        type.Name, @namespace.Name, outputPath));
                                 }
                                 options.OutputFile = new FileInfo(outputPath);
                                 CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
                                 CodeCompileUnit compileUnit = new CodeCompileUnit();
                                 CodeNamespace splitNamespace = new CodeNamespace(@namespace.Name);
+
+                                // Transfer the assembly attributes, referenced assemblies, user data and directives to each split compile unit to ensure the generated code is correct.
+                                compileUnit.AssemblyCustomAttributes.AddRange(importModule.CodeCompileUnit.AssemblyCustomAttributes);
+                                compileUnit.StartDirectives.AddRange(importModule.CodeCompileUnit.StartDirectives);
+                                compileUnit.EndDirectives.AddRange(importModule.CodeCompileUnit.EndDirectives);
+                                compileUnit.ReferencedAssemblies.AddRange(importModule.CodeCompileUnit.ReferencedAssemblies.Cast<string>().ToArray());
+                                foreach (DictionaryEntry pair in importModule.CodeCompileUnit.UserData)
+                                {
+                                    compileUnit.UserData.Add(pair.Key, pair.Value);
+                                }
+                                
                                 compileUnit.Namespaces.Add(splitNamespace);
                                 splitNamespace.Types.Add(type);
                                 var filePath = codeSerializer.Save(compileUnit);
