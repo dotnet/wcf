@@ -250,11 +250,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     var originalOutputFile = options.OutputFile;
                     try
                     {
+                        var generatedOutputPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                         foreach (CodeNamespace @namespace in importModule.CodeCompileUnit.Namespaces)
                         {
                             foreach (CodeTypeDeclaration type in @namespace.Types)
                             {
-                                options.OutputFile = new FileInfo(Path.Combine(options.OutputDir.FullName, $"{type.Name}{CodeSerializer.GetOutputFileExtension(options)}"));
+                                var namespacePrefix = GetSafeNamespaceFilePrefix(@namespace.Name);
+                                var outputFileName = $"{namespacePrefix}.{type.Name}{CodeSerializer.GetOutputFileExtension(options)}";
+                                var outputPath = Path.Combine(options.OutputDir.FullName, outputFileName);
+                                if (!generatedOutputPaths.Add(outputPath))
+                                {
+                                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "A generated output file collision was detected for type '{0}' in namespace '{1}'. The file path '{2}' is already assigned to another generated type.", type.Name, @namespace.Name, outputPath));
+                                }
+                                options.OutputFile = new FileInfo(outputPath);
                                 CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
                                 CodeCompileUnit compileUnit = new CodeCompileUnit();
                                 CodeNamespace splitNamespace = new CodeNamespace(@namespace.Name);
@@ -281,6 +289,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             return ToolConsole.ExitCode;
+        }
+
+        private static string GetSafeNamespaceFilePrefix(string namespaceName)
+        {
+            var prefix = string.IsNullOrWhiteSpace(namespaceName) ? "Global" : namespaceName;
+            foreach (var invalidChar in Path.GetInvalidFileNameChars())
+            {
+                prefix = prefix.Replace(invalidChar, '_');
+            }
+            return prefix.Replace('.', '_');
         }
 
         private static bool IsSuccess(int result)
