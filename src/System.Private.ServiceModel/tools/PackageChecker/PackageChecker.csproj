@@ -12,8 +12,8 @@
     <PackageReference Include="System.CommandLine.DragonFruit" Version="0.4.0-alpha.22272.1" />
     <PackageReference Include="System.Reflection.MetadataLoadContext" Version="9.0.0" />
     <PackageReference Include="NuGet.PackageManagement" Version="6.12.1" />
-    <PackageReference Include="NuGet.Protocol" Version="6.12.1" />
-    <PackageReference Include="Nuget.Packaging" Version="6.12.1" />
+    <PackageReference Include="NuGet.Protocol" Version="6.12.5" />
+    <PackageReference Include="Nuget.Packaging" Version="6.12.5" />
     <PackageReference Include="NuGet.Frameworks" Version="6.12.1" />
   </ItemGroup>
 
