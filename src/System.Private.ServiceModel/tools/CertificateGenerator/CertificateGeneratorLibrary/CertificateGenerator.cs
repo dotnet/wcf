@@ -465,27 +465,9 @@ namespace WcfTestCommon
                 // you will have to re-export this cert if needed
                 if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
                 {
-                    //string tempKeychainFilePath = Path.GetTempFileName();
-                    string tempKeychainFilePath = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
-                    System.Security.Cryptography.X509Certificates.X509Store MacOsTempStore = CertificateHelper.GetMacOSX509Store(tempKeychainFilePath);
-                    MacOsTempStore.Certificates.Import(container.Pfx, _password, X509KeyStorageFlags.Exportable);
-                    MacOsTempStore.Close();
-                    MacOsTempStore.Dispose();
-
-                    MacOsTempStore = CertificateHelper.GetMacOSX509Store(tempKeychainFilePath);
-
-                    outputCert = ((IEnumerable<X509Certificate2>)MacOsTempStore.Certificates).FirstOrDefault();
-
-                    if (outputCert == null)
-                    {
-                        Console.WriteLine("Couldn't find Certificate..");
-                    }
-
-                    MacOsTempStore.Dispose();
-                    if (File.Exists(tempKeychainFilePath))
-                    {
-                        File.Delete(tempKeychainFilePath);
-                    }
+                    // On macOS, MachineKeySet and PersistKeySet are not supported.
+                    // Load the certificate directly from the PFX bytes with Exportable flag only.
+                    outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.Exportable);
                 }
                 else
                 {
