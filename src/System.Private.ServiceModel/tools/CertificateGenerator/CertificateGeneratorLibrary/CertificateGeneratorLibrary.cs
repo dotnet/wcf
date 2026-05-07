@@ -24,15 +24,28 @@ public class CertificateGeneratorLibrary
     {
         X509Store store = CertificateHelper.GetX509Store(storeName, storeLocation);
         Console.WriteLine("  Checking StoreName '{0}', StoreLocation '{1}'", storeName, store.Location);
-        {
-            store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
 
+        // On macOS, Root and TrustedPeople stores are read-only via the X509Store API.
+        // Use the macOS security CLI to manage trust for these stores.
+        if (CertificateHelper.CurrentOperatingSystem.IsMacOS() &&
+            (storeName == StoreName.Root || storeName == StoreName.TrustedPeople))
+        {
             foreach (var cert in store.Certificates.Find(X509FindType.FindByIssuerName, CertificateIssuer, false))
             {
                 Console.Write("    {0}. Subject: '{1}'", cert.Thumbprint, cert.SubjectName.Name);
-                store.Remove(cert);
-                Console.WriteLine(" ... removed");
+                CertificateHelper.RemoveTrustedCertOnMacOS(cert);
+                Console.WriteLine(" ... removed via security CLI");
             }
+            Console.WriteLine();
+            return;
+        }
+
+        store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
+        foreach (var cert in store.Certificates.Find(X509FindType.FindByIssuerName, CertificateIssuer, false))
+        {
+            Console.Write("    {0}. Subject: '{1}'", cert.Thumbprint, cert.SubjectName.Name);
+            store.Remove(cert);
+            Console.WriteLine(" ... removed");
         }
         Console.WriteLine();
     }
