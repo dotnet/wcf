@@ -49,12 +49,7 @@ namespace WcfTestCommon
             try
             {
                 store = CertificateHelper.GetX509Store(storeName, storeLocation);
-
-                // We assume Bridge is running elevated
-                if (!CertificateHelper.CurrentOperatingSystem.IsMacOS())
-                {
-                    store.Open(OpenFlags.ReadWrite);
-                }
+                store.Open(OpenFlags.ReadWrite);
                 existingCert = CertificateFromThumbprint(store, certificate.Thumbprint);
                 if (existingCert == null)
                 {
