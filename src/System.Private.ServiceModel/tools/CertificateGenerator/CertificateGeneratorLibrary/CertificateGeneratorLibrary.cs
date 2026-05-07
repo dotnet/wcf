@@ -25,10 +25,7 @@ public class CertificateGeneratorLibrary
         X509Store store = CertificateHelper.GetX509Store(storeName, storeLocation);
         Console.WriteLine("  Checking StoreName '{0}', StoreLocation '{1}'", storeName, store.Location);
         {
-            if (!CertificateHelper.CurrentOperatingSystem.IsMacOS()) 
-            {
-                store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
-            }
+            store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
 
             foreach (var cert in store.Certificates.Find(X509FindType.FindByIssuerName, CertificateIssuer, false))
             {

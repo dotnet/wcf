@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Compile Include="..\..\IISHostedWcfService\App_code\CertificateHelper\CertificateHelper.cs" Link="CertificateHelper.cs" />
-    <Compile Include="..\..\IISHostedWcfService\App_code\CertificateHelper\SafeKeychainHandle.cs" Link="SafeKeychainHandle.cs" />
   </ItemGroup>
 
   <ItemGroup>
