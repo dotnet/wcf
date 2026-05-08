@@ -44,20 +44,17 @@ namespace WcfTestCommon
         // already present.  Returns 'true' if the certificate was added.
         public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate)
         {
-            // On macOS, Root and TrustedPeople stores are read-only via the X509Store API.
-            // Use the macOS security CLI to manage trust for these stores.
-            if (CertificateHelper.CurrentOperatingSystem.IsMacOS() &&
-                (storeName == StoreName.Root || storeName == StoreName.TrustedPeople))
+            // On macOS, the X509Store API cannot modify stores without user interaction.
+            // Use the macOS security CLI with a custom unlocked keychain instead.
+            if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
             {
-                bool added = CertificateHelper.AddTrustedCertOnMacOS(certificate);
-                if (added)
+                if (storeName == StoreName.Root || storeName == StoreName.TrustedPeople)
                 {
-                    Trace.WriteLine(string.Format("[CertificateManager] Added certificate via macOS security CLI:"));
-                    Trace.WriteLine(string.Format("    {0} = {1}", "StoreName", storeName));
-                    Trace.WriteLine(string.Format("    {0} = {1}", "CN", certificate.SubjectName.Name));
-                    Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", certificate.Thumbprint));
+                    return CertificateHelper.AddTrustedCertOnMacOS(certificate);
                 }
-                return added;
+
+                // For My store, import the cert (with private key) into the custom keychain
+                return CertificateHelper.ImportCertToMacOSKeychain(certificate, "test");
             }
 
             X509Store store = null;
