@@ -69,43 +69,32 @@ namespace WcfTestCommon
 
         // Adds the given certificate to the given store unless it is
         // already present.  Returns 'true' if the certificate was added.
-        // On macOS, pfxBytes must be provided for My store operations (private key import via CLI).
-        // certDerBytes can be provided for macOS trust operations when certificate is null.
-        public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate, byte[] pfxBytes = null, string pfxPassword = null, byte[] certDerBytes = null)
+        public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate)
         {
-            // On macOS, the X509Store API cannot modify stores without user interaction.
-            // Use the macOS security CLI with a custom unlocked keychain instead.
+            if (certificate == null)
+            {
+                Trace.WriteLine("[CertificateManager] AddToStoreIfNeeded called with null certificate.");
+                return false;
+            }
+
+            // On macOS, the X509Store API cannot modify Root/TrustedPeople stores without user interaction,
+            // and the login keychain may be locked in CI. Use the macOS security CLI with a custom unlocked
+            // keychain instead.
             if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
             {
                 if (storeName == StoreName.Root || storeName == StoreName.TrustedPeople)
                 {
-                    if (certificate != null)
-                    {
-                        return CertificateHelper.AddTrustedCertOnMacOS(certificate);
-                    }
-                    else if (certDerBytes != null)
-                    {
-                        return CertificateHelper.AddTrustedCertOnMacOS(certDerBytes);
-                    }
-
-                    Trace.WriteLine("[CertificateManager] Cannot add trusted cert on macOS: no certificate or DER bytes available.");
-                    return false;
+                    return CertificateHelper.AddTrustedCertOnMacOS(certificate);
                 }
 
-                // For My store, import the PFX (with private key) into the custom keychain
-                if (pfxBytes != null)
+                // For My store, import the PFX (with private key) into the custom keychain.
+                if (certificate.HasPrivateKey)
                 {
-                    return CertificateHelper.ImportCertToMacOSKeychain(pfxBytes, pfxPassword ?? "test");
+                    byte[] pfxBytes = certificate.Export(X509ContentType.Pkcs12, "test");
+                    return CertificateHelper.ImportCertToMacOSKeychain(pfxBytes, "test");
                 }
 
-                // Fallback: import public cert only
-                if (certificate != null)
-                {
-                    return CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
-                }
-
-                Trace.WriteLine("[CertificateManager] Cannot add cert on macOS: no PFX bytes or certificate available.");
-                return false;
+                return CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
             }
 
             X509Store store = null;
@@ -164,12 +153,11 @@ namespace WcfTestCommon
         // Install the certificate into the My store.
         // It will not install the certificate if it is already present in the store.
         // It returns the thumbprint of the certificate, regardless whether it was added or found.
-        public static string InstallCertificateToMyStore(X509Certificate2 certificate, bool isValidCert = true, byte[] pfxBytes = null, string pfxPassword = null)
+        public static string InstallCertificateToMyStore(X509Certificate2 certificate, bool isValidCert = true)
         {
             lock (s_certificateLock)
             {
-                bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate, pfxBytes, pfxPassword);
-
+                AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
                 return certificate?.Thumbprint;
             }
         }
@@ -177,13 +165,12 @@ namespace WcfTestCommon
         // Install the certificate into the TrustedPeople store.
         // It will not install the certificate if it is already present in the store.
         // It returns the thumbprint of the certificate, regardless whether it was added or found.
-        public static string InstallCertificateToTrustedPeopleStore(X509Certificate2 certificate, bool isValidCert = true, byte[] certDerBytes = null)
+        public static string InstallCertificateToTrustedPeopleStore(X509Certificate2 certificate, bool isValidCert = true)
         {
             lock (s_certificateLock)
             {
-                bool added = AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.LocalMachine, certificate, certDerBytes: certDerBytes);
-
-                return certificate != null ? certificate.Thumbprint : null;
+                AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.LocalMachine, certificate);
+                return certificate?.Thumbprint;
             }
         }
 
@@ -227,14 +214,7 @@ namespace WcfTestCommon
                 // Since s_myCertificates keys by subject name, we won't install a cert for the same subject twice
                 // only the first-created cert will win
                 InstallCertificateToRootStore(rootCertificate);
-                InstallCertificateToMyStore(hostCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid, hostCertContainer.Pfx, certificateGenerator.CertificatePassword);
-
-                // On macOS, hostCert is null because we can't create X509Certificate2 from BouncyCastle output.
-                // After importing PFX to the keychain via CLI, retrieve the cert from the keychain.
-                if (hostCert == null && CertificateHelper.CurrentOperatingSystem.IsMacOS())
-                {
-                    hostCert = FindCertificateInStore(hostCertContainer.Thumbprint);
-                }
+                InstallCertificateToMyStore(hostCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid);
 
                 s_localCertificate = hostCert;
 
@@ -247,8 +227,7 @@ namespace WcfTestCommon
                 };
                 var peerCertContainer = certificateGenerator.CreateMachineCertificate(certificateCreationSettings);
                 var peerCert = peerCertContainer.Certificate;
-                byte[] peerCertDer = peerCertContainer.InternalCertificate != null ? peerCertContainer.InternalCertificate.GetEncoded() : null;
-                InstallCertificateToTrustedPeopleStore(peerCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid, peerCertDer);
+                InstallCertificateToTrustedPeopleStore(peerCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid);
             }
 
             return s_localCertificate;

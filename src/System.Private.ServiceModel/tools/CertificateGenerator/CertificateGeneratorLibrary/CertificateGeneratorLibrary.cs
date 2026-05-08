@@ -157,7 +157,8 @@ public class CertificateGeneratorLibrary
             ValidityType = CertificateValidityType.Valid,
             Subject = s_fqdn,
             SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" },
-            EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID> { Org.BouncyCastle.Asn1.X509.KeyPurposeID.id_kp_clientAuth }
+            // serverAuth OID = 1.3.6.1.5.5.7.3.1; clientAuth OID = 1.3.6.1.5.5.7.3.2
+            EKU = new List<string> { "1.3.6.1.5.5.7.3.2" }
         };
         CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
@@ -167,7 +168,7 @@ public class CertificateGeneratorLibrary
             FriendlyName = "WCF Bridge - STSMetaData",
             ValidityType = CertificateValidityType.Valid,
             Subject = "STSMetaData",
-            EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID>()
+            EKU = new List<string>()
         };
         CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
@@ -178,7 +179,7 @@ public class CertificateGeneratorLibrary
             Subject = "WCF Client Certificate",
         };
         var userCertContainer = certificateGenerate.CreateUserCertificate(certificateCreationSettings);
-        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, userCertContainer.Certificate, userCertContainer.Pfx, certificateGenerate.CertificatePassword);
+        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, userCertContainer.Certificate);
 
         //Create CRL and save it
         FileInfo file = new FileInfo(s_crlFileLocation);
@@ -192,6 +193,6 @@ public class CertificateGeneratorLibrary
     private static void CreateAndInstallMachineCertificate(CertificateGenerator certificateGenerate, CertificateCreationSettings certificateCreationSettings)
     {
         var container = certificateGenerate.CreateMachineCertificate(certificateCreationSettings);
-        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, container.Certificate, container.Pfx, certificateGenerate.CertificatePassword);
+        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, container.Certificate);
     }
 }
