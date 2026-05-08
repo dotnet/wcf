@@ -143,7 +143,7 @@ namespace WcfTestCommon
             {
                 bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate, pfxBytes, pfxPassword);
 
-                return certificate.Thumbprint;
+                return certificate?.Thumbprint;
             }
         }
 
