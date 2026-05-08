@@ -469,15 +469,12 @@ namespace WcfTestCommon
             }
             else if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
             {
-                // On macOS, the .NET X509Certificate2 constructor cannot load BouncyCastle-generated
-                // certs due to format incompatibilities with the Apple Security framework.
-                // Skip X509Certificate2 creation; PFX import is handled via CLI.
-                // Compute thumbprint (SHA1 of DER) directly from BouncyCastle cert.
-                using (var sha1 = System.Security.Cryptography.SHA1.Create())
-                {
-                    byte[] hash = sha1.ComputeHash(cert.GetEncoded());
-                    thumbprint = BitConverter.ToString(hash).Replace("-", "");
-                }
+                // On macOS, BouncyCastle's PKCS12 and DER encodings are incompatible with Apple's
+                // Security framework. Use openssl to create a macOS-compatible PFX instead.
+                byte[] macPfx = CreateMacOSCompatiblePfx(cert, keyPair, _password);
+                container.Pfx = macPfx;
+                outputCert = new X509Certificate2(macPfx, _password, X509KeyStorageFlags.Exportable);
+                thumbprint = outputCert.Thumbprint;
             }
             else
             {
@@ -500,11 +497,72 @@ namespace WcfTestCommon
                 Trace.WriteLine(string.Format("    {0} = {1}", "Subject Alt names ", string.Join(", ", subjectAlternativeNames)));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Friendly Name ", certificateCreationSettings.FriendlyName));
             }
-            Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey:", outputCert != null ? outputCert.HasPrivateKey.ToString() : "N/A (macOS)"));
+            Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey:", outputCert.HasPrivateKey));
             Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", thumbprint));
             Trace.WriteLine(string.Format("    {0} = {1}", "CertificateValidityType", certificateCreationSettings.ValidityType));
 
             return container;
+        }
+
+        /// <summary>
+        /// On macOS, BouncyCastle's PKCS12 encoding is incompatible with Apple's Security framework.
+        /// This method uses openssl to create a macOS-compatible PFX from PEM cert and key.
+        /// </summary>
+        private static byte[] CreateMacOSCompatiblePfx(X509Certificate cert, AsymmetricCipherKeyPair keyPair, string password)
+        {
+            string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tempDir);
+
+            string certPem = Path.Combine(tempDir, "cert.pem");
+            string keyPem = Path.Combine(tempDir, "key.pem");
+            string pfxFile = Path.Combine(tempDir, "cert.pfx");
+
+            try
+            {
+                // Write cert as PEM
+                using (var writer = new StreamWriter(certPem))
+                {
+                    var pemWriter = new Org.BouncyCastle.OpenSsl.PemWriter(writer);
+                    pemWriter.WriteObject(cert);
+                }
+
+                // Write private key as PEM
+                using (var writer = new StreamWriter(keyPem))
+                {
+                    var pemWriter = new Org.BouncyCastle.OpenSsl.PemWriter(writer);
+                    pemWriter.WriteObject(keyPair.Private);
+                }
+
+                // Use openssl to create a macOS-compatible PFX
+                var psi = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "openssl",
+                    Arguments = string.Format(
+                        "pkcs12 -export -in \"{0}\" -inkey \"{1}\" -out \"{2}\" -passout pass:{3}",
+                        certPem, keyPem, pfxFile, password),
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false
+                };
+
+                using (var process = System.Diagnostics.Process.Start(psi))
+                {
+                    string stderr = process.StandardError.ReadToEnd();
+                    process.WaitForExit(30000);
+
+                    if (process.ExitCode != 0)
+                    {
+                        throw new InvalidOperationException(
+                            string.Format("openssl pkcs12 export failed (exit code {0}): {1}", process.ExitCode, stderr));
+                    }
+                }
+
+                return File.ReadAllBytes(pfxFile);
+            }
+            finally
+            {
+                try { Directory.Delete(tempDir, true); } catch { }
+            }
         }
 
         private X509Crl CreateCrl(X509Certificate signingCertificate)
