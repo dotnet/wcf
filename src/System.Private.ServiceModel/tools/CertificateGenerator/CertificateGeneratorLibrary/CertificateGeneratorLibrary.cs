@@ -177,8 +177,8 @@ public class CertificateGeneratorLibrary
             FriendlyName = "WCF Bridge - UserCertificateResource",
             Subject = "WCF Client Certificate",
         };
-        X509Certificate2 certificate = certificateGenerate.CreateUserCertificate(certificateCreationSettings).Certificate;
-        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+        var userCertContainer = certificateGenerate.CreateUserCertificate(certificateCreationSettings);
+        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, userCertContainer.Certificate, userCertContainer.Pfx, certificateGenerate.CertificatePassword);
 
         //Create CRL and save it
         FileInfo file = new FileInfo(s_crlFileLocation);
@@ -191,7 +191,7 @@ public class CertificateGeneratorLibrary
 
     private static void CreateAndInstallMachineCertificate(CertificateGenerator certificateGenerate, CertificateCreationSettings certificateCreationSettings)
     {
-        X509Certificate2 certificate = certificateGenerate.CreateMachineCertificate(certificateCreationSettings).Certificate;
-        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+        var container = certificateGenerate.CreateMachineCertificate(certificateCreationSettings);
+        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, container.Certificate, container.Pfx, certificateGenerate.CertificatePassword);
     }
 }
