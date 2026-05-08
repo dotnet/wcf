@@ -94,6 +94,9 @@ namespace WcfTestCommon
             string existingKeychains = RunSecurityCommand("list-keychains -d user").Trim().Replace("\"", "");
             RunSecurityCommand(string.Format("list-keychains -d user -s \"{0}\" {1}", s_macOSKeychainPath, existingKeychains));
 
+            // Set as default keychain so .NET's X509Store(My, CurrentUser) searches it
+            RunSecurityCommand(string.Format("default-keychain -s \"{0}\"", s_macOSKeychainPath));
+
             s_macOSKeychainInitialized = true;
             Trace.WriteLine(string.Format("[CertificateHelper] macOS keychain initialized at: {0}", s_macOSKeychainPath));
         }
