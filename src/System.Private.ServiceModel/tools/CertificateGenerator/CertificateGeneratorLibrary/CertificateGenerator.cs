@@ -459,29 +459,37 @@ namespace WcfTestCommon
             }
 
             X509Certificate2 outputCert = null;
+            string thumbprint = null;
 
             if (isAuthority)
             {
                 // don't hand out the private key for the cert when it's the authority
                 outputCert = new X509Certificate2(cert.GetEncoded());
+                thumbprint = outputCert.Thumbprint;
             }
             else if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
             {
                 // On macOS, the .NET X509Certificate2 constructor cannot load BouncyCastle-generated
-                // PFX due to format incompatibilities with the Apple Security framework.
-                // Create from DER (public cert only) for metadata; PFX import is handled via CLI.
-                outputCert = new X509Certificate2(cert.GetEncoded());
+                // certs due to format incompatibilities with the Apple Security framework.
+                // Skip X509Certificate2 creation; PFX import is handled via CLI.
+                // Compute thumbprint (SHA1 of DER) directly from BouncyCastle cert.
+                using (var sha1 = System.Security.Cryptography.SHA1.Create())
+                {
+                    byte[] hash = sha1.ComputeHash(cert.GetEncoded());
+                    thumbprint = BitConverter.ToString(hash).Replace("-", "");
+                }
             }
             else
             {
                 // On Windows/Linux, load with private key from PFX
                 outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                thumbprint = outputCert.Thumbprint;
             }
 
             container.Subject = subject;
             container.InternalCertificate = cert;
             container.Certificate = outputCert;
-            container.Thumbprint = outputCert.Thumbprint;
+            container.Thumbprint = thumbprint;
 
             Trace.WriteLine("[CertificateGenerator] generated a certificate:");
             Trace.WriteLine(string.Format("    {0} = {1}", "isAuthority", isAuthority));
@@ -492,8 +500,8 @@ namespace WcfTestCommon
                 Trace.WriteLine(string.Format("    {0} = {1}", "Subject Alt names ", string.Join(", ", subjectAlternativeNames)));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Friendly Name ", certificateCreationSettings.FriendlyName));
             }
-            Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey:", outputCert.HasPrivateKey));
-            Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", outputCert.Thumbprint));
+            Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey:", outputCert != null ? outputCert.HasPrivateKey.ToString() : "N/A (macOS)"));
+            Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", thumbprint));
             Trace.WriteLine(string.Format("    {0} = {1}", "CertificateValidityType", certificateCreationSettings.ValidityType));
 
             return container;
