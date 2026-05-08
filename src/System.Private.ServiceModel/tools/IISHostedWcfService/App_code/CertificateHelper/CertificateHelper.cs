@@ -162,12 +162,20 @@ namespace WcfTestCommon
         /// </summary>
         public static bool AddTrustedCertOnMacOS(X509Certificate2 certificate)
         {
+            return AddTrustedCertOnMacOS(certificate.Export(X509ContentType.Cert));
+        }
+
+        /// <summary>
+        /// Adds trust for a certificate (from raw DER bytes) on macOS using the 'security' CLI.
+        /// </summary>
+        public static bool AddTrustedCertOnMacOS(byte[] certDerBytes)
+        {
             EnsureMacOSKeychainInitialized();
 
             string tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".cer");
             try
             {
-                File.WriteAllBytes(tempFile, certificate.Export(X509ContentType.Cert));
+                File.WriteAllBytes(tempFile, certDerBytes);
                 RunSecurityCommand(string.Format(
                     "add-trusted-cert -r trustRoot -p ssl -k \"{0}\" \"{1}\"",
                     s_macOSKeychainPath, tempFile));
