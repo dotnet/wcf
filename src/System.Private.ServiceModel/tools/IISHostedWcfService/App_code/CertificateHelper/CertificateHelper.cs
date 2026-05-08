@@ -99,17 +99,16 @@ namespace WcfTestCommon
         }
 
         /// <summary>
-        /// Imports a certificate (with private key) into the macOS custom keychain
+        /// Imports a PFX (PKCS12) file into the macOS custom keychain
         /// using the 'security import' CLI, avoiding user interaction prompts.
         /// </summary>
-        public static bool ImportCertToMacOSKeychain(X509Certificate2 certificate, string pfxPassword)
+        public static bool ImportCertToMacOSKeychain(byte[] pfxBytes, string pfxPassword)
         {
             EnsureMacOSKeychainInitialized();
 
             string tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".pfx");
             try
             {
-                byte[] pfxBytes = certificate.Export(X509ContentType.Pfx, pfxPassword);
                 File.WriteAllBytes(tempFile, pfxBytes);
 
                 // -A allows any application to access the imported key without prompting
@@ -117,10 +116,7 @@ namespace WcfTestCommon
                     "import \"{0}\" -k \"{1}\" -P \"{2}\" -A -T /usr/bin/security",
                     tempFile, s_macOSKeychainPath, pfxPassword));
 
-                Trace.WriteLine(string.Format("[CertificateHelper] Imported certificate to macOS keychain:"));
-                Trace.WriteLine(string.Format("    {0} = {1}", "CN", certificate.SubjectName.Name));
-                Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", certificate.Thumbprint));
-                Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey", certificate.HasPrivateKey));
+                Trace.WriteLine("[CertificateHelper] Imported PFX to macOS keychain.");
                 return true;
             }
             finally

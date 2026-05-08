@@ -42,7 +42,8 @@ namespace WcfTestCommon
 
         // Adds the given certificate to the given store unless it is
         // already present.  Returns 'true' if the certificate was added.
-        public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate)
+        // On macOS, pfxBytes must be provided for My store operations (private key import via CLI).
+        public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate, byte[] pfxBytes = null, string pfxPassword = null)
         {
             // On macOS, the X509Store API cannot modify stores without user interaction.
             // Use the macOS security CLI with a custom unlocked keychain instead.
@@ -53,8 +54,14 @@ namespace WcfTestCommon
                     return CertificateHelper.AddTrustedCertOnMacOS(certificate);
                 }
 
-                // For My store, import the cert (with private key) into the custom keychain
-                return CertificateHelper.ImportCertToMacOSKeychain(certificate, "test");
+                // For My store, import the PFX (with private key) into the custom keychain
+                if (pfxBytes != null)
+                {
+                    return CertificateHelper.ImportCertToMacOSKeychain(pfxBytes, pfxPassword ?? "test");
+                }
+
+                // Fallback: import public cert only
+                return CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
             }
 
             X509Store store = null;
@@ -113,11 +120,11 @@ namespace WcfTestCommon
         // Install the certificate into the My store.
         // It will not install the certificate if it is already present in the store.
         // It returns the thumbprint of the certificate, regardless whether it was added or found.
-        public static string InstallCertificateToMyStore(X509Certificate2 certificate, bool isValidCert = true)
+        public static string InstallCertificateToMyStore(X509Certificate2 certificate, bool isValidCert = true, byte[] pfxBytes = null, string pfxPassword = null)
         {
             lock (s_certificateLock)
             {
-                bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+                bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate, pfxBytes, pfxPassword);
 
                 return certificate.Thumbprint;
             }
@@ -170,12 +177,13 @@ namespace WcfTestCommon
                     Subject = fqdn,
                     SubjectAlternativeNames = new string[] { fqdn, hostname, "localhost" }
                 };
-                var hostCert = certificateGenerator.CreateMachineCertificate(certificateCreationSettings).Certificate;
+                var hostCertContainer = certificateGenerator.CreateMachineCertificate(certificateCreationSettings);
+                var hostCert = hostCertContainer.Certificate;
 
                 // Since s_myCertificates keys by subject name, we won't install a cert for the same subject twice
                 // only the first-created cert will win
                 InstallCertificateToRootStore(rootCertificate);
-                InstallCertificateToMyStore(hostCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid);
+                InstallCertificateToMyStore(hostCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid, hostCertContainer.Pfx, certificateGenerator.CertificatePassword);
 
                 s_localCertificate = hostCert;
 
@@ -186,7 +194,8 @@ namespace WcfTestCommon
                     Subject = fqdn,
                     SubjectAlternativeNames = new string[] { fqdn, hostname, "localhost" }
                 };
-                var peerCert = certificateGenerator.CreateMachineCertificate(certificateCreationSettings).Certificate;
+                var peerCertContainer = certificateGenerator.CreateMachineCertificate(certificateCreationSettings);
+                var peerCert = peerCertContainer.Certificate;
                 InstallCertificateToTrustedPeopleStore(peerCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid);
             }
 
