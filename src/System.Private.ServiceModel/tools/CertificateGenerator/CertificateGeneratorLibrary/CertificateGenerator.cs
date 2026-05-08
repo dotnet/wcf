@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
@@ -47,7 +48,7 @@ namespace WcfTestCommon
         private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
 
         private readonly string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
-        private readonly string _signatureAlgorithm = Org.BouncyCastle.Asn1.Pkcs.PkcsObjectIdentifiers.Sha256WithRsaEncryption.Id;
+        private readonly string _signatureAlgorithm = PkcsObjectIdentifiers.Sha256WithRsaEncryption.Id;
         private readonly string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
         private readonly int _keyLengthInBits = 2048;
 
@@ -440,7 +441,12 @@ namespace WcfTestCommon
             X509CertificateEntry[] chain = new X509CertificateEntry[1];
             chain[0] = new X509CertificateEntry(cert);
 
-            Pkcs12Store store = new Pkcs12StoreBuilder().Build();
+            // Use 3DES for both key and cert encryption to ensure macOS compatibility.
+            // The default RC2-40-CBC for cert encryption is not supported by macOS Security framework.
+            Pkcs12Store store = new Pkcs12StoreBuilder()
+                .SetCertAlgorithm(PkcsObjectIdentifiers.PbeWithShaAnd3KeyTripleDesCbc)
+                .SetKeyAlgorithm(PkcsObjectIdentifiers.PbeWithShaAnd3KeyTripleDesCbc)
+                .Build();
             store.SetKeyEntry(
                 certificateCreationSettings.FriendlyName != null ? certificateCreationSettings.FriendlyName : string.Empty,
                 new AsymmetricKeyEntry(keyPair.Private),
