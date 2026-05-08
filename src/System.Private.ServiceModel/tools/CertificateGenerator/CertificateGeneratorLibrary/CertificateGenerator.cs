@@ -465,20 +465,17 @@ namespace WcfTestCommon
                 // don't hand out the private key for the cert when it's the authority
                 outputCert = new X509Certificate2(cert.GetEncoded());
             }
+            else if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+            {
+                // On macOS, the .NET X509Certificate2 constructor cannot load BouncyCastle-generated
+                // PFX due to format incompatibilities with the Apple Security framework.
+                // Create from DER (public cert only) for metadata; PFX import is handled via CLI.
+                outputCert = new X509Certificate2(cert.GetEncoded());
+            }
             else
             {
-                // Otherwise, allow encode with the private key. note that X509Certificate2.RawData will not provide the private key
-                // you will have to re-export this cert if needed
-                if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
-                {
-                    // On macOS, MachineKeySet and PersistKeySet are not supported.
-                    // Load the certificate directly from the PFX bytes with Exportable flag only.
-                    outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.Exportable);
-                }
-                else
-                {
-                    outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
-                }
+                // On Windows/Linux, load with private key from PFX
+                outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
             }
 
             container.Subject = subject;
