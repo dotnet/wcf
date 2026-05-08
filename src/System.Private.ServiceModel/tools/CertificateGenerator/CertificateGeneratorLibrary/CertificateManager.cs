@@ -43,7 +43,8 @@ namespace WcfTestCommon
         // Adds the given certificate to the given store unless it is
         // already present.  Returns 'true' if the certificate was added.
         // On macOS, pfxBytes must be provided for My store operations (private key import via CLI).
-        public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate, byte[] pfxBytes = null, string pfxPassword = null)
+        // certDerBytes can be provided for macOS trust operations when certificate is null.
+        public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate, byte[] pfxBytes = null, string pfxPassword = null, byte[] certDerBytes = null)
         {
             // On macOS, the X509Store API cannot modify stores without user interaction.
             // Use the macOS security CLI with a custom unlocked keychain instead.
@@ -51,7 +52,17 @@ namespace WcfTestCommon
             {
                 if (storeName == StoreName.Root || storeName == StoreName.TrustedPeople)
                 {
-                    return CertificateHelper.AddTrustedCertOnMacOS(certificate);
+                    if (certificate != null)
+                    {
+                        return CertificateHelper.AddTrustedCertOnMacOS(certificate);
+                    }
+                    else if (certDerBytes != null)
+                    {
+                        return CertificateHelper.AddTrustedCertOnMacOS(certDerBytes);
+                    }
+
+                    Trace.WriteLine("[CertificateManager] Cannot add trusted cert on macOS: no certificate or DER bytes available.");
+                    return false;
                 }
 
                 // For My store, import the PFX (with private key) into the custom keychain
@@ -61,7 +72,13 @@ namespace WcfTestCommon
                 }
 
                 // Fallback: import public cert only
-                return CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
+                if (certificate != null)
+                {
+                    return CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
+                }
+
+                Trace.WriteLine("[CertificateManager] Cannot add cert on macOS: no PFX bytes or certificate available.");
+                return false;
             }
 
             X509Store store = null;
@@ -133,13 +150,13 @@ namespace WcfTestCommon
         // Install the certificate into the TrustedPeople store.
         // It will not install the certificate if it is already present in the store.
         // It returns the thumbprint of the certificate, regardless whether it was added or found.
-        public static string InstallCertificateToTrustedPeopleStore(X509Certificate2 certificate, bool isValidCert = true)
+        public static string InstallCertificateToTrustedPeopleStore(X509Certificate2 certificate, bool isValidCert = true, byte[] certDerBytes = null)
         {
             lock (s_certificateLock)
             {
-                bool added = AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.LocalMachine, certificate);
+                bool added = AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.LocalMachine, certificate, certDerBytes: certDerBytes);
 
-                return certificate.Thumbprint;
+                return certificate != null ? certificate.Thumbprint : null;
             }
         }
 
@@ -196,7 +213,8 @@ namespace WcfTestCommon
                 };
                 var peerCertContainer = certificateGenerator.CreateMachineCertificate(certificateCreationSettings);
                 var peerCert = peerCertContainer.Certificate;
-                InstallCertificateToTrustedPeopleStore(peerCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid);
+                byte[] peerCertDer = peerCertContainer.InternalCertificate != null ? peerCertContainer.InternalCertificate.GetEncoded() : null;
+                InstallCertificateToTrustedPeopleStore(peerCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid, peerCertDer);
             }
 
             return s_localCertificate;
