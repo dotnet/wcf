@@ -270,6 +270,28 @@ namespace WcfTestCommon
                 certificateCreationSettings.ValidityNotAfter = _defaultValidityNotAfter;
             }
 
+            // The authority cert needs a validity window wide enough to contain every child cert (including
+            // intentionally expired ones with NotBefore in the past). Unlike BouncyCastle, .NET's
+            // CertificateRequest.Create(issuer, notBefore, notAfter, ...) enforces that the issued cert's
+            // window is contained within the issuer's. Use a generous ±10 year window for the authority.
+            if (isAuthority)
+            {
+                certificateCreationSettings.ValidityNotBefore = _initializationDateTime.AddYears(-10);
+                certificateCreationSettings.ValidityNotAfter = _initializationDateTime.AddYears(10);
+            }
+            else if (signingCertificate != null)
+            {
+                // Defensive clamp in case a caller passes dates outside the issuer window.
+                if (certificateCreationSettings.ValidityNotBefore < signingCertificate.NotBefore.ToUniversalTime())
+                {
+                    certificateCreationSettings.ValidityNotBefore = signingCertificate.NotBefore.ToUniversalTime();
+                }
+                if (certificateCreationSettings.ValidityNotAfter > signingCertificate.NotAfter.ToUniversalTime())
+                {
+                    certificateCreationSettings.ValidityNotAfter = signingCertificate.NotAfter.ToUniversalTime();
+                }
+            }
+
             if (!isAuthority ^ (signingCertificate != null))
             {
                 throw new ArgumentException("Either isAuthority == true or signingCertificate is not null");
@@ -420,11 +442,12 @@ namespace WcfTestCommon
             // X509KeyStorageFlags.Exportable lets callers re-export later.
             byte[] pfxBytes = certWithKey.Export(X509ContentType.Pkcs12, _password);
 
-            // Reload from PFX so the resulting handle behaves identically across platforms (e.g., macOS keychain semantics).
-            X509Certificate2 outputCert = X509CertificateLoader.LoadPkcs12(
-                pfxBytes,
-                _password,
-                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+            // Use the in-memory cert directly. Round-tripping through X509CertificateLoader.LoadPkcs12
+            // fails on macOS ("The specified keychain could not be found") because the loader needs a
+            // keychain handle to attach the private key. The in-memory cert from CopyWithPrivateKey
+            // already has the key associated and works on all platforms; CertificateManager will
+            // install it via the platform-appropriate path (security CLI on macOS).
+            X509Certificate2 outputCert = certWithKey;
 
             switch (certificateCreationSettings.ValidityType)
             {
@@ -453,8 +476,12 @@ namespace WcfTestCommon
             }
             else
             {
-                certWithKey.Dispose();
-                cert.Dispose();
+                // outputCert == certWithKey, and the container owns it. Only dispose the keyless original
+                // if it's a separate instance from certWithKey.
+                if (!ReferenceEquals(cert, certWithKey))
+                {
+                    cert.Dispose();
+                }
             }
 
             Trace.WriteLine("[CertificateGenerator] generated a certificate:");
