@@ -120,6 +120,7 @@ namespace WcfTestCommon
                     tempFile, s_macOSKeychainPath, pfxPassword));
 
                 Trace.WriteLine("[CertificateHelper] Imported PFX to macOS keychain.");
+                Console.WriteLine("[CertificateHelper] Imported PFX to macOS keychain ({0} bytes).", pfxBytes.Length);
                 return true;
             }
             finally
@@ -149,6 +150,7 @@ namespace WcfTestCommon
                 Trace.WriteLine(string.Format("[CertificateHelper] Imported public certificate to macOS keychain:"));
                 Trace.WriteLine(string.Format("    {0} = {1}", "CN", certificate.SubjectName.Name));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", certificate.Thumbprint));
+                Console.WriteLine("[CertificateHelper] Imported public certificate to macOS keychain: {0} ({1})", certificate.SubjectName.Name, certificate.Thumbprint);
                 return true;
             }
             finally
