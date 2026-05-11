@@ -461,7 +461,16 @@ namespace WcfTestCommon
                 outputCert = X509CertificateLoader.LoadPkcs12(
                     pfxBytes,
                     _password,
-                    X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                    X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+            }
+
+            // Set FriendlyName on Windows so lookups via CertificateFromFriendlyName succeed.
+            // The setter throws PlatformNotSupportedException on non-Windows; the macOS/Linux
+            // lookup paths fall through to a deterministic-serial match instead.
+            if (CertificateHelper.CurrentOperatingSystem.IsWindows()
+                && !string.IsNullOrEmpty(certificateCreationSettings.FriendlyName))
+            {
+                outputCert.FriendlyName = certificateCreationSettings.FriendlyName;
             }
 
             switch (certificateCreationSettings.ValidityType)
