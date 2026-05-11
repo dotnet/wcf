@@ -58,9 +58,17 @@ namespace WcfTestCommon
             {
                 store = new X509Store(storeName, storeLocation);
             }
+            else if (CurrentOperatingSystem.IsMacOS())
+            {
+                // macOS doesn't have proper per-store separation. .NET's X509Store(TrustedPeople|Root, CurrentUser)
+                // on macOS does not enumerate certs imported into the user's default keychain via the
+                // 'security' CLI. Route all store names through StoreName.My so adds and lookups land in
+                // the same place — the user's default keychain (which is our custom WCF test keychain).
+                store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            }
             else
             {
-                // On Linux and macOS, use CurrentUser scope as LocalMachine is not supported.
+                // On Linux, use CurrentUser scope as LocalMachine is not supported.
                 store = new X509Store(storeName, StoreLocation.CurrentUser);
             }
 
