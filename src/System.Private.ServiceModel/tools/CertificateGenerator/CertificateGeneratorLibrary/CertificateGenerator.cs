@@ -470,7 +470,9 @@ namespace WcfTestCommon
             if (CertificateHelper.CurrentOperatingSystem.IsWindows()
                 && !string.IsNullOrEmpty(certificateCreationSettings.FriendlyName))
             {
+#pragma warning disable CA1416 // Validate platform compatibility (guarded by IsWindows())
                 outputCert.FriendlyName = certificateCreationSettings.FriendlyName;
+#pragma warning restore CA1416
             }
 
             switch (certificateCreationSettings.ValidityType)
