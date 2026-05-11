@@ -82,19 +82,27 @@ namespace WcfTestCommon
             // keychain instead.
             if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
             {
-                if (storeName == StoreName.Root || storeName == StoreName.TrustedPeople)
-                {
-                    return CertificateHelper.AddTrustedCertOnMacOS(certificate);
-                }
-
                 // For My store, import the PFX (with private key) into the custom keychain.
-                if (certificate.HasPrivateKey)
+                if (storeName == StoreName.My)
                 {
-                    byte[] pfxBytes = certificate.Export(X509ContentType.Pkcs12, "test");
-                    return CertificateHelper.ImportCertToMacOSKeychain(pfxBytes, "test");
+                    if (certificate.HasPrivateKey)
+                    {
+                        byte[] pfxBytes = certificate.Export(X509ContentType.Pkcs12, "test");
+                        return CertificateHelper.ImportCertToMacOSKeychain(pfxBytes, "test");
+                    }
+
+                    return CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
                 }
 
-                return CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
+                // For Root and TrustedPeople, the cert must be importable as a regular cert in the keychain
+                // so that X509Store(<store>, CurrentUser).Certificates enumerates it. add-trusted-cert
+                // only registers trust settings — it does not put the cert in the keychain's cert list.
+                bool imported = CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
+                if (storeName == StoreName.Root)
+                {
+                    CertificateHelper.AddTrustedCertOnMacOS(certificate);
+                }
+                return imported;
             }
 
             X509Store store = null;
