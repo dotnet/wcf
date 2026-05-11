@@ -79,29 +79,30 @@ namespace WcfTestCommon
 
             // On macOS, the X509Store API cannot modify Root/TrustedPeople stores without user interaction,
             // and the login keychain may be locked in CI. Use the macOS security CLI with a custom unlocked
-            // keychain instead.
+            // keychain instead. Route all stores into the custom keychain (macOS doesn't have proper
+            // per-store separation anyway — see CertificateHelper.GetX509Store).
             if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
             {
-                // For My store, import the PFX (with private key) into the custom keychain.
-                if (storeName == StoreName.My)
+                // Always import the PFX (with private key) when the cert has one — services hosting the
+                // cert (e.g., a TrustedPeople peer cert used by SSL) need the private key, not just the
+                // public bytes.
+                bool imported;
+                if (certificate.HasPrivateKey)
                 {
-                    if (certificate.HasPrivateKey)
-                    {
-                        byte[] pfxBytes = certificate.Export(X509ContentType.Pkcs12, "test");
-                        return CertificateHelper.ImportCertToMacOSKeychain(pfxBytes, "test");
-                    }
-
-                    return CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
+                    byte[] pfxBytes = certificate.Export(X509ContentType.Pkcs12, "test");
+                    imported = CertificateHelper.ImportCertToMacOSKeychain(pfxBytes, "test");
+                }
+                else
+                {
+                    imported = CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
                 }
 
-                // For Root and TrustedPeople, the cert must be importable as a regular cert in the keychain
-                // so that X509Store(<store>, CurrentUser).Certificates enumerates it. add-trusted-cert
-                // only registers trust settings — it does not put the cert in the keychain's cert list.
-                bool imported = CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
+                // Additionally register Root certs with OS trust settings so chain validation works.
                 if (storeName == StoreName.Root)
                 {
                     CertificateHelper.AddTrustedCertOnMacOS(certificate);
                 }
+
                 return imported;
             }
 
