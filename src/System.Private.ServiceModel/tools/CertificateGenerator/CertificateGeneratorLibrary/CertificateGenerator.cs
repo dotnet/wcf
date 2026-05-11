@@ -442,12 +442,27 @@ namespace WcfTestCommon
             // X509KeyStorageFlags.Exportable lets callers re-export later.
             byte[] pfxBytes = certWithKey.Export(X509ContentType.Pkcs12, _password);
 
-            // Use the in-memory cert directly. Round-tripping through X509CertificateLoader.LoadPkcs12
-            // fails on macOS ("The specified keychain could not be found") because the loader needs a
-            // keychain handle to attach the private key. The in-memory cert from CopyWithPrivateKey
-            // already has the key associated and works on all platforms; CertificateManager will
-            // install it via the platform-appropriate path (security CLI on macOS).
-            X509Certificate2 outputCert = certWithKey;
+            // On Windows (and Linux), round-trip through X509CertificateLoader.LoadPkcs12 with
+            // PersistKeySet so the private key lands in the platform key container; otherwise the
+            // in-memory ephemeral key from CopyWithPrivateKey won't survive being added to a cert
+            // store and lookups later return a cert with no usable private key.
+            //
+            // On macOS, LoadPkcs12 fails with "The specified keychain could not be found" because
+            // the Apple loader needs a keychain handle to attach the key. CertificateManager bypasses
+            // X509Store on macOS (uses the security CLI), so the in-memory CopyWithPrivateKey result
+            // works there.
+            X509Certificate2 outputCert;
+            if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+            {
+                outputCert = certWithKey;
+            }
+            else
+            {
+                outputCert = X509CertificateLoader.LoadPkcs12(
+                    pfxBytes,
+                    _password,
+                    X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+            }
 
             switch (certificateCreationSettings.ValidityType)
             {
@@ -473,14 +488,20 @@ namespace WcfTestCommon
             {
                 _authorityCertWithKey = certWithKey;
                 // certWithKey is the same instance as cert (CreateSelfSigned attaches the key in-place); do not dispose.
+                // On non-macOS, outputCert is a separate (round-tripped) instance owned by the container.
             }
             else
             {
-                // outputCert == certWithKey, and the container owns it. Only dispose the keyless original
-                // if it's a separate instance from certWithKey.
+                // Dispose the keyless original if it's a separate instance.
                 if (!ReferenceEquals(cert, certWithKey))
                 {
                     cert.Dispose();
+                }
+                // On non-macOS, outputCert is the round-tripped instance owned by the container;
+                // certWithKey is orphaned and should be disposed. On macOS, outputCert == certWithKey.
+                if (!ReferenceEquals(outputCert, certWithKey))
+                {
+                    certWithKey.Dispose();
                 }
             }
 
