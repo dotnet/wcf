@@ -224,7 +224,12 @@ namespace WcfService
             {
                 store = CertificateHelper.GetX509Store(name, location);
 
-                X509Certificate2Collection foundCertificates = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, validOnly: true);
+                // validOnly: false — on macOS, our self-signed root in the custom keychain is not
+                // necessarily recognized by the OS chain builder, so requiring a fully-valid chain
+                // would filter the root out and cause /TestHost.svc/RootCert to return 500. The
+                // caller is responsible for any additional validation it needs (e.g., the test
+                // client installs whatever root it gets back).
+                X509Certificate2Collection foundCertificates = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, validOnly: false);
                 return foundCertificates.Count == 0 ? null : foundCertificates[0];
             }
             finally
