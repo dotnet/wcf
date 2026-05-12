@@ -60,6 +60,7 @@ public class WS2007HttpTransportWithMessageCredentialsSecurityTests : Conditiona
     }
 
     [WcfFact]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
