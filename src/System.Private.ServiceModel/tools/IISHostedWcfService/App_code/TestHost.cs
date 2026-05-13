@@ -265,11 +265,6 @@ namespace WcfService
                     }
                 }
 
-                Console.WriteLine("[TestHost.CertificateFromFriendlyName] No match for friendlyName='{0}' (hash='{1}') in store {2}/{3}. Filtered candidates ({4}):", friendlyName, friendlyNameHash, name, location, foundCertificates.Count);
-                foreach (X509Certificate2 cert in foundCertificates)
-                {
-                    Console.WriteLine("    Subject={0}, FriendlyName='{1}', Serial={2}, Thumbprint={3}", cert.Subject, cert.FriendlyName, cert.SerialNumber, cert.Thumbprint);
-                }
                 return null;
             }
             finally

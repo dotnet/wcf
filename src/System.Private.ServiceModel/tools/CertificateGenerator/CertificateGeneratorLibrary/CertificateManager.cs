@@ -40,33 +40,6 @@ namespace WcfTestCommon
             return foundCertificates.Count == 0 ? null : foundCertificates[0];
         }
 
-        // Finds a certificate by thumbprint from the user's My store.
-        // On macOS, this searches the keychain (including the custom WCF test keychain).
-        private static X509Certificate2 FindCertificateInStore(string thumbprint)
-        {
-            X509Store store = null;
-            try
-            {
-                store = CertificateHelper.GetX509Store(StoreName.My, StoreLocation.CurrentUser);
-                X509Certificate2Collection found = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
-                if (found.Count > 0)
-                {
-                    Trace.WriteLine(string.Format("[CertificateManager] Retrieved certificate from store by thumbprint: {0}", thumbprint));
-                    return found[0];
-                }
-
-                Trace.WriteLine(string.Format("[CertificateManager] Certificate not found in store by thumbprint: {0}", thumbprint));
-                return null;
-            }
-            finally
-            {
-                if (store != null)
-                {
-                    store.Close();
-                }
-            }
-        }
-
         // Adds the given certificate to the given store unless it is
         // already present.  Returns 'true' if the certificate was added.
         public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate)
