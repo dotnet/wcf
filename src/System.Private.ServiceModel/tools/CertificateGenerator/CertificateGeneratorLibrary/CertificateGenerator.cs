@@ -20,16 +20,16 @@ namespace WcfTestCommon
     // DER encodings are compatible with all platform X.509 stacks (including macOS Apple Security framework).
     public class CertificateGenerator
     {
-        // OIDs
-        private const string OidServerAuth = "1.3.6.1.5.5.7.3.1";
-        private const string OidClientAuth = "1.3.6.1.5.5.7.3.2";
-        private const string OidUpn = "1.3.6.1.4.1.311.20.2.3";
-        private const string OidExtAuthorityKeyIdentifier = "2.5.29.35";
-        private const string OidExtSubjectAlternativeName = "2.5.29.17";
-        private const string OidExtCrlDistributionPoints = "2.5.29.31";
-        private const string OidExtAuthorityInfoAccess = "1.3.6.1.5.5.7.1.1";
-        private const string OidExtCrlNumber = "2.5.29.20";
-        private const string OidSha256WithRsa = "1.2.840.113549.1.1.11";
+        // Strongly-typed OIDs used in cert/CRL generation. Friendly names show up in tools that
+        // surface Oid.FriendlyName (e.g., certificate viewers).
+        private static readonly Oid ServerAuthEkuOid                   = new Oid("1.3.6.1.5.5.7.3.1",      "TLS Web Server Authentication");
+        private static readonly Oid ClientAuthEkuOid                   = new Oid("1.3.6.1.5.5.7.3.2",      "TLS Web Client Authentication");
+        private static readonly Oid UserPrincipalNameOtherNameOid      = new Oid("1.3.6.1.4.1.311.20.2.3", "Microsoft User Principal Name");
+        private static readonly Oid AuthorityKeyIdentifierExtensionOid = new Oid("2.5.29.35",              "X509v3 Authority Key Identifier");
+        private static readonly Oid SubjectAlternativeNameExtensionOid = new Oid("2.5.29.17",              "X509v3 Subject Alternative Name");
+        private static readonly Oid CrlDistributionPointsExtensionOid  = new Oid("2.5.29.31",              "X509v3 CRL Distribution Points");
+        private static readonly Oid CrlNumberExtensionOid              = new Oid("2.5.29.20",              "X509v3 CRL Number");
+        private static readonly Oid Sha256WithRsaSignatureOid          = new Oid("1.2.840.113549.1.1.11",  "sha256WithRSAEncryption");
 
         private bool _isInitialized;
 
@@ -360,8 +360,8 @@ namespace WcfTestCommon
             OidCollection ekuOids = new OidCollection();
             if (certificateCreationSettings.EKU == null || certificateCreationSettings.EKU.Count == 0)
             {
-                ekuOids.Add(new Oid(OidServerAuth));
-                ekuOids.Add(new Oid(OidClientAuth));
+                ekuOids.Add(ServerAuthEkuOid);
+                ekuOids.Add(ClientAuthEkuOid);
             }
             else
             {
@@ -666,10 +666,10 @@ namespace WcfTestCommon
                     using (w.PushSequence())
                     {
                         // CRL Number extension
-                        WriteExtension(w, OidExtCrlNumber, critical: false, value: BuildCrlNumberValue());
+                        WriteExtension(w, CrlNumberExtensionOid, critical: false, value: BuildCrlNumberValue());
                         // AKI extension (key id only)
                         byte[] aki = GetSubjectKeyIdentifierBytes(_authorityCertWithKey);
-                        WriteExtension(w, OidExtAuthorityKeyIdentifier, critical: false, value: BuildAuthorityKeyIdentifierValue(aki));
+                        WriteExtension(w, AuthorityKeyIdentifierExtensionOid, critical: false, value: BuildAuthorityKeyIdentifierValue(aki));
                     }
                 }
             }
@@ -696,11 +696,11 @@ namespace WcfTestCommon
             return w.Encode();
         }
 
-        private static void WriteExtension(AsnWriter w, string oid, bool critical, byte[] value)
+        private static void WriteExtension(AsnWriter w, Oid oid, bool critical, byte[] value)
         {
             using (w.PushSequence())
             {
-                w.WriteObjectIdentifier(oid);
+                w.WriteObjectIdentifier(oid.Value);
                 if (critical)
                 {
                     w.WriteBoolean(true);
@@ -713,7 +713,7 @@ namespace WcfTestCommon
         {
             using (w.PushSequence())
             {
-                w.WriteObjectIdentifier(OidSha256WithRsa);
+                w.WriteObjectIdentifier(Sha256WithRsaSignatureOid.Value);
                 w.WriteNull();
             }
         }
@@ -780,7 +780,7 @@ namespace WcfTestCommon
         // AuthorityKeyIdentifier ::= SEQUENCE { keyIdentifier [0] IMPLICIT OCTET STRING OPTIONAL, ... }
         private static X509Extension BuildAuthorityKeyIdentifierExtension(byte[] keyIdentifier)
         {
-            return new X509Extension(OidExtAuthorityKeyIdentifier, BuildAuthorityKeyIdentifierValue(keyIdentifier), critical: false);
+            return new X509Extension(AuthorityKeyIdentifierExtensionOid, BuildAuthorityKeyIdentifierValue(keyIdentifier), critical: false);
         }
 
         private static byte[] BuildAuthorityKeyIdentifierValue(byte[] keyIdentifier)
@@ -814,7 +814,7 @@ namespace WcfTestCommon
                     }
                 }
             }
-            return new X509Extension(OidExtCrlDistributionPoints, w.Encode(), critical: false);
+            return new X509Extension(CrlDistributionPointsExtensionOid, w.Encode(), critical: false);
         }
 
         // SubjectAltName extension containing UPN OtherName entries.
@@ -829,7 +829,7 @@ namespace WcfTestCommon
                 {
                     using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true)))
                     {
-                        w.WriteObjectIdentifier(OidUpn);
+                        w.WriteObjectIdentifier(UserPrincipalNameOtherNameOid.Value);
                         using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true)))
                         {
                             w.WriteCharacterString(UniversalTagNumber.UTF8String, upn);
@@ -837,7 +837,7 @@ namespace WcfTestCommon
                     }
                 }
             }
-            return new X509Extension(OidExtSubjectAlternativeName, w.Encode(), critical: true);
+            return new X509Extension(SubjectAlternativeNameExtensionOid, w.Encode(), critical: true);
         }
 
         private static byte[] HexToBytes(string hex)
