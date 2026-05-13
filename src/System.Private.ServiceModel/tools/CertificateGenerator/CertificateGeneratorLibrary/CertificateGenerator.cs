@@ -24,9 +24,7 @@ namespace WcfTestCommon
         // surface Oid.FriendlyName (e.g., certificate viewers).
         private static readonly Oid ServerAuthEkuOid                   = new Oid("1.3.6.1.5.5.7.3.1",      "TLS Web Server Authentication");
         private static readonly Oid ClientAuthEkuOid                   = new Oid("1.3.6.1.5.5.7.3.2",      "TLS Web Client Authentication");
-        private static readonly Oid UserPrincipalNameOtherNameOid      = new Oid("1.3.6.1.4.1.311.20.2.3", "Microsoft User Principal Name");
         private static readonly Oid AuthorityKeyIdentifierExtensionOid = new Oid("2.5.29.35",              "X509v3 Authority Key Identifier");
-        private static readonly Oid SubjectAlternativeNameExtensionOid = new Oid("2.5.29.17",              "X509v3 Subject Alternative Name");
         private static readonly Oid CrlDistributionPointsExtensionOid  = new Oid("2.5.29.31",              "X509v3 CRL Distribution Points");
         private static readonly Oid CrlNumberExtensionOid              = new Oid("2.5.29.20",              "X509v3 CRL Number");
         private static readonly Oid Sha256WithRsaSignatureOid          = new Oid("1.2.840.113549.1.1.11",  "sha256WithRSAEncryption");
@@ -350,11 +348,11 @@ namespace WcfTestCommon
             X509SubjectKeyIdentifierExtension ski = new X509SubjectKeyIdentifierExtension(req.PublicKey, critical: false);
             req.CertificateExtensions.Add(ski);
 
-            // AuthorityKeyIdentifier — built manually since X509AuthorityKeyIdentifierExtension is .NET 7+
+            // AuthorityKeyIdentifier
             byte[] authorityKeyId = isAuthority
                 ? HexToBytes(ski.SubjectKeyIdentifier)
                 : GetSubjectKeyIdentifierBytes(signingCertificate);
-            req.CertificateExtensions.Add(BuildAuthorityKeyIdentifierExtension(authorityKeyId));
+            req.CertificateExtensions.Add(X509AuthorityKeyIdentifierExtension.CreateFromSubjectKeyIdentifier(authorityKeyId));
 
             // Extended Key Usage
             OidCollection ekuOids = new OidCollection();
@@ -402,17 +400,19 @@ namespace WcfTestCommon
                     // User cert: skip the first SAN (which mirrors Subject) and emit remaining as UPN OtherName entries.
                     if (subjectAlternativeNames.Length > 1)
                     {
-                        List<string> upns = new List<string>();
+                        SubjectAlternativeNameBuilder upnBuilder = new SubjectAlternativeNameBuilder();
+                        bool anyUpn = false;
                         for (int i = 1; i < subjectAlternativeNames.Length; i++)
                         {
                             if (!string.IsNullOrWhiteSpace(subjectAlternativeNames[i]))
                             {
-                                upns.Add(subjectAlternativeNames[i]);
+                                upnBuilder.AddUserPrincipalName(subjectAlternativeNames[i]);
+                                anyUpn = true;
                             }
                         }
-                        if (upns.Count > 0)
+                        if (anyUpn)
                         {
-                            req.CertificateExtensions.Add(BuildUpnSubjectAlternativeNameExtension(upns));
+                            req.CertificateExtensions.Add(upnBuilder.Build(critical: true));
                         }
                     }
                 }
@@ -667,9 +667,11 @@ namespace WcfTestCommon
                     {
                         // CRL Number extension
                         WriteExtension(w, CrlNumberExtensionOid, critical: false, value: BuildCrlNumberValue());
-                        // AKI extension (key id only)
+                        // AKI extension (key id only) — reuse the built-in builder to produce the
+                        // SEQUENCE { keyIdentifier [0] OCTET STRING } payload.
                         byte[] aki = GetSubjectKeyIdentifierBytes(_authorityCertWithKey);
-                        WriteExtension(w, AuthorityKeyIdentifierExtensionOid, critical: false, value: BuildAuthorityKeyIdentifierValue(aki));
+                        WriteExtension(w, AuthorityKeyIdentifierExtensionOid, critical: false,
+                            value: X509AuthorityKeyIdentifierExtension.CreateFromSubjectKeyIdentifier(aki).RawData);
                     }
                 }
             }
@@ -776,23 +778,6 @@ namespace WcfTestCommon
             }
         }
 
-        // Builds X509Extension for AuthorityKeyIdentifier (only keyIdentifier field).
-        // AuthorityKeyIdentifier ::= SEQUENCE { keyIdentifier [0] IMPLICIT OCTET STRING OPTIONAL, ... }
-        private static X509Extension BuildAuthorityKeyIdentifierExtension(byte[] keyIdentifier)
-        {
-            return new X509Extension(AuthorityKeyIdentifierExtensionOid, BuildAuthorityKeyIdentifierValue(keyIdentifier), critical: false);
-        }
-
-        private static byte[] BuildAuthorityKeyIdentifierValue(byte[] keyIdentifier)
-        {
-            AsnWriter w = new AsnWriter(AsnEncodingRules.DER);
-            using (w.PushSequence())
-            {
-                w.WriteOctetString(keyIdentifier, new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: false));
-            }
-            return w.Encode();
-        }
-
         // Builds CRLDistributionPoints extension for a single fullName URI distribution point.
         // CRLDistributionPoints ::= SEQUENCE OF DistributionPoint
         // DistributionPoint ::= SEQUENCE { distributionPoint [0] EXPLICIT DistributionPointName OPTIONAL, ... }
@@ -815,29 +800,6 @@ namespace WcfTestCommon
                 }
             }
             return new X509Extension(CrlDistributionPointsExtensionOid, w.Encode(), critical: false);
-        }
-
-        // SubjectAltName extension containing UPN OtherName entries.
-        // GeneralName ::= CHOICE { otherName [0] IMPLICIT OtherName, ... }
-        // OtherName ::= SEQUENCE { type-id OBJECT IDENTIFIER, value [0] EXPLICIT ANY DEFINED BY type-id }
-        private static X509Extension BuildUpnSubjectAlternativeNameExtension(IEnumerable<string> upns)
-        {
-            AsnWriter w = new AsnWriter(AsnEncodingRules.DER);
-            using (w.PushSequence())
-            {
-                foreach (string upn in upns)
-                {
-                    using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true)))
-                    {
-                        w.WriteObjectIdentifier(UserPrincipalNameOtherNameOid.Value);
-                        using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true)))
-                        {
-                            w.WriteCharacterString(UniversalTagNumber.UTF8String, upn);
-                        }
-                    }
-                }
-            }
-            return new X509Extension(SubjectAlternativeNameExtensionOid, w.Encode(), critical: true);
         }
 
         private static byte[] HexToBytes(string hex)
