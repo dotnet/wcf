@@ -569,7 +569,18 @@ namespace WcfTestCommon
             CertificateRevocationListBuilder builder = new CertificateRevocationListBuilder();
             foreach (KeyValuePair<string, DateTime> kvp in s_revokedCertificates)
             {
-                builder.AddEntry(HexToBytes(kvp.Key), kvp.Value);
+                byte[] serial = HexToBytes(kvp.Key);
+                // AddEntry writes the bytes verbatim as the INTEGER content (signed encoding).
+                // Our stored serials are minimal-unsigned, so prepend a 0x00 sign byte when the
+                // high bit of the first byte is set, otherwise the value would be interpreted
+                // as negative and would not match the certificate's positively-encoded serial.
+                if (serial.Length > 0 && (serial[0] & 0x80) != 0)
+                {
+                    byte[] padded = new byte[serial.Length + 1];
+                    Buffer.BlockCopy(serial, 0, padded, 1, serial.Length);
+                    serial = padded;
+                }
+                builder.AddEntry(serial, kvp.Value);
             }
 
             byte[] crl = builder.Build(
