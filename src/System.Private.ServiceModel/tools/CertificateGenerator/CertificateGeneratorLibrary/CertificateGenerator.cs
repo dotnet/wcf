@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Formats.Asn1;
-using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -540,45 +539,18 @@ namespace WcfTestCommon
             else
             {
                 byte[] rand = new byte[8];
-                using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-                {
-                    rng.GetBytes(rand);
-                }
-                // Force positive
+                RandomNumberGenerator.Fill(rand);
                 rand[0] &= 0x7F;
-                Array.Reverse(rand);
-                serialBigInt = new BigInteger(rand);
-                if (serialBigInt.Sign < 0)
-                {
-                    serialBigInt = -serialBigInt;
-                }
+                serialBigInt = new BigInteger(rand, isUnsigned: true, isBigEndian: true);
             }
 
-            // Convert to big-endian byte[] for CertificateRequest.Create(serialNumber)
-            byte[] little = serialBigInt.ToByteArray();
-            // Trim trailing zero (sign byte) if present
-            int len = little.Length;
-            if (len > 1 && little[len - 1] == 0 && (little[len - 2] & 0x80) == 0)
-            {
-                len--;
-            }
-            byte[] big = new byte[len];
-            for (int i = 0; i < len; i++)
-            {
-                big[i] = little[len - 1 - i];
-            }
-            return big;
+            // CertificateRequest.Create(serialNumber) expects big-endian, minimum-length, unsigned.
+            return serialBigInt.ToByteArray(isUnsigned: true, isBigEndian: true);
         }
 
         private static string SerialToHex(byte[] serialBigEndian)
         {
-            StringBuilder sb = new StringBuilder(serialBigEndian.Length * 2);
-            for (int i = 0; i < serialBigEndian.Length; i++)
-            {
-                sb.Append(serialBigEndian[i].ToString("x2"));
-            }
-            // Trim leading zeros for hex string compatibility
-            string s = sb.ToString().TrimStart('0');
+            string s = Convert.ToHexString(serialBigEndian).ToLowerInvariant().TrimStart('0');
             return s.Length == 0 ? "0" : s;
         }
 
@@ -694,30 +666,12 @@ namespace WcfTestCommon
 
         private static byte[] HexToBytes(string hex)
         {
-            if (hex == null)
+            if (string.IsNullOrEmpty(hex))
             {
-                return new byte[0];
+                return Array.Empty<byte>();
             }
-            // Strip whitespace and hyphens
-            StringBuilder cleaned = new StringBuilder(hex.Length);
-            foreach (char c in hex)
-            {
-                if (!char.IsWhiteSpace(c) && c != '-' && c != ':')
-                {
-                    cleaned.Append(c);
-                }
-            }
-            string s = cleaned.ToString();
-            if ((s.Length & 1) == 1)
-            {
-                s = "0" + s;
-            }
-            byte[] bytes = new byte[s.Length / 2];
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                bytes[i] = byte.Parse(s.Substring(i * 2, 2), System.Globalization.NumberStyles.HexNumber);
-            }
-            return bytes;
+            string s = (hex.Length & 1) == 1 ? "0" + hex : hex;
+            return Convert.FromHexString(s);
         }
 
         private static BigInteger HexToBigInteger(string hex)
