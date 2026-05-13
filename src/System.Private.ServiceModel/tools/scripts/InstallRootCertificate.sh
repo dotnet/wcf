@@ -141,7 +141,7 @@ fi
 
 # OpenSSL rehash - applicable on all platforms
 
-__c_rehash_exec=`which c_rehash`
+__c_rehash_exec=`command -v c_rehash`
 if [ $? -ne 0 -o ! -f "$__c_rehash_exec" ]; then 
     echo "WARNING: Could not find 'c_rehash'. Is OpenSSL installed properly?" 
 fi
@@ -163,13 +163,13 @@ case ${__os} in
         ;;
 esac 
 
-__update_os_certbundle_exec=`which ${__update_os_certbundle_cmd}`
+__update_os_certbundle_exec=`command -v ${__update_os_certbundle_cmd}`
 if [ $? -ne 0 -o ! -f "$__update_os_certbundle_exec" ]; then 
     echo "ERROR: Could not find '${__update_os_certbundle_cmd}', which is needed to update certificates on '${__os}'" 
     exit 1
 fi
 
-__curl_exe=`which curl`
+__curl_exe=`command -v curl`
 
 if [ ! -e "$__curl_exe" ]; then
     echo "Could not find cURL"
