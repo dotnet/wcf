@@ -128,7 +128,6 @@ namespace WcfTestCommon
                     tempFile, s_macOSKeychainPath, pfxPassword));
 
                 Trace.WriteLine("[CertificateHelper] Imported PFX to macOS keychain.");
-                Console.WriteLine("[CertificateHelper] Imported PFX to macOS keychain ({0} bytes).", pfxBytes.Length);
                 return true;
             }
             finally
@@ -158,7 +157,6 @@ namespace WcfTestCommon
                 Trace.WriteLine(string.Format("[CertificateHelper] Imported public certificate to macOS keychain:"));
                 Trace.WriteLine(string.Format("    {0} = {1}", "CN", certificate.SubjectName.Name));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", certificate.Thumbprint));
-                Console.WriteLine("[CertificateHelper] Imported public certificate to macOS keychain: {0} ({1})", certificate.SubjectName.Name, certificate.Thumbprint);
                 return true;
             }
             finally
@@ -204,31 +202,6 @@ namespace WcfTestCommon
         }
 
         /// <summary>
-        /// On macOS, remove trust for a certificate using the 'security' CLI.
-        /// </summary>
-        public static bool RemoveTrustedCertOnMacOS(X509Certificate2 certificate)
-        {
-            string tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".cer");
-            try
-            {
-                File.WriteAllBytes(tempFile, certificate.Export(X509ContentType.Cert));
-                RunSecurityCommand(string.Format("remove-trusted-cert \"{0}\"", tempFile));
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                if (File.Exists(tempFile))
-                {
-                    File.Delete(tempFile);
-                }
-            }
-        }
-
-        /// <summary>
         /// Deletes the custom macOS keychain used for WCF test certificates.
         /// </summary>
         public static void DeleteMacOSKeychain()
@@ -239,20 +212,6 @@ namespace WcfTestCommon
                 s_macOSKeychainInitialized = false;
                 Trace.WriteLine("[CertificateHelper] macOS keychain deleted.");
             }
-        }
-
-        /// <summary>
-        /// Removes certificates matching the given issuer from the macOS custom keychain.
-        /// </summary>
-        public static void RemoveCertsFromMacOSKeychain(string issuerName)
-        {
-            if (!File.Exists(s_macOSKeychainPath))
-            {
-                return;
-            }
-
-            // Delete the entire keychain — it will be recreated during the next setup
-            DeleteMacOSKeychain();
         }
 
         private static string RunSecurityCommand(string arguments)
