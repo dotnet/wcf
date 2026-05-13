@@ -24,10 +24,7 @@ namespace WcfTestCommon
         // surface Oid.FriendlyName (e.g., certificate viewers).
         private static readonly Oid ServerAuthEkuOid                   = new Oid("1.3.6.1.5.5.7.3.1",      "TLS Web Server Authentication");
         private static readonly Oid ClientAuthEkuOid                   = new Oid("1.3.6.1.5.5.7.3.2",      "TLS Web Client Authentication");
-        private static readonly Oid AuthorityKeyIdentifierExtensionOid = new Oid("2.5.29.35",              "X509v3 Authority Key Identifier");
         private static readonly Oid CrlDistributionPointsExtensionOid  = new Oid("2.5.29.31",              "X509v3 CRL Distribution Points");
-        private static readonly Oid CrlNumberExtensionOid              = new Oid("2.5.29.20",              "X509v3 CRL Number");
-        private static readonly Oid Sha256WithRsaSignatureOid          = new Oid("1.2.840.113549.1.1.11",  "sha256WithRSAEncryption");
 
         private bool _isInitialized;
 
@@ -597,22 +594,19 @@ namespace WcfTestCommon
             }
             DateTime nextUpdate = now.Add(_validityPeriod);
 
-            // Build TBSCertList
-            byte[] tbs = BuildTbsCertList(updateTime, nextUpdate);
-
-            // Sign TBSCertList
-            byte[] signature = _authorityKey.SignData(tbs, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-
-            // Build CertificateList
-            AsnWriter w = new AsnWriter(AsnEncodingRules.DER);
-            using (w.PushSequence())
+            CertificateRevocationListBuilder builder = new CertificateRevocationListBuilder();
+            foreach (KeyValuePair<string, DateTime> kvp in s_revokedCertificates)
             {
-                w.WriteEncodedValue(tbs);
-                WriteSha256RsaAlgorithmIdentifier(w);
-                w.WriteBitString(signature);
+                builder.AddEntry(HexToBytes(kvp.Key), kvp.Value);
             }
 
-            byte[] crl = w.Encode();
+            byte[] crl = builder.Build(
+                issuerCertificate: _authorityCertWithKey,
+                crlNumber: GenerateCrlNumber(),
+                nextUpdate: nextUpdate,
+                hashAlgorithm: HashAlgorithmName.SHA256,
+                rsaSignaturePadding: RSASignaturePadding.Pkcs1,
+                thisUpdate: updateTime);
 
             Trace.WriteLine(string.Format("[CertificateGenerator] has created a Certificate Revocation List:"));
             Trace.WriteLine(string.Format("    {0} = {1}", "Issuer", _authorityCertWithKey.SubjectName.Name));
@@ -621,118 +615,14 @@ namespace WcfTestCommon
             return crl;
         }
 
-        private byte[] BuildTbsCertList(DateTime thisUpdate, DateTime nextUpdate)
+        private static BigInteger GenerateCrlNumber()
         {
-            AsnWriter w = new AsnWriter(AsnEncodingRules.DER);
-            using (w.PushSequence())
-            {
-                // version v2 = INTEGER 1
-                w.WriteInteger(1);
-
-                // signature AlgorithmIdentifier
-                WriteSha256RsaAlgorithmIdentifier(w);
-
-                // issuer Name (DER bytes from authority cert subject)
-                w.WriteEncodedValue(_authorityCertWithKey.SubjectName.RawData);
-
-                // thisUpdate
-                WriteX509Time(w, thisUpdate);
-
-                // nextUpdate
-                WriteX509Time(w, nextUpdate);
-
-                // revokedCertificates OPTIONAL
-                if (s_revokedCertificates.Count > 0)
-                {
-                    using (w.PushSequence())
-                    {
-                        foreach (KeyValuePair<string, DateTime> kvp in s_revokedCertificates)
-                        {
-                            using (w.PushSequence())
-                            {
-                                // userCertificate (CertificateSerialNumber INTEGER)
-                                BigInteger serial = HexToBigInteger(kvp.Key);
-                                w.WriteInteger(serial);
-                                // revocationDate
-                                WriteX509Time(w, kvp.Value);
-                            }
-                        }
-                    }
-                }
-
-                // crlExtensions [0] EXPLICIT Extensions
-                using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true)))
-                {
-                    using (w.PushSequence())
-                    {
-                        // CRL Number extension
-                        WriteExtension(w, CrlNumberExtensionOid, critical: false, value: BuildCrlNumberValue());
-                        // AKI extension (key id only) — reuse the built-in builder to produce the
-                        // SEQUENCE { keyIdentifier [0] OCTET STRING } payload.
-                        byte[] aki = GetSubjectKeyIdentifierBytes(_authorityCertWithKey);
-                        WriteExtension(w, AuthorityKeyIdentifierExtensionOid, critical: false,
-                            value: X509AuthorityKeyIdentifierExtension.CreateFromSubjectKeyIdentifier(aki).RawData);
-                    }
-                }
-            }
-            return w.Encode();
-        }
-
-        private static byte[] BuildCrlNumberValue()
-        {
-            // Use a random positive 64-bit integer as the CRL number.
             byte[] rand = new byte[8];
-            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(rand);
-            }
+            RandomNumberGenerator.Fill(rand);
             rand[0] &= 0x7F;
             Array.Reverse(rand);
             BigInteger n = new BigInteger(rand);
-            if (n.Sign < 0)
-            {
-                n = -n;
-            }
-            AsnWriter w = new AsnWriter(AsnEncodingRules.DER);
-            w.WriteInteger(n);
-            return w.Encode();
-        }
-
-        private static void WriteExtension(AsnWriter w, Oid oid, bool critical, byte[] value)
-        {
-            using (w.PushSequence())
-            {
-                w.WriteObjectIdentifier(oid.Value);
-                if (critical)
-                {
-                    w.WriteBoolean(true);
-                }
-                w.WriteOctetString(value);
-            }
-        }
-
-        private static void WriteSha256RsaAlgorithmIdentifier(AsnWriter w)
-        {
-            using (w.PushSequence())
-            {
-                w.WriteObjectIdentifier(Sha256WithRsaSignatureOid.Value);
-                w.WriteNull();
-            }
-        }
-
-        // RFC 5280: Time ::= CHOICE { utcTime UTCTime, generalTime GeneralizedTime }
-        // CAs MUST encode dates through 2049 as UTCTime; dates 2050+ as GeneralizedTime.
-        private static void WriteX509Time(AsnWriter w, DateTime utc)
-        {
-            DateTimeOffset dto = new DateTimeOffset(DateTime.SpecifyKind(utc, DateTimeKind.Utc));
-            if (dto.UtcDateTime.Year < 2050)
-            {
-                w.WriteUtcTime(dto);
-            }
-            else
-            {
-                w.WriteGeneralizedTime(dto, omitFractionalSeconds: true);
-            }
+            return n.Sign < 0 ? -n : n;
         }
 
         private static X500DistinguishedName BuildDistinguishedName(string canonicalName)
