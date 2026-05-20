@@ -84,12 +84,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' == 'MacOS'" >
-    <!-- Helix macOS workers run as the non-interactive 'helix-runner' user, which has
-         no login keychain. X509Store(My, CurrentUser) then fails with errSecNoSuchKeychain
-         when the test infrastructure tries to install the client certificate, masking the
-         macOS partial-trust fix (dotnet/wcf#2870). Pre-create, unlock and register a login
-         keychain for the current user so StoreLocation.CurrentUser can be opened. -->
-    <HelixPreCommands>$(HelixPreCommands);security create-keychain -p "" $HOME/Library/Keychains/login.keychain-db 2&gt;/dev/null || true</HelixPreCommands>
+    <!-- Helix macOS workers run as the non-interactive 'helix-runner' user. The
+         existing login keychain (if any) has a password we do not know, which leaves
+         it locked and causes X509Store(My, CurrentUser).Open(ReadWrite) to fail with
+         errSecNoSuchKeychain / SecKeychainUnlock errors. Drop any pre-existing login
+         keychain and create a fresh one with an empty password so the test
+         infrastructure can install the client cert (dotnet/wcf#2870). -->
+    <HelixPreCommands>$(HelixPreCommands);security delete-keychain $HOME/Library/Keychains/login.keychain-db 2&gt;/dev/null || true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);security create-keychain -p "" $HOME/Library/Keychains/login.keychain-db</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);security set-keychain-settings -lut 7200 $HOME/Library/Keychains/login.keychain-db</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);security unlock-keychain -p "" $HOME/Library/Keychains/login.keychain-db</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);security list-keychains -d user -s $HOME/Library/Keychains/login.keychain-db /Library/Keychains/System.keychain</HelixPreCommands>
