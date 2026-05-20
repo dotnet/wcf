@@ -95,6 +95,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             public readonly CommandSwitch AcceptCertificate = new CommandSwitch(AccecptCertificateKey, "ac", SwitchType.Flag);
             public readonly CommandSwitch ServiceContract = new CommandSwitch(ServiceContractKey, "sc", SwitchType.Flag);
             public readonly CommandSwitch Language = new CommandSwitch(LanguageKey, "l", SwitchType.SingletonValue, OperationalContext.Global);
+            public readonly CommandSwitch SeparateFiles = new CommandSwitch(SeparateFilesKey, "sf", SwitchType.Flag);
 
             public void Init() { } // provided as a way to get the static class Switches loaded early.
         }
