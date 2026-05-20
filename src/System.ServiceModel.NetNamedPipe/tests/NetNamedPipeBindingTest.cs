@@ -18,7 +18,13 @@ public static class NetNamedPipeBindingTest
     {
         Type t = Assembly.GetAssembly(typeof(NamedPipeTransportBindingElement))
                             .GetType(typeof(NamedPipeTransportBindingElement).Namespace + ".PipeUri");
-        MethodInfo m = t.GetMethod("BuildSharedMemoryName", BindingFlags.Static | BindingFlags.Public);
+        MethodInfo m = t.GetMethod(
+            "BuildSharedMemoryName",
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            types: new Type[] { typeof(string), typeof(string), typeof(bool) },
+            modifiers: null
+        );
 
         //swtich on
         AppContext.SetSwitch("Switch.System.ServiceModel.UseSha1InPipeConnectionGetHashAlgorithm", true);
