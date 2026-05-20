@@ -6,7 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using Microsoft.Xml;
+using System.Xml;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.IO;

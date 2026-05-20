@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Security;
 using System.Text;
-using Microsoft.Xml;
+using System.Xml;
 using System.Diagnostics.CodeAnalysis;
 using System.ServiceModel;
 

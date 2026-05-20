@@ -6,7 +6,7 @@ using System.ServiceModel.Channels;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Selectors;
 using System.Runtime.Serialization;
-using Microsoft.Xml;
+using System.Xml;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;

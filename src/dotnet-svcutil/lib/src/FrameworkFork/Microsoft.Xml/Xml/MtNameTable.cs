@@ -8,7 +8,7 @@ using System.IO;
 using System.Collections;
 using System.Threading;
 
-namespace Microsoft.Xml {
+namespace System.Xml {
 				using System;
 				
 

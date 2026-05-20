@@ -4,7 +4,7 @@
 
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using Microsoft.Xml;
+using System.Xml;
 
 using ISignatureValueSecurityElement = System.IdentityModel.ISignatureValueSecurityElement;
 

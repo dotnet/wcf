@@ -5,7 +5,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.IdentityModel.Tokens;
-using Microsoft.Xml;
+using System.Xml;
 using System.Text;
 
 namespace System.IdentityModel

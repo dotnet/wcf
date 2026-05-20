@@ -4,7 +4,7 @@
 
 // NOTE: this file was generated from 'xd.xml'
 
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel
 {

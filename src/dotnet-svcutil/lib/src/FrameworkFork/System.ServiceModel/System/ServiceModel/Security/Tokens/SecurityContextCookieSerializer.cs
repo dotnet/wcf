@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Dispatcher;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Security.Tokens
 {
