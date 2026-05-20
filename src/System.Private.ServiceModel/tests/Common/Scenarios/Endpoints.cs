@@ -768,6 +768,14 @@ public static partial class Endpoints
         get { return GetEndpointAddress("TcpTransSecMessCredsCert.svc/tcp-message-credentials-cert", protocol: "net.tcp"); }
     }
 
+    // NetTcp + TransportWithMessageCredential + certificate client credentials, hosted with a
+    // short SessionKeyRenewalInterval so the test cycle reliably crosses an SCT renewal
+    // boundary. Used by the regression test for dotnet/wcf#5883.
+    public static string Tcp_SecModeTransWithMessCred_ClientCredTypeCert_Renew
+    {
+        get { return GetEndpointAddress("TcpSctRenewal.svc/tcp-sct-renewal", protocol: "net.tcp"); }
+    }
+
     public static string Tcp_SecModeTransWithMessCred_ClientCredTypeUserName
     {
         get { return GetEndpointAddress("TcpTransSecMessCredsUserName.svc/tcp-message-credentials-username", protocol: "net.tcp"); }
