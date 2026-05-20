@@ -71,6 +71,11 @@
   <PropertyGroup>
     <RunWithCoreWCFService Condition="'$(RunWithCoreWCFService)' == ''">false</RunWithCoreWCFService>
     <ServiceHttpPort Condition="'$(ServiceHttpPort)' == ''">8081</ServiceHttpPort>
+    <!-- ServiceHost is required by InstallRootCertificate.sh. Without it the pre-command
+         expands to "--service-host --cert-file ..." and the script treats "--cert-file"
+         as the service host, fails to download the root CA, and every TLS test on
+         macOS/Linux fails with PartialChain (dotnet/wcf#2870). -->
+    <ServiceHost Condition="'$(ServiceHost)' == ''">localhost</ServiceHost>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' != 'Windows'" >
