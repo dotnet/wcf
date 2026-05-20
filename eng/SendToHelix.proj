@@ -71,11 +71,6 @@
   <PropertyGroup>
     <RunWithCoreWCFService Condition="'$(RunWithCoreWCFService)' == ''">false</RunWithCoreWCFService>
     <ServiceHttpPort Condition="'$(ServiceHttpPort)' == ''">8081</ServiceHttpPort>
-    <!-- ServiceHost is required by InstallRootCertificate.sh. Without it the pre-command
-         expands to an empty service-host argument and the install script then treats the
-         next flag as the service host, fails to download the root CA, and every TLS test
-         on macOS/Linux fails with PartialChain (dotnet/wcf#2870). -->
-    <ServiceHost Condition="'$(ServiceHost)' == ''">localhost</ServiceHost>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' != 'Windows'" >
@@ -86,6 +81,19 @@
   <PropertyGroup Condition="'$(TestJob)' == 'Linux'" >
     <!-- WCF tests have a dependency on RSA+SHA1 being enabled on Helix: https://github.com/dotnet/wcf/pull/5744#issuecomment-2702201438 -->
     <HelixPreCommands>$(HelixPreCommands);export OPENSSL_ENABLE_SHA1_SIGNATURES=1</HelixPreCommands>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TestJob)' == 'MacOS'" >
+    <!-- Helix macOS workers run as the non-interactive 'helix-runner' user, which has
+         no login keychain. X509Store(My, CurrentUser) then fails with errSecNoSuchKeychain
+         when the test infrastructure tries to install the client certificate, masking the
+         macOS partial-trust fix (dotnet/wcf#2870). Pre-create, unlock and register a login
+         keychain for the current user so StoreLocation.CurrentUser can be opened. -->
+    <HelixPreCommands>$(HelixPreCommands);security create-keychain -p "" $HOME/Library/Keychains/login.keychain-db 2&gt;/dev/null || true</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);security set-keychain-settings -lut 7200 $HOME/Library/Keychains/login.keychain-db</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);security unlock-keychain -p "" $HOME/Library/Keychains/login.keychain-db</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);security list-keychains -d user -s $HOME/Library/Keychains/login.keychain-db /Library/Keychains/System.keychain</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);security default-keychain -d user -s $HOME/Library/Keychains/login.keychain-db</HelixPreCommands>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunWithCoreWCFService)' == 'true'">
