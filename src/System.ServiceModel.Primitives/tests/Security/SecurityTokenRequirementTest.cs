@@ -8,7 +8,7 @@ using System.IdentityModel.Selectors;
 using Infrastructure.Common;
 using Xunit;
 
-public static class SecurityTokenRequirementTest
+public class SecurityTokenRequirementTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void TokenType_DefaultValueIsSameAsNetFramework()

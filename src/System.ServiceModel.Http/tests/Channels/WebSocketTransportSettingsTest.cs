@@ -8,7 +8,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static class WebSocketTransportSettingsTest
+public class WebSocketTransportSettingsTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void DisablePayloadMasking_Property_Set_PNSE_Throws()

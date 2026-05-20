@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static class OperationContractAttributeTest
+public class OperationContractAttributeTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Default_Ctor_Initializes_Correctly()

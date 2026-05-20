@@ -10,7 +10,7 @@ using Infrastructure.Common;
 using Xunit;
 using System.Threading.Tasks;
 
-public static partial class ClientBaseTest
+public partial class ClientBaseTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void ClientBaseCloseMethodClosesCorrectly()
