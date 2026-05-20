@@ -157,8 +157,8 @@ public class CertificateGeneratorLibrary
             ValidityType = CertificateValidityType.Valid,
             Subject = s_fqdn,
             SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" },
-            // serverAuth OID = 1.3.6.1.5.5.7.3.1; clientAuth OID = 1.3.6.1.5.5.7.3.2
-            EKU = new List<string> { "1.3.6.1.5.5.7.3.2" }
+            // Only clientAuth EKU - intentionally missing serverAuth to exercise invalid-EKU scenario.
+            EKU = new List<string> { Oids.ClientAuthEku }
         };
         CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 

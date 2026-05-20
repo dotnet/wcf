@@ -20,11 +20,17 @@ acquire_certificate()
     
     echo "Obtaining certificate from '$ServiceUri'"
    
-    # Need to make a call as the original user as we need to write to the cert store for the current 
-    # user, not as root
-    echo "Making a call to '${__service_host}/TestHost.svc/RootCert' as user '$SUDO_USER'"
-    sudo -E -u $SUDO_USER $__curl_exe -o $__cafile "http://${__service_host}/TestHost.svc/RootCert?asPem=true" 
-    
+    if [ "${__os}" = "darwin" ]; then
+        # No sudo on macOS — the script runs as the user so it can write to the user keychain.
+        echo "Making a call to '${__service_host}/TestHost.svc/RootCert'"
+        $__curl_exe -o "$__cafile" "http://${__service_host}/TestHost.svc/RootCert?asPem=true"
+    else
+        # Need to make a call as the original user as we need to write to the cert store for the current 
+        # user, not as root
+        echo "Making a call to '${__service_host}/TestHost.svc/RootCert' as user '$SUDO_USER'"
+        sudo -E -u $SUDO_USER $__curl_exe -o $__cafile "http://${__service_host}/TestHost.svc/RootCert?asPem=true" 
+    fi
+
     return $?
 }
 
@@ -38,8 +44,26 @@ install_root_cert()
 
     case ${__os} in 
         "darwin")
-            # OS X SecureTransport does a direct install into the cert store without requiring copying into a location
-            $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ${__cafile} 
+            # macOS: install into a user-domain custom keychain so we don't need root and so
+            # the cert is granted a full SSL trust policy (not the "partial trust" state that
+            # breaks TLS handshakes — see issue dotnet/wcf#2870).
+            __wcf_keychain="${HOME}/Library/Keychains/wcfTest.keychain-db"
+            __wcf_keychain_password="WCFKeychainFilePassword"
+
+            if [ ! -f "${__wcf_keychain}" ]; then
+                $__update_os_certbundle_exec create-keychain -p "${__wcf_keychain_password}" "${__wcf_keychain}"
+            fi
+            $__update_os_certbundle_exec unlock-keychain -p "${__wcf_keychain_password}" "${__wcf_keychain}"
+            # No -t / -u = disable auto-lock so the keychain stays unlocked for the test run.
+            $__update_os_certbundle_exec set-keychain-settings "${__wcf_keychain}"
+
+            # Make the custom keychain part of the user search list and the default keychain
+            # so .NET's X509Store(My, CurrentUser) discovers certs imported into it.
+            __existing_keychains=$($__update_os_certbundle_exec list-keychains -d user | tr -d '"')
+            $__update_os_certbundle_exec list-keychains -d user -s "${__wcf_keychain}" ${__existing_keychains}
+            $__update_os_certbundle_exec default-keychain -s "${__wcf_keychain}"
+
+            $__update_os_certbundle_exec add-trusted-cert -r trustRoot -p ssl -k "${__wcf_keychain}" "${__cafile}"
             ;;
         "centos" | "rhel" | "fedora")
             cp -f "${__cafile}" /etc/pki/ca-trust/source/anchors
@@ -133,7 +157,9 @@ readonly __binpath
 readonly __os
 
 # Check prerequisities
-if [ `id -u` -ne 0 ]; then
+# macOS uses a user-domain custom keychain, so sudo is neither required nor desirable
+# (sudo would write the keychain into root's home directory).
+if [ "${__os}" != "darwin" ] && [ `id -u` -ne 0 ]; then
     show_usage
     echo "ERROR: This script must be run under sudo or as a superuser" 
     exit 1
