@@ -53,6 +53,18 @@
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
     <EnableRunSettingsSupport Condition="'$(ContinuousIntegrationBuild)' != 'true'">true</EnableRunSettingsSupport>
+
+    <!--
+      Default xunit parallelism cap for integration tests. Resource-constrained
+      Helix Linux Open queues (2-4 vCPU) can starve the SelfHosted(Core)WCF
+      service under default parallelism, causing intermittent hangs in the
+      WebSocket close handshake and similar transport flows (see #5819, #5818).
+      Cap at min(ProcessorCount, 4) so 2-vCPU Helix VMs use 2 threads and dev
+      boxes still get 4. Individual projects can override _XunitOptions to
+      tighten further (e.g. '-parallel none' or a different '-maxthreads').
+    -->
+    <WcfHelixMaxThreads Condition="'$(WcfHelixMaxThreads)' == ''">$([System.Math]::Min(4, $([System.Environment]::ProcessorCount)))</WcfHelixMaxThreads>
+    <_XunitOptions>$(_XunitOptions) -maxthreads $(WcfHelixMaxThreads)</_XunitOptions>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">
