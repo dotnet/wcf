@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -93,7 +93,6 @@ public partial class Binding_UDSBindingTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(SSL_Available))]
     [OuterLoop]
     private void BasicCertAsTransport()

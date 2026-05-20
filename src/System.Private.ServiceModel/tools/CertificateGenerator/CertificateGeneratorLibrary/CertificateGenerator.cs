@@ -19,12 +19,6 @@ namespace WcfTestCommon
     // DER encodings are compatible with all platform X.509 stacks (including macOS Apple Security framework).
     public class CertificateGenerator
     {
-        // Strongly-typed OIDs used in cert/CRL generation. Friendly names show up in tools that
-        // surface Oid.FriendlyName (e.g., certificate viewers).
-        private static readonly Oid ServerAuthEkuOid                   = new Oid("1.3.6.1.5.5.7.3.1",      "TLS Web Server Authentication");
-        private static readonly Oid ClientAuthEkuOid                   = new Oid("1.3.6.1.5.5.7.3.2",      "TLS Web Client Authentication");
-        private static readonly Oid CrlDistributionPointsExtensionOid  = new Oid("2.5.29.31",              "X509v3 CRL Distribution Points");
-
         private bool _isInitialized;
 
         // Settable properties prior to initialization
@@ -354,8 +348,8 @@ namespace WcfTestCommon
             OidCollection ekuOids = new OidCollection();
             if (certificateCreationSettings.EKU == null || certificateCreationSettings.EKU.Count == 0)
             {
-                ekuOids.Add(ServerAuthEkuOid);
-                ekuOids.Add(ClientAuthEkuOid);
+                ekuOids.Add(Oids.ServerAuthEkuOid);
+                ekuOids.Add(Oids.ClientAuthEkuOid);
             }
             else
             {
@@ -636,7 +630,7 @@ namespace WcfTestCommon
         {
             foreach (X509Extension ext in cert.Extensions)
             {
-                if (ext.Oid != null && ext.Oid.Value == "2.5.29.14")
+                if (ext.Oid != null && ext.Oid.Value == Oids.SubjectKeyIdentifierExtension)
                 {
                     // SubjectKeyIdentifier extension; value is OCTET STRING containing OCTET STRING (the key id)
                     AsnReader r = new AsnReader(ext.RawData, AsnEncodingRules.DER);
@@ -672,7 +666,7 @@ namespace WcfTestCommon
                     }
                 }
             }
-            return new X509Extension(CrlDistributionPointsExtensionOid, w.Encode(), critical: false);
+            return new X509Extension(Oids.CrlDistributionPointsExtensionOid, w.Encode(), critical: false);
         }
 
         private static byte[] HexToBytes(string hex)
