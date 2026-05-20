@@ -10,9 +10,11 @@
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "$TEMP$MultiTargetTypeReuse//TypeReuseClient//bin//Debug//DOTNET_VERSION//BinLib.dll"
+      "$TEMP$NetStandard20TypeReuse//TypeReuseClient//bin//Debug//netstandard2.0//TypesLib.dll",
+      "System.Runtime, {System.Runtime, 99.99.99}",
+      "System.Runtime.Serialization.Primitives, {System.Runtime.Serialization.Primitives, 99.99.99}"
     ],
-    "targetFramework": "N.N",
+    "targetFramework": "netstandard2.0",
     "typeReuseMode": "All"
   }
 }
