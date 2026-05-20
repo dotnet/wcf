@@ -171,4 +171,22 @@ namespace WcfService
         {
         }
     }
+
+    // Host for ServerInitiatedShutdownService used by dotnet/wcf#5803 regression test.
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "ServerInitiatedShutdown.svc")]
+    public class ServerInitiatedShutdownServiceHost : TestServiceHostBase<IServerInitiatedShutdownService>
+    {
+        protected override string Address { get { return "tcp-nosecurity-server-shutdown"; } }
+
+        protected override Binding GetBinding()
+        {
+            return new NetTcpBinding(SecurityMode.None);
+        }
+
+        public ServerInitiatedShutdownServiceHost(params Uri[] baseAddresses)
+            : base(typeof(ServerInitiatedShutdownService), baseAddresses)
+        {
+            this.Description.Behaviors.Add(new CaptureChannelServiceBehavior());
+        }
+    }
 }
