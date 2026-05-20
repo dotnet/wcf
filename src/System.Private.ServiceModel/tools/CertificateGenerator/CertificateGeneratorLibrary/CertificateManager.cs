@@ -44,17 +44,47 @@ namespace WcfTestCommon
         // already present.  Returns 'true' if the certificate was added.
         public static bool AddToStoreIfNeeded(StoreName storeName, StoreLocation storeLocation, X509Certificate2 certificate)
         {
+            if (certificate == null)
+            {
+                Trace.WriteLine("[CertificateManager] AddToStoreIfNeeded called with null certificate.");
+                return false;
+            }
+
+            // On macOS, the X509Store API cannot modify Root/TrustedPeople stores without user interaction,
+            // and the login keychain may be locked in CI. Use the macOS security CLI with a custom unlocked
+            // keychain instead. Route all stores into the custom keychain (macOS doesn't have proper
+            // per-store separation anyway — see CertificateHelper.GetX509Store).
+            if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+            {
+                // Always import the PFX (with private key) when the cert has one — services hosting the
+                // cert (e.g., a TrustedPeople peer cert used by SSL) need the private key, not just the
+                // public bytes.
+                bool imported;
+                if (certificate.HasPrivateKey)
+                {
+                    byte[] pfxBytes = certificate.Export(X509ContentType.Pkcs12, "test");
+                    imported = CertificateHelper.ImportCertToMacOSKeychain(pfxBytes, "test");
+                }
+                else
+                {
+                    imported = CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
+                }
+
+                // Additionally register Root certs with OS trust settings so chain validation works.
+                if (storeName == StoreName.Root)
+                {
+                    CertificateHelper.AddTrustedCertOnMacOS(certificate);
+                }
+
+                return imported;
+            }
+
             X509Store store = null;
             X509Certificate2 existingCert = null;
             try
             {
                 store = CertificateHelper.GetX509Store(storeName, storeLocation);
-
-                // We assume Bridge is running elevated
-                if (!CertificateHelper.CurrentOperatingSystem.IsMacOS())
-                {
-                    store.Open(OpenFlags.ReadWrite);
-                }
+                store.Open(OpenFlags.ReadWrite);
                 existingCert = CertificateFromThumbprint(store, certificate.Thumbprint);
                 if (existingCert == null)
                 {
@@ -109,9 +139,8 @@ namespace WcfTestCommon
         {
             lock (s_certificateLock)
             {
-                bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
-
-                return certificate.Thumbprint;
+                AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+                return certificate?.Thumbprint;
             }
         }
 
@@ -122,9 +151,8 @@ namespace WcfTestCommon
         {
             lock (s_certificateLock)
             {
-                bool added = AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.LocalMachine, certificate);
-
-                return certificate.Thumbprint;
+                AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.LocalMachine, certificate);
+                return certificate?.Thumbprint;
             }
         }
 
@@ -162,7 +190,8 @@ namespace WcfTestCommon
                     Subject = fqdn,
                     SubjectAlternativeNames = new string[] { fqdn, hostname, "localhost" }
                 };
-                var hostCert = certificateGenerator.CreateMachineCertificate(certificateCreationSettings).Certificate;
+                var hostCertContainer = certificateGenerator.CreateMachineCertificate(certificateCreationSettings);
+                var hostCert = hostCertContainer.Certificate;
 
                 // Since s_myCertificates keys by subject name, we won't install a cert for the same subject twice
                 // only the first-created cert will win
@@ -178,7 +207,8 @@ namespace WcfTestCommon
                     Subject = fqdn,
                     SubjectAlternativeNames = new string[] { fqdn, hostname, "localhost" }
                 };
-                var peerCert = certificateGenerator.CreateMachineCertificate(certificateCreationSettings).Certificate;
+                var peerCertContainer = certificateGenerator.CreateMachineCertificate(certificateCreationSettings);
+                var peerCert = peerCertContainer.Certificate;
                 InstallCertificateToTrustedPeopleStore(peerCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid);
             }
 

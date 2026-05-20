@@ -1,4 +1,4 @@
-﻿// The .NET Foundation licenses this file to you under the MIT license.
+// The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
 using System;
@@ -12,7 +12,6 @@ using Xunit;
 public class WS2007HttpTransportWithMessageCredentialsSecurityTests : ConditionalWcfTest
 {
     [WcfFact]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
        nameof(Client_Certificate_Installed),
        nameof(SSL_Available))]

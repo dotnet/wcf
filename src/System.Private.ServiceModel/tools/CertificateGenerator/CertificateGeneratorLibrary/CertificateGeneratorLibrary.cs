@@ -22,26 +22,36 @@ public class CertificateGeneratorLibrary
 
     private static void RemoveCertificatesFromStore(StoreName storeName, StoreLocation storeLocation)
     {
+        // On macOS, all cert operations go through a custom keychain managed by CertificateHelper.
+        // Cleanup is handled by deleting the entire keychain in UninstallAllCerts.
+        if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+        {
+            return;
+        }
+
         X509Store store = CertificateHelper.GetX509Store(storeName, storeLocation);
         Console.WriteLine("  Checking StoreName '{0}', StoreLocation '{1}'", storeName, store.Location);
+        store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
+        foreach (var cert in store.Certificates.Find(X509FindType.FindByIssuerName, CertificateIssuer, false))
         {
-            if (!CertificateHelper.CurrentOperatingSystem.IsMacOS()) 
-            {
-                store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
-            }
-
-            foreach (var cert in store.Certificates.Find(X509FindType.FindByIssuerName, CertificateIssuer, false))
-            {
-                Console.Write("    {0}. Subject: '{1}'", cert.Thumbprint, cert.SubjectName.Name);
-                store.Remove(cert);
-                Console.WriteLine(" ... removed");
-            }
+            Console.Write("    {0}. Subject: '{1}'", cert.Thumbprint, cert.SubjectName.Name);
+            store.Remove(cert);
+            Console.WriteLine(" ... removed");
         }
         Console.WriteLine();
     }
 
     public static void UninstallAllCerts()
     {
+        // On macOS, delete the custom keychain which removes all WCF test certs at once
+        if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+        {
+            Console.WriteLine("  Cleaning up macOS keychain...");
+            CertificateHelper.DeleteMacOSKeychain();
+            Console.WriteLine();
+            return;
+        }
+
         RemoveCertificatesFromStore(StoreName.My, StoreLocation.CurrentUser);
         RemoveCertificatesFromStore(StoreName.My, StoreLocation.LocalMachine);
 
@@ -147,7 +157,8 @@ public class CertificateGeneratorLibrary
             ValidityType = CertificateValidityType.Valid,
             Subject = s_fqdn,
             SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" },
-            EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID> { Org.BouncyCastle.Asn1.X509.KeyPurposeID.id_kp_clientAuth }
+            // Only clientAuth EKU - intentionally missing serverAuth to exercise invalid-EKU scenario.
+            EKU = new List<string> { Oids.ClientAuthEku }
         };
         CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
@@ -157,7 +168,7 @@ public class CertificateGeneratorLibrary
             FriendlyName = "WCF Bridge - STSMetaData",
             ValidityType = CertificateValidityType.Valid,
             Subject = "STSMetaData",
-            EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID>()
+            EKU = new List<string>()
         };
         CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
@@ -167,8 +178,8 @@ public class CertificateGeneratorLibrary
             FriendlyName = "WCF Bridge - UserCertificateResource",
             Subject = "WCF Client Certificate",
         };
-        X509Certificate2 certificate = certificateGenerate.CreateUserCertificate(certificateCreationSettings).Certificate;
-        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+        var userCertContainer = certificateGenerate.CreateUserCertificate(certificateCreationSettings);
+        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, userCertContainer.Certificate);
 
         //Create CRL and save it
         FileInfo file = new FileInfo(s_crlFileLocation);
@@ -181,7 +192,7 @@ public class CertificateGeneratorLibrary
 
     private static void CreateAndInstallMachineCertificate(CertificateGenerator certificateGenerate, CertificateCreationSettings certificateCreationSettings)
     {
-        X509Certificate2 certificate = certificateGenerate.CreateMachineCertificate(certificateCreationSettings).Certificate;
-        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+        var container = certificateGenerate.CreateMachineCertificate(certificateCreationSettings);
+        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, container.Certificate);
     }
 }

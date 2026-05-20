@@ -38,8 +38,13 @@ install_root_cert()
 
     case ${__os} in 
         "darwin")
-            # OS X SecureTransport does a direct install into the cert store without requiring copying into a location
-            $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ${__cafile} 
+            # macOS: install into the System keychain (admin domain) and attach the SSL trust
+            # policy. Without -p ssl the cert lands in the keychain without an SSL trust
+            # policy, which macOS reports as "partial trust" and breaks TLS handshakes
+            # (issue dotnet/wcf#2870). add-trusted-cert -d targets the admin domain
+            # (System.keychain); it is non-interactive only when invoked as root, which is
+            # always the case here (helix runs this script under `sudo -E`).
+            $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -p ssl -k /Library/Keychains/System.keychain ${__cafile} 
             ;;
         "centos" | "rhel" | "fedora")
             cp -f "${__cafile}" /etc/pki/ca-trust/source/anchors
@@ -141,7 +146,7 @@ fi
 
 # OpenSSL rehash - applicable on all platforms
 
-__c_rehash_exec=`which c_rehash`
+__c_rehash_exec=`command -v c_rehash`
 if [ $? -ne 0 -o ! -f "$__c_rehash_exec" ]; then 
     echo "WARNING: Could not find 'c_rehash'. Is OpenSSL installed properly?" 
 fi
@@ -163,13 +168,13 @@ case ${__os} in
         ;;
 esac 
 
-__update_os_certbundle_exec=`which ${__update_os_certbundle_cmd}`
+__update_os_certbundle_exec=`command -v ${__update_os_certbundle_cmd}`
 if [ $? -ne 0 -o ! -f "$__update_os_certbundle_exec" ]; then 
     echo "ERROR: Could not find '${__update_os_certbundle_cmd}', which is needed to update certificates on '${__os}'" 
     exit 1
 fi
 
-__curl_exe=`which curl`
+__curl_exe=`command -v curl`
 
 if [ ! -e "$__curl_exe" ]; then
     echo "Could not find cURL"
