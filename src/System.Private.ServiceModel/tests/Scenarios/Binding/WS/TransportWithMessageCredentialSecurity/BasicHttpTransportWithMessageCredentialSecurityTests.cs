@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -8,7 +8,6 @@ using Xunit;
 public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfTest
 {
     [WcfFact]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
@@ -56,7 +55,6 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
     }
 
     [WcfTheory]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
@@ -107,7 +105,6 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
@@ -156,7 +153,6 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
     }
 
     [WcfTheory]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]

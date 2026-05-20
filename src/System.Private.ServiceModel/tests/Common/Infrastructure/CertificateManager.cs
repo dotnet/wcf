@@ -92,6 +92,39 @@ namespace Infrastructure.Common
             X509Certificate2 resultCert = null;
             lock (s_certificateLock)
             {
+                // On macOS, the .NET X509Store API alone does not produce a chain that
+                // SecTrustEvaluate considers fully trusted for SSL — certs land in the
+                // user keychain but without an SSL trust policy ("partial trust"), and
+                // TLS handshakes fail (issue #2870). Use the `security` CLI to import
+                // into a dedicated unlocked keychain and, for roots, attach an explicit
+                // SSL trust policy. We still fall through to X509Store.Add below so
+                // lookups by thumbprint via the managed API continue to work.
+                if (MacOSKeychain.IsMacOS)
+                {
+                    try
+                    {
+                        if (certificate.HasPrivateKey)
+                        {
+                            MacOSKeychain.ImportPfx(certificate);
+                        }
+                        else
+                        {
+                            MacOSKeychain.ImportPublic(certificate);
+                        }
+
+                        if (storeName == StoreName.Root)
+                        {
+                            MacOSKeychain.AddTrustedRoot(certificate);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Surface the underlying error but keep going so callers see the
+                        // managed X509Store failure path consistently across platforms.
+                        System.Diagnostics.Trace.WriteLine($"MacOSKeychain install failed: {ex}");
+                    }
+                }
+
                 // Open the store as ReadOnly first, as it prevents the need for elevation if opening
                 // a LocalMachine store
                 using (X509Store store = new X509Store(storeName, storeLocation))
