@@ -625,19 +625,31 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     await logger.WriteMessageAsync(Shared.Resources.ResolvingProjectReferences, logToUI: this.ToolContext <= OperationalContext.Global).ConfigureAwait(false);
 
                     var references = await this.Project.ResolveProjectReferencesAsync(ProjectDependency.IgnorableDependencies, logger, cancellationToken).ConfigureAwait(false);
+                    var projectDependencies = references.ToList();
 
+                    ToolConsole.WriteLine($"TypeReuseMode: {TypeReuseMode}");
                     if (this.TypeReuseMode == Svcutil.TypeReuseMode.All)
                     {
                         this.References.Clear();
-                        this.References.AddRange(references);
+                        this.References.AddRange(projectDependencies);
                     }
-                    else // Update operation: remove any reference no longer in the project!
+                    else 
                     {
+                        // Update operation: remove any reference no longer in the project!
                         for (int idx = this.References.Count - 1; idx >= 0; idx--)
                         {
-                            if (!references.Contains(this.References[idx]))
+                            if (!projectDependencies.Contains(this.References[idx]))
                             {
                                 this.References.RemoveAt(idx);
+                            }
+                        }
+
+                        // Add any new references that are not already in the list.
+                        foreach (var missingReference in projectDependencies)
+                        {
+                            if (!this.References.Contains(missingReference))
+                            {
+                                this.References.Add(missingReference);
                             }
                         }
                     }
