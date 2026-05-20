@@ -178,19 +178,50 @@ namespace WcfTestCommon
 
         /// <summary>
         /// Adds trust for a certificate (from raw DER bytes) on macOS using the 'security' CLI.
+        /// Writes trust settings into the admin trust domain (System.keychain) via sudo so that
+        /// macOS's TLS chain evaluator honors the root system-wide. Helix macOS runners are
+        /// configured with passwordless sudo, so this is non-interactive.
         /// </summary>
         public static bool AddTrustedCertOnMacOS(byte[] certDerBytes)
         {
-            EnsureMacOSKeychainInitialized();
-
             string tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".cer");
             try
             {
                 File.WriteAllBytes(tempFile, certDerBytes);
-                RunSecurityCommand(string.Format(
-                    "add-trusted-cert -r trustRoot -p ssl -k \"{0}\" \"{1}\"",
-                    s_macOSKeychainPath, tempFile));
-                return true;
+
+                // sudo -n: non-interactive; fail rather than prompt.
+                // -d: admin trust domain (system-wide), requires root.
+                // -r trustRoot: this cert is a trust root.
+                // -p ssl: trust for SSL policy.
+                // -k System.keychain: store the cert in the system keychain.
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "sudo",
+                    Arguments = string.Format(
+                        "-n security add-trusted-cert -d -r trustRoot -p ssl -k /Library/Keychains/System.keychain \"{0}\"",
+                        tempFile),
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false
+                };
+
+                using (var process = Process.Start(psi))
+                {
+                    string stdout = process.StandardOutput.ReadToEnd();
+                    string stderr = process.StandardError.ReadToEnd();
+                    process.WaitForExit(30000);
+
+                    if (process.ExitCode != 0)
+                    {
+                        Console.Error.WriteLine(string.Format(
+                            "[CertificateHelper] sudo security add-trusted-cert failed (exit {0}): {1}",
+                            process.ExitCode, stderr));
+                        return false;
+                    }
+
+                    Console.WriteLine("[CertificateHelper] Added root cert to macOS System.keychain admin trust domain.");
+                    return true;
+                }
             }
             finally
             {
@@ -233,7 +264,7 @@ namespace WcfTestCommon
 
                 if (process.ExitCode != 0)
                 {
-                    Trace.WriteLine(string.Format("[CertificateHelper] security {0} failed (exit code {1}): {2}",
+                    Console.Error.WriteLine(string.Format("[CertificateHelper] security {0} failed (exit code {1}): {2}",
                         arguments, process.ExitCode, stderr));
                 }
 
