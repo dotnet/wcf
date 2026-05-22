@@ -35,7 +35,8 @@ public class SctRenewalRegressionTests : ConditionalWcfTest
     [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
-               nameof(SSL_Available))]
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void NetTcp_TransWithMessCred_CertClientCredential_SctRenewal_Succeeds()
     {
