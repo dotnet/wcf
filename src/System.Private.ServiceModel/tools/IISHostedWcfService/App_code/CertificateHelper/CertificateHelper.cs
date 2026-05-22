@@ -112,6 +112,8 @@ namespace WcfTestCommon
         /// <summary>
         /// Imports a PFX (PKCS12) file into the macOS custom keychain
         /// using the 'security import' CLI, avoiding user interaction prompts.
+        /// Also runs an X509Chain.Build diagnostic against the leaf cert so we can
+        /// see how SecTrust evaluates it post-import.
         /// </summary>
         public static bool ImportCertToMacOSKeychain(byte[] pfxBytes, string pfxPassword)
         {
@@ -128,6 +130,40 @@ namespace WcfTestCommon
                     tempFile, s_macOSKeychainPath, pfxPassword));
 
                 Trace.WriteLine("[CertificateHelper] Imported PFX to macOS keychain.");
+
+                // Diagnostic: build chain against the leaf cert and dump status.
+                try
+                {
+                    var leaf = X509CertificateLoader.LoadPkcs12(pfxBytes, pfxPassword);
+                    foreach (var mode in new[] { X509RevocationMode.NoCheck, X509RevocationMode.Online })
+                    {
+                        using (var chain = new X509Chain())
+                        {
+                            chain.ChainPolicy.RevocationMode = mode;
+                            bool ok = chain.Build(leaf);
+                            Console.WriteLine("[CertificateHelper][diag-leaf] subject='" + leaf.Subject + "' thumb=" + leaf.Thumbprint + " RevocationMode=" + mode + " ok=" + ok);
+                            if (chain.ChainStatus != null)
+                            {
+                                foreach (var s in chain.ChainStatus)
+                                {
+                                    Console.WriteLine("    status=" + s.Status + ": " + (s.StatusInformation ?? string.Empty).Trim());
+                                }
+                            }
+                            if (chain.ChainElements != null)
+                            {
+                                foreach (X509ChainElement e in chain.ChainElements)
+                                {
+                                    Console.WriteLine("    element subject='" + e.Certificate.Subject + "' thumb=" + e.Certificate.Thumbprint);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine("[CertificateHelper][diag-leaf] threw: " + ex.Message);
+                }
+
                 return true;
             }
             finally
