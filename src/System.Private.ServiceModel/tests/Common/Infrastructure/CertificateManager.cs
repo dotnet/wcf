@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -233,7 +234,73 @@ namespace Infrastructure.Common
         {
             // See explanation of StoreLocation selection at PlatformSpecificRootStoreLocation
             certificate = AddToStoreIfNeeded(StoreName.Root, PlatformSpecificRootStoreLocation, certificate);
+
+            // On macOS, .NET's X509Store(Root, *) does not establish OS-level trust required by SslStream/SecTrust.
+            // Add an admin trust setting to the System.keychain via the `security` CLI. Passwordless sudo is set up
+            // for the Helix work item via eng/SendToHelix.proj pre-commands.
+            if ((OSHelper.Current & OSID.OSX) == OSHelper.Current)
+            {
+                AddTrustedRootOnMacOS(certificate);
+            }
+
             return certificate;
+        }
+
+        private static void AddTrustedRootOnMacOS(X509Certificate2 certificate)
+        {
+            string pemPath = Path.Combine(Path.GetTempPath(), "wcf-root-" + certificate.Thumbprint + ".pem");
+            try
+            {
+                byte[] der = certificate.Export(X509ContentType.Cert);
+                var sb = new StringBuilder();
+                sb.AppendLine("-----BEGIN CERTIFICATE-----");
+                string b64 = Convert.ToBase64String(der);
+                for (int i = 0; i < b64.Length; i += 64)
+                {
+                    sb.AppendLine(b64.Substring(i, Math.Min(64, b64.Length - i)));
+                }
+                sb.AppendLine("-----END CERTIFICATE-----");
+                File.WriteAllText(pemPath, sb.ToString());
+
+                RunSecurity("sudo", "-n security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"" + pemPath + "\"");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[CertificateManager] Failed to add macOS admin trust: " + ex);
+            }
+            finally
+            {
+                try { if (File.Exists(pemPath)) File.Delete(pemPath); } catch { }
+            }
+        }
+
+        private static void RunSecurity(string fileName, string arguments)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = fileName,
+                    Arguments = arguments,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                };
+                using (var p = Process.Start(psi))
+                {
+                    string stdout = p.StandardOutput.ReadToEnd();
+                    string stderr = p.StandardError.ReadToEnd();
+                    p.WaitForExit(60000);
+                    Console.WriteLine($"[CertificateManager] {fileName} {arguments} exit={p.ExitCode}");
+                    if (!string.IsNullOrEmpty(stdout)) Console.WriteLine("[CertificateManager] stdout: " + stdout);
+                    if (!string.IsNullOrEmpty(stderr)) Console.WriteLine("[CertificateManager] stderr: " + stderr);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[CertificateManager] Failed to run '{fileName} {arguments}': {ex}");
+            }
         }
 
         // Install the certificate into the My store.
