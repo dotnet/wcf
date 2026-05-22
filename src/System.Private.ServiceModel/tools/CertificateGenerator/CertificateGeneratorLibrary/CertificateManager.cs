@@ -56,6 +56,15 @@ namespace WcfTestCommon
             // per-store separation anyway — see CertificateHelper.GetX509Store).
             if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
             {
+                // Root certs need OS-level trust (admin domain) to be honored by SecTrust during TLS
+                // handshakes. Do NOT also import them into the custom keychain - it sits first in the
+                // user search list and would shadow the trusted System.keychain entry, causing
+                // SecTrust to report UntrustedRoot at TLS time.
+                if (storeName == StoreName.Root)
+                {
+                    return CertificateHelper.AddTrustedCertOnMacOS(certificate);
+                }
+
                 // Always import the PFX (with private key) when the cert has one — services hosting the
                 // cert (e.g., a TrustedPeople peer cert used by SSL) need the private key, not just the
                 // public bytes.
@@ -68,12 +77,6 @@ namespace WcfTestCommon
                 else
                 {
                     imported = CertificateHelper.ImportPublicCertToMacOSKeychain(certificate);
-                }
-
-                // Additionally register Root certs with OS trust settings so chain validation works.
-                if (storeName == StoreName.Root)
-                {
-                    CertificateHelper.AddTrustedCertOnMacOS(certificate);
                 }
 
                 return imported;
