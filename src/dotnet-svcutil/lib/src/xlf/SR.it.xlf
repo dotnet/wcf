@@ -652,6 +652,11 @@ Identificatore di documento: '{0}'.</target>
         <target state="translated">-= UTILIZZO =-</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpUseDefaultCredentialsFormat">
+        <source>Use default credentials when downloading service metadata. (Short Form: -{0})</source>
+        <target state="new">Use default credentials when downloading service metadata. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpVerbosityFormat">
         <source>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</source>
         <target state="translated">Determina la quantità di informazioni visualizzate dallo strumento. I valori validi sono: '{0}'. Forma breve: -{1}</target>

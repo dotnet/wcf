@@ -652,6 +652,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">-= 사용법 =-</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpUseDefaultCredentialsFormat">
+        <source>Use default credentials when downloading service metadata. (Short Form: -{0})</source>
+        <target state="new">Use default credentials when downloading service metadata. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpVerbosityFormat">
         <source>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</source>
         <target state="translated">도구에 표시되는 정보의 양을 결정합니다. 유효한 값은 '{0}'입니다(약식: -{1}).</target>

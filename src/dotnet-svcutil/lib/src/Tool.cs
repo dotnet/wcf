@@ -202,8 +202,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             credsProvider.AcceptCert = options.AcceptCert.Value;
 
             ServiceDescriptor serviceDescriptor = options.Inputs.Count == 1 ?
-                new ServiceDescriptor(options.Inputs[0].ToString(), credsProvider, credsProvider, credsProvider) :
-                new ServiceDescriptor(options.Inputs.Select(i => i.ToString()).ToList(), credsProvider, credsProvider, credsProvider);
+                new ServiceDescriptor(options.Inputs[0].ToString(), credsProvider, credsProvider, credsProvider, options.UseDefaultCredentials.Value) :
+                new ServiceDescriptor(options.Inputs.Select(i => i.ToString()).ToList(), credsProvider, credsProvider, credsProvider, options.UseDefaultCredentials.Value);
 
             // When in Infrastructure mode (WCF CS) it is assumed the metadata docs have been downloaded and passed in as wsdl files.
             if (options.ToolContext != OperationalContext.Infrastructure)
