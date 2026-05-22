@@ -220,6 +220,9 @@ namespace WcfTestCommon
                     }
 
                     Console.WriteLine("[CertificateHelper] Added root cert to macOS System.keychain admin trust domain.");
+
+                    // Diagnostics: dump admin trust settings + verify chain to confirm macOS honors our trust.
+                    DumpMacOSTrustDiagnostics(tempFile);
                     return true;
                 }
             }
@@ -242,6 +245,75 @@ namespace WcfTestCommon
                 RunSecurityCommand(string.Format("delete-keychain \"{0}\"", s_macOSKeychainPath));
                 s_macOSKeychainInitialized = false;
                 Trace.WriteLine("[CertificateHelper] macOS keychain deleted.");
+            }
+        }
+
+        /// <summary>
+        /// Diagnostics: dump trust settings and verify-cert output so we can see how macOS
+        /// is interpreting our 'add-trusted-cert' call. Outputs everything to console so it
+        /// shows up in Helix logs.
+        /// </summary>
+        private static void DumpMacOSTrustDiagnostics(string certFile)
+        {
+            string[] cmds = new[]
+            {
+                "trust-settings-export -d /tmp/wcf-trust-admin.plist",
+                "find-certificate -a -p -c \"DO_NOT_TRUST_WcfBridgeRootCA\" /Library/Keychains/System.keychain",
+                "verify-cert -c \"" + certFile + "\" -p ssl",
+            };
+            foreach (var args in cmds)
+            {
+                try
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "security",
+                        Arguments = args,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false
+                    };
+                    using (var p = Process.Start(psi))
+                    {
+                        string so = p.StandardOutput.ReadToEnd();
+                        string se = p.StandardError.ReadToEnd();
+                        p.WaitForExit(15000);
+                        Console.WriteLine("[CertificateHelper][diag] security " + args + " -> exit=" + p.ExitCode);
+                        if (!string.IsNullOrWhiteSpace(so)) Console.WriteLine("  stdout: " + so.Trim());
+                        if (!string.IsNullOrWhiteSpace(se)) Console.WriteLine("  stderr: " + se.Trim());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine("[CertificateHelper][diag] " + args + " threw: " + ex.Message);
+                }
+            }
+
+            // Dump the admin-domain trust settings plist if it was produced.
+            try
+            {
+                if (File.Exists("/tmp/wcf-trust-admin.plist"))
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "plutil",
+                        Arguments = "-p /tmp/wcf-trust-admin.plist",
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false
+                    };
+                    using (var p = Process.Start(psi))
+                    {
+                        string so = p.StandardOutput.ReadToEnd();
+                        p.WaitForExit(15000);
+                        Console.WriteLine("[CertificateHelper][diag] admin trust plist:");
+                        Console.WriteLine(so);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("[CertificateHelper][diag] plutil failed: " + ex.Message);
             }
         }
 
