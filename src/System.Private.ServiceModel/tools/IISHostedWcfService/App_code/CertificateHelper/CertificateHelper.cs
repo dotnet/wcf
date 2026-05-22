@@ -322,7 +322,7 @@ namespace WcfTestCommon
             // see whether .NET's macOS chain processor honors the OS trust we just installed.
             try
             {
-                var cert = new X509Certificate2(certFile);
+                var cert = X509CertificateLoader.LoadCertificateFromFile(certFile);
                 foreach (var mode in new[] { X509RevocationMode.NoCheck, X509RevocationMode.Online })
                 {
                     using (var chain = new X509Chain())
