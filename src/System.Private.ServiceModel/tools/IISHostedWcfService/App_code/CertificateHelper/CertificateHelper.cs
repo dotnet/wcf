@@ -192,13 +192,15 @@ namespace WcfTestCommon
                 // sudo -n: non-interactive; fail rather than prompt.
                 // -d: admin trust domain (system-wide), requires root.
                 // -r trustRoot: this cert is a trust root.
-                // -p ssl: trust for SSL policy.
+                // NO -p flag: empty trust settings array means "trusted for all uses" - broader
+                // than "-p ssl" which constrains trust to the sslServer policy only. Without -p
+                // SecTrust treats the root as a universal trust anchor.
                 // -k System.keychain: store the cert in the system keychain.
                 var psi = new ProcessStartInfo
                 {
                     FileName = "sudo",
                     Arguments = string.Format(
-                        "-n security add-trusted-cert -d -r trustRoot -p ssl -k /Library/Keychains/System.keychain \"{0}\"",
+                        "-n security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"{0}\"",
                         tempFile),
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -314,6 +316,33 @@ namespace WcfTestCommon
             catch (Exception ex)
             {
                 Console.Error.WriteLine("[CertificateHelper][diag] plutil failed: " + ex.Message);
+            }
+
+            // .NET-side diagnostic: build a chain using X509Chain and dump the result so we can
+            // see whether .NET's macOS chain processor honors the OS trust we just installed.
+            try
+            {
+                var cert = new X509Certificate2(certFile);
+                foreach (var mode in new[] { X509RevocationMode.NoCheck, X509RevocationMode.Online })
+                {
+                    using (var chain = new X509Chain())
+                    {
+                        chain.ChainPolicy.RevocationMode = mode;
+                        bool ok = chain.Build(cert);
+                        Console.WriteLine("[CertificateHelper][diag] .NET X509Chain.Build (RevocationMode=" + mode + ") ok=" + ok);
+                        if (chain.ChainStatus != null)
+                        {
+                            foreach (var s in chain.ChainStatus)
+                            {
+                                Console.WriteLine("    status=" + s.Status + ": " + (s.StatusInformation ?? string.Empty).Trim());
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("[CertificateHelper][diag] X509Chain.Build threw: " + ex.Message);
             }
         }
 
