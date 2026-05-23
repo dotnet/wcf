@@ -452,7 +452,7 @@ public class WSHttpTransactionFlowTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available), nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
-    public static void WSHttpBinding_TransactionFlow_Mandatory_WithoutScope_Throws()
+    public static void WSHttpBinding_TransactionFlow_Mandatory_RoundTrips_And_WithoutScope_Throws()
     {
         ChannelFactory<IWcfTransactionMandatoryService> factory = null;
         IWcfTransactionMandatoryService serviceProxy = null;
@@ -465,13 +465,27 @@ public class WSHttpTransactionFlowTests : ConditionalWcfTest
             factory = new ChannelFactory<IWcfTransactionMandatoryService>(binding, new EndpointAddress(Endpoints.WSHttpTransactionFlowMandatoryAddress));
             serviceProxy = factory.CreateChannel();
 
-            // *** EXECUTE & VALIDATE *** \\
-            // Calling a Mandatory operation without an ambient transaction should throw.
-            // The client-side TransactionChannel enforces Mandatory by requiring a flowed transaction.
+            // *** EXECUTE & VALIDATE — negative case (client-side enforcement) *** \\
+            // Calling a Mandatory operation without an ambient transaction must throw
+            // before any wire activity. The client-side TransactionChannel enforces
+            // [TransactionFlow(Mandatory)] by requiring a flowed transaction.
             Assert.ThrowsAny<ProtocolException>(() =>
             {
                 serviceProxy.IsTransactionFlowed();
             });
+
+            // *** EXECUTE & VALIDATE — positive case (true end-to-end) *** \\
+            // With an ambient transaction, the call must succeed AND the server must
+            // see the flowed transaction. This portion requires real server support
+            // for TransactionFlow and exercises the Mandatory contract attribute on
+            // the wire.
+            bool flowed;
+            using (var scope = new TransactionScope(TransactionScopeOption.Required, TransactionScopeAsyncFlowOption.Enabled))
+            {
+                flowed = serviceProxy.IsTransactionFlowed();
+                scope.Complete();
+            }
+            Assert.True(flowed, "Expected the transaction to flow to the Mandatory service operation, but IsTransactionFlowed returned false.");
 
             // *** CLEANUP *** \\
             factory.Close();
