@@ -38,15 +38,22 @@ install_root_cert()
 
     case ${__os} in 
         "darwin")
-            # macOS: install into the System keychain (admin domain) and attach the SSL trust
-            # policy. Without -p ssl the cert lands in the keychain without an SSL trust
-            # policy, which macOS reports as "partial trust" and breaks TLS handshakes
-            # (issue dotnet/wcf#2870). add-trusted-cert -d targets the admin domain
-            # (System.keychain); it is non-interactive only when invoked as root, which is
-            # always the case here (helix runs this script under `sudo -E`).
-            $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -p ssl -k /Library/Keychains/System.keychain ${__cafile}
+            # macOS: install into the System keychain (admin domain) and grant full trust.
+            # `add-trusted-cert -d` targets the admin domain (System.keychain). It is
+            # non-interactive only when invoked as root, which is always the case here
+            # (helix runs this script under `sudo -E`). We deliberately omit `-p ssl`
+            # so the cert is trusted for ALL policies; specifying a policy narrows trust
+            # to that policy only and has produced inconsistent SslStream chain validation
+            # results in CI (dotnet/wcf#2870).
+            $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ${__cafile}
             __add_rc=$?
             echo "[InstallRootCertificate] add-trusted-cert exit=${__add_rc}"
+
+            # Force trustd to drop its in-memory cache and re-read the trust settings.
+            # Without this, SecTrustEvaluate (used by .NET's X509Chain on macOS) can keep
+            # returning the previous "untrusted" verdict for the lifetime of the helix VM,
+            # even though `security verify-cert` already reports the cert as trusted.
+            killall -HUP trustd 2>/dev/null || true
 
             # Diagnostics: dump cert details + verify the trust setting actually took effect.
             echo "[InstallRootCertificate] --- downloaded cert details ---"
