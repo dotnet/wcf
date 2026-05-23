@@ -146,7 +146,10 @@ public class CertificateGeneratorLibrary
             FriendlyName = "WCF Bridge - TcpRevokedServerCertResource",
             ValidityType = CertificateValidityType.Revoked,
             Subject = s_fqdn,
-            SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" }
+            SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" },
+            // Revocation test requires the leaf to advertise a CRL DP so the client can fetch
+            // the CRL and detect that this cert is revoked.
+            IncludeCrlDistributionPoint = true
         };
         CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
