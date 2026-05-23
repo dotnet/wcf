@@ -55,7 +55,6 @@ public partial class ClientBaseTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void DefaultSettings_SetCookieOnServerSide()
     {

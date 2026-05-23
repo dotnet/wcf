@@ -356,8 +356,7 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
-    [Condition(nameof(Root_Certificate_Installed),
-        nameof(Skip_CoreWCFService_FailedTest))]
+    [Condition(nameof(Root_Certificate_Installed))]
     [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
