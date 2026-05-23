@@ -98,7 +98,11 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
 
     [WcfFact]
     [Issue(3572, OS = OSID.OSX)]
-    [Condition(nameof(Root_Certificate_Installed))]
+    // Test-infra limitation: certificate generator on Linux derives the cert CN
+    // from Dns.GetHostEntry("127.0.0.1").HostName which returns "localhost",
+    // so the "domain name" cert ends up indistinguishable from the localhost
+    // cert and the negative-case assertion cannot be made. Gate on Windows.
+    [Condition(nameof(Root_Certificate_Installed), nameof(Is_Windows))]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_DomainName_Address_EchoString()
     {
@@ -175,7 +179,11 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
 
     [WcfFact]
     [Issue(3572, OS = OSID.OSX)]
-    [Condition(nameof(Root_Certificate_Installed))]
+    // Test-infra limitation: certificate generator on Linux derives the cert CN
+    // from Dns.GetHostEntry("127.0.0.1").HostName which returns "localhost",
+    // so the "fqdn" cert ends up indistinguishable from the localhost cert and
+    // the negative-case assertion cannot be made. Gate on Windows.
+    [Condition(nameof(Root_Certificate_Installed), nameof(Is_Windows))]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_Fqdn_Address_EchoString()
     {
