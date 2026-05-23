@@ -134,7 +134,9 @@ namespace WcfTestCommon
                 // Diagnostic: build chain against the leaf cert and dump status.
                 try
                 {
-                    var leaf = X509CertificateLoader.LoadPkcs12(pfxBytes, pfxPassword);
+                    #pragma warning disable SYSLIB0057
+                    var leaf = new X509Certificate2(pfxBytes, pfxPassword);
+                    #pragma warning restore SYSLIB0057
                     foreach (var mode in new[] { X509RevocationMode.NoCheck, X509RevocationMode.Online })
                     {
                         using (var chain = new X509Chain())
@@ -358,7 +360,9 @@ namespace WcfTestCommon
             // see whether .NET's macOS chain processor honors the OS trust we just installed.
             try
             {
-                var cert = X509CertificateLoader.LoadCertificateFromFile(certFile);
+                #pragma warning disable SYSLIB0057
+                var cert = new X509Certificate2(certFile);
+                #pragma warning restore SYSLIB0057
                 foreach (var mode in new[] { X509RevocationMode.NoCheck, X509RevocationMode.Online })
                 {
                     using (var chain = new X509Chain())
