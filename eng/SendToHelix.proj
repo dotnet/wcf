@@ -96,6 +96,14 @@
     <HelixPreCommands>$(HelixPreCommands);security unlock-keychain -p "" $HOME/Library/Keychains/login.keychain-db</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);security list-keychains -d user -s $HOME/Library/Keychains/login.keychain-db /Library/Keychains/System.keychain</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);security default-keychain -d user -s $HOME/Library/Keychains/login.keychain-db</HelixPreCommands>
+    <!-- macOS: .NET's X509Chain on SslStream does NOT consult admin-domain trust in System.keychain
+         the way `security verify-cert` does. Custom trust anchors must live in .NET's per-user
+         root store under ~/.dotnet/corefx/cryptography/x509stores/root/<thumb>.pfx for the
+         managed chain builder to pick them up (dotnet/wcf#2870). Convert the downloaded root
+         PEM to a passwordless PFX and drop it into that location so HTTPS tests that target
+         the remote wcfcoresrv23 service can build a trusted chain. -->
+    <HelixPreCommands>$(HelixPreCommands);mkdir -p $HOME/.dotnet/corefx/cryptography/x509stores/root</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);__wcf_thumb=$(openssl x509 -in /tmp/wcfrootca.crt -fingerprint -sha1 -noout | sed 's/.*=//' | tr -d ':') &amp;&amp; openssl pkcs12 -export -nokeys -in /tmp/wcfrootca.crt -out $HOME/.dotnet/corefx/cryptography/x509stores/root/${__wcf_thumb}.pfx -password pass: -name wcfroot &amp;&amp; echo "[InstallRootCertificate] wrote .NET user-root store entry: ${__wcf_thumb}.pfx" &amp;&amp; ls -la $HOME/.dotnet/corefx/cryptography/x509stores/root/</HelixPreCommands>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunWithCoreWCFService)' == 'true'">
