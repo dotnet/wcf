@@ -55,6 +55,12 @@ public partial class ClientBaseTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    // Flaky under CoreWCF on certain Linux distros (Fedora.41, Debian.12):
+    // the second POST over a keep-alive connection sometimes triggers a
+    // Kestrel pipe-writer race on the server side
+    //   (System.InvalidOperationException: Writing is not allowed after writer
+    //    was completed -> Connection reset by peer at the client).
+    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void DefaultSettings_SetCookieOnServerSide()
     {
