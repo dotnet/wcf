@@ -44,7 +44,19 @@ install_root_cert()
             # (issue dotnet/wcf#2870). add-trusted-cert -d targets the admin domain
             # (System.keychain); it is non-interactive only when invoked as root, which is
             # always the case here (helix runs this script under `sudo -E`).
-            $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -p ssl -k /Library/Keychains/System.keychain ${__cafile} 
+            $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -p ssl -k /Library/Keychains/System.keychain ${__cafile}
+            __add_rc=$?
+            echo "[InstallRootCertificate] add-trusted-cert exit=${__add_rc}"
+
+            # Diagnostics: dump cert details + verify the trust setting actually took effect.
+            echo "[InstallRootCertificate] --- downloaded cert details ---"
+            $__update_os_certbundle_exec -v find-certificate -a -p /Library/Keychains/System.keychain | head -20 || true
+            __subject=$(openssl x509 -in "${__cafile}" -noout -subject -issuer -fingerprint -sha1 2>&1 || echo "openssl missing")
+            echo "[InstallRootCertificate] cert: ${__subject}"
+            echo "[InstallRootCertificate] --- verify-cert (ssl policy) ---"
+            $__update_os_certbundle_exec verify-cert -c "${__cafile}" -p ssl 2>&1 || true
+            echo "[InstallRootCertificate] --- admin trust settings dump ---"
+            $__update_os_certbundle_exec dump-trust-settings -d 2>&1 | head -40 || true
             ;;
         "centos" | "rhel" | "fedora")
             cp -f "${__cafile}" /etc/pki/ca-trust/source/anchors

@@ -195,7 +195,6 @@ public partial class HttpsTests : ConditionalWcfTest
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
             factory.Credentials.ServiceCertificate.SslCertificateAuthentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
-            factory.Credentials.ServiceCertificate.SslCertificateAuthentication.RevocationMode = X509RevocationMode.NoCheck;
 
             serviceProxy = factory.CreateChannel();
 
