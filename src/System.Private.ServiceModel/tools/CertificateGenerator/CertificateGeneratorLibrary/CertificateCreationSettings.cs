@@ -22,7 +22,7 @@ namespace WcfTestCommon
         public DateTime ValidityNotBefore { get; set; }
         public DateTime ValidityNotAfter { get; set; }
         public CertificateValidityType ValidityType { get; set; }
-        public bool IncludeCrlDistributionPoint { get; set; } = false;
+        public bool IncludeCrlDistributionPoint { get; set; } = true;
         // List of EKU OIDs (e.g., "1.3.6.1.5.5.7.3.1" for serverAuth, "1.3.6.1.5.5.7.3.2" for clientAuth).
         public List<string> EKU { get; set; }
     }

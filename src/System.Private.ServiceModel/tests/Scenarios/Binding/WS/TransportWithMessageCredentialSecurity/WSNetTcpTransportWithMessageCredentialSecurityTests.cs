@@ -36,6 +36,11 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
             clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication
+            {
+                CertificateValidationMode = X509CertificateValidationMode.ChainTrust,
+                RevocationMode = X509RevocationMode.NoCheck
+            };
             factory.Credentials.ClientCertificate.SetCertificate(
                 StoreLocation.CurrentUser,
                 StoreName.My,
@@ -83,6 +88,11 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_SecModeTransWithMessCred_ClientCredTypeUserName));
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication
+            {
+                CertificateValidationMode = X509CertificateValidationMode.ChainTrust,
+                RevocationMode = X509RevocationMode.NoCheck
+            };
             username = Guid.NewGuid().ToString("n").Substring(0, 8);
             char[] usernameArr = username.ToCharArray();
             Array.Reverse(usernameArr);
