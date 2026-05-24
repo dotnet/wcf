@@ -414,6 +414,18 @@ namespace WcfTestCommon
                 req.CertificateExtensions.Add(BuildCrlDistributionPointsExtension(_crlUri));
             }
 
+            // Authority Information Access (AIA): point to an OCSP responder. Apple
+            // SecTrust on macOS prefers OCSP over CRL fetching; without an OCSP URL
+            // it returns RevocationStatusUnknown for chains that only advertise a
+            // CRL distribution point, which makes X509Chain.Build() fail under
+            // X509RevocationMode.Online (dotnet/wcf#2870). The OCSP URL is derived
+            // from the CRL URL by replacing the trailing "/Crl" path segment with
+            // "/Ocsp"; the IIS host serves a minimal OCSP responder at that path.
+            if (!isAuthority)
+            {
+                req.CertificateExtensions.Add(BuildAuthorityInfoAccessExtension(DeriveOcspUri(_crlUri)));
+            }
+
             X509Certificate2 cert;
             if (isAuthority)
             {
@@ -667,6 +679,38 @@ namespace WcfTestCommon
                 }
             }
             return new X509Extension(Oids.CrlDistributionPointsExtensionOid, w.Encode(), critical: false);
+        }
+
+        // Builds AuthorityInfoAccess extension carrying a single OCSP accessDescription.
+        // AuthorityInfoAccessSyntax ::= SEQUENCE OF AccessDescription
+        // AccessDescription ::= SEQUENCE { accessMethod OBJECT IDENTIFIER, accessLocation GeneralName }
+        // GeneralName uniformResourceIdentifier [6] IMPLICIT IA5String
+        private static X509Extension BuildAuthorityInfoAccessExtension(string ocspUrl)
+        {
+            AsnWriter w = new AsnWriter(AsnEncodingRules.DER);
+            using (w.PushSequence())
+            {
+                using (w.PushSequence())
+                {
+                    w.WriteObjectIdentifier(Oids.IdAdOcsp);
+                    w.WriteCharacterString(UniversalTagNumber.IA5String, ocspUrl, new Asn1Tag(TagClass.ContextSpecific, 6, isConstructed: false));
+                }
+            }
+            return new X509Extension(Oids.AuthorityInfoAccessExtensionOid, w.Encode(), critical: false);
+        }
+
+        // Derive the OCSP URL from the CRL URL by replacing the trailing "/Crl"
+        // segment with "/Ocsp"; falls back to appending "/Ocsp" if the CRL URL
+        // does not end in "/Crl".
+        private static string DeriveOcspUri(string crlUri)
+        {
+            const string crlSuffix = "/Crl";
+            const string ocspSuffix = "/Ocsp";
+            if (crlUri != null && crlUri.EndsWith(crlSuffix, StringComparison.OrdinalIgnoreCase))
+            {
+                return crlUri.Substring(0, crlUri.Length - crlSuffix.Length) + ocspSuffix;
+            }
+            return crlUri + ocspSuffix;
         }
 
         private static byte[] HexToBytes(string hex)

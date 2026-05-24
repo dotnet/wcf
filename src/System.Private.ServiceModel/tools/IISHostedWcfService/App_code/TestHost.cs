@@ -31,6 +31,17 @@ namespace WcfService
         [WebGet(UriTemplate = "Crl", BodyStyle = WebMessageBodyStyle.Bare)]
         Stream Crl();
 
+        // OCSP responder endpoint. Returns a minimal OCSPResponse with status
+        // `tryLater` (3) so Apple SecTrust on macOS - which requires a positive
+        // revocation response under kSecRevocationRequirePositiveResponse - can
+        // at least observe a valid OCSP reply and (per RFC 6960 / SecTrust soft-
+        // fail behaviour) fall through to the cert's CRL DistributionPoint.
+        // This is wired up via the AuthorityInfoAccess (id-ad-ocsp) extension
+        // added by CertificateGenerator on every non-authority cert (dotnet/wcf#2870).
+        [OperationContract]
+        [WebInvoke(UriTemplate = "Ocsp", Method = "*", BodyStyle = WebMessageBodyStyle.Bare)]
+        Stream Ocsp(Stream request);
+
         [OperationContract]
         [WebGet(UriTemplate = "PeerCert?asPem={asPem}", BodyStyle = WebMessageBodyStyle.Bare)]
         Stream PeerCert(bool asPem);
@@ -208,6 +219,30 @@ namespace WcfService
         public Stream Ping()
         {
             return new MemoryStream(Encoding.UTF8.GetBytes("Service has started"));
+        }
+
+        // Minimal OCSP responder: returns OCSPResponse with status `tryLater` (3).
+        // This is the smallest valid OCSPResponse possible:
+        //   OCSPResponse ::= SEQUENCE { responseStatus ENUMERATED { tryLater(3) } }
+        // DER:  30 03  0A 01 03
+        //        |     |     +-- ENUMERATED value 3 (tryLater)
+        //        |     +-------- ENUMERATED tag, length 1
+        //        +-------------- SEQUENCE tag, length 3
+        // Apple SecTrust on macOS treats this as a valid OCSP reply and falls
+        // back to the CRL DistributionPoint advertised on the leaf cert.
+        // The request body is ignored intentionally - we don't parse OCSPRequest
+        // because no responder key/signing is available in this test infra.
+        private static readonly byte[] s_ocspTryLater = new byte[] { 0x30, 0x03, 0x0A, 0x01, 0x03 };
+
+        public Stream Ocsp(Stream request)
+        {
+            // Drain the request body so the connection isn't left half-read.
+            if (request != null)
+            {
+                try { request.CopyTo(Stream.Null); } catch { /* best effort */ }
+            }
+            WebOperationContext.Current.OutgoingResponse.ContentType = "application/ocsp-response";
+            return new MemoryStream(s_ocspTryLater);
         }
 
         public Stream State()
