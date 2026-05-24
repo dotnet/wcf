@@ -221,19 +221,20 @@ namespace WcfService
             return new MemoryStream(Encoding.UTF8.GetBytes("Service has started"));
         }
 
-        // Minimal OCSP responder: returns OCSPResponse with status `tryLater` (3).
-        // This is the smallest valid OCSPResponse possible:
-        //   OCSPResponse ::= SEQUENCE { responseStatus ENUMERATED { tryLater(3) } }
-        // DER:  30 03  0A 01 03
-        //        |     |     +-- ENUMERATED value 3 (tryLater)
-        //        |     +-------- ENUMERATED tag, length 1
-        //        +-------------- SEQUENCE tag, length 3
-        // Apple SecTrust on macOS treats this as a valid OCSP reply and falls
-        // back to the CRL DistributionPoint advertised on the leaf cert.
-        // The request body is ignored intentionally - we don't parse OCSPRequest
-        // because no responder key/signing is available in this test infra.
-        private static readonly byte[] s_ocspTryLater = new byte[] { 0x30, 0x03, 0x0A, 0x01, 0x03 };
-
+        // OCSP responder endpoint. Returns a CA-signed BasicOCSPResponse covering
+        // every cert minted by the CertificateGenerator with status `good`. The
+        // response bytes are pre-built by the CertificateGenerator tool at cert
+        // setup time and written to disk as `test.ocsp` next to `test.crl`; this
+        // endpoint just serves them statically (no per-request signing).
+        // Required for macOS Apple SecTrust which under kSecRevocationRequire-
+        // PositiveResponse needs an actual positive OCSP reply (the AIA URL is
+        // emitted on every leaf by CertificateGenerator, dotnet/wcf#2870).
+        //
+        // OCSP requests are normally POSTed with a DER-encoded OCSPRequest body
+        // but per RFC 6960 may also be sent as GET. The static-file approach
+        // means we don't need to parse the request - the response contains a
+        // SingleResponse for every issued serial so the client matches CertID
+        // and finds its answer regardless.
         public Stream Ocsp(Stream request)
         {
             // Drain the request body so the connection isn't left half-read.
@@ -241,8 +242,26 @@ namespace WcfService
             {
                 try { request.CopyTo(Stream.Null); } catch { /* best effort */ }
             }
+
+            string downloadFilePath;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                downloadFilePath = @"c:\\WCFTest\\test.ocsp";
+            }
+            else
+            {
+                downloadFilePath = Path.Combine(Environment.CurrentDirectory, "test.ocsp");
+            }
+
+            if (!File.Exists(downloadFilePath))
+            {
+                WebOperationContext.Current.OutgoingResponse.StatusCode = HttpStatusCode.NotFound;
+                WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+                return new MemoryStream(Encoding.UTF8.GetBytes("OCSP response file not found"));
+            }
+
             WebOperationContext.Current.OutgoingResponse.ContentType = "application/ocsp-response";
-            return new MemoryStream(s_ocspTryLater);
+            return File.OpenRead(downloadFilePath);
         }
 
         public Stream State()
