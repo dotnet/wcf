@@ -200,6 +200,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             ImportModule importModule = null;
             var credsProvider = new CmdCredentialsProvider();
             credsProvider.AcceptCert = options.AcceptCert.Value;
+            credsProvider.UseDefaultCredentials = options.UseDefaultCredentials.Value;
 
             ServiceDescriptor serviceDescriptor = options.Inputs.Count == 1 ?
                 new ServiceDescriptor(options.Inputs[0].ToString(), credsProvider, credsProvider, credsProvider, options.UseDefaultCredentials.Value) :

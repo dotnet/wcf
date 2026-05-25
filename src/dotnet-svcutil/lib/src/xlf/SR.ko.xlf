@@ -653,8 +653,8 @@ Document Identifier: '{0}'.</source>
         <note />
       </trans-unit>
       <trans-unit id="HelpUseDefaultCredentialsFormat">
-        <source>Use default credentials when downloading service metadata. (Short Form: -{0})</source>
-        <target state="new">Use default credentials when downloading service metadata. (Short Form: -{0})</target>
+        <source>Use default system credentials when downloading service metadata. Only use with trusted endpoints. (Short Form: -{0})</source>
+        <target state="new">Use default system credentials when downloading service metadata. Only use with trusted endpoints. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpVerbosityFormat">
@@ -670,6 +670,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="HelpXmlSerializer">
         <source>Generate data types that use the XmlSerializer for serialization and deserialization</source>
         <target state="translated">serialization 및 deserialization을 위해 XmlSerializer를 사용하는 데이터 형식을 생성합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HintUseDefaultCredentials">
+        <source>Note: You can also use --useDefaultCredentials (-udc) to use system credentials instead of entering them manually.</source>
+        <target state="new">Note: You can also use --useDefaultCredentials (-udc) to use system credentials instead of entering them manually.</target>
         <note />
       </trans-unit>
       <trans-unit id="LogoFormat">
