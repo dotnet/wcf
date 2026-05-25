@@ -38,9 +38,17 @@ namespace WcfService
         // fail behaviour) fall through to the cert's CRL DistributionPoint.
         // This is wired up via the AuthorityInfoAccess (id-ad-ocsp) extension
         // added by CertificateGenerator on every non-authority cert (dotnet/wcf#2870).
-        [OperationContract]
+        [OperationContract(Name = "OcspWithBody")]
         [WebInvoke(UriTemplate = "Ocsp", Method = "*", BodyStyle = WebMessageBodyStyle.Bare)]
         Stream Ocsp(Stream request);
+
+        // RFC 6960 A.1.1: OCSP GET requests append the base64-encoded OCSPRequest
+        // as a URL path segment after the OCSP URL. macOS Apple SecTrust uses
+        // this GET form. Match the trailing payload so we serve the same static
+        // OCSPResponse regardless of how the client encodes the request.
+        [OperationContract(Name = "OcspWithPath")]
+        [WebInvoke(UriTemplate = "Ocsp/{*payload}", Method = "*", BodyStyle = WebMessageBodyStyle.Bare)]
+        Stream OcspWithPath(string payload, Stream request);
 
         [OperationContract]
         [WebGet(UriTemplate = "PeerCert?asPem={asPem}", BodyStyle = WebMessageBodyStyle.Bare)]
@@ -262,6 +270,12 @@ namespace WcfService
 
             WebOperationContext.Current.OutgoingResponse.ContentType = "application/ocsp-response";
             return File.OpenRead(downloadFilePath);
+        }
+
+        // Path-style OCSP GET (RFC 6960 A.1.1) - same static response.
+        public Stream OcspWithPath(string payload, Stream request)
+        {
+            return Ocsp(request);
         }
 
         public Stream State()
