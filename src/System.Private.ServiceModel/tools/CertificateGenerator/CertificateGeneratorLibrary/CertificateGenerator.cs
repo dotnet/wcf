@@ -687,7 +687,12 @@ namespace WcfTestCommon
                 {
                     foreach (byte[] serial in _issuedSerials)
                     {
-                        WriteOcspSingleResponse(td, serial, issuerNameHash, issuerKeyHash, thisUpdate, nextUpdate);
+                        DateTime? revokedAt = null;
+                        if (s_revokedCertificates.TryGetValue(SerialToHex(serial), out DateTime when))
+                        {
+                            revokedAt = when;
+                        }
+                        WriteOcspSingleResponse(td, serial, issuerNameHash, issuerKeyHash, thisUpdate, nextUpdate, revokedAt);
                     }
                 }
 
@@ -739,7 +744,7 @@ namespace WcfTestCommon
             return response;
         }
 
-        private static void WriteOcspSingleResponse(AsnWriter w, byte[] serialBytes, byte[] issuerNameHash, byte[] issuerKeyHash, DateTime thisUpdate, DateTime nextUpdate)
+        private static void WriteOcspSingleResponse(AsnWriter w, byte[] serialBytes, byte[] issuerNameHash, byte[] issuerKeyHash, DateTime thisUpdate, DateTime nextUpdate, DateTime? revokedAt = null)
         {
             using (w.PushSequence())
             {
@@ -760,8 +765,22 @@ namespace WcfTestCommon
                     BigInteger sn = new BigInteger(serialBytes, isUnsigned: true, isBigEndian: true);
                     w.WriteInteger(sn);
                 }
-                // certStatus good [0] IMPLICIT NULL  -- primitive context-specific [0] of length 0
-                w.WriteNull(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: false));
+                if (revokedAt.HasValue)
+                {
+                    // certStatus revoked [1] IMPLICIT RevokedInfo
+                    // RevokedInfo ::= SEQUENCE { revocationTime GeneralizedTime,
+                    //                            revocationReason [0] EXPLICIT CRLReason OPTIONAL }
+                    using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 1, isConstructed: true)))
+                    {
+                        w.WriteGeneralizedTime(revokedAt.Value, omitFractionalSeconds: true);
+                        // revocationReason omitted -- "unspecified" is acceptable for Apple SecTrust.
+                    }
+                }
+                else
+                {
+                    // certStatus good [0] IMPLICIT NULL  -- primitive context-specific [0] of length 0
+                    w.WriteNull(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: false));
+                }
                 // thisUpdate GeneralizedTime
                 w.WriteGeneralizedTime(thisUpdate, omitFractionalSeconds: true);
                 // nextUpdate [0] EXPLICIT GeneralizedTime OPTIONAL
