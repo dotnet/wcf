@@ -22,9 +22,9 @@
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
-    <MicrosoftDotNetGenFacadesPackageVersion>11.0.0-beta.26275.3</MicrosoftDotNetGenFacadesPackageVersion>
-    <MicrosoftDotNetXUnitExtensionsPackageVersion>11.0.0-beta.26275.3</MicrosoftDotNetXUnitExtensionsPackageVersion>
-    <MicrosoftDotNetGenAPIPackageVersion>11.0.0-beta.26275.3</MicrosoftDotNetGenAPIPackageVersion>
+    <MicrosoftDotNetGenFacadesPackageVersion>11.0.0-beta.26276.8</MicrosoftDotNetGenFacadesPackageVersion>
+    <MicrosoftDotNetXUnitExtensionsPackageVersion>11.0.0-beta.26276.8</MicrosoftDotNetXUnitExtensionsPackageVersion>
+    <MicrosoftDotNetGenAPIPackageVersion>11.0.0-beta.26276.8</MicrosoftDotNetGenAPIPackageVersion>
   </PropertyGroup>
   <!-- Additional dependencies -->
   <PropertyGroup>
