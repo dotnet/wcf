@@ -233,7 +233,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                     else
                     {
-                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.s_currentSupportedVersions.First());
+                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.MinSupportedDotNetVersion);
                     }
 
                     msbuildProj._targetFrameworks.Add(msbuildProj._targetFramework);
