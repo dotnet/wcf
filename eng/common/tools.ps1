@@ -596,9 +596,10 @@ function InitializeNuGetPackageCachePath() {
     # use global cache in dev builds to avoid cost of downloading packages.
     # For directory normalization, see also: https://github.com/NuGet/Home/issues/7968
     if ($useGlobalNuGetCache) {
-      $env:NUGET_PACKAGES = Join-Path $env:UserProfile '.nuget\packages\'
+      $userProfile = if (IsWindowsPlatform) { $env:UserProfile } else { $env:HOME }
+      $env:NUGET_PACKAGES = [IO.Path]::Combine($userProfile, '.nuget', 'packages') + [IO.Path]::DirectorySeparatorChar
     } else {
-      $env:NUGET_PACKAGES = Join-Path $RepoRoot '.packages\'
+      $env:NUGET_PACKAGES = [IO.Path]::Combine($RepoRoot, '.packages') + [IO.Path]::DirectorySeparatorChar
     }
   }
 
