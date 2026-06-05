@@ -14,18 +14,6 @@ using System.Text;
 
 namespace WcfTestCommon
 {
-    // OCSPResponseStatus (RFC 6960 4.2.1) - ENUMERATED.
-    internal enum OcspResponseStatus
-    {
-        Successful = 0,
-        MalformedRequest = 1,
-        InternalError = 2,
-        TryLater = 3,
-        // 4 is not used per RFC 6960
-        SigRequired = 5,
-        Unauthorized = 6,
-    }
-
     // NOT THREADSAFE. Callers should lock before doing work with this class if multithreaded operation is expected.
     // This generator uses the .NET built-in X.509 APIs (CertificateRequest / RSA) so the produced
     // DER encodings are compatible with all platform X.509 stacks (including macOS Apple Security framework).
@@ -52,11 +40,6 @@ namespace WcfTestCommon
 
         // key: serial number (lowercase hex), value: revocation time
         private static Dictionary<string, DateTime> s_revokedCertificates = new Dictionary<string, DateTime>();
-
-        // Big-endian unsigned serial bytes for every non-authority cert issued by
-        // this instance. Used to pre-generate OCSP single-responses covering all
-        // issued leafs (see CreateOcspResponse).
-        private List<byte[]> _issuedSerials = new List<byte[]>();
 
         private DateTime _initializationDateTime;
         private DateTime _defaultValidityNotBefore;
@@ -135,19 +118,6 @@ namespace WcfTestCommon
             {
                 EnsureInitialized();
                 return CreateCrl();
-            }
-        }
-
-        // DER-encoded OCSPResponse (RFC 6960) signed by the authority key, with a
-        // single-response entry of status `good` for every non-authority cert this
-        // instance has issued. macOS Apple SecTrust serves /Ocsp from the IIS host
-        // and matches the leaf's CertID against entries in this response.
-        public byte[] OcspResponseEncoded
-        {
-            get
-            {
-                EnsureInitialized();
-                return CreateOcspResponse();
             }
         }
 
@@ -444,18 +414,6 @@ namespace WcfTestCommon
                 req.CertificateExtensions.Add(BuildCrlDistributionPointsExtension(_crlUri));
             }
 
-            // Authority Information Access (AIA): point to an OCSP responder. Apple
-            // SecTrust on macOS prefers OCSP over CRL fetching; without an OCSP URL
-            // it returns RevocationStatusUnknown for chains that only advertise a
-            // CRL distribution point, which makes X509Chain.Build() fail under
-            // X509RevocationMode.Online (dotnet/wcf#2870). The OCSP URL is derived
-            // from the CRL URL by replacing the trailing "/Crl" path segment with
-            // "/Ocsp"; the IIS host serves a minimal OCSP responder at that path.
-            if (!isAuthority)
-            {
-                req.CertificateExtensions.Add(BuildAuthorityInfoAccessExtension(DeriveOcspUri(_crlUri)));
-            }
-
             X509Certificate2 cert;
             if (isAuthority)
             {
@@ -464,9 +422,6 @@ namespace WcfTestCommon
             else
             {
                 cert = req.Create(signingCertificate, certificateCreationSettings.ValidityNotBefore, certificateCreationSettings.ValidityNotAfter, serialNum);
-                // Track every leaf serial so we can later pre-build a signed OCSP
-                // response covering all issued certs (CreateOcspResponse).
-                _issuedSerials.Add(serialNum);
             }
 
             // Build a complete X509Certificate2 with the private key attached.
@@ -603,7 +558,12 @@ namespace WcfTestCommon
             {
                 updateTime = _defaultValidityNotBefore;
             }
-            DateTime nextUpdate = now.Add(_validityPeriod);
+            // Use a long-horizon nextUpdate (30 days) so trustd on macOS doesn't
+            // refetch (or treat the cached CRL as stale) over the lifetime of a
+            // CI run. The validity window of the issued certs already bounds the
+            // useful lifetime; a long nextUpdate just keeps Apple's CRL cache
+            // happy. (dotnet/wcf#2870)
+            DateTime nextUpdate = now.Add(TimeSpan.FromDays(30));
 
             CertificateRevocationListBuilder builder = new CertificateRevocationListBuilder();
             foreach (KeyValuePair<string, DateTime> kvp in s_revokedCertificates)
@@ -635,161 +595,6 @@ namespace WcfTestCommon
             Trace.WriteLine(string.Format("    {0} = {1} bytes", "Length", crl.Length));
 
             return crl;
-        }
-
-        // Builds a CA-signed DER-encoded OCSPResponse (RFC 6960) containing one
-        // SingleResponse entry per issued leaf cert with status `good`. The same
-        // bytes are served statically by the IIS host's /Ocsp endpoint; macOS
-        // Apple SecTrust looks up the leaf's CertID and finds a positive answer,
-        // which is required when an X509Chain is built with the default
-        // RevocationMode=Online under kSecRevocationRequirePositiveResponse.
-        // ResponderID is byKey = SHA-1 of the authority's SubjectPublicKey, so
-        // the response is implicitly trusted because the trust anchor (the
-        // authority cert) signed it directly - no separate responder cert is
-        // required in the response.
-        private byte[] CreateOcspResponse()
-        {
-            DateTime now = DateTime.UtcNow;
-            DateTime thisUpdate = now.Subtract(_crlValidityGracePeriodEnd);
-            if (_defaultValidityNotBefore > thisUpdate)
-            {
-                thisUpdate = _defaultValidityNotBefore;
-            }
-            DateTime nextUpdate = now.Add(_validityPeriod);
-
-            byte[] issuerNameDer = _authorityCertWithKey.SubjectName.RawData;
-            byte[] issuerKeyBits = _authorityCertWithKey.PublicKey.EncodedKeyValue.RawData;
-            byte[] issuerNameHash;
-            byte[] issuerKeyHash;
-            using (SHA1 sha1 = SHA1.Create())
-            {
-                issuerNameHash = sha1.ComputeHash(issuerNameDer);
-                issuerKeyHash = sha1.ComputeHash(issuerKeyBits);
-            }
-
-            // 1. Build ResponseData (the to-be-signed portion)
-            AsnWriter td = new AsnWriter(AsnEncodingRules.DER);
-            using (td.PushSequence())
-            {
-                // version [0] EXPLICIT INTEGER DEFAULT v1 -- omitted (defaulted)
-
-                // responderID byKey [2] EXPLICIT KeyHash (KeyHash ::= OCTET STRING)
-                using (td.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 2, isConstructed: true)))
-                {
-                    td.WriteOctetString(issuerKeyHash);
-                }
-
-                // producedAt GeneralizedTime
-                td.WriteGeneralizedTime(now, omitFractionalSeconds: true);
-
-                // responses SEQUENCE OF SingleResponse
-                using (td.PushSequence())
-                {
-                    foreach (byte[] serial in _issuedSerials)
-                    {
-                        DateTime? revokedAt = null;
-                        if (s_revokedCertificates.TryGetValue(SerialToHex(serial), out DateTime when))
-                        {
-                            revokedAt = when;
-                        }
-                        WriteOcspSingleResponse(td, serial, issuerNameHash, issuerKeyHash, thisUpdate, nextUpdate, revokedAt);
-                    }
-                }
-
-                // responseExtensions [1] EXPLICIT Extensions OPTIONAL -- omitted
-            }
-            byte[] tbsResponseData = td.Encode();
-
-            // 2. Sign the ResponseData with the authority's RSA key, SHA-256/PKCS#1 v1.5
-            byte[] signature = _authorityKey.SignData(tbsResponseData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-
-            // 3. BasicOCSPResponse ::= SEQUENCE { tbsResponseData, signatureAlgorithm, signature, certs[0] OPTIONAL }
-            AsnWriter basic = new AsnWriter(AsnEncodingRules.DER);
-            using (basic.PushSequence())
-            {
-                basic.WriteEncodedValue(tbsResponseData);
-                using (basic.PushSequence())
-                {
-                    basic.WriteObjectIdentifier(Oids.Sha256WithRsaEncryption);
-                    basic.WriteNull();
-                }
-                basic.WriteBitString(signature);
-                // certs OPTIONAL: omitted - responder identity matches the trust anchor.
-            }
-            byte[] basicOcspResponse = basic.Encode();
-
-            // 4. OCSPResponse ::= SEQUENCE { responseStatus, responseBytes [0] EXPLICIT OPTIONAL }
-            AsnWriter ocsp = new AsnWriter(AsnEncodingRules.DER);
-            using (ocsp.PushSequence())
-            {
-                // responseStatus successful (0)
-                ocsp.WriteEnumeratedValue(OcspResponseStatus.Successful);
-                // responseBytes [0] EXPLICIT { responseType OBJECT IDENTIFIER, response OCTET STRING }
-                using (ocsp.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true)))
-                {
-                    using (ocsp.PushSequence())
-                    {
-                        ocsp.WriteObjectIdentifier(Oids.IdPkixOcspBasic);
-                        ocsp.WriteOctetString(basicOcspResponse);
-                    }
-                }
-            }
-            byte[] response = ocsp.Encode();
-
-            Trace.WriteLine(string.Format("[CertificateGenerator] has created an OCSP response:"));
-            Trace.WriteLine(string.Format("    {0} = {1}", "Issuer", _authorityCertWithKey.SubjectName.Name));
-            Trace.WriteLine(string.Format("    {0} = {1} entries", "Single responses", _issuedSerials.Count));
-            Trace.WriteLine(string.Format("    {0} = {1} bytes", "Length", response.Length));
-
-            return response;
-        }
-
-        private static void WriteOcspSingleResponse(AsnWriter w, byte[] serialBytes, byte[] issuerNameHash, byte[] issuerKeyHash, DateTime thisUpdate, DateTime nextUpdate, DateTime? revokedAt = null)
-        {
-            using (w.PushSequence())
-            {
-                // certID SEQUENCE { hashAlgorithm AlgorithmIdentifier, issuerNameHash OCTET STRING, issuerKeyHash OCTET STRING, serialNumber INTEGER }
-                using (w.PushSequence())
-                {
-                    using (w.PushSequence())
-                    {
-                        w.WriteObjectIdentifier(Oids.Sha1);
-                        w.WriteNull();
-                    }
-                    w.WriteOctetString(issuerNameHash);
-                    w.WriteOctetString(issuerKeyHash);
-                    // serialNumber is the leaf's serial as a non-negative INTEGER.
-                    // _issuedSerials stores big-endian unsigned bytes; convert to BigInteger
-                    // so AsnWriter emits the correct INTEGER encoding (with a leading 0x00
-                    // sign byte if the high bit of the first byte is set).
-                    BigInteger sn = new BigInteger(serialBytes, isUnsigned: true, isBigEndian: true);
-                    w.WriteInteger(sn);
-                }
-                if (revokedAt.HasValue)
-                {
-                    // certStatus revoked [1] IMPLICIT RevokedInfo
-                    // RevokedInfo ::= SEQUENCE { revocationTime GeneralizedTime,
-                    //                            revocationReason [0] EXPLICIT CRLReason OPTIONAL }
-                    using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 1, isConstructed: true)))
-                    {
-                        w.WriteGeneralizedTime(revokedAt.Value, omitFractionalSeconds: true);
-                        // revocationReason omitted -- "unspecified" is acceptable for Apple SecTrust.
-                    }
-                }
-                else
-                {
-                    // certStatus good [0] IMPLICIT NULL  -- primitive context-specific [0] of length 0
-                    w.WriteNull(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: false));
-                }
-                // thisUpdate GeneralizedTime
-                w.WriteGeneralizedTime(thisUpdate, omitFractionalSeconds: true);
-                // nextUpdate [0] EXPLICIT GeneralizedTime OPTIONAL
-                using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true)))
-                {
-                    w.WriteGeneralizedTime(nextUpdate, omitFractionalSeconds: true);
-                }
-                // singleExtensions OPTIONAL -- omitted
-            }
         }
 
         private static BigInteger GenerateCrlNumber()
@@ -869,37 +674,6 @@ namespace WcfTestCommon
             return new X509Extension(Oids.CrlDistributionPointsExtensionOid, w.Encode(), critical: false);
         }
 
-        // Builds AuthorityInfoAccess extension carrying a single OCSP accessDescription.
-        // AuthorityInfoAccessSyntax ::= SEQUENCE OF AccessDescription
-        // AccessDescription ::= SEQUENCE { accessMethod OBJECT IDENTIFIER, accessLocation GeneralName }
-        // GeneralName uniformResourceIdentifier [6] IMPLICIT IA5String
-        private static X509Extension BuildAuthorityInfoAccessExtension(string ocspUrl)
-        {
-            AsnWriter w = new AsnWriter(AsnEncodingRules.DER);
-            using (w.PushSequence())
-            {
-                using (w.PushSequence())
-                {
-                    w.WriteObjectIdentifier(Oids.IdAdOcsp);
-                    w.WriteCharacterString(UniversalTagNumber.IA5String, ocspUrl, new Asn1Tag(TagClass.ContextSpecific, 6, isConstructed: false));
-                }
-            }
-            return new X509Extension(Oids.AuthorityInfoAccessExtensionOid, w.Encode(), critical: false);
-        }
-
-        // Derive the OCSP URL from the CRL URL by replacing the trailing "/Crl"
-        // segment with "/Ocsp"; falls back to appending "/Ocsp" if the CRL URL
-        // does not end in "/Crl".
-        private static string DeriveOcspUri(string crlUri)
-        {
-            const string crlSuffix = "/Crl";
-            const string ocspSuffix = "/Ocsp";
-            if (crlUri != null && crlUri.EndsWith(crlSuffix, StringComparison.OrdinalIgnoreCase))
-            {
-                return crlUri.Substring(0, crlUri.Length - crlSuffix.Length) + ocspSuffix;
-            }
-            return crlUri + ocspSuffix;
-        }
 
         private static byte[] HexToBytes(string hex)
         {

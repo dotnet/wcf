@@ -21,15 +21,7 @@ namespace WcfTestCommon
         public const string AuthorityInfoAccessExtension    = "1.3.6.1.5.5.7.1.1";
 
         // AuthorityInfoAccess accessMethod OIDs (RFC 5280 4.2.2.1)
-        public const string IdAdOcsp        = "1.3.6.1.5.5.7.48.1";
         public const string IdAdCaIssuers   = "1.3.6.1.5.5.7.48.2";
-
-        // OCSP (RFC 6960)
-        public const string IdPkixOcspBasic = "1.3.6.1.5.5.7.48.1.1";
-
-        // Hash and signature algorithm OIDs
-        public const string Sha1                  = "1.3.14.3.2.26";
-        public const string Sha256WithRsaEncryption = "1.2.840.113549.1.1.11";
 
         // Friendly names used when surfacing OIDs in cert viewers.
         public const string ServerAuthEkuFriendlyName                  = "TLS Web Server Authentication";

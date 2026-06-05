@@ -55,6 +55,36 @@ install_root_cert()
             # even though `security verify-cert` already reports the cert as trusted.
             killall -HUP trustd 2>/dev/null || true
 
+            # Pre-warm trustd's CRL cache.
+            #
+            # On macOS the CRL distribution-point fetcher in trustd is asynchronous and
+            # batched: the first SecTrust evaluation that needs revocation typically
+            # returns RevocationStatusUnknown because the CRL has not yet been fetched
+            # and parsed. SecTrust with kSecRevocationRequirePositiveResponse then
+            # rejects the chain.
+            #
+            # Mitigation: synchronously fetch the CRL ourselves before any test runs so
+            # the bytes are at least present on the local network path and (more
+            # importantly) prime trustd by issuing one synchronous verify against a
+            # representative leaf so the CRL gets fetched and cached. We tolerate any
+            # failure here -- this is best-effort priming, not a hard install gate.
+            __crl_url="http://${__service_host}/TestHost.svc/Crl"
+            __crl_file="/tmp/wcf-test.crl"
+            __leaf_file="/tmp/wcf-test-leaf.pem"
+            echo "[InstallRootCertificate] --- pre-warming CRL cache from ${__crl_url} ---"
+            sudo -E -u $SUDO_USER $__curl_exe -fsS -o "${__crl_file}" "${__crl_url}" && \
+                echo "[InstallRootCertificate] fetched CRL ($(wc -c < "${__crl_file}") bytes)" || \
+                echo "[InstallRootCertificate] CRL fetch failed (continuing)"
+            # Pull a representative server leaf cert (the same TestHost endpoint exposes /MachineCert).
+            sudo -E -u $SUDO_USER $__curl_exe -fsS -o "${__leaf_file}" "http://${__service_host}/TestHost.svc/MachineCert?asPem=true" && \
+                echo "[InstallRootCertificate] fetched leaf ($(wc -c < "${__leaf_file}") bytes)" || \
+                echo "[InstallRootCertificate] leaf fetch failed (continuing)"
+            if [ -s "${__leaf_file}" ]; then
+                # -L = fetch + cache CRL synchronously via trustd; -R offline=0 ensures network is allowed.
+                $__update_os_certbundle_exec verify-cert -L -c "${__leaf_file}" -p ssl 2>&1 | head -20 || true
+                $__update_os_certbundle_exec verify-cert -L -c "${__leaf_file}" -p basic 2>&1 | head -20 || true
+            fi
+
             # Diagnostics: dump cert details + verify the trust setting actually took effect.
             echo "[InstallRootCertificate] --- downloaded cert details ---"
             $__update_os_certbundle_exec -v find-certificate -a -p /Library/Keychains/System.keychain | head -20 || true
