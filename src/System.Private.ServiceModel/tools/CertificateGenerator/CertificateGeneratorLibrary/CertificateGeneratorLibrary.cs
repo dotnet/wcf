@@ -187,14 +187,6 @@ public class CertificateGeneratorLibrary
 
         File.WriteAllBytes(s_crlFileLocation, certificateGenerate.CrlEncoded);
 
-        // Create a CA-signed OCSP response covering every issued leaf with status
-        // `good` and save it alongside the CRL. The IIS host serves these bytes
-        // statically from /Ocsp (matching the AIA URL embedded in each leaf cert)
-        // so macOS Apple SecTrust gets a positive revocation answer required by
-        // kSecRevocationRequirePositiveResponse (dotnet/wcf#2870).
-        string ocspFileLocation = Path.ChangeExtension(s_crlFileLocation, ".ocsp");
-        File.WriteAllBytes(ocspFileLocation, certificateGenerate.OcspResponseEncoded);
-
         return 0;
     }
 

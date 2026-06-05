@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -30,25 +30,6 @@ namespace WcfService
         [OperationContract]
         [WebGet(UriTemplate = "Crl", BodyStyle = WebMessageBodyStyle.Bare)]
         Stream Crl();
-
-        // OCSP responder endpoint. Returns a minimal OCSPResponse with status
-        // `tryLater` (3) so Apple SecTrust on macOS - which requires a positive
-        // revocation response under kSecRevocationRequirePositiveResponse - can
-        // at least observe a valid OCSP reply and (per RFC 6960 / SecTrust soft-
-        // fail behaviour) fall through to the cert's CRL DistributionPoint.
-        // This is wired up via the AuthorityInfoAccess (id-ad-ocsp) extension
-        // added by CertificateGenerator on every non-authority cert (dotnet/wcf#2870).
-        [OperationContract(Name = "OcspWithBody")]
-        [WebInvoke(UriTemplate = "Ocsp", Method = "*", BodyStyle = WebMessageBodyStyle.Bare)]
-        Stream Ocsp(Stream request);
-
-        // RFC 6960 A.1.1: OCSP GET requests append the base64-encoded OCSPRequest
-        // as a URL path segment after the OCSP URL. macOS Apple SecTrust uses
-        // this GET form. Match the trailing payload so we serve the same static
-        // OCSPResponse regardless of how the client encodes the request.
-        [OperationContract(Name = "OcspWithPath")]
-        [WebInvoke(UriTemplate = "Ocsp/{*payload}", Method = "*", BodyStyle = WebMessageBodyStyle.Bare)]
-        Stream OcspWithPath(string payload, Stream request);
 
         [OperationContract]
         [WebGet(UriTemplate = "PeerCert?asPem={asPem}", BodyStyle = WebMessageBodyStyle.Bare)]
@@ -227,55 +208,6 @@ namespace WcfService
         public Stream Ping()
         {
             return new MemoryStream(Encoding.UTF8.GetBytes("Service has started"));
-        }
-
-        // OCSP responder endpoint. Returns a CA-signed BasicOCSPResponse covering
-        // every cert minted by the CertificateGenerator with status `good`. The
-        // response bytes are pre-built by the CertificateGenerator tool at cert
-        // setup time and written to disk as `test.ocsp` next to `test.crl`; this
-        // endpoint just serves them statically (no per-request signing).
-        // Required for macOS Apple SecTrust which under kSecRevocationRequire-
-        // PositiveResponse needs an actual positive OCSP reply (the AIA URL is
-        // emitted on every leaf by CertificateGenerator, dotnet/wcf#2870).
-        //
-        // OCSP requests are normally POSTed with a DER-encoded OCSPRequest body
-        // but per RFC 6960 may also be sent as GET. The static-file approach
-        // means we don't need to parse the request - the response contains a
-        // SingleResponse for every issued serial so the client matches CertID
-        // and finds its answer regardless.
-        public Stream Ocsp(Stream request)
-        {
-            // Drain the request body so the connection isn't left half-read.
-            if (request != null)
-            {
-                try { request.CopyTo(Stream.Null); } catch { /* best effort */ }
-            }
-
-            string downloadFilePath;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                downloadFilePath = @"c:\\WCFTest\\test.ocsp";
-            }
-            else
-            {
-                downloadFilePath = Path.Combine(Environment.CurrentDirectory, "test.ocsp");
-            }
-
-            if (!File.Exists(downloadFilePath))
-            {
-                WebOperationContext.Current.OutgoingResponse.StatusCode = HttpStatusCode.NotFound;
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
-                return new MemoryStream(Encoding.UTF8.GetBytes("OCSP response file not found"));
-            }
-
-            WebOperationContext.Current.OutgoingResponse.ContentType = "application/ocsp-response";
-            return File.OpenRead(downloadFilePath);
-        }
-
-        // Path-style OCSP GET (RFC 6960 A.1.1) - same static response.
-        public Stream OcspWithPath(string payload, Stream request)
-        {
-            return Ocsp(request);
         }
 
         public Stream State()
