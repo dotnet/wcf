@@ -166,6 +166,70 @@ namespace WcfTestCommon
                     Console.Error.WriteLine("[CertificateHelper][diag-leaf] threw: " + ex.Message);
                 }
 
+                // Warm trustd's CRL cache for this leaf.
+                //
+                // macOS's CRL distribution-point fetcher in trustd is asynchronous and
+                // batched: the first SecTrust evaluation that requires revocation
+                // typically returns RevocationStatusUnknown because the CRL hasn't been
+                // fetched and parsed yet. X509Chain.Build under RevocationMode.Online
+                // (which is what WCF's SslStream uses by default) then rejects the chain.
+                //
+                // Running `security verify-cert -L -p ssl` on a leaf that carries the
+                // CRL distribution-point extension forces trustd to fetch+cache the CRL
+                // synchronously while we hold the install path. We do it for both `ssl`
+                // and `basic` policies because the SecTrust path WCF eventually hits
+                // depends on the binding. Best-effort: failures are logged and ignored.
+                try
+                {
+                    #pragma warning disable SYSLIB0057
+                    var leafForWarm = new X509Certificate2(pfxBytes, pfxPassword);
+                    #pragma warning restore SYSLIB0057
+
+                    // Skip CA / self-signed certs — they have no CRL DP and warming is moot.
+                    bool isCa = leafForWarm.Subject == leafForWarm.Issuer;
+                    if (!isCa)
+                    {
+                        string leafPemFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".pem");
+                        try
+                        {
+                            File.WriteAllText(leafPemFile,
+                                "-----BEGIN CERTIFICATE-----\n"
+                                + Convert.ToBase64String(leafForWarm.RawData, Base64FormattingOptions.InsertLineBreaks)
+                                + "\n-----END CERTIFICATE-----\n");
+
+                            foreach (string policy in new[] { "ssl", "basic" })
+                            {
+                                var psi = new ProcessStartInfo
+                                {
+                                    FileName = "security",
+                                    Arguments = string.Format("verify-cert -L -c \"{0}\" -p {1}", leafPemFile, policy),
+                                    RedirectStandardOutput = true,
+                                    RedirectStandardError = true,
+                                    UseShellExecute = false
+                                };
+                                using (var p = Process.Start(psi))
+                                {
+                                    string so = p.StandardOutput.ReadToEnd();
+                                    string se = p.StandardError.ReadToEnd();
+                                    p.WaitForExit(30000);
+                                    Console.WriteLine("[CertificateHelper][crl-warm] verify-cert -L -p " + policy
+                                        + " thumb=" + leafForWarm.Thumbprint + " exit=" + p.ExitCode);
+                                    if (!string.IsNullOrWhiteSpace(so)) Console.WriteLine("  stdout: " + so.Trim());
+                                    if (!string.IsNullOrWhiteSpace(se)) Console.WriteLine("  stderr: " + se.Trim());
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            if (File.Exists(leafPemFile)) File.Delete(leafPemFile);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine("[CertificateHelper][crl-warm] threw: " + ex.Message);
+                }
+
                 return true;
             }
             finally
