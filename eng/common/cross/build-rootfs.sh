@@ -618,9 +618,9 @@ elif [[ "$__CodeName" == "openbsd" ]]; then
         [[ -z "$PKG_FILE" ]] && { echo "ERROR: Package $pkg not found"; exit 1; }
 
         if [[ "$__hasWget" == 1 ]]; then
-            wget -O- "$PKG_MIRROR/$PKG_FILE" | tar -C "$__RootfsDir" -xzpf -
+            wget -O- "$PKG_MIRROR/$PKG_FILE" | tar -C "$__RootfsDir/usr/local" -xzpf -
         else
-            curl -SL "$PKG_MIRROR/$PKG_FILE" | tar -C "$__RootfsDir" -xzpf -
+            curl -SL "$PKG_MIRROR/$PKG_FILE" | tar -C "$__RootfsDir/usr/local" -xzpf -
         fi
     done
 
