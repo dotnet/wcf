@@ -636,6 +636,10 @@ elif [[ "$__CodeName" == "openbsd" ]]; then
             ln -sf "$VERSIONED_NAME" "$__RootfsDir/usr/lib/$BASE_NAME"
         fi
     done
+
+    echo "Cleaning up unnecessary paths"
+    # we don't use executables and kernel in rootfs (as we use host's compiler with -sysroot)
+    rm -rf "$__RootfsDir/usr/share" "$__RootfsDir/usr/bin"
 elif [[ "$__CodeName" == "illumos" ]]; then
     mkdir "$__RootfsDir/tmp"
     pushd "$__RootfsDir/tmp"
