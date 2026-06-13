@@ -21,6 +21,7 @@ namespace System
             : base(message, innerException)
         {
         }
+        [Obsolete(DiagnosticId = "SYSLIB0051")] // add this attribute to the serialization ctor
         protected UriTemplateMatchException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
