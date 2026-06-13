@@ -4,6 +4,11 @@
     <CLSCompliant>false</CLSCompliant>
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
+    <!-- Our new System.ServiceModel.Web (v$(WcfAssemblyVersion)) collides with the
+         BCL shim System.ServiceModel.Web (v4.0.0.0) that forwards Syndication/JSON
+         types. Demote the MSBuild "no way to resolve" message from a build-breaking
+         warning to an informational message — our assembly is always the winner here. -->
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MSB3243</MSBuildWarningsAsMessages>
   </PropertyGroup>
 
   <ItemGroup>
