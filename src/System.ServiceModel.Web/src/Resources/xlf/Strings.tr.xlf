@@ -7,6 +7,16 @@
         <target state="new">Bind parameters cannot be null or empty for path variable '{0}'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ConditionalRetrieveGetAndHeadOnly">
+        <source>Conditional retrieval (If-Modified-Since, If-None-Match) is only supported for HTTP GET and HEAD requests.</source>
+        <target state="new">Conditional retrieval (If-Modified-Since, If-None-Match) is only supported for HTTP GET and HEAD requests.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ConditionalUpdatePutPostAndDeleteOnly">
+        <source>Conditional update (If-Match, If-Unmodified-Since) is only supported for HTTP PUT, POST, and DELETE requests.</source>
+        <target state="new">Conditional update (If-Match, If-Unmodified-Since) is only supported for HTTP PUT, POST, and DELETE requests.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DefaultContentFormatNotAllowedInProperty">
         <source>WebContentFormat.Default cannot be set on a WebBodyFormatMessageProperty; use Xml, Json, or Raw instead.</source>
         <target state="new">WebContentFormat.Default cannot be set on a WebBodyFormatMessageProperty; use Xml, Json, or Raw instead.</target>
@@ -20,6 +30,11 @@
       <trans-unit id="ErrorEncounteredInContentTypeMapper">
         <source>The WebContentTypeMapper threw an exception while attempting to map the content type. See the inner exception for details.</source>
         <target state="new">The WebContentTypeMapper threw an exception while attempting to map the content type. See the inner exception for details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HttpContextNoIncomingMessageProperty">
+        <source>HTTP context property '{0}' is missing from the incoming message. This typically means the message did not arrive over the WebHttpBinding transport.</source>
+        <target state="new">HTTP context property '{0}' is missing from the incoming message. This typically means the message did not arrive over the WebHttpBinding transport.</target>
         <note />
       </trans-unit>
       <trans-unit id="JsonOnlySupportsMessageVersionNone">
@@ -287,6 +302,11 @@
         <target state="new">The value supplied must be greater than zero.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WeakEntityTagsNotSupported">
+        <source>Weak entity tags (W/"...") are not supported in this context.</source>
+        <target state="new">Weak entity tags (W/"...") are not supported in this context.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WebBodyFormatPropertyToString">
         <source>WebBodyFormatMessageProperty(Format={0})</source>
         <target state="new">WebBodyFormatMessageProperty(Format={0})</target>
@@ -295,6 +315,11 @@
       <trans-unit id="WebHttpRawContentNotSupported">
         <source>Raw (application/octet-stream pass-through) content is not yet supported by the WebHttpBinding client. Use Xml or Json instead, or convert your payload to a typed parameter.</source>
         <target state="new">Raw (application/octet-stream pass-through) content is not yet supported by the WebHttpBinding client. Use Xml or Json instead, or convert your payload to a typed parameter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebHttpServerSideOperationSelectorNotSupported">
+        <source>WebHttpDispatchOperationSelector is server-side and is not supported in the client-only port of System.ServiceModel.Web. Construct a UriTemplate manually from the [WebGet]/[WebInvoke] attribute on your contract instead.</source>
+        <target state="new">WebHttpDispatchOperationSelector is server-side and is not supported in the client-only port of System.ServiceModel.Web. Construct a UriTemplate manually from the [WebGet]/[WebInvoke] attribute on your contract instead.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferQuotaExceeded">

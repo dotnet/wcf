@@ -240,6 +240,21 @@
   <data name="WebHttpRawContentNotSupported" xml:space="preserve">
     <value>Raw (application/octet-stream pass-through) content is not yet supported by the WebHttpBinding client. Use Xml or Json instead, or convert your payload to a typed parameter.</value>
   </data>
+  <data name="WebHttpServerSideOperationSelectorNotSupported" xml:space="preserve">
+    <value>WebHttpDispatchOperationSelector is server-side and is not supported in the client-only port of System.ServiceModel.Web. Construct a UriTemplate manually from the [WebGet]/[WebInvoke] attribute on your contract instead.</value>
+  </data>
+  <data name="ConditionalRetrieveGetAndHeadOnly" xml:space="preserve">
+    <value>Conditional retrieval (If-Modified-Since, If-None-Match) is only supported for HTTP GET and HEAD requests.</value>
+  </data>
+  <data name="ConditionalUpdatePutPostAndDeleteOnly" xml:space="preserve">
+    <value>Conditional update (If-Match, If-Unmodified-Since) is only supported for HTTP PUT, POST, and DELETE requests.</value>
+  </data>
+  <data name="HttpContextNoIncomingMessageProperty" xml:space="preserve">
+    <value>HTTP context property '{0}' is missing from the incoming message. This typically means the message did not arrive over the WebHttpBinding transport.</value>
+  </data>
+  <data name="WeakEntityTagsNotSupported" xml:space="preserve">
+    <value>Weak entity tags (W/&quot;...&quot;) are not supported in this context.</value>
+  </data>
   <data name="XmlBufferQuotaExceeded" xml:space="preserve">
     <value>The XmlBuffer's quota has been exceeded.</value>
   </data>
