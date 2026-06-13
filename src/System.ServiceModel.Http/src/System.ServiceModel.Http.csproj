@@ -15,6 +15,10 @@
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == '$(DotNetVersion)'">
+    <InternalsVisibleTo Include="System.ServiceModel.Web" />
+  </ItemGroup>
+
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
   <ItemGroup Condition="'$(TargetFrameworkId)' != '.NETFramework'">
     <EmbeddedResource Update="Resources\Strings.resx">

@@ -2,9 +2,44 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../Strings.resx">
     <body>
+      <trans-unit id="AtMostOneRequestBodyParameterAllowedForStream">
+        <source>Operation '{0}' in contract '{1}' has multiple request body parameters, one of which is a Stream. When the Stream is a parameter, there can be no other parameters in the body.</source>
+        <target state="new">Operation '{0}' in contract '{1}' has multiple request body parameters, one of which is a Stream. When the Stream is a parameter, there can be no other parameters in the body.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AtMostOneRequestBodyParameterAllowedForUnwrappedMessages">
+        <source>Operation '{0}' of contract '{1}' specifies multiple request body parameters to be serialized without any wrapper elements. At most one body parameter can be serialized without wrapper elements. Either remove the extra body parameters or set the BodyStyle property on the WebGetAttribute/WebInvokeAttribute to Wrapped.</source>
+        <target state="new">Operation '{0}' of contract '{1}' specifies multiple request body parameters to be serialized without any wrapper elements. At most one body parameter can be serialized without wrapper elements. Either remove the extra body parameters or set the BodyStyle property on the WebGetAttribute/WebInvokeAttribute to Wrapped.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindUriTemplateToNullOrEmptyPathParam">
         <source>Bind parameters cannot be null or empty for path variable '{0}'.</source>
         <target state="new">Bind parameters cannot be null or empty for path variable '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BufferIsNotRightSizeForBufferManager">
+        <source>This buffer cannot be returned to the buffer manager because it is the wrong size.</source>
+        <target state="new">This buffer cannot be returned to the buffer manager because it is the wrong size.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BufferedOutputStreamQuotaExceeded">
+        <source>The size quota for this stream ({0}) has been exceeded.</source>
+        <target state="new">The size quota for this stream ({0}) has been exceeded.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotDeserializeBody">
+        <source>Unable to deserialize XML body with root name '{0}' and root namespace '{1}' (for operation '{2}' and contract ('{3}',  '{4}')) using {5}. Ensure that the type corresponding to the XML is added to the known types collection of the service.</source>
+        <target state="new">Unable to deserialize XML body with root name '{0}' and root namespace '{1}' (for operation '{2}' and contract ('{3}',  '{4}')) using {5}. Ensure that the type corresponding to the XML is added to the known types collection of the service.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotSerializeType">
+        <source>Type '{0}' of operation '{1}' and contract ('{2}', '{3}') could not be serialized. Ensure that the type can be serialized using {4} and add the type to the known types collection of the service if required.</source>
+        <target state="new">Type '{0}' of operation '{1}' and contract ('{2}', '{3}') could not be serialized. Ensure that the type can be serialized using {4} and add the type to the known types collection of the service if required.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CertificateUnsupportedForHttpTransportCredentialOnly">
+        <source>Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</source>
+        <target state="new">Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</target>
         <note />
       </trans-unit>
       <trans-unit id="ConditionalRetrieveGetAndHeadOnly">
@@ -17,9 +52,34 @@
         <target state="new">Conditional update (If-Match, If-Unmodified-Since) is only supported for HTTP PUT, POST, and DELETE requests.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ConfigInvalidEncodingValue">
+        <source>{0} is not a valid encoding string for System.Text.Encoding.GetEncoding(string).</source>
+        <target state="new">{0} is not a valid encoding string for System.Text.Encoding.GetEncoding(string).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CrossDomainJavascriptAuthNotSupported">
+        <source>Cross domain javascript callback is not supported in authenticated services.</source>
+        <target state="new">Cross domain javascript callback is not supported in authenticated services.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CrossDomainJavascriptNotsupported">
+        <source>CrossDomainScriptAccessEnabled cannot be used in Clients.</source>
+        <target state="new">CrossDomainScriptAccessEnabled cannot be used in Clients.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DefaultContentFormatNotAllowedInProperty">
         <source>WebContentFormat.Default cannot be set on a WebBodyFormatMessageProperty; use Xml, Json, or Raw instead.</source>
         <target state="new">WebContentFormat.Default cannot be set on a WebBodyFormatMessageProperty; use Xml, Json, or Raw instead.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DuplicateRegistration">
+        <source>A registration already exists for URI '{0}'.</source>
+        <target state="new">A registration already exists for URI '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EncoderBadContentType">
+        <source>Cannot process contentType.</source>
+        <target state="new">Cannot process contentType.</target>
         <note />
       </trans-unit>
       <trans-unit id="EncoderEnvelopeVersionMismatch">
@@ -27,14 +87,149 @@
         <target state="new">The envelope version of the outgoing message ({0}) does not match the envelope version of the encoder ({1}).</target>
         <note />
       </trans-unit>
+      <trans-unit id="EncoderUnrecognizedCharSet">
+        <source>Unrecognized charSet '{0}' in contentType.</source>
+        <target state="new">Unrecognized charSet '{0}' in contentType.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EndpointAddressCannotBeNull">
+        <source>The ServiceEndpoint's Address is null.  Address must be an absolute uri.</source>
+        <target state="new">The ServiceEndpoint's Address is null.  Address must be an absolute uri.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrorEncounteredInContentTypeMapper">
         <source>The WebContentTypeMapper threw an exception while attempting to map the content type. See the inner exception for details.</source>
         <target state="new">The WebContentTypeMapper threw an exception while attempting to map the content type. See the inner exception for details.</target>
         <note />
       </trans-unit>
+      <trans-unit id="FormatterCannotBeUsedForReplyMessages">
+        <source>This message formatter cannot be used to process response messages.</source>
+        <target state="new">This message formatter cannot be used to process response messages.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FormatterCannotBeUsedForRequestMessages">
+        <source>This message formatter cannot be used to process request messages.</source>
+        <target state="new">This message formatter cannot be used to process request messages.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GETCannotHaveBody">
+        <source>Operation '{0}' in contract '{1}' uses GET, but also has body parameter '{2}'. GET operations cannot have a body. Either make the parameter '{2}' a UriTemplate parameter, or switch from WebGetAttribute to WebInvokeAttribute.</source>
+        <target state="new">Operation '{0}' in contract '{1}' uses GET, but also has body parameter '{2}'. GET operations cannot have a body. Either make the parameter '{2}' a UriTemplate parameter, or switch from WebGetAttribute to WebInvokeAttribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GETCannotHaveMCParameter">
+        <source>Operation '{0}' in contract '{1}' uses GET, but also has a parameter of MessageContract type '{2}'. GET operations cannot have a body. To use a MessageContract parameter type, switch from WebGetAttribute to WebInvokeAttribute.</source>
+        <target state="new">Operation '{0}' in contract '{1}' uses GET, but also has a parameter of MessageContract type '{2}'. GET operations cannot have a body. To use a MessageContract parameter type, switch from WebGetAttribute to WebInvokeAttribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpPageEndpointNotFound">
+        <source>Endpoint not found.</source>
+        <target state="new">Endpoint not found.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpPageEndpointNotFoundWithLink">
+        <source>&lt;p&gt;Endpoint not found. Please see the &lt;a rel="help-page" href="{0}"&gt;service help page&lt;/a&gt; for constructing valid requests to the service.&lt;/p&gt;</source>
+        <target state="new">&lt;p&gt;Endpoint not found. Please see the &lt;a rel="help-page" href="{0}"&gt;service help page&lt;/a&gt; for constructing valid requests to the service.&lt;/p&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpPageHtml">
+        <source>BODY { color: #000000; background-color: white; font-family: Verdana; margin-left: 0px; margin-top: 0px; } #content { margin-left: 30px; font-size: .70em; padding-bottom: 2em; } A:link { color: #336699; font-weight: bold; text-decoration: underline; } A:visited { color: #6699cc; font-weight: bold; text-decoration: underline; } A:active { color: #336699; font-weight: bold; text-decoration: underline; } .heading1 { background-color: #003366; border-bottom: #336699 6px solid; color: #ffffff; font-family: Tahoma; font-size: 26px; font-weight: normal;margin: 0em 0em 10px -20px; padding-bottom: 8px; padding-left: 30px;padding-top: 16px;} pre { font-size:small; background-color: #e5e5cc; padding: 5px; font-family: Courier New; margin-top: 0px; border: 1px #f0f0e0 solid; white-space: pre-wrap; white-space: -pre-wrap; word-wrap: break-word; } table { border-collapse: collapse; border-spacing: 0px; font-family: Verdana;} table th { border-right: 2px white solid; border-bottom: 2px white solid; font-weight: bold; background-color: #cecf9c;} table td { border-right: 2px white solid; border-bottom: 2px white solid; background-color: #e5e5cc;}</source>
+        <target state="new">BODY { color: #000000; background-color: white; font-family: Verdana; margin-left: 0px; margin-top: 0px; } #content { margin-left: 30px; font-size: .70em; padding-bottom: 2em; } A:link { color: #336699; font-weight: bold; text-decoration: underline; } A:visited { color: #6699cc; font-weight: bold; text-decoration: underline; } A:active { color: #336699; font-weight: bold; text-decoration: underline; } .heading1 { background-color: #003366; border-bottom: #336699 6px solid; color: #ffffff; font-family: Tahoma; font-size: 26px; font-weight: normal;margin: 0em 0em 10px -20px; padding-bottom: 8px; padding-left: 30px;padding-top: 16px;} pre { font-size:small; background-color: #e5e5cc; padding: 5px; font-family: Courier New; margin-top: 0px; border: 1px #f0f0e0 solid; white-space: pre-wrap; white-space: -pre-wrap; word-wrap: break-word; } table { border-collapse: collapse; border-spacing: 0px; font-family: Verdana;} table th { border-right: 2px white solid; border-bottom: 2px white solid; font-weight: bold; background-color: #cecf9c;} table td { border-right: 2px white solid; border-bottom: 2px white solid; background-color: #e5e5cc;}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpPageMethodNotAllowed">
+        <source>Method not allowed.</source>
+        <target state="new">Method not allowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpPageMethodNotAllowedWithLink">
+        <source>&lt;p&gt;Method not allowed. Please see the &lt;a rel="help-page" href="{0}"&gt;service help page&lt;/a&gt; for constructing valid requests to the service.&lt;/p&gt;</source>
+        <target state="new">&lt;p&gt;Method not allowed. Please see the &lt;a rel="help-page" href="{0}"&gt;service help page&lt;/a&gt; for constructing valid requests to the service.&lt;/p&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpPageRedirect">
+        <source>&lt;p&gt;There is no operation listening for &lt;a href="{0}"&gt;{0}&lt;/a&gt;, but there is an operation listening for &lt;a href="{1}"&gt;{1}&lt;/a&gt;, so you are being redirected there.&lt;/p&gt;</source>
+        <target state="new">&lt;p&gt;There is no operation listening for &lt;a href="{0}"&gt;{0}&lt;/a&gt;, but there is an operation listening for &lt;a href="{1}"&gt;{1}&lt;/a&gt;, so you are being redirected there.&lt;/p&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpPageRequestErrorTitle">
+        <source>Request Error</source>
+        <target state="new">Request Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpPageTitleText">
+        <source>Service</source>
+        <target state="new">Service</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpServerErrorProcessingRequest">
+        <source>The server encountered an error processing the request. See server logs for more details.</source>
+        <target state="new">The server encountered an error processing the request. See server logs for more details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpServerErrorProcessingRequestWithDetails">
+        <source>The server encountered an error processing the request. The exception message is '{0}'. See server logs for more details. The exception stack trace is:</source>
+        <target state="new">The server encountered an error processing the request. The exception message is '{0}'. See server logs for more details. The exception stack trace is:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpServerErrorProcessingRequestWithDetailsAndLink">
+        <source>&lt;p&gt;The server encountered an error processing the request. Please see the &lt;a rel="help-page" href="{0}"&gt;service help page&lt;/a&gt; for constructing valid requests to the service. The exception message is '{1}'. See server logs for more details. The exception stack trace is: &lt;/p&gt;</source>
+        <target state="new">&lt;p&gt;The server encountered an error processing the request. Please see the &lt;a rel="help-page" href="{0}"&gt;service help page&lt;/a&gt; for constructing valid requests to the service. The exception message is '{1}'. See server logs for more details. The exception stack trace is: &lt;/p&gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpServerErrorProcessingRequestWithLink">
+        <source>&amp;lt;p&amp;gt;The server encountered an error processing the request. Please see the &amp;lt;a rel="help-page" href="{0}"&amp;gt;service help page&amp;lt;/a&amp;gt; for constructing valid requests to the service.&amp;lt;/p&amp;gt;</source>
+        <target state="new">&amp;lt;p&amp;gt;The server encountered an error processing the request. Please see the &amp;lt;a rel="help-page" href="{0}"&amp;gt;service help page&amp;lt;/a&amp;gt; for constructing valid requests to the service.&amp;lt;/p&amp;gt;</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HttpClientCredentialTypeInvalid">
+        <source>There is no {0} on the incoming Message.</source>
+        <target state="new">There is no {0} on the incoming Message.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HttpContextNoIncomingMessageProperty">
         <source>HTTP context property '{0}' is missing from the incoming message. This typically means the message did not arrive over the WebHttpBinding transport.</source>
         <target state="new">HTTP context property '{0}' is missing from the incoming message. This typically means the message did not arrive over the WebHttpBinding transport.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HttpUnhandledOperationInvokerCalledWithoutMessage">
+        <source>A message was dispatched to the UnhandledDispatchOperation, but was invoked without a Message as input.  This error might be caused by a behavior that provided a bad IDispatchMessageFormatter for the EndpointDispatcher's DispatchRuntime's UnhandledDispatchOperation's Formatter.</source>
+        <target state="new">A message was dispatched to the UnhandledDispatchOperation, but was invoked without a Message as input.  This error might be caused by a behavior that provided a bad IDispatchMessageFormatter for the EndpointDispatcher's DispatchRuntime's UnhandledDispatchOperation's Formatter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidHttpMessageFormat">
+        <source>Incoming message for operation '{0}' (contract '{1}' with namespace '{2}') contains an unrecognized http body format value '{3}'. The expected body format value is '{4}'. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.</source>
+        <target state="new">Incoming message for operation '{0}' (contract '{1}' with namespace '{2}') contains an unrecognized http body format value '{3}'. The expected body format value is '{4}'. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidHttpMessageFormat3">
+        <source>Incoming message for operation '{0}'  contains an unrecognized http body format value '{1}'. The expected body format value is '{2}'. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.</source>
+        <target state="new">Incoming message for operation '{0}'  contains an unrecognized http body format value '{1}'. The expected body format value is '{2}'. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidMessageContractWithoutWrapperName">
+        <source>Operation '{0}' in contract '{1}' has a MessageContract parameter (of type '{2}') without a wrapper name and with more than one body element. MessageContract parameters without a wrapper element are supported only if they have zero or one body element.</source>
+        <target state="new">Operation '{0}' in contract '{1}' has a MessageContract parameter (of type '{2}') without a wrapper name and with more than one body element. MessageContract parameters without a wrapper element are supported only if they have zero or one body element.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidMethodWithSOAPHeaders">
+        <source>Operation '{0}' in contract '{1}' uses a MessageContract that has SOAP headers. SOAP headers are not supported by the None MessageVersion.</source>
+        <target state="new">Operation '{0}' in contract '{1}' uses a MessageContract that has SOAP headers. SOAP headers are not supported by the None MessageVersion.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonFormatRequiresDataContract">
+        <source>Operation '{0}' (in contract '{1}' with namespace '{2}') specifies the http body format to be JSON but the serialization mechanism for the operation is not DataContract. JSON format is only supported with DataContract serialization. If you have an XmlSerializerFormatAttribute on the operation consider replacing it with DataContractFormatAttribute.</source>
+        <target state="new">Operation '{0}' (in contract '{1}' with namespace '{2}') specifies the http body format to be JSON but the serialization mechanism for the operation is not DataContract. JSON format is only supported with DataContract serialization. If you have an XmlSerializerFormatAttribute on the operation consider replacing it with DataContractFormatAttribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonFormatterExpectedAttributeNull">
+        <source>OperationFormatter encountered an invalid Message body. Expected to find an attribute with name 'type' and value 'null'. Found value '{0}'.</source>
+        <target state="new">OperationFormatter encountered an invalid Message body. Expected to find an attribute with name 'type' and value 'null'. Found value '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonFormatterExpectedAttributeObject">
+        <source>OperationFormatter encountered an invalid Message body. Expected to find an attribute with name 'type' and value 'object'. Found value '{0}'.</source>
+        <target state="new">OperationFormatter encountered an invalid Message body. Expected to find an attribute with name 'type' and value 'object'. Found value '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="JsonOnlySupportsMessageVersionNone">
@@ -45,6 +240,26 @@
       <trans-unit id="JsonValueMustBeInRange">
         <source>The value must be in the range [{0}, {1}].</source>
         <target state="new">The value must be in the range [{0}, {1}].</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LockTimeoutExceptionMessage">
+        <source>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="new">Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MCAtMostOneRequestBodyParameterAllowedForUnwrappedMessages">
+        <source>Operation '{0}' of contract '{1}' specifies MessageContract type '{2}' which has IsWrapped as false but has multiple request body parameters. At most one body parameter can be serialized without wrapper elements. Either remove the extra body parameters or set the IsWrapped property on the MessageContractAttribute to true.</source>
+        <target state="new">Operation '{0}' of contract '{1}' specifies MessageContract type '{2}' which has IsWrapped as false but has multiple request body parameters. At most one body parameter can be serialized without wrapper elements. Either remove the extra body parameters or set the IsWrapped property on the MessageContractAttribute to true.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ManualAddressingCannotBeFalseWithTransportBindingElement">
+        <source>In the endpoint at '{0}', in order to use '{1}', the '{2}' of the binding must have ManualAddressing set to true.</source>
+        <target state="new">In the endpoint at '{0}', in order to use '{1}', the '{2}' of the binding must have ManualAddressing set to true.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MaxReceivedMessageSizeExceeded">
+        <source>The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</source>
+        <target state="new">The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxSentMessageSizeExceeded">
@@ -77,14 +292,204 @@
         <target state="new">The message has been closed and can no longer be used.</target>
         <note />
       </trans-unit>
+      <trans-unit id="MessageFormatPropertyNotFound">
+        <source>Incoming message for operation '{0}' (contract '{1}' with namespace '{2}') does not contain a WebBodyFormatMessageProperty. This can be because a WebContentTypeMapper or a WebMessageEncodingBindingElement has not been configured on the binding. See the documentation of WebContentTypeMapper and WebMessageEncodingBindingElement for more details.</source>
+        <target state="new">Incoming message for operation '{0}' (contract '{1}' with namespace '{2}') does not contain a WebBodyFormatMessageProperty. This can be because a WebContentTypeMapper or a WebMessageEncodingBindingElement has not been configured on the binding. See the documentation of WebContentTypeMapper and WebMessageEncodingBindingElement for more details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageFormatPropertyNotFound2">
+        <source>Message does not contain the http body format property. The encoder expects the http format property to be '{0}'.</source>
+        <target state="new">Message does not contain the http body format property. The encoder expects the http format property to be '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageFormatPropertyNotFound3">
+        <source>Incoming message does not contain a WebBodyFormatMessageProperty. This can be because a WebContentTypeMapper or a WebMessageEncodingBindingElement has not been configured on the binding. See the documentation of WebContentTypeMapper and WebMessageEncodingBindingElement for more details.</source>
+        <target state="new">Incoming message does not contain a WebBodyFormatMessageProperty. This can be because a WebContentTypeMapper or a WebMessageEncodingBindingElement has not been configured on the binding. See the documentation of WebContentTypeMapper and WebMessageEncodingBindingElement for more details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageTextEncodingNotSupported">
+        <source>The text encoding '{0}' used in the text message format is not supported.</source>
+        <target state="new">The text encoding '{0}' used in the text message format is not supported.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="MessageVersionUnknown">
         <source>Unknown MessageVersion.</source>
         <target state="new">Unknown MessageVersion.</target>
         <note />
       </trans-unit>
+      <trans-unit id="MultipleOperationsInContractWithPathMethod">
+        <source>In contract '{0}', there are multiple operations with Method '{2}' and a UriTemplate that is equivalent to '{1}'. Each operation requires a unique combination of UriTemplate and Method to unambiguously dispatch messages. Use WebGetAttribute or WebInvokeAttribute to alter the UriTemplate and Method values of an operation.</source>
+        <target state="new">In contract '{0}', there are multiple operations with Method '{2}' and a UriTemplate that is equivalent to '{1}'. Each operation requires a unique combination of UriTemplate and Method to unambiguously dispatch messages. Use WebGetAttribute or WebInvokeAttribute to alter the UriTemplate and Method values of an operation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MultipleWebAttributes">
+        <source>Operation '{0}' in contract '{1}' has both WebGetAttribute and WebInvokeAttribute; only one can be present.</source>
+        <target state="new">Operation '{0}' in contract '{1}' has both WebGetAttribute and WebInvokeAttribute; only one can be present.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoOutOrRefParametersAllowedWithStreamResult">
+        <source>Operation '{0}' in contract '{1}' has a Stream return value and also has out or ref parameters. When Stream is the return value of the operation, it cannot have ref or out parameters.</source>
+        <target state="new">Operation '{0}' in contract '{1}' has a Stream return value and also has out or ref parameters. When Stream is the return value of the operation, it cannot have ref or out parameters.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoOutOrRefStreamParametersAllowed">
+        <source>Parameter '{0}' of operation '{1}' in contract '{2}' is a Stream, and is also a ref or out parameter. Stream cannot be a ref or out parameter.</source>
+        <target state="new">Parameter '{0}' of operation '{1}' in contract '{2}' is a Stream, and is also a ref or out parameter. Stream cannot be a ref or out parameter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectDisposed">
+        <source>The {0} object has been disposed.</source>
+        <target state="new">The {0} object has been disposed.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ObjectIsReadOnly">
         <source>Object is read-only.</source>
         <target state="new">Object is read-only.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OnlyDataContractAndXmlSerializerTypesInUnWrappedMode">
+        <source>WebGetAttribute/WebInvokeAttribute supports setting the BodyStyle property to Bare only with DataContract and XmlSerializer serializable types. Operation '{0}' does not specify serialization using any of these formats. Add a DataContractFormatAttribute or XmlSerializerFormatAttribute to this operation to specify one of these serialization formats.</source>
+        <target state="new">WebGetAttribute/WebInvokeAttribute supports setting the BodyStyle property to Bare only with DataContract and XmlSerializer serializable types. Operation '{0}' does not specify serialization using any of these formats. Add a DataContractFormatAttribute or XmlSerializerFormatAttribute to this operation to specify one of these serialization formats.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OnlyReturnValueBodyParameterAllowedForUnwrappedMessages">
+        <source>Operation '{0}' of contract '{1}' specifies at least one response body parameter that is not a return value of the operation. Only the return value is allowed when the BodyStyle property of WebGetAttribute/WebInvokeAttribute is set to Bare. Either remove the extra response body parameters or set the BodyStyle property to Wrapped.</source>
+        <target state="new">Operation '{0}' of contract '{1}' specifies at least one response body parameter that is not a return value of the operation. Only the return value is allowed when the BodyStyle property of WebGetAttribute/WebInvokeAttribute is set to Bare. Either remove the extra response body parameters or set the BodyStyle property to Wrapped.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OperationDoesNotSupportFormat">
+        <source>The operation '{0}' does not support '{1}' as a response format.</source>
+        <target state="new">The operation '{0}' does not support '{1}' as a response format.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OperationNameNotFound">
+        <source>Could not find operation name in the message properties.</source>
+        <target state="new">Could not find operation name in the message properties.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OperationSelectorNotWebSelector">
+        <source>This operation is supported only when the operation selector is of type '{0}'.</source>
+        <target state="new">This operation is supported only when the operation selector is of type '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParameterIsNotStreamType">
+        <source>Parameter type '{0}' of operation '{1}' (contract '{2}' with namespace '{3}') is not of type Stream. Ensure that the parameter is of type Stream or derives from Stream.</source>
+        <target state="new">Parameter type '{0}' of operation '{1}' (contract '{2}' with namespace '{3}') is not of type Stream. Ensure that the parameter is of type Stream or derives from Stream.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="QueryStringFormatterOperationNotSupportedServerSide">
+        <source>This operation formatter can only be used for deserializing requests; serializing replies is not supported since query strings are not used to represent parameters in replies.</source>
+        <target state="new">This operation formatter can only be used for deserializing requests; serializing replies is not supported since query strings are not used to represent parameters in replies.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReadNotSupported">
+        <source>Read is not supported on this stream.</source>
+        <target state="new">Read is not supported on this stream.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReceiveShutdownReturnedFault">
+        <source>The channel received an unexpected fault input message while closing. The fault reason given is: '{0}'</source>
+        <target state="new">The channel received an unexpected fault input message while closing. The fault reason given is: '{0}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReceiveShutdownReturnedLargeFault">
+        <source>The channel received an unexpected fault input message with Action = '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</source>
+        <target state="new">The channel received an unexpected fault input message with Action = '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReceiveShutdownReturnedMessage">
+        <source>The channel received an unexpected input message with Action '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</source>
+        <target state="new">The channel received an unexpected input message with Action '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReplyAlreadySent">
+        <source>ReplyAlreadySent</source>
+        <target state="new">ReplyAlreadySent</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RequestContextAborted">
+        <source>The requestContext has been aborted.</source>
+        <target state="new">The requestContext has been aborted.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RpcEncodedNotSupportedForNoneMessageVersion">
+        <source>Operation '{0}', belonging to contract ('{1}', '{2}') has an XmlSerializerFormatAttribute configured with OperationUse Encoded or OperationStyle Rpc. OperationUse Encoded and OperationStyle Rpc are not supported for web bindings. Configure the endpoint with a SOAP binding (like WSHttpBinding) in order to use these options.</source>
+        <target state="new">Operation '{0}', belonging to contract ('{1}', '{2}') has an XmlSerializerFormatAttribute configured with OperationUse Encoded or OperationStyle Rpc. OperationUse Encoded and OperationStyle Rpc are not supported for web bindings. Configure the endpoint with a SOAP binding (like WSHttpBinding) in order to use these options.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxInvalidCallbackIAsyncResult">
+        <source>IAsyncResult not provided or of wrong type.</source>
+        <target state="new">IAsyncResult not provided or of wrong type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxInvalidMessageBody">
+        <source>OperationFormatter encountered an invalid Message body. Expected to find node type 'Element' with name '{0}' and namespace '{1}'. Found node type '{2}' with name '{3}' and namespace '{4}'</source>
+        <target state="new">OperationFormatter encountered an invalid Message body. Expected to find node type 'Element' with name '{0}' and namespace '{1}'. Found node type '{2}' with name '{3}' and namespace '{4}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxInvalidMessageBodyErrorDeserializingParameter">
+        <source>There was an error while trying to deserialize parameter {0}:{1}.  Please see InnerException for more details.</source>
+        <target state="new">There was an error while trying to deserialize parameter {0}:{1}.  Please see InnerException for more details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxInvalidMessageBodyErrorDeserializingParameterMore">
+        <source>There was an error while trying to deserialize parameter {0}:{1}. The InnerException message was '{2}'.  Please see InnerException for more details.</source>
+        <target state="new">There was an error while trying to deserialize parameter {0}:{1}. The InnerException message was '{2}'.  Please see InnerException for more details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxInvalidMessageBodyErrorSerializingParameter">
+        <source>There was an error while trying to serialize parameter {0}:{1}. The InnerException message was '{2}'.  Please see InnerException for more details.</source>
+        <target state="new">There was an error while trying to serialize parameter {0}:{1}. The InnerException message was '{2}'.  Please see InnerException for more details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SeekNotSupported">
+        <source>Seek is not supported on this stream.</source>
+        <target state="new">Seek is not supported on this stream.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SerializingReplyNotSupportedByFormatter">
+        <source>The formatter '{0}' does not support serializing replies.</source>
+        <target state="new">The formatter '{0}' does not support serializing replies.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SerializingRequestNotSupportedByFormatter">
+        <source>The formatter '{0}' does not support serializing requests.</source>
+        <target state="new">The formatter '{0}' does not support serializing requests.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ServiceModelWebServicesNotRegistered">
+        <source>Unable to find the endpoint behavior WebHttpBehavior for endpoint address '{0}'. This is possibly caused by not calling ServiceModelWebServiceCollectionExtensions.AddServiceModelWebServices(IServiceCollection services).</source>
+        <target state="new">Unable to find the endpoint behavior WebHttpBehavior for endpoint address '{0}'. This is possibly caused by not calling ServiceModelWebServiceCollectionExtensions.AddServiceModelWebServices(IServiceCollection services).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StreamBodyMemberNotSupported">
+        <source>'{0}' does not allow the use of Streams with the MessageContract programming model. The service '{1}' defines an operation '{2}' that uses the MessageContract type '{3}'. '{3}' contains MessageBodyMember '{4}' of type Stream.</source>
+        <target state="new">'{0}' does not allow the use of Streams with the MessageContract programming model. The service '{1}' defines an operation '{2}' that uses the MessageContract type '{3}'. '{3}' contains MessageBodyMember '{4}' of type Stream.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TaskTimedOutError">
+        <source>The task timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</source>
+        <target state="new">The task timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TimeoutMustBeNonNegative">
+        <source>Argument {0} must be a non-negative timeout value. Provided value was {1}.</source>
+        <target state="new">Argument {0} must be a non-negative timeout value. Provided value was {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TimeoutMustBePositive">
+        <source>Argument {0} must be a positive timeout value. Provided value was {1}.</source>
+        <target state="new">Argument {0} must be a positive timeout value. Provided value was {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TypeIsNotParameterTypeAndIsNotPresentInKnownTypes">
+        <source>Cannot serialize parameter of type '{0}' (for operation '{1}', contract '{2}') because it is not the exact type '{3}' in the method signature and is not in the known types collection. In order to serialize the parameter, add the type to the known types collection for the operation using ServiceKnownTypeAttribute.</source>
+        <target state="new">Cannot serialize parameter of type '{0}' (for operation '{1}', contract '{2}') because it is not the exact type '{3}' in the method signature and is not in the known types collection. In order to serialize the parameter, add the type to the known types collection for the operation using ServiceKnownTypeAttribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TypeNotSupportedByQueryStringConverter">
+        <source>Type '{0}' is not supported by '{1}'.</source>
+        <target state="new">Type '{0}' is not supported by '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UTAdditionalDefaultIsInvalid">
@@ -192,6 +597,16 @@
         <target state="new">UriTemplate '{0}' has nullable default for variable '{1}'. Path variables with nullable defaults cannot be followed by a wildcard segment.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UTParamsDoNotComposeWithMessage">
+        <source>Operation '{0}' in contract '{1}' uses UriTemplate parameters, but also uses a Message parameter.  Message and UriTemplate parameters are incompatible.</source>
+        <target state="new">Operation '{0}' in contract '{1}' uses UriTemplate parameters, but also uses a Message parameter.  Message and UriTemplate parameters are incompatible.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTParamsDoNotComposeWithMessageContract">
+        <source>Operation '{0}' in contract '{1}' uses UriTemplate parameters, but also uses a MessageContract parameter.  MessageContract and UriTemplate parameters are incompatible.</source>
+        <target state="new">Operation '{0}' in contract '{1}' uses UriTemplate parameters, but also uses a MessageContract parameter.  MessageContract and UriTemplate parameters are incompatible.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="UTQueryCannotEndInAmpersand">
         <source>UriTemplate '{0}' has a query string that ends in '&amp;'.</source>
         <target state="new">UriTemplate '{0}' has a query string that ends in '&amp;'.</target>
@@ -292,6 +707,31 @@
         <target state="new">Unknown WebContentFormat '{0}'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnrecognizedHttpMessageFormat">
+        <source>The incoming message has an unexpected message format '{0}'. The expected message formats for the operation are {1}. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.</source>
+        <target state="new">The incoming message has an unexpected message format '{0}'. The expected message formats for the operation are {1}. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UriTemplateMissingVar">
+        <source>Operation '{0}' in contract '{1}' has a UriTemplate that expects a parameter named '{2}', but there is no input parameter with that name on the operation.</source>
+        <target state="new">Operation '{0}' in contract '{1}' has a UriTemplate that expects a parameter named '{2}', but there is no input parameter with that name on the operation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UriTemplatePathVarMustBeString">
+        <source>Operation '{0}' in contract '{1}' has a path variable named '{2}' which does not have type 'string'.  Variables for UriTemplate path segments must have type 'string'.</source>
+        <target state="new">Operation '{0}' in contract '{1}' has a path variable named '{2}' which does not have type 'string'.  Variables for UriTemplate path segments must have type 'string'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UriTemplateQueryVarMustBeConvertible">
+        <source>Operation '{0}' in contract '{1}' has a query variable named '{2}' of type '{3}', but type '{3}' is not convertible by '{4}'.  Variables for UriTemplate query values must have types that can be converted by '{4}'.</source>
+        <target state="new">Operation '{0}' in contract '{1}' has a query variable named '{2}' of type '{3}', but type '{3}' is not convertible by '{4}'.  Variables for UriTemplate query values must have types that can be converted by '{4}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UriTemplateVarCaseDistinction">
+        <source>Operation '{0}' in contract '{1}' has multiple parameters named '{2}' that vary only in uppercase versus lowercase.  The parameter names must be distinct.</source>
+        <target state="new">Operation '{0}' in contract '{1}' has multiple parameters named '{2}' that vary only in uppercase versus lowercase.  The parameter names must be distinct.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value supplied must be non-negative.</source>
         <target state="new">The value supplied must be non-negative.</target>
@@ -302,14 +742,34 @@
         <target state="new">The value supplied must be greater than zero.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WCFBindingCannotBeUsedWithUriOperationSelectorBehaviorBadMessageVersion">
+        <source>The endpoint at '{0}' does not have a Binding with the None MessageVersion.  '{1}' is only intended for use with WebHttpBinding or similar bindings.</source>
+        <target state="new">The endpoint at '{0}' does not have a Binding with the None MessageVersion.  '{1}' is only intended for use with WebHttpBinding or similar bindings.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WCFBindingCannotBeUsedWithUriOperationSelectorBehaviorBadScheme">
+        <source>The endpoint at '{0}' does not have a Binding with Scheme 'http' or 'https'.  '{1}' is only intended for use with WebHttpBinding or similar bindings.</source>
+        <target state="new">The endpoint at '{0}' does not have a Binding with Scheme 'http' or 'https'.  '{1}' is only intended for use with WebHttpBinding or similar bindings.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WeakEntityTagsNotSupported">
         <source>Weak entity tags (W/"...") are not supported in this context.</source>
         <target state="new">Weak entity tags (W/"...") are not supported in this context.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WebBehaviorNotFoundWithEndpoint">
+        <source>The standard endpoint of type '{0}' does not have a behavior of type '{1}'.  The endpoint is initialized with the proper behavior and it should not be removed or replaced.</source>
+        <target state="new">The standard endpoint of type '{0}' does not have a behavior of type '{1}'.  The endpoint is initialized with the proper behavior and it should not be removed or replaced.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WebBodyFormatPropertyToString">
         <source>WebBodyFormatMessageProperty(Format={0})</source>
         <target state="new">WebBodyFormatMessageProperty(Format={0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebHttpBindingNotFoundWithEndpoint">
+        <source>The standard endpoint of type '{0}' does not have a binding of type '{1}'.  The endpoint is initialized with the proper binding and it should not be removed or replaced.</source>
+        <target state="new">The standard endpoint of type '{0}' does not have a binding of type '{1}'.  The endpoint is initialized with the proper binding and it should not be removed or replaced.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebHttpRawContentNotSupported">
@@ -322,9 +782,44 @@
         <target state="new">WebHttpDispatchOperationSelector is server-side and is not supported in the client-only port of System.ServiceModel.Web. Construct a UriTemplate manually from the [WebGet]/[WebInvoke] attribute on your contract instead.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WebHttpServiceEndpointCannotHaveMessageHeaders">
+        <source>The endpoint address '{0}' has message headers and is being used with a binding that's configured for message version None. Either change the endpoint address to not contain message headers or change the binding to be one that supports SOAP (for example, WSHttpBinding).</source>
+        <target state="new">The endpoint address '{0}' has message headers and is being used with a binding that's configured for message version None. Either change the endpoint address to not contain message headers or change the binding to be one that supports SOAP (for example, WSHttpBinding).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebRequestDidNotMatchMethod">
+        <source>The HTTP method '{0}' of the incoming request (with URI '{1}') is not allowed.</source>
+        <target state="new">The HTTP method '{0}' of the incoming request (with URI '{1}') is not allowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebRequestDidNotMatchOperation">
+        <source>The incoming HTTP request's URI '{0}' does not match any service operation.</source>
+        <target state="new">The incoming HTTP request's URI '{0}' does not match any service operation.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="XmlBufferQuotaExceeded">
         <source>The XmlBuffer's quota has been exceeded.</source>
         <target state="new">The XmlBuffer's quota has been exceeded.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlSerializersCreatedBeforeRegistration">
+        <source>New types cannot be registered with serializer manager after the service has been opened.</source>
+        <target state="new">New types cannot be registered with serializer manager after the service has been opened.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlWriterBackedStreamMethodNotSupported">
+        <source>The '{0}' method is not supported by the stream.</source>
+        <target state="new">The '{0}' method is not supported by the stream.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlWriterBackedStreamPropertyGetNotSupported">
+        <source>The get accessor of the '{0}' property is not supported by the stream.</source>
+        <target state="new">The get accessor of the '{0}' property is not supported by the stream.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlWriterBackedStreamPropertySetNotSupported">
+        <source>The set accessor of the '{0}' property is not supported by the stream.</source>
+        <target state="new">The set accessor of the '{0}' property is not supported by the stream.</target>
         <note />
       </trans-unit>
     </body>

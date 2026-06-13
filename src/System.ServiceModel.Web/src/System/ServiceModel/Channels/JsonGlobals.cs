@@ -10,5 +10,21 @@ namespace System.ServiceModel.Channels
     {
         public const string ApplicationJsonMediaType = "application/json";
         public const string TextJsonMediaType = "text/json";
+
+        // XML dictionary string constants used by DataContractJsonSerializer-emitted XML.
+        public const string RootString = "root";
+        public const string ItemString = "item";
+        public const string TypeString = "type";
+        public const string ObjectString = "object";
+        public const string DString = "d";
+        public const string NullString = "null";
+
+        // Pre-created dictionary strings.
+        public static readonly System.Xml.XmlDictionaryString RootDictionaryString =
+            new System.Xml.XmlDictionary().Add(RootString);
+        public static readonly System.Xml.XmlDictionaryString ItemDictionaryString =
+            new System.Xml.XmlDictionary().Add(ItemString);
+        public static readonly System.Xml.XmlDictionaryString DDictionaryString =
+            new System.Xml.XmlDictionary().Add(DString);
     }
 }

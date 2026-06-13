@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -253,9 +253,306 @@
     <value>HTTP context property '{0}' is missing from the incoming message. This typically means the message did not arrive over the WebHttpBinding transport.</value>
   </data>
   <data name="WeakEntityTagsNotSupported" xml:space="preserve">
-    <value>Weak entity tags (W/&quot;...&quot;) are not supported in this context.</value>
+    <value>Weak entity tags (W/"...") are not supported in this context.</value>
   </data>
   <data name="XmlBufferQuotaExceeded" xml:space="preserve">
     <value>The XmlBuffer's quota has been exceeded.</value>
+  </data>
+  <data name="AtMostOneRequestBodyParameterAllowedForStream" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' has multiple request body parameters, one of which is a Stream. When the Stream is a parameter, there can be no other parameters in the body.</value>
+  </data>
+  <data name="AtMostOneRequestBodyParameterAllowedForUnwrappedMessages" xml:space="preserve">
+    <value>Operation '{0}' of contract '{1}' specifies multiple request body parameters to be serialized without any wrapper elements. At most one body parameter can be serialized without wrapper elements. Either remove the extra body parameters or set the BodyStyle property on the WebGetAttribute/WebInvokeAttribute to Wrapped.</value>
+  </data>
+  <data name="BufferedOutputStreamQuotaExceeded" xml:space="preserve">
+    <value>The size quota for this stream ({0}) has been exceeded.</value>
+  </data>
+  <data name="BufferIsNotRightSizeForBufferManager" xml:space="preserve">
+    <value>This buffer cannot be returned to the buffer manager because it is the wrong size.</value>
+  </data>
+  <data name="CannotDeserializeBody" xml:space="preserve">
+    <value>Unable to deserialize XML body with root name '{0}' and root namespace '{1}' (for operation '{2}' and contract ('{3}',  '{4}')) using {5}. Ensure that the type corresponding to the XML is added to the known types collection of the service.</value>
+  </data>
+  <data name="CannotSerializeType" xml:space="preserve">
+    <value>Type '{0}' of operation '{1}' and contract ('{2}', '{3}') could not be serialized. Ensure that the type can be serialized using {4} and add the type to the known types collection of the service if required.</value>
+  </data>
+  <data name="CertificateUnsupportedForHttpTransportCredentialOnly" xml:space="preserve">
+    <value>Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</value>
+  </data>
+  <data name="ConfigInvalidEncodingValue" xml:space="preserve">
+    <value>{0} is not a valid encoding string for System.Text.Encoding.GetEncoding(string).</value>
+  </data>
+  <data name="CrossDomainJavascriptAuthNotSupported" xml:space="preserve">
+    <value>Cross domain javascript callback is not supported in authenticated services.</value>
+  </data>
+  <data name="CrossDomainJavascriptNotsupported" xml:space="preserve">
+    <value>CrossDomainScriptAccessEnabled cannot be used in Clients.</value>
+  </data>
+  <data name="DuplicateRegistration" xml:space="preserve">
+    <value>A registration already exists for URI '{0}'.</value>
+  </data>
+  <data name="EncoderBadContentType" xml:space="preserve">
+    <value>Cannot process contentType.</value>
+  </data>
+  <data name="EncoderUnrecognizedCharSet" xml:space="preserve">
+    <value>Unrecognized charSet '{0}' in contentType.</value>
+  </data>
+  <data name="EndpointAddressCannotBeNull" xml:space="preserve">
+    <value>The ServiceEndpoint's Address is null.  Address must be an absolute uri.</value>
+  </data>
+  <data name="FormatterCannotBeUsedForReplyMessages" xml:space="preserve">
+    <value>This message formatter cannot be used to process response messages.</value>
+  </data>
+  <data name="FormatterCannotBeUsedForRequestMessages" xml:space="preserve">
+    <value>This message formatter cannot be used to process request messages.</value>
+  </data>
+  <data name="GETCannotHaveBody" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' uses GET, but also has body parameter '{2}'. GET operations cannot have a body. Either make the parameter '{2}' a UriTemplate parameter, or switch from WebGetAttribute to WebInvokeAttribute.</value>
+  </data>
+  <data name="GETCannotHaveMCParameter" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' uses GET, but also has a parameter of MessageContract type '{2}'. GET operations cannot have a body. To use a MessageContract parameter type, switch from WebGetAttribute to WebInvokeAttribute.</value>
+  </data>
+  <data name="HelpPageEndpointNotFound" xml:space="preserve">
+    <value>Endpoint not found.</value>
+  </data>
+  <data name="HelpPageEndpointNotFoundWithLink" xml:space="preserve">
+    <value>&lt;p&gt;Endpoint not found. Please see the &lt;a rel="help-page" href="{0}"&gt;service help page&lt;/a&gt; for constructing valid requests to the service.&lt;/p&gt;</value>
+  </data>
+  <data name="HelpPageHtml" xml:space="preserve">
+    <value>BODY { color: #000000; background-color: white; font-family: Verdana; margin-left: 0px; margin-top: 0px; } #content { margin-left: 30px; font-size: .70em; padding-bottom: 2em; } A:link { color: #336699; font-weight: bold; text-decoration: underline; } A:visited { color: #6699cc; font-weight: bold; text-decoration: underline; } A:active { color: #336699; font-weight: bold; text-decoration: underline; } .heading1 { background-color: #003366; border-bottom: #336699 6px solid; color: #ffffff; font-family: Tahoma; font-size: 26px; font-weight: normal;margin: 0em 0em 10px -20px; padding-bottom: 8px; padding-left: 30px;padding-top: 16px;} pre { font-size:small; background-color: #e5e5cc; padding: 5px; font-family: Courier New; margin-top: 0px; border: 1px #f0f0e0 solid; white-space: pre-wrap; white-space: -pre-wrap; word-wrap: break-word; } table { border-collapse: collapse; border-spacing: 0px; font-family: Verdana;} table th { border-right: 2px white solid; border-bottom: 2px white solid; font-weight: bold; background-color: #cecf9c;} table td { border-right: 2px white solid; border-bottom: 2px white solid; background-color: #e5e5cc;}</value>
+  </data>
+  <data name="HelpPageMethodNotAllowed" xml:space="preserve">
+    <value>Method not allowed.</value>
+  </data>
+  <data name="HelpPageMethodNotAllowedWithLink" xml:space="preserve">
+    <value>&lt;p&gt;Method not allowed. Please see the &lt;a rel="help-page" href="{0}"&gt;service help page&lt;/a&gt; for constructing valid requests to the service.&lt;/p&gt;</value>
+  </data>
+  <data name="HelpPageRedirect" xml:space="preserve">
+    <value>&lt;p&gt;There is no operation listening for &lt;a href="{0}"&gt;{0}&lt;/a&gt;, but there is an operation listening for &lt;a href="{1}"&gt;{1}&lt;/a&gt;, so you are being redirected there.&lt;/p&gt;</value>
+  </data>
+  <data name="HelpPageRequestErrorTitle" xml:space="preserve">
+    <value>Request Error</value>
+  </data>
+  <data name="HelpPageTitleText" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="HelpServerErrorProcessingRequest" xml:space="preserve">
+    <value>The server encountered an error processing the request. See server logs for more details.</value>
+  </data>
+  <data name="HelpServerErrorProcessingRequestWithDetails" xml:space="preserve">
+    <value>The server encountered an error processing the request. The exception message is '{0}'. See server logs for more details. The exception stack trace is:</value>
+  </data>
+  <data name="HelpServerErrorProcessingRequestWithDetailsAndLink" xml:space="preserve">
+    <value>&lt;p&gt;The server encountered an error processing the request. Please see the &lt;a rel="help-page" href="{0}"&gt;service help page&lt;/a&gt; for constructing valid requests to the service. The exception message is '{1}'. See server logs for more details. The exception stack trace is: &lt;/p&gt;</value>
+  </data>
+  <data name="HelpServerErrorProcessingRequestWithLink" xml:space="preserve">
+    <value>&amp;lt;p&amp;gt;The server encountered an error processing the request. Please see the &amp;lt;a rel="help-page" href="{0}"&amp;gt;service help page&amp;lt;/a&amp;gt; for constructing valid requests to the service.&amp;lt;/p&amp;gt;</value>
+  </data>
+  <data name="HttpClientCredentialTypeInvalid" xml:space="preserve">
+    <value>There is no {0} on the incoming Message.</value>
+  </data>
+  <data name="HttpUnhandledOperationInvokerCalledWithoutMessage" xml:space="preserve">
+    <value>A message was dispatched to the UnhandledDispatchOperation, but was invoked without a Message as input.  This error might be caused by a behavior that provided a bad IDispatchMessageFormatter for the EndpointDispatcher's DispatchRuntime's UnhandledDispatchOperation's Formatter.</value>
+  </data>
+  <data name="InvalidHttpMessageFormat" xml:space="preserve">
+    <value>Incoming message for operation '{0}' (contract '{1}' with namespace '{2}') contains an unrecognized http body format value '{3}'. The expected body format value is '{4}'. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.</value>
+  </data>
+  <data name="InvalidHttpMessageFormat3" xml:space="preserve">
+    <value>Incoming message for operation '{0}'  contains an unrecognized http body format value '{1}'. The expected body format value is '{2}'. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.</value>
+  </data>
+  <data name="InvalidMessageContractWithoutWrapperName" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' has a MessageContract parameter (of type '{2}') without a wrapper name and with more than one body element. MessageContract parameters without a wrapper element are supported only if they have zero or one body element.</value>
+  </data>
+  <data name="InvalidMethodWithSOAPHeaders" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' uses a MessageContract that has SOAP headers. SOAP headers are not supported by the None MessageVersion.</value>
+  </data>
+  <data name="JsonFormatRequiresDataContract" xml:space="preserve">
+    <value>Operation '{0}' (in contract '{1}' with namespace '{2}') specifies the http body format to be JSON but the serialization mechanism for the operation is not DataContract. JSON format is only supported with DataContract serialization. If you have an XmlSerializerFormatAttribute on the operation consider replacing it with DataContractFormatAttribute.</value>
+  </data>
+  <data name="JsonFormatterExpectedAttributeNull" xml:space="preserve">
+    <value>OperationFormatter encountered an invalid Message body. Expected to find an attribute with name 'type' and value 'null'. Found value '{0}'.</value>
+  </data>
+  <data name="JsonFormatterExpectedAttributeObject" xml:space="preserve">
+    <value>OperationFormatter encountered an invalid Message body. Expected to find an attribute with name 'type' and value 'object'. Found value '{0}'.</value>
+  </data>
+  <data name="LockTimeoutExceptionMessage" xml:space="preserve">
+    <value>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
+  </data>
+  <data name="ManualAddressingCannotBeFalseWithTransportBindingElement" xml:space="preserve">
+    <value>In the endpoint at '{0}', in order to use '{1}', the '{2}' of the binding must have ManualAddressing set to true.</value>
+  </data>
+  <data name="MaxReceivedMessageSizeExceeded" xml:space="preserve">
+    <value>The maximum message size quota for incoming messages ({0}) has been exceeded. To increase the quota, use the MaxReceivedMessageSize property on the appropriate binding element.</value>
+  </data>
+  <data name="MCAtMostOneRequestBodyParameterAllowedForUnwrappedMessages" xml:space="preserve">
+    <value>Operation '{0}' of contract '{1}' specifies MessageContract type '{2}' which has IsWrapped as false but has multiple request body parameters. At most one body parameter can be serialized without wrapper elements. Either remove the extra body parameters or set the IsWrapped property on the MessageContractAttribute to true.</value>
+  </data>
+  <data name="MessageFormatPropertyNotFound" xml:space="preserve">
+    <value>Incoming message for operation '{0}' (contract '{1}' with namespace '{2}') does not contain a WebBodyFormatMessageProperty. This can be because a WebContentTypeMapper or a WebMessageEncodingBindingElement has not been configured on the binding. See the documentation of WebContentTypeMapper and WebMessageEncodingBindingElement for more details.</value>
+  </data>
+  <data name="MessageFormatPropertyNotFound2" xml:space="preserve">
+    <value>Message does not contain the http body format property. The encoder expects the http format property to be '{0}'.</value>
+  </data>
+  <data name="MessageFormatPropertyNotFound3" xml:space="preserve">
+    <value>Incoming message does not contain a WebBodyFormatMessageProperty. This can be because a WebContentTypeMapper or a WebMessageEncodingBindingElement has not been configured on the binding. See the documentation of WebContentTypeMapper and WebMessageEncodingBindingElement for more details.</value>
+  </data>
+  <data name="MessageTextEncodingNotSupported" xml:space="preserve">
+    <value>The text encoding '{0}' used in the text message format is not supported.</value>
+  </data>
+  <data name="MultipleOperationsInContractWithPathMethod" xml:space="preserve">
+    <value>In contract '{0}', there are multiple operations with Method '{2}' and a UriTemplate that is equivalent to '{1}'. Each operation requires a unique combination of UriTemplate and Method to unambiguously dispatch messages. Use WebGetAttribute or WebInvokeAttribute to alter the UriTemplate and Method values of an operation.</value>
+  </data>
+  <data name="MultipleWebAttributes" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' has both WebGetAttribute and WebInvokeAttribute; only one can be present.</value>
+  </data>
+  <data name="NoOutOrRefParametersAllowedWithStreamResult" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' has a Stream return value and also has out or ref parameters. When Stream is the return value of the operation, it cannot have ref or out parameters.</value>
+  </data>
+  <data name="NoOutOrRefStreamParametersAllowed" xml:space="preserve">
+    <value>Parameter '{0}' of operation '{1}' in contract '{2}' is a Stream, and is also a ref or out parameter. Stream cannot be a ref or out parameter.</value>
+  </data>
+  <data name="ObjectDisposed" xml:space="preserve">
+    <value>The {0} object has been disposed.</value>
+  </data>
+  <data name="OnlyDataContractAndXmlSerializerTypesInUnWrappedMode" xml:space="preserve">
+    <value>WebGetAttribute/WebInvokeAttribute supports setting the BodyStyle property to Bare only with DataContract and XmlSerializer serializable types. Operation '{0}' does not specify serialization using any of these formats. Add a DataContractFormatAttribute or XmlSerializerFormatAttribute to this operation to specify one of these serialization formats.</value>
+  </data>
+  <data name="OnlyReturnValueBodyParameterAllowedForUnwrappedMessages" xml:space="preserve">
+    <value>Operation '{0}' of contract '{1}' specifies at least one response body parameter that is not a return value of the operation. Only the return value is allowed when the BodyStyle property of WebGetAttribute/WebInvokeAttribute is set to Bare. Either remove the extra response body parameters or set the BodyStyle property to Wrapped.</value>
+  </data>
+  <data name="OperationDoesNotSupportFormat" xml:space="preserve">
+    <value>The operation '{0}' does not support '{1}' as a response format.</value>
+  </data>
+  <data name="OperationNameNotFound" xml:space="preserve">
+    <value>Could not find operation name in the message properties.</value>
+  </data>
+  <data name="OperationSelectorNotWebSelector" xml:space="preserve">
+    <value>This operation is supported only when the operation selector is of type '{0}'.</value>
+  </data>
+  <data name="ParameterIsNotStreamType" xml:space="preserve">
+    <value>Parameter type '{0}' of operation '{1}' (contract '{2}' with namespace '{3}') is not of type Stream. Ensure that the parameter is of type Stream or derives from Stream.</value>
+  </data>
+  <data name="QueryStringFormatterOperationNotSupportedServerSide" xml:space="preserve">
+    <value>This operation formatter can only be used for deserializing requests; serializing replies is not supported since query strings are not used to represent parameters in replies.</value>
+  </data>
+  <data name="ReadNotSupported" xml:space="preserve">
+    <value>Read is not supported on this stream.</value>
+  </data>
+  <data name="ReceiveShutdownReturnedFault" xml:space="preserve">
+    <value>The channel received an unexpected fault input message while closing. The fault reason given is: '{0}'</value>
+  </data>
+  <data name="ReceiveShutdownReturnedLargeFault" xml:space="preserve">
+    <value>The channel received an unexpected fault input message with Action = '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</value>
+  </data>
+  <data name="ReceiveShutdownReturnedMessage" xml:space="preserve">
+    <value>The channel received an unexpected input message with Action '{0}' while closing. You should only close your channel when you are not expecting any more input messages.</value>
+  </data>
+  <data name="ReplyAlreadySent" xml:space="preserve">
+    <value>ReplyAlreadySent</value>
+  </data>
+  <data name="RequestContextAborted" xml:space="preserve">
+    <value>The requestContext has been aborted.</value>
+  </data>
+  <data name="RpcEncodedNotSupportedForNoneMessageVersion" xml:space="preserve">
+    <value>Operation '{0}', belonging to contract ('{1}', '{2}') has an XmlSerializerFormatAttribute configured with OperationUse Encoded or OperationStyle Rpc. OperationUse Encoded and OperationStyle Rpc are not supported for web bindings. Configure the endpoint with a SOAP binding (like WSHttpBinding) in order to use these options.</value>
+  </data>
+  <data name="SeekNotSupported" xml:space="preserve">
+    <value>Seek is not supported on this stream.</value>
+  </data>
+  <data name="SerializingReplyNotSupportedByFormatter" xml:space="preserve">
+    <value>The formatter '{0}' does not support serializing replies.</value>
+  </data>
+  <data name="SerializingRequestNotSupportedByFormatter" xml:space="preserve">
+    <value>The formatter '{0}' does not support serializing requests.</value>
+  </data>
+  <data name="ServiceModelWebServicesNotRegistered" xml:space="preserve">
+    <value>Unable to find the endpoint behavior WebHttpBehavior for endpoint address '{0}'. This is possibly caused by not calling ServiceModelWebServiceCollectionExtensions.AddServiceModelWebServices(IServiceCollection services).</value>
+  </data>
+  <data name="SFxInvalidCallbackIAsyncResult" xml:space="preserve">
+    <value>IAsyncResult not provided or of wrong type.</value>
+  </data>
+  <data name="SFxInvalidMessageBody" xml:space="preserve">
+    <value>OperationFormatter encountered an invalid Message body. Expected to find node type 'Element' with name '{0}' and namespace '{1}'. Found node type '{2}' with name '{3}' and namespace '{4}'</value>
+  </data>
+  <data name="SFxInvalidMessageBodyErrorDeserializingParameter" xml:space="preserve">
+    <value>There was an error while trying to deserialize parameter {0}:{1}.  Please see InnerException for more details.</value>
+  </data>
+  <data name="SFxInvalidMessageBodyErrorDeserializingParameterMore" xml:space="preserve">
+    <value>There was an error while trying to deserialize parameter {0}:{1}. The InnerException message was '{2}'.  Please see InnerException for more details.</value>
+  </data>
+  <data name="SFxInvalidMessageBodyErrorSerializingParameter" xml:space="preserve">
+    <value>There was an error while trying to serialize parameter {0}:{1}. The InnerException message was '{2}'.  Please see InnerException for more details.</value>
+  </data>
+  <data name="StreamBodyMemberNotSupported" xml:space="preserve">
+    <value>'{0}' does not allow the use of Streams with the MessageContract programming model. The service '{1}' defines an operation '{2}' that uses the MessageContract type '{3}'. '{3}' contains MessageBodyMember '{4}' of type Stream.</value>
+  </data>
+  <data name="TaskTimedOutError" xml:space="preserve">
+    <value>The task timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
+  </data>
+  <data name="TimeoutMustBeNonNegative" xml:space="preserve">
+    <value>Argument {0} must be a non-negative timeout value. Provided value was {1}.</value>
+  </data>
+  <data name="TimeoutMustBePositive" xml:space="preserve">
+    <value>Argument {0} must be a positive timeout value. Provided value was {1}.</value>
+  </data>
+  <data name="TypeIsNotParameterTypeAndIsNotPresentInKnownTypes" xml:space="preserve">
+    <value>Cannot serialize parameter of type '{0}' (for operation '{1}', contract '{2}') because it is not the exact type '{3}' in the method signature and is not in the known types collection. In order to serialize the parameter, add the type to the known types collection for the operation using ServiceKnownTypeAttribute.</value>
+  </data>
+  <data name="TypeNotSupportedByQueryStringConverter" xml:space="preserve">
+    <value>Type '{0}' is not supported by '{1}'.</value>
+  </data>
+  <data name="UnrecognizedHttpMessageFormat" xml:space="preserve">
+    <value>The incoming message has an unexpected message format '{0}'. The expected message formats for the operation are {1}. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.</value>
+  </data>
+  <data name="UriTemplateMissingVar" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' has a UriTemplate that expects a parameter named '{2}', but there is no input parameter with that name on the operation.</value>
+  </data>
+  <data name="UriTemplatePathVarMustBeString" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' has a path variable named '{2}' which does not have type 'string'.  Variables for UriTemplate path segments must have type 'string'.</value>
+  </data>
+  <data name="UriTemplateQueryVarMustBeConvertible" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' has a query variable named '{2}' of type '{3}', but type '{3}' is not convertible by '{4}'.  Variables for UriTemplate query values must have types that can be converted by '{4}'.</value>
+  </data>
+  <data name="UriTemplateVarCaseDistinction" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' has multiple parameters named '{2}' that vary only in uppercase versus lowercase.  The parameter names must be distinct.</value>
+  </data>
+  <data name="UTParamsDoNotComposeWithMessage" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' uses UriTemplate parameters, but also uses a Message parameter.  Message and UriTemplate parameters are incompatible.</value>
+  </data>
+  <data name="UTParamsDoNotComposeWithMessageContract" xml:space="preserve">
+    <value>Operation '{0}' in contract '{1}' uses UriTemplate parameters, but also uses a MessageContract parameter.  MessageContract and UriTemplate parameters are incompatible.</value>
+  </data>
+  <data name="WCFBindingCannotBeUsedWithUriOperationSelectorBehaviorBadMessageVersion" xml:space="preserve">
+    <value>The endpoint at '{0}' does not have a Binding with the None MessageVersion.  '{1}' is only intended for use with WebHttpBinding or similar bindings.</value>
+  </data>
+  <data name="WCFBindingCannotBeUsedWithUriOperationSelectorBehaviorBadScheme" xml:space="preserve">
+    <value>The endpoint at '{0}' does not have a Binding with Scheme 'http' or 'https'.  '{1}' is only intended for use with WebHttpBinding or similar bindings.</value>
+  </data>
+  <data name="WebBehaviorNotFoundWithEndpoint" xml:space="preserve">
+    <value>The standard endpoint of type '{0}' does not have a behavior of type '{1}'.  The endpoint is initialized with the proper behavior and it should not be removed or replaced.</value>
+  </data>
+  <data name="WebHttpBindingNotFoundWithEndpoint" xml:space="preserve">
+    <value>The standard endpoint of type '{0}' does not have a binding of type '{1}'.  The endpoint is initialized with the proper binding and it should not be removed or replaced.</value>
+  </data>
+  <data name="WebHttpServiceEndpointCannotHaveMessageHeaders" xml:space="preserve">
+    <value>The endpoint address '{0}' has message headers and is being used with a binding that's configured for message version None. Either change the endpoint address to not contain message headers or change the binding to be one that supports SOAP (for example, WSHttpBinding).</value>
+  </data>
+  <data name="WebRequestDidNotMatchMethod" xml:space="preserve">
+    <value>The HTTP method '{0}' of the incoming request (with URI '{1}') is not allowed.</value>
+  </data>
+  <data name="WebRequestDidNotMatchOperation" xml:space="preserve">
+    <value>The incoming HTTP request's URI '{0}' does not match any service operation.</value>
+  </data>
+  <data name="XmlSerializersCreatedBeforeRegistration" xml:space="preserve">
+    <value>New types cannot be registered with serializer manager after the service has been opened.</value>
+  </data>
+  <data name="XmlWriterBackedStreamMethodNotSupported" xml:space="preserve">
+    <value>The '{0}' method is not supported by the stream.</value>
+  </data>
+  <data name="XmlWriterBackedStreamPropertyGetNotSupported" xml:space="preserve">
+    <value>The get accessor of the '{0}' property is not supported by the stream.</value>
+  </data>
+  <data name="XmlWriterBackedStreamPropertySetNotSupported" xml:space="preserve">
+    <value>The set accessor of the '{0}' property is not supported by the stream.</value>
   </data>
 </root>
