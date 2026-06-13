@@ -29,6 +29,11 @@ namespace System.ServiceModel.Description
         private string _contractNamespace;
         private readonly UnwrappedTypesXmlSerializerManager _xmlSerializerManager;
 
+        public WebHttpBehavior()
+            : this(null)
+        {
+        }
+
         public WebHttpBehavior(IServiceProvider serviceProvider)
         {
             _defaultOutgoingRequestFormat = WebMessageFormat.Xml;

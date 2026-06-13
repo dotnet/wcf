@@ -11,6 +11,15 @@
     <!-- No baseline package on NuGet yet (new package). Skip API-compat validation against a non-existent baseline. -->
     <EnablePackageValidation>false</EnablePackageValidation>
     <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+    <!--
+      The CoreWCF source we lifted from declares some types with the same names as types
+      that already exist as internals in System.ServiceModel.Primitives / System.ServiceModel.Http
+      (e.g. SR, BufferedMessage, ReceivedMessage, XmlAttributeHolder, EncoderHelpers).
+      Our local copies always win, but the compiler emits CS0436 and a few related cleanup
+      warnings (CS0105 duplicate-using, CS0108 method-hiding) that get escalated by
+      -warnaserror in the repo-wide build. Demote them to messages so the full build stays clean.
+    -->
+    <NoWarn>$(NoWarn);CS0105;CS0108;CS0436</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
