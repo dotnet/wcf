@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../Strings.resx">
+    <body>
+      <trans-unit id="BindUriTemplateToNullOrEmptyPathParam">
+        <source>Bind parameters cannot be null or empty for path variable '{0}'.</source>
+        <target state="new">Bind parameters cannot be null or empty for path variable '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectIsReadOnly">
+        <source>Object is read-only.</source>
+        <target state="new">Object is read-only.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTAdditionalDefaultIsInvalid">
+        <source>The additional default value with key '{0}' is invalid because the UriTemplate '{1}' does not contain a variable with that name.</source>
+        <target state="new">The additional default value with key '{0}' is invalid because the UriTemplate '{1}' does not contain a variable with that name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTBadBaseAddress">
+        <source>The base address must be an absolute URI with a scheme of http or https and no query or fragment.</source>
+        <target state="new">The base address must be an absolute URI with a scheme of http or https and no query or fragment.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTBindByNameCalledWithEmptyKey">
+        <source>UriTemplate.BindByName was called with an empty key in the parameters collection.</source>
+        <target state="new">UriTemplate.BindByName was called with an empty key in the parameters collection.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTBindByPositionNoVariables">
+        <source>UriTemplate '{0}' has no variables; UriTemplate.BindByPosition cannot be called with {1} value(s).</source>
+        <target state="new">UriTemplate '{0}' has no variables; UriTemplate.BindByPosition cannot be called with {1} value(s).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTBindByPositionWrongCount">
+        <source>UriTemplate '{0}' has {1} path variable(s) and {2} query variable(s) but was passed {3} value(s).</source>
+        <target state="new">UriTemplate '{0}' has {1} path variable(s) and {2} query variable(s) but was passed {3} value(s).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTBothLiteralAndNameValueCollectionKey">
+        <source>The key '{0}' appears as both a literal segment and as a name in the name-value collection passed to UriTemplate.BindByName.</source>
+        <target state="new">The key '{0}' appears as both a literal segment and as a name in the name-value collection passed to UriTemplate.BindByName.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTCSRLookupBeforeMatch">
+        <source>Cannot look up compound segment results before a successful Match has been performed.</source>
+        <target state="new">Cannot look up compound segment results before a successful Match has been performed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTDefaultValueToCompoundSegmentVar">
+        <source>UriTemplate '{0}' has a compound path segment '{1}' that contains the variable '{2}' for which a default value was specified. Variables in compound segments cannot have default values.</source>
+        <target state="new">UriTemplate '{0}' has a compound path segment '{1}' that contains the variable '{2}' for which a default value was specified. Variables in compound segments cannot have default values.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTDefaultValueToCompoundSegmentVarFromAdditionalDefaults">
+        <source>UriTemplate '{0}' has an additional default value for variable '{1}', but that variable appears inside a compound segment and cannot have a default value.</source>
+        <target state="new">UriTemplate '{0}' has an additional default value for variable '{1}', but that variable appears inside a compound segment and cannot have a default value.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTDefaultValueToQueryVar">
+        <source>UriTemplate '{0}' has a query value variable '{1}' with default value '{2}'. Query variables cannot have default values.</source>
+        <target state="new">UriTemplate '{0}' has a query value variable '{1}' with default value '{2}'. Query variables cannot have default values.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTDefaultValueToQueryVarFromAdditionalDefaults">
+        <source>UriTemplate '{0}' has an additional default value for query variable '{1}'. Query variables cannot have default values.</source>
+        <target state="new">UriTemplate '{0}' has an additional default value for query variable '{1}'. Query variables cannot have default values.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTDefaultValuesAreImmutable">
+        <source>The Defaults dictionary on the UriTemplate is immutable.</source>
+        <target state="new">The Defaults dictionary on the UriTemplate is immutable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTDoesNotSupportAdjacentVarsInCompoundSegment">
+        <source>UriTemplate '{0}' contains compound path segment '{1}' with two adjacent variables. Adjacent variables in compound segments are not supported.</source>
+        <target state="new">UriTemplate '{0}' contains compound path segment '{1}' with two adjacent variables. Adjacent variables in compound segments are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTInvalidDefaultPathValue">
+        <source>UriTemplate '{0}' has variable '{1}' with default value '{2}'. The default value of a path variable cannot be null, empty, or contain a path separator.</source>
+        <target state="new">UriTemplate '{0}' has variable '{1}' with default value '{2}'. The default value of a path variable cannot be null, empty, or contain a path separator.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTInvalidFormatSegmentOrQueryPart">
+        <source>The segment or query part '{0}' has an invalid format. Variable names must be enclosed in matching braces.</source>
+        <target state="new">The segment or query part '{0}' has an invalid format. Variable names must be enclosed in matching braces.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTInvalidVarDeclaration">
+        <source>UriTemplate '{0}' has invalid variable declaration '{1}'.</source>
+        <target state="new">UriTemplate '{0}' has invalid variable declaration '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTInvalidWildcardInVariableOrLiteral">
+        <source>UriTemplate '{0}' has invalid usage of wildcard '{1}'. Wildcards are only allowed as the last path segment and cannot be combined with other characters in the same segment.</source>
+        <target state="new">UriTemplate '{0}' has invalid usage of wildcard '{1}'. Wildcards are only allowed as the last path segment and cannot be combined with other characters in the same segment.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTNullableDefaultAtAdditionalDefaults">
+        <source>UriTemplate '{0}' has an additional default value for variable '{1}' that is null. Nullable defaults are only allowed when declared inline in the template.</source>
+        <target state="new">UriTemplate '{0}' has an additional default value for variable '{1}' that is null. Nullable defaults are only allowed when declared inline in the template.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTNullableDefaultMustBeFollowedWithNullables">
+        <source>UriTemplate '{0}' has nullable default for variable '{1}' but that variable is followed by variable '{2}' which is not nullable. All path variables after a nullable variable must also be nullable.</source>
+        <target state="new">UriTemplate '{0}' has nullable default for variable '{1}' but that variable is followed by variable '{2}' which is not nullable. All path variables after a nullable variable must also be nullable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTNullableDefaultMustNotBeFollowedWithLiteral">
+        <source>UriTemplate '{0}' has nullable default for variable '{1}' but that variable is followed by literal segment '{2}'. Path variables with nullable defaults cannot be followed by literal segments.</source>
+        <target state="new">UriTemplate '{0}' has nullable default for variable '{1}' but that variable is followed by literal segment '{2}'. Path variables with nullable defaults cannot be followed by literal segments.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTNullableDefaultMustNotBeFollowedWithWildcard">
+        <source>UriTemplate '{0}' has nullable default for variable '{1}'. Path variables with nullable defaults cannot be followed by a wildcard segment.</source>
+        <target state="new">UriTemplate '{0}' has nullable default for variable '{1}'. Path variables with nullable defaults cannot be followed by a wildcard segment.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTQueryCannotEndInAmpersand">
+        <source>UriTemplate '{0}' has a query string that ends in '&amp;'.</source>
+        <target state="new">UriTemplate '{0}' has a query string that ends in '&amp;'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTQueryCannotHaveCompoundValue">
+        <source>UriTemplate '{0}' has a query value that is a compound (mixed literal and variable) expression. Query values must be either pure literals or pure variables.</source>
+        <target state="new">UriTemplate '{0}' has a query value that is a compound (mixed literal and variable) expression. Query values must be either pure literals or pure variables.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTQueryCannotHaveEmptyName">
+        <source>UriTemplate '{0}' has a query parameter with an empty name.</source>
+        <target state="new">UriTemplate '{0}' has a query parameter with an empty name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTQueryMustHaveLiteralNames">
+        <source>UriTemplate '{0}' has a query parameter with a variable name. Query parameter names must be literals.</source>
+        <target state="new">UriTemplate '{0}' has a query parameter with a variable name. Query parameter names must be literals.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTQueryNamesMustBeUnique">
+        <source>UriTemplate '{0}' has multiple query parameters with the same name. Query parameter names must be unique within a template.</source>
+        <target state="new">UriTemplate '{0}' has multiple query parameters with the same name. Query parameter names must be unique within a template.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTStarVariableWithDefaults">
+        <source>UriTemplate '{0}' has wildcard variable '{1}' with default value '{2}'. Wildcard variables cannot have default values.</source>
+        <target state="new">UriTemplate '{0}' has wildcard variable '{1}' with default value '{2}'. Wildcard variables cannot have default values.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTStarVariableWithDefaultsFromAdditionalDefaults">
+        <source>UriTemplate '{0}' has additional default value for wildcard variable '{1}'. Wildcard variables cannot have default values.</source>
+        <target state="new">UriTemplate '{0}' has additional default value for wildcard variable '{1}'. Wildcard variables cannot have default values.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTAmbiguousQueries">
+        <source>UriTemplateTable contains templates with ambiguous query strings. Conflicting templates: '{0}'.</source>
+        <target state="new">UriTemplateTable contains templates with ambiguous query strings. Conflicting templates: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTBaseAddressMustBeAbsolute">
+        <source>The base address of the UriTemplateTable must be an absolute URI.</source>
+        <target state="new">The base address of the UriTemplateTable must be an absolute URI.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTBaseAddressNotSet">
+        <source>The UriTemplateTable's BaseAddress must be set before this operation can be performed.</source>
+        <target state="new">The UriTemplateTable's BaseAddress must be set before this operation can be performed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTCannotChangeBaseAddress">
+        <source>The BaseAddress of the UriTemplateTable cannot be changed after the table has been made read-only.</source>
+        <target state="new">The BaseAddress of the UriTemplateTable cannot be changed after the table has been made read-only.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTDuplicate">
+        <source>UriTemplateTable contains duplicate templates: '{0}' and '{1}'.</source>
+        <target state="new">UriTemplateTable contains duplicate templates: '{0}' and '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTEmptyKeyValuePairs">
+        <source>The KeyValuePairs collection of the UriTemplateTable cannot be empty.</source>
+        <target state="new">The KeyValuePairs collection of the UriTemplateTable cannot be empty.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTInvalidTemplateKey">
+        <source>'{0}' is not a valid UriTemplate string for use as a key in a UriTemplateTable.</source>
+        <target state="new">'{0}' is not a valid UriTemplate string for use as a key in a UriTemplateTable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTMultipleMatches">
+        <source>The URI matched multiple UriTemplates in this UriTemplateTable. Use Match() instead of MatchSingle() to get all results.</source>
+        <target state="new">The URI matched multiple UriTemplates in this UriTemplateTable. Use Match() instead of MatchSingle() to get all results.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTMustBeAbsolute">
+        <source>The base address of the UriTemplateTable must be an absolute URI.</source>
+        <target state="new">The base address of the UriTemplateTable must be an absolute URI.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTNullTemplateKey">
+        <source>A UriTemplate key in the UriTemplateTable's KeyValuePairs collection cannot be null.</source>
+        <target state="new">A UriTemplate key in the UriTemplateTable's KeyValuePairs collection cannot be null.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTTOtherAmbiguousQueries">
+        <source>UriTemplateTable contains templates with ambiguous query strings: '{0}'.</source>
+        <target state="new">UriTemplateTable contains templates with ambiguous query strings: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UTVarNamesMustBeUnique">
+        <source>UriTemplate '{0}' has multiple variables with the name '{1}'. Variable names must be unique within a template.</source>
+        <target state="new">UriTemplate '{0}' has multiple variables with the name '{1}'. Variable names must be unique within a template.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
