@@ -7,6 +7,66 @@
         <target state="new">Bind parameters cannot be null or empty for path variable '{0}'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="DefaultContentFormatNotAllowedInProperty">
+        <source>WebContentFormat.Default cannot be set on a WebBodyFormatMessageProperty; use Xml, Json, or Raw instead.</source>
+        <target state="new">WebContentFormat.Default cannot be set on a WebBodyFormatMessageProperty; use Xml, Json, or Raw instead.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EncoderEnvelopeVersionMismatch">
+        <source>The envelope version of the outgoing message ({0}) does not match the envelope version of the encoder ({1}).</source>
+        <target state="new">The envelope version of the outgoing message ({0}) does not match the envelope version of the encoder ({1}).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorEncounteredInContentTypeMapper">
+        <source>The WebContentTypeMapper threw an exception while attempting to map the content type. See the inner exception for details.</source>
+        <target state="new">The WebContentTypeMapper threw an exception while attempting to map the content type. See the inner exception for details.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonOnlySupportsMessageVersionNone">
+        <source>WebMessageEncodingBindingElement only supports MessageVersion.None.</source>
+        <target state="new">WebMessageEncodingBindingElement only supports MessageVersion.None.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonValueMustBeInRange">
+        <source>The value must be in the range [{0}, {1}].</source>
+        <target state="new">The value must be in the range [{0}, {1}].</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MaxSentMessageSizeExceeded">
+        <source>The maximum message size quota for outgoing messages ({0}) has been exceeded.</source>
+        <target state="new">The maximum message size quota for outgoing messages ({0}) has been exceeded.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageBodyIsStream">
+        <source>The message body is a Stream and cannot be re-read.</source>
+        <target state="new">The message body is a Stream and cannot be re-read.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageBodyMissing">
+        <source>The message body is missing or empty.</source>
+        <target state="new">The message body is missing or empty.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageBodyReaderInvalidReadState">
+        <source>The XmlReader used to read the message body is in an invalid read state '{0}'.</source>
+        <target state="new">The XmlReader used to read the message body is in an invalid read state '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageBufferIsClosed">
+        <source>The MessageBuffer has been closed and can no longer be used.</source>
+        <target state="new">The MessageBuffer has been closed and can no longer be used.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageClosed">
+        <source>The message has been closed and can no longer be used.</source>
+        <target state="new">The message has been closed and can no longer be used.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageVersionUnknown">
+        <source>Unknown MessageVersion.</source>
+        <target state="new">Unknown MessageVersion.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ObjectIsReadOnly">
         <source>Object is read-only.</source>
         <target state="new">Object is read-only.</target>
@@ -210,6 +270,36 @@
       <trans-unit id="UTVarNamesMustBeUnique">
         <source>UriTemplate '{0}' has multiple variables with the name '{1}'. Variable names must be unique within a template.</source>
         <target state="new">UriTemplate '{0}' has multiple variables with the name '{1}'. Variable names must be unique within a template.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnknownWebEncodingFormat">
+        <source>Unknown WebContentFormat '{0}'.</source>
+        <target state="new">Unknown WebContentFormat '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeNonNegative">
+        <source>The value supplied must be non-negative.</source>
+        <target state="new">The value supplied must be non-negative.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBePositive">
+        <source>The value supplied must be greater than zero.</source>
+        <target state="new">The value supplied must be greater than zero.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebBodyFormatPropertyToString">
+        <source>WebBodyFormatMessageProperty(Format={0})</source>
+        <target state="new">WebBodyFormatMessageProperty(Format={0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebHttpRawContentNotSupported">
+        <source>Raw (application/octet-stream pass-through) content is not yet supported by the WebHttpBinding client. Use Xml or Json instead, or convert your payload to a typed parameter.</source>
+        <target state="new">Raw (application/octet-stream pass-through) content is not yet supported by the WebHttpBinding client. Use Xml or Json instead, or convert your payload to a typed parameter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlBufferQuotaExceeded">
+        <source>The XmlBuffer's quota has been exceeded.</source>
+        <target state="new">The XmlBuffer's quota has been exceeded.</target>
         <note />
       </trans-unit>
     </body>

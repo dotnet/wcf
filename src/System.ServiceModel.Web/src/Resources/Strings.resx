@@ -189,4 +189,58 @@
   <data name="UTVarNamesMustBeUnique" xml:space="preserve">
     <value>UriTemplate '{0}' has multiple variables with the name '{1}'. Variable names must be unique within a template.</value>
   </data>
+  <data name="DefaultContentFormatNotAllowedInProperty" xml:space="preserve">
+    <value>WebContentFormat.Default cannot be set on a WebBodyFormatMessageProperty; use Xml, Json, or Raw instead.</value>
+  </data>
+  <data name="EncoderEnvelopeVersionMismatch" xml:space="preserve">
+    <value>The envelope version of the outgoing message ({0}) does not match the envelope version of the encoder ({1}).</value>
+  </data>
+  <data name="ErrorEncounteredInContentTypeMapper" xml:space="preserve">
+    <value>The WebContentTypeMapper threw an exception while attempting to map the content type. See the inner exception for details.</value>
+  </data>
+  <data name="JsonOnlySupportsMessageVersionNone" xml:space="preserve">
+    <value>WebMessageEncodingBindingElement only supports MessageVersion.None.</value>
+  </data>
+  <data name="JsonValueMustBeInRange" xml:space="preserve">
+    <value>The value must be in the range [{0}, {1}].</value>
+  </data>
+  <data name="MaxSentMessageSizeExceeded" xml:space="preserve">
+    <value>The maximum message size quota for outgoing messages ({0}) has been exceeded.</value>
+  </data>
+  <data name="MessageBodyIsStream" xml:space="preserve">
+    <value>The message body is a Stream and cannot be re-read.</value>
+  </data>
+  <data name="MessageBodyMissing" xml:space="preserve">
+    <value>The message body is missing or empty.</value>
+  </data>
+  <data name="MessageBodyReaderInvalidReadState" xml:space="preserve">
+    <value>The XmlReader used to read the message body is in an invalid read state '{0}'.</value>
+  </data>
+  <data name="MessageBufferIsClosed" xml:space="preserve">
+    <value>The MessageBuffer has been closed and can no longer be used.</value>
+  </data>
+  <data name="MessageClosed" xml:space="preserve">
+    <value>The message has been closed and can no longer be used.</value>
+  </data>
+  <data name="MessageVersionUnknown" xml:space="preserve">
+    <value>Unknown MessageVersion.</value>
+  </data>
+  <data name="UnknownWebEncodingFormat" xml:space="preserve">
+    <value>Unknown WebContentFormat '{0}'.</value>
+  </data>
+  <data name="ValueMustBeNonNegative" xml:space="preserve">
+    <value>The value supplied must be non-negative.</value>
+  </data>
+  <data name="ValueMustBePositive" xml:space="preserve">
+    <value>The value supplied must be greater than zero.</value>
+  </data>
+  <data name="WebBodyFormatPropertyToString" xml:space="preserve">
+    <value>WebBodyFormatMessageProperty(Format={0})</value>
+  </data>
+  <data name="WebHttpRawContentNotSupported" xml:space="preserve">
+    <value>Raw (application/octet-stream pass-through) content is not yet supported by the WebHttpBinding client. Use Xml or Json instead, or convert your payload to a typed parameter.</value>
+  </data>
+  <data name="XmlBufferQuotaExceeded" xml:space="preserve">
+    <value>The XmlBuffer's quota has been exceeded.</value>
+  </data>
 </root>
