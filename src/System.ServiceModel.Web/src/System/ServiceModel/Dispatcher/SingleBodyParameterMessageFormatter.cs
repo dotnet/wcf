@@ -12,7 +12,7 @@ using System.ServiceModel.Web;
 
 namespace System.ServiceModel.Dispatcher
 {
-    internal abstract class SingleBodyParameterMessageFormatter : IDispatchMessageFormatter
+    internal abstract class SingleBodyParameterMessageFormatter : IDispatchMessageFormatter, IClientMessageFormatter
     {
         private readonly bool _isRequestFormatter;
         private readonly string _serializerType;
@@ -49,6 +49,74 @@ namespace System.ServiceModel.Dispatcher
             // DemultiplexingDispatchMessageFormatter is server-side only (not ported).
             // For the client-only port, fall back to the XML formatter as the single choice.
             return xmlFormatter;
+        }
+
+        public static IClientMessageFormatter CreateXmlAndJsonClientFormatter(OperationDescription operation, Type type, bool isRequestFormatter, UnwrappedTypesXmlSerializerManager xmlSerializerManager)
+        {
+            IClientMessageFormatter xmlFormatter = CreateClientFormatter(operation, type, isRequestFormatter, false, xmlSerializerManager);
+            if (!WebHttpBehavior.SupportsJsonFormat(operation))
+            {
+                return xmlFormatter;
+            }
+            // DemultiplexingClientMessageFormatter is needed to switch on incoming Content-Type;
+            // without it we cannot deserialize JSON replies. For the client-only port we still
+            // return the XML formatter as the default - JSON responses on the wire are surfaced
+            // via the format mapping on WebHttpBinding when the operation explicitly opts into
+            // WebMessageFormat.Json via the [WebGet]/[WebInvoke] attribute.
+            return xmlFormatter;
+        }
+
+        public Message SerializeRequest(MessageVersion messageVersion, object[] parameters)
+        {
+            if (!_isRequestFormatter)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.FormatterCannotBeUsedForRequestMessages)));
+            }
+            Message message = Message.CreateMessage(messageVersion, (string)null, CreateBodyWriter(parameters[0]));
+            if (parameters[0] == null)
+            {
+                SuppressRequestEntityBody(message);
+            }
+            AttachMessageProperties(message, true);
+            return message;
+        }
+
+        public object DeserializeReply(Message message, object[] parameters)
+        {
+            if (_isRequestFormatter)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.FormatterCannotBeUsedForReplyMessages)));
+            }
+            return ReadObject(message);
+        }
+
+        internal static IClientMessageFormatter CreateClientFormatter(OperationDescription operation, Type type, bool isRequestFormatter, bool useJson, UnwrappedTypesXmlSerializerManager xmlSerializerManager)
+        {
+            if (type == null)
+            {
+                return new NullMessageFormatter();
+            }
+            else if (useJson)
+            {
+                return CreateJsonFormatter(operation, type, isRequestFormatter);
+            }
+            else
+            {
+                return CreateXmlFormatter(operation, type, isRequestFormatter, xmlSerializerManager);
+            }
+        }
+
+        internal static void SuppressRequestEntityBody(Message message)
+        {
+            object prop;
+            message.Properties.TryGetValue(HttpRequestMessageProperty.Name, out prop);
+            HttpRequestMessageProperty httpProperty = prop as HttpRequestMessageProperty;
+            if (httpProperty == null)
+            {
+                httpProperty = new HttpRequestMessageProperty();
+                message.Properties[HttpRequestMessageProperty.Name] = httpProperty;
+            }
+            httpProperty.SuppressEntityBody = true;
         }
 
         public void DeserializeRequest(Message message, object[] parameters)
@@ -212,7 +280,7 @@ namespace System.ServiceModel.Dispatcher
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SerializationException(SR.Format(SR.CannotDeserializeBody, reader.LocalName, reader.NamespaceURI, OperationName, ContractName, ContractNs, _serializerType)));
         }
 
-        internal class NullMessageFormatter : IDispatchMessageFormatter
+        internal class NullMessageFormatter : IDispatchMessageFormatter, IClientMessageFormatter
         {
             public void DeserializeRequest(Message message, object[] parameters)
             {
@@ -224,6 +292,18 @@ namespace System.ServiceModel.Dispatcher
                 SuppressReplyEntityBody(reply);
 
                 return reply;
+            }
+
+            public object DeserializeReply(Message message, object[] parameters)
+            {
+                return null;
+            }
+
+            public Message SerializeRequest(MessageVersion messageVersion, object[] parameters)
+            {
+                Message request = Message.CreateMessage(messageVersion, (string)null);
+                SuppressRequestEntityBody(request);
+                return request;
             }
         }
 

@@ -1,20 +1,119 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
 
+#pragma warning disable 1634, 1691
 namespace System.ServiceModel.Dispatcher
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.Reflection;
+    using System.ServiceModel;
+    using System.ServiceModel.Channels;
+    using System.ServiceModel.Description;
+    using System.Text;
+    using System.Xml;
+    using System.ServiceModel.Web;
+
     internal class UriTemplateClientFormatter : IClientMessageFormatter
     {
-        public object DeserializeReply(Message message, object[] parameters) => throw new PlatformNotSupportedException();
+        internal Dictionary<int, string> pathMapping;
+        internal Dictionary<int, KeyValuePair<string, Type>> queryMapping;
+        Uri baseUri;
+        IClientMessageFormatter inner;
+        bool innerIsUntypedMessage;
+        bool isGet;
+        string method;
+        QueryStringConverter qsc;
+        int totalNumUTVars;
+        UriTemplate uriTemplate;
 
-        public Message SerializeRequest(MessageVersion messageVersion, object[] parameters) => throw new PlatformNotSupportedException();
+        public UriTemplateClientFormatter(OperationDescription operationDescription, IClientMessageFormatter inner, QueryStringConverter qsc, Uri baseUri, bool innerIsUntypedMessage, string contractName)
+        {
+            this.inner = inner;
+            this.qsc = qsc;
+            this.baseUri = baseUri;
+            this.innerIsUntypedMessage = innerIsUntypedMessage;
+            Populate(out this.pathMapping,
+                out this.queryMapping,
+                out this.totalNumUTVars,
+                out this.uriTemplate,
+                operationDescription,
+                qsc,
+                contractName);
+            this.method = WebHttpBehavior.GetWebMethod(operationDescription);
+            isGet = this.method == WebHttpBehavior.GET;
+        }
+
+        public object DeserializeReply(Message message, object[] parameters)
+        {
+            // The URI template formatter is purely a request-side concern: it binds
+            // operation parameters into the outgoing URI. Reply deserialization is
+            // delegated to the inner formatter.
+            if (inner != null)
+            {
+                return inner.DeserializeReply(message, parameters);
+            }
+            return null;
+        }
+
+        public Message SerializeRequest(MessageVersion messageVersion, object[] parameters)
+        {
+            object[] innerParameters = new object[parameters.Length - this.totalNumUTVars];
+            NameValueCollection nvc = new NameValueCollection();
+            int j = 0;
+            for (int i = 0; i < parameters.Length; ++i)
+            {
+                if (this.pathMapping.ContainsKey(i))
+                {
+                    nvc[this.pathMapping[i]] = parameters[i] as string;
+                }
+                else if (this.queryMapping.ContainsKey(i))
+                {
+                    if (parameters[i] != null)
+                    {
+                        nvc[this.queryMapping[i].Key] = this.qsc.ConvertValueToString(parameters[i], this.queryMapping[i].Value);
+                    }
+                }
+                else
+                {
+                    innerParameters[j] = parameters[i];
+                    ++j;
+                }
+            }
+            Message m = inner.SerializeRequest(messageVersion, innerParameters);
+            bool userSetTheToOnMessage = (this.innerIsUntypedMessage && m.Headers.To != null);
+            bool userSetTheToOnOutgoingHeaders = (OperationContext.Current != null && OperationContext.Current.OutgoingMessageHeaders.To != null);
+            if (!userSetTheToOnMessage && !userSetTheToOnOutgoingHeaders)
+            {
+                m.Headers.To = this.uriTemplate.BindByName(this.baseUri, nvc);
+            }
+            // dotnet/wcf's HttpRequestMessageProperty exposes SuppressEntityBody and Method
+            // (server-only HttpResponseMessageProperty does not). Set them here rather than
+            // routing through WebOperationContext (which is optional and may not be set up).
+            HttpRequestMessageProperty hrmp;
+            if (m.Properties.ContainsKey(HttpRequestMessageProperty.Name))
+            {
+                hrmp = m.Properties[HttpRequestMessageProperty.Name] as HttpRequestMessageProperty;
+            }
+            else
+            {
+                hrmp = new HttpRequestMessageProperty();
+                m.Properties.Add(HttpRequestMessageProperty.Name, hrmp);
+            }
+            if (isGet)
+            {
+                hrmp.SuppressEntityBody = true;
+            }
+            if (this.method != WebHttpBehavior.WildcardMethod)
+            {
+                hrmp.Method = this.method;
+            }
+            return m;
+        }
 
         internal static string GetUTStringOrDefault(OperationDescription operationDescription)
         {
@@ -93,14 +192,14 @@ namespace System.ServiceModel.Dispatcher
 
             if (neededPathVars.Count != 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
-                    SR.Format(SR.UriTemplateMissingVar, XmlConvert.DecodeName(operationDescription.Name), contractName, neededPathVars[0]))));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
+                    SR.Format(SR.UriTemplateMissingVar, XmlConvert.DecodeName(operationDescription.Name), contractName, neededPathVars[0])));
             }
 
             if (neededQueryVars.Count != 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format
-                    (SR.Format(SR.UriTemplateMissingVar, XmlConvert.DecodeName(operationDescription.Name), contractName, neededQueryVars[0]))));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
+                    SR.Format(SR.UriTemplateMissingVar, XmlConvert.DecodeName(operationDescription.Name), contractName, neededQueryVars[0])));
             }
         }
 

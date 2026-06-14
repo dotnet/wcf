@@ -128,6 +128,20 @@ namespace System.ServiceModel.Description
             }
 
             _contractNamespace = endpoint.Contract.Namespace;
+
+            foreach (OperationDescription od in endpoint.Contract.Operations)
+            {
+                if (clientRuntime.Operations.Contains(od.Name))
+                {
+                    ClientOperation cop = clientRuntime.Operations[od.Name];
+                    IClientMessageFormatter requestClient = GetRequestClientFormatter(od, endpoint);
+                    IClientMessageFormatter replyClient = GetReplyClientFormatter(od, endpoint);
+                    cop.Formatter = new CompositeClientFormatter(requestClient, replyClient);
+                    cop.SerializeRequest = true;
+                    cop.DeserializeReply = od.Messages.Count > 1 && !IsUntypedMessage(od.Messages[1]);
+                }
+            }
+            AddClientErrorInspector(endpoint, clientRuntime);
         }
 
         public virtual void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
@@ -341,6 +355,201 @@ namespace System.ServiceModel.Description
             // composed of dispatch-side helpers that are not ported (ContentTypeSettingDispatchMessageFormatter,
             // MultiplexingDispatchMessageFormatter, MessagePassthroughFormatter).
             return null;
+        }
+
+        // ---- Client-side formatters (ported from .NET Framework System.ServiceModel.Web reference source) ----
+
+        protected virtual IClientMessageFormatter GetReplyClientFormatter(OperationDescription operationDescription, ServiceEndpoint endpoint)
+        {
+            if (operationDescription.Messages.Count < 2)
+            {
+                return null;
+            }
+            ValidateBodyParameters(operationDescription, false);
+            Type type;
+            if (TryGetStreamParameterType(operationDescription.Messages[1], operationDescription, false, out type))
+            {
+                return new HttpStreamFormatter(operationDescription);
+            }
+            if (IsUntypedMessage(operationDescription.Messages[1]))
+            {
+                return new MessagePassthroughFormatter();
+            }
+            WebMessageBodyStyle style = GetBodyStyle(operationDescription);
+            Type parameterType;
+            if (UseBareReplyFormatter(style, operationDescription, GetResponseFormat(operationDescription), out parameterType))
+            {
+                return SingleBodyParameterMessageFormatter.CreateXmlAndJsonClientFormatter(operationDescription, parameterType, false, _xmlSerializerManager);
+            }
+            else
+            {
+                MessageDescription temp = operationDescription.Messages[0];
+                operationDescription.Messages[0] = MakeDummyMessageDescription(MessageDirection.Input);
+                IClientMessageFormatter result = GetDefaultXmlAndJsonClientFormatter(operationDescription, !IsBareResponse(style));
+                operationDescription.Messages[0] = temp;
+                return result;
+            }
+        }
+
+        protected virtual IClientMessageFormatter GetRequestClientFormatter(OperationDescription operationDescription, ServiceEndpoint endpoint)
+        {
+            WebMessageFormat requestFormat = GetRequestFormat(operationDescription);
+            bool useJson = (requestFormat == WebMessageFormat.Json);
+            WebMessageEncodingBindingElement webEncoding = useJson
+                ? endpoint.Binding.CreateBindingElements().Find<WebMessageEncodingBindingElement>()
+                : null;
+            IClientMessageFormatter innerFormatter = null;
+
+            if (endpoint.Address == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
+                    SR.Format(SR.EndpointAddressCannotBeNull)));
+            }
+
+            // Throw-away formatter just to get path/query mapping counts before the message description is mutated below.
+            UriTemplateClientFormatter throwAway = new UriTemplateClientFormatter(operationDescription, null, GetQueryStringConverter(operationDescription), endpoint.Address.Uri, false, endpoint.Contract.Name);
+            int numUriVariables = throwAway.pathMapping.Count + throwAway.queryMapping.Count;
+            bool isStream = false;
+
+            HideReplyMessage(operationDescription, delegate ()
+            {
+                WebMessageBodyStyle style = GetBodyStyle(operationDescription);
+                bool isUntypedWhenUriParamsNotConsidered = false;
+                Effect doBodyFormatter = delegate ()
+                {
+                    if (numUriVariables != 0)
+                    {
+                        EnsureNotUntypedMessageNorMessageContract(operationDescription);
+                    }
+                    ValidateBodyParameters(operationDescription, true);
+                    IClientMessageFormatter baseFormatter;
+                    Type parameterType;
+                    if (TryGetStreamParameterType(operationDescription.Messages[0], operationDescription, true, out parameterType))
+                    {
+                        isStream = true;
+                        baseFormatter = new HttpStreamFormatter(operationDescription);
+                    }
+                    else if (UseBareRequestFormatter(style, operationDescription, out parameterType))
+                    {
+                        baseFormatter = SingleBodyParameterMessageFormatter.CreateClientFormatter(operationDescription, parameterType, true, useJson, _xmlSerializerManager);
+                    }
+                    else
+                    {
+                        baseFormatter = GetDefaultClientFormatter(operationDescription, useJson, !IsBareRequest(style));
+                    }
+                    innerFormatter = baseFormatter;
+                    isUntypedWhenUriParamsNotConsidered = IsUntypedMessage(operationDescription.Messages[0]);
+                };
+
+                if (numUriVariables == 0)
+                {
+                    if (IsUntypedMessage(operationDescription.Messages[0]))
+                    {
+                        ValidateBodyParameters(operationDescription, true);
+                        innerFormatter = new MessagePassthroughFormatter();
+                        isUntypedWhenUriParamsNotConsidered = true;
+                    }
+                    else if (IsTypedMessage(operationDescription.Messages[0]))
+                    {
+                        ValidateBodyParameters(operationDescription, true);
+                        innerFormatter = GetDefaultClientFormatter(operationDescription, useJson, !IsBareRequest(style));
+                    }
+                    else
+                    {
+                        doBodyFormatter();
+                    }
+                }
+                else
+                {
+                    HideRequestUriTemplateParameters(operationDescription, throwAway.pathMapping, throwAway.queryMapping, delegate ()
+                    {
+                        CloneMessageDescriptionsBeforeActing(operationDescription, delegate ()
+                        {
+                            doBodyFormatter();
+                        });
+                    });
+                }
+                innerFormatter = new UriTemplateClientFormatter(operationDescription, innerFormatter, GetQueryStringConverter(operationDescription), endpoint.Address.Uri, isUntypedWhenUriParamsNotConsidered, endpoint.Contract.Name);
+            });
+
+            string defaultContentType = GetDefaultContentType(isStream, useJson, webEncoding);
+            if (!string.IsNullOrEmpty(defaultContentType))
+            {
+                innerFormatter = new ContentTypeSettingClientMessageFormatter(defaultContentType, innerFormatter);
+            }
+            return innerFormatter;
+        }
+
+        internal IClientMessageFormatter GetDefaultClientFormatter(OperationDescription od, bool useJson, bool isWrapped)
+        {
+            DataContractSerializerOperationBehavior dcsob = ((KeyedByTypeCollection<IOperationBehavior>)od.OperationBehaviors).Find<DataContractSerializerOperationBehavior>();
+            if (useJson)
+            {
+                if (dcsob == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
+                        SR.Format(SR.JsonFormatRequiresDataContract, od.Name, od.DeclaringContract.Name, od.DeclaringContract.Namespace)));
+                }
+                return CreateDataContractJsonSerializerOperationFormatter(od, dcsob, isWrapped);
+            }
+            else
+            {
+                ClientRuntime clientRuntime = new ClientRuntime("name", "");
+                ClientOperation cop = new ClientOperation(clientRuntime, "dummyClient", "urn:dummy");
+                cop.Formatter = null;
+
+                if (dcsob != null)
+                {
+                    (dcsob as IOperationBehavior).ApplyClientBehavior(od, cop);
+                    return cop.Formatter;
+                }
+                XmlSerializerOperationBehavior xsob = ((KeyedByTypeCollection<IOperationBehavior>)od.OperationBehaviors).Find<XmlSerializerOperationBehavior>();
+                if (xsob != null)
+                {
+                    xsob = new XmlSerializerOperationBehavior(od, xsob.XmlSerializerFormatAttribute);
+                    (xsob as IOperationBehavior).ApplyClientBehavior(od, cop);
+                    return cop.Formatter;
+                }
+            }
+            return null;
+        }
+
+        private IClientMessageFormatter GetDefaultXmlAndJsonClientFormatter(OperationDescription od, bool isWrapped)
+        {
+            IClientMessageFormatter xmlFormatter = GetDefaultClientFormatter(od, false, isWrapped);
+            if (!SupportsJsonFormat(od))
+            {
+                return xmlFormatter;
+            }
+            // The .NET Framework version wraps both formatters in a DemultiplexingClientMessageFormatter
+            // that switches on the response Content-Type. The client-only port returns the XML formatter
+            // directly; the caller's [WebGet]/[WebInvoke] ResponseFormat selects between Xml and Json
+            // formats deterministically at description time.
+            return xmlFormatter;
+        }
+
+        protected virtual void AddClientErrorInspector(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
+        {
+            if (!FaultExceptionEnabled)
+            {
+                clientRuntime.ClientMessageInspectors.Add(new WebFaultClientMessageInspector());
+            }
+        }
+
+        private string GetDefaultContentType(bool isStream, bool useJson, WebMessageEncodingBindingElement webEncoding)
+        {
+            if (isStream)
+            {
+                return s_defaultStreamContentType;
+            }
+            else if (useJson)
+            {
+                return JsonMessageEncoderFactory.GetContentType(webEncoding);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         internal virtual IDispatchMessageFormatter GetRequestDispatchFormatter(OperationDescription operationDescription, ServiceEndpoint endpoint)

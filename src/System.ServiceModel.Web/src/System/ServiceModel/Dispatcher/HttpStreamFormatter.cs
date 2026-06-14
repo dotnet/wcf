@@ -8,7 +8,7 @@ using System.ServiceModel.Description;
 
 namespace System.ServiceModel.Dispatcher
 {
-    internal class HttpStreamFormatter : IDispatchMessageFormatter
+    internal class HttpStreamFormatter : IDispatchMessageFormatter, IClientMessageFormatter
     {
         private readonly string _contractName;
         private readonly string _contractNs;
@@ -39,6 +39,21 @@ namespace System.ServiceModel.Dispatcher
                 SingleBodyParameterMessageFormatter.SuppressReplyEntityBody(message);
             }
 
+            return message;
+        }
+
+        public object DeserializeReply(Message message, object[] parameters)
+        {
+            return GetStreamFromMessage(message, false);
+        }
+
+        public Message SerializeRequest(MessageVersion messageVersion, object[] parameters)
+        {
+            Message message = CreateMessageFromStream(parameters[0]);
+            if (parameters[0] == null)
+            {
+                SingleBodyParameterMessageFormatter.SuppressRequestEntityBody(message);
+            }
             return message;
         }
 
