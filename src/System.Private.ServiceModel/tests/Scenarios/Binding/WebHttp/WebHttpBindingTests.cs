@@ -6,6 +6,7 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
 using Infrastructure.Common;
 using Xunit;
@@ -201,5 +202,62 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
         ServiceEndpoint endpoint = factory.Endpoint;
         Assert.NotNull(endpoint);
         Assert.IsType<WebHttpBinding>(endpoint.Binding);
+    }
+
+    // Regression test for the WebHttpBinding wire-URL bug fixed in this
+    // PR. Spin up a local HttpListener and verify that invoking an
+    // operation with a UriTemplate path variable actually goes to the
+    // bound URI (not just the base address).
+    [WcfFact]
+    public static void WebHttpBinding_ActualWireUrl_IsBoundUriTemplate()
+    {
+        int port = 18091;
+        string baseUrl = "http://127.0.0.1:" + port + "/WebHttp.svc/";
+        var listener = new System.Net.HttpListener();
+        listener.Prefixes.Add(baseUrl);
+        string capturedUrl = null;
+        var done = new System.Threading.ManualResetEventSlim();
+        try
+        {
+            listener.Start();
+        }
+        catch (System.Net.HttpListenerException)
+        {
+            // Cannot bind (likely needs admin on Windows); skip silently.
+            return;
+        }
+
+        System.Threading.Tasks.Task.Run(() =>
+        {
+            try
+            {
+                var ctx = listener.GetContext();
+                capturedUrl = ctx.Request.Url.AbsoluteUri;
+                ctx.Response.ContentType = "application/xml";
+                byte[] body = System.Text.Encoding.UTF8.GetBytes(
+                    "<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">Hello-PATH</string>");
+                ctx.Response.OutputStream.Write(body, 0, body.Length);
+                ctx.Response.OutputStream.Close();
+            }
+            catch { }
+            finally { done.Set(); }
+        });
+
+        WebHttpBinding binding = new WebHttpBinding();
+        var factory = new WebChannelFactory<IWcfWebHttpService>(binding, new Uri(baseUrl));
+        IWcfWebHttpService channel = factory.CreateChannel();
+        try
+        {
+            try { channel.EchoWithGetPath("Hello-PATH"); } catch { /* response parsing may fail; we only care about the URL */ }
+            done.Wait(TimeSpan.FromSeconds(10));
+        }
+        finally
+        {
+            try { ((ICommunicationObject)channel).Close(); } catch { }
+            try { factory.Close(); } catch { }
+            try { listener.Stop(); } catch { }
+        }
+
+        Assert.Equal(baseUrl + "EchoWithGetPath/Hello-PATH", capturedUrl);
     }
 }

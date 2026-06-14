@@ -133,6 +133,16 @@ namespace System.ServiceModel.Channels
             return new WebMessageEncodingBindingElement(this);
         }
 
+        public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
+        {
+            return InternalBuildChannelFactory<TChannel>(context);
+        }
+
+        public override bool CanBuildChannelFactory<TChannel>(BindingContext context)
+        {
+            return InternalCanBuildChannelFactory<TChannel>(context);
+        }
+
         public override MessageEncoderFactory CreateMessageEncoderFactory()
         {
             return new WebMessageEncoderFactory(WriteEncoding, MaxReadPoolSize, MaxWritePoolSize, ReaderQuotas, ContentTypeMapper, CrossDomainScriptAccessEnabled);
