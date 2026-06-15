@@ -80,40 +80,37 @@ namespace System.ServiceModel.Channels
                 {
                     try
                     {
-                        while (true)
+                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, Via) { Version = HttpVersion.Version11 };
+
+                        // Override the Host header when the endpoint identity requires it (Kerberos SPN/DNS/UPN scenarios).
+                        if (HttpChannelFactory<IDuplexSessionChannel>.MapIdentity(RemoteAddress, _channelFactory.AuthenticationScheme))
                         {
-                            try
+                            request.Headers.Host = HttpTransportSecurityHelpers.GetIdentityHostHeader(RemoteAddress);
+                        }
+
+                        // These headers were added for WCF specific handshake to avoid encoder or transfermode mismatch between client and server.
+                        // For BinaryMessageEncoder, since we are using a sessionful channel for websocket, the encoder is actually different when
+                        // we are using Buffered or Stramed transfermode. So we need an extra header to identify the transfermode we are using, just
+                        // to make people a little bit easier to diagnose these mismatch issues.
+                        if (_channelFactory.MessageVersion != MessageVersion.None)
+                        {
+                            request.Headers.TryAddWithoutValidation(WebSocketTransportSettings.SoapContentTypeHeader, _channelFactory.WebSocketSoapContentType);
+
+                            if (_channelFactory.MessageEncoderFactory is BinaryMessageEncoderFactory)
                             {
-                                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, Via) { Version = HttpVersion.Version11 };
-
-                                // These headers were added for WCF specific handshake to avoid encoder or transfermode mismatch between client and server.
-                                // For BinaryMessageEncoder, since we are using a sessionful channel for websocket, the encoder is actually different when
-                                // we are using Buffered or Stramed transfermode. So we need an extra header to identify the transfermode we are using, just
-                                // to make people a little bit easier to diagnose these mismatch issues.
-                                if (_channelFactory.MessageVersion != MessageVersion.None)
-                                {
-                                    request.Headers.TryAddWithoutValidation(WebSocketTransportSettings.SoapContentTypeHeader, _channelFactory.WebSocketSoapContentType);
-
-                                    if (_channelFactory.MessageEncoderFactory is BinaryMessageEncoderFactory)
-                                    {
-                                        request.Headers.TryAddWithoutValidation(WebSocketTransportSettings.BinaryEncoderTransferModeHeader, _channelFactory.TransferMode.ToString());
-                                    }
-                                }
-
-                                string secValue = AddWebSocketHeaders(request);
-
-                                Task<HttpResponseMessage> sendTask = invoker is HttpClient client
-                                    ? client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead)
-                                    : invoker.SendAsync(request, CancellationToken.None);
-                                response = await sendTask.ConfigureAwait(false);
-
-                                ValidateResponse(response, secValue);
-                                break;
-                            }
-                            catch (HttpRequestException ex) when (ex.HttpRequestError == HttpRequestError.ExtendedConnectNotSupported || ex.Data.Contains("HTTP2_ENABLED"))
-                            {
+                                request.Headers.TryAddWithoutValidation(WebSocketTransportSettings.BinaryEncoderTransferModeHeader, _channelFactory.TransferMode.ToString());
                             }
                         }
+
+                        string secValue = AddWebSocketHeaders(request);
+
+                        CancellationToken cancellationToken = await helper.GetCancellationTokenAsync();
+                        Task<HttpResponseMessage> sendTask = invoker is HttpClient client
+                            ? client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+                            : invoker.SendAsync(request, cancellationToken);
+                        response = await sendTask.ConfigureAwait(false);
+
+                        ValidateResponse(response, secValue);
 
                         // The SecWebSocketProtocol header is optional.  We should only get it with a non-empty value if we requested subprotocols,
                         // and then it must only be one of the ones we requested.  If we got a subprotocol other than one we requested (or if we
@@ -140,6 +137,12 @@ namespace System.ServiceModel.Channels
                                         SR.Format(SR.net_WebSockets_AcceptUnsupportedProtocol, WebSocketSettings.SubProtocol, string.Join(", ", subprotocolArray)));
                                 }
                             }
+                        }
+
+                        // If the client requested a subprotocol but the server returned none, fail to preserve prior WCF behavior.
+                        if (subprotocol == null && !string.IsNullOrEmpty(WebSocketSettings.SubProtocol))
+                        {
+                            throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(SR.WebSocketInvalidProtocolNotInClientList, string.Empty, WebSocketSettings.SubProtocol)));
                         }
 
                         // Get the response stream and wrap it in a web socket.
@@ -286,6 +289,15 @@ namespace System.ServiceModel.Channels
             bool disposeInvoker = true;
             var handler = new SocketsHttpHandler();
             handler.PooledConnectionLifetime = TimeSpan.Zero;
+
+            // Initialize token providers used for client (HTTP auth) and proxy credentials below.
+            (_webRequestTokenProvider, _webRequestProxyTokenProvider) =
+                await _channelFactory.CreateAndOpenTokenProvidersAsync(
+                    RemoteAddress,
+                    Via,
+                    channelParameterCollection,
+                    helper.RemainingTime());
+
             if (_channelFactory.AllowCookies)
             {
                 var cookieContainerManager = _channelFactory.GetHttpCookieContainerManager();
@@ -333,10 +345,8 @@ namespace System.ServiceModel.Channels
                     _webRequestProxyTokenProvider,
                     helper.RemainingTime());
             }
-            else
-            {
-                handler.UseProxy = false;
-            }
+            // else: leave handler.UseProxy at its default so the system/default proxy
+            // continues to be honored (matches prior ClientWebSocket behavior).
 
             //configure handler.Credentials
             if (credential == CredentialCache.DefaultCredentials || credential == null)
