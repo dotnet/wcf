@@ -537,7 +537,7 @@ namespace SvcutilTest
         [Trait("Category", "Test")]
         [Theory]
         [InlineData("CertificateAuth")]
-        [InlineData("SspiNegoAuthRequireCancelTokenFasle")]
+        [InlineData("SspiNegoAuthRequireCancelTokenFalse")]
         [InlineData("SspiNegoAuthRequireCancelTokenTrue")]
         public void CustomBindingSecurityCodeGenTest(string testCaseName)
         {

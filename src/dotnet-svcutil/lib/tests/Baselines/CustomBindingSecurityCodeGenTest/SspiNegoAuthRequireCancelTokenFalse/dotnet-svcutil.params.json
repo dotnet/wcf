@@ -3,10 +3,10 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/SspiNegoAuthRequireCancelTokenFasle.wsdl"
+      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/SspiNegoAuthRequireCancelTokenFalse.wsdl"
     ],
     "namespaceMappings": [
-      "*, SspiNegoAuthRequireCancelTokenFasle_NS"
+      "*, SspiNegoAuthRequireCancelTokenFalse_NS"
     ],
     "outputFile": "Reference.cs",
     "targetFramework": "N.N",

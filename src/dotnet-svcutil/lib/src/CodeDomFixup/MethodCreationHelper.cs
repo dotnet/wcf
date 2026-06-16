@@ -1172,12 +1172,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 };
             }
 
-            // KerberosOverTransport
-            else if (SecurityBindingElement.IsKerberosBinding(bindingElement))
-            {
-                defaultBindingElement = SecurityBindingElement.CreateKerberosOverTransportBindingElement();
-                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateKerberosOverTransportBindingElement);
-            }
+            // NOTE: KerberosOverTransport is not supported here because:
+            // 1. The released WCF Core client packages do not expose
+            //    CreateKerberosOverTransportBindingElement() or KerberosSecurityTokenParameters.
+            //    Generated client code using these APIs would not compile.
+            // 2. The EndpointSelector validation rejects non-default AlgorithmSuites, and
+            //    CreateKerberosOverTransportBindingElement() uses KerberosDefault (Basic128).
+            // Use SspiNegotiationOverTransport (SPNEGO) for equivalent functionality -- it
+            // negotiates Kerberos when available. Support can be added when the client packages
+            // ship the Kerberos-specific APIs and EndpointSelector is updated accordingly.
 
             // SspiNegotiatedOverTransport
             else if (SecurityBindingElement.IsSspiNegotiationOverTransportBinding(bindingElement, requireCancellation: true))
@@ -1203,7 +1206,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
             else
             {
-                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingElementNotSupportedFormat, bindingElement.GetType()));
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingElementNotSupportedFormat, bindingElement.GetType().FullName));
             }
 
             CodeVariableDeclarationStatement transportSecurityBindingElement = new CodeVariableDeclarationStatement(

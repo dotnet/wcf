@@ -7,12 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SspiNegoAuthRequireCancelTokenFasle_NS
+namespace SspiNegoAuthRequireCancelTokenFalse_NS
 {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SspiNegoAuthRequireCancelTokenFasle_NS.IService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SspiNegoAuthRequireCancelTokenFalse_NS.IService")]
     public interface IService
     {
         
@@ -21,13 +21,14 @@ namespace SspiNegoAuthRequireCancelTokenFasle_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface IServiceChannel : SspiNegoAuthRequireCancelTokenFasle_NS.IService, System.ServiceModel.IClientChannel
+    public interface IServiceChannel : SspiNegoAuthRequireCancelTokenFalse_NS.IService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class ServiceClient : System.ServiceModel.ClientBase<SspiNegoAuthRequireCancelTokenFasle_NS.IService>, SspiNegoAuthRequireCancelTokenFasle_NS.IService
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class ServiceClient : System.ServiceModel.ClientBase<SspiNegoAuthRequireCancelTokenFalse_NS.IService>, SspiNegoAuthRequireCancelTokenFalse_NS.IService
     {
         
         /// <summary>
