@@ -207,9 +207,10 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
     // Regression test for the WebHttpBinding wire-URL bug fixed in this
     // PR. Spin up a local HttpListener and verify that invoking an
     // operation with a UriTemplate path variable actually goes to the
-    // bound URI (not just the base address).
+    // bound URI (not just the base address). Also verifies that the
+    // application/xml reply is deserialized correctly by the client.
     [WcfFact]
-    public static void WebHttpBinding_ActualWireUrl_IsBoundUriTemplate()
+    public static void WebHttpBinding_RoundTripsAgainstLocalHttpListener()
     {
         int port = 18091;
         string baseUrl = "http://127.0.0.1:" + port + "/WebHttp.svc/";
@@ -233,7 +234,7 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
             {
                 var ctx = listener.GetContext();
                 capturedUrl = ctx.Request.Url.AbsoluteUri;
-                ctx.Response.ContentType = "application/xml";
+                ctx.Response.ContentType = "application/xml; charset=utf-8";
                 byte[] body = System.Text.Encoding.UTF8.GetBytes(
                     "<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">Hello-PATH</string>");
                 ctx.Response.OutputStream.Write(body, 0, body.Length);
@@ -246,9 +247,10 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
         WebHttpBinding binding = new WebHttpBinding();
         var factory = new WebChannelFactory<IWcfWebHttpService>(binding, new Uri(baseUrl));
         IWcfWebHttpService channel = factory.CreateChannel();
+        string result = null;
         try
         {
-            try { channel.EchoWithGetPath("Hello-PATH"); } catch { /* response parsing may fail; we only care about the URL */ }
+            result = channel.EchoWithGetPath("Hello-PATH");
             done.Wait(TimeSpan.FromSeconds(10));
         }
         finally
@@ -259,5 +261,6 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
         }
 
         Assert.Equal(baseUrl + "EchoWithGetPath/Hello-PATH", capturedUrl);
+        Assert.Equal("Hello-PATH", result);
     }
 }

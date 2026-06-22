@@ -149,7 +149,23 @@ namespace System.ServiceModel.Channels
                     return true;
                 }
 
-                return RawMessageEncoder.IsContentTypeSupported(contentType) || JsonMessageEncoder.IsContentTypeSupported(contentType) || TextMessageEncoder.IsContentTypeSupported(contentType);
+                // Raw (application/octet-stream pass-through) support is not yet ported, so probe
+                // Json and Text directly to avoid materializing the raw encoder. The raw fallback
+                // path below short-circuits without throwing for non-raw content types.
+                if (JsonMessageEncoder.IsContentTypeSupported(contentType) || TextMessageEncoder.IsContentTypeSupported(contentType))
+                {
+                    return true;
+                }
+
+                return IsRawContentType(contentType);
+            }
+
+            private static bool IsRawContentType(string contentType)
+            {
+                // Mirrors ByteStreamMessageEncoder.IsContentTypeSupported semantics so callers
+                // can determine support without instantiating the (unported) raw encoder.
+                return !string.IsNullOrEmpty(contentType)
+                    && contentType.StartsWith("application/octet-stream", StringComparison.OrdinalIgnoreCase);
             }
 
             public override Message ReadMessage(ArraySegment<byte> buffer, BufferManager bufferManager, string contentType)
