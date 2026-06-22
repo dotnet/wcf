@@ -263,4 +263,57 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
         Assert.Equal(baseUrl + "EchoWithGetPath/Hello-PATH", capturedUrl);
         Assert.Equal("Hello-PATH", result);
     }
+
+    // Regression test for the JSON reply-deserialization path: when an
+    // operation declares ResponseFormat=Json, the client must use the JSON
+    // formatter to read the body, not DataContractSerializer.
+    [WcfFact]
+    public static void WebHttpBinding_JsonReply_RoundTripsAgainstLocalHttpListener()
+    {
+        int port = 18092;
+        string baseUrl = "http://127.0.0.1:" + port + "/WebHttp.svc/";
+        var listener = new System.Net.HttpListener();
+        listener.Prefixes.Add(baseUrl);
+        var done = new System.Threading.ManualResetEventSlim();
+        try
+        {
+            listener.Start();
+        }
+        catch (System.Net.HttpListenerException)
+        {
+            return;
+        }
+
+        System.Threading.Tasks.Task.Run(() =>
+        {
+            try
+            {
+                var ctx = listener.GetContext();
+                ctx.Response.ContentType = "application/json; charset=utf-8";
+                byte[] body = System.Text.Encoding.UTF8.GetBytes("\"Hello-JSON\"");
+                ctx.Response.OutputStream.Write(body, 0, body.Length);
+                ctx.Response.OutputStream.Close();
+            }
+            catch { }
+            finally { done.Set(); }
+        });
+
+        WebHttpBinding binding = new WebHttpBinding();
+        var factory = new WebChannelFactory<IWcfWebHttpService>(binding, new Uri(baseUrl));
+        IWcfWebHttpService channel = factory.CreateChannel();
+        string result = null;
+        try
+        {
+            result = channel.EchoWithGetJson("Hello-JSON");
+            done.Wait(TimeSpan.FromSeconds(10));
+        }
+        finally
+        {
+            try { ((ICommunicationObject)channel).Close(); } catch { }
+            try { factory.Close(); } catch { }
+            try { listener.Stop(); } catch { }
+        }
+
+        Assert.Equal("Hello-JSON", result);
+    }
 }

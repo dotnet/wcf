@@ -377,9 +377,10 @@ namespace System.ServiceModel.Description
             }
             WebMessageBodyStyle style = GetBodyStyle(operationDescription);
             Type parameterType;
-            if (UseBareReplyFormatter(style, operationDescription, GetResponseFormat(operationDescription), out parameterType))
+            WebMessageFormat responseFormat = GetResponseFormat(operationDescription);
+            if (UseBareReplyFormatter(style, operationDescription, responseFormat, out parameterType))
             {
-                return SingleBodyParameterMessageFormatter.CreateXmlAndJsonClientFormatter(operationDescription, parameterType, false, _xmlSerializerManager);
+                return SingleBodyParameterMessageFormatter.CreateXmlAndJsonClientFormatter(operationDescription, parameterType, false, _xmlSerializerManager, responseFormat == WebMessageFormat.Json);
             }
             else
             {

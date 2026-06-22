@@ -51,19 +51,14 @@ namespace System.ServiceModel.Dispatcher
             return xmlFormatter;
         }
 
-        public static IClientMessageFormatter CreateXmlAndJsonClientFormatter(OperationDescription operation, Type type, bool isRequestFormatter, UnwrappedTypesXmlSerializerManager xmlSerializerManager)
+        public static IClientMessageFormatter CreateXmlAndJsonClientFormatter(OperationDescription operation, Type type, bool isRequestFormatter, UnwrappedTypesXmlSerializerManager xmlSerializerManager, bool preferJson = false)
         {
-            IClientMessageFormatter xmlFormatter = CreateClientFormatter(operation, type, isRequestFormatter, false, xmlSerializerManager);
-            if (!WebHttpBehavior.SupportsJsonFormat(operation))
-            {
-                return xmlFormatter;
-            }
-            // DemultiplexingClientMessageFormatter is needed to switch on incoming Content-Type;
-            // without it we cannot deserialize JSON replies. For the client-only port we still
-            // return the XML formatter as the default - JSON responses on the wire are surfaced
-            // via the format mapping on WebHttpBinding when the operation explicitly opts into
-            // WebMessageFormat.Json via the [WebGet]/[WebInvoke] attribute.
-            return xmlFormatter;
+            // The .NET Framework implementation builds a DemultiplexingClientMessageFormatter
+            // here that picks XML or JSON based on the actual response Content-Type. That class
+            // has not yet been ported to dotnet/wcf, so for now we honour the static choice
+            // declared on the operation's [WebGet]/[WebInvoke] ResponseFormat attribute.
+            bool useJson = preferJson && WebHttpBehavior.SupportsJsonFormat(operation);
+            return CreateClientFormatter(operation, type, isRequestFormatter, useJson, xmlSerializerManager);
         }
 
         public Message SerializeRequest(MessageVersion messageVersion, object[] parameters)
