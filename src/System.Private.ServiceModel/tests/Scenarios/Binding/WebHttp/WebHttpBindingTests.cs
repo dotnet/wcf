@@ -58,6 +58,7 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]
+    [Condition(nameof(Run_With_CoreWCFService))]
     public static void DefaultSettings_EchoWithGet_Xml_RoundTrips_String()
     {
         WebChannelFactory<IWcfWebHttpService> factory = null;
@@ -90,6 +91,7 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
 
     [WcfFact]
     [OuterLoop]
+    [Condition(nameof(Run_With_CoreWCFService))]
     public static void DefaultSettings_EchoWithGetJson_Json_RoundTrips_String()
     {
         WebChannelFactory<IWcfWebHttpService> factory = null;
@@ -118,6 +120,7 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
 
     [WcfFact]
     [OuterLoop]
+    [Condition(nameof(Run_With_CoreWCFService))]
     public static void DefaultSettings_EchoWithPost_Xml_RoundTrips_String()
     {
         WebChannelFactory<IWcfWebHttpService> factory = null;
@@ -146,6 +149,7 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
 
     [WcfFact]
     [OuterLoop]
+    [Condition(nameof(Run_With_CoreWCFService))]
     public static void DefaultSettings_EchoWithGetPath_PathVar_RoundTrips_String()
     {
         WebChannelFactory<IWcfWebHttpService> factory = null;
