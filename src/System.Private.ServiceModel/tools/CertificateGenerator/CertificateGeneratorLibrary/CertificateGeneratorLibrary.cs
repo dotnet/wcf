@@ -16,9 +16,47 @@ public class CertificateGeneratorLibrary
 
     private static string s_fqdn = Dns.GetHostEntry("127.0.0.1").HostName;
     private static string s_hostname = Dns.GetHostEntry("127.0.0.1").HostName.Split('.')[0];
+
+    // The SubjectCanonicalName{DomainName,Fqdn} certificates are used by tests that assert a
+    // NEGATIVE identity check: a client connecting to "localhost" must be rejected because the
+    // server certificate's CN is a different name. On Windows, Dns.GetHostEntry("127.0.0.1")
+    // returns the machine name, which satisfies this. On Linux/macOS it returns "localhost",
+    // making those certs indistinguishable from the localhost cert and breaking the tests.
+    // Resolve a non-localhost canonical name from the machine name on non-Windows platforms.
+    // These values are used ONLY for the canonical-name certs; the CRL URI and all other certs
+    // continue to use s_fqdn/s_hostname so localhost-based CRL fetch and TLS keep working.
+    private static string s_canonicalFqdn = GetCanonicalFqdn();
+    private static string s_canonicalHostname = s_canonicalFqdn.Split('.')[0];
+
     private static string s_testserverbase = string.Empty;
     private static string s_crlFileLocation = string.Empty;
     private static TimeSpan s_validatePeriod;
+
+    private static string GetCanonicalFqdn()
+    {
+        if (CertificateHelper.CurrentOperatingSystem.IsWindows())
+        {
+            return Dns.GetHostEntry("127.0.0.1").HostName;
+        }
+
+        // On Linux/macOS, "127.0.0.1" resolves to "localhost"; use the machine name instead so
+        // that the canonical-name certificates carry a name distinct from "localhost".
+        try
+        {
+            string resolved = Dns.GetHostEntry(Environment.MachineName).HostName;
+            if (!string.IsNullOrEmpty(resolved) &&
+                !string.Equals(resolved, "localhost", StringComparison.OrdinalIgnoreCase))
+            {
+                return resolved;
+            }
+        }
+        catch
+        {
+            // Name may not be resolvable in some sandboxes; fall back to the raw machine name below.
+        }
+
+        return Environment.MachineName;
+    }
 
     private static void RemoveCertificatesFromStore(StoreName storeName, StoreLocation storeLocation)
     {
@@ -114,7 +152,7 @@ public class CertificateGeneratorLibrary
         certificateCreationSettings = new CertificateCreationSettings()
         {
             FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameDomainNameResource",
-            Subject = s_hostname,
+            Subject = s_canonicalHostname,
             SubjectAlternativeNames = new string[0],
             ValidityType = CertificateValidityType.NonAuthoritativeForMachine
         };
@@ -124,7 +162,7 @@ public class CertificateGeneratorLibrary
         certificateCreationSettings = new CertificateCreationSettings()
         {
             FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdnResource",
-            Subject = s_fqdn,
+            Subject = s_canonicalFqdn,
             SubjectAlternativeNames = new string[0],
             ValidityType = CertificateValidityType.NonAuthoritativeForMachine
         };
