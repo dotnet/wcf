@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="CoreWCF.Http" Version="1.8.0" />
     <PackageReference Include="CoreWCF.NetTcp" Version="1.8.0" />
-    <PackageReference Include="CoreWCF.Primitives" Version="1.8.0" />
+    <PackageReference Include="CoreWCF.Primitives" Version="1.8.1" />
     <PackageReference Include="CoreWCF.WebHttp" Version="1.8.0" />
     <PackageReference Include="idunno.Authentication.Basic" Version="2.4.0" />
   </ItemGroup>
