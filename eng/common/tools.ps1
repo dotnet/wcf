@@ -13,6 +13,12 @@
 # Set to true to output binary log from msbuild. Note that emitting binary log slows down the build.
 [bool]$binaryLog = if (Test-Path variable:binaryLog) { $binaryLog } else { $ci -and !$excludeCIBinarylog }
 
+# Set to true to use the pipelines logger which will enable Azure logging output.
+# https://github.com/Microsoft/azure-pipelines-tasks/blob/master/docs/authoring/commands.md
+# This flag is meant as a temporary opt-in for the feature while validating it across
+# our consumers. It will be deleted in the future.
+[bool]$pipelinesLog = if (Test-Path variable:pipelinesLog) { $pipelinesLog } else { $ci }
+
 # Turns on machine preparation/clean up code that changes the machine state (e.g. kills build processes).
 [bool]$prepareMachine = if (Test-Path variable:prepareMachine) { $prepareMachine } else { $false }
 
@@ -774,6 +780,19 @@ function MSBuild() {
   }
 
   $buildTool = InitializeBuildTool
+
+  if ($pipelinesLog) {
+    $toolsetBuildProject = InitializeToolset
+    $basePath = Split-Path -parent $toolsetBuildProject
+    $selectedPath = Join-Path $basePath (Join-Path 'net' 'Microsoft.DotNet.ArcadeLogging.dll')
+
+    # Only inject the logger when it's present. A last-known-good Arcade used to bootstrap
+    # the build may not ship the logger yet, so its absence must not be a hard error.
+    # Specify the logger type explicitly so loading is deterministic.
+    if (Test-Path $selectedPath) {
+      $args += "/logger:Microsoft.DotNet.ArcadeLogging.PipelinesLogger,$selectedPath"
+    }
+  }
 
   $cmdArgs = "$($buildTool.Command) /m /nologo /clp:Summary /v:$verbosity /nr:$nodeReuse /p:ContinuousIntegrationBuild=$ci"
 
