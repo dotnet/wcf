@@ -8,6 +8,16 @@ ci=${ci:-false}
 # Build mode
 source_build=${source_build:-false}
 
+# Set to true to use the pipelines logger which will enable Azure logging output.
+# https://github.com/Microsoft/azure-pipelines-tasks/blob/master/docs/authoring/commands.md
+# This flag is meant as a temporary opt-in for the feature while validating it across
+# our consumers. It will be deleted in the future.
+if [[ "$ci" == true ]]; then
+  pipelines_log=${pipelines_log:-true}
+else
+  pipelines_log=${pipelines_log:-false}
+fi
+
 # Build configuration. Common values include 'Debug' and 'Release', but the repository may use other names.
 configuration=${configuration:-'Debug'}
 
@@ -510,6 +520,21 @@ function MSBuild {
 
   InitializeBuildTool
 
+  local logger_switch=()
+  if [[ "$pipelines_log" == true ]]; then
+    InitializeToolset
+
+    local toolset_dir="${_InitializeToolset%/*}"
+    local selectedPath="$toolset_dir/net/Microsoft.DotNet.ArcadeLogging.dll"
+
+    # Only inject the logger when it's present. A last-known-good Arcade used to bootstrap
+    # the build may not ship the logger yet, so its absence must not be a hard error.
+    # Specify the logger type explicitly so loading is deterministic.
+    if [[ -f "$selectedPath" ]]; then
+      logger_switch=("-logger:Microsoft.DotNet.ArcadeLogging.PipelinesLogger,$selectedPath")
+    fi
+  fi
+
   local warnaserror_switch=""
   if [[ $warn_as_error == true ]]; then
     warnaserror_switch="/warnaserror"
@@ -548,7 +573,7 @@ function MSBuild {
     warnnotaserror_switch="/warnnotaserror:$warn_not_as_error /p:AdditionalWarningsNotAsErrors=$warn_not_as_error"
   fi
 
-  RunBuildTool "$_InitializeBuildToolCommand" /m /nologo /clp:Summary /v:$verbosity /nr:$node_reuse $warnaserror_switch $mt_switch $warnnotaserror_switch /p:TreatWarningsAsErrors=$warn_as_error /p:ContinuousIntegrationBuild=$ci "$@"
+  RunBuildTool "$_InitializeBuildToolCommand" /m /nologo /clp:Summary /v:$verbosity /nr:$node_reuse $warnaserror_switch $mt_switch $warnnotaserror_switch "${logger_switch[@]}" /p:TreatWarningsAsErrors=$warn_as_error /p:ContinuousIntegrationBuild=$ci "$@"
 }
 
 function GetDarc {
