@@ -78,6 +78,8 @@ runtime_source_feed_key=${runtime_source_feed_key:-''}
 # True when the build is running within the VMR.
 from_vmr=${from_vmr:-false}
 
+disable_pipeline_set_result=${disable_pipeline_set_result:-false}
+
 # Resolve any symlinks in the given path.
 function ResolvePath {
   local path=$1
@@ -452,7 +454,16 @@ function InitializeToolset {
   if [[ -n "$nuget_config" ]]; then
     download_args+=("--configfile" "$nuget_config")
   fi
-  DotNet "${download_args[@]}"
+
+  # 'dotnet package download' fails outright if any source in the repo's NuGet.config is
+  # unavailable (for example a transport feed that was decommissioned after a release). The
+  # Arcade SDK is always published to the public dotnet-eng feed, so if the config-driven
+  # download fails, retry once against that feed directly (which ignores the other sources)
+  # before giving up, so a single dead source doesn't block the build.
+  if ! DotNet true "${download_args[@]}"; then
+    echo "Restoring the Arcade SDK from the configured sources failed; retrying from the public dotnet-eng feed."
+    DotNet "${download_args[@]}" --source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json"
+  fi
 
   local package_dir="$_InitializeNuGetPackageCachePath/microsoft.dotnet.arcade.sdk/$toolset_version"
 
@@ -491,6 +502,15 @@ function StopProcesses {
 }
 
 function DotNet {
+  # When the first argument is 'true' or 'false' it controls the exit behavior on failure:
+  # 'true' returns the dotnet exit code to the caller (so it can implement its own fallback),
+  # while the default terminates the script. Any other first argument is treated as a dotnet argument.
+  local ignore_failure=false
+  if [[ "$1" == 'true' || "$1" == 'false' ]]; then
+    ignore_failure="$1"
+    shift
+  fi
+
   InitializeDotNetCli $restore
 
   local dotnet_path="$_InitializeDotNetCli/dotnet"
@@ -499,9 +519,14 @@ function DotNet {
 
   "$dotnet_path" "$@" || {
     local exit_code=$?
+
+    if [[ "$ignore_failure" == true ]]; then
+      return $exit_code
+    fi
+
     echo "dotnet command failed with exit code $exit_code. Check errors above."
 
-    if [[ "$ci" == true && -n ${SYSTEM_TEAMPROJECT:-} && "$from_vmr" != true ]]; then
+    if [[ "$ci" == true && -n ${SYSTEM_TEAMPROJECT:-} && "$from_vmr" != true && "$disable_pipeline_set_result" != true ]]; then
       Write-PipelineSetResult -result "Failed" -message "dotnet command execution failed."
       ExitWithExitCode 0
     else
@@ -550,8 +575,8 @@ function MSBuild {
       echo "Build failed with exit code $exit_code. Check errors above."
 
       # When running on Azure Pipelines, override the returned exit code to avoid double logging.
-      # Skip this when the build is a child of the VMR build.
-      if [[ "$ci" == true && -n ${SYSTEM_TEAMPROJECT:-} && "$from_vmr" != true ]]; then
+      # Skip this when the build is a child of the VMR build, or when -disablePipelineSetResult is set so the real exit code propagates.
+      if [[ "$ci" == true && -n ${SYSTEM_TEAMPROJECT:-} && "$from_vmr" != true && "$disable_pipeline_set_result" != true ]]; then
         Write-PipelineSetResult -result "Failed" -message "msbuild execution failed."
         # Exiting with an exit code causes the azure pipelines task to log yet another "noise" error
         # The above Write-PipelineSetResult will cause the task to be marked as failure without adding yet another error
