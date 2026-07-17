@@ -172,6 +172,12 @@ public partial class HttpsTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    // macOS SecTrust cannot obtain a positive revocation response for a private
+    // CA under X509RevocationMode.Online (dotnet/runtime#31249), so a ChainTrust
+    // validation of the server cert fails on macOS. This test's purpose is the
+    // ChainTrust validation itself, so it is skipped on macOS rather than having
+    // its revocation check disabled.
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]

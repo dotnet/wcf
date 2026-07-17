@@ -36,6 +36,15 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
             clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            // macOS SecTrust cannot obtain a positive revocation response for a
+            // private CA (dotnet/runtime#31249); the transport-cert revocation
+            // check is incidental to this message-credential scenario, so skip
+            // it on macOS only.
+            if (OSID.OSX.MatchesCurrent())
+            {
+                factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
+            }
+
             factory.Credentials.ClientCertificate.SetCertificate(
                 StoreLocation.CurrentUser,
                 StoreName.My,
@@ -83,6 +92,15 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_SecModeTransWithMessCred_ClientCredTypeUserName));
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            // macOS SecTrust cannot obtain a positive revocation response for a
+            // private CA (dotnet/runtime#31249); the transport-cert revocation
+            // check is incidental to this message-credential scenario, so skip
+            // it on macOS only.
+            if (OSID.OSX.MatchesCurrent())
+            {
+                factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
+            }
+
             username = Guid.NewGuid().ToString("n").Substring(0, 8);
             char[] usernameArr = username.ToCharArray();
             Array.Reverse(usernameArr);
