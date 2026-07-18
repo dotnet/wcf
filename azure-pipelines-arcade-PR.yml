@@ -60,7 +60,6 @@ stages:
       helixRepo: dotnet/wcf
       jobs:
       - job: Windows
-        condition: false  # TEMP: macos-cert-issue branch — skip Windows leg for faster iteration on macOS-only changes
         timeoutInMinutes: 90
         pool:
           ${{ if eq(variables._RunAsPublic, True) }}:
@@ -143,7 +142,6 @@ stages:
       # Only build and test Linux in PR and CI builds.
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: Linux
-          condition: false  # TEMP: macos-cert-issue branch — skip Linux leg for faster iteration on macOS-only changes
           timeoutInMinutes: 90
           container: ubuntu_2204
           pool:

@@ -197,48 +197,29 @@ namespace WcfTestCommon
                 // than "-p ssl" which constrains trust to the sslServer policy only. Without -p
                 // SecTrust treats the root as a universal trust anchor.
                 // -k System.keychain: store the cert in the system keychain.
-                var psi = new ProcessStartInfo
-                {
-                    FileName = "sudo",
-                    Arguments = string.Format(
-                        "-n security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"{0}\"",
-                        tempFile),
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false
-                };
+                // add-trusted-cert -d writes to the admin trust domain via SecTrustSettings, which
+                // on headless macOS CI runners intermittently fails with "SecTrustSettingsSet-
+                // TrustSettings: The authorization was denied since no user interaction was
+                // possible." The failure is transient, so retry a few times with a short backoff.
+                string addTrustedArgs = string.Format(
+                    "-n security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"{0}\"",
+                    tempFile);
 
-                // add-trusted-cert -d writes to the admin trust domain via SecTrustSettings,
-                // which on headless macOS CI runners intermittently fails with
-                // "SecTrustSettingsSetTrustSettings: The authorization was denied since no user
-                // interaction was possible." The failure is transient, so retry a few times with
-                // a short backoff before giving up.
                 const int maxAttempts = 5;
                 for (int attempt = 1; attempt <= maxAttempts; attempt++)
                 {
-                    using (var process = Process.Start(psi))
+                    string stdout, stderr;
+                    int exitCode = RunProcess("sudo", addTrustedArgs, 30000, out stdout, out stderr);
+                    if (exitCode == 0)
                     {
-                        process.StandardOutput.ReadToEnd();
-                        string stderr = process.StandardError.ReadToEnd();
-                        process.WaitForExit(30000);
-
-                        if (process.ExitCode == 0)
-                        {
-                            Console.WriteLine("[CertificateHelper] Added root cert to macOS System.keychain admin trust domain.");
-
-                            // Force trustd to synchronously commit/reload the admin trust domain
-                            // that add-trusted-cert just wrote. The reload is otherwise async, so
-                            // the first SecTrustEvaluate (used by .NET's X509Chain on macOS) can
-                            // race against it and report UntrustedRoot. These blocking `security`
-                            // calls do not return until trustd has the new trust settings.
-                            SettleMacOSTrust(tempFile);
-                            return true;
-                        }
-
-                        Console.Error.WriteLine(string.Format(
-                            "[CertificateHelper] sudo security add-trusted-cert failed (attempt {0}/{1}, exit {2}): {3}",
-                            attempt, maxAttempts, process.ExitCode, stderr));
+                        Console.WriteLine("[CertificateHelper] Added root cert to macOS System.keychain admin trust domain.");
+                        SettleMacOSTrust(tempFile);
+                        return true;
                     }
+
+                    Console.Error.WriteLine(string.Format(
+                        "[CertificateHelper] sudo security add-trusted-cert failed (attempt {0}/{1}, exit {2}): {3}",
+                        attempt, maxAttempts, exitCode, stderr));
 
                     if (attempt < maxAttempts)
                     {
@@ -274,65 +255,58 @@ namespace WcfTestCommon
         /// Blocks until trustd has committed the admin trust domain written by
         /// add-trusted-cert. Running synchronous `security` operations that consult the
         /// trust store forces trustd to finish reloading before we proceed, which prevents
-        /// the first macOS X509Chain build from racing and reporting UntrustedRoot.
+        /// the first macOS X509Chain build from racing and reporting UntrustedRoot. This is a
+        /// best-effort barrier, so command results are intentionally ignored.
         /// </summary>
         private static void SettleMacOSTrust(string rootCertFile)
         {
-            RunSecurityQuiet("trust-settings-export -d /tmp/wcf-trust-admin.plist");
-            RunSecurityQuiet("verify-cert -c \"" + rootCertFile + "\" -p ssl");
+            string stdout, stderr;
+            RunProcess("security", "trust-settings-export -d /tmp/wcf-trust-admin.plist", 15000, out stdout, out stderr);
+            RunProcess("security", "verify-cert -c \"" + rootCertFile + "\" -p ssl", 15000, out stdout, out stderr);
         }
 
-        // Runs a `security` subcommand synchronously and discards its output. Used only as
-        // a trust-settle barrier (see SettleMacOSTrust); failures are intentionally ignored.
-        private static void RunSecurityQuiet(string arguments)
+        // Runs a `security` subcommand, logs a diagnostic on non-zero exit, and returns its stdout.
+        private static string RunSecurityCommand(string arguments)
         {
+            string stdout, stderr;
+            int exitCode = RunProcess("security", arguments, 30000, out stdout, out stderr);
+            if (exitCode != 0)
+            {
+                Console.Error.WriteLine(string.Format("[CertificateHelper] security {0} failed (exit code {1}): {2}",
+                    arguments, exitCode, stderr));
+            }
+
+            return stdout;
+        }
+
+        // Core process runner for all `security` / `sudo` invocations. Captures stdout/stderr and
+        // returns the process exit code, or -1 if the process could not be started or timed out.
+        private static int RunProcess(string fileName, string arguments, int timeoutMilliseconds, out string stdout, out string stderr)
+        {
+            stdout = string.Empty;
+            stderr = string.Empty;
             try
             {
                 var psi = new ProcessStartInfo
                 {
-                    FileName = "security",
+                    FileName = fileName,
                     Arguments = arguments,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false
                 };
-                using (var p = Process.Start(psi))
+                using (var process = Process.Start(psi))
                 {
-                    p.StandardOutput.ReadToEnd();
-                    p.StandardError.ReadToEnd();
-                    p.WaitForExit(15000);
+                    stdout = process.StandardOutput.ReadToEnd();
+                    stderr = process.StandardError.ReadToEnd();
+                    process.WaitForExit(timeoutMilliseconds);
+                    return process.ExitCode;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Best-effort settle barrier; ignore failures.
-            }
-        }
-
-        private static string RunSecurityCommand(string arguments)
-        {
-            var psi = new ProcessStartInfo
-            {
-                FileName = "security",
-                Arguments = arguments,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false
-            };
-
-            using (var process = Process.Start(psi))
-            {
-                string stdout = process.StandardOutput.ReadToEnd();
-                string stderr = process.StandardError.ReadToEnd();
-                process.WaitForExit(30000);
-
-                if (process.ExitCode != 0)
-                {
-                    Console.Error.WriteLine(string.Format("[CertificateHelper] security {0} failed (exit code {1}): {2}",
-                        arguments, process.ExitCode, stderr));
-                }
-
-                return stdout;
+                stderr = ex.Message;
+                return -1;
             }
         }
     }
