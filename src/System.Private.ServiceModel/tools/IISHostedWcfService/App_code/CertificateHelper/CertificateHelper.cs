@@ -208,24 +208,45 @@ namespace WcfTestCommon
                     UseShellExecute = false
                 };
 
-                using (var process = Process.Start(psi))
+                // add-trusted-cert -d writes to the admin trust domain via SecTrustSettings,
+                // which on headless macOS CI runners intermittently fails with
+                // "SecTrustSettingsSetTrustSettings: The authorization was denied since no user
+                // interaction was possible." The failure is transient, so retry a few times with
+                // a short backoff before giving up.
+                const int maxAttempts = 5;
+                for (int attempt = 1; attempt <= maxAttempts; attempt++)
                 {
-                    string stdout = process.StandardOutput.ReadToEnd();
-                    string stderr = process.StandardError.ReadToEnd();
-                    process.WaitForExit(30000);
-
-                    if (process.ExitCode != 0)
+                    using (var process = Process.Start(psi))
                     {
+                        process.StandardOutput.ReadToEnd();
+                        string stderr = process.StandardError.ReadToEnd();
+                        process.WaitForExit(30000);
+
+                        if (process.ExitCode == 0)
+                        {
+                            Console.WriteLine("[CertificateHelper] Added root cert to macOS System.keychain admin trust domain.");
+
+                            // Force trustd to synchronously commit/reload the admin trust domain
+                            // that add-trusted-cert just wrote. The reload is otherwise async, so
+                            // the first SecTrustEvaluate (used by .NET's X509Chain on macOS) can
+                            // race against it and report UntrustedRoot. These blocking `security`
+                            // calls do not return until trustd has the new trust settings.
+                            SettleMacOSTrust(tempFile);
+                            return true;
+                        }
+
                         Console.Error.WriteLine(string.Format(
-                            "[CertificateHelper] sudo security add-trusted-cert failed (exit {0}): {1}",
-                            process.ExitCode, stderr));
-                        return false;
+                            "[CertificateHelper] sudo security add-trusted-cert failed (attempt {0}/{1}, exit {2}): {3}",
+                            attempt, maxAttempts, process.ExitCode, stderr));
                     }
 
-                    Console.WriteLine("[CertificateHelper] Added root cert to macOS System.keychain admin trust domain.");
-
-                    return true;
+                    if (attempt < maxAttempts)
+                    {
+                        System.Threading.Thread.Sleep(2000);
+                    }
                 }
+
+                return false;
             }
             finally
             {
@@ -246,6 +267,45 @@ namespace WcfTestCommon
                 RunSecurityCommand(string.Format("delete-keychain \"{0}\"", s_macOSKeychainPath));
                 s_macOSKeychainInitialized = false;
                 Trace.WriteLine("[CertificateHelper] macOS keychain deleted.");
+            }
+        }
+
+        /// <summary>
+        /// Blocks until trustd has committed the admin trust domain written by
+        /// add-trusted-cert. Running synchronous `security` operations that consult the
+        /// trust store forces trustd to finish reloading before we proceed, which prevents
+        /// the first macOS X509Chain build from racing and reporting UntrustedRoot.
+        /// </summary>
+        private static void SettleMacOSTrust(string rootCertFile)
+        {
+            RunSecurityQuiet("trust-settings-export -d /tmp/wcf-trust-admin.plist");
+            RunSecurityQuiet("verify-cert -c \"" + rootCertFile + "\" -p ssl");
+        }
+
+        // Runs a `security` subcommand synchronously and discards its output. Used only as
+        // a trust-settle barrier (see SettleMacOSTrust); failures are intentionally ignored.
+        private static void RunSecurityQuiet(string arguments)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "security",
+                    Arguments = arguments,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false
+                };
+                using (var p = Process.Start(psi))
+                {
+                    p.StandardOutput.ReadToEnd();
+                    p.StandardError.ReadToEnd();
+                    p.WaitForExit(15000);
+                }
+            }
+            catch
+            {
+                // Best-effort settle barrier; ignore failures.
             }
         }
 

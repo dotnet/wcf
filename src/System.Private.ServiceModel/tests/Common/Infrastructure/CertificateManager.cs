@@ -262,7 +262,27 @@ namespace Infrastructure.Common
                 sb.AppendLine("-----END CERTIFICATE-----");
                 File.WriteAllText(pemPath, sb.ToString());
 
-                RunSecurity("sudo", "-n security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"" + pemPath + "\"");
+                // add-trusted-cert -d writes to the admin trust domain via SecTrustSettings,
+                // which on headless macOS CI runners intermittently fails with
+                // "SecTrustSettingsSetTrustSettings: The authorization was denied since no user
+                // interaction was possible." The failure is transient, so retry a few times with
+                // a short backoff; without a trusted root every TLS test would fail with
+                // UntrustedRoot.
+                const int maxAttempts = 5;
+                for (int attempt = 1; attempt <= maxAttempts; attempt++)
+                {
+                    int rc = RunSecurity("sudo", "-n security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"" + pemPath + "\"");
+                    if (rc == 0)
+                    {
+                        break;
+                    }
+
+                    Console.WriteLine($"[CertificateManager] add-trusted-cert attempt {attempt}/{maxAttempts} failed (exit {rc})" + (attempt < maxAttempts ? "; retrying after 2s..." : "."));
+                    if (attempt < maxAttempts)
+                    {
+                        System.Threading.Thread.Sleep(2000);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -274,7 +294,7 @@ namespace Infrastructure.Common
             }
         }
 
-        private static void RunSecurity(string fileName, string arguments)
+        private static int RunSecurity(string fileName, string arguments)
         {
             try
             {
@@ -295,11 +315,13 @@ namespace Infrastructure.Common
                     Console.WriteLine($"[CertificateManager] {fileName} {arguments} exit={p.ExitCode}");
                     if (!string.IsNullOrEmpty(stdout)) Console.WriteLine("[CertificateManager] stdout: " + stdout);
                     if (!string.IsNullOrEmpty(stderr)) Console.WriteLine("[CertificateManager] stderr: " + stderr);
+                    return p.ExitCode;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[CertificateManager] Failed to run '{fileName} {arguments}': {ex}");
+                return -1;
             }
         }
 
