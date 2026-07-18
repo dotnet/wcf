@@ -47,7 +47,7 @@ public class PullRequestHandler : IHttpHandler
     // Paths (relative to the repo root) whose content drives certificate generation.
     // Whenever any of these change between PR syncs we re-run the certificate
     // generator so that wcfcoresrv23 serves certs minted from the PR's code
-    // (e.g. AIA / OCSP fields). See dotnet/wcf#2870.
+    // (e.g. AIA / CRL fields). See dotnet/wcf#2870.
     private static readonly string[] _certSourcePaths = new[]
     {
         "src/System.Private.ServiceModel/tools/CertificateGenerator",
@@ -183,7 +183,7 @@ public class PullRequestHandler : IHttpHandler
         else
         {
             // Sync succeeded. If the PR changed certificate-related sources, re-mint server
-            // certs so that AIA / OCSP / CRL artifacts on wcfcoresrv23 match the PR's code.
+            // certs so that AIA / CRL artifacts on wcfcoresrv23 match the PR's code.
             // Failure here is logged but does NOT fail the sync request - tests will then
             // run against the previously-installed certs and surface the problem themselves.
             try
@@ -509,7 +509,7 @@ public class PullRequestHandler : IHttpHandler
             return false;
         }
 
-        // 3) Run CertificateGenerator (mints root + leaf certs, writes test.crl and test.ocsp).
+        // 3) Run CertificateGenerator (mints root + leaf certs, writes test.crl).
         if (!RunProcess(certGenExe, "", _wcfTestDir, result)) return false;
 
         // 4) Bind the new cert to the HTTPS port.

@@ -558,12 +558,7 @@ namespace WcfTestCommon
             {
                 updateTime = _defaultValidityNotBefore;
             }
-            // Use a long-horizon nextUpdate (30 days) so trustd on macOS doesn't
-            // refetch (or treat the cached CRL as stale) over the lifetime of a
-            // CI run. The validity window of the issued certs already bounds the
-            // useful lifetime; a long nextUpdate just keeps Apple's CRL cache
-            // happy. (dotnet/wcf#2870)
-            DateTime nextUpdate = now.Add(TimeSpan.FromDays(30));
+            DateTime nextUpdate = now.Add(_validityPeriod);
 
             CertificateRevocationListBuilder builder = new CertificateRevocationListBuilder();
             foreach (KeyValuePair<string, DateTime> kvp in s_revokedCertificates)
