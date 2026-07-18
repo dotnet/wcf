@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System;
@@ -112,8 +112,6 @@ namespace WcfTestCommon
         /// <summary>
         /// Imports a PFX (PKCS12) file into the macOS custom keychain
         /// using the 'security import' CLI, avoiding user interaction prompts.
-        /// Also runs an X509Chain.Build diagnostic against the leaf cert so we can
-        /// see how SecTrust evaluates it post-import.
         /// </summary>
         public static bool ImportCertToMacOSKeychain(byte[] pfxBytes, string pfxPassword)
         {
@@ -130,105 +128,6 @@ namespace WcfTestCommon
                     tempFile, s_macOSKeychainPath, pfxPassword));
 
                 Trace.WriteLine("[CertificateHelper] Imported PFX to macOS keychain.");
-
-                // Diagnostic: build chain against the leaf cert and dump status.
-                try
-                {
-                    #pragma warning disable SYSLIB0057
-                    var leaf = new X509Certificate2(pfxBytes, pfxPassword);
-                    #pragma warning restore SYSLIB0057
-                    foreach (var mode in new[] { X509RevocationMode.NoCheck, X509RevocationMode.Online })
-                    {
-                        using (var chain = new X509Chain())
-                        {
-                            chain.ChainPolicy.RevocationMode = mode;
-                            bool ok = chain.Build(leaf);
-                            Console.WriteLine("[CertificateHelper][diag-leaf] subject='" + leaf.Subject + "' thumb=" + leaf.Thumbprint + " RevocationMode=" + mode + " ok=" + ok);
-                            if (chain.ChainStatus != null)
-                            {
-                                foreach (var s in chain.ChainStatus)
-                                {
-                                    Console.WriteLine("    status=" + s.Status + ": " + (s.StatusInformation ?? string.Empty).Trim());
-                                }
-                            }
-                            if (chain.ChainElements != null)
-                            {
-                                foreach (X509ChainElement e in chain.ChainElements)
-                                {
-                                    Console.WriteLine("    element subject='" + e.Certificate.Subject + "' thumb=" + e.Certificate.Thumbprint);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine("[CertificateHelper][diag-leaf] threw: " + ex.Message);
-                }
-
-                // Warm trustd's CRL cache for this leaf.
-                //
-                // macOS's CRL distribution-point fetcher in trustd is asynchronous and
-                // batched: the first SecTrust evaluation that requires revocation
-                // typically returns RevocationStatusUnknown because the CRL hasn't been
-                // fetched and parsed yet. X509Chain.Build under RevocationMode.Online
-                // (which is what WCF's SslStream uses by default) then rejects the chain.
-                //
-                // Running `security verify-cert -L -p ssl` on a leaf that carries the
-                // CRL distribution-point extension forces trustd to fetch+cache the CRL
-                // synchronously while we hold the install path. We do it for both `ssl`
-                // and `basic` policies because the SecTrust path WCF eventually hits
-                // depends on the binding. Best-effort: failures are logged and ignored.
-                try
-                {
-                    #pragma warning disable SYSLIB0057
-                    var leafForWarm = new X509Certificate2(pfxBytes, pfxPassword);
-                    #pragma warning restore SYSLIB0057
-
-                    // Skip CA / self-signed certs — they have no CRL DP and warming is moot.
-                    bool isCa = leafForWarm.Subject == leafForWarm.Issuer;
-                    if (!isCa)
-                    {
-                        string leafPemFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".pem");
-                        try
-                        {
-                            File.WriteAllText(leafPemFile,
-                                "-----BEGIN CERTIFICATE-----\n"
-                                + Convert.ToBase64String(leafForWarm.RawData, Base64FormattingOptions.InsertLineBreaks)
-                                + "\n-----END CERTIFICATE-----\n");
-
-                            foreach (string policy in new[] { "ssl", "basic" })
-                            {
-                                var psi = new ProcessStartInfo
-                                {
-                                    FileName = "security",
-                                    Arguments = string.Format("verify-cert -L -c \"{0}\" -p {1}", leafPemFile, policy),
-                                    RedirectStandardOutput = true,
-                                    RedirectStandardError = true,
-                                    UseShellExecute = false
-                                };
-                                using (var p = Process.Start(psi))
-                                {
-                                    string so = p.StandardOutput.ReadToEnd();
-                                    string se = p.StandardError.ReadToEnd();
-                                    p.WaitForExit(30000);
-                                    Console.WriteLine("[CertificateHelper][crl-warm] verify-cert -L -p " + policy
-                                        + " thumb=" + leafForWarm.Thumbprint + " exit=" + p.ExitCode);
-                                    if (!string.IsNullOrWhiteSpace(so)) Console.WriteLine("  stdout: " + so.Trim());
-                                    if (!string.IsNullOrWhiteSpace(se)) Console.WriteLine("  stderr: " + se.Trim());
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            if (File.Exists(leafPemFile)) File.Delete(leafPemFile);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine("[CertificateHelper][crl-warm] threw: " + ex.Message);
-                }
 
                 return true;
             }
@@ -325,8 +224,6 @@ namespace WcfTestCommon
 
                     Console.WriteLine("[CertificateHelper] Added root cert to macOS System.keychain admin trust domain.");
 
-                    // Diagnostics: dump admin trust settings + verify chain to confirm macOS honors our trust.
-                    DumpMacOSTrustDiagnostics(tempFile);
                     return true;
                 }
             }
@@ -349,104 +246,6 @@ namespace WcfTestCommon
                 RunSecurityCommand(string.Format("delete-keychain \"{0}\"", s_macOSKeychainPath));
                 s_macOSKeychainInitialized = false;
                 Trace.WriteLine("[CertificateHelper] macOS keychain deleted.");
-            }
-        }
-
-        /// <summary>
-        /// Diagnostics: dump trust settings and verify-cert output so we can see how macOS
-        /// is interpreting our 'add-trusted-cert' call. Outputs everything to console so it
-        /// shows up in Helix logs.
-        /// </summary>
-        private static void DumpMacOSTrustDiagnostics(string certFile)
-        {
-            string[] cmds = new[]
-            {
-                "trust-settings-export -d /tmp/wcf-trust-admin.plist",
-                "find-certificate -a -p -c \"DO_NOT_TRUST_WcfBridgeRootCA\" /Library/Keychains/System.keychain",
-                "verify-cert -c \"" + certFile + "\" -p ssl",
-            };
-            foreach (var args in cmds)
-            {
-                try
-                {
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = "security",
-                        Arguments = args,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        UseShellExecute = false
-                    };
-                    using (var p = Process.Start(psi))
-                    {
-                        string so = p.StandardOutput.ReadToEnd();
-                        string se = p.StandardError.ReadToEnd();
-                        p.WaitForExit(15000);
-                        Console.WriteLine("[CertificateHelper][diag] security " + args + " -> exit=" + p.ExitCode);
-                        if (!string.IsNullOrWhiteSpace(so)) Console.WriteLine("  stdout: " + so.Trim());
-                        if (!string.IsNullOrWhiteSpace(se)) Console.WriteLine("  stderr: " + se.Trim());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine("[CertificateHelper][diag] " + args + " threw: " + ex.Message);
-                }
-            }
-
-            // Dump the admin-domain trust settings plist if it was produced.
-            try
-            {
-                if (File.Exists("/tmp/wcf-trust-admin.plist"))
-                {
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = "plutil",
-                        Arguments = "-p /tmp/wcf-trust-admin.plist",
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        UseShellExecute = false
-                    };
-                    using (var p = Process.Start(psi))
-                    {
-                        string so = p.StandardOutput.ReadToEnd();
-                        p.WaitForExit(15000);
-                        Console.WriteLine("[CertificateHelper][diag] admin trust plist:");
-                        Console.WriteLine(so);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine("[CertificateHelper][diag] plutil failed: " + ex.Message);
-            }
-
-            // .NET-side diagnostic: build a chain using X509Chain and dump the result so we can
-            // see whether .NET's macOS chain processor honors the OS trust we just installed.
-            try
-            {
-                #pragma warning disable SYSLIB0057
-                var cert = new X509Certificate2(certFile);
-                #pragma warning restore SYSLIB0057
-                foreach (var mode in new[] { X509RevocationMode.NoCheck, X509RevocationMode.Online })
-                {
-                    using (var chain = new X509Chain())
-                    {
-                        chain.ChainPolicy.RevocationMode = mode;
-                        bool ok = chain.Build(cert);
-                        Console.WriteLine("[CertificateHelper][diag] .NET X509Chain.Build (RevocationMode=" + mode + ") ok=" + ok);
-                        if (chain.ChainStatus != null)
-                        {
-                            foreach (var s in chain.ChainStatus)
-                            {
-                                Console.WriteLine("    status=" + s.Status + ": " + (s.StatusInformation ?? string.Empty).Trim());
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine("[CertificateHelper][diag] X509Chain.Build threw: " + ex.Message);
             }
         }
 
