@@ -45,7 +45,23 @@ install_root_cert()
             # so the cert is trusted for ALL policies; specifying a policy narrows trust
             # to that policy only and has produced inconsistent SslStream chain validation
             # results in CI (dotnet/wcf#2870).
-            $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ${__cafile}
+            #
+            # add-trusted-cert -d writes to the admin trust domain via SecTrustSettings, which on
+            # headless macOS CI runners intermittently fails with "SecTrustSettingsSetTrustSettings:
+            # The authorization was denied since no user interaction was possible." The failure is
+            # transient, so retry a few times with a short backoff.
+            __attempt=1
+            __max_attempts=5
+            while [ ${__attempt} -le ${__max_attempts} ]; do
+                $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ${__cafile}
+                __add_rc=$?
+                if [ ${__add_rc} -eq 0 ]; then
+                    break
+                fi
+                echo "[InstallRootCertificate] add-trusted-cert attempt ${__attempt}/${__max_attempts} failed (exit ${__add_rc}); retrying after 2s..."
+                __attempt=$((__attempt + 1))
+                sleep 2
+            done
 
             # Force trustd to drop its in-memory cache and re-read the trust settings so
             # the newly-installed root takes effect immediately for SecTrustEvaluate
