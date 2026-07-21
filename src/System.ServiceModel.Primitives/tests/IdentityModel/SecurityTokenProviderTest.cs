@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public class SecurityTokenProviderTest
+public class SecurityTokenProviderTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void SynchronousImplementationOnly()

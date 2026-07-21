@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public class DuplexClientBaseTest
+public class DuplexClientBaseTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void DuplexClientBase_Ctor_Initializes_State()

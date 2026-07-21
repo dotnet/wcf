@@ -14,7 +14,7 @@ using System.Xml;
 using Infrastructure.Common;
 using Xunit;
 
-public static class BasicHttpBindingTest
+public class BasicHttpBindingTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Default_Ctor_Initializes_Properties()

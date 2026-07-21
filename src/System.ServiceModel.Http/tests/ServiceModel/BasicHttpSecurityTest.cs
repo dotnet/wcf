@@ -12,7 +12,7 @@ using System.Xml;
 using Infrastructure.Common;
 using Xunit;
 
-public static class BasicHttpSecurityTest
+public class BasicHttpSecurityTest : ConditionalWcfTest
 {
     [WcfTheory]
     [InlineData(BasicHttpSecurityMode.Message)]

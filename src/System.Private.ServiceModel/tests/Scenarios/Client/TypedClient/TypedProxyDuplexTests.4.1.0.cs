@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static class TypedProxyDuplexTests
+public class TypedProxyDuplexTests : ConditionalWcfTest
 {
     // ServiceContract typed proxy tests create a ChannelFactory using a provided [ServiceContract] Interface which...
     //       returns a generated proxy based on that Interface.

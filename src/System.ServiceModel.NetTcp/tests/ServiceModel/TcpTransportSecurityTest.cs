@@ -8,7 +8,7 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-public static class TcpTransportSecurityTest
+public class TcpTransportSecurityTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Ctor_Default_Properties()
