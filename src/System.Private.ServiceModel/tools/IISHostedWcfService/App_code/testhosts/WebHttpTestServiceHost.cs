@@ -60,11 +60,11 @@ namespace WcfService
     // ---- Implementation --------------------------------------------------
     public class WcfWebHttpService : IWcfWebHttpService
     {
-        public string EchoWithGet(string message)      => message;
-        public string EchoWithGetJson(string message)  => message;
-        public string EchoWithPost(string message)     => message;
-        public string EchoWithPostJson(string message) => message;
-        public string EchoWithGetPath(string message)  => message;
+        public string EchoWithGet(string message) { return message; }
+        public string EchoWithGetJson(string message) { return message; }
+        public string EchoWithPost(string message) { return message; }
+        public string EchoWithPostJson(string message) { return message; }
+        public string EchoWithGetPath(string message) { return message; }
     }
 
     // ---- Test Host -------------------------------------------------------
@@ -83,9 +83,9 @@ namespace WcfService
     [TestServiceDefinition(BasePath = "WebHttp.svc", Schema = ServiceSchema.HTTP)]
     public class WebHttpTestServiceHost : TestServiceHostBase<IWcfWebHttpService>
     {
-        protected override string Address => "";
+        protected override string Address { get { return ""; } }
 
-        protected override Binding GetBinding() => new WebHttpBinding();
+        protected override Binding GetBinding() { return new WebHttpBinding(); }
 
         public WebHttpTestServiceHost(params Uri[] baseAddresses)
             : base(typeof(WcfWebHttpService), baseAddresses) { }
