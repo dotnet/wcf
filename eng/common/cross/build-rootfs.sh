@@ -187,17 +187,14 @@ while :; do
             __AlpineArch=loongarch64
             __QEMUArch=loongarch64
             __UbuntuArch=loong64
-            __UbuntuSuites=unreleased
             __LLDB_Package="liblldb-19-dev"
             ;;
         riscv64)
             __BuildArch=riscv64
             __AlpineArch=riscv64
-            __AlpinePackages="${__AlpinePackages// lldb-dev/}"
             __QEMUArch=riscv64
             __UbuntuArch=riscv64
-            __UbuntuPackages="${__UbuntuPackages// libunwind8-dev/}"
-            unset __LLDB_Package
+            __LLDB_Package="liblldb-19-dev"
             ;;
         ppc64le)
             __BuildArch=ppc64le
@@ -291,6 +288,10 @@ while :; do
             __CodeName=noble
             __LLDB_Package="liblldb-19-dev"
             ;;
+        resolute) # Ubuntu 26.04
+            __CodeName=resolute
+            __LLDB_Package="liblldb-21-dev"
+            ;;
         stretch) # Debian 9
             __CodeName=stretch
             __LLDB_Package="liblldb-6.0-dev"
@@ -331,7 +332,7 @@ while :; do
 
             # Debian-Ports architectures need different values
             case "$__UbuntuArch" in
-            amd64|arm64|armhf|i386|mips64el|ppc64el|riscv64|s390x)
+            amd64|arm64|armhf|i386|mips64el|ppc64el|riscv64|loong64|s390x)
                 __KeyringFile="/usr/share/keyrings/debian-archive-keyring.gpg"
 
                 if [[ -z "$__UbuntuRepo" ]]; then
@@ -377,6 +378,15 @@ while :; do
             ;;
         openbsd)
             __CodeName=openbsd
+            __SkipUnmount=1
+            ;;
+        openbsd7.8)
+            __CodeName=openbsd
+            __SkipUnmount=1
+            ;;
+        openbsd7.9)
+            __CodeName=openbsd
+            __OpenBSDVersion="7.9"
             __SkipUnmount=1
             ;;
         illumos)
