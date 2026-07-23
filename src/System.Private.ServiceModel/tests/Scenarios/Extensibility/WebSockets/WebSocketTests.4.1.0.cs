@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -168,12 +168,9 @@ public class WebSocketTests : ConditionalWcfTest
                 "The logging done by the Server was not returned via the Callback.");
 
             // *** CLEANUP *** \\
-            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
-            if (!ScenarioTestHelpers.IsLocalHost())
-            {
-                ((ICommunicationObject)client).Close();
-                channelFactory.Close();
-            }
+            // Close the client and channel factory.
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
         }
         finally
         {
@@ -240,12 +237,9 @@ public class WebSocketTests : ConditionalWcfTest
                 "The logging done by the Server was not returned via the Callback.");
 
             // *** CLEANUP *** \\
-            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
-            if (!ScenarioTestHelpers.IsLocalHost())
-            {
-                ((ICommunicationObject)client).Close();
-                channelFactory.Close();
-            }
+            // Close the client and channel factory.
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
         }
         finally
         {
@@ -478,12 +472,9 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
-            if (!ScenarioTestHelpers.IsLocalHost())
-            {
-                ((ICommunicationObject)client).Close();
-                channelFactory.Close();
-            }
+            // Close the client and channel factory.
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
         }
         finally
         {
@@ -536,12 +527,9 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
-            if (!ScenarioTestHelpers.IsLocalHost())
-            {
-                ((ICommunicationObject)client).Close();
-                channelFactory.Close();
-            }
+            // Close the client and channel factory.
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
         }
         finally
         {
@@ -594,12 +582,9 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
-            if (!ScenarioTestHelpers.IsLocalHost())
-            {
-                ((ICommunicationObject)client).Close();
-                channelFactory.Close();
-            }
+            // Close the client and channel factory.
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
         }
         finally
         {
@@ -653,12 +638,9 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
-            if (!ScenarioTestHelpers.IsLocalHost())
-            {
-                ((ICommunicationObject)client).Close();
-                channelFactory.Close();
-            }
+            // Close the client and channel factory.
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
         }
         finally
         {
@@ -714,12 +696,9 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
-            if (!ScenarioTestHelpers.IsLocalHost())
-            {
-                ((ICommunicationObject)client).Close();
-                channelFactory.Close();
-            }
+            // Close the client and channel factory.
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
         }
         finally
         {
@@ -884,12 +863,9 @@ public class WebSocketTests : ConditionalWcfTest
             Assert.True(responseFromService, String.Format("Response from the service was not expected. Expected: 'True' but got {0}", responseFromService));
 
             // *** CLEANUP *** \\
-            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
-            if (!ScenarioTestHelpers.IsLocalHost())
-            {
-                ((ICommunicationObject)client).Close();
-                channelFactory.Close();
-            }
+            // Close the client and channel factory.
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
         }
         finally
         {
