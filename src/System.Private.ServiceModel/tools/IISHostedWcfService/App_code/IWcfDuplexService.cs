@@ -38,6 +38,25 @@ namespace WcfService
         void OnPingCallback(Guid guid);
     }
 
+    // Contract used by ServerInitiatedSessionShutdownTests (dotnet/wcf#5803).
+    // The server replies to RequestServerShutdown and then closes its session channel,
+    // which delivers an EndRecord to the client and exercises ServiceChannel.DecrementActivity.
+    [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(IServerInitiatedShutdownCallback))]
+    public interface IServerInitiatedShutdownService
+    {
+        [OperationContract]
+        string Echo(string text);
+
+        [OperationContract]
+        string RequestServerShutdown();
+    }
+
+    public interface IServerInitiatedShutdownCallback
+    {
+        [OperationContract(IsOneWay = true)]
+        void OnShutdownNotification();
+    }
+
     [ServiceContract(CallbackContract = typeof(IWcfDuplexTaskReturnCallback))]
     public interface IWcfDuplexTaskReturnService
     {

@@ -4,10 +4,20 @@
 
 #if NET
 using CoreWCF;
+using CoreWCF.Channels;
+using CoreWCF.Description;
+using CoreWCF.Dispatcher;
+using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 #else
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 using System.Threading.Tasks;
 #endif
 
@@ -46,6 +56,109 @@ namespace WcfService
 
             // Schedule the callback on another thread to avoid reentrancy.
             Task.Run(() => xml_callback.OnXmlPingCallback(xmlCompositeType));
+        }
+    }
+
+    // Service implementation for ServerInitiatedShutdownService (dotnet/wcf#5803 regression coverage).
+    // On RequestServerShutdown the service gracefully closes the *current session's* output channel
+    // (sends the NetFraming EndRecord) so the idle duplex client's receive pump observes end-of-stream
+    // and runs DecrementActivity. This reproduces the user-reported scenario where a host shuts down
+    // while a session-ful client is idle, without disturbing other sessions on the same host.
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, AddressFilterMode = AddressFilterMode.Any)]
+    public class ServerInitiatedShutdownService : IServerInitiatedShutdownService
+    {
+        public string Echo(string text)
+        {
+            return text;
+        }
+
+        public string RequestServerShutdown()
+        {
+            IClientChannel channel = CaptureChannelServiceBehavior.GetCurrentChannel();
+            Task.Run(async () =>
+            {
+                await Task.Delay(250);
+                ISessionChannel<IDuplexSession> duplex = channel as ISessionChannel<IDuplexSession>;
+                try
+                {
+                    if (duplex != null)
+                    {
+#if NET
+                        await duplex.Session.CloseOutputSessionAsync();
+#else
+                        duplex.Session.CloseOutputSession();
+#endif
+                    }
+                    else if (channel != null)
+                    {
+                        // The inspector hands us a typed callback proxy that doesn't expose
+                        // ISessionChannel<IDuplexSession>; closing the proxy tears down the
+                        // underlying session and sends the framing EndRecord to the client.
+#if NET
+                        await ((ICommunicationObject)channel).CloseAsync();
+#else
+                        ((ICommunicationObject)channel).Close();
+#endif
+                    }
+                }
+                catch
+                {
+                    try { if (channel != null) channel.Abort(); } catch { }
+                }
+            });
+            return "Server shutting down";
+        }
+    }
+
+    // Captures the per-session IClientChannel into OperationContext.Extensions so the service
+    // operation can act on it (e.g., to gracefully close that session's output channel).
+    // No portable API on CoreWCF exposes the underlying ISessionChannel<IDuplexSession> from
+    // OperationContext, so an IDispatchMessageInspector is the simplest cross-framework hook.
+    internal sealed class CaptureChannelServiceBehavior : IServiceBehavior, IDispatchMessageInspector
+    {
+        public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase,
+            Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters) { }
+
+        public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) { }
+
+        public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
+        {
+            foreach (ChannelDispatcher cd in serviceHostBase.ChannelDispatchers)
+            {
+                foreach (EndpointDispatcher ed in cd.Endpoints)
+                {
+                    ed.DispatchRuntime.MessageInspectors.Add(this);
+                }
+            }
+        }
+
+        public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
+        {
+            OperationContext ctx = OperationContext.Current;
+            if (ctx != null && ctx.Extensions.Find<ChannelHolder>() == null)
+            {
+                ctx.Extensions.Add(new ChannelHolder(channel));
+            }
+            return null;
+        }
+
+        public void BeforeSendReply(ref Message reply, object correlationState) { }
+
+        public static IClientChannel GetCurrentChannel()
+        {
+            OperationContext ctx = OperationContext.Current;
+            if (ctx == null) return null;
+            ChannelHolder holder = ctx.Extensions.Find<ChannelHolder>();
+            return holder == null ? null : holder.Channel;
+        }
+
+        private sealed class ChannelHolder : IExtension<OperationContext>
+        {
+            private readonly IClientChannel _channel;
+            public IClientChannel Channel { get { return _channel; } }
+            public ChannelHolder(IClientChannel channel) { _channel = channel; }
+            public void Attach(OperationContext owner) { }
+            public void Detach(OperationContext owner) { }
         }
     }
 
