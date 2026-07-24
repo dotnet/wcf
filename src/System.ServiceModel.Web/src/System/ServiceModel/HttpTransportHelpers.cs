@@ -36,6 +36,12 @@ namespace System.ServiceModel
         private static void ConfigureAuthentication(HttpTransportBindingElement http, HttpTransportSecurity transportSecurity)
         {
             http.AuthenticationScheme = MapToAuthenticationScheme(transportSecurity.ClientCredentialType);
+            // Also propagate ProxyCredentialType -> ProxyAuthenticationScheme so authenticated
+            // corporate proxies (Basic/Digest/Ntlm/Negotiate) work when a ProxyAddress is set on
+            // the binding. Mirrors HttpTransportSecurity.ConfigureAuthentication in
+            // System.ServiceModel.Http. HttpProxyCredentialTypeHelper is internal to
+            // System.ServiceModel.Http but visible to us via [InternalsVisibleTo].
+            http.ProxyAuthenticationScheme = HttpProxyCredentialTypeHelper.MapToAuthenticationScheme(transportSecurity.ProxyCredentialType);
             // Realm property is not exposed on dotnet/wcf's HttpTransportBindingElement /
             // HttpTransportSecurity (server-side only). Skip in the client port.
             http.ExtendedProtectionPolicy = transportSecurity.ExtendedProtectionPolicy;

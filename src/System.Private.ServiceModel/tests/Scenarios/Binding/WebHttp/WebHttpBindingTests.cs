@@ -258,6 +258,36 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
         });
     }
 
+    // Verify Security.Transport.ProxyCredentialType is mapped onto the
+    // transport's ProxyAuthenticationScheme so HttpChannelFactory can
+    // authenticate against an explicit proxy. Uses TransportCredentialOnly
+    // because that's the mode where WebHttpSecurity actually runs
+    // HttpTransportHelpers.ConfigureAuthentication against the HTTP
+    // transport element.
+    [WcfTheory]
+    [InlineData(HttpProxyCredentialType.None, System.Net.AuthenticationSchemes.Anonymous)]
+    [InlineData(HttpProxyCredentialType.Basic, System.Net.AuthenticationSchemes.Basic)]
+    [InlineData(HttpProxyCredentialType.Digest, System.Net.AuthenticationSchemes.Digest)]
+    [InlineData(HttpProxyCredentialType.Ntlm, System.Net.AuthenticationSchemes.Ntlm)]
+    [InlineData(HttpProxyCredentialType.Windows, System.Net.AuthenticationSchemes.Negotiate)]
+    public static void WebHttpBinding_ProxyCredentialType_FlowsToTransportProxyAuthenticationScheme(
+        HttpProxyCredentialType proxyCredential, System.Net.AuthenticationSchemes expectedScheme)
+    {
+        WebHttpBinding binding = new WebHttpBinding(WebHttpSecurityMode.TransportCredentialOnly);
+        binding.Security.Transport.ProxyCredentialType = proxyCredential;
+
+        HttpTransportBindingElement httpBe = null;
+        foreach (var be in binding.CreateBindingElements())
+        {
+            if (be is HttpTransportBindingElement http && !(be is HttpsTransportBindingElement))
+            {
+                httpBe = http;
+            }
+        }
+        Assert.NotNull(httpBe);
+        Assert.Equal(expectedScheme, httpBe.ProxyAuthenticationScheme);
+    }
+
     // Walk both the HTTP and HTTPS transport elements the binding owns and
     // invoke assertions against them. We CreateBindingElements() for both
     // security modes (None -> yields HTTP, Transport -> yields HTTPS) so
