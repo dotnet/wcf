@@ -418,6 +418,24 @@ public interface IWcfDuplexService_Xml_Callback
     void OnXmlPingCallback(XmlCompositeTypeDuplexCallbackOnly xmlCompositeType);
 }
 
+// Client-side mirror of WcfService.IServerInitiatedShutdownService used by the
+// ServerInitiatedSessionShutdownTests scenario (dotnet/wcf#5803 regression).
+[ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(IServerInitiatedShutdownCallback))]
+public interface IServerInitiatedShutdownService
+{
+    [OperationContract]
+    string Echo(string text);
+
+    [OperationContract]
+    string RequestServerShutdown();
+}
+
+public interface IServerInitiatedShutdownCallback
+{
+    [OperationContract(IsOneWay = true)]
+    void OnShutdownNotification();
+}
+
 [ServiceContract(CallbackContract = typeof(IWcfDuplexService_CallbackConcurrencyMode_Callback))]
 public interface IWcfDuplexService_CallbackConcurrencyMode
 {
