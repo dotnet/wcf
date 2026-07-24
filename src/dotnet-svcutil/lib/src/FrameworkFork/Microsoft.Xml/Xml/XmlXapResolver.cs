@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.ComponentModel;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

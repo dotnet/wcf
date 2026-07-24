@@ -21,7 +21,7 @@ using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
 using System.Threading;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Security
 {

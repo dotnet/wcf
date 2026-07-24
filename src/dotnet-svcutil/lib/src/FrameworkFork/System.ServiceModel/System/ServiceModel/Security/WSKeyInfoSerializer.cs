@@ -7,7 +7,7 @@ using System.IdentityModel;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.ServiceModel.Security.Tokens;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Security
 {
@@ -142,8 +142,8 @@ namespace System.ServiceModel.Security
 
                 public override SecurityKeyIdentifierClause ReadClause(XmlDictionaryReader reader, byte[] derivationNonce, int derivationLength, string tokenType)
                 {
-                    Microsoft.Xml.UniqueId uri = XmlHelper.GetAttributeAsUniqueId(reader, XD.SecurityJan2004Dictionary.URI, null);
-                    Microsoft.Xml.UniqueId generation = ReadGeneration(reader);
+                    System.Xml.UniqueId uri = XmlHelper.GetAttributeAsUniqueId(reader, XD.SecurityJan2004Dictionary.URI, null);
+                    System.Xml.UniqueId generation = ReadGeneration(reader);
 
                     if (reader.IsEmptyElement)
                     {
@@ -162,7 +162,7 @@ namespace System.ServiceModel.Security
                     return new SecurityContextKeyIdentifierClause(uri, generation, derivationNonce, derivationLength);
                 }
 
-                protected abstract Microsoft.Xml.UniqueId ReadGeneration(XmlDictionaryReader reader);
+                protected abstract System.Xml.UniqueId ReadGeneration(XmlDictionaryReader reader);
 
                 public override bool SupportsCore(SecurityKeyIdentifierClause clause)
                 {
@@ -265,7 +265,7 @@ namespace System.ServiceModel.Security
                 {
                 }
 
-                protected override Microsoft.Xml.UniqueId ReadGeneration(XmlDictionaryReader reader)
+                protected override System.Xml.UniqueId ReadGeneration(XmlDictionaryReader reader)
                 {
                     return XmlHelper.GetAttributeAsUniqueId(
                         reader,
@@ -321,7 +321,7 @@ namespace System.ServiceModel.Security
                 {
                 }
 
-                protected override Microsoft.Xml.UniqueId ReadGeneration(XmlDictionaryReader reader)
+                protected override System.Xml.UniqueId ReadGeneration(XmlDictionaryReader reader)
                 {
                     return XmlHelper.GetAttributeAsUniqueId(reader, this.Parent.SecurityTokenSerializer.DictionaryManager.SecureConversationDec2005Dictionary.Instance,
                         this.Parent.SecurityTokenSerializer.DictionaryManager.SecureConversationDec2005Dictionary.Namespace);

@@ -4,7 +4,7 @@
 
 namespace System.ServiceModel.Description
 {
-    using Microsoft.Xml;
+    using System.Xml;
     using System.ServiceModel.Channels;
     using System.Collections;
     using System.Collections.Generic;

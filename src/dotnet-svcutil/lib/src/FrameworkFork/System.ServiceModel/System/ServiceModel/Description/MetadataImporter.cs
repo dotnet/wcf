@@ -10,7 +10,7 @@ namespace System.ServiceModel.Description
     using System.Security;
     using System.ServiceModel;
     using System.ServiceModel.Channels;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public abstract partial class MetadataImporter
     {

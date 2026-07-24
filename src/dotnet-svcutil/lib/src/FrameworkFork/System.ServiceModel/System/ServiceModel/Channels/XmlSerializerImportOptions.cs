@@ -5,6 +5,7 @@
 namespace System.ServiceModel.Channels
 {
     using System;
+    using System.Collections.Specialized;
     using Microsoft.CodeDom.Compiler;
     using Microsoft.CodeDom;
     using System.Collections;
@@ -15,18 +16,17 @@ namespace System.ServiceModel.Channels
     using System.Text;
     using System.ServiceModel;
     using System.Runtime.Serialization;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml.Serialization;
-    using WsdlNS = System.Web.Services.Description;
+    using System.Xml;
+    using System.Xml.Schema;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 
     public class XmlSerializerImportOptions
     {
         private CodeCompileUnit _codeCompileUnit;
         private CodeDomProvider _codeProvider;
         private string _clrNamespace;
-        private WsdlNS.WebReferenceOptions _webReferenceOptions;
-        private static CodeGenerationOptions s_defaultCodeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateOrder;
+        private CodeGenerationOptions _codeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateOrder;
+        private StringCollection _schemaImporterExtensions;
 
         public XmlSerializerImportOptions()
             : this(new CodeCompileUnit())
@@ -65,18 +65,23 @@ namespace System.ServiceModel.Channels
             set { _clrNamespace = value; }
         }
 
-        public WsdlNS.WebReferenceOptions WebReferenceOptions
+        public CodeGenerationOptions CodeGenerationOptions
+        {
+            get { return _codeGenerationOptions; }
+            set { _codeGenerationOptions = value; }
+        }
+
+        public StringCollection SchemaImporterExtensions
         {
             get
             {
-                if (_webReferenceOptions == null)
+                if (_schemaImporterExtensions == null)
                 {
-                    _webReferenceOptions = new WsdlNS.WebReferenceOptions();
-                    _webReferenceOptions.CodeGenerationOptions = s_defaultCodeGenerationOptions;
+                    _schemaImporterExtensions = new StringCollection();
                 }
-                return _webReferenceOptions;
+
+                return _schemaImporterExtensions;
             }
-            set { _webReferenceOptions = value; }
         }
     }
 }
