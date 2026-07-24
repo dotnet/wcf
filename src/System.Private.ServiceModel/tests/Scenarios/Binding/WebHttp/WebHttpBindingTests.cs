@@ -208,6 +208,84 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
         Assert.IsType<WebHttpBinding>(endpoint.Binding);
     }
 
+    // Verify AllowCookies flows to BOTH the HTTP and HTTPS transport binding
+    // elements (WebHttpBinding wraps both). This is how WSHttpBinding /
+    // HttpBindingBase already model shared HTTP settings.
+    [WcfFact]
+    public static void WebHttpBinding_AllowCookies_PropagatesToBothTransports()
+    {
+        WebHttpBinding binding = new WebHttpBinding();
+        Assert.False(binding.AllowCookies);
+
+        binding.AllowCookies = true;
+        AssertTransportPropertyFlows(binding, (http, https) =>
+        {
+            Assert.True(http.AllowCookies);
+            Assert.True(https.AllowCookies);
+        });
+    }
+
+    [WcfFact]
+    public static void WebHttpBinding_ProxyAddress_PropagatesToBothTransports()
+    {
+        WebHttpBinding binding = new WebHttpBinding();
+        Assert.Null(binding.ProxyAddress);
+
+        var proxy = new Uri("http://proxy.contoso.example:8080/");
+        binding.ProxyAddress = proxy;
+        AssertTransportPropertyFlows(binding, (http, https) =>
+        {
+            Assert.Equal(proxy, http.ProxyAddress);
+            Assert.Equal(proxy, https.ProxyAddress);
+        });
+    }
+
+    [WcfFact]
+    public static void WebHttpBinding_UseDefaultWebProxy_And_BypassProxyOnLocal_PropagateToBothTransports()
+    {
+        WebHttpBinding binding = new WebHttpBinding();
+        Assert.True(binding.UseDefaultWebProxy);
+        Assert.False(binding.BypassProxyOnLocal);
+
+        binding.UseDefaultWebProxy = false;
+        binding.BypassProxyOnLocal = true;
+        AssertTransportPropertyFlows(binding, (http, https) =>
+        {
+            Assert.False(http.UseDefaultWebProxy);
+            Assert.False(https.UseDefaultWebProxy);
+            Assert.True(http.BypassProxyOnLocal);
+            Assert.True(https.BypassProxyOnLocal);
+        });
+    }
+
+    // Walk both the HTTP and HTTPS transport elements the binding owns and
+    // invoke assertions against them. We CreateBindingElements() for both
+    // security modes (None -> yields HTTP, Transport -> yields HTTPS) so
+    // both underlying elements are observed.
+    private static void AssertTransportPropertyFlows(
+        WebHttpBinding binding, Action<HttpTransportBindingElement, HttpsTransportBindingElement> assertions)
+    {
+        HttpTransportBindingElement httpBe = null;
+        HttpsTransportBindingElement httpsBe = null;
+
+        binding.Security.Mode = WebHttpSecurityMode.None;
+        foreach (var be in binding.CreateBindingElements())
+        {
+            if (be is HttpsTransportBindingElement https) httpsBe = https;
+            else if (be is HttpTransportBindingElement http) httpBe = http;
+        }
+        binding.Security.Mode = WebHttpSecurityMode.Transport;
+        foreach (var be in binding.CreateBindingElements())
+        {
+            if (be is HttpsTransportBindingElement https) httpsBe = https;
+            else if (be is HttpTransportBindingElement http) httpBe = http;
+        }
+
+        Assert.NotNull(httpBe);
+        Assert.NotNull(httpsBe);
+        assertions(httpBe, httpsBe);
+    }
+
     // Regression test for the WebHttpBinding wire-URL bug fixed in this
     // PR. Spin up a local HttpListener and verify that invoking an
     // operation with a UriTemplate path variable actually goes to the
@@ -319,5 +397,75 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
         }
 
         Assert.Equal("Hello-JSON", result);
+    }
+
+    // End-to-end regression test for AllowCookies: with AllowCookies=true,
+    // the client's underlying HttpMessageHandler should retain the cookie
+    // set by the server on the first response and echo it back on the
+    // second request. With AllowCookies=false (the default) the cookie
+    // is NOT echoed back. Runs against a local HttpListener so it needs
+    // no external service.
+    [WcfFact]
+    public static void WebHttpBinding_AllowCookies_RoundTripsCookieHeader()
+    {
+        int port = 18093;
+        string baseUrl = "http://127.0.0.1:" + port + "/WebHttp.svc/";
+        var listener = new System.Net.HttpListener();
+        listener.Prefixes.Add(baseUrl);
+        string secondRequestCookieHeader = null;
+        var done = new System.Threading.ManualResetEventSlim();
+        try
+        {
+            listener.Start();
+        }
+        catch (System.Net.HttpListenerException)
+        {
+            return;
+        }
+
+        System.Threading.Tasks.Task.Run(() =>
+        {
+            try
+            {
+                // First request: set a cookie.
+                var ctx1 = listener.GetContext();
+                ctx1.Response.Headers.Add("Set-Cookie", "sid=abc123; Path=/");
+                ctx1.Response.ContentType = "application/xml; charset=utf-8";
+                byte[] body1 = System.Text.Encoding.UTF8.GetBytes(
+                    "<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">first</string>");
+                ctx1.Response.OutputStream.Write(body1, 0, body1.Length);
+                ctx1.Response.OutputStream.Close();
+
+                // Second request: capture Cookie header.
+                var ctx2 = listener.GetContext();
+                secondRequestCookieHeader = ctx2.Request.Headers["Cookie"];
+                ctx2.Response.ContentType = "application/xml; charset=utf-8";
+                byte[] body2 = System.Text.Encoding.UTF8.GetBytes(
+                    "<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">second</string>");
+                ctx2.Response.OutputStream.Write(body2, 0, body2.Length);
+                ctx2.Response.OutputStream.Close();
+            }
+            catch { }
+            finally { done.Set(); }
+        });
+
+        WebHttpBinding binding = new WebHttpBinding { AllowCookies = true };
+        var factory = new WebChannelFactory<IWcfWebHttpService>(binding, new Uri(baseUrl));
+        IWcfWebHttpService channel = factory.CreateChannel();
+        try
+        {
+            channel.EchoWithGetPath("first");
+            channel.EchoWithGetPath("second");
+            done.Wait(TimeSpan.FromSeconds(10));
+        }
+        finally
+        {
+            try { ((ICommunicationObject)channel).Close(); } catch { }
+            try { factory.Close(); } catch { }
+            try { listener.Stop(); } catch { }
+        }
+
+        Assert.NotNull(secondRequestCookieHeader);
+        Assert.Contains("sid=abc123", secondRequestCookieHeader);
     }
 }

@@ -27,23 +27,32 @@ namespace System.ServiceModel
             _security.Mode = securityMode;
         }
 
-        // This needs an update in the HttpTransportBindingElement to work.
-        //[DefaultValue(false)]
-        //public bool AllowCookies
-        //{
-        //    get { throw new PlatformNotSupportedException(); }
-        //    set { throw new PlatformNotSupportedException(); }
-        //}
+        [DefaultValue(HttpTransportDefaults.AllowCookies)]
+        public bool AllowCookies
+        {
+            get { return _httpTransportBindingElement.AllowCookies; }
+            set
+            {
+                _httpTransportBindingElement.AllowCookies = value;
+                _httpsTransportBindingElement.AllowCookies = value;
+            }
+        }
+
+        [DefaultValue(HttpTransportDefaults.BypassProxyOnLocal)]
+        public bool BypassProxyOnLocal
+        {
+            get { return _httpTransportBindingElement.BypassProxyOnLocal; }
+            set
+            {
+                _httpTransportBindingElement.BypassProxyOnLocal = value;
+                _httpsTransportBindingElement.BypassProxyOnLocal = value;
+            }
+        }
 
         public EnvelopeVersion EnvelopeVersion => EnvelopeVersion.None;
 
-        // This needs an update in the HttpTransportBindingElement to work.
-        //[DefaultValue(HostNameComparisonMode.StrongWildcard)]
-        //public HostNameComparisonMode HostNameComparisonMode
-        //{
-        //    get { throw new PlatformNotSupportedException(); }
-        //    set { throw new PlatformNotSupportedException(); }
-        //}
+        // HostNameComparisonMode is not exposed on HttpTransportBindingElement in
+        // dotnet/wcf, so it is intentionally omitted here (unlike .NET Framework).
 
         [DefaultValue(TransportDefaults.MaxBufferPoolSize)]
         public long MaxBufferPoolSize
@@ -103,6 +112,29 @@ namespace System.ServiceModel
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
 
                 _security = value;
+            }
+        }
+
+        [DefaultValue(HttpTransportDefaults.ProxyAddress)]
+        [TypeConverter(typeof(UriTypeConverter))]
+        public Uri ProxyAddress
+        {
+            get { return _httpTransportBindingElement.ProxyAddress; }
+            set
+            {
+                _httpTransportBindingElement.ProxyAddress = value;
+                _httpsTransportBindingElement.ProxyAddress = value;
+            }
+        }
+
+        [DefaultValue(HttpTransportDefaults.UseDefaultWebProxy)]
+        public bool UseDefaultWebProxy
+        {
+            get { return _httpTransportBindingElement.UseDefaultWebProxy; }
+            set
+            {
+                _httpTransportBindingElement.UseDefaultWebProxy = value;
+                _httpsTransportBindingElement.UseDefaultWebProxy = value;
             }
         }
 
