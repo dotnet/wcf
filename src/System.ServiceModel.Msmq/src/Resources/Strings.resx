@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PlatformNotSupported_Msmq" xml:space="preserve">
+    <value>MSMQ is not supported on this platform.</value>
+  </data>
+  <data name="MsmqPoisonMessage" xml:space="preserve">
+    <value>The transport channel detected an incoming message that cannot be processed and that exceeded the configured allowed retries. Refer to the inner exception for details of the failure, and the documentation for the MsmqPoisonMessageException class for further guidance.</value>
+  </data>
+  <data name="MsmqNonNegativeArgumentExpected" xml:space="preserve">
+    <value>The value of this argument must be non-negative.</value>
+  </data>
+  <data name="SFxTimeoutOutOfRange0" xml:space="preserve">
+    <value>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</value>
+  </data>
+  <data name="SFxTimeoutOutOfRangeTooBig" xml:space="preserve">
+    <value>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</value>
+  </data>
+  <data name="ChannelTypeNotSupported" xml:space="preserve">
+    <value>The specified channel type {0} is not supported by this channel manager.</value>
+  </data>
+  <data name="MsmqSendNotYetImplemented" xml:space="preserve">
+    <value>The MSMQ send channel is not yet implemented in this build of System.ServiceModel.Msmq.</value>
+  </data>
+  <data name="MsmqListenerNotSupported" xml:space="preserve">
+    <value>The MSMQ client package does not support building channel listeners. Use CoreWCF to host an MSMQ service.</value>
+  </data>
+  <data name="MsmqInvalidScheme" xml:space="preserve">
+    <value>The scheme of the URI is not valid for this MSMQ address translator.</value>
+  </data>
+  <data name="MsmqWrongUri" xml:space="preserve">
+    <value>The MSMQ queue URI is missing the host segment.</value>
+  </data>
+  <data name="MsmqUnexpectedPort" xml:space="preserve">
+    <value>A port may not be specified on a net.msmq queue URI when using the native MSMQ transport protocol.</value>
+  </data>
+  <data name="MsmqWrongPrivateQueueSyntax" xml:space="preserve">
+    <value>Private queues are addressed using '/private/&lt;name&gt;' in net.msmq URIs. The legacy '/private$' syntax is not supported.</value>
+  </data>
+  <data name="MsmqMessagingNotAvailable" xml:space="preserve">
+    <value>The MSMQ.Messaging assembly could not be loaded. Add a PackageReference to the MSMQ.Messaging NuGet package to your application so System.ServiceModel.Msmq can dispatch messages to the underlying queue.</value>
+  </data>
+  <data name="MsmqOpenQueueFailed" xml:space="preserve">
+    <value>Failed to open the MSMQ queue at format name '{0}'. See InnerException for the native MQ_ERROR_* code.</value>
+  </data>
+  <data name="MsmqSendFailed" xml:space="preserve">
+    <value>The MSMQ send operation failed with native error 0x{0}. See InnerException for the underlying MQ_ERROR_* code.</value>
+  </data>
+  <data name="MsmqMessageAlreadyFrozen" xml:space="preserve">
+    <value>The native MSMQ message buffer has already been finalized and cannot accept additional properties.</value>
+  </data>
+  <data name="MsmqInvalidMessageId" xml:space="preserve">
+    <value>The MSMQ message id is not in the expected 'GUID\COUNTER' format.</value>
+  </data>
+</root>

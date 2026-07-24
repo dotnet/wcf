@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(ScenarioTestTargetFrameworks)</TargetFrameworks>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MSMQ.Messaging" Version="1.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+    <ProjectReference Include="$(WcfScenarioTestCommonProj)" />
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Msmq\src\System.ServiceModel.Msmq.csproj" />
+  </ItemGroup>
+</Project>

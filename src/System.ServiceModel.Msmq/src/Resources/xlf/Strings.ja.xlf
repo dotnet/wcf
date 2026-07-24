@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../Strings.resx">
+    <body>
+      <trans-unit id="ChannelTypeNotSupported">
+        <source>The specified channel type {0} is not supported by this channel manager.</source>
+        <target state="new">The specified channel type {0} is not supported by this channel manager.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqInvalidMessageId">
+        <source>The MSMQ message id is not in the expected 'GUID\COUNTER' format.</source>
+        <target state="new">The MSMQ message id is not in the expected 'GUID\COUNTER' format.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqInvalidScheme">
+        <source>The scheme of the URI is not valid for this MSMQ address translator.</source>
+        <target state="new">The scheme of the URI is not valid for this MSMQ address translator.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqListenerNotSupported">
+        <source>The MSMQ client package does not support building channel listeners. Use CoreWCF to host an MSMQ service.</source>
+        <target state="new">The MSMQ client package does not support building channel listeners. Use CoreWCF to host an MSMQ service.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqMessageAlreadyFrozen">
+        <source>The native MSMQ message buffer has already been finalized and cannot accept additional properties.</source>
+        <target state="new">The native MSMQ message buffer has already been finalized and cannot accept additional properties.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqMessagingNotAvailable">
+        <source>The MSMQ.Messaging assembly could not be loaded. Add a PackageReference to the MSMQ.Messaging NuGet package to your application so System.ServiceModel.Msmq can dispatch messages to the underlying queue.</source>
+        <target state="new">The MSMQ.Messaging assembly could not be loaded. Add a PackageReference to the MSMQ.Messaging NuGet package to your application so System.ServiceModel.Msmq can dispatch messages to the underlying queue.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqNonNegativeArgumentExpected">
+        <source>The value of this argument must be non-negative.</source>
+        <target state="new">The value of this argument must be non-negative.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqOpenQueueFailed">
+        <source>Failed to open the MSMQ queue at format name '{0}'. See InnerException for the native MQ_ERROR_* code.</source>
+        <target state="new">Failed to open the MSMQ queue at format name '{0}'. See InnerException for the native MQ_ERROR_* code.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqPoisonMessage">
+        <source>The transport channel detected an incoming message that cannot be processed and that exceeded the configured allowed retries. Refer to the inner exception for details of the failure, and the documentation for the MsmqPoisonMessageException class for further guidance.</source>
+        <target state="new">The transport channel detected an incoming message that cannot be processed and that exceeded the configured allowed retries. Refer to the inner exception for details of the failure, and the documentation for the MsmqPoisonMessageException class for further guidance.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqSendFailed">
+        <source>The MSMQ send operation failed with native error 0x{0}. See InnerException for the underlying MQ_ERROR_* code.</source>
+        <target state="new">The MSMQ send operation failed with native error 0x{0}. See InnerException for the underlying MQ_ERROR_* code.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqSendNotYetImplemented">
+        <source>The MSMQ send channel is not yet implemented in this build of System.ServiceModel.Msmq.</source>
+        <target state="new">The MSMQ send channel is not yet implemented in this build of System.ServiceModel.Msmq.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqUnexpectedPort">
+        <source>A port may not be specified on a net.msmq queue URI when using the native MSMQ transport protocol.</source>
+        <target state="new">A port may not be specified on a net.msmq queue URI when using the native MSMQ transport protocol.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqWrongPrivateQueueSyntax">
+        <source>Private queues are addressed using '/private/&lt;name&gt;' in net.msmq URIs. The legacy '/private$' syntax is not supported.</source>
+        <target state="new">Private queues are addressed using '/private/&lt;name&gt;' in net.msmq URIs. The legacy '/private$' syntax is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsmqWrongUri">
+        <source>The MSMQ queue URI is missing the host segment.</source>
+        <target state="new">The MSMQ queue URI is missing the host segment.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PlatformNotSupported_Msmq">
+        <source>MSMQ is not supported on this platform.</source>
+        <target state="new">MSMQ is not supported on this platform.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRange0">
+        <source>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="new">Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTimeoutOutOfRangeTooBig">
+        <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
+        <target state="new">Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
