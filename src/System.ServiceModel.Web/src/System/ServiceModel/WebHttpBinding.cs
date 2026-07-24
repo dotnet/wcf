@@ -190,6 +190,25 @@ namespace System.ServiceModel
             return bindingElements.Clone();
         }
 
+        public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingParameterCollection parameters)
+        {
+            // ClientCredentialType.InheritedFromHost is only valid on server-side
+            // (IIS-hosted) scenarios; on a client channel factory it would map to
+            // AuthenticationSchemes.None and blow up deep inside the HTTP transport
+            // with an ArgumentException. Fail fast here with the same clear message
+            // the .NET Framework WebHttpBinding produced, matching WSHttpBinding's
+            // equivalent guard in dotnet/wcf.
+            if ((_security.Mode == WebHttpSecurityMode.Transport
+                    || _security.Mode == WebHttpSecurityMode.TransportCredentialOnly)
+                && _security.Transport.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    new InvalidOperationException(SR.Format(SR.HttpClientCredentialTypeInvalid, _security.Transport.ClientCredentialType)));
+            }
+
+            return base.BuildChannelFactory<TChannel>(parameters);
+        }
+
         private TransportBindingElement GetTransport()
         {
             if (_security.Mode == WebHttpSecurityMode.Transport)

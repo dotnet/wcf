@@ -288,6 +288,53 @@ public partial class Binding_WebHttp_WebHttpBindingTests : ConditionalWcfTest
         Assert.Equal(expectedScheme, httpBe.ProxyAuthenticationScheme);
     }
 
+    // ClientCredentialType.InheritedFromHost is only valid on server hosts.
+    // Constructing a client channel factory with it should throw
+    // InvalidOperationException up front (matching .NET Framework), not fail
+    // deeper inside HttpTransportBindingElement with ArgumentException.
+    // We exercise the guard by calling binding.BuildChannelFactory<T> directly
+    // — the same path ChannelFactory.CreateFactory() takes during Open().
+    [WcfTheory]
+    [InlineData(WebHttpSecurityMode.Transport)]
+    [InlineData(WebHttpSecurityMode.TransportCredentialOnly)]
+    public static void WebHttpBinding_InheritedFromHost_ThrowsInvalidOperationExceptionAtFactoryCreation(
+        WebHttpSecurityMode mode)
+    {
+        WebHttpBinding binding = new WebHttpBinding(mode);
+        binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.InheritedFromHost;
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            binding.BuildChannelFactory<IRequestChannel>());
+        Assert.Contains("InheritedFromHost", ex.Message);
+    }
+
+    // In WebHttpSecurityMode.None, InheritedFromHost is not applicable so
+    // the guard must NOT fire.
+    [WcfFact]
+    public static void WebHttpBinding_InheritedFromHost_DoesNotThrow_WhenSecurityModeIsNone()
+    {
+        WebHttpBinding binding = new WebHttpBinding(WebHttpSecurityMode.None);
+        binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.InheritedFromHost;
+
+        // The guard doesn't apply in None mode, so BuildChannelFactory itself
+        // should succeed (although downstream HttpTransportBindingElement may
+        // still reject the resulting AuthenticationSchemes.None). We only
+        // assert that our guard doesn't fire.
+        try
+        {
+            var factory = binding.BuildChannelFactory<IRequestChannel>();
+            factory.Close();
+        }
+        catch (InvalidOperationException ex) when (ex.Message.Contains("InheritedFromHost"))
+        {
+            Assert.Fail("Guard should not fire in WebHttpSecurityMode.None");
+        }
+        catch
+        {
+            // Any other exception is unrelated to our guard and acceptable.
+        }
+    }
+
     // Walk both the HTTP and HTTPS transport elements the binding owns and
     // invoke assertions against them. We CreateBindingElements() for both
     // security modes (None -> yields HTTP, Transport -> yields HTTPS) so

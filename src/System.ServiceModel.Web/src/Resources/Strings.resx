@@ -349,7 +349,7 @@
     <value>&amp;lt;p&amp;gt;The server encountered an error processing the request. Please see the &amp;lt;a rel="help-page" href="{0}"&amp;gt;service help page&amp;lt;/a&amp;gt; for constructing valid requests to the service.&amp;lt;/p&amp;gt;</value>
   </data>
   <data name="HttpClientCredentialTypeInvalid" xml:space="preserve">
-    <value>There is no {0} on the incoming Message.</value>
+    <value>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</value>
   </data>
   <data name="HttpUnhandledOperationInvokerCalledWithoutMessage" xml:space="preserve">
     <value>A message was dispatched to the UnhandledDispatchOperation, but was invoked without a Message as input.  This error might be caused by a behavior that provided a bad IDispatchMessageFormatter for the EndpointDispatcher's DispatchRuntime's UnhandledDispatchOperation's Formatter.</value>
