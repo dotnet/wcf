@@ -13,6 +13,7 @@ namespace System.ServiceModel.Channels
     {
         private readonly List<SecurityIdentifier> _allowedUsers = new List<SecurityIdentifier>();
         private readonly NamedPipeConnectionPoolSettings _connectionPoolSettings = new NamedPipeConnectionPoolSettings();
+        private readonly NamedPipeSettings _namedPipeSettings = new NamedPipeSettings();
 
         public NamedPipeTransportBindingElement() : base()
         {
@@ -34,22 +35,16 @@ namespace System.ServiceModel.Channels
             }
 
             _connectionPoolSettings = elementToBeCloned._connectionPoolSettings.Clone();
+            _namedPipeSettings = elementToBeCloned._namedPipeSettings.Clone();
         }
 
-        public NamedPipeConnectionPoolSettings ConnectionPoolSettings
-        {
-            get { return _connectionPoolSettings; }
-        }
+        public NamedPipeConnectionPoolSettings ConnectionPoolSettings => _connectionPoolSettings;
 
-        public override string Scheme
-        {
-            get { return Uri.UriSchemeNetPipe; }
-        }
+        public NamedPipeSettings PipeSettings => _namedPipeSettings;
 
-        public override BindingElement Clone()
-        {
-            return new NamedPipeTransportBindingElement(this);
-        }
+        public override string Scheme => Uri.UriSchemeNetPipe;
+
+        public override BindingElement Clone() => new NamedPipeTransportBindingElement(this);
 
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
@@ -87,15 +82,9 @@ namespace System.ServiceModel.Channels
             internal BindingDeliveryCapabilitiesHelper()
             {
             }
-            bool IBindingDeliveryCapabilities.AssuresOrderedDelivery
-            {
-                get { return true; }
-            }
+            bool IBindingDeliveryCapabilities.AssuresOrderedDelivery => true;
 
-            bool IBindingDeliveryCapabilities.QueuedDelivery
-            {
-                get { return false; }
-            }
+            bool IBindingDeliveryCapabilities.QueuedDelivery => false;
         }
     }
 }

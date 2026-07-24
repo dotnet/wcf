@@ -6,8 +6,7 @@ using System.Runtime.Versioning;
 namespace System.ServiceModel.Channels
 {
     [SupportedOSPlatform("windows")]
-
-    internal class NamedPipeChannelFactory<TChannel> : NetFramingTransportChannelFactory<TChannel>
+    internal class NamedPipeChannelFactory<TChannel> : NetFramingTransportChannelFactory<TChannel>, IPipeTransportFactorySettings
     {
         public NamedPipeChannelFactory(NamedPipeTransportBindingElement bindingElement, BindingContext context)
             : base(bindingElement, context,
@@ -15,31 +14,28 @@ namespace System.ServiceModel.Channels
             bindingElement.ConnectionPoolSettings.IdleTimeout,
             bindingElement.ConnectionPoolSettings.MaxOutboundConnectionsPerEndpoint)
         {
+            if (bindingElement.PipeSettings != null)
+            {
+                PipeSettings = bindingElement.PipeSettings.Clone();
+            }
         }
 
-        public override string Scheme
+        public override string Scheme => Uri.UriSchemeNetPipe;
+
+        public NamedPipeSettings PipeSettings
         {
-            get { return Uri.UriSchemeNetPipe; }
+            get; private set;
         }
 
         private static string GetConnectionGroupName(NamedPipeTransportBindingElement bindingElement)
         {
-            return bindingElement.ConnectionPoolSettings.GroupName;
+            return bindingElement.ConnectionPoolSettings.GroupName + bindingElement.PipeSettings.ApplicationContainerSettings.GetConnectionGroupSuffix();
         }
 
-        public override IConnectionInitiator GetConnectionInitiator()
-        {
-            return new PipeConnectionInitiator(ConnectionBufferSize);
-        }
+        public override IConnectionInitiator GetConnectionInitiator() => new PipeConnectionInitiator(ConnectionBufferSize, this);
 
-        protected override string GetConnectionPoolKey(EndpointAddress address, Uri via)
-        {
-            return PipeConnectionInitiator.GetPipeName(via);
-        }
+        protected override string GetConnectionPoolKey(EndpointAddress address, Uri via) => PipeConnectionInitiator.GetPipeName(via, this);
 
-        protected override bool SupportsUpgrade(StreamUpgradeBindingElement upgradeBindingElement)
-        {
-            return upgradeBindingElement is not SslStreamSecurityBindingElement;
-        }
+        protected override bool SupportsUpgrade(StreamUpgradeBindingElement upgradeBindingElement) => upgradeBindingElement is not SslStreamSecurityBindingElement;
     }
 }

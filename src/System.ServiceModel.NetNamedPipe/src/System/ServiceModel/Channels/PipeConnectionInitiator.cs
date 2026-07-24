@@ -14,6 +14,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.ServiceModel.Diagnostics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -22,10 +23,12 @@ namespace System.ServiceModel.Channels
     internal class PipeConnectionInitiator : IConnectionInitiator
     {
         private readonly int _bufferSize;
+        private readonly IPipeTransportFactorySettings _pipeSettings;
 
-        public PipeConnectionInitiator(int bufferSize)
+        public PipeConnectionInitiator(int bufferSize, IPipeTransportFactorySettings pipeSettings)
         {
             _bufferSize = bufferSize;
+            _pipeSettings = pipeSettings;
         }
 
         private Exception CreateConnectFailedException(Uri remoteUri, PipeException innerException)
@@ -44,7 +47,7 @@ namespace System.ServiceModel.Channels
             IConnection connection = null;
             while (connection == null)
             {
-                connection =  TryConnect(remoteUri, resolvedAddress, backoffHelper);
+                connection = TryConnect(remoteUri, resolvedAddress, backoffHelper);
                 if (connection == null)
                 {
                     await backoffHelper.WaitAndBackoffAsync();
@@ -67,8 +70,10 @@ namespace System.ServiceModel.Channels
         internal const string UseBestMatchNamedPipeUriString = "wcf:useBestMatchNamedPipeUri";
         internal static bool s_useBestMatchNamedPipeUri = AppContext.TryGetSwitch(UseBestMatchNamedPipeUriString, out bool enabled) && enabled;
 
-        internal static string GetPipeName(Uri uri)
+        internal static string GetPipeName(Uri uri, IPipeTransportFactorySettings transportFactorySettings)
         {
+            AppContainerInfo appInfo = GetAppContainerInfo(transportFactorySettings);
+
             // for wildcard hostName support, we first try and connect to the StrongWildcard,
             // then the Exact HostName, and lastly the WeakWildcard
             string[] hostChoices = new string[] { "+", uri.Host, "*" };
@@ -85,8 +90,7 @@ namespace System.ServiceModel.Channels
 
                     while (path.Length > 0)
                     {
-
-                        string sharedMemoryName = PipeUri.BuildSharedMemoryName(hostChoices[i], path, globalChoices[iGlobal]);
+                        string sharedMemoryName = PipeUri.BuildSharedMemoryName(hostChoices[i], path, globalChoices[iGlobal], appInfo);
                         try
                         {
                             PipeSharedMemory sharedMemory = PipeSharedMemory.Open(sharedMemoryName, uri);
@@ -94,7 +98,7 @@ namespace System.ServiceModel.Channels
                             {
                                 try
                                 {
-                                    string pipeName = sharedMemory.PipeName;
+                                    string pipeName = sharedMemory.GetPipeName(appInfo);
                                     if (pipeName != null)
                                     {
                                         // Found a matching pipe name. 
@@ -150,7 +154,7 @@ namespace System.ServiceModel.Channels
                     SR.TraceCodeInitiatingNamedPipeConnection,
                     new StringTraceRecord("Uri", remoteUri.ToString()), this, null);
             }
-            resolvedAddress = GetPipeName(remoteUri);
+            resolvedAddress = GetPipeName(remoteUri, _pipeSettings);
             const int backoffBufferMilliseconds = 150;
             TimeSpan backoffTimeout;
             if (timeout >= TimeSpan.FromMilliseconds(backoffBufferMilliseconds * 2))
@@ -230,7 +234,7 @@ namespace System.ServiceModel.Channels
             {
                 namedPipeClient.ReadMode = PipeTransmissionMode.Message;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 PipeException innerException = new PipeException(SR.Format(SR.PipeModeChangeFailed, ex.Message), ex.HResult);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
@@ -240,6 +244,21 @@ namespace System.ServiceModel.Channels
 
             return new PipeConnection(namedPipeClient, _bufferSize);
         }
+
+        private static AppContainerInfo GetAppContainerInfo(IPipeTransportFactorySettings transportFactorySettings)
+        {
+            if (transportFactorySettings != null &&
+                transportFactorySettings.PipeSettings != null)
+            {
+                ApplicationContainerSettings appSettings = transportFactorySettings.PipeSettings.ApplicationContainerSettings;
+                if (appSettings != null && appSettings.TargetingAppContainer)
+                {
+                    return AppContainerInfo.CreateAppContainerInfo(appSettings.PackageFullName, appSettings.SessionId);
+                }
+            }
+
+            return null;
+        }
     }
 
     [SupportedOSPlatform("windows")]
@@ -248,6 +267,7 @@ namespace System.ServiceModel.Channels
         internal const string PipeLocalPrefix = @"Local\";
         private MemoryMappedFile _fileMapping;
         private string _pipeName;
+        private string _pipeNameGuidPart;
         private readonly Uri _pipeUri;
 
         private PipeSharedMemory(MemoryMappedFile fileMapping, Uri pipeUri)
@@ -277,11 +297,11 @@ namespace System.ServiceModel.Channels
                     memoryMappedFile = MemoryMappedFile.OpenExisting("Global\\" + sharedMemoryName, MemoryMappedFileRights.Read,
                                                                             HandleInheritability.None);
                 }
-                catch(FileNotFoundException)
+                catch (FileNotFoundException)
                 {
                     return null;
                 }
-                catch(IOException ioe)
+                catch (IOException ioe)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreatePipeNameCannotBeAccessedException(ioe, pipeUri));
                 }
@@ -299,6 +319,8 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        private static string BuildPipeName(string pipeGuid) => AppContainerInfo.IsRunningInAppContainer ? string.Concat(PipeLocalPrefix, pipeGuid) : pipeGuid;
+
         public string PipeName
         {
             get
@@ -308,12 +330,38 @@ namespace System.ServiceModel.Channels
                     using (MemoryMappedViewStream view = GetView(false))
                     {
                         SharedMemoryContents contents = view.SafeMemoryMappedViewHandle.Read<SharedMemoryContents>(0);
-                        _pipeName = contents.pipeGuid.ToString();
+                        if (contents.isInitialized)
+                        {
+                            Thread.MemoryBarrier();
+                            _pipeNameGuidPart = contents.pipeGuid.ToString();
+                            _pipeName = BuildPipeName(_pipeNameGuidPart);
+                        }
                     }
                 }
 
                 return _pipeName;
             }
+        }
+
+        internal string GetPipeName(AppContainerInfo appInfo)
+        {
+            if (appInfo == null)
+            {
+                return PipeName;
+            }
+            else if (PipeName != null)
+            {
+                // Build the PipeName for a pipe inside an AppContainer as follows
+                // \\.\Sessions\<SessionId>\<NamedObjectPath>\<PipeGuid>
+                return string.Format(
+                            CultureInfo.InvariantCulture,
+                            @"\\.\Sessions\{0}\{1}\{2}",
+                            appInfo.SessionId,
+                            appInfo.NamedObjectPath,
+                            _pipeNameGuidPart);
+            }
+
+            return null;
         }
 
         private static Exception CreatePipeNameCannotBeAccessedException(IOException ioe, Uri pipeUri)
@@ -329,7 +377,7 @@ namespace System.ServiceModel.Channels
             {
                 return _fileMapping.CreateViewStream(0, sizeof(SharedMemoryContents), writable ? MemoryMappedFileAccess.Write : MemoryMappedFileAccess.Read);
             }
-            catch(IOException ioe)
+            catch (IOException ioe)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreatePipeNameCannotBeAccessedException(ioe, _pipeUri));
             }
@@ -343,8 +391,28 @@ namespace System.ServiceModel.Channels
         }
     }
 
+    [SupportedOSPlatform("windows")]
     internal static class PipeUri
     {
+        public static string BuildSharedMemoryName(string hostName, string path, bool global, AppContainerInfo appContainerInfo)
+        {
+            if (appContainerInfo == null)
+            {
+                return BuildSharedMemoryName(hostName, path, global);
+            }
+            else
+            {
+                //We need to use a session symlink for the lowbox appcontainer.
+                // Session\{0}\{1}\{2}\<SharedMemoryName>                
+                return string.Format(
+                            CultureInfo.InvariantCulture,
+                            @"Session\{0}\{1}\{2}",
+                            appContainerInfo.SessionId,
+                            appContainerInfo.NamedObjectPath,
+                            BuildSharedMemoryName(hostName, path, global));
+            }
+        }
+
         public static string BuildSharedMemoryName(string hostName, string path, bool global)
         {
             StringBuilder builder = new StringBuilder();
@@ -439,9 +507,6 @@ namespace System.ServiceModel.Channels
                 Convert.ToString(originalErrorCode, 16));
         }
 
-        public static int GetErrorFromHResult(int hResult)
-        {
-            return hResult & 0x7FF8FFFF;
-        }
+        public static int GetErrorFromHResult(int hResult) => hResult & 0x7FF8FFFF;
     }
 }
