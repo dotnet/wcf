@@ -15,14 +15,29 @@ namespace ContractTypeNamedReservedKeyword_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Composite", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
-    public partial class Composite : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class Composite : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
         private ContractTypeNamedReservedKeyword_NS.Composite.file NestedClassValueField;
         
         private string StringValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
@@ -66,10 +81,25 @@ namespace ContractTypeNamedReservedKeyword_NS
         [System.Diagnostics.DebuggerStepThroughAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
         [System.Runtime.Serialization.DataContractAttribute(Name="Composite.file", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
-        public partial class @file : object
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        public partial class @file : object, System.Runtime.Serialization.IExtensibleDataObject
         {
             
+            private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+            
             private string NestedClassStringField;
+            
+            public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+            {
+                get
+                {
+                    return this.extensionDataField;
+                }
+                set
+                {
+                    this.extensionDataField = value;
+                }
+            }
             
             [System.Runtime.Serialization.DataMemberAttribute()]
             public string NestedClassString
@@ -89,12 +119,27 @@ namespace ContractTypeNamedReservedKeyword_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="file", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
-    public partial class @file : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class @file : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
         private string StringValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
@@ -126,12 +171,27 @@ namespace ContractTypeNamedReservedKeyword_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="scoped", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
-    public partial class @scoped : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class @scoped : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private string scopeMemberField;
         
         private ContractTypeNamedReservedKeyword_NS.required scopeRequiredMemberField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string scopeMember
@@ -197,6 +257,7 @@ namespace ContractTypeNamedReservedKeyword_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class Service1Client : System.ServiceModel.ClientBase<ContractTypeNamedReservedKeyword_NS.IService1>, ContractTypeNamedReservedKeyword_NS.IService1
     {
         

@@ -15,8 +15,11 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ComplexCompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
-    public partial class ComplexCompositeType : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class ComplexCompositeType : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
@@ -55,6 +58,18 @@ namespace multiDocAll_NS
         private ulong UlongValueField;
         
         private ushort UshortValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
@@ -307,10 +322,25 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="FaultDetail", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
-    public partial class FaultDetail : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class FaultDetail : object, System.Runtime.Serialization.IExtensibleDataObject
     {
         
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
         private string MessageField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Message
@@ -329,12 +359,27 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
-    public partial class CompositeType : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class CompositeType : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
         private string StringValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
@@ -366,8 +411,11 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultOfstring", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
-    public partial class ResultOfstring : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class ResultOfstring : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private int ErrorCodeField;
         
@@ -376,6 +424,18 @@ namespace multiDocAll_NS
         private System.Net.HttpStatusCode HttpStatusCodeField;
         
         private string ResultField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int ErrorCode
@@ -433,8 +493,11 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultOfArrayOfUserGamePlay", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
-    public partial class ResultOfArrayOfUserGamePlay : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class ResultOfArrayOfUserGamePlay : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private int ErrorCodeField;
         
@@ -443,6 +506,18 @@ namespace multiDocAll_NS
         private System.Net.HttpStatusCode HttpStatusCodeField;
         
         private multiDocAll_NS.UserGamePlay[] ResultField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int ErrorCode
@@ -500,8 +575,11 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserGamePlay", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
-    public partial class UserGamePlay : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class UserGamePlay : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private string GameKeyField;
         
@@ -512,6 +590,18 @@ namespace multiDocAll_NS
         private string UserIdField;
         
         private string ValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string GameKey
@@ -582,8 +672,11 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="TestHttpRequestMessageProperty", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
-    public partial class TestHttpRequestMessageProperty : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class TestHttpRequestMessageProperty : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private System.Collections.Generic.Dictionary<string, string> HeadersField;
         
@@ -592,6 +685,18 @@ namespace multiDocAll_NS
         private string QueryStringField;
         
         private bool SuppressEntityBodyField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.Generic.Dictionary<string, string> Headers
@@ -698,6 +803,7 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://mycustomwrappernamespace.com", IsWrapped=true)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class RequestBankingData
     {
         
@@ -725,6 +831,7 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://mycustomwrappernamespace.com", IsWrapped=true)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class ReplyBankingData
     {
         
@@ -752,6 +859,7 @@ namespace multiDocAll_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class ReplyBankingDataNotWrapped
     {
         
@@ -783,6 +891,7 @@ namespace multiDocAll_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class WcfProjectNServiceClient : System.ServiceModel.ClientBase<multiDocAll_NS.IWcfProjectNService>, multiDocAll_NS.IWcfProjectNService
     {
         

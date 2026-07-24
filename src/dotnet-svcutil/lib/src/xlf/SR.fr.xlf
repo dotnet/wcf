@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 Le langage ne prend peut-être pas en charge tous les éléments de code générés. Utilisez un autre langage.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">Impossible de créer un fournisseur de code pour la valeur '{0}' passée à l'argument /{1}. Vérifiez que le fournisseur de code est installé et configuré de manière correcte.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">Impossible de créer un fournisseur de code pour la valeur '{0}' passée à l'option --{1}. Vérifiez que le fournisseur de code est installé et configuré correctement.</target>
@@ -547,6 +552,11 @@ Identificateur de document : '{0}'.</target>
         <target state="translated">Générer des classes marquées comme internes. Valeur par défaut : générer des classes publiques. (Forme abrégée : /{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="translated">Langage de programmation utilisé pour la génération du code. Les noms de langage à utiliser sont par exemple CS et VB. Valeur par défaut : C#. (Forme abrégée : /{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
         <target state="translated">Langage de programmation utilisé pour la génération du code. Indiquez un nom de langage inscrit dans le fichier machine.config ou le nom complet d'une classe qui hérite de System.CodeDom.Compiler.CodeDomProvider. Les noms de langage à utiliser sont par exemple CS et VB. Valeur par défaut : C#. (Forme abrégée : /{0})</target>
@@ -815,6 +825,11 @@ Si vous avez tenté de générer un client, cela peut être dû au fait que les 
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
         <target state="translated">Le point de terminaison '{0}' à l'adresse '{1}' contient une ou plusieurs liaisons non compatibles avec les applications .Net Core. Il va être ignoré...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">

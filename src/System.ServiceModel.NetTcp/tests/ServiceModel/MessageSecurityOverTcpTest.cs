@@ -20,15 +20,11 @@ public static class MessageSecurityOverTcpTest
     public static void Ctor_Default_Properties_Not_Supported()
     {
         MessageSecurityOverTcp msot = new MessageSecurityOverTcp();
-        Assert.Throws <PlatformNotSupportedException>(() =>
-        {
-            MessageCredentialType unused = msot.ClientCredentialType;
-        });
+        Assert.Equal(MessageCredentialType.Windows, msot.ClientCredentialType);
     }
 
     [WcfTheory]
     [InlineData(MessageCredentialType.IssuedToken)]
-    [InlineData(MessageCredentialType.Windows)]
     public static void ClientCredentialType_Property_Values_Not_Supported(MessageCredentialType credentialType)
     {
         MessageSecurityOverTcp msot = new MessageSecurityOverTcp();

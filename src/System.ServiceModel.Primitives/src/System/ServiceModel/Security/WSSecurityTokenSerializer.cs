@@ -15,7 +15,7 @@ namespace System.ServiceModel.Security
 {
     public class WSSecurityTokenSerializer : SecurityTokenSerializer
     {
-        private const int DefaultMaximumKeyDerivationOffset = 64; // bytes 
+        private const int DefaultMaximumKeyDerivationOffset = 64; // bytes
         private const int DefaultMaximumKeyDerivationLabelLength = 128; // bytes
         private const int DefaultMaximumKeyDerivationNonceLength = 128; // bytes
 
@@ -272,7 +272,14 @@ namespace System.ServiceModel.Security
 
         protected override bool CanReadKeyIdentifierCore(XmlReader reader)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                return _keyInfoSerializer.CanReadKeyIdentifier(reader);
+            }
+            catch (IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         protected override SecurityKeyIdentifier ReadKeyIdentifierCore(XmlReader reader)
@@ -289,7 +296,14 @@ namespace System.ServiceModel.Security
 
         protected override bool CanWriteKeyIdentifierCore(SecurityKeyIdentifier keyIdentifier)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                return _keyInfoSerializer.CanWriteKeyIdentifier(keyIdentifier);
+            }
+            catch (IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         protected override void WriteKeyIdentifierCore(XmlWriter writer, SecurityKeyIdentifier keyIdentifier)

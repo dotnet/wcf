@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 Przyczyną może być język, który nie obsługuje wszystkich elementów kodu do wygenerowania. Rozważ użycie innego języka.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">Nie można utworzyć dostawcy kodu dla wartości „{0}” przekazanej do argumentu /{1}. Upewnij się, że dostawca kodu został prawidłowo zainstalowany i skonfigurowany.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">Nie można utworzyć dostawcy kodu dla wartości „{0}” przekazanej do opcji --{1}. Upewnij się, że dostawca kodu został prawidłowo zainstalowany i skonfigurowany.</target>
@@ -547,6 +552,11 @@ Identyfikator dokumentu: „{0}”.</target>
         <target state="translated">Generuj klasy, które są oznaczone jako wewnętrzne. Domyślnie: generuj klasy publiczne. (Krótka wersja: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="translated">Język programowania służący do wygenerowania kodu. Przykłady nazw języków do wykorzystania to CS i VB. Domyślnie: C#. (Krótka wersja: –{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
         <target state="translated">Język programowania służący do wygenerowania kodu. Podaj nazwę języka zarejestrowaną w pliku machine.config lub w pełni kwalifikowaną nazwę klasy, która dziedziczy z elementu System.CodeDom.Compiler.CodeDomProvider. Przykłady nazw języków do wykorzystania to CS i VB. Domyślnie: C#. (Krótka wersja: -{0})</target>
@@ -815,6 +825,11 @@ Jeśli próbowano wygenerować klienta, może być to spowodowane przez dokument
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
         <target state="translated">Punkt końcowy „{0}” pod adresem „{1}” zawiera co najmniej jedno powiązanie, które nie jest zgodne z aplikacjami .Net Core. Są one pomijane...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">

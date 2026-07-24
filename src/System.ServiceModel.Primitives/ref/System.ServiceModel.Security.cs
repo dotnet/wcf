@@ -86,6 +86,8 @@ namespace System.ServiceModel.Channels
         public static TransportSecurityBindingElement CreateIssuedTokenOverTransportBindingElement(System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters issuedTokenParameters) { return default; }
         public static TransportSecurityBindingElement CreateCertificateOverTransportBindingElement() { return default; }
         public static TransportSecurityBindingElement CreateCertificateOverTransportBindingElement(MessageSecurityVersion version) { return default; }
+        public static TransportSecurityBindingElement CreateSspiNegotiationOverTransportBindingElement() { return default; }
+        public static TransportSecurityBindingElement CreateSspiNegotiationOverTransportBindingElement(bool requireCancellation) { return default; }
         public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default; }
         public override string ToString() { return default; }
         public System.ServiceModel.Security.SecurityKeyEntropyMode KeyEntropyMode { get { return default;} set { } }
@@ -304,6 +306,14 @@ namespace System.ServiceModel.Security.Tokens
         public UserNameSecurityTokenParameters() { }
         protected override SecurityTokenParameters CloneCore() { return default; }
 
+    }
+    public partial class SspiSecurityTokenParameters : System.ServiceModel.Security.Tokens.SecurityTokenParameters
+    {
+        public SspiSecurityTokenParameters() { }
+        public SspiSecurityTokenParameters(bool requireCancellation) { }
+        public bool RequireCancellation { get { return default; } set { } }
+        protected override SecurityTokenParameters CloneCore() { return default; }
+        public override string ToString() { return default; }
     }
 }
 namespace System.IdentityModel.Claims

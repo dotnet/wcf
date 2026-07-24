@@ -1,0 +1,244 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" name="Service1" targetNamespace="http://tempuri.org/">
+<wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+<xs:import namespace="http://schemas.datacontract.org/2004/07/CollectionTestService"/>
+<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+<xs:element name="GetCollections">
+<xs:complexType>
+<xs:sequence/>
+</xs:complexType>
+</xs:element>
+<xs:element name="GetCollectionsResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CollectionTestService" minOccurs="0" name="GetCollectionsResult" nillable="true" type="q1:CollectionContainer"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="GetDictionaries">
+<xs:complexType>
+<xs:sequence/>
+</xs:complexType>
+</xs:element>
+<xs:element name="GetDictionariesResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CollectionTestService" minOccurs="0" name="GetDictionariesResult" nillable="true" type="q2:DictionaryContainer"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="GetOrderedDictionary">
+<xs:complexType>
+<xs:sequence/>
+</xs:complexType>
+</xs:element>
+<xs:element name="GetOrderedDictionaryResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetOrderedDictionaryResult" nillable="true" type="q3:ArrayOfKeyValueOfanyTypeanyType"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/">
+<xs:element name="anyType" nillable="true" type="xs:anyType"/>
+<xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+<xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+<xs:element name="boolean" nillable="true" type="xs:boolean"/>
+<xs:element name="byte" nillable="true" type="xs:byte"/>
+<xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+<xs:element name="decimal" nillable="true" type="xs:decimal"/>
+<xs:element name="double" nillable="true" type="xs:double"/>
+<xs:element name="float" nillable="true" type="xs:float"/>
+<xs:element name="int" nillable="true" type="xs:int"/>
+<xs:element name="long" nillable="true" type="xs:long"/>
+<xs:element name="QName" nillable="true" type="xs:QName"/>
+<xs:element name="short" nillable="true" type="xs:short"/>
+<xs:element name="string" nillable="true" type="xs:string"/>
+<xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+<xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+<xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+<xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+<xs:element name="char" nillable="true" type="tns:char"/>
+<xs:simpleType name="char">
+<xs:restriction base="xs:int"/>
+</xs:simpleType>
+<xs:element name="duration" nillable="true" type="tns:duration"/>
+<xs:simpleType name="duration">
+<xs:restriction base="xs:duration">
+<xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+<xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+<xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="guid" nillable="true" type="tns:guid"/>
+<xs:simpleType name="guid">
+<xs:restriction base="xs:string">
+<xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:attribute name="FactoryType" type="xs:QName"/>
+<xs:attribute name="Id" type="xs:ID"/>
+<xs:attribute name="Ref" type="xs:IDREF"/>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/CollectionTestService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CollectionTestService">
+<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+<xs:complexType name="CollectionContainer">
+<xs:sequence>
+<xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Names" nillable="true" type="q1:ArrayOfstring"/>
+<xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Numbers" nillable="true" type="q2:ArrayOfint"/>
+<xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Values" nillable="true" type="q3:ArrayOfdouble"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="CollectionContainer" nillable="true" type="tns:CollectionContainer"/>
+<xs:complexType name="DictionaryContainer">
+<xs:sequence>
+<xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ReverseLookup" nillable="true" type="q4:ArrayOfKeyValueOfintstring"/>
+<xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Scores" nillable="true" type="q5:ArrayOfKeyValueOfstringint"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="DictionaryContainer" nillable="true" type="tns:DictionaryContainer"/>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+<xs:complexType name="ArrayOfstring">
+<xs:sequence>
+<xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring"/>
+<xs:complexType name="ArrayOfint">
+<xs:sequence>
+<xs:element minOccurs="0" maxOccurs="unbounded" name="int" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="ArrayOfint" nillable="true" type="tns:ArrayOfint"/>
+<xs:complexType name="ArrayOfdouble">
+<xs:sequence>
+<xs:element minOccurs="0" maxOccurs="unbounded" name="double" type="xs:double"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="ArrayOfdouble" nillable="true" type="tns:ArrayOfdouble"/>
+<xs:complexType name="ArrayOfKeyValueOfintstring">
+<xs:annotation>
+<xs:appinfo>
+<IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+</xs:appinfo>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfintstring">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Key" type="xs:int"/>
+<xs:element name="Value" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="ArrayOfKeyValueOfintstring" nillable="true" type="tns:ArrayOfKeyValueOfintstring"/>
+<xs:complexType name="ArrayOfKeyValueOfstringint">
+<xs:annotation>
+<xs:appinfo>
+<IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+</xs:appinfo>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfstringint">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Key" nillable="true" type="xs:string"/>
+<xs:element name="Value" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="ArrayOfKeyValueOfstringint" nillable="true" type="tns:ArrayOfKeyValueOfstringint"/>
+<xs:complexType name="ArrayOfKeyValueOfanyTypeanyType">
+<xs:annotation>
+<xs:appinfo>
+<IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+</xs:appinfo>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfanyTypeanyType">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Key" nillable="true" type="xs:anyType"/>
+<xs:element name="Value" nillable="true" type="xs:anyType"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="ArrayOfKeyValueOfanyTypeanyType" nillable="true" type="tns:ArrayOfKeyValueOfanyTypeanyType"/>
+</xs:schema>
+</wsdl:types>
+<wsdl:message name="IService1_GetCollections_InputMessage">
+<wsdl:part name="parameters" element="tns:GetCollections"/>
+</wsdl:message>
+<wsdl:message name="IService1_GetCollections_OutputMessage">
+<wsdl:part name="parameters" element="tns:GetCollectionsResponse"/>
+</wsdl:message>
+<wsdl:message name="IService1_GetDictionaries_InputMessage">
+<wsdl:part name="parameters" element="tns:GetDictionaries"/>
+</wsdl:message>
+<wsdl:message name="IService1_GetDictionaries_OutputMessage">
+<wsdl:part name="parameters" element="tns:GetDictionariesResponse"/>
+</wsdl:message>
+<wsdl:message name="IService1_GetOrderedDictionary_InputMessage">
+<wsdl:part name="parameters" element="tns:GetOrderedDictionary"/>
+</wsdl:message>
+<wsdl:message name="IService1_GetOrderedDictionary_OutputMessage">
+<wsdl:part name="parameters" element="tns:GetOrderedDictionaryResponse"/>
+</wsdl:message>
+<wsdl:portType name="IService1">
+<wsdl:operation name="GetCollections">
+<wsdl:input wsaw:Action="http://tempuri.org/IService1/GetCollections" message="tns:IService1_GetCollections_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IService1/GetCollectionsResponse" message="tns:IService1_GetCollections_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="GetDictionaries">
+<wsdl:input wsaw:Action="http://tempuri.org/IService1/GetDictionaries" message="tns:IService1_GetDictionaries_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IService1/GetDictionariesResponse" message="tns:IService1_GetDictionaries_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="GetOrderedDictionary">
+<wsdl:input wsaw:Action="http://tempuri.org/IService1/GetOrderedDictionary" message="tns:IService1_GetOrderedDictionary_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IService1/GetOrderedDictionaryResponse" message="tns:IService1_GetOrderedDictionary_OutputMessage"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="GetCollections">
+<soap:operation soapAction="http://tempuri.org/IService1/GetCollections" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetDictionaries">
+<soap:operation soapAction="http://tempuri.org/IService1/GetDictionaries" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetOrderedDictionary">
+<soap:operation soapAction="http://tempuri.org/IService1/GetOrderedDictionary" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="Service1">
+<wsdl:port name="BasicHttpBinding_IService1" binding="tns:BasicHttpBinding_IService1">
+<soap:address location="http://localhost:49773/Service1.svc"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

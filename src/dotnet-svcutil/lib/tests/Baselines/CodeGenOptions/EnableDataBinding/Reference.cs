@@ -15,8 +15,11 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ComplexCompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
-    public partial class ComplexCompositeType : object, System.ComponentModel.INotifyPropertyChanged
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class ComplexCompositeType : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
@@ -55,6 +58,18 @@ namespace EnableDataBinding_NS
         private ulong UlongValueField;
         
         private ushort UshortValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
@@ -394,10 +409,25 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="FaultDetail", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
-    public partial class FaultDetail : object, System.ComponentModel.INotifyPropertyChanged
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class FaultDetail : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
     {
         
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
         private string MessageField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Message
@@ -431,12 +461,27 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
-    public partial class CompositeType : object, System.ComponentModel.INotifyPropertyChanged
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class CompositeType : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
         private string StringValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
@@ -487,8 +532,11 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultOfstring", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
-    public partial class ResultOfstring : object, System.ComponentModel.INotifyPropertyChanged
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class ResultOfstring : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private int ErrorCodeField;
         
@@ -497,6 +545,18 @@ namespace EnableDataBinding_NS
         private System.Net.HttpStatusCode HttpStatusCodeField;
         
         private string ResultField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int ErrorCode
@@ -581,8 +641,11 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultOfArrayOfUserGamePlay", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
-    public partial class ResultOfArrayOfUserGamePlay : object, System.ComponentModel.INotifyPropertyChanged
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class ResultOfArrayOfUserGamePlay : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private int ErrorCodeField;
         
@@ -591,6 +654,18 @@ namespace EnableDataBinding_NS
         private System.Net.HttpStatusCode HttpStatusCodeField;
         
         private EnableDataBinding_NS.UserGamePlay[] ResultField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int ErrorCode
@@ -675,8 +750,11 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserGamePlay", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
-    public partial class UserGamePlay : object, System.ComponentModel.INotifyPropertyChanged
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class UserGamePlay : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private string GameKeyField;
         
@@ -687,6 +765,18 @@ namespace EnableDataBinding_NS
         private string UserIdField;
         
         private string ValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string GameKey
@@ -788,8 +878,11 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="TestHttpRequestMessageProperty", Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService")]
-    public partial class TestHttpRequestMessageProperty : object, System.ComponentModel.INotifyPropertyChanged
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class TestHttpRequestMessageProperty : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private System.Collections.Generic.Dictionary<string, string> HeadersField;
         
@@ -798,6 +891,18 @@ namespace EnableDataBinding_NS
         private string QueryStringField;
         
         private bool SuppressEntityBodyField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.Generic.Dictionary<string, string> Headers
@@ -931,6 +1036,7 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://mycustomwrappernamespace.com", IsWrapped=true)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class RequestBankingData
     {
         
@@ -958,6 +1064,7 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://mycustomwrappernamespace.com", IsWrapped=true)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class ReplyBankingData
     {
         
@@ -985,6 +1092,7 @@ namespace EnableDataBinding_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class ReplyBankingDataNotWrapped
     {
         
@@ -1016,6 +1124,7 @@ namespace EnableDataBinding_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class WcfProjectNServiceClient : System.ServiceModel.ClientBase<EnableDataBinding_NS.IWcfProjectNService>, EnableDataBinding_NS.IWcfProjectNService
     {
         

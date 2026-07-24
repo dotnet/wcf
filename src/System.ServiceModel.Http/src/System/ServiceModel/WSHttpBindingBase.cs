@@ -13,7 +13,6 @@ namespace System.ServiceModel
         private OptionalReliableSession _reliableSession;
         private TextMessageEncodingBindingElement _textEncoding;
         private MtomMessageEncodingBindingElement _mtomEncoding;
-        private ReliableSessionBindingElement _session;
 
         protected WSHttpBindingBase()
             : base()
@@ -40,14 +39,8 @@ namespace System.ServiceModel
         [DefaultValue(false)]
         public bool TransactionFlow
         {
-            get { return false; }
-            set
-            {
-                if (value)
-                {
-                    throw ExceptionHelper.PlatformNotSupported();
-                }
-            }
+            get { return TransactionFlowBindingElement.Transactions; }
+            set { TransactionFlowBindingElement.Transactions = value; }
         }
 
         [DefaultValue(TransportDefaults.MaxBufferPoolSize)]
@@ -150,19 +143,30 @@ namespace System.ServiceModel
         }
 
         internal HttpTransportBindingElement HttpTransport { get; private set; }
-
         internal HttpsTransportBindingElement HttpsTransport { get; private set; }
+        internal ReliableSessionBindingElement ReliableSessionBindingElement { get; private set; }
+        internal TransactionFlowBindingElement TransactionFlowBindingElement { get; private set; }
+
+        private static TransactionFlowBindingElement GetDefaultTransactionFlowBindingElement()
+        {
+            TransactionFlowBindingElement tfbe = new(false)
+            {
+                TransactionProtocol = TransactionProtocol.WSAtomicTransactionOctober2004
+            };
+            return tfbe;
+        }
 
         private void Initialize()
         {
             HttpTransport = new HttpTransportBindingElement();
             HttpsTransport = new HttpsTransportBindingElement();
-            _session = new ReliableSessionBindingElement(true);
+            TransactionFlowBindingElement = GetDefaultTransactionFlowBindingElement();
+            ReliableSessionBindingElement = new ReliableSessionBindingElement(true);
             _textEncoding = new TextMessageEncodingBindingElement();
             _textEncoding.MessageVersion = MessageVersion.Soap12WSAddressing10;
             _mtomEncoding = new MtomMessageEncodingBindingElement();
             _mtomEncoding.MessageVersion = MessageVersion.Soap12WSAddressing10;
-            _reliableSession = new OptionalReliableSession(_session);
+            _reliableSession = new OptionalReliableSession(ReliableSessionBindingElement);
         }
 
         public override BindingElementCollection CreateBindingElements()
@@ -171,10 +175,13 @@ namespace System.ServiceModel
             // order of BindingElements is important
             // context
 
+            // transaction flow
+            bindingElements.Add(TransactionFlowBindingElement);
+
             // reliable
             if (_reliableSession.Enabled)
             {
-                bindingElements.Add(_session);
+                bindingElements.Add(ReliableSessionBindingElement);
             }
 
             // add security (*optional)

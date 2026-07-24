@@ -16,8 +16,8 @@ namespace System.ServiceModel.Security
     internal class AcceleratedTokenProvider :
         NegotiationTokenProvider<AcceleratedTokenProviderState>
     {
-        internal const SecurityKeyEntropyMode defaultKeyEntropyMode = SecurityKeyEntropyMode.CombinedEntropy;
-        private SecurityKeyEntropyMode _keyEntropyMode = defaultKeyEntropyMode;
+        internal const SecurityKeyEntropyMode DefaultKeyEntropyMode = SecurityKeyEntropyMode.CombinedEntropy;
+        private SecurityKeyEntropyMode _keyEntropyMode = DefaultKeyEntropyMode;
         private SecurityBindingElement _bootstrapSecurityBindingElement;
         private ChannelParameterCollection _channelParameters;
 
@@ -115,7 +115,7 @@ namespace System.ServiceModel.Security
             base.OnAbort();
         }
 
-        protected override IChannelFactory<IAsyncRequestChannel> GetNegotiationChannelFactory(IChannelFactory<IAsyncRequestChannel> transportChannelFactory, ChannelBuilder channelBuilder)
+        protected override IChannelFactory<IRequestChannel> GetNegotiationChannelFactory(IChannelFactory<IRequestChannel> transportChannelFactory, ChannelBuilder channelBuilder)
         {
             ISecurityCapabilities securityCapabilities = _bootstrapSecurityBindingElement.GetProperty<ISecurityCapabilities>(IssuerBindingContext);
             SecurityCredentialsManager securityCredentials = IssuerBindingContext.BindingParameters.Find<SecurityCredentialsManager>();
@@ -137,13 +137,13 @@ namespace System.ServiceModel.Security
             }
 
             SecurityProtocolFactory securityProtocolFactory = _bootstrapSecurityBindingElement.CreateSecurityProtocolFactory<IAsyncRequestChannel>(IssuerBindingContext.Clone(), securityCredentials, false, IssuerBindingContext.Clone());
-            return new SecurityChannelFactory<IAsyncRequestChannel>(
+            return new SecurityChannelFactory<IRequestChannel>(
                 securityCapabilities, IssuerBindingContext, channelBuilder, securityProtocolFactory, transportChannelFactory);
         }
 
-        protected override IAsyncRequestChannel CreateClientChannel(EndpointAddress target, Uri via)
+        protected override IRequestChannel CreateClientChannel(EndpointAddress target, Uri via)
         {
-            IAsyncRequestChannel result = base.CreateClientChannel(target, via);
+            IRequestChannel result = base.CreateClientChannel(target, via);
             if (_channelParameters != null)
             {
                 _channelParameters.PropagateChannelParameters(result);

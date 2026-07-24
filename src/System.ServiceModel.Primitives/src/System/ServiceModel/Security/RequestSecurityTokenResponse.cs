@@ -4,16 +4,16 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IdentityModel;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.IO;
+using System.Runtime;
 using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
-using System.Xml;
 using System.ServiceModel.Dispatcher;
-using System.IdentityModel;
-using System.Runtime;
+using System.Xml;
 
 namespace System.ServiceModel.Security
 {
@@ -527,6 +527,16 @@ namespace System.ServiceModel.Security
             {
                 return _negotiationData;
             }
+        }
+
+        internal void SetBinaryNegotiation(BinaryNegotiation negotiationData)
+        {
+            if (IsReadOnly)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRP.ObjectIsReadOnly));
+            }
+
+            _negotiationData = negotiationData ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(negotiationData));
         }
 
         internal byte[] GetAuthenticator()

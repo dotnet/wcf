@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 Bunun nedeni, dilin oluşturulmakta olan tüm kod öğelerini desteklememesi olabilir. Başka bir dil kullanmayı deneyin.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">/{1} bağımsız değişkenine geçirilen '{0}' değeri için bir kod sağlayıcısı oluşturulamadı. Kod sağlayıcısının düzgün bir biçimde yüklenip yapılandırıldığından emin olun.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">--{1} seçeneğine geçirilen '{0}' değeri için bir kod sağlayıcısı oluşturulamadı. Kod sağlayıcısının düzgün bir biçimde yüklenip yapılandırıldığından emin olun.</target>
@@ -547,6 +552,11 @@ Belge Tanımlayıcısı: '{0}'.</target>
         <target state="translated">İç olarak işaretlenmiş sınıflar oluşturun. Varsayılan: Genel sınıflar oluşturma. (Kısa Biçim: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="translated">Kod oluşturmak için kullanılan programlama dili. Kullanılabilecek dil adlarına örnek olarak CS ve VB verilebilir. Varsayılan: C#. (Kısa Biçim: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
         <target state="translated">Kod oluşturmak için kullanılan programlama dili. machine.config dosyasında kayıtlı bir dili ya da System.CodeDom.Compiler.CodeDomProvider'dan devralan bir sınıfın tam adını sağlayın. Kullanılabilecek dil adlarına örnek olarak CS ve VB verilebilir. Varsayılan: C#. (Kısa Biçim: -{0})</target>
@@ -815,6 +825,11 @@ If you were trying to generate a client, this could be because the metadata docu
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
         <target state="translated">'{1}' adresindeki '{0}' uç noktası, .Net Core uygulamalarıyla uyumsuz bir veya daha fazla bağlama içerdiğinden atlanıyor...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">

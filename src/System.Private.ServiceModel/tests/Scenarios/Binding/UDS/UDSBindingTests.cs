@@ -93,7 +93,6 @@ public partial class Binding_UDSBindingTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(SSL_Available))]
     [OuterLoop]
     private void BasicCertAsTransport()

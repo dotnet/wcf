@@ -148,13 +148,17 @@ public static class ServiceUtilHelper
     // installed.  Exceptions are propagated to the caller.
     private static X509Certificate2 InstallRootCertificateFromServer()
     {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         X509Certificate2 rootCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(RootCertificateResource));
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
         return CertificateManager.InstallCertificateToRootStore(rootCertificate);
     }
 
     public static async Task<X509Certificate2> GetServiceMacineCertFromServerAsync()
     {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         return new X509Certificate2(await GetResourceFromServiceAsByteArrayAsync(MachineCertificateResource));
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
     }
 
     // Tries to ensure that the client certificate is installed into
@@ -359,7 +363,9 @@ public static class ServiceUtilHelper
             storageFlags = X509KeyStorageFlags.Exportable;
         }
 
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         X509Certificate2 clientCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(ClientCertificateResource), "test", storageFlags);
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
         return CertificateManager.InstallCertificateToMyStore(clientCertificate);
     }
 
@@ -368,7 +374,9 @@ public static class ServiceUtilHelper
     // propagated back to the caller.
     private static X509Certificate2 InstallOSXPeerCertificateFromServer()
     {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         X509Certificate2 peerCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(PeerCertificateResource), "test", X509KeyStorageFlags.DefaultKeySet);
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
         return CertificateManager.InstallCertificateToOSXKeychainStore(peerCertificate);
     }
 
@@ -377,7 +385,9 @@ public static class ServiceUtilHelper
     // propagated back to the caller.
     private static X509Certificate2 InstallPeerCertificateFromServer()
     {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
         X509Certificate2 peerCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(PeerCertificateResource), "test", X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.UserKeySet);
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
         return CertificateManager.InstallCertificateToTrustedPeopleStore(peerCertificate);
     }
 
@@ -483,7 +493,29 @@ public static class ServiceUtilHelper
         var builder = new UriBuilder();
         try
         {
-            builder.Host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+            string serviceUri = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+
+            // Split ServiceUri into host and path components
+            // ServiceUri can be "hostname" or "hostname/path"
+            int pathSeparatorIndex = serviceUri.IndexOf('/');
+            if (pathSeparatorIndex >= 0)
+            {
+                builder.Host = serviceUri.Substring(0, pathSeparatorIndex);
+                string path = serviceUri.Substring(pathSeparatorIndex);
+
+                // Ensure path has trailing slash
+                if (!path.EndsWith("/"))
+                {
+                    path = path + "/";
+                }
+
+                builder.Path = path;
+            }
+            else
+            {
+                builder.Host = serviceUri;
+            }
+
             builder.Scheme = protocol;
 
             if (!IISHosted)
@@ -530,8 +562,13 @@ public static class ServiceUtilHelper
 
     private static string GetResourceAddress(string resource, string protocol = "http")
     {
-        var baseUri = BuildBaseUri(protocol);
-        return new Uri(baseUri, $"{TestHostUtilitiesService}/{resource}").ToString();
+        if (ConditionalTestDetectors.IsRunWithCoreWCFService())
+        {
+            return new Uri(BuildBaseUri(protocol), $"{TestHostUtilitiesService}/{resource}").ToString();
+        }
+
+        string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+        return string.Format(@"{0}://{1}/{2}/{3}", protocol, host, TestHostUtilitiesService, resource);
     }
 
     public static string GetResourceFromServiceAsString(string resource)

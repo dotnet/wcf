@@ -168,8 +168,12 @@ public class WebSocketTests : ConditionalWcfTest
                 "The logging done by the Server was not returned via the Callback.");
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
+            if (!ScenarioTestHelpers.IsLocalHost())
+            {
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         }
         finally
         {
@@ -236,8 +240,12 @@ public class WebSocketTests : ConditionalWcfTest
                 "The logging done by the Server was not returned via the Callback.");
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
+            if (!ScenarioTestHelpers.IsLocalHost())
+            {
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         }
         finally
         {
@@ -348,8 +356,7 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
-    [Condition(nameof(Root_Certificate_Installed),
-        nameof(Skip_CoreWCFService_FailedTest))]
+    [Condition(nameof(Root_Certificate_Installed))]
     [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -416,7 +423,6 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfTheory]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
@@ -472,8 +478,12 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
+            if (!ScenarioTestHelpers.IsLocalHost())
+            {
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         }
         finally
         {
@@ -487,7 +497,6 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_Buffered(NetHttpMessageEncoding messageEncoding)
     {
@@ -527,8 +536,12 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
+            if (!ScenarioTestHelpers.IsLocalHost())
+            {
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         }
         finally
         {
@@ -541,7 +554,6 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_Buffered_KeepAlive(NetHttpMessageEncoding messageEncoding)
@@ -582,8 +594,12 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
+            if (!ScenarioTestHelpers.IsLocalHost())
+            {
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         }
         finally
         {
@@ -596,8 +612,7 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
-    [Condition(nameof(Root_Certificate_Installed),
-               nameof(Skip_CoreWCFService_FailedTest))]
+    [Condition(nameof(Root_Certificate_Installed))]
     [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -638,8 +653,12 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
+            if (!ScenarioTestHelpers.IsLocalHost())
+            {
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         }
         finally
         {
@@ -652,8 +671,7 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
-    [Condition(nameof(Root_Certificate_Installed),
-               nameof(Skip_CoreWCFService_FailedTest))]
+    [Condition(nameof(Root_Certificate_Installed))]
     [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -696,8 +714,12 @@ public class WebSocketTests : ConditionalWcfTest
             }
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
+            if (!ScenarioTestHelpers.IsLocalHost())
+            {
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         }
         finally
         {
@@ -837,7 +859,6 @@ public class WebSocketTests : ConditionalWcfTest
     // When not using a callback you can still force WCF to use WebSockets.
     // This test verifies that it actually uses WebSockets when not using a callback.
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_VerifyWebSocketsUsed()
@@ -863,8 +884,12 @@ public class WebSocketTests : ConditionalWcfTest
             Assert.True(responseFromService, String.Format("Response from the service was not expected. Expected: 'True' but got {0}", responseFromService));
 
             // *** CLEANUP *** \\
-            ((ICommunicationObject)client).Close();
-            channelFactory.Close();
+            // Close the client and channel factory if not running on localhost. CoreWCF has a bug in Close method (on Linux).
+            if (!ScenarioTestHelpers.IsLocalHost())
+            {
+                ((ICommunicationObject)client).Close();
+                channelFactory.Close();
+            }
         }
         finally
         {

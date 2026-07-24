@@ -18,11 +18,18 @@ namespace System.ServiceModel
             public const string DeserializationFailed = "DeserializationFailed";
             public const string SessionTerminated = "SessionTerminated";
             public const string InternalServiceFault = "InternalServiceFault";
+            public const string TransactionHeaderMalformed = "TransactionHeaderMalformed";
+            public const string TransactionHeaderMissing = "TransactionHeaderMissing";
+            public const string TransactionUnmarshalingFailed = "TransactionUnmarshalingFailed";
+            public const string TransactionIsolationLevelMismatch = "TransactionIsolationLevelMismatch";
+            public const string TransactionAborted = "TransactionAborted";
+            public const string IssuedTokenFlowNotAllowed = "IssuedTokenFlowNotAllowed";
         }
 
         public static class Actions
         {
             public const string NetDispatcher = "http://schemas.microsoft.com/net/2005/12/windowscommunicationfoundation/dispatcher/fault";
+            public const string Transactions = "http://schemas.microsoft.com/net/2005/12/windowscommunicationfoundation/transactions/fault";
         }
     }
 }

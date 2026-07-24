@@ -147,6 +147,16 @@
         <target state="translated">Próbowano uzyskać typ kontraktu dla {0}, ale ten typ nie jest typu ServiceContract ani nie dziedziczy z klasy ServiceContract.</target>
         <note />
       </trans-unit>
+      <trans-unit id="AuthenticationOfClientFailed">
+        <source>Authentication of the client by the service failed.</source>
+        <target state="new">Authentication of the client by the service failed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticatorNotPresentInRSTRCollection">
+        <source>The authenticator RSTR was not found in the RSTR collection.</source>
+        <target state="new">The authenticator RSTR was not found in the RSTR collection.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BadCloseTarget">
         <source>The CloseTarget specified '{0}' does not identify the security token that signed the message.</source>
         <target state="translated">Określony przez CloseTarget element „{0}” nie identyfikuje tokenu zabezpieczającego, który podpisał komunikat.</target>
@@ -155,6 +165,11 @@
       <trans-unit id="BadIssuedTokenType">
         <source>The issued token is of unexpected type '{0}'. Expected token type '{1}'.</source>
         <target state="translated">Wystawiony token jest nieoczekiwanego typu „{0}”. Spodziewany typ tokenu „{1}”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BadKeyEncryptionAlgorithm">
+        <source>Invalid key encryption algorithm {0}.</source>
+        <target state="new">Invalid key encryption algorithm {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BadSecurityNegotiationContext">
@@ -367,6 +382,11 @@
         <target state="translated">Nie można dodać dwóch elementów z tym samym kluczem do kolekcji SynchronizedKeyedCollection.</target>
         <note />
       </trans-unit>
+      <trans-unit id="CannotAuthenticateServer">
+        <source>The security negotiation could not be completed because mutual authentication was not achieved.</source>
+        <target state="new">The security negotiation could not be completed because mutual authentication was not achieved.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="CannotDetectAddressingVersion">
         <source>Cannot detect WS-Addressing version. EndpointReference does not start with an Element.</source>
         <target state="translated">Nie można wykryć wersji WS-Addressing. Wartość EndpointReference nie zaczyna się od wartości Element.</target>
@@ -435,6 +455,11 @@
       <trans-unit id="CertificateUnsupportedForHttpTransportCredentialOnly">
         <source>Certificate-based client authentication is not supported in TransportCredentialOnly security mode. Select the Transport security mode.</source>
         <target state="translated">Uwierzytelnianie klienta oparte na certyfikatach jest nieobsługiwane w trybie zabezpieczeń TransportCredentialOnly. Wybierz tryb zabezpieczeń Transport.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelDemuxerBindingElementNotFound">
+        <source>The binding does not contain a ChannelDemuxerBindingElement.</source>
+        <target state="new">The binding does not contain a ChannelDemuxerBindingElement.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryCannotBeUsedToCreateChannels">
@@ -580,6 +605,11 @@
       <trans-unit id="CommunicationObjectInInvalidState">
         <source>The communication object, {0}, is not part of WCF and is in an unsupported state '{1}'.  This indicates an internal error in the implementation of that communication object.</source>
         <target state="translated">Obiekt komunikacyjny {0} nie wchodzi w skład WCF i jest w nieobsługiwanym stanie „{1}”. Oznacza to błąd wewnętrzny w implementacji obiektu komunikacji.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ConfigInvalidTransactionFlowProtocolValue">
+        <source>The transaction protocol value '{0}' is not valid.</source>
+        <target state="new">The transaction protocol value '{0}' is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ConfigurationFilesNotSupported">
@@ -852,6 +882,11 @@
         <target state="translated">Nie można uzyskać obiektu XmlDictionaryReaderQuotas z powiązania. Jeśli określono niestandardową wartość EncodingBindingElement, sprawdź, czy obiekt EncodingBindingElement w swojej metodzie GetProperty&lt;T&gt;() potrafi obsłużyć obiekt XmlDictionaryReaderQuotas.</target>
         <note />
       </trans-unit>
+      <trans-unit id="EncryptedKeyWasNotEncryptedWithTheRequiredEncryptingToken">
+        <source>The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</source>
+        <target state="new">The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EndMethodsCannotBeDecoratedWithOperationContractAttribute">
         <source>When using the IAsyncResult design pattern, the End method cannot be decorated with OperationContractAttribute. Only the corresponding Begin method can be decorated with OperationContractAttribute; that attribute will apply to the Begin-End pair of methods. Method '{0}' in type '{1}' violates this.</source>
         <target state="translated">Kiedy używany jest wzorzec projektowy IAsyncResult, metoda End nie może mieć atrybutu OperationContractAttribute. Jedynie odpowiednia metoda Begin może korzystać z atrybutu OperationContractAttribute; ten atrybut obowiązuje w odniesieniu do pary metod Begin-End. Metoda „{0}” w typie „{1}” narusza tę zasadę.</target>
@@ -965,6 +1000,11 @@
       <trans-unit id="FailToReceiveReplyFromNegotiation">
         <source>Security negotiation failed because the remote party did not send back a reply in a timely manner. This may be because the underlying transport connection was aborted.</source>
         <target state="translated">Nie można wynegocjować zabezpieczeń, ponieważ strona zdalna nie odpowiedziała na czas. Przyczyną może być przerwanie podstawowego połączenia transportowego.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FailedSspiNegotiation">
+        <source>The SSPI negotiation failed with the server.</source>
+        <target state="new">The SSPI negotiation failed with the server.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToCreateTypedProxy">
@@ -1317,6 +1357,11 @@
         <target state="translated">Nieprawidłowy element ValueType {0} w przychodzącej negocjacji binarnej.</target>
         <note />
       </trans-unit>
+      <trans-unit id="IncorrectSpnOrUpnSpecified">
+        <source>SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</source>
+        <target state="new">SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InnerChannelFactoryWasNotSet">
         <source>Cannot open ChannelFactory as the inner channel factory was not set during the initialization process.</source>
         <target state="translated">Nie można otworzyć elementu ChannelFactory, ponieważ wewnętrzna fabryka kanałów nie została ustawiona podczas procesu inicjowania.</target>
@@ -1367,6 +1412,11 @@
         <target state="translated">Odebrano potwierdzenie, że pozostała ilość miejsca w buforze zdalnego punktu końcowego wynosi {0}. Liczba ta nie może być ujemna. Wystąpił błąd sesji uwierzytelnionej.</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidClientCredentials">
+        <source>The client credentials are not valid.</source>
+        <target state="new">The client credentials are not valid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
         <source>A security session close response was received with an invalid action '{0}'.</source>
         <target state="translated">Odebrano odpowiedź zamykającą sesję zabezpieczeń z nieprawidłową akcją "{0}".</target>
@@ -1412,6 +1462,11 @@
         <target state="translated">Wystąpił błąd wewnętrzny. Nieprawidłowy element MessageState.</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidPropagationToken">
+        <source>The propagation token in the message is invalid.</source>
+        <target state="new">The propagation token in the message is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidQName">
         <source>The QName is invalid.</source>
         <target state="translated">Nieprawidłowy element QName.</target>
@@ -1440,6 +1495,11 @@
       <trans-unit id="InvalidSequenceRange">
         <source>An acknowledgement range starting at {0} and ending at {1} was received. This is an invalid acknowledgement range. The reliable session was faulted.</source>
         <target state="translated">Odebrano zakres potwierdzeń rozpoczynający się od {0} i kończący się na {1}. Jest to nieprawidłowy zakres potwierdzeń. Wystąpił błąd sesji uwierzytelnionej.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidSspiNegotiation">
+        <source>The SSPI negotiation failed.</source>
+        <target state="new">The SSPI negotiation failed.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTokenProvided">
@@ -1490,6 +1550,11 @@
       <trans-unit id="IssuedSecurityTokenParametersNotSet">
         <source>The security token parameters to use for the issued token are not set on '{0}'.</source>
         <target state="translated">Parametry tokenu zabezpieczającego, które mają być używane dla wystawionego tokenu, nie zostały ustawione w elemencie „{0}”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IssuedTokenFlowNotAllowed">
+        <source>Issued token flow is not allowed by this binding.</source>
+        <target state="new">Issued token flow is not allowed by this binding.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuerBindingNotPresentInTokenRequirement">
@@ -1847,6 +1912,11 @@
         <target state="translated">Zdalny punkt końcowy nie dołączył ostatecznego potwierdzenia do odpowiedzi na komunikat żądania zamknięcia sekwencji. Stanowi to naruszenie protokołu WS-ReliableMessaging. Wystąpił błąd niezawodnej sesji.</target>
         <note />
       </trans-unit>
+      <trans-unit id="MissingKeyInfoInEncryptedKey">
+        <source>The KeyInfo clause is missing or empty in EncryptedKey.</source>
+        <target state="new">The KeyInfo clause is missing or empty in EncryptedKey.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="MissingMessageID">
         <source>Request Message is missing a MessageID header. One is required to correlate a reply.</source>
         <target state="translated">W żądaniu wiadomości brak nagłówka MessageID, który jest wymagany do dopasowania odpowiedzi.</target>
@@ -2097,6 +2167,16 @@
         <target state="translated">Punkt końcowy przetwarza wiadomości tylko przy użyciu protokołu WS-ReliableMessaging. Wiadomość wysłana do punktu końcowego nie zawiera akcji ani żadnych nagłówków używanych w protokole i nie można jej przetworzyć.</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoBinaryNegoToReceive">
+        <source>Security negotiation failed because no binary negotiation data was received from the other party.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data was received from the other party.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoBinaryNegoToSend">
+        <source>Security negotiation failed because no binary negotiation data is available to send.</source>
+        <target state="new">Security negotiation failed because no binary negotiation data is available to send.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NoChannelBuilderAvailable">
         <source>The binding (Name={0}, Namespace={1}) cannot be used to create a ChannelFactory or a ChannelListener because it appears to be missing a TransportBindingElement.  Every binding must have at least one binding element that derives from TransportBindingElement.</source>
         <target state="translated">Nie można użyć powiązania (Nazwa={0}, Przestrzeń nazw={1}) do utworzenia elementu ChannelFactory lub ChannelListener, ponieważ brakuje elementu TransportBindingElement. Każde powiązanie musi zawierać co najmniej jeden element wiążący pochodzący od elementu TransportBindingElement.</target>
@@ -2115,6 +2195,11 @@
       <trans-unit id="NoEndMethodFoundForAsyncBeginMethod3">
         <source>OperationContract method '{0}' in type '{1}' does not properly implement the async pattern, as no corresponding method '{2}' could be found. Either provide a method called '{2}' or set the AsyncPattern property on method '{0}' to false.</source>
         <target state="translated">Dla metody OperationContract „{0}” w typie „{1}” nie zaimplementowano poprawnie wzorca asynchronicznego, ponieważ nie można odnaleźć odpowiedniej metody „{2}”. Należy dostarczyć metodę o nazwie „{2}” lub ustawić wartość „false” dla właściwości AsyncPattern w metodzie „{0}”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoInputIsSetForCanonicalization">
+        <source>No input is set for writing canonicalized output.</source>
+        <target state="new">No input is set for writing canonicalized output.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyIdentifierClauseFound">
@@ -2162,6 +2247,11 @@
         <target state="translated">Element SecurityContextSecurityToken nie zawiera identyfikatora kontekstu.</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoServiceTokenReceived">
+        <source>No service token was received as part of the security negotiation.</source>
+        <target state="new">No service token was received as part of the security negotiation.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NoUserNameTokenProvided">
         <source>The required UserNameSecurityToken was not provided.</source>
         <target state="translated">Nie dostarczono wymaganego elementu UserNameSecurityToken.</target>
@@ -2205,6 +2295,11 @@
       <trans-unit id="OffsetExceedsBufferSize">
         <source>The specified offset exceeds the buffer size ({0} bytes).</source>
         <target state="translated">Określone przesunięcie przekracza rozmiar buforu ({0} B).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OleTxHeaderCorrupt">
+        <source>The OleTx transaction header in the message is malformed.</source>
+        <target state="new">The OleTx transaction header in the message is malformed.</target>
         <note />
       </trans-unit>
       <trans-unit id="OneWayAndFaultsIncompatible2">
@@ -2312,6 +2407,11 @@
         <target state="translated">Algorytm klucza dla tego klucza prywatnego nie jest obsługiwany.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ProofTokenWasNotWrappedCorrectly">
+        <source>The proof token was not wrapped with the correct algorithm.</source>
+        <target state="new">The proof token was not wrapped with the correct algorithm.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PropertySettingErrorOnProtocolFactory">
         <source>The required '{0}' property on the '{1}' security protocol factory is not set or has an invalid value.</source>
         <target state="translated">Wymagana właściwość „{0}” fabryki protokołów zabezpieczeń „{1}” nie została ustawiona lub ma nieprawidłową wartość.</target>
@@ -2365,6 +2465,21 @@
       <trans-unit id="PublicKeyNotSupported">
         <source>The key algorithm for this public key is not supported.</source>
         <target state="translated">Algorytm klucza dla tego klucza publicznego nie jest obsługiwany.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorHasBadContext">
+        <source>The authenticator RSTR has a different Context value than the negotiation RSTR.</source>
+        <target state="new">The authenticator RSTR has a different Context value than the negotiation RSTR.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorIncorrect">
+        <source>The authenticator in the server response was incorrect.</source>
+        <target state="new">The authenticator in the server response was incorrect.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRAuthenticatorNotPresent">
+        <source>The authenticator was not present in the server response.</source>
+        <target state="new">The authenticator was not present in the server response.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadNotSupportedOnStream">
@@ -2550,6 +2665,11 @@
       <trans-unit id="SFxBadByValueParameterMetadata">
         <source>Method '{0}' in class '{1}' has bad parameter metadata: a pass-by-value parameter is marked with the 'out' parameter mode.</source>
         <target state="translated">Metoda „{0}” w klasie „{1}” ma niepoprawne metadane parametrów: parametr przekazywany przez wartość jest oznaczony przy użyciu trybu parametru „out”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxBadTransactionProtocols">
+        <source>The specified transaction protocol is not valid.</source>
+        <target state="new">The specified transaction protocol is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBindingMustContainTransport2">
@@ -3392,6 +3512,26 @@
         <target state="translated">Limity czasu większe niż Int32.MaxValue TotalMilliseconds (około 24 dni) nie mogą być uwzględniane. Aby wyłączyć limit czasu, określ wartość TimeSpan.MaxValue.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxTransactionDeserializationFailed">
+        <source>Transaction deserialization failed: {0}.</source>
+        <target state="new">Transaction deserialization failed: {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionFlowRequired">
+        <source>A transaction is required but was not flowed.</source>
+        <target state="new">A transaction is required but was not flowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTransactionHeaderNotUnderstood">
+        <source>The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</source>
+        <target state="new">The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxTryAddMultipleTransactionsOnMessage">
+        <source>Cannot add multiple transaction properties to a message.</source>
+        <target state="new">Cannot add multiple transaction properties to a message.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeNull">
         <source>Internal Error: The instance of the MessageContract cannot be null in {0}.</source>
         <target state="translated">Błąd wewnętrzny: Wystąpienie MessageContract nie może być równe null w elemencie {0}.</target>
@@ -3827,6 +3967,11 @@
         <target state="translated">Miejsce wymagane do kodowania ({0} B) przekracza przesunięcie ramki komunikatu.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SpnegoImpersonationLevelCannotBeSetToNone">
+        <source>The impersonation level for SPNEGO negotiation cannot be set to None.</source>
+        <target state="new">The impersonation level for SPNEGO negotiation cannot be set to None.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StandardsManagerCannotWriteObject">
         <source>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</source>
         <target state="translated">Serializator tokenów nie może zserializować elementu „{0}”. Jeśli jest to typ niestandardowy, należy użyć serializatora niestandardowego.</target>
@@ -4097,6 +4242,26 @@
         <target state="translated">Infrastruktura niezawodnych sesji wykryła zmianę zegara systemowego. Spowoduje to tymczasowe używanie mniej optymalnej strategii odpowiadania na komunikaty.</target>
         <note />
       </trans-unit>
+      <trans-unit id="TransactionFlowBadOption">
+        <source>The specified TransactionFlowOption is not a valid value.</source>
+        <target state="new">The specified TransactionFlowOption is not a valid value.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowOnlySupportedOnWindows">
+        <source>Transaction flow is only supported on Windows.</source>
+        <target state="new">Transaction flow is only supported on Windows.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionFlowRequiredIssuedTokens">
+        <source>Transaction flow is required, but issued tokens are not allowed.</source>
+        <target state="new">Transaction flow is required, but issued tokens are not allowed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TransactionsNotSupported">
+        <source>Distributed transactions are not supported on this platform.</source>
+        <target state="new">Distributed transactions are not supported on this platform.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="TransferModeNotSupported">
         <source>Transfer mode {0} is not supported by {1}.</source>
         <target state="translated">Tryb transferu {0} nie jest obsługiwany przez element {1}.</target>
@@ -4190,6 +4355,11 @@
       <trans-unit id="UnableToResolveKeyInfoClauseInDerivedKeyToken">
         <source>Cannot resolve KeyInfo in derived key token for resolving source token: KeyInfoClause '{0}'.</source>
         <target state="translated">Nie można ustalić wartości KeyInfo w wyprowadzonym tokenie klucza wymaganej do ustalenia tokenu źródłowego: KeyInfoClause „{0}”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnableToResolveKeyInfoForUnwrappingToken">
+        <source>Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</source>
+        <target state="new">Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyReference">
@@ -4330,6 +4500,11 @@
       <trans-unit id="UnknownTokenAuthenticatorUsedInTokenProcessing">
         <source>An unrecognized token authenticator '{0}' was used for token processing.</source>
         <target state="translated">Do przetwarzania tokenu użyto nierozpoznanego wystawcy uwierzytelnienia tokenu „{0}”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnmarshalTransactionFaulted">
+        <source>The transaction could not be unmarshaled.</source>
+        <target state="new">The transaction could not be unmarshaled.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnparsableCSResponse">
@@ -4567,6 +4742,11 @@
         <target state="translated">Zdalny punkt końcowy wysłał komunikat o błędzie o nieoczekiwanym identyfikatorze sekwencji za pośrednictwem sesji. Błąd może dotyczyć innej sesji. Powód błędu: {0} Wystąpił błąd sesji uwierzytelnionej.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WsatHeaderCorrupt">
+        <source>The WS-AtomicTransaction header in the message is malformed.</source>
+        <target state="new">The WS-AtomicTransaction header in the message is malformed.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WsrmFaultReceived">
         <source>The sequence has been terminated by the remote endpoint. {0} The reliable session was faulted.</source>
         <target state="translated">Sekwencja została przerwana przez zdalny punkt końcowy. {0} Wystąpił błąd sesji uwierzytelnionej.</target>
@@ -4694,7 +4874,7 @@
       </trans-unit>
       <trans-unit id="channelDoesNotHaveADuplexSession0">
         <source>The current channel does not support closing the output session as this channel does not implement ISessionChannel&lt;IDuplexSession&gt;.</source>
-        <target state="translated">Ten kanał nie obsługuje zamykania sesji wyjściowej, ponieważ nie ma zaimplementowanego elementu ISessionChannel&lt;IDuplexSession&gt;.</target>
+        <target state="translated">Kanał Current nie obsługuje zamykania sesji wyjściowej, ponieważ nie ma zaimplementowanego elementu ISessionChannel&lt;IDuplexSession&gt;.</target>
         <note />
       </trans-unit>
       <trans-unit id="channelIsNotAvailable0">

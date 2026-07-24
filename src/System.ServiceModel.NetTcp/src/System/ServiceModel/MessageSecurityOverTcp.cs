@@ -26,7 +26,7 @@ namespace System.ServiceModel
         {
             get
             {
-                if (_clientCredentialType == MessageCredentialType.IssuedToken || _clientCredentialType == MessageCredentialType.Windows)
+                if (_clientCredentialType == MessageCredentialType.IssuedToken)
                 {
                     throw new PlatformNotSupportedException($"MessageSecurityOverTcp.ClientCredentialType is not supported for value {_clientCredentialType}.");
                 }
@@ -40,7 +40,7 @@ namespace System.ServiceModel
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
-                if (value == MessageCredentialType.IssuedToken || value == MessageCredentialType.Windows)
+                if (value == MessageCredentialType.IssuedToken)
                 {
                     throw new PlatformNotSupportedException($"MessageSecurityOverTcp.ClientCredentialType is not supported for value {value}.");
                 }
@@ -77,7 +77,8 @@ namespace System.ServiceModel
                         oneShotSecurity = SecurityBindingElement.CreateCertificateOverTransportBindingElement();
                         break;
                     case MessageCredentialType.Windows:
-                        throw new PlatformNotSupportedException($"{nameof(MessageCredentialType)}.{nameof(MessageCredentialType.Windows)}");
+                        oneShotSecurity = SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement(true);
+                        break;
                     case MessageCredentialType.IssuedToken:
                         throw new PlatformNotSupportedException($"{nameof(MessageCredentialType)}.{nameof(MessageCredentialType.IssuedToken)}");
                     default:

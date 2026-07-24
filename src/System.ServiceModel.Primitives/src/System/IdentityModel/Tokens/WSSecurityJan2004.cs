@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IdentityModel.Selectors;
 using System.ServiceModel;
 using System.ServiceModel.Security;
+using System.ServiceModel.Security.Tokens;
 using System.Text;
 using System.Xml;
 using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
@@ -122,6 +123,15 @@ namespace System.IdentityModel.Tokens
             protected override XmlDictionaryString NamespaceUri { get { return XD.SecurityJan2004Dictionary.Namespace; } }
             protected override Type[] GetTokenTypesCore() { return new Type[] { typeof(UserNameSecurityToken) }; }
             public override string TokenTypeUri { get { return SecurityJan2004Strings.UPTokenType; } }
+            protected override string ValueTypeUri { get { return null; } }
+        }
+
+        protected class WrappedKeyTokenEntry : TokenEntry
+        {
+            protected override XmlDictionaryString LocalName => XD.XmlEncryptionDictionary.EncryptedKey;
+            protected override XmlDictionaryString NamespaceUri => XD.XmlEncryptionDictionary.Namespace;
+            protected override Type[] GetTokenTypesCore() { return new Type[] { typeof(WrappedKeySecurityToken) }; }
+            public override string TokenTypeUri { get { return null; } }
             protected override string ValueTypeUri { get { return null; } }
         }
 

@@ -30,6 +30,7 @@ namespace BasicHttp_4_4_0_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class RequestBankingData_4_4_0
     {
         
@@ -76,6 +77,7 @@ namespace BasicHttp_4_4_0_NS
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CustomWrapperName", WrapperNamespace="http://www.contoso.com", IsWrapped=true)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class ReplyBankingData_4_4_0
     {
         
@@ -123,6 +125,7 @@ namespace BasicHttp_4_4_0_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class XmlElementMessageHeader
     {
         
@@ -147,6 +150,7 @@ namespace BasicHttp_4_4_0_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="SendRequestWithXmlElementMessageHeader", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class XmlElementMessageHeaderRequest
     {
         
@@ -167,6 +171,7 @@ namespace BasicHttp_4_4_0_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="SendRequestWithXmlElementMessageHeaderResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class XmlElementMessageHeaderResponse
     {
         
@@ -190,6 +195,7 @@ namespace BasicHttp_4_4_0_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class WcfService_4_4_0Client : System.ServiceModel.ClientBase<BasicHttp_4_4_0_NS.IWcfService_4_4_0>, BasicHttp_4_4_0_NS.IWcfService_4_4_0
     {
         

@@ -3,8 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Security.Cryptography; 
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
@@ -15,32 +16,32 @@ namespace Infrastructure.Common
     internal static class CertificateManager
     {
         private static object s_certificateLock = new object();
-        private static bool s_PlatformSpecificStoreLocationIsSet = false;
-        private static StoreLocation s_PlatformSpecificRootStoreLocation = StoreLocation.LocalMachine;
+        private static bool s_platformSpecificStoreLocationIsSet = false;
+        private static StoreLocation s_platformSpecificRootStoreLocation = StoreLocation.LocalMachine;
 
         // The location from where to open StoreName.Root
         //
         // Since we don't have access to System.Runtime.InteropServices.IsOSPlatform API, we need to find a novel way to switch
         // the store we use on Linux
         //
-        // For Linux: 
+        // For Linux:
         // On Linux, opening stores from the LocalMachine store is not supported yet, so we toggle to use CurrentUser
         // Furthermore, we don't need to sudo in Linux to install a StoreName.Root : StoreLocation.CurrentUser. So this will allow
-        // tests requiring certs to pass in Linux. 
+        // tests requiring certs to pass in Linux.
         // See dotnet/corefx#3690
         //
-        // For Windows: 
-        // We don't want to use CurrentUser, as writing to StoreName.Root : StoreLocation.CurrentUser will result in a 
-        // modal dialog box that isn't dismissable if the root cert hasn't already been installed previously. 
+        // For Windows:
+        // We don't want to use CurrentUser, as writing to StoreName.Root : StoreLocation.CurrentUser will result in a
+        // modal dialog box that isn't dismissable if the root cert hasn't already been installed previously.
         // If the cert has already been installed, writing to StoreName.Root : StoreLocation.CurrentUser results in a no-op
-        // 
+        //
         // In other words, on Windows, we can bypass the modal dialog box, but only if we install to StoreName.Root : StoreLocation.LocalMachine
         // To do this though means that we must run certificate-based tests elevated
         internal static StoreLocation PlatformSpecificRootStoreLocation
         {
             get
             {
-                if (!s_PlatformSpecificStoreLocationIsSet)
+                if (!s_platformSpecificStoreLocationIsSet)
                 {
                     try
                     {
@@ -52,17 +53,17 @@ namespace Infrastructure.Common
                     catch (PlatformNotSupportedException)
                     {
                         // Linux
-                        s_PlatformSpecificRootStoreLocation = StoreLocation.CurrentUser; 
+                        s_platformSpecificRootStoreLocation = StoreLocation.CurrentUser;
                     }
                     catch(CryptographicException)
                     {
                         // Linux
-                        s_PlatformSpecificRootStoreLocation = StoreLocation.CurrentUser;
+                        s_platformSpecificRootStoreLocation = StoreLocation.CurrentUser;
                     }
 
-                    s_PlatformSpecificStoreLocationIsSet = true;
+                    s_platformSpecificStoreLocationIsSet = true;
                 }
-                return s_PlatformSpecificRootStoreLocation;
+                return s_platformSpecificRootStoreLocation;
             }
         }
 
@@ -139,7 +140,7 @@ namespace Infrastructure.Common
             {
                 using (X509Store store = new X509Store(keychain.DangerousGetHandle()))
                 {
-                    // No need to open X509Store as it is already opened with mode of MaxAllowed 
+                    // No need to open X509Store as it is already opened with mode of MaxAllowed
                     resultCert = CertificateFromThumbprint(store, certificate.Thumbprint, validOnly: false);
                     // Not already in store.  We need to add it.
                     if (resultCert == null)
@@ -148,7 +149,9 @@ namespace Infrastructure.Common
                         {
                             // We don't need the private key and the X509Certificate2 instance wasn't created as exportable.
                             // This creates a new certificate instance with only the public key so that it can be added to keychain.
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
                             var publicOnly = new X509Certificate2(certificate.RawData);
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
                             store.Add(publicOnly);
                             resultCert = publicOnly;
                         }
@@ -231,7 +234,95 @@ namespace Infrastructure.Common
         {
             // See explanation of StoreLocation selection at PlatformSpecificRootStoreLocation
             certificate = AddToStoreIfNeeded(StoreName.Root, PlatformSpecificRootStoreLocation, certificate);
+
+            // On macOS, .NET's X509Store(Root, *) does not establish OS-level trust required by SslStream/SecTrust.
+            // Add an admin trust setting to the System.keychain via the `security` CLI. Passwordless sudo is set up
+            // for the Helix work item via eng/SendToHelix.proj pre-commands.
+            if ((OSHelper.Current & OSID.OSX) == OSHelper.Current)
+            {
+                AddTrustedRootOnMacOS(certificate);
+            }
+
             return certificate;
+        }
+
+        private static void AddTrustedRootOnMacOS(X509Certificate2 certificate)
+        {
+            string pemPath = Path.Combine(Path.GetTempPath(), "wcf-root-" + certificate.Thumbprint + ".pem");
+            try
+            {
+                byte[] der = certificate.Export(X509ContentType.Cert);
+                var sb = new StringBuilder();
+                sb.AppendLine("-----BEGIN CERTIFICATE-----");
+                string b64 = Convert.ToBase64String(der);
+                for (int i = 0; i < b64.Length; i += 64)
+                {
+                    sb.AppendLine(b64.Substring(i, Math.Min(64, b64.Length - i)));
+                }
+                sb.AppendLine("-----END CERTIFICATE-----");
+                File.WriteAllText(pemPath, sb.ToString());
+
+                // add-trusted-cert -d writes to the admin trust domain via SecTrustSettings,
+                // which on headless macOS CI runners intermittently fails with
+                // "SecTrustSettingsSetTrustSettings: The authorization was denied since no user
+                // interaction was possible." The failure is transient, so retry a few times with
+                // a short backoff; without a trusted root every TLS test would fail with
+                // UntrustedRoot.
+                const int maxAttempts = 5;
+                for (int attempt = 1; attempt <= maxAttempts; attempt++)
+                {
+                    int rc = RunSecurity("sudo", "-n security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain \"" + pemPath + "\"");
+                    if (rc == 0)
+                    {
+                        break;
+                    }
+
+                    Console.WriteLine($"[CertificateManager] add-trusted-cert attempt {attempt}/{maxAttempts} failed (exit {rc})" + (attempt < maxAttempts ? "; retrying after 2s..." : "."));
+                    if (attempt < maxAttempts)
+                    {
+                        System.Threading.Thread.Sleep(2000);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[CertificateManager] Failed to add macOS admin trust: " + ex);
+            }
+            finally
+            {
+                try { if (File.Exists(pemPath)) File.Delete(pemPath); } catch { }
+            }
+        }
+
+        private static int RunSecurity(string fileName, string arguments)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = fileName,
+                    Arguments = arguments,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                };
+                using (var p = Process.Start(psi))
+                {
+                    string stdout = p.StandardOutput.ReadToEnd();
+                    string stderr = p.StandardError.ReadToEnd();
+                    p.WaitForExit(60000);
+                    Console.WriteLine($"[CertificateManager] {fileName} {arguments} exit={p.ExitCode}");
+                    if (!string.IsNullOrEmpty(stdout)) Console.WriteLine("[CertificateManager] stdout: " + stdout);
+                    if (!string.IsNullOrEmpty(stderr)) Console.WriteLine("[CertificateManager] stderr: " + stderr);
+                    return p.ExitCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[CertificateManager] Failed to run '{fileName} {arguments}': {ex}");
+                return -1;
+            }
         }
 
         // Install the certificate into the My store.
@@ -240,7 +331,7 @@ namespace Infrastructure.Common
         public static X509Certificate2 InstallCertificateToMyStore(X509Certificate2 certificate)
         {
             // Always install client certs to CurrentUser
-            // StoreLocation.CurrentUser is supported on both Linux and Windows 
+            // StoreLocation.CurrentUser is supported on both Linux and Windows
             // Furthermore, installing this cert to this location does not require sudo or admin elevation
             certificate = AddToStoreIfNeeded(StoreName.My, StoreLocation.CurrentUser, certificate);
 
@@ -253,7 +344,7 @@ namespace Infrastructure.Common
         public static X509Certificate2 InstallCertificateToTrustedPeopleStore(X509Certificate2 certificate)
         {
             // Always install certs to CurrentUser
-            // StoreLocation.CurrentUser is supported on both Linux and Windows 
+            // StoreLocation.CurrentUser is supported on both Linux and Windows
             // Furthermore, installing this cert to this location does not require sudo or admin elevation
             certificate = AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.CurrentUser, certificate);
 

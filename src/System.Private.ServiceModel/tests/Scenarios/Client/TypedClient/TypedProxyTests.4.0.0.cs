@@ -615,6 +615,10 @@ public static partial class TypedProxyTests
             // Force a Gen2 GC so that the WeakReference will no longer have the OperationContextExtension as a target.
             GC.Collect(2);
 
+            // wait for finalizers
+            GC.WaitForPendingFinalizers();
+            GC.Collect(2);
+
             // *** VALIDATE *** \\
             Assert.Equal(requestString, result);
             Assert.False(opContextReference.TryGetTarget(out OperationContextExtension opContext), "OperationContextExtension should have been collected");

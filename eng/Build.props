@@ -1,0 +1,13 @@
+<Project>
+
+  <!--
+    Explicitly list solutions to build and disable parallel builds/restores to avoid
+    file locking conflicts when different solutions reference the same projects.
+  -->
+  <ItemGroup>
+    <ProjectToBuild Include="$(RepoRoot)System.ServiceModel.sln" BuildInParallel="false" RestoreInParallel="false" />
+    <ProjectToBuild Include="$(RepoRoot)dotnet-svcutil.sln" BuildInParallel="false" RestoreInParallel="false" />
+    <ProjectToBuild Include="$(RepoRoot)dotnet-svcutil.xmlserializer.sln" BuildInParallel="false" RestoreInParallel="false" />
+  </ItemGroup>
+
+</Project>

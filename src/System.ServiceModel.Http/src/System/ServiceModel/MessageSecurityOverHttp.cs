@@ -78,7 +78,8 @@ namespace System.ServiceModel
                         oneShotSecurity = SecurityBindingElement.CreateCertificateOverTransportBindingElement();
                         break;
                     case MessageCredentialType.Windows:
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
+                        oneShotSecurity = SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement(true);
+                        break;
                     case MessageCredentialType.IssuedToken:
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
                     default:

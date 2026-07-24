@@ -15,11 +15,11 @@ namespace WcfService
     public class WcfRestartService : IWcfRestartService
     {
 #if NET
-        public static Dictionary<Guid, IWebHost> webHostDictionary = new Dictionary<Guid, IWebHost>();
+        public static Dictionary<Guid, IHost> webHostDictionary = new Dictionary<Guid, IHost>();
 
         public string RestartService(Guid uniqueIdentifier)
         {
-            IWebHost host;
+            IHost host;
 
             if (!webHostDictionary.TryGetValue(uniqueIdentifier, out host))
             {
@@ -34,7 +34,7 @@ namespace WcfService
 
         public string NonRestartService(Guid uniqueIdentifier)
         {
-            IWebHost host;
+            IHost host;
 
             if (!webHostDictionary.TryGetValue(uniqueIdentifier, out host))
             {

@@ -15,11 +15,9 @@ using Xunit;
 public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWcfTest
 {
     [WcfFact]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
            nameof(Client_Certificate_Installed),
-           nameof(SSL_Available),
-           nameof(Skip_CoreWCFService_FailedTest))]
+           nameof(SSL_Available))]
     [OuterLoop]
     public static void NetTcp_SecModeTransWithMessCred_CertClientCredential_Succeeds()
     {
@@ -38,6 +36,15 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
             clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            // macOS SecTrust cannot obtain a positive revocation response for a
+            // private CA (dotnet/runtime#31249); the transport-cert revocation
+            // check is incidental to this message-credential scenario, so skip
+            // it on macOS only.
+            if (OSID.OSX.MatchesCurrent())
+            {
+                factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
+            }
+
             factory.Credentials.ClientCertificate.SetCertificate(
                 StoreLocation.CurrentUser,
                 StoreName.My,
@@ -64,10 +71,8 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
-               nameof(SSL_Available),
-               nameof(Skip_CoreWCFService_FailedTest))]
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void NetTcp_SecModeTransWithMessCred_UserNameClientCredential_Succeeds()
     {
@@ -87,6 +92,15 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_SecModeTransWithMessCred_ClientCredTypeUserName));
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            // macOS SecTrust cannot obtain a positive revocation response for a
+            // private CA (dotnet/runtime#31249); the transport-cert revocation
+            // check is incidental to this message-credential scenario, so skip
+            // it on macOS only.
+            if (OSID.OSX.MatchesCurrent())
+            {
+                factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
+            }
+
             username = Guid.NewGuid().ToString("n").Substring(0, 8);
             char[] usernameArr = username.ToCharArray();
             Array.Reverse(usernameArr);
@@ -114,10 +128,8 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
-               nameof(SSL_Available),
-               nameof(Skip_CoreWCFService_FailedTest))]
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void NetTcp_SecModeTransWithMessCred_UserNameClientCredential_Succeeds_WithSingleThreadedSyncContext()
     {
@@ -129,5 +141,97 @@ public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWc
             });
         }).Wait(ScenarioTestHelpers.TestTimeout * 10000);
         Assert.True(success, "Test Scenario: NetTcp_SecModeTransWithMessCred_UserNameClientCredential_Succeeds_WithSingleThreadedSyncContext timed-out.");
+    }
+
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
+    [OuterLoop]
+    public static void NetTcp_SecModeTransWithMessCred_WindowsClientCredential_Succeeds()
+    {
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.TransportWithMessageCredential);
+            binding.Security.Message.ClientCredentialType = MessageCredentialType.Windows;
+
+            factory = new ChannelFactory<IWcfService>(
+                binding,
+                new EndpointAddress(new Uri(Endpoints.Tcp_SecModeTransWithMessCred_ClientCredTypeWindows)));
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
+    [OuterLoop]
+    public static void NetTcp_SecModeTransWithMessCred_WindowsClientCredential_NoSecureConversation_Succeeds()
+    {
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            // NetTcpBinding doesn't expose EstablishSecurityContext for TransportWithMessageCredential,
+            // so use CustomBinding to create SSPI over transport without SecureConversation wrapper
+            var sspiSecurity = SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement(true);
+            sspiSecurity.IncludeTimestamp = true;
+            sspiSecurity.LocalClientSettings.ReconnectTransportOnFailure = false;
+            sspiSecurity.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
+
+            CustomBinding binding = new CustomBinding(
+                sspiSecurity,
+                new BinaryMessageEncodingBindingElement(),
+                new SslStreamSecurityBindingElement(),
+                new TcpTransportBindingElement());
+
+            factory = new ChannelFactory<IWcfService>(
+                binding,
+                new EndpointAddress(new Uri(Endpoints.Tcp_SecModeTransWithMessCred_ClientCredTypeWindows_NoSecureConversation)));
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
     }
 }

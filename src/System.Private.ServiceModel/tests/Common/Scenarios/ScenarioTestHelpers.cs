@@ -210,6 +210,12 @@ public static class ScenarioTestHelpers
             {
                 comObj.Abort();
             }
+            catch (System.Net.WebSockets.WebSocketException)
+            {
+                // WCF Client has a bug which throws WebSocketException when the server closes the connection.
+                // The remote party closed the WebSocket connection without completing the close handshake.
+                comObj.Abort();
+            }
         }
     }
 

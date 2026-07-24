@@ -2946,4 +2946,112 @@
   <data name="SFxNullReplyFromExtension2" xml:space="preserve">
     <value>Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</value>
   </data>
+  <data name="ConfigInvalidTransactionFlowProtocolValue" xml:space="preserve">
+    <value>The transaction protocol value '{0}' is not valid.</value>
+  </data>
+  <data name="TransactionFlowBadOption" xml:space="preserve">
+    <value>The specified TransactionFlowOption is not a valid value.</value>
+  </data>
+  <data name="TransactionFlowRequiredIssuedTokens" xml:space="preserve">
+    <value>Transaction flow is required, but issued tokens are not allowed.</value>
+  </data>
+  <data name="SFxBadTransactionProtocols" xml:space="preserve">
+    <value>The specified transaction protocol is not valid.</value>
+  </data>
+  <data name="SFxTransactionFlowRequired" xml:space="preserve">
+    <value>A transaction is required but was not flowed.</value>
+  </data>
+  <data name="SFxTryAddMultipleTransactionsOnMessage" xml:space="preserve">
+    <value>Cannot add multiple transaction properties to a message.</value>
+  </data>
+  <data name="SFxTransactionDeserializationFailed" xml:space="preserve">
+    <value>Transaction deserialization failed: {0}.</value>
+  </data>
+  <data name="TransactionsNotSupported" xml:space="preserve">
+    <value>Distributed transactions are not supported on this platform.</value>
+  </data>
+  <data name="IssuedTokenFlowNotAllowed" xml:space="preserve">
+    <value>Issued token flow is not allowed by this binding.</value>
+  </data>
+  <data name="OleTxHeaderCorrupt" xml:space="preserve">
+    <value>The OleTx transaction header in the message is malformed.</value>
+  </data>
+  <data name="WsatHeaderCorrupt" xml:space="preserve">
+    <value>The WS-AtomicTransaction header in the message is malformed.</value>
+  </data>
+  <data name="InvalidPropagationToken" xml:space="preserve">
+    <value>The propagation token in the message is invalid.</value>
+  </data>
+  <data name="UnmarshalTransactionFaulted" xml:space="preserve">
+    <value>The transaction could not be unmarshaled.</value>
+  </data>
+  <data name="SFxTransactionHeaderNotUnderstood" xml:space="preserve">
+    <value>The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</value>
+  </data>
+  <data name="TransactionFlowOnlySupportedOnWindows" xml:space="preserve">
+    <value>Transaction flow is only supported on Windows.</value>
+  </data>
+  <data name="NoBinaryNegoToSend" xml:space="preserve">
+    <value>Security negotiation failed because no binary negotiation data is available to send.</value>
+  </data>
+  <data name="NoBinaryNegoToReceive" xml:space="preserve">
+    <value>Security negotiation failed because no binary negotiation data was received from the other party.</value>
+  </data>
+  <data name="InvalidSspiNegotiation" xml:space="preserve">
+    <value>The SSPI negotiation failed.</value>
+  </data>
+  <data name="IncorrectSpnOrUpnSpecified" xml:space="preserve">
+    <value>SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</value>
+  </data>
+  <data name="CannotAuthenticateServer" xml:space="preserve">
+    <value>The security negotiation could not be completed because mutual authentication was not achieved.</value>
+  </data>
+  <data name="AuthenticationOfClientFailed" xml:space="preserve">
+    <value>Authentication of the client by the service failed.</value>
+  </data>
+  <data name="FailedSspiNegotiation" xml:space="preserve">
+    <value>The SSPI negotiation failed with the server.</value>
+  </data>
+  <data name="NoServiceTokenReceived" xml:space="preserve">
+    <value>No service token was received as part of the security negotiation.</value>
+  </data>
+  <data name="ProofTokenWasNotWrappedCorrectly" xml:space="preserve">
+    <value>The proof token was not wrapped with the correct algorithm.</value>
+  </data>
+  <data name="RSTRAuthenticatorNotPresent" xml:space="preserve">
+    <value>The authenticator was not present in the server response.</value>
+  </data>
+  <data name="RSTRAuthenticatorIncorrect" xml:space="preserve">
+    <value>The authenticator in the server response was incorrect.</value>
+  </data>
+  <data name="AuthenticatorNotPresentInRSTRCollection" xml:space="preserve">
+    <value>The authenticator RSTR was not found in the RSTR collection.</value>
+  </data>
+  <data name="RSTRAuthenticatorHasBadContext" xml:space="preserve">
+    <value>The authenticator RSTR has a different Context value than the negotiation RSTR.</value>
+  </data>
+  <data name="SpnegoImpersonationLevelCannotBeSetToNone" xml:space="preserve">
+    <value>The impersonation level for SPNEGO negotiation cannot be set to None.</value>
+  </data>
+  <data name="InvalidClientCredentials" xml:space="preserve">
+    <value>The client credentials are not valid.</value>
+  </data>
+  <data name="ChannelDemuxerBindingElementNotFound" xml:space="preserve">
+    <value>The binding does not contain a ChannelDemuxerBindingElement.</value>
+  </data>
+  <data name="NoInputIsSetForCanonicalization" xml:space="preserve">
+    <value>No input is set for writing canonicalized output.</value>
+  </data>
+  <data name="BadKeyEncryptionAlgorithm" xml:space="preserve">
+    <value>Invalid key encryption algorithm {0}.</value>
+  </data>
+  <data name="MissingKeyInfoInEncryptedKey" xml:space="preserve">
+    <value>The KeyInfo clause is missing or empty in EncryptedKey.</value>
+  </data>
+  <data name="EncryptedKeyWasNotEncryptedWithTheRequiredEncryptingToken" xml:space="preserve">
+    <value>The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</value>
+  </data>
+  <data name="UnableToResolveKeyInfoForUnwrappingToken" xml:space="preserve">
+    <value>Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</value>
+  </data>
 </root>

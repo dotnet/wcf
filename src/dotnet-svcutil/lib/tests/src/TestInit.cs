@@ -318,7 +318,7 @@ namespace SvcutilTest
         public static readonly string g_GeneralErrMsg = $"{Environment.NewLine}{Environment.NewLine}Click the Output link for a full report.";
 
         // get test case generated files. NOTE: common test project is not considered nor fixed up.
-        public static readonly string[] g_GeneratedExtensions = new string[] { ".cs", ".log", ".csproj", ".json", ".config", ".wsdl" };
+        public static readonly string[] g_GeneratedExtensions = new string[] { ".vb", ".cs", ".log", ".csproj", ".json", ".config", ".wsdl" };
 
         protected void ValidateTest(string options, string workingDir, int exitCode, string outputText, bool expectSuccess = true)
         {

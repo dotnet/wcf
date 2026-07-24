@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 Возможная причина: язык не поддерживает все элементы создаваемого кода. Попробуйте применить другой язык.</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">Не удается создать поставщик кода для значения "{0}", переданного аргументу /{1}. Проверьте, правильно ли установлен и настроен поставщик кода.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">Не удалось создать поставщик кода для значения "{0}", переданного для параметра --{1}. Убедитесь, что поставщик кода установлен и настроен правильно.</target>
@@ -547,6 +552,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">Формирование классов, отмеченных как внутренние. По умолчанию: формирование открытых классов. (Краткая форма: /{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="translated">Язык для генерирования кода. Примеры имен языков, которые следует использовать: CS и VB. По умолчанию: C#. (Краткая форма: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
         <target state="translated">Язык программирования для формирования кода. Предоставьте имя языка, зарегистрированного в файле machine.config, или полное имя класса, который наследует у System.CodeDom.Compiler.CodeDomProvider. Примеры имен языков, которые следует использовать: CS и VB. По умолчанию: C#. (Краткая форма: /{0})</target>
@@ -815,6 +825,11 @@ If you were trying to generate a client, this could be because the metadata docu
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
         <target state="translated">Конечная точка "{0}" по адресу "{1}" содержит одну или несколько привязок, несовместимых с приложениями .Net Core. Пропуск...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">

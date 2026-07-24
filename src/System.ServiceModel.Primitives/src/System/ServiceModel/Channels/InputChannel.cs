@@ -33,5 +33,21 @@ namespace System.ServiceModel.Channels
                 return new TimeoutException(SRP.Format(SRP.ReceiveTimedOutNoLocalAddress, timeout));
             }
         }
+
+        #region static Helpers to convert TryReceive to Receive
+        internal static Message HelpReceive(IInputChannel channel, TimeSpan timeout)
+        {
+            Message message;
+            if (channel.TryReceive(timeout, out message))
+            {
+                return message;
+            }
+            else
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateReceiveTimedOutException(channel, timeout));
+            }
+        }
+
+        #endregion
     }
 }

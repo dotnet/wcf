@@ -2,31 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using System.Formats.Asn1;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Org.BouncyCastle.Asn1;
-using Org.BouncyCastle.Asn1.X509;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Generators;
-using Org.BouncyCastle.Crypto.Operators;
-using Org.BouncyCastle.Crypto.Prng;
-using Org.BouncyCastle.Math;
-using Org.BouncyCastle.Pkcs;
-using Org.BouncyCastle.Security;
-using Org.BouncyCastle.X509;
-using Org.BouncyCastle.X509.Extension;
-using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
-using X509KeyStorageFlags = System.Security.Cryptography.X509Certificates.X509KeyStorageFlags;
 
 namespace WcfTestCommon
 {
-    // NOT THREADSAFE. Callers should lock before doing work with this class if multithreaded operation is expected
+    // NOT THREADSAFE. Callers should lock before doing work with this class if multithreaded operation is expected.
+    // This generator uses the .NET built-in X.509 APIs (CertificateRequest / RSA) so the produced
+    // DER encodings are compatible with all platform X.509 stacks (including macOS Apple Security framework).
     public class CertificateGenerator
     {
         private bool _isInitialized;
@@ -39,85 +29,77 @@ namespace WcfTestCommon
         private TimeSpan _validityPeriod = TimeSpan.FromDays(1);
 
         // This can't be too short as there might be a time skew between machines,
-        // but also can't be too long, as the CRL is cached by the machine
-        private TimeSpan _crlValidityGracePeriodStart = TimeSpan.FromMinutes(5);
+        // but also can't be too long, as the CRL is cached by the machine.
         private TimeSpan _crlValidityGracePeriodEnd = TimeSpan.FromMinutes(5);
 
         // Give the cert a grace period in case there's a time skew between machines
         private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
 
         private readonly string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
-        private readonly string _signatureAlgorithm = Org.BouncyCastle.Asn1.Pkcs.PkcsObjectIdentifiers.Sha256WithRsaEncryption.Id;
-        private readonly string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
         private readonly int _keyLengthInBits = 2048;
 
-        private static readonly X509V3CertificateGenerator s_certGenerator = new X509V3CertificateGenerator();
-        private static readonly X509V2CrlGenerator s_crlGenerator = new X509V2CrlGenerator();
-
-        // key: serial number, value: revocation time
+        // key: serial number (lowercase hex), value: revocation time
         private static Dictionary<string, DateTime> s_revokedCertificates = new Dictionary<string, DateTime>();
-
-        private RsaKeyPairGenerator _keyPairGenerator;
-        private SecureRandom _random;
 
         private DateTime _initializationDateTime;
         private DateTime _defaultValidityNotBefore;
         private DateTime _defaultValidityNotAfter;
 
-        // We need to hang onto the _authorityKeyPair and _authorityCertificate - all certificates generated
-        // by this instance will be signed by this Authority certificate and private key
-        private AsymmetricCipherKeyPair _authorityKeyPair;
+        // Authority private key + cert (with private key) used to sign all issued certificates
+        private RSA _authorityKey;
+        private X509Certificate2 _authorityCertWithKey;
         private X509CertificateContainer _authorityCertificate;
 
         public void Initialize()
         {
-            if (!_isInitialized)
+            if (_isInitialized)
             {
-                if (string.IsNullOrWhiteSpace(_authorityCanonicalName))
-                {
-                    throw new ArgumentException("AuthorityCanonicalName must not be an empty string or only whitespace", "AuthorityCanonicalName");
-                }
-
-                if (string.IsNullOrWhiteSpace(_password))
-                {
-                    throw new ArgumentException("Password must not be an empty string or only whitespace", "Password");
-                }
-
-                Uri dummy;
-                if (string.IsNullOrWhiteSpace(_crlUriRelativePath) && !Uri.TryCreate(_crlUriRelativePath, UriKind.Relative, out dummy))
-                {
-                    throw new ArgumentException("CrlUri must be a valid relative URI", "CrlUriRelativePath");
-                }
-
-                _crlUri = new Uri(string.Format("http://{0}{1}", _crlServiceUri, _crlUriRelativePath)).AbsoluteUri;
-
-                _initializationDateTime = DateTime.UtcNow;
-                _defaultValidityNotBefore = _initializationDateTime.Subtract(_gracePeriod);
-                _defaultValidityNotAfter = _initializationDateTime.Add(_validityPeriod);
-
-                _random = new SecureRandom(new CryptoApiRandomGenerator());
-                _keyPairGenerator = new RsaKeyPairGenerator();
-                _keyPairGenerator.Init(new KeyGenerationParameters(_random, _keyLengthInBits));
-                _authorityKeyPair = _keyPairGenerator.GenerateKeyPair();
-
-                _isInitialized = true;
-
-                Trace.WriteLine("[CertificateGenerator] initialized with the following configuration:");
-                Trace.WriteLine(string.Format("    {0} = {1}", "AuthorityCanonicalName", _authorityCanonicalName));
-                Trace.WriteLine(string.Format("    {0} = {1}", "CrlUri", _crlUri));
-                Trace.WriteLine(string.Format("    {0} = {1}", "Password", _password));
-                Trace.WriteLine(string.Format("    {0} = {1}", "ValidityPeriod", _validityPeriod));
-                Trace.WriteLine(string.Format("    {0} = {1}", "Valid to", _defaultValidityNotAfter));
-
-                _authorityCertificate = CreateCertificate(isAuthority: true, isMachineCert: false, signingCertificate: null, certificateCreationSettings: null);
+                return;
             }
+
+            if (string.IsNullOrWhiteSpace(_authorityCanonicalName))
+            {
+                throw new ArgumentException("AuthorityCanonicalName must not be an empty string or only whitespace", "AuthorityCanonicalName");
+            }
+
+            if (string.IsNullOrWhiteSpace(_password))
+            {
+                throw new ArgumentException("Password must not be an empty string or only whitespace", "Password");
+            }
+
+            Uri dummy;
+            if (string.IsNullOrWhiteSpace(_crlUriRelativePath) && !Uri.TryCreate(_crlUriRelativePath, UriKind.Relative, out dummy))
+            {
+                throw new ArgumentException("CrlUri must be a valid relative URI", "CrlUriRelativePath");
+            }
+
+            _crlUri = new Uri(string.Format("http://{0}{1}", _crlServiceUri, _crlUriRelativePath)).AbsoluteUri;
+
+            _initializationDateTime = DateTime.UtcNow;
+            _defaultValidityNotBefore = _initializationDateTime.Subtract(_gracePeriod);
+            _defaultValidityNotAfter = _initializationDateTime.Add(_validityPeriod);
+
+            _isInitialized = true;
+
+            Trace.WriteLine("[CertificateGenerator] initialized with the following configuration:");
+            Trace.WriteLine(string.Format("    {0} = {1}", "AuthorityCanonicalName", _authorityCanonicalName));
+            Trace.WriteLine(string.Format("    {0} = {1}", "CrlUri", _crlUri));
+            Trace.WriteLine(string.Format("    {0} = {1}", "Password", _password));
+            Trace.WriteLine(string.Format("    {0} = {1}", "ValidityPeriod", _validityPeriod));
+            Trace.WriteLine(string.Format("    {0} = {1}", "Valid to", _defaultValidityNotAfter));
+
+            _authorityCertificate = CreateCertificate(isAuthority: true, isMachineCert: false, signingCertificate: null, certificateCreationSettings: null);
         }
 
         public void Reset()
         {
-            s_certGenerator.Reset();
-            s_crlGenerator.Reset();
             _authorityCertificate = null;
+            _authorityCertWithKey = null;
+            if (_authorityKey != null)
+            {
+                _authorityKey.Dispose();
+                _authorityKey = null;
+            }
             _isInitialized = false;
         }
 
@@ -135,7 +117,7 @@ namespace WcfTestCommon
             get
             {
                 EnsureInitialized();
-                return CreateCrl(_authorityCertificate.InternalCertificate).GetEncoded();
+                return CreateCrl();
             }
         }
 
@@ -154,7 +136,7 @@ namespace WcfTestCommon
             get
             {
                 EnsureInitialized();
-                return CreateX509Name(_authorityCanonicalName).ToString();
+                return BuildDistinguishedName(_authorityCanonicalName).Name;
             }
         }
 
@@ -179,10 +161,7 @@ namespace WcfTestCommon
 
         public string CrlServiceUri
         {
-            get
-            {
-                return _crlServiceUri;
-            }
+            get { return _crlServiceUri; }
             set
             {
                 EnsureNotInitialized("CrlServiceUri");
@@ -192,10 +171,7 @@ namespace WcfTestCommon
 
         public string CrlUriRelativePath
         {
-            get
-            {
-                return _crlUriRelativePath;
-            }
+            get { return _crlUriRelativePath; }
             set
             {
                 EnsureNotInitialized("CrlUriRelativePath");
@@ -205,11 +181,7 @@ namespace WcfTestCommon
 
         public List<string> RevokedCertificates
         {
-            get
-            {
-                List<string> retVal = new List<string>(s_revokedCertificates.Keys);
-                return retVal;
-            }
+            get { return new List<string>(s_revokedCertificates.Keys); }
         }
 
         public TimeSpan ValidityPeriod
@@ -225,36 +197,45 @@ namespace WcfTestCommon
         public X509CertificateContainer CreateMachineCertificate(CertificateCreationSettings creationSettings)
         {
             EnsureInitialized();
-            return CreateCertificate(false, true, _authorityCertificate.InternalCertificate, creationSettings);
+            return CreateCertificate(false, true, _authorityCertWithKey, creationSettings);
         }
 
         public X509CertificateContainer CreateUserCertificate(CertificateCreationSettings creationSettings)
         {
             EnsureInitialized();
-            return CreateCertificate(false, false, _authorityCertificate.InternalCertificate, creationSettings);
+            return CreateCertificate(false, false, _authorityCertWithKey, creationSettings);
         }
 
         public static BigInteger HashFriendlyName(string input)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                // Convert the input string to a byte array
                 byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-
-                // Compute the hash value of the input bytes, and take the first 20 bytes
+                // Take first 20 bytes (160 bits) to fit in a typical serial number range
                 byte[] hashBytes = sha256.ComputeHash(inputBytes).Take(20).ToArray();
 
-                // return a Positive BigInt of the hash
-                var bigInteger = new BigInteger(1, hashBytes.ToArray());
-                return bigInteger;
+                // Force a positive BigInteger by appending a zero byte if the high bit is set
+                if ((hashBytes[0] & 0x80) != 0)
+                {
+                    byte[] padded = new byte[hashBytes.Length + 1];
+                    Array.Copy(hashBytes, 0, padded, 1, hashBytes.Length);
+                    hashBytes = padded;
+                }
+
+                // BigInteger ctor expects little-endian; reverse for big-endian hash
+                Array.Reverse(hashBytes);
+                return new BigInteger(hashBytes);
             }
         }
 
-        public static string HashFriendlyNameToString(string input) => HashFriendlyName(input).ToString(16).ToUpper();
+        public static string HashFriendlyNameToString(string input)
+        {
+            return HashFriendlyName(input).ToString("X").TrimStart('0');
+        }
 
-        // Only the ctor should be calling with isAuthority = true
-        // if isAuthority, value for isMachineCert doesn't matter
-        private X509CertificateContainer CreateCertificate(bool isAuthority, bool isMachineCert, X509Certificate signingCertificate, CertificateCreationSettings certificateCreationSettings)
+        // Only Initialize() should be calling with isAuthority = true.
+        // If isAuthority, value for isMachineCert doesn't matter.
+        private X509CertificateContainer CreateCertificate(bool isAuthority, bool isMachineCert, X509Certificate2 signingCertificate, CertificateCreationSettings certificateCreationSettings)
         {
             if (certificateCreationSettings == null)
             {
@@ -268,7 +249,6 @@ namespace WcfTestCommon
                 }
             }
 
-            // Set to default cert creation settings if not set
             if (certificateCreationSettings.ValidityNotBefore == default(DateTime))
             {
                 certificateCreationSettings.ValidityNotBefore = _defaultValidityNotBefore;
@@ -278,6 +258,28 @@ namespace WcfTestCommon
                 certificateCreationSettings.ValidityNotAfter = _defaultValidityNotAfter;
             }
 
+            // The authority cert needs a validity window wide enough to contain every child cert (including
+            // intentionally expired ones with NotBefore in the past). Unlike BouncyCastle, .NET's
+            // CertificateRequest.Create(issuer, notBefore, notAfter, ...) enforces that the issued cert's
+            // window is contained within the issuer's. Use a generous ±10 year window for the authority.
+            if (isAuthority)
+            {
+                certificateCreationSettings.ValidityNotBefore = _initializationDateTime.AddYears(-10);
+                certificateCreationSettings.ValidityNotAfter = _initializationDateTime.AddYears(10);
+            }
+            else if (signingCertificate != null)
+            {
+                // Defensive clamp in case a caller passes dates outside the issuer window.
+                if (certificateCreationSettings.ValidityNotBefore < signingCertificate.NotBefore.ToUniversalTime())
+                {
+                    certificateCreationSettings.ValidityNotBefore = signingCertificate.NotBefore.ToUniversalTime();
+                }
+                if (certificateCreationSettings.ValidityNotAfter > signingCertificate.NotAfter.ToUniversalTime())
+                {
+                    certificateCreationSettings.ValidityNotAfter = signingCertificate.NotAfter.ToUniversalTime();
+                }
+            }
+
             if (!isAuthority ^ (signingCertificate != null))
             {
                 throw new ArgumentException("Either isAuthority == true or signingCertificate is not null");
@@ -285,8 +287,8 @@ namespace WcfTestCommon
             string subject = certificateCreationSettings.Subject;
 
             // If certificateCreationSettings.SubjectAlternativeNames == null, then we should add exactly one SubjectAlternativeName == Subject
-            // so that the default certificate generated is compatible with mainline scenarios
-            // However, if certificateCreationSettings.SubjectAlternativeNames == string[0], then allow this as this is a legit scenario we want to test out
+            // so that the default certificate generated is compatible with mainline scenarios.
+            // However, if certificateCreationSettings.SubjectAlternativeNames == string[0], then allow this as this is a legit scenario we want to test out.
             if (certificateCreationSettings.SubjectAlternativeNames == null)
             {
                 certificateCreationSettings.SubjectAlternativeNames = new string[1] { subject };
@@ -301,208 +303,214 @@ namespace WcfTestCommon
 
             EnsureInitialized();
 
-            s_certGenerator.Reset();
+            // Tag on the generation time to prevent caching of the cert CRL on Linux
+            X500DistinguishedName authorityDn = BuildDistinguishedName(string.Format("{0} {1}", _authorityCanonicalName, DateTime.Now.ToString("s")));
 
-            // Tag on the generation time to prevent caching of the cert CRL in Linux
-            X509Name authorityX509Name = CreateX509Name(string.Format("{0} {1}", _authorityCanonicalName, DateTime.Now.ToString("s")));
-            BigInteger serialNum;
+            byte[] serialNum = ComputeSerialNumber(certificateCreationSettings);
 
-            // Search by serial number in Linux/MacOS
-            if (!CertificateHelper.CurrentOperatingSystem.IsWindows() && certificateCreationSettings.FriendlyName != null)
-            {
-                serialNum = HashFriendlyName(certificateCreationSettings.FriendlyName);
-            }
-            else
-            {
-                serialNum = new BigInteger(64 /*sizeInBits*/, _random).Abs();
-            }
+            RSA subjectKey = isAuthority ? (_authorityKey = RSA.Create(_keyLengthInBits)) : RSA.Create(_keyLengthInBits);
 
-            var keyPair = isAuthority ? _authorityKeyPair : _keyPairGenerator.GenerateKeyPair();
+            X500DistinguishedName subjectDn;
+            CertificateRequest req;
+
             if (isAuthority)
             {
-                s_certGenerator.SetIssuerDN(authorityX509Name);
-                s_certGenerator.SetSubjectDN(authorityX509Name);
+                subjectDn = authorityDn;
+                req = new CertificateRequest(subjectDn, subjectKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
-                var authorityKeyIdentifier = new AuthorityKeyIdentifier(
-                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(_authorityKeyPair.Public),
-                    new GeneralNames(new GeneralName(authorityX509Name)),
-                    serialNum);
-
-                s_certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, authorityKeyIdentifier);
-                s_certGenerator.AddExtension(X509Extensions.KeyUsage, false, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyCertSign | X509KeyUsage.KeyEncipherment | X509KeyUsage.CrlSign));
+                req.CertificateExtensions.Add(new X509BasicConstraintsExtension(certificateAuthority: true, hasPathLengthConstraint: false, pathLengthConstraint: 0, critical: true));
+                req.CertificateExtensions.Add(new X509KeyUsageExtension(
+                    X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyAgreement | X509KeyUsageFlags.KeyCertSign | X509KeyUsageFlags.KeyEncipherment | X509KeyUsageFlags.CrlSign,
+                    critical: false));
             }
             else
             {
-                X509Name subjectName = CreateX509Name(subject);
-                s_certGenerator.SetIssuerDN(signingCertificate.SubjectDN);
-                s_certGenerator.SetSubjectDN(subjectName);
+                subjectDn = BuildDistinguishedName(subject);
+                req = new CertificateRequest(subjectDn, subjectKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
-                s_certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(_authorityKeyPair.Public));
-                s_certGenerator.AddExtension(X509Extensions.KeyUsage, false, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyEncipherment));
+                req.CertificateExtensions.Add(new X509BasicConstraintsExtension(certificateAuthority: false, hasPathLengthConstraint: false, pathLengthConstraint: 0, critical: true));
+                req.CertificateExtensions.Add(new X509KeyUsageExtension(
+                    X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyAgreement | X509KeyUsageFlags.KeyEncipherment,
+                    critical: false));
             }
 
-            s_certGenerator.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(keyPair.Public));
+            // SubjectKeyIdentifier
+            X509SubjectKeyIdentifierExtension ski = new X509SubjectKeyIdentifierExtension(req.PublicKey, critical: false);
+            req.CertificateExtensions.Add(ski);
 
-            s_certGenerator.SetSerialNumber(serialNum);
-            s_certGenerator.SetNotBefore(certificateCreationSettings.ValidityNotBefore);
-            s_certGenerator.SetNotAfter(certificateCreationSettings.ValidityNotAfter);
-            s_certGenerator.SetPublicKey(keyPair.Public);
+            // AuthorityKeyIdentifier
+            byte[] authorityKeyId = isAuthority
+                ? HexToBytes(ski.SubjectKeyIdentifier)
+                : GetSubjectKeyIdentifierBytes(signingCertificate);
+            req.CertificateExtensions.Add(X509AuthorityKeyIdentifierExtension.CreateFromSubjectKeyIdentifier(authorityKeyId));
 
-            s_certGenerator.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(isAuthority));
+            // Extended Key Usage
+            OidCollection ekuOids = new OidCollection();
             if (certificateCreationSettings.EKU == null || certificateCreationSettings.EKU.Count == 0)
             {
-                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.id_kp_serverAuth, KeyPurposeID.id_kp_clientAuth));
+                ekuOids.Add(Oids.ServerAuthEkuOid);
+                ekuOids.Add(Oids.ClientAuthEkuOid);
             }
             else
             {
-                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(certificateCreationSettings.EKU));
+                foreach (string ekuOid in certificateCreationSettings.EKU)
+                {
+                    ekuOids.Add(new Oid(ekuOid));
+                }
+            }
+            if (ekuOids.Count > 0)
+            {
+                req.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(ekuOids, critical: false));
             }
 
+            // Subject Alternative Name
             if (!isAuthority)
             {
                 if (isMachineCert)
                 {
-                    List<Asn1Encodable> subjectAlternativeNamesAsAsn1EncodableList = new List<Asn1Encodable>();
-
-                    // All endpoints should also be in the Subject Alt Names 
-                    for (int i = 0; i < subjectAlternativeNames.Length; i++)
+                    SubjectAlternativeNameBuilder sanBuilder = new SubjectAlternativeNameBuilder();
+                    bool any = false;
+                    foreach (string san in subjectAlternativeNames)
                     {
-                        if (!string.IsNullOrWhiteSpace(subjectAlternativeNames[i]))
+                        if (!string.IsNullOrWhiteSpace(san))
                         {
-                            // Machine certs can have additional DNS names
-                            subjectAlternativeNamesAsAsn1EncodableList.Add(new GeneralName(GeneralName.DnsName, subjectAlternativeNames[i]));
+                            sanBuilder.AddDnsName(san);
+                            any = true;
                         }
                     }
-
-                    s_certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNamesAsAsn1EncodableList.ToArray()));
+                    if (any)
+                    {
+                        // SubjectAlternativeNameBuilder.Build defaults to non-critical; rebuild as critical.
+                        X509Extension defaultSan = sanBuilder.Build(critical: true);
+                        req.CertificateExtensions.Add(defaultSan);
+                    }
                 }
                 else
                 {
+                    // User cert: skip the first SAN (which mirrors Subject) and emit remaining as UPN OtherName entries.
                     if (subjectAlternativeNames.Length > 1)
                     {
-                        var subjectAlternativeNamesAsAsn1EncodableList = new Asn1EncodableVector();
-
-                        // Only add a SAN for the user if there are any
+                        SubjectAlternativeNameBuilder upnBuilder = new SubjectAlternativeNameBuilder();
+                        bool anyUpn = false;
                         for (int i = 1; i < subjectAlternativeNames.Length; i++)
                         {
                             if (!string.IsNullOrWhiteSpace(subjectAlternativeNames[i]))
                             {
-                                Asn1EncodableVector otherNames = new Asn1EncodableVector();
-                                otherNames.Add(new DerObjectIdentifier(_upnObjectId));
-                                otherNames.Add(new DerTaggedObject(true, 0, new DerUtf8String(subjectAlternativeNames[i])));
-
-                                Asn1Object genName = new DerTaggedObject(false, 0, new DerSequence(otherNames));
-
-                                subjectAlternativeNamesAsAsn1EncodableList.Add(genName);
+                                upnBuilder.AddUserPrincipalName(subjectAlternativeNames[i]);
+                                anyUpn = true;
                             }
                         }
-                        s_certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNamesAsAsn1EncodableList));
+                        if (anyUpn)
+                        {
+                            req.CertificateExtensions.Add(upnBuilder.Build(critical: true));
+                        }
                     }
                 }
             }
 
+            // CRL Distribution Points
             if (isAuthority || certificateCreationSettings.IncludeCrlDistributionPoint)
             {
-                var crlDistributionPoints = new DistributionPoint[1]
-                {
-                    new DistributionPoint(
-                        new DistributionPointName(
-                            new GeneralNames(
-                                new GeneralName(
-                                    GeneralName.UniformResourceIdentifier, string.Format("{0}", _crlUri, serialNum.ToString(radix: 16))))),
-                                    null,
-                                    null)
-                };
-                var revocationListExtension = new CrlDistPoint(crlDistributionPoints);
-                s_certGenerator.AddExtension(X509Extensions.CrlDistributionPoints, false, revocationListExtension);
+                req.CertificateExtensions.Add(BuildCrlDistributionPointsExtension(_crlUri));
             }
 
-            ISignatureFactory signatureFactory = new Asn1SignatureFactory(_signatureAlgorithm, _authorityKeyPair.Private, _random);
-            X509Certificate cert = s_certGenerator.Generate(signatureFactory);
+            X509Certificate2 cert;
+            if (isAuthority)
+            {
+                cert = req.CreateSelfSigned(certificateCreationSettings.ValidityNotBefore, certificateCreationSettings.ValidityNotAfter);
+            }
+            else
+            {
+                cert = req.Create(signingCertificate, certificateCreationSettings.ValidityNotBefore, certificateCreationSettings.ValidityNotAfter, serialNum);
+            }
+
+            // Build a complete X509Certificate2 with the private key attached.
+            // CreateSelfSigned already attaches the private key; req.Create(issuer,...) does not.
+            X509Certificate2 certWithKey = cert.HasPrivateKey ? cert : cert.CopyWithPrivateKey(subjectKey);
+
+            // For consistency with previous behavior, always export the cert with private key as PFX.
+            // X509KeyStorageFlags.Exportable lets callers re-export later.
+            byte[] pfxBytes = certWithKey.Export(X509ContentType.Pkcs12, _password);
+
+            // On Windows (and Linux), round-trip through X509CertificateLoader.LoadPkcs12 with
+            // PersistKeySet so the private key lands in the platform key container; otherwise the
+            // in-memory ephemeral key from CopyWithPrivateKey won't survive being added to a cert
+            // store and lookups later return a cert with no usable private key.
+            //
+            // On macOS, LoadPkcs12 fails with "The specified keychain could not be found" because
+            // the Apple loader needs a keychain handle to attach the key. CertificateManager bypasses
+            // X509Store on macOS (uses the security CLI), so the in-memory CopyWithPrivateKey result
+            // works there.
+            X509Certificate2 outputCert;
+            if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+            {
+                outputCert = certWithKey;
+            }
+            else
+            {
+                outputCert = X509CertificateLoader.LoadPkcs12(
+                    pfxBytes,
+                    _password,
+                    X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+            }
+
+            // Set FriendlyName on Windows so lookups via CertificateFromFriendlyName succeed.
+            // The setter throws PlatformNotSupportedException on non-Windows; the macOS/Linux
+            // lookup paths fall through to a deterministic-serial match instead.
+            if (CertificateHelper.CurrentOperatingSystem.IsWindows()
+                && !string.IsNullOrEmpty(certificateCreationSettings.FriendlyName))
+            {
+#pragma warning disable CA1416 // Validate platform compatibility (guarded by IsWindows())
+                outputCert.FriendlyName = certificateCreationSettings.FriendlyName;
+#pragma warning restore CA1416
+            }
 
             switch (certificateCreationSettings.ValidityType)
             {
                 case CertificateValidityType.Revoked:
-                    RevokeCertificateBySerialNumber(serialNum.ToString(radix: 16));
+                    RevokeCertificateBySerialNumber(SerialToHex(serialNum));
                     break;
                 case CertificateValidityType.Expired:
                     break;
                 default:
-                    EnsureCertificateIsValid(cert);
+                    EnsureCertificateIsValid(outputCert);
                     break;
             }
 
-            // For now, given that we don't know what format to return it in, preserve the formats so we have 
-            // the flexibility to do what we need to
-
-            X509CertificateContainer container = new X509CertificateContainer();
-
-            X509CertificateEntry[] chain = new X509CertificateEntry[1];
-            chain[0] = new X509CertificateEntry(cert);
-
-            Pkcs12Store store = new Pkcs12StoreBuilder().Build();
-            store.SetKeyEntry(
-                certificateCreationSettings.FriendlyName != null ? certificateCreationSettings.FriendlyName : string.Empty,
-                new AsymmetricKeyEntry(keyPair.Private),
-                chain);
-
-            using (MemoryStream stream = new MemoryStream())
+            X509CertificateContainer container = new X509CertificateContainer
             {
-                store.Save(stream, _password.ToCharArray(), _random);
-                container.Pfx = stream.ToArray();
-            }
-
-            X509Certificate2 outputCert = null;
+                Subject = subject,
+                Pfx = pfxBytes,
+                Certificate = outputCert,
+                Thumbprint = outputCert.Thumbprint
+            };
 
             if (isAuthority)
             {
-                // don't hand out the private key for the cert when it's the authority
-                outputCert = new X509Certificate2(cert.GetEncoded());
+                _authorityCertWithKey = certWithKey;
+                // certWithKey is the same instance as cert (CreateSelfSigned attaches the key in-place); do not dispose.
+                // On non-macOS, outputCert is a separate (round-tripped) instance owned by the container.
             }
             else
             {
-                // Otherwise, allow encode with the private key. note that X509Certificate2.RawData will not provide the private key
-                // you will have to re-export this cert if needed
-                if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+                // Dispose the keyless original if it's a separate instance.
+                if (!ReferenceEquals(cert, certWithKey))
                 {
-                    //string tempKeychainFilePath = Path.GetTempFileName();
-                    string tempKeychainFilePath = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
-                    System.Security.Cryptography.X509Certificates.X509Store MacOsTempStore = CertificateHelper.GetMacOSX509Store(tempKeychainFilePath);
-                    MacOsTempStore.Certificates.Import(container.Pfx, _password, X509KeyStorageFlags.Exportable);
-                    MacOsTempStore.Close();
-                    MacOsTempStore.Dispose();
-
-                    MacOsTempStore = CertificateHelper.GetMacOSX509Store(tempKeychainFilePath);
-
-                    outputCert = ((IEnumerable<X509Certificate2>)MacOsTempStore.Certificates).FirstOrDefault();
-
-                    if (outputCert == null)
-                    {
-                        Console.WriteLine("Couldn't find Certificate..");
-                    }
-
-                    MacOsTempStore.Dispose();
-                    if (File.Exists(tempKeychainFilePath))
-                    {
-                        File.Delete(tempKeychainFilePath);
-                    }
+                    cert.Dispose();
                 }
-                else
+                // On non-macOS, outputCert is the round-tripped instance owned by the container;
+                // certWithKey is orphaned and should be disposed. On macOS, outputCert == certWithKey.
+                if (!ReferenceEquals(outputCert, certWithKey))
                 {
-                    outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                    certWithKey.Dispose();
                 }
             }
-
-            container.Subject = subject;
-            container.InternalCertificate = cert;
-            container.Certificate = outputCert;
-            container.Thumbprint = outputCert.Thumbprint;
 
             Trace.WriteLine("[CertificateGenerator] generated a certificate:");
             Trace.WriteLine(string.Format("    {0} = {1}", "isAuthority", isAuthority));
             if (!isAuthority)
             {
-                Trace.WriteLine(string.Format("    {0} = {1}", "Signed by", signingCertificate.SubjectDN));
+                Trace.WriteLine(string.Format("    {0} = {1}", "Signed by", signingCertificate.SubjectName.Name));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Subject (CN) ", subject));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Subject Alt names ", string.Join(", ", subjectAlternativeNames)));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Friendly Name ", certificateCreationSettings.FriendlyName));
@@ -514,52 +522,183 @@ namespace WcfTestCommon
             return container;
         }
 
-        private X509Crl CreateCrl(X509Certificate signingCertificate)
+        private byte[] ComputeSerialNumber(CertificateCreationSettings settings)
+        {
+            // On non-Windows hosts, use a deterministic serial derived from FriendlyName so cleanup-by-serial works.
+            BigInteger serialBigInt;
+            if (!CertificateHelper.CurrentOperatingSystem.IsWindows() && settings != null && settings.FriendlyName != null)
+            {
+                serialBigInt = HashFriendlyName(settings.FriendlyName);
+            }
+            else
+            {
+                byte[] rand = new byte[8];
+                RandomNumberGenerator.Fill(rand);
+                rand[0] &= 0x7F;
+                serialBigInt = new BigInteger(rand, isUnsigned: true, isBigEndian: true);
+            }
+
+            // CertificateRequest.Create(serialNumber) expects big-endian, minimum-length, unsigned.
+            return serialBigInt.ToByteArray(isUnsigned: true, isBigEndian: true);
+        }
+
+        private static string SerialToHex(byte[] serialBigEndian)
+        {
+            string s = Convert.ToHexString(serialBigEndian).ToLowerInvariant().TrimStart('0');
+            return s.Length == 0 ? "0" : s;
+        }
+
+        private byte[] CreateCrl()
         {
             EnsureInitialized();
 
-            s_crlGenerator.Reset();
-
             DateTime now = DateTime.UtcNow;
-
             DateTime updateTime = now.Subtract(_crlValidityGracePeriodEnd);
-            // Ensure that the update time for the CRL is no greater than the earliest time that the CA is valid for
-            if (_defaultValidityNotBefore > now.Subtract(_crlValidityGracePeriodEnd))
+            if (_defaultValidityNotBefore > updateTime)
             {
                 updateTime = _defaultValidityNotBefore;
             }
+            DateTime nextUpdate = now.Add(_validityPeriod);
 
-            s_crlGenerator.SetThisUpdate(updateTime);
-            //There is no need to update CRL.
-            s_crlGenerator.SetNextUpdate(now.Add(ValidityPeriod));
-            s_crlGenerator.SetIssuerDN(signingCertificate.SubjectDN);
-
-            s_crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(signingCertificate));
-
-            BigInteger crlNumber = new BigInteger(64 /*bits for the number*/, _random).Abs();
-            s_crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(crlNumber));
-
-            foreach (var kvp in s_revokedCertificates)
+            CertificateRevocationListBuilder builder = new CertificateRevocationListBuilder();
+            foreach (KeyValuePair<string, DateTime> kvp in s_revokedCertificates)
             {
-                s_crlGenerator.AddCrlEntry(new BigInteger(kvp.Key, 16), kvp.Value, CrlReason.CessationOfOperation);
+                byte[] serial = HexToBytes(kvp.Key);
+                // AddEntry writes the bytes verbatim as the INTEGER content (signed encoding).
+                // Our stored serials are minimal-unsigned, so prepend a 0x00 sign byte when the
+                // high bit of the first byte is set, otherwise the value would be interpreted
+                // as negative and would not match the certificate's positively-encoded serial.
+                if (serial.Length > 0 && (serial[0] & 0x80) != 0)
+                {
+                    byte[] padded = new byte[serial.Length + 1];
+                    Buffer.BlockCopy(serial, 0, padded, 1, serial.Length);
+                    serial = padded;
+                }
+                builder.AddEntry(serial, kvp.Value);
             }
 
-            ISignatureFactory signatureFactory = new Asn1SignatureFactory(_signatureAlgorithm, _authorityKeyPair.Private, _random);
-            X509Crl crl = s_crlGenerator.Generate(signatureFactory);
-            crl.Verify(_authorityKeyPair.Public);
+            byte[] crl = builder.Build(
+                issuerCertificate: _authorityCertWithKey,
+                crlNumber: GenerateCrlNumber(),
+                nextUpdate: nextUpdate,
+                hashAlgorithm: HashAlgorithmName.SHA256,
+                rsaSignaturePadding: RSASignaturePadding.Pkcs1,
+                thisUpdate: updateTime);
 
-            Trace.WriteLine(string.Format("[CertificateGenerator] has created a Certificate Revocation List :"));
-            Trace.WriteLine(string.Format("    {0} = {1}", "Issuer", crl.IssuerDN));
-            Trace.WriteLine(string.Format("    {0} = {1}", "CRL Number", crlNumber));
+            Trace.WriteLine(string.Format("[CertificateGenerator] has created a Certificate Revocation List:"));
+            Trace.WriteLine(string.Format("    {0} = {1}", "Issuer", _authorityCertWithKey.SubjectName.Name));
+            Trace.WriteLine(string.Format("    {0} = {1} bytes", "Length", crl.Length));
 
             return crl;
         }
 
-        // Throws an exception if the certificate is invalid
-        private void EnsureCertificateIsValid(X509Certificate certificate)
+        private static BigInteger GenerateCrlNumber()
         {
-            certificate.CheckValidity(DateTime.UtcNow);
-            certificate.Verify(_authorityKeyPair.Public);
+            byte[] rand = new byte[8];
+            RandomNumberGenerator.Fill(rand);
+            rand[0] &= 0x7F;
+            Array.Reverse(rand);
+            BigInteger n = new BigInteger(rand);
+            return n.Sign < 0 ? -n : n;
+        }
+
+        private static X500DistinguishedName BuildDistinguishedName(string canonicalName)
+        {
+            // Order in DN: CN, O, OU (encoded inner-to-outer / RFC 4514 reverse of issuance)
+            // Use X500DistinguishedName parser; quote values that may contain spaces.
+            string dn = string.Format("CN={0}, O=DO_NOT_TRUST, OU=Created by https://github.com/dotnet/wcf",
+                EscapeDnComponent(canonicalName));
+            return new X500DistinguishedName(dn);
+        }
+
+        private static string EscapeDnComponent(string value)
+        {
+            // Minimal escaping for special chars in RFC 4514 DN strings.
+            StringBuilder sb = new StringBuilder(value.Length);
+            foreach (char c in value)
+            {
+                if (c == ',' || c == '+' || c == '"' || c == '\\' || c == '<' || c == '>' || c == ';' || c == '=' || c == '#')
+                {
+                    sb.Append('\\');
+                }
+                sb.Append(c);
+            }
+            return sb.ToString();
+        }
+
+        private static byte[] GetSubjectKeyIdentifierBytes(X509Certificate2 cert)
+        {
+            foreach (X509Extension ext in cert.Extensions)
+            {
+                if (ext.Oid != null && ext.Oid.Value == Oids.SubjectKeyIdentifierExtension)
+                {
+                    // SubjectKeyIdentifier extension; value is OCTET STRING containing OCTET STRING (the key id)
+                    AsnReader r = new AsnReader(ext.RawData, AsnEncodingRules.DER);
+                    return r.ReadOctetString();
+                }
+            }
+
+            // Fallback: compute SHA-1 of the DER-encoded SubjectPublicKey BIT STRING (just the key bytes).
+            using (SHA1 sha1 = SHA1.Create())
+            {
+                return sha1.ComputeHash(cert.PublicKey.EncodedKeyValue.RawData);
+            }
+        }
+
+        // Builds CRLDistributionPoints extension for a single fullName URI distribution point.
+        // CRLDistributionPoints ::= SEQUENCE OF DistributionPoint
+        // DistributionPoint ::= SEQUENCE { distributionPoint [0] EXPLICIT DistributionPointName OPTIONAL, ... }
+        // DistributionPointName ::= CHOICE { fullName [0] IMPLICIT GeneralNames, ... }
+        // GeneralName ::= CHOICE { uniformResourceIdentifier [6] IMPLICIT IA5String, ... }
+        private static X509Extension BuildCrlDistributionPointsExtension(string url)
+        {
+            AsnWriter w = new AsnWriter(AsnEncodingRules.DER);
+            using (w.PushSequence())
+            {
+                using (w.PushSequence())
+                {
+                    using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true)))
+                    {
+                        using (w.PushSequence(new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true)))
+                        {
+                            w.WriteCharacterString(UniversalTagNumber.IA5String, url, new Asn1Tag(TagClass.ContextSpecific, 6, isConstructed: false));
+                        }
+                    }
+                }
+            }
+            return new X509Extension(Oids.CrlDistributionPointsExtensionOid, w.Encode(), critical: false);
+        }
+
+
+        private static byte[] HexToBytes(string hex)
+        {
+            if (string.IsNullOrEmpty(hex))
+            {
+                return Array.Empty<byte>();
+            }
+            string s = (hex.Length & 1) == 1 ? "0" + hex : hex;
+            return Convert.FromHexString(s);
+        }
+
+        private static BigInteger HexToBigInteger(string hex)
+        {
+            if (string.IsNullOrEmpty(hex))
+            {
+                return BigInteger.Zero;
+            }
+            // Ensure positive parsing
+            string s = hex.StartsWith("0", StringComparison.Ordinal) ? hex : "0" + hex;
+            return BigInteger.Parse(s, System.Globalization.NumberStyles.HexNumber);
+        }
+
+        // Throws an exception if the certificate is invalid.
+        private void EnsureCertificateIsValid(X509Certificate2 certificate)
+        {
+            DateTime now = DateTime.UtcNow;
+            if (now < certificate.NotBefore.ToUniversalTime() || now > certificate.NotAfter.ToUniversalTime())
+            {
+                throw new CryptographicException(string.Format("Certificate is outside its validity window: {0} - {1}", certificate.NotBefore, certificate.NotAfter));
+            }
         }
 
         private void EnsureInitialized()
@@ -578,33 +717,13 @@ namespace WcfTestCommon
             }
         }
 
-        private static X509Name CreateX509Name(string canonicalName)
-        {
-            X509Name authorityX509Name;
-
-            IList<DerObjectIdentifier> authorityKeyIdOrder = new List<DerObjectIdentifier>();
-            IDictionary<DerObjectIdentifier, string> authorityKeyIdName = new Dictionary<DerObjectIdentifier, string>();
-
-            authorityKeyIdOrder.Add(X509Name.OU);
-            authorityKeyIdOrder.Add(X509Name.O);
-            authorityKeyIdOrder.Add(X509Name.CN);
-
-            authorityKeyIdName.Add(X509Name.CN, canonicalName);
-            authorityKeyIdName.Add(X509Name.O, "DO_NOT_TRUST");
-            authorityKeyIdName.Add(X509Name.OU, "Created by https://github.com/dotnet/wcf");
-
-            authorityX509Name = new X509Name(authorityKeyIdOrder, authorityKeyIdName);
-
-            return authorityX509Name;
-        }
-
         public bool RevokeCertificateBySerialNumber(string serialNum)
         {
             bool success = false;
-            BigInteger serialNumBigInt = null;
             try
             {
-                serialNumBigInt = new BigInteger(str: serialNum, radix: 16);
+                // Validate hex parses
+                HexToBigInteger(serialNum);
                 success = true;
             }
             catch (FormatException)
@@ -618,8 +737,8 @@ namespace WcfTestCommon
                 s_revokedCertificates.Add(serialNum, DateTime.UtcNow);
             }
 
-            // Note that we don't actually check against the thumbprints here, we just go ahead and stick the serial 
-            // number into the CRL without checking whether or not we've ever generated it
+            // Note that we don't actually check against the thumbprints here, we just go ahead and stick the serial
+            // number into the CRL without checking whether or not we've ever generated it.
             Trace.WriteLine(string.Format("[CertificateGenerator] Revoke certificate with serial number {0}: ", success ? "succeeded" : "FAILED"));
             return success;
         }
@@ -628,9 +747,8 @@ namespace WcfTestCommon
     public class X509CertificateContainer
     {
         public string Subject { get; internal set; }
-        internal X509Certificate InternalCertificate { get; set; }
         public X509Certificate2 Certificate { get; internal set; }
-        internal byte[] Pfx { get; set; }
+        public byte[] Pfx { get; internal set; }
         public string Thumbprint { get; internal set; }
     }
 }

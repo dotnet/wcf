@@ -6,7 +6,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.ServiceModel.Channels;
+using System.Transactions;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -124,6 +126,17 @@ namespace System.ServiceModel.Dispatcher
                 }
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(e);
             }
+
+            if (_addTransactionFlowProperties)
+            {
+                SendTransaction(ref rpc);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void SendTransaction(ref ProxyRpc rpc)
+        {
+            TransactionFlowProperty.Set(Transaction.Current, rpc.Request);
         }
 
         internal void DisplayInitializationUI(ServiceChannel channel)

@@ -13,11 +13,9 @@ using Xunit;
 public class WSHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfTest
 {
     [WcfFact]
-    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
            nameof(Client_Certificate_Installed),
-           nameof(SSL_Available),
-           nameof(Skip_CoreWCFService_FailedTest))]
+           nameof(SSL_Available))]
     [OuterLoop]
     public static void Https_SecModeTransWithMessCred_CertClientCredential_Succeeds()
     {
@@ -63,8 +61,7 @@ public class WSHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfT
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
-               nameof(SSL_Available),
-               nameof(Skip_CoreWCFService_FailedTest))]
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void Https_SecModeTransWithMessCred_UserNameClientCredential_Succeeds()
     {
@@ -95,6 +92,89 @@ public class WSHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfT
 
             // *** EXECUTE *** \\
             result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
+    [OuterLoop]
+    public static void Https_SecModeTransWithMessCred_WindowsClientCredential_Succeeds()
+    {
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            WSHttpBinding binding = new WSHttpBinding(SecurityMode.TransportWithMessageCredential);
+            binding.Security.Message.ClientCredentialType = MessageCredentialType.Windows;
+
+            factory = new ChannelFactory<IWcfService>(
+                binding,
+                new EndpointAddress(new Uri(Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeWindows)));
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(SSL_Available),
+               nameof(Skip_CoreWCFService_FailedTest))]
+    [OuterLoop]
+    public static void Https_SecModeTransWithMessCred_WindowsClientCredential_NoSecureConversation_Succeeds()
+    {
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            WSHttpBinding binding = new WSHttpBinding(SecurityMode.TransportWithMessageCredential);
+            binding.Security.Message.ClientCredentialType = MessageCredentialType.Windows;
+            binding.Security.Message.EstablishSecurityContext = false;
+
+            factory = new ChannelFactory<IWcfService>(
+                binding,
+                new EndpointAddress(new Uri(Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeWindows_NoSecureConversation)));
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
 
             // *** VALIDATE *** \\
             Assert.Equal(testString, result);

@@ -1,0 +1,19 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/CollectionTypes.wsdl"
+    ],
+    "collectionTypes": [
+      "System.Collections.Generic.LinkedList`1",
+      "System.Collections.Specialized.ListDictionary"
+    ],
+    "namespaceMappings": [
+      "*, ListDictionary_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "N.N",
+    "typeReuseMode": "All"
+  }
+}

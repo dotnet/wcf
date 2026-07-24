@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using Microsoft.Tools.ServiceModel.Svcutil;
 using System.Threading;
 using Xunit;
@@ -13,6 +14,14 @@ namespace SvcutilTest
 {
     public partial class E2ETest
     {
+        private static int CountInternalXmlSerializerWarningLines(string outputText)
+        {
+            return outputText
+                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
+                .Count(l => l.IndexOf("--internal", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                            l.IndexOf("XmlSerializer", StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
         private void TestGlobalSvcutil(string options, bool expectSuccess = true)
         {
             Assert.False(string.IsNullOrWhiteSpace(this_TestCaseName), $"{nameof(this_TestCaseName)} not initialized!");
@@ -41,6 +50,56 @@ namespace SvcutilTest
 
             var options = $"-h -v {verbosity}";
             TestGlobalSvcutil(options);
+        }
+
+        [Theory]
+        [Trait("Category", "BVT")]
+        [InlineData("CS")]
+        [InlineData("VB")]
+        public void LanguageOption(string lang)
+        {
+            this_TestCaseName = "LanguageOption";
+            TestFixture();
+            InitializeGlobal(lang);
+            var wsdlFile = Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl");
+            var options = $"-l {lang} {wsdlFile}";
+            TestGlobalSvcutil(options);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
+        [InlineData("InternalTypes_DataSetWrapper_NoInternal", false, 0)]
+        [InlineData("InternalTypes_DataSetWrapper", true, 1)]
+        public void InternalTypes_DataSetWrapper_Variations(string testCaseName, bool useInternal, int expectedWarningCount)
+        {
+            // Validate both default (public) and --internal flows for the same WSDL.
+            // Note: this test will require baselines for both variations.
+            const string groupName = "InternalTypes_DataSetWrapper";
+            this_TestCaseName = groupName;
+            TestFixture();
+
+            this_TestCaseName = testCaseName;
+            InitializeGlobal(testCaseName);
+
+            var wsdlFile = Path.Combine(g_TestCasesDir, "wsdl", "InternalTypes_DataSetWrapper.wsdl");
+
+            // Do not force a serializer. This matches real user behavior and validates the default code path.
+            var options = useInternal
+                ? $"\"{wsdlFile}\" -i -nl"
+                : $"\"{wsdlFile}\" -nl";
+
+            options = AppendCommonOptions(options);
+            var processResult = this_TestCaseProject.RunSvcutil(options, expectSuccess: true, this_TestCaseLogger, globalTool: true);
+
+            Assert.True(processResult.ExitCode == 0 || processResult.ExitCode == 6, processResult.OutputText);
+
+            // Assert on invariant tokens so the test is resilient to localization.
+            var warningCount = CountInternalXmlSerializerWarningLines(processResult.OutputText);
+            Assert.True(
+                warningCount == expectedWarningCount,
+                $"Expected {expectedWarningCount} warning(s) mentioning both '--internal' and 'XmlSerializer', found {warningCount}. Output was:{Environment.NewLine}{processResult.OutputText}");
+
+            ValidateTest(options, this_TestCaseProject.DirectoryPath, processResult.ExitCode, processResult.OutputText, expectSuccess: true);
         }
 
         [Theory]
@@ -219,6 +278,28 @@ namespace SvcutilTest
             var refs = Path.Combine(g_TestCasesDir, "ReuseIXmlSerializableType", "CommonTypes", "CommonTypes.csproj");
             var options = $"{uri} -r {refs} -nl -v minimal -n \"\"*,{this_TestCaseName}_NS\"\"";
 
+            TestGlobalSvcutil(options);
+        }
+
+        [Trait("Category", "BVT")]
+        [Theory]
+        [InlineData("LegacyNonGeneric", "System.Collections.ArrayList", "System.Collections.Hashtable")]
+        [InlineData("GenericBaseline", "System.Collections.Generic.List`1", "System.Collections.Generic.Dictionary`2")]
+        [InlineData("GenericSortedDict", "System.Collections.Generic.LinkedList`1", "System.Collections.Generic.SortedDictionary`2")]
+        [InlineData("GenericSortedList", "System.Collections.Generic.LinkedList`1", "System.Collections.Generic.SortedList`2")]
+        [InlineData("ObjectModelOrderedDict", "System.Collections.ObjectModel.ObservableCollection`1", "System.Collections.Specialized.OrderedDictionary")]
+        [InlineData("NonGenericSortedDict", "System.Collections.ObjectModel.Collection`1", "System.Collections.SortedList")]
+        [InlineData("HybridDictionary", "System.Collections.Generic.List`1", "System.Collections.Specialized.HybridDictionary")]
+        [InlineData("ListDictionary", "System.Collections.Generic.LinkedList`1", "System.Collections.Specialized.ListDictionary")]
+        public void CollectionTypeOptionTests(string testCaseName, string collectionType, string dictionaryType)
+        {
+            this_TestCaseName = "CollectionTypeOptionTests";
+            TestFixture();
+
+            InitializeGlobal(testCaseName);
+
+            var uri = Path.Combine(g_TestCasesDir, "wsdl", "CollectionTypes.wsdl");
+            var options = $"{uri} --collectionType {collectionType} --collectionType {dictionaryType} -nl -v minimal -n \"\"*,{testCaseName}_NS\"\"";
             TestGlobalSvcutil(options);
         }
     }

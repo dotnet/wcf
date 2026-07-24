@@ -15,10 +15,25 @@ namespace UpdateServiceRefOptions_Folder_With_Spaces
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BinLibrary", Namespace="http://schemas.datacontract.org/2004/07/BinLib")]
-    public partial class BinLibrary : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class BinLibrary : object, System.Runtime.Serialization.IExtensibleDataObject
     {
         
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
         private string ValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Value
@@ -37,12 +52,27 @@ namespace UpdateServiceRefOptions_Folder_With_Spaces
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Runtime.Serialization.DataContractAttribute(Name="TypeReuseCompositeType", Namespace="http://schemas.datacontract.org/2004/07/TypesLib")]
-    public partial class TypeReuseCompositeType : object
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public partial class TypeReuseCompositeType : object, System.Runtime.Serialization.IExtensibleDataObject
     {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool BoolValueField;
         
         private string StringValueField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool BoolValue
@@ -90,6 +120,7 @@ namespace UpdateServiceRefOptions_Folder_With_Spaces
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<UpdateServiceRefOptions_Folder_With_Spaces.ITypeReuseSvc>, UpdateServiceRefOptions_Folder_With_Spaces.ITypeReuseSvc
     {
         

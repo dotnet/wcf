@@ -23,8 +23,6 @@ pr:
 variables:  
   - name: _TeamName
     value: WcfCore
-  - name: _PublishUsingPipelines
-    value: true
   - name: _DotNetArtifactsCategory
     value: .NETCore
   - name: _RunAsPublic
@@ -58,7 +56,6 @@ stages:
       enableMicrobuild: true
       enablePublishBuildArtifacts: true
       enablePublishBuildAssets: true
-      enablePublishUsingPipelines: $(_PublishUsingPipelines)
       enableTelemetry: true
       helixRepo: dotnet/wcf
       jobs:
@@ -213,7 +210,6 @@ stages:
       # Only build and test MacOS in PR and CI builds.
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: MacOS
-          condition: ne(variables._RunWithCoreWcfService, True)
           timeoutInMinutes: 90
           pool:
             name: NetCore-Public

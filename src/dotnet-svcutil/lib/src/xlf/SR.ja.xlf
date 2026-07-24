@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 その言語が、生成されるコード要素をすべてはサポートしていないことが原因である可能性があります。別の言語を使用することを検討してください。</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">/{1} 引数に渡された値 '{0}' に対して、コード プロバイダーを作成できませんでした。コード プロバイダーが正しくインストールおよび構成されていることを確認してください。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">--{1} オプションに渡された値 '{0}' に対して、コード プロバイダーを作成できませんでした。コード プロバイダーが正しくインストールおよび構成されていることをご確認ください。</target>
@@ -547,6 +552,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">内部クラスのマークが付けられたクラスを生成します。既定: パブリック クラスを生成します。(短い形式: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="translated">コードの生成に使用するプログラミング言語です。使用する言語名の例は CS および VB です。既定: C#。(短い形式: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
         <target state="translated">コードの生成に使用するプログラミング言語です。machine.config ファイルに登録された言語名を指定するか、System.CodeDom.Compiler.CodeDomProvider から継承するクラスの完全修飾名を指定します。使用する言語名の例は CS および VB です。既定: C#。(短い形式: -{0})</target>
@@ -815,6 +825,11 @@ If you were trying to generate a client, this could be because the metadata docu
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
         <target state="translated">アドレス '{1}' のエンドポイント '{0}' に、.Net Core アプリと互換性のないバインドが 1 つ以上含まれています。スキップしています...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">

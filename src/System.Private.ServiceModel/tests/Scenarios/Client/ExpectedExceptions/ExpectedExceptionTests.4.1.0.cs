@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-public partial class ExpectedExceptionTests : ConditionalWcfTest
+public partial class ExpectedExceptionTests
 {
     [WcfFact]
     [OuterLoop]
@@ -185,7 +185,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void UnknownUrl_Throws_ProtocolException()
     {
@@ -329,7 +328,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
     public static void TCP_ServiceCertExpired_Throw_MessageSecurityException()
@@ -373,7 +371,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Verify product throws SecurityNegotiationException when the service cert is revoked
     public static void TCP_ServiceCertRevoked_Throw_SecurityNegotiationException()
@@ -421,7 +418,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     // Verify product throws SecurityNegotiationException when the service cert only has the ClientAuth usage
     public static void TCP_ServiceCertInvalidEKU_Throw_SecurityNegotiationException()

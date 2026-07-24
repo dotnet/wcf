@@ -16,32 +16,80 @@ public class CertificateGeneratorLibrary
 
     private static string s_fqdn = Dns.GetHostEntry("127.0.0.1").HostName;
     private static string s_hostname = Dns.GetHostEntry("127.0.0.1").HostName.Split('.')[0];
+
+    // The SubjectCanonicalName{DomainName,Fqdn} certificates are used by tests that assert a
+    // NEGATIVE identity check: a client connecting to "localhost" must be rejected because the
+    // server certificate's CN is a different name. On Windows, Dns.GetHostEntry("127.0.0.1")
+    // returns the machine name, which satisfies this. On Linux/macOS it returns "localhost",
+    // making those certs indistinguishable from the localhost cert and breaking the tests.
+    // Resolve a non-localhost canonical name from the machine name on non-Windows platforms.
+    // These values are used ONLY for the canonical-name certs; the CRL URI and all other certs
+    // continue to use s_fqdn/s_hostname so localhost-based CRL fetch and TLS keep working.
+    private static string s_canonicalFqdn = GetCanonicalFqdn();
+    private static string s_canonicalHostname = s_canonicalFqdn.Split('.')[0];
+
     private static string s_testserverbase = string.Empty;
     private static string s_crlFileLocation = string.Empty;
     private static TimeSpan s_validatePeriod;
 
+    private static string GetCanonicalFqdn()
+    {
+        if (CertificateHelper.CurrentOperatingSystem.IsWindows())
+        {
+            return Dns.GetHostEntry("127.0.0.1").HostName;
+        }
+
+        // On Linux/macOS, "127.0.0.1" resolves to "localhost"; use the machine name instead so
+        // that the canonical-name certificates carry a name distinct from "localhost".
+        try
+        {
+            string resolved = Dns.GetHostEntry(Environment.MachineName).HostName;
+            if (!string.IsNullOrEmpty(resolved) &&
+                !string.Equals(resolved, "localhost", StringComparison.OrdinalIgnoreCase))
+            {
+                return resolved;
+            }
+        }
+        catch
+        {
+            // Name may not be resolvable in some sandboxes; fall back to the raw machine name below.
+        }
+
+        return Environment.MachineName;
+    }
+
     private static void RemoveCertificatesFromStore(StoreName storeName, StoreLocation storeLocation)
     {
+        // On macOS, all cert operations go through a custom keychain managed by CertificateHelper.
+        // Cleanup is handled by deleting the entire keychain in UninstallAllCerts.
+        if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+        {
+            return;
+        }
+
         X509Store store = CertificateHelper.GetX509Store(storeName, storeLocation);
         Console.WriteLine("  Checking StoreName '{0}', StoreLocation '{1}'", storeName, store.Location);
+        store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
+        foreach (var cert in store.Certificates.Find(X509FindType.FindByIssuerName, CertificateIssuer, false))
         {
-            if (!CertificateHelper.CurrentOperatingSystem.IsMacOS()) 
-            {
-                store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
-            }
-
-            foreach (var cert in store.Certificates.Find(X509FindType.FindByIssuerName, CertificateIssuer, false))
-            {
-                Console.Write("    {0}. Subject: '{1}'", cert.Thumbprint, cert.SubjectName.Name);
-                store.Remove(cert);
-                Console.WriteLine(" ... removed");
-            }
+            Console.Write("    {0}. Subject: '{1}'", cert.Thumbprint, cert.SubjectName.Name);
+            store.Remove(cert);
+            Console.WriteLine(" ... removed");
         }
         Console.WriteLine();
     }
 
     public static void UninstallAllCerts()
     {
+        // On macOS, delete the custom keychain which removes all WCF test certs at once
+        if (CertificateHelper.CurrentOperatingSystem.IsMacOS())
+        {
+            Console.WriteLine("  Cleaning up macOS keychain...");
+            CertificateHelper.DeleteMacOSKeychain();
+            Console.WriteLine();
+            return;
+        }
+
         RemoveCertificatesFromStore(StoreName.My, StoreLocation.CurrentUser);
         RemoveCertificatesFromStore(StoreName.My, StoreLocation.LocalMachine);
 
@@ -104,7 +152,7 @@ public class CertificateGeneratorLibrary
         certificateCreationSettings = new CertificateCreationSettings()
         {
             FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameDomainNameResource",
-            Subject = s_hostname,
+            Subject = s_canonicalHostname,
             SubjectAlternativeNames = new string[0],
             ValidityType = CertificateValidityType.NonAuthoritativeForMachine
         };
@@ -114,7 +162,7 @@ public class CertificateGeneratorLibrary
         certificateCreationSettings = new CertificateCreationSettings()
         {
             FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdnResource",
-            Subject = s_fqdn,
+            Subject = s_canonicalFqdn,
             SubjectAlternativeNames = new string[0],
             ValidityType = CertificateValidityType.NonAuthoritativeForMachine
         };
@@ -147,7 +195,8 @@ public class CertificateGeneratorLibrary
             ValidityType = CertificateValidityType.Valid,
             Subject = s_fqdn,
             SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" },
-            EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID> { Org.BouncyCastle.Asn1.X509.KeyPurposeID.id_kp_clientAuth }
+            // Only clientAuth EKU - intentionally missing serverAuth to exercise invalid-EKU scenario.
+            EKU = new List<string> { Oids.ClientAuthEku }
         };
         CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
@@ -157,7 +206,7 @@ public class CertificateGeneratorLibrary
             FriendlyName = "WCF Bridge - STSMetaData",
             ValidityType = CertificateValidityType.Valid,
             Subject = "STSMetaData",
-            EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID>()
+            EKU = new List<string>()
         };
         CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
@@ -167,8 +216,8 @@ public class CertificateGeneratorLibrary
             FriendlyName = "WCF Bridge - UserCertificateResource",
             Subject = "WCF Client Certificate",
         };
-        X509Certificate2 certificate = certificateGenerate.CreateUserCertificate(certificateCreationSettings).Certificate;
-        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+        var userCertContainer = certificateGenerate.CreateUserCertificate(certificateCreationSettings);
+        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, userCertContainer.Certificate);
 
         //Create CRL and save it
         FileInfo file = new FileInfo(s_crlFileLocation);
@@ -181,7 +230,7 @@ public class CertificateGeneratorLibrary
 
     private static void CreateAndInstallMachineCertificate(CertificateGenerator certificateGenerate, CertificateCreationSettings certificateCreationSettings)
     {
-        X509Certificate2 certificate = certificateGenerate.CreateMachineCertificate(certificateCreationSettings).Certificate;
-        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+        var container = certificateGenerate.CreateMachineCertificate(certificateCreationSettings);
+        CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, container.Certificate);
     }
 }

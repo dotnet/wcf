@@ -549,6 +549,9 @@ Your credentials will be sent to the server in clear text.</value>
   <data name="WrnCouldNotGenerateContractOperationsFormat" xml:space="preserve">
     <value>Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</value>
   </data>
+  <data name="WrnInternalOptionPartiallyAppliedWithXmlSerializer" xml:space="preserve">
+    <value>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</value>
+  </data>
   <data name="TelemetryEnabled" xml:space="preserve">
     <value>This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
 </value>
@@ -630,5 +633,11 @@ Your credentials will be sent to the server in clear text.</value>
   </data>
   <data name="HelpSyncOnlyFormat" xml:space="preserve">
     <value>Generate only synchronous methods for operations. Default: generate task-based asynchronous method signatures. (Short Form: -{0})</value>
+  </data>
+  <data name="ErrCouldNotCreateCodeProvider" xml:space="preserve">
+    <value>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</value>
+  </data>
+  <data name="HelpLanguage" xml:space="preserve">
+    <value>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</value>
   </data>
 </root>

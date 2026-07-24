@@ -30,6 +30,7 @@ namespace ReuseIXmlSerializableType_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class ServiceClient : System.ServiceModel.ClientBase<ReuseIXmlSerializableType_NS.IService>, ReuseIXmlSerializableType_NS.IService
     {
         

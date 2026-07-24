@@ -40,7 +40,9 @@ namespace System.IdentityModel.Tokens
             {
                 if (_certificate == null)
                 {
+#pragma warning disable SYSLIB0057 // Type or member is obsolete
                     _certificate = new X509Certificate2(GetBuffer());
+#pragma warning restore SYSLIB0057 // Type or member is obsolete
                 }
                 _key = new X509AsymmetricSecurityKey(_certificate);
             }

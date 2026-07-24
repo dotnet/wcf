@@ -4,6 +4,7 @@
 
 
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Security;
 using Infrastructure.Common;
@@ -125,8 +126,7 @@ public partial class HttpsTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
-               nameof(SSL_Available),
-               nameof(Skip_CoreWCFService_FailedTest))]
+               nameof(SSL_Available))]
     [Issue(1945, OS = OSID.OSX)] // OSX doesn't support the TrustedPeople certificate store
     [OuterLoop]
     // Asking for PeerOrChainTrust should succeed if the certificate is
@@ -172,11 +172,15 @@ public partial class HttpsTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    // macOS SecTrust cannot obtain a positive revocation response for a private
+    // CA under X509RevocationMode.Online (dotnet/runtime#31249), so a ChainTrust
+    // validation of the server cert fails on macOS. This test's purpose is the
+    // ChainTrust validation itself, so it is skipped on macOS rather than having
+    // its revocation check disabled.
     [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
-               nameof(SSL_Available),
-               nameof(Skip_CoreWCFService_FailedTest))]
+               nameof(SSL_Available))]
     [OuterLoop]
     // Asking for ChainTrust should succeed if the certificate is
     // chain-trusted.

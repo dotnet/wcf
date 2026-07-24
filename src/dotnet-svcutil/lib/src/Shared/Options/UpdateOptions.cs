@@ -28,6 +28,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public const string TargetFrameworkKey = "targetFramework";
         public const string TypeReuseModeKey = "typeReuseMode";
         public const string WrappedKey = "wrapped";
+        public const string LanguageKey = "language";
         #endregion
 
         #region properties
@@ -47,6 +48,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public FrameworkInfo TargetFramework { get { return GetValue<FrameworkInfo>(TargetFrameworkKey); } set { SetValue(TargetFrameworkKey, value); } }
         public TypeReuseMode? TypeReuseMode { get { return GetValue<TypeReuseMode?>(TypeReuseModeKey); } set { SetValue(TypeReuseModeKey, value); } }
         public bool? Wrapped { get { return GetValue<bool?>(WrappedKey); } set { SetValue(WrappedKey, value); } }
+        public string Language { get { return GetValue<string>(LanguageKey); } set { SetValue(LanguageKey, value); } }
         #endregion
 
         public UpdateOptions()
@@ -67,7 +69,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 new SingleValueOption<bool>(SyncOnlyKey) { SerializationName = "syncOnly" },
                 new SingleValueOption<FrameworkInfo>(TargetFrameworkKey),
                 new SingleValueOption<TypeReuseMode>(TypeReuseModeKey),
-                new SingleValueOption<bool>(WrappedKey));
+                new SingleValueOption<bool>(WrappedKey),
+                new SingleValueOption<string>(LanguageKey));
         }
 
         public static UpdateOptions FromFile(string filePath, bool throwOnError = true)

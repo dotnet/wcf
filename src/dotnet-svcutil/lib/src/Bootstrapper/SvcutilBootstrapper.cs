@@ -149,7 +149,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             // Don't treat warnings as errors so the bootstrapper will succeed as often as possible.
             this.MSBuildProj.ClearWarningsAsErrors();
-
+            // Suppress harmless MSB3277 assembly version conflicts resolved automatically by MSBuild.
+            this.MSBuildProj.SuppressWarningMSB3277();
             await this.MSBuildProj.SaveAsync(logger, cancellationToken).ConfigureAwait(false);
         }
 

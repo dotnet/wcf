@@ -380,7 +380,15 @@ namespace System.ServiceModel.Security
                 var reference = new Reference(ms);
             }
 
-            if ((ShouldSignToHeader) && (_signingKey != null || _signedXml.SigningKey != null) && (Version.Addressing != AddressingVersion.None))
+            // NetFx parity: the To-header reference is added to the SignedInfo only when
+            // the signing key is asymmetric (e.g. the X.509 client cert). This matches
+            // System.ServiceModel's WSSecurityOneDotZeroSendSecurityHeader.CompletePrimarySignatureCore
+            // which guards on `signatureKey is AsymmetricSecurityKey`. Without this, primary
+            // signatures driven by a symmetric SCT-derived key (e.g. RST/SCT/Renew secured by
+            // the current SCT) include an extra reference that .NET Framework servers reject
+            // with "The security protocol cannot verify the incoming message." -- see
+            // dotnet/wcf#5883.
+            if ((ShouldSignToHeader) && (_signedXml.SigningKey != null) && (Version.Addressing != AddressingVersion.None))
             {
                 if (_toHeaderStream != null)
                 {

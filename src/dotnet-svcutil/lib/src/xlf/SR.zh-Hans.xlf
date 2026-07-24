@@ -209,6 +209,11 @@ This could be because the language does not support all the code elements being 
 这可能是由于该语言不支持正在生成的所有代码元素。请考虑使用其他语言。</target>
         <note />
       </trans-unit>
+      <trans-unit id="ErrCouldNotCreateCodeProvider">
+        <source>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</source>
+        <target state="translated">无法为传递给 /{1} 参数的值“{0}”创建代码提供程序。请验证是否正确安装并配置了代码提供程序。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
         <target state="translated">无法为传递给 --{1} 选项的值“{0}”创建代码提供程序。请验证是否正确安装并配置了代码提供程序。</target>
@@ -547,6 +552,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">生成标记为内部的类。默认设置: 生成公共类。(缩写: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpLanguage">
+        <source>The programming language to use for generating code. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
+        <target state="translated">用于生成代码的编程语言。要使用的语言名称示例包括 CS 和 VB。默认语言名称: C#。(短格式: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
         <target state="translated">用于生成代码的编程语言。提供在 machine.config 文件中注册的语言名称，或提供从 System.CodeDom.Compiler.CodeDomProvider 继承的类的完全限定名称。要使用的语言名称示例包括 CS 和 VB。默认语言名称: C#。(缩写: -{0})</target>
@@ -815,6 +825,11 @@ If you were trying to generate a client, this could be because the metadata docu
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
         <target state="translated">地址“{1}”处的终结点“{0}”包含一个或多个与 .Net Core 应用不兼容的绑定，正在跳过...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
+        <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
+        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">

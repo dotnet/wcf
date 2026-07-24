@@ -30,6 +30,7 @@ namespace ReliableSessionService_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class WcfReliableServiceClient : System.ServiceModel.ClientBase<ReliableSessionService_NS.IWcfReliableService>, ReliableSessionService_NS.IWcfReliableService
     {
         

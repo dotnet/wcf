@@ -233,7 +233,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                     else
                     {
-                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.s_currentSupportedVersions.First());
+                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.MinSupportedDotNetVersion);
                     }
 
                     msbuildProj._targetFrameworks.Add(msbuildProj._targetFramework);
@@ -551,7 +551,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if(copyInternalAssets && dependency.AssemblyName == "dotnet-svcutil-lib")
                 {
                     string basePath;
-                    string[] frameworks = { "net6.0", "net8.0", "net462" };
+                    string[] frameworks = { "net8.0", "net462" };
                     switch (dependency.DependencyType)
                     {
                         case ProjectDependencyType.Binary:
@@ -634,6 +634,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             // Add an empty WarningsAsErrors element to clear the list, and treat them as warnings.
             SetPropertyValue("WarningsAsErrors", string.Empty);
+        }
+
+        public void SuppressWarningMSB3277()
+        {
+            SetPropertyValue("NoWarn", "$(NoWarn);MSB3277");
         }
 
         private void UpdateTargetFramework(string targetFramework)

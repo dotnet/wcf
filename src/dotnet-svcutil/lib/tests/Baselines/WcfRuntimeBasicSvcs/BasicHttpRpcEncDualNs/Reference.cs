@@ -54,6 +54,7 @@ namespace BasicHttpRpcEncDualNs_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.SoapTypeAttribute(Namespace="http://contoso.com/calc/encoded")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class IntParams
     {
         
@@ -92,6 +93,7 @@ namespace BasicHttpRpcEncDualNs_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.SoapTypeAttribute(Namespace="http://contoso.com/calc/encoded")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class ByteParams
     {
         
@@ -130,6 +132,7 @@ namespace BasicHttpRpcEncDualNs_NS
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.SoapTypeAttribute(Namespace="http://contoso.com/calc/encoded")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class FloatParams
     {
         
@@ -171,6 +174,7 @@ namespace BasicHttpRpcEncDualNs_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class CalculatorRpcEncClient : System.ServiceModel.ClientBase<BasicHttpRpcEncDualNs_NS.ICalculatorRpcEnc>, BasicHttpRpcEncDualNs_NS.ICalculatorRpcEnc
     {
         
@@ -328,6 +332,7 @@ namespace BasicHttpRpcEncDualNs_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public partial class HelloWorldRpcEncClient : System.ServiceModel.ClientBase<BasicHttpRpcEncDualNs_NS.IHelloWorldRpcEnc>, BasicHttpRpcEncDualNs_NS.IHelloWorldRpcEnc
     {
         

@@ -5,7 +5,7 @@ setlocal
 pushd %~dp0..\..\..\..\
 
 :buildsln
-set buildtool=eng\common\cibuild.cmd -warnAsError 0 -configuration Release -projects src\System.Private.ServiceModel\tools\SelfHostedWcfService\SelfHostedWCFService.sln /p:Sign=false
+set buildtool=eng\common\cibuild.cmd -warnAsError 0 -configuration Release -projects src\System.Private.ServiceModel\tools\SelfHostedWcfService\SelfHostedWCFService.sln /p:Sign=false /p:Publish=false
 echo %buildtool%
 call %buildtool%
 
@@ -15,3 +15,4 @@ endlocal
 
 :: Kill dotnet.exe process started by eng\common\cibuild.cmd which might remain running
 TASKKILL /F /IM dotnet.exe
+exit /b 0
