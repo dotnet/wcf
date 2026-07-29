@@ -96,8 +96,11 @@ steps:
       Write-Host "Variable Operation is set to: $env:operation"
       Write-Host "Variable wcfPRServiceUri is set to: $env:WCFPRSERVICEURI"
       Write-Host "Variable branchNameorPrId is set to: $env:branchNameorPrId"
-      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:operation $env:WCFPRSERVICEURI $env:branchNameorPrId"" }
-      $LASTEXITCODE
+      & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd" $env:WCFPRSERVICEID $env:operation $env:WCFPRSERVICEURI $env:branchNameorPrId
+      Write-Host "sync-pr.cmd exit code: $LASTEXITCODE"
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "##vso[task.logissue type=warning]sync-pr.cmd failed with exit code $LASTEXITCODE - the test service was NOT synced to this PR."
+      }
 
     displayName: Sync_PRService_Windows
     env:
