@@ -18,4 +18,9 @@ namespace System.ServiceModel.Channels
         // Audit
         //ServiceSecurityAuditBehavior AuditBehavior { get; }
     }
+
+    internal interface IPipeTransportFactorySettings
+    {
+        NamedPipeSettings PipeSettings { get; }
+    }
 }
