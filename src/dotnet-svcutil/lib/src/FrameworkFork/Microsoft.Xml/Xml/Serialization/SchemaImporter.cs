@@ -10,8 +10,8 @@ namespace Microsoft.Xml.Serialization
     using System.ComponentModel;
     using System.Reflection;
 
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     using Microsoft.Xml.Serialization.Advanced;
 
 #if DEBUG

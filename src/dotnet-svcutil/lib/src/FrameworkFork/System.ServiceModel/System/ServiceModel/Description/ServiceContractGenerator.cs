@@ -5,8 +5,8 @@
 namespace System.ServiceModel.Description
 {
     using System;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
@@ -110,7 +110,7 @@ namespace System.ServiceModel.Description
         public CodeTypeReference GenerateServiceContractType(ContractDescription contractDescription)
         {
             CodeTypeReference retVal = GenerateServiceContractTypeInternal(contractDescription);
-            Microsoft.CodeDom.Compiler.CodeGenerator.ValidateIdentifiers(TargetCompileUnit);
+            System.CodeDom.Compiler.CodeGenerator.ValidateIdentifiers(TargetCompileUnit);
             return retVal;
         }
 

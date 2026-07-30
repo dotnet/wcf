@@ -10,8 +10,8 @@ namespace Microsoft.Xml.Serialization
     using System.IO;
     using System.Globalization;
     using System.Diagnostics;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     using System.Reflection;
     using Microsoft.CSharp;
 

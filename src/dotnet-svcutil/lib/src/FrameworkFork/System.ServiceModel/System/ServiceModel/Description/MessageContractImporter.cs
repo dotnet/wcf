@@ -5,8 +5,8 @@
 namespace System.ServiceModel.Description
 {
     using System;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

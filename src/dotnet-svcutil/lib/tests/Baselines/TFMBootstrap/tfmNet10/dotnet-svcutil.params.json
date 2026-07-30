@@ -3,16 +3,16 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "$testCasesPath$/wsdl/TypeReuseSvc.wsdl"
+      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/Simple.wsdl"
     ],
     "namespaceMappings": [
-      "*, ServiceReference"
+      "*, tfmNet10_NS"
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "$TEMP$MultiTargetTypeReuse//TypeReuseClient//bin//Debug//net10.0//BinLib.dll"
+      "Newtonsoft.Json, {Newtonsoft.Json, *}"
     ],
     "targetFramework": "N.N",
-    "typeReuseMode": "All"
+    "typeReuseMode": "Specified"
   }
 }
