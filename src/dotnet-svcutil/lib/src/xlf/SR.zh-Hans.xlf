@@ -652,6 +652,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">-= 用法 =-</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpUseDefaultCredentialsFormat">
+        <source>Use default system credentials when downloading service metadata. Only use with trusted endpoints. (Short Form: -{0})</source>
+        <target state="new">Use default system credentials when downloading service metadata. Only use with trusted endpoints. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpVerbosityFormat">
         <source>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</source>
         <target state="translated">确定工具显示的信息量。有效值为“{0}”。(缩写: -{1})</target>
@@ -665,6 +670,11 @@ Document Identifier: '{0}'.</source>
       <trans-unit id="HelpXmlSerializer">
         <source>Generate data types that use the XmlSerializer for serialization and deserialization</source>
         <target state="translated">生成使用 XmlSerializer 进行序列化和反序列化的数据类型。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HintUseDefaultCredentials">
+        <source>Note: You can also use --useDefaultCredentials (-udc) to use system credentials instead of entering them manually.</source>
+        <target state="new">Note: You can also use --useDefaultCredentials (-udc) to use system credentials instead of entering them manually.</target>
         <note />
       </trans-unit>
       <trans-unit id="LogoFormat">
