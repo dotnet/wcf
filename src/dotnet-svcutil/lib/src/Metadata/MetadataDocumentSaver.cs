@@ -12,8 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.ServiceModel.Description;
 #if PRIVATE_RTLIB
-using Microsoft.Xml.Schema;
-using XmlNS = Microsoft.Xml;
+using System.Xml.Schema;
+using XmlNS = System.Xml;
 #else
 using System.Xml.Schema;
 using XmlNS = System.Xml;

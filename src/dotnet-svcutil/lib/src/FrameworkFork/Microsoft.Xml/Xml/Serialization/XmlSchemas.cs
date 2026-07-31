@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -10,8 +10,8 @@ namespace Microsoft.Xml.Serialization
     using System;
     using System.Globalization;
     using System.ComponentModel;
-    using Microsoft.Xml.Serialization;
-    using Microsoft.Xml.Schema;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
+    using System.Xml.Schema;
     using System.Diagnostics;
     using System.Threading;
     // using System.Security.Permissions;
@@ -19,7 +19,7 @@ namespace Microsoft.Xml.Serialization
     using System.Security;
     using System.Net;
     using System.Reflection;
-    using Microsoft.Xml;
+    using System.Xml;
 
     /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas"]/*' />
     /// <internalonly/>
@@ -73,6 +73,22 @@ namespace Microsoft.Xml.Serialization
         public IList GetSchemas(string ns)
         {
             return (IList)SchemaSet.Schemas(ns);
+        }
+
+        public static implicit operator System.Xml.Serialization.XmlSchemas(XmlSchemas schemas)
+        {
+            if (schemas == null) return null;
+            System.Xml.Serialization.XmlSchemas sysSchemas = new System.Xml.Serialization.XmlSchemas();
+            foreach(XmlSchema s in schemas) { sysSchemas.Add(s); }
+            return sysSchemas;
+        }
+
+        public static implicit operator XmlSchemas(System.Xml.Serialization.XmlSchemas schemas)
+        {
+            if (schemas == null) return null;
+            XmlSchemas localSchemas = new XmlSchemas();
+            foreach(XmlSchema s in schemas) { localSchemas.Add(s); }
+            return localSchemas;
         }
 
         internal SchemaObjectCache Cache
@@ -151,8 +167,8 @@ namespace Microsoft.Xml.Serialization
         {
             if (List.Contains(schema))
                 return List.IndexOf(schema);
-            if (baseUri != null)
-                schema.BaseUri = baseUri;
+            //if (baseUri != null)
+            //    schema.BaseUri = baseUri;
             return List.Add(schema);
         }
 
@@ -384,11 +400,12 @@ namespace Microsoft.Xml.Serialization
 
         internal static void Preprocess(XmlSchema schema)
         {
-            if (!schema.IsPreprocessed)
+            if (!SchemaHelper.IsPreprocessed(schema))
             {
+                /*
                 try
                 {
-                    XmlNameTable nameTable = new Microsoft.Xml.NameTable();
+                    XmlNameTable nameTable = new System.Xml.NameTable();
                     Preprocessor prep = new Preprocessor(nameTable, new SchemaNames(nameTable), null);
                     prep.SchemaLocations = new Hashtable();
                     prep.Execute(schema, schema.TargetNamespace, false);
@@ -397,6 +414,7 @@ namespace Microsoft.Xml.Serialization
                 {
                     throw CreateValidationException(e, e.Message);
                 }
+                */
             }
         }
 
@@ -538,7 +556,7 @@ namespace Microsoft.Xml.Serialization
                         destination.Items.Add(schema.Items[i]);
                     }
                 }
-                destination.IsPreprocessed = false;
+                // destination.IsPreprocessed = false;
                 Preprocess(destination);
             }
         }
@@ -775,9 +793,10 @@ namespace Microsoft.Xml.Serialization
             }
             else
             {
+                /*
                 try
                 {
-                    XmlNameTable nameTable = new Microsoft.Xml.NameTable();
+                    XmlNameTable nameTable = new System.Xml.NameTable();
                     Preprocessor prep = new Preprocessor(nameTable, new SchemaNames(nameTable), null);
                     prep.XmlResolver = null;
                     prep.SchemaLocations = new Hashtable();
@@ -791,6 +810,7 @@ namespace Microsoft.Xml.Serialization
                 {
                     throw CreateValidationException(e, e.Message);
                 }
+                */
             }
         }
 

@@ -10,7 +10,7 @@ namespace System.ServiceModel.Channels
     using System.ServiceModel.Channels;
     using System.ServiceModel;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.ComponentModel;
 
     public sealed class MtomMessageEncodingBindingElement : MessageEncodingBindingElement, IWsdlExportExtension, IPolicyExportExtension

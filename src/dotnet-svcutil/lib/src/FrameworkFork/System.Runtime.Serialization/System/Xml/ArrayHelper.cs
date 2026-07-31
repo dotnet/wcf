@@ -5,7 +5,7 @@
 using System;
 
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     internal abstract class ArrayHelper<TArgument, TArray>
     {
@@ -18,8 +18,8 @@ namespace Microsoft.Xml
             int count;
             if (reader.TryGetArrayLength(out count))
             {
-                if (count > XmlDictionaryReader.MaxInitialArrayLength)
-                    count = XmlDictionaryReader.MaxInitialArrayLength;
+                if (count > 65535 /*XmlDictionaryReader.MaxInitialArrayLength*/)
+                    count = 65535 /*XmlDictionaryReader.MaxInitialArrayLength*/;
             }
             else
             {

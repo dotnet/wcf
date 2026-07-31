@@ -11,7 +11,7 @@ namespace System.ServiceModel
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security;
     using System.ServiceModel.Security.Tokens;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.ComponentModel;
 
     public sealed class FederatedMessageSecurityOverHttp

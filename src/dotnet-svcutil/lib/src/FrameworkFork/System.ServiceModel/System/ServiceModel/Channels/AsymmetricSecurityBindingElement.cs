@@ -11,7 +11,7 @@ using System.Net.Security;
 
 namespace System.ServiceModel.Channels
 {
-    using Microsoft.Xml;
+    using System.Xml;
     using System.ServiceModel.Security.Tokens;
     using System.ServiceModel.Security;
     using System.ServiceModel;

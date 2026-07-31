@@ -4,10 +4,10 @@
 
 namespace System.ServiceModel.Channels
 {
-    using Microsoft.Xml;
+    using System.Xml;
     using System.ServiceModel;
     using System.ServiceModel.Description;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System.Collections.ObjectModel;
     using System.Collections.Generic;
     using WsdlNS = System.Web.Services.Description;

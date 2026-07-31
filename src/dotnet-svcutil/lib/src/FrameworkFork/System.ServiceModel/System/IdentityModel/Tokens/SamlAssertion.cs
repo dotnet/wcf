@@ -16,7 +16,7 @@ namespace System.IdentityModel.Tokens
     using System.Runtime.InteropServices;
     using System.Security;
     using System.Security.Cryptography;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public class SamlAssertion // TODO: ICanonicalWriterEndRootElementCallback
     {

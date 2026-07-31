@@ -18,7 +18,7 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {

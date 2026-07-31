@@ -68,6 +68,7 @@
     <SystemReflectionEmitPackageVersion>4.7.0</SystemReflectionEmitPackageVersion>
     <SystemReflectionEmitLightweightPackageVersion>4.7.0</SystemReflectionEmitLightweightPackageVersion>
     <SystemRuntimeLoaderPackageVersion>4.3.0</SystemRuntimeLoaderPackageVersion>
+    <SystemWebServicesDescriptionPackageVersion>8.1.2</SystemWebServicesDescriptionPackageVersion>
     <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net6.0'">6.2.0</WCFClientPackageVersion>
     <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">8.1.2</WCFClientPackageVersion>
     <WCFClientPackageVersion Condition="'$(TargetFramework)' == 'net9.0'">8.1.2</WCFClientPackageVersion>

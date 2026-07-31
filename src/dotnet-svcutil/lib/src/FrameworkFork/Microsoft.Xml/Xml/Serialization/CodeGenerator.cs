@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
-    using Microsoft.Xml;
-    //using Microsoft.Xml.Serialization.Configuration;
+    using System.Xml;
+    //using System.Xml.Serialization.Configuration;
     using System.Reflection;
     using System.Reflection.Emit;
     using System.IO;

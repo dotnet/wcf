@@ -4,11 +4,11 @@
 
 namespace System.ServiceModel.Description
 {
-    using Microsoft.Xml;
+    using System.Xml;
 
     using System.ServiceModel.Channels;
 
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using WsdlNS = System.Web.Services.Description;
