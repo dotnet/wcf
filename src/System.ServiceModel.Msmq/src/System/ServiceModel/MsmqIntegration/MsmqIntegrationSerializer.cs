@@ -6,6 +6,7 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Runtime.Versioning;
 using System.Xml.Serialization;
 
 namespace System.ServiceModel.MsmqIntegration
@@ -25,6 +26,7 @@ namespace System.ServiceModel.MsmqIntegration
     //               equivalent.
     // Both throw rather than silently emitting a payload the receiver cannot
     // interpret.
+    [SupportedOSPlatform("windows")]
     internal sealed class MsmqIntegrationSerializer
     {
         // .NET Framework capped its serializer cache at 1024 entries to bound
