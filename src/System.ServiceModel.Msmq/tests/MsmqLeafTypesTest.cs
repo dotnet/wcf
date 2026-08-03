@@ -4,11 +4,14 @@
 
 
 using System;
+using System.Reflection;
+using System.Runtime.Versioning;
 using System.ServiceModel;
 using System.ServiceModel.MsmqIntegration;
 using Infrastructure.Common;
 using Xunit;
 
+[SupportedOSPlatform("windows")]
 public static class MsmqLeafTypesTest
 {
     [WcfTheory]
@@ -19,7 +22,7 @@ public static class MsmqLeafTypesTest
     public static void MsmqAuthenticationModeHelper_IsDefined(MsmqAuthenticationMode mode, bool expected)
     {
         Type t = typeof(MsmqAuthenticationMode).Assembly.GetType("System.ServiceModel.MsmqAuthenticationModeHelper", throwOnError: true);
-        bool actual = (bool)t.GetMethod("IsDefined").Invoke(null, new object[] { mode });
+        bool actual = (bool)t.GetMethod("IsDefined", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).Invoke(null, new object[] { mode });
         Assert.Equal(expected, actual);
     }
 
@@ -30,7 +33,7 @@ public static class MsmqLeafTypesTest
     public static void MsmqEncryptionAlgorithmHelper_IsDefined(MsmqEncryptionAlgorithm value, bool expected)
     {
         Type t = typeof(MsmqEncryptionAlgorithm).Assembly.GetType("System.ServiceModel.MsmqEncryptionAlgorithmHelper", throwOnError: true);
-        bool actual = (bool)t.GetMethod("IsDefined").Invoke(null, new object[] { value });
+        bool actual = (bool)t.GetMethod("IsDefined", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).Invoke(null, new object[] { value });
         Assert.Equal(expected, actual);
     }
 
@@ -43,7 +46,7 @@ public static class MsmqLeafTypesTest
     public static void MsmqSecureHashAlgorithmHelper_IsDefined(MsmqSecureHashAlgorithm value, bool expected)
     {
         Type t = typeof(MsmqSecureHashAlgorithm).Assembly.GetType("System.ServiceModel.MsmqSecureHashAlgorithmHelper", throwOnError: true);
-        bool actual = (bool)t.GetMethod("IsDefined").Invoke(null, new object[] { value });
+        bool actual = (bool)t.GetMethod("IsDefined", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).Invoke(null, new object[] { value });
         Assert.Equal(expected, actual);
     }
 

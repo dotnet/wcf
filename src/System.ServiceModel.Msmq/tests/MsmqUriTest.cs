@@ -4,10 +4,12 @@
 
 
 using System;
+using System.Runtime.Versioning;
 using System.Reflection;
 using Infrastructure.Common;
 using Xunit;
 
+[SupportedOSPlatform("windows")]
 public static class MsmqUriTest
 {
     private static readonly Assembly s_msmqAsm = typeof(System.ServiceModel.NetMsmqBinding).Assembly;

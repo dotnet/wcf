@@ -27,8 +27,26 @@ namespace System.ServiceModel.Channels
 
         internal override MsmqUri.IAddressTranslator AddressTranslator
         {
-            // Filled in by the slice that ports MsmqUri's per-protocol translators.
-            get { return null; }
+            get
+            {
+                if (_useActiveDirectory)
+                {
+                    // netfx resolved a path name through Active Directory here.
+                    // That lookup is not ported, and silently falling back to a
+                    // DIRECT= format name would send to a different queue than
+                    // the caller asked for.
+                    throw new NotSupportedException(SR.MsmqActiveDirectoryNotSupported);
+                }
+                switch (_queueTransferProtocol)
+                {
+                    case QueueTransferProtocol.Srmp:
+                        return MsmqUri.SrmpAddressTranslator;
+                    case QueueTransferProtocol.SrmpSecure:
+                        return MsmqUri.SrmpsAddressTranslator;
+                    default:
+                        return MsmqUri.NetMsmqAddressTranslator;
+                }
+            }
         }
 
         public int MaxPoolSize
@@ -91,7 +109,7 @@ namespace System.ServiceModel.Channels
             {
                 return (IChannelFactory<TChannel>)(object)new MsmqOutputSessionChannelFactory(this, context);
             }
-            throw new ArgumentException(SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)), "TChannel");
+            throw new ArgumentException(SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)), nameof(TChannel));
         }
     }
 }

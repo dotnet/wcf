@@ -65,10 +65,31 @@ public static class MsmqMessagingInteropTest
     [InlineData(0xC00E001Bu, typeof(TimeoutException))]          // IOTimeout
     [InlineData(0xC00E001Eu, typeof(ArgumentException))]         // IllegalFormatName
     [InlineData(0xC00E0025u, typeof(AddressAccessDeniedException))]    // AccessDenied
-    [InlineData(0xC00E000Eu, typeof(EndpointNotFoundException))] // RemoteMachineNotAvailable
+    [InlineData(0xC00E0069u, typeof(EndpointNotFoundException))] // RemoteMachineNotAvailable
+    [InlineData(0xC00E004Bu, typeof(EndpointNotFoundException))] // QueueNotAvailable
+    [InlineData(0xC00E0026u, typeof(AddressAccessDeniedException))]    // PrivilegeNotHeld
+    [InlineData(0xC00E004Cu, typeof(CommunicationException))]    // DtcConnect
+    [InlineData(0xC00E0035u, typeof(CommunicationException))]    // BadSecurityContext
+    [InlineData(0xC00E002Cu, typeof(CommunicationException))]    // InvalidCertificate
+    [InlineData(0xC00E0082u, typeof(CommunicationException))]    // FailVerifySignatureEx
+    [InlineData(0xC00E004Eu, typeof(CommunicationException))]    // TransactionImport
+    [InlineData(0xC00E0056u, typeof(InvalidOperationException))] // StaleHandle
     public static void MsmqException_NormalizesToWcfException(uint nativeCode, Type expected)
     {
         var ex = new MsmqException("native send failed", unchecked((int)nativeCode));
         Assert.Equal(expected, GetNormalizedType(ex));
+    }
+
+    // 0xC00E0006 is MQ_ERROR_INVALID_PARAMETER and 0xC00E0051 is
+    // MQ_ERROR_TRANSACTION_SEQUENCE. Both were previously mislabelled in the
+    // error table (as StaleHandle and TransactionImport), so a fault of one
+    // kind was reported as another.
+    [WcfTheory]
+    [InlineData(0xC00E0006u)] // MQ_ERROR_INVALID_PARAMETER
+    [InlineData(0xC00E000Eu)] // not a defined MQ_ERROR_* value
+    public static void MsmqException_DoesNotClaimUnrelatedCodes(uint nativeCode)
+    {
+        var ex = new MsmqException("native send failed", unchecked((int)nativeCode));
+        Assert.Null(GetNormalizedType(ex));
     }
 }

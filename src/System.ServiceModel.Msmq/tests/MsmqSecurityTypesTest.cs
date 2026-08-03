@@ -4,12 +4,14 @@
 
 
 using System;
+using System.Runtime.Versioning;
 using System.Net.Security;
 using System.ServiceModel;
 using System.ServiceModel.Security;
 using Infrastructure.Common;
 using Xunit;
 
+[SupportedOSPlatform("windows")]
 public static class MsmqSecurityTypesTest
 {
     [WcfFact]

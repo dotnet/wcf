@@ -42,7 +42,12 @@ namespace Binding.Msmq.IntegrationTests
                     MessageQueue.Delete(_machineQueuePath);
                 }
             }
-            catch { /* swallow on cleanup */ }
+            catch (MessageQueueException)
+            {
+                // Queue teardown is best effort: the queue may already be gone,
+                // or the worker may lack delete rights. Narrow the catch to MSMQ
+                // failures so an unrelated bug in cleanup is not buried.
+            }
         }
 
         [WcfFact]
@@ -84,6 +89,48 @@ namespace Binding.Msmq.IntegrationTests
             Assert.Equal(MessageQueueErrorCode.IOTimeout, ex.MessageQueueErrorCode);
         }
 
+        // Transaction.Current is [ThreadStatic] and does not flow onto a
+        // thread-pool thread. The asynchronous send path used to read it inside
+        // the Task body, where it was always null, so the message committed
+        // outside the caller's transaction and survived a rollback.
+        [WcfFact]
+        [Condition(nameof(MsmqInstalled))]
+        [Condition(nameof(ImplicitDtcEnabled))]
+        public void BeginSend_InRolledBackTransactionScope_MessageDoesNotArrive()
+        {
+            MessageQueue.Create(_machineQueuePath, transactional: true);
+
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                SendOneAsync("async-rolled-back");
+                // scope.Complete() not called -> Dispose rolls back.
+            }
+
+            using var receiver = new MessageQueue("FormatName:DIRECT=OS:" + _machineQueuePath);
+            MSMQ.Messaging.MessageQueueException ex = Assert.Throws<MessageQueueException>(() =>
+                receiver.Receive(TimeSpan.FromSeconds(2), MessageQueueTransactionType.Single));
+            Assert.Equal(MessageQueueErrorCode.IOTimeout, ex.MessageQueueErrorCode);
+        }
+
+        [WcfFact]
+        [Condition(nameof(MsmqInstalled))]
+        [Condition(nameof(ImplicitDtcEnabled))]
+        public void BeginSend_InCommittedTransactionScope_MessageArrivesInQueue()
+        {
+            MessageQueue.Create(_machineQueuePath, transactional: true);
+
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                SendOneAsync("async-committed");
+                scope.Complete();
+            }
+
+            using var receiver = new MessageQueue("FormatName:DIRECT=OS:" + _machineQueuePath);
+            using MSMQ.Messaging.Message received = receiver.Receive(MessageQueueTransactionType.Single);
+            Assert.NotNull(received);
+            Assert.True(received.BodyStream.Length > 0);
+        }
+
         // Note on transactional scenario tests: the .NET 8+ runtime
         // disables implicit DTC promotion by default and the property
         // must be flipped before any code in the process touches
@@ -98,7 +145,11 @@ namespace Binding.Msmq.IntegrationTests
         // TransactionManager.ImplicitDistributedTransactions=true as
         // its very first statement.
 
-        private void SendOne(string bodyText)
+        private void SendOne(string bodyText) => Send(bodyText, asynchronous: false);
+
+        private void SendOneAsync(string bodyText) => Send(bodyText, asynchronous: true);
+
+        private void Send(string bodyText, bool asynchronous)
         {
             var binding = new NetMsmqBinding(NetMsmqSecurityMode.None)
             {
@@ -115,7 +166,14 @@ namespace Binding.Msmq.IntegrationTests
                 {
                     var msg = System.ServiceModel.Channels.Message.CreateMessage(
                         MessageVersion.Soap12WSAddressing10, "urn:test/echo", bodyText);
-                    channel.Send(msg);
+                    if (asynchronous)
+                    {
+                        channel.EndSend(channel.BeginSend(msg, null, null));
+                    }
+                    else
+                    {
+                        channel.Send(msg);
+                    }
                 }
                 finally
                 {

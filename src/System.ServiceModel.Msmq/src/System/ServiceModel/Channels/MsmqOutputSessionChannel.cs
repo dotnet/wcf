@@ -4,7 +4,7 @@
 
 
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
+using System.Transactions;
 
 namespace System.ServiceModel.Channels
 {
@@ -19,52 +19,38 @@ namespace System.ServiceModel.Channels
     // hosted with SessionMode.Required. Tracked as a follow-up; see
     // plan.md, slice 4b decisions.
     [SupportedOSPlatform("windows")]
-    internal sealed class MsmqOutputSessionChannel : ChannelBase, IOutputSessionChannel
+    internal sealed class MsmqOutputSessionChannel : MsmqOutputChannelBase, IOutputSessionChannel
     {
         private readonly MsmqOutputSessionChannelFactory _factory;
-        private readonly EndpointAddress _remoteAddress;
-        private readonly Uri _via;
-        private readonly string _formatName;
-        private readonly OutputSession _session;
+        private readonly OutputSession _session = new OutputSession();
 
         internal MsmqOutputSessionChannel(MsmqOutputSessionChannelFactory factory, EndpointAddress remoteAddress, Uri via)
-            : base(factory)
+            : base(factory, remoteAddress, via)
         {
             _factory = factory;
-            _remoteAddress = remoteAddress;
-            _via = via;
-            _formatName = MsmqUri.UriToFormatNameByScheme(via);
-            _session = new OutputSession();
         }
-
-        public EndpointAddress RemoteAddress => _remoteAddress;
-
-        public Uri Via => _via;
 
         public IOutputSession Session => _session;
 
-        public void Send(Message message) => Send(message, DefaultSendTimeout);
+        protected override MsmqBindingElementBase BindingElement => _factory.BindingElement;
 
-        public void Send(Message message, TimeSpan timeout)
+        protected override MsmqUri.IAddressTranslator AddressTranslator => _factory.BindingElement.AddressTranslator;
+
+        protected override void OnSend(Message message, TimeSpan timeout, Transaction ambientTransaction)
         {
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-            ThrowIfDisposedOrNotOpen();
-
             ArraySegment<byte> encoded = _factory.MessageEncoder.WriteMessage(
-                message, int.MaxValue, _factory.BufferManager);
+                message, MaxMessageSize, _factory.BufferManager);
             try
             {
                 MsmqMessagingInterop.Send(
-                    _formatName,
+                    FormatName,
                     encoded.Array,
                     encoded.Offset,
                     encoded.Count,
-                    _factory.BindingElement.ExactlyOnce,
-                    _factory.BindingElement.TimeToLive,
-                    timeout);
+                    property: null,
+                    _factory.BindingElement,
+                    timeout,
+                    ambientTransaction);
             }
             finally
             {
@@ -72,38 +58,9 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public IAsyncResult BeginSend(Message message, AsyncCallback callback, object state)
-            => BeginSend(message, DefaultSendTimeout, callback, state);
-
-        public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
-            => Task.Run(() => Send(message, timeout)).ToApm(callback, state);
-
-        public void EndSend(IAsyncResult result) => result.ToApmEnd();
-
-        protected override void OnAbort() { }
-
-        protected override void OnClose(TimeSpan timeout) { }
-
-        protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-            => Task.CompletedTask.ToApm(callback, state);
-
-        protected override void OnEndClose(IAsyncResult result) => result.ToApmEnd();
-
-        protected override void OnOpen(TimeSpan timeout) { }
-
-        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-            => Task.CompletedTask.ToApm(callback, state);
-
-        protected override void OnEndOpen(IAsyncResult result) => result.ToApmEnd();
-
-        protected override Task OnOpenAsync(TimeSpan timeout) => Task.CompletedTask;
-
-        protected override Task OnCloseAsync(TimeSpan timeout) => Task.CompletedTask;
-
         private sealed class OutputSession : IOutputSession
         {
-            private readonly string _id = "uuid:" + Guid.NewGuid().ToString("D");
-            public string Id => _id;
+            public string Id { get; } = "uuid:" + Guid.NewGuid().ToString("D");
         }
     }
 }

@@ -4,9 +4,11 @@
 
 
 using System.Reflection;
+using System.Runtime.Versioning;
 using Infrastructure.Common;
 using Xunit;
 
+[SupportedOSPlatform("windows")]
 public static class MsmqScaffoldTest
 {
     [WcfFact]

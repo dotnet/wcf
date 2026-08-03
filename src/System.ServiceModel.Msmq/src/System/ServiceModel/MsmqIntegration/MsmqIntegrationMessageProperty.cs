@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.ComponentModel;
 using System.Runtime.Versioning;
 using System.ServiceModel.Channels;
 
@@ -21,6 +22,9 @@ namespace System.ServiceModel.MsmqIntegration
     {
         public const string Name = "MsmqIntegrationMessageProperty";
 
+        private MessagePriority? _priority;
+        private TimeSpan? _timeToReachQueue;
+
         public object Body { get; set; }
         public AcknowledgeTypes? AcknowledgeType { get; set; }
         public Acknowledgment? Acknowledgment { get; internal set; }
@@ -35,13 +39,49 @@ namespace System.ServiceModel.MsmqIntegration
         public string Id { get; internal set; }
         public string Label { get; set; }
         public MessageType? MessageType { get; internal set; }
-        public MessagePriority? Priority { get; set; }
+
+        // Validated on set, matching .NET Framework. An out-of-range priority is
+        // forwarded to MSMQ as a raw byte and interpreted arbitrarily, and a
+        // negative time-to-reach-queue clamps to zero seconds, which makes MSMQ
+        // discard the message the moment it is sent.
+        public MessagePriority? Priority
+        {
+            get { return _priority; }
+            set
+            {
+                if (value.HasValue && !MessagePriorityHelper.IsDefined(value.Value))
+                {
+                    throw new InvalidEnumArgumentException(nameof(value), (int)value.Value, typeof(MessagePriority));
+                }
+                _priority = value;
+            }
+        }
+
         public Uri ResponseQueue { get; set; }
         public byte[] SenderId { get; internal set; }
         public DateTime? SentTime { get; internal set; }
-        public TimeSpan? TimeToReachQueue { get; set; }
 
-        public static MsmqIntegrationMessageProperty Get(System.ServiceModel.Channels.Message message)
+        public TimeSpan? TimeToReachQueue
+        {
+            get { return _timeToReachQueue; }
+            set
+            {
+                if (value.HasValue)
+                {
+                    if (value.Value < TimeSpan.Zero)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(value), value.Value, SR.MsmqNonNegativeArgumentExpected);
+                    }
+                    if (value.Value != TimeSpan.MaxValue && value.Value.TotalSeconds > uint.MaxValue)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(value), value.Value, SR.SFxTimeoutOutOfRangeTooBig);
+                    }
+                }
+                _timeToReachQueue = value;
+            }
+        }
+
+        public static MsmqIntegrationMessageProperty Get(Message message)
         {
             if (message == null)
             {
@@ -64,6 +104,10 @@ namespace System.ServiceModel.MsmqIntegration
         //   Priority               VT_UI1   PROPID_M_PRIORITY
         //   ResponseQueue          VT_LPWSTR + VT_UI4 (length)
         //   TimeToReachQueue       VT_UI4   PROPID_M_TIME_TO_REACH_QUEUE
+        //
+        // Queue URIs are translated with MsmqUri.FormatNameAddressTranslator
+        // rather than by scheme: these properties carry MSMQ format names, and
+        // .NET Framework's integration channel resolves them the same way.
         internal void ApplyTo(NativeMsmqMessage message)
         {
             if (AcknowledgeType.HasValue)
@@ -74,7 +118,7 @@ namespace System.ServiceModel.MsmqIntegration
             {
                 message.SetWideString(
                     UnsafeNativeMethods.PROPID_M_ADMIN_QUEUE,
-                    MsmqUri.UriToFormatNameByScheme(AdministrationQueue),
+                    MsmqUri.FormatNameAddressTranslator.UriToFormatName(AdministrationQueue),
                     UnsafeNativeMethods.PROPID_M_ADMIN_QUEUE_LEN);
             }
             if (AppSpecific.HasValue)
@@ -113,9 +157,9 @@ namespace System.ServiceModel.MsmqIntegration
             if (ResponseQueue != null)
             {
                 message.SetWideString(
-                    UnsafeNativeMethods.PROPID_M_RESP_QUEUE,
-                    MsmqUri.UriToFormatNameByScheme(ResponseQueue),
-                    UnsafeNativeMethods.PROPID_M_RESP_QUEUE_LEN);
+                    UnsafeNativeMethods.PROPID_M_RESP_FORMAT_NAME,
+                    MsmqUri.FormatNameAddressTranslator.UriToFormatName(ResponseQueue),
+                    UnsafeNativeMethods.PROPID_M_RESP_FORMAT_NAME_LEN);
             }
             if (TimeToReachQueue.HasValue)
             {

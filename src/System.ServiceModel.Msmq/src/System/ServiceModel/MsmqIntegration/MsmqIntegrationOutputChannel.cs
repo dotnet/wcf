@@ -5,94 +5,48 @@
 
 using System.Runtime.Versioning;
 using System.ServiceModel.Channels;
-using System.Threading.Tasks;
+using System.Transactions;
 
 namespace System.ServiceModel.MsmqIntegration
 {
     // Send-side channel for MsmqIntegrationBinding. Targets classic MSMQ
-    // applications that exchange raw payloads (no SOAP envelope). The
-    // channel writes the encoded WCF message bytes directly to MSMQ as
-    // the message body. Full MsmqMessage<T> / MsmqIntegrationMessageProperty
-    // support (priority, label, ack types, etc.) lands in a follow-up
-    // slice that ports the netfx integration message-property layer.
+    // applications that exchange raw payloads rather than SOAP envelopes, so
+    // the body is produced by MsmqIntegrationSerializer from
+    // MsmqIntegrationMessageProperty.Body according to the binding's
+    // SerializationFormat — no message encoder is involved.
     [SupportedOSPlatform("windows")]
-    internal sealed class MsmqIntegrationOutputChannel : ChannelBase, IOutputChannel
+    internal sealed class MsmqIntegrationOutputChannel : MsmqOutputChannelBase, IOutputChannel
     {
         private readonly MsmqIntegrationOutputChannelFactory _factory;
-        private readonly EndpointAddress _remoteAddress;
-        private readonly Uri _via;
-        private readonly string _formatName;
 
         internal MsmqIntegrationOutputChannel(MsmqIntegrationOutputChannelFactory factory, EndpointAddress remoteAddress, Uri via)
-            : base(factory)
+            : base(factory, remoteAddress, via)
         {
             _factory = factory;
-            _remoteAddress = remoteAddress;
-            _via = via;
-            _formatName = MsmqUri.UriToFormatNameByScheme(via);
         }
 
-        public EndpointAddress RemoteAddress => _remoteAddress;
+        protected override MsmqBindingElementBase BindingElement => _factory.BindingElement;
 
-        public Uri Via => _via;
+        protected override MsmqUri.IAddressTranslator AddressTranslator => _factory.BindingElement.AddressTranslator;
 
-        public void Send(Message message) => Send(message, DefaultSendTimeout);
-
-        public void Send(Message message, TimeSpan timeout)
+        protected override void OnSend(Message message, TimeSpan timeout, Transaction ambientTransaction)
         {
-            if (message == null)
+            MsmqIntegrationMessageProperty property = MsmqIntegrationMessageProperty.Get(message);
+            if (property == null)
             {
-                throw new ArgumentNullException(nameof(message));
+                throw new CommunicationException(SR.MsmqMessageDoesntHaveIntegrationProperty);
             }
-            ThrowIfDisposedOrNotOpen();
 
-            ArraySegment<byte> encoded = _factory.MessageEncoder.WriteMessage(
-                message, int.MaxValue, _factory.BufferManager);
-            try
-            {
-                MsmqIntegrationMessageProperty property = MsmqIntegrationMessageProperty.Get(message);
-                MsmqMessagingInterop.Send(
-                    _formatName,
-                    encoded.Array,
-                    encoded.Offset,
-                    encoded.Count,
-                    property,
-                    _factory.BindingElement.ExactlyOnce,
-                    _factory.BindingElement.TimeToLive,
-                    timeout);
-            }
-            finally
-            {
-                _factory.BufferManager.ReturnBuffer(encoded.Array);
-            }
+            byte[] body = _factory.Serializer.Serialize(property);
+            MsmqMessagingInterop.Send(
+                FormatName,
+                body,
+                0,
+                body.Length,
+                property,
+                _factory.BindingElement,
+                timeout,
+                ambientTransaction);
         }
-
-        public IAsyncResult BeginSend(Message message, AsyncCallback callback, object state)
-            => BeginSend(message, DefaultSendTimeout, callback, state);
-
-        public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
-            => Task.Run(() => Send(message, timeout)).ToApm(callback, state);
-
-        public void EndSend(IAsyncResult result) => result.ToApmEnd();
-
-        protected override void OnAbort() { }
-
-        protected override void OnClose(TimeSpan timeout) { }
-
-        protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-            => Task.CompletedTask.ToApm(callback, state);
-
-        protected override void OnEndClose(IAsyncResult result) => result.ToApmEnd();
-
-        protected override void OnOpen(TimeSpan timeout) { }
-
-        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-            => Task.CompletedTask.ToApm(callback, state);
-
-        protected override void OnEndOpen(IAsyncResult result) => result.ToApmEnd();
-
-        protected override Task OnOpenAsync(TimeSpan timeout) => Task.CompletedTask;
-
-        protected override Task OnCloseAsync(TimeSpan timeout) => Task.CompletedTask;
     }
 }

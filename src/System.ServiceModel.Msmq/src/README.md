@@ -59,6 +59,11 @@ var msg = new MsmqMessage<MyPayload>(myPayload)
 // channel.Send(...) carrying msg as the WCF message body.
 ```
 
+`MsmqIntegrationBinding` carries raw MSMQ payloads rather than SOAP envelopes, so
+it contributes no message encoder. The body is produced from
+`MsmqIntegrationMessageProperty.Body` according to `SerializationFormat`, and a
+message sent over this binding must carry an `MsmqIntegrationMessageProperty`.
+
 ## Differences from the .NET Framework
 
 This client-only port deliberately omits server-side concerns. See the [`dotnet/wcf` README](https://github.com/dotnet/wcf/) for the broader WCF client roadmap. Highlights:
@@ -66,6 +71,28 @@ This client-only port deliberately omits server-side concerns. See the [`dotnet/
 - Server hosting (channel listeners, poison-message handlers, queue receive loops) is not in scope — use [CoreWCF](https://github.com/CoreWCF/CoreWCF) for service hosting.
 - `System.Configuration`-based XML binding configuration is not supported; configure bindings in code.
 - `IOutputSessionChannel` is supported but emits one MSMQ message per `Send` rather than the .NET Framework "session gram" framing — wire-level interop with netfx `SessionMode.Required` services is tracked as a follow-up.
+
+### Configurations that are rejected rather than silently ignored
+
+Where a .NET Framework capability has not been ported, the corresponding
+configuration throws instead of quietly falling back to different behaviour on
+the wire:
+
+| Configuration | Behaviour | Reason |
+| --- | --- | --- |
+| `NetMsmqSecurityMode.Message` / `.Both` | `NotSupportedException` from `CreateBindingElements()` | Needs the WS-Security message-protection stack, which this package does not carry. Falling back would put plaintext on the wire under a binding that claims message security. |
+| `MsmqTransportBindingElement.UseActiveDirectory = true` | `NotSupportedException` when the channel factory resolves the address | Active Directory queue path lookup is not ported; the DIRECT= fallback would address a different queue than the caller asked for. |
+| `MsmqMessageSerializationFormat.Binary` / `.ActiveX` | `PlatformNotSupportedException` | Relied on `BinaryFormatter` and the ActiveX type serializer, neither of which exists in modern .NET. Use `Xml`, `ByteArray` or `Stream`. |
+
+### Receive-side properties
+
+`MaxRetryCycles`, `ReceiveRetryCount`, `RetryCycleDelay`, `ReceiveErrorHandling`,
+`ReceiveContextEnabled` and `ValidityDuration` are present for .NET Framework
+surface parity. They configure the receive side and have no effect on a
+client-side send; host the service with CoreWCF to use them.
+
+`MaxPoolSize` is accepted but not yet honoured — queue handles are opened per
+send rather than pooled.
 
 ## Feedback & Contributing
 

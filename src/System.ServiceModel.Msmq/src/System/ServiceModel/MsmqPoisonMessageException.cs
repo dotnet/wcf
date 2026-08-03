@@ -10,7 +10,7 @@ namespace System.ServiceModel
     [Serializable]
     public class MsmqPoisonMessageException : PoisonMessageException
     {
-        private long _messageLookupId = 0;
+        private readonly long _messageLookupId;
 
         public MsmqPoisonMessageException() { }
         public MsmqPoisonMessageException(string message) : base(message) { }

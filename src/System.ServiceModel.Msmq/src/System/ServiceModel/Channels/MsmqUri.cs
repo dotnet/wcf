@@ -10,10 +10,16 @@ using System.Text;
 namespace System.ServiceModel.Channels
 {
     // Address translation for net.msmq:// and msmq.formatname: URIs.
-    // Active Directory (path-name lookup) and the dead-letter-queue resolver
-    // from the .NET Framework reference source are intentionally omitted —
-    // both rely on infrastructure (MsmqFormatName, DnsCache) that is not
-    // yet ported. They can be added later without breaking changes.
+    // Selection between the native (DIRECT=OS:/TCP:) and SRMP
+    // (DIRECT=http://, DIRECT=https://) forms is driven by
+    // MsmqTransportBindingElement.QueueTransferProtocol; the
+    // msmq.formatname: pass-through form is used by
+    // MsmqIntegrationBindingElement.
+    //
+    // Active Directory path-name resolution (net.msmq with
+    // UseActiveDirectory=true) is not ported. MsmqTransportBindingElement
+    // rejects that configuration when it builds a channel factory rather
+    // than silently falling back to a DIRECT= format name.
     internal static class MsmqUri
     {
         private static IAddressTranslator s_netMsmq;
@@ -56,9 +62,29 @@ namespace System.ServiceModel.Channels
             string UriToFormatName(Uri uri);
         }
 
+        // Percent-decoding a URI path can reintroduce characters that are
+        // structurally significant to MSMQ. NUL is the dangerous one: the
+        // format name is marshalled to native code as a Unicode C string, so
+        // an embedded NUL silently truncates it and can redirect a send to a
+        // queue other than the one the caller composed. ',' and ';' delimit
+        // multiple format names in MSMQ's own grammar, and control characters
+        // are never valid inside a queue name.
+        private static void ValidateDecodedQueuePath(string decodedPath)
+        {
+            foreach (char c in decodedPath)
+            {
+                if (c < ' ' || c == ',' || c == ';')
+                {
+                    throw new ArgumentException(SR.MsmqInvalidQueueNameCharacter, nameof(decodedPath));
+                }
+            }
+        }
+
         private static void AppendQueueName(StringBuilder builder, string relativePath, string separator)
         {
             const string privatePart = "/private";
+
+            ValidateDecodedQueuePath(relativePath);
 
             if (relativePath.StartsWith("/private$", StringComparison.OrdinalIgnoreCase))
             {
@@ -109,7 +135,7 @@ namespace System.ServiceModel.Channels
             {
                 ValidateNetMsmqUri(uri, Scheme, allowPort: false);
 
-                var builder = new StringBuilder("DIRECT=");
+                StringBuilder builder = new StringBuilder("DIRECT=");
                 if (string.Equals(uri.Host, "localhost", StringComparison.OrdinalIgnoreCase))
                 {
                     builder.Append("OS:.");
@@ -134,7 +160,7 @@ namespace System.ServiceModel.Channels
             {
                 ValidateNetMsmqUri(uri, Scheme, allowPort: true);
 
-                var builder = new StringBuilder("DIRECT=");
+                StringBuilder builder = new StringBuilder("DIRECT=");
                 builder.Append(DirectScheme);
                 builder.Append(uri.Host);
                 if (uri.Port != -1)
@@ -171,7 +197,9 @@ namespace System.ServiceModel.Channels
                 {
                     throw new ArgumentException(SR.MsmqInvalidScheme, nameof(uri));
                 }
-                return Uri.UnescapeDataString(uri.AbsoluteUri.Substring(Scheme.Length + 1));
+                string formatName = Uri.UnescapeDataString(uri.AbsoluteUri.Substring(Scheme.Length + 1));
+                ValidateDecodedQueuePath(formatName);
+                return formatName;
             }
         }
     }

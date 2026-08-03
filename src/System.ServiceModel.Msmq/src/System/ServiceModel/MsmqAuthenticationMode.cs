@@ -14,7 +14,7 @@ namespace System.ServiceModel
 
     internal static class MsmqAuthenticationModeHelper
     {
-        public static bool IsDefined(MsmqAuthenticationMode mode)
+        internal static bool IsDefined(MsmqAuthenticationMode mode)
         {
             return mode >= MsmqAuthenticationMode.None && mode <= MsmqAuthenticationMode.Certificate;
         }

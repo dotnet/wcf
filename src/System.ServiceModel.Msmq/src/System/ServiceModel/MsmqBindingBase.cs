@@ -10,101 +10,113 @@ namespace System.ServiceModel
 {
     public abstract class MsmqBindingBase : Binding, IBindingRuntimePreferences
     {
-        internal MsmqBindingElementBase transport;
+        internal MsmqBindingElementBase _transport;
 
         protected MsmqBindingBase()
         {
         }
 
+        [DefaultValue(null)]
         public Uri CustomDeadLetterQueue
         {
-            get { return transport.CustomDeadLetterQueue; }
-            set { transport.CustomDeadLetterQueue = value; }
+            get { return _transport.CustomDeadLetterQueue; }
+            set { _transport.CustomDeadLetterQueue = value; }
         }
 
         [DefaultValue(MsmqDefaults.DeadLetterQueue)]
         public DeadLetterQueue DeadLetterQueue
         {
-            get { return transport.DeadLetterQueue; }
-            set { transport.DeadLetterQueue = value; }
+            get { return _transport.DeadLetterQueue; }
+            set { _transport.DeadLetterQueue = value; }
         }
 
         [DefaultValue(MsmqDefaults.Durable)]
         public bool Durable
         {
-            get { return transport.Durable; }
-            set { transport.Durable = value; }
+            get { return _transport.Durable; }
+            set { _transport.Durable = value; }
         }
 
         [DefaultValue(MsmqDefaults.ExactlyOnce)]
         public bool ExactlyOnce
         {
-            get { return transport.ExactlyOnce; }
-            set { transport.ExactlyOnce = value; }
+            get { return _transport.ExactlyOnce; }
+            set { _transport.ExactlyOnce = value; }
         }
 
+        // TransportDefaults.MaxReceivedMessageSize is internal to
+        // System.ServiceModel.Primitives, so the literal is repeated here to
+        // keep the attribute in step with .NET Framework's surface.
+        [DefaultValue((long)65536)]
         public long MaxReceivedMessageSize
         {
-            get { return transport.MaxReceivedMessageSize; }
-            set { transport.MaxReceivedMessageSize = value; }
+            get { return _transport.MaxReceivedMessageSize; }
+            set { _transport.MaxReceivedMessageSize = value; }
         }
 
         [DefaultValue(MsmqDefaults.ReceiveRetryCount)]
         public int ReceiveRetryCount
         {
-            get { return transport.ReceiveRetryCount; }
-            set { transport.ReceiveRetryCount = value; }
+            get { return _transport.ReceiveRetryCount; }
+            set { _transport.ReceiveRetryCount = value; }
         }
 
         [DefaultValue(MsmqDefaults.MaxRetryCycles)]
         public int MaxRetryCycles
         {
-            get { return transport.MaxRetryCycles; }
-            set { transport.MaxRetryCycles = value; }
+            get { return _transport.MaxRetryCycles; }
+            set { _transport.MaxRetryCycles = value; }
         }
 
         [DefaultValue(MsmqDefaults.ReceiveContextEnabled)]
         public bool ReceiveContextEnabled
         {
-            get { return transport.ReceiveContextEnabled; }
-            set { transport.ReceiveContextEnabled = value; }
+            get { return _transport.ReceiveContextEnabled; }
+            set { _transport.ReceiveContextEnabled = value; }
         }
 
         [DefaultValue(MsmqDefaults.ReceiveErrorHandling)]
         public ReceiveErrorHandling ReceiveErrorHandling
         {
-            get { return transport.ReceiveErrorHandling; }
-            set { transport.ReceiveErrorHandling = value; }
+            get { return _transport.ReceiveErrorHandling; }
+            set { _transport.ReceiveErrorHandling = value; }
         }
 
         [DefaultValue(typeof(TimeSpan), MsmqDefaults.RetryCycleDelayString)]
         public TimeSpan RetryCycleDelay
         {
-            get { return transport.RetryCycleDelay; }
-            set { transport.RetryCycleDelay = value; }
+            get { return _transport.RetryCycleDelay; }
+            set { _transport.RetryCycleDelay = value; }
         }
 
-        public override string Scheme => transport.Scheme;
+        public override string Scheme => _transport.Scheme;
 
         [DefaultValue(typeof(TimeSpan), MsmqDefaults.TimeToLiveString)]
         public TimeSpan TimeToLive
         {
-            get { return transport.TimeToLive; }
-            set { transport.TimeToLive = value; }
+            get { return _transport.TimeToLive; }
+            set { _transport.TimeToLive = value; }
         }
 
         [DefaultValue(MsmqDefaults.UseSourceJournal)]
         public bool UseSourceJournal
         {
-            get { return transport.UseSourceJournal; }
-            set { transport.UseSourceJournal = value; }
+            get { return _transport.UseSourceJournal; }
+            set { _transport.UseSourceJournal = value; }
         }
 
         [DefaultValue(MsmqDefaults.UseMsmqTracing)]
         public bool UseMsmqTracing
         {
-            get { return transport.UseMsmqTracing; }
-            set { transport.UseMsmqTracing = value; }
+            get { return _transport.UseMsmqTracing; }
+            set { _transport.UseMsmqTracing = value; }
+        }
+
+        [DefaultValue(typeof(TimeSpan), MsmqDefaults.ValidityDurationString)]
+        public TimeSpan ValidityDuration
+        {
+            get { return _transport.ValidityDuration; }
+            set { _transport.ValidityDuration = value; }
         }
 
         bool IBindingRuntimePreferences.ReceiveSynchronously => ExactlyOnce;

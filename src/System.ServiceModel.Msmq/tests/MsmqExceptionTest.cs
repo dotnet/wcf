@@ -4,11 +4,13 @@
 
 
 using System;
+using System.Runtime.Versioning;
 using System.Reflection;
 using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
+[SupportedOSPlatform("windows")]
 public static class MsmqExceptionTest
 {
     private static (bool faultSender, bool faultReceiver, Type normalizedType) MapErrorCode(uint code)
@@ -26,14 +28,21 @@ public static class MsmqExceptionTest
     [InlineData(0xC00E001Eu, typeof(ArgumentException))]         // IllegalFormatName
     [InlineData(0xC00E0014u, typeof(ArgumentException))]         // IllegalQueuePathName
     [InlineData(0xC00E001Bu, typeof(TimeoutException))]          // IOTimeout
-    [InlineData(0xC00E0026u, typeof(EndpointNotFoundException))] // QueueNotAvailable
-    [InlineData(0xC00E000Eu, typeof(EndpointNotFoundException))] // RemoteMachineNotAvailable
+    [InlineData(0xC00E004Bu, typeof(EndpointNotFoundException))] // QueueNotAvailable
+    [InlineData(0xC00E0069u, typeof(EndpointNotFoundException))] // RemoteMachineNotAvailable
     [InlineData(0xC00E000Bu, typeof(EndpointNotFoundException))] // ServiceNotAvailable
     [InlineData(0xC00E0050u, typeof(InvalidOperationException))] // TransactionUsage
-    [InlineData(0xC00E0006u, typeof(InvalidOperationException))] // StaleHandle
+    [InlineData(0xC00E0051u, typeof(InvalidOperationException))] // TransactionSequence
+    [InlineData(0xC00E004Eu, typeof(CommunicationException))]    // TransactionImport
+    [InlineData(0xC00E0056u, typeof(InvalidOperationException))] // StaleHandle
     [InlineData(0xC00E0025u, typeof(AddressAccessDeniedException))]   // AccessDenied — now lives in Primitives (slice 10)
+    [InlineData(0xC00E0026u, typeof(AddressAccessDeniedException))]   // PrivilegeNotHeld
     [InlineData(0xC00E0009u, typeof(AddressAccessDeniedException))]   // SharingViolation
     [InlineData(0xC00E0027u, typeof(CommunicationException))]    // InsufficientResources
+    [InlineData(0xC00E004Cu, typeof(CommunicationException))]    // DtcConnect
+    [InlineData(0xC00E0035u, typeof(CommunicationException))]    // BadSecurityContext
+    [InlineData(0xC00E002Cu, typeof(CommunicationException))]    // InvalidCertificate
+    [InlineData(0xC00E0041u, typeof(InvalidOperationException))] // IllegalMqQmProps
     public static void Normalized_MapsErrorCodeToWcfExceptionType(uint code, Type expected)
     {
         var (_, _, outer) = MapErrorCode(code);
@@ -54,7 +63,7 @@ public static class MsmqExceptionTest
     [WcfTheory]
     [InlineData(0xC00E001Bu, false, false)] // IOTimeout: neither faulted
     [InlineData(0xC00E001Eu, false, false)] // IllegalFormatName: neither
-    [InlineData(0xC00E0026u, false, true)]  // QueueNotAvailable: receiver only
+    [InlineData(0xC00E004Bu, false, true)]  // QueueNotAvailable: receiver only
     [InlineData(0xC00E0003u, true, true)]   // QueueNotFound: both
     public static void FaultSenderReceiver_MatchesNetFxTable(uint code, bool expectedSender, bool expectedReceiver)
     {

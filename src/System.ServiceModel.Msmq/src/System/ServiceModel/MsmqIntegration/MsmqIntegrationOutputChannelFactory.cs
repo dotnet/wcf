@@ -9,37 +9,29 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.MsmqIntegration
 {
+    // Send-side channel factory for MsmqIntegrationBinding.
+    //
+    // Unlike the NetMsmqBinding factories this one holds no MessageEncoder.
+    // The binding's MessageVersion is None and the payload is a raw MSMQ body
+    // produced by MsmqIntegrationSerializer, so running the message through a
+    // SOAP encoder would both corrupt the payload and throw on the version
+    // mismatch.
     [SupportedOSPlatform("windows")]
     internal sealed class MsmqIntegrationOutputChannelFactory : ChannelFactoryBase<IOutputChannel>
     {
         private readonly MsmqIntegrationBindingElement _bindingElement;
-        private readonly MessageEncoderFactory _messageEncoderFactory;
-        private readonly BufferManager _bufferManager;
+        private readonly MsmqIntegrationSerializer _serializer;
 
         internal MsmqIntegrationOutputChannelFactory(MsmqIntegrationBindingElement bindingElement, BindingContext context)
-            : base(context.Binding)
+            : base(GetBinding(context))
         {
             _bindingElement = bindingElement ?? throw new ArgumentNullException(nameof(bindingElement));
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-            // MsmqIntegrationBinding carries raw payloads (MessageVersion.None), so
-            // pick whatever encoder the binding context supplied; default to binary
-            // when nothing is configured. The encoder serializes the body bytes that
-            // get dispatched to MSMQ as the message payload.
-            MessageEncodingBindingElement encodingElement =
-                context.BindingParameters.Find<MessageEncodingBindingElement>()
-                ?? new BinaryMessageEncodingBindingElement();
-            _messageEncoderFactory = encodingElement.CreateMessageEncoderFactory();
-            _bufferManager = BufferManager.CreateBufferManager(
-                bindingElement.MaxBufferPoolSize,
-                (int)Math.Min(bindingElement.MaxReceivedMessageSize, int.MaxValue));
+            _serializer = new MsmqIntegrationSerializer(bindingElement.SerializationFormat);
         }
 
         internal MsmqIntegrationBindingElement BindingElement => _bindingElement;
-        internal MessageEncoder MessageEncoder => _messageEncoderFactory.Encoder;
-        internal BufferManager BufferManager => _bufferManager;
+
+        internal MsmqIntegrationSerializer Serializer => _serializer;
 
         public override T GetProperty<T>()
         {
@@ -48,6 +40,18 @@ namespace System.ServiceModel.MsmqIntegration
                 return (T)(object)MessageVersion.None;
             }
             return base.GetProperty<T>();
+        }
+
+        // Validates the argument before it reaches the base constructor, which
+        // would otherwise dereference it and raise NullReferenceException
+        // instead of ArgumentNullException.
+        private static IDefaultCommunicationTimeouts GetBinding(BindingContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+            return context.Binding;
         }
 
         protected override IOutputChannel OnCreateChannel(EndpointAddress address, Uri via)
@@ -59,20 +63,22 @@ namespace System.ServiceModel.MsmqIntegration
             return new MsmqIntegrationOutputChannel(this, address, via ?? address.Uri);
         }
 
-        protected override void OnAbort() => _bufferManager?.Clear();
+        protected override void OnAbort()
+        {
+        }
 
-        protected override void OnClose(TimeSpan timeout) => _bufferManager?.Clear();
+        protected override void OnClose(TimeSpan timeout)
+        {
+        }
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
             => Task.CompletedTask.ToApm(callback, state);
 
-        protected override void OnEndClose(IAsyncResult result)
-        {
-            _bufferManager?.Clear();
-            result.ToApmEnd();
-        }
+        protected override void OnEndClose(IAsyncResult result) => result.ToApmEnd();
 
-        protected override void OnOpen(TimeSpan timeout) { }
+        protected override void OnOpen(TimeSpan timeout)
+        {
+        }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
             => Task.CompletedTask.ToApm(callback, state);
@@ -81,10 +87,6 @@ namespace System.ServiceModel.MsmqIntegration
 
         protected override Task OnOpenAsync(TimeSpan timeout) => Task.CompletedTask;
 
-        protected override Task OnCloseAsync(TimeSpan timeout)
-        {
-            _bufferManager?.Clear();
-            return Task.CompletedTask;
-        }
+        protected override Task OnCloseAsync(TimeSpan timeout) => Task.CompletedTask;
     }
 }

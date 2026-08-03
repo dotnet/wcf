@@ -11,6 +11,13 @@ namespace System.ServiceModel
 {
     public class NetMsmqBinding : MsmqBindingBase
     {
+        // Default XmlDictionaryReaderQuotas (mirrors System.Xml's EncoderDefaults).
+        private const int DefaultMaxArrayLength = 16384;
+        private const int DefaultMaxBytesPerRead = 4096;
+        private const int DefaultMaxDepth = 32;
+        private const int DefaultMaxNameTableCharCount = 16384;
+        private const int DefaultMaxStringContentLength = 8192;
+
         private BinaryMessageEncodingBindingElement _encoding;
         private NetMsmqSecurity _security;
 
@@ -33,8 +40,8 @@ namespace System.ServiceModel
         [DefaultValue(MsmqDefaults.QueueTransferProtocol)]
         public QueueTransferProtocol QueueTransferProtocol
         {
-            get { return ((MsmqTransportBindingElement)transport).QueueTransferProtocol; }
-            set { ((MsmqTransportBindingElement)transport).QueueTransferProtocol = value; }
+            get { return ((MsmqTransportBindingElement)_transport).QueueTransferProtocol; }
+            set { ((MsmqTransportBindingElement)_transport).QueueTransferProtocol = value; }
         }
 
         public XmlDictionaryReaderQuotas ReaderQuotas
@@ -60,29 +67,22 @@ namespace System.ServiceModel
 
         public long MaxBufferPoolSize
         {
-            get { return transport.MaxBufferPoolSize; }
-            set { transport.MaxBufferPoolSize = value; }
+            get { return _transport.MaxBufferPoolSize; }
+            set { _transport.MaxBufferPoolSize = value; }
         }
 
         internal int MaxPoolSize
         {
-            get { return ((MsmqTransportBindingElement)transport).MaxPoolSize; }
-            set { ((MsmqTransportBindingElement)transport).MaxPoolSize = value; }
+            get { return ((MsmqTransportBindingElement)_transport).MaxPoolSize; }
+            set { ((MsmqTransportBindingElement)_transport).MaxPoolSize = value; }
         }
 
         [DefaultValue(MsmqDefaults.UseActiveDirectory)]
         public bool UseActiveDirectory
         {
-            get { return ((MsmqTransportBindingElement)transport).UseActiveDirectory; }
-            set { ((MsmqTransportBindingElement)transport).UseActiveDirectory = value; }
+            get { return ((MsmqTransportBindingElement)_transport).UseActiveDirectory; }
+            set { ((MsmqTransportBindingElement)_transport).UseActiveDirectory = value; }
         }
-
-        // Default XmlDictionaryReaderQuotas (mirrors System.Xml's EncoderDefaults).
-        private const int DefaultMaxArrayLength = 16384;
-        private const int DefaultMaxBytesPerRead = 4096;
-        private const int DefaultMaxDepth = 32;
-        private const int DefaultMaxNameTableCharCount = 16384;
-        private const int DefaultMaxStringContentLength = 8192;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeReaderQuotas()
@@ -118,16 +118,21 @@ namespace System.ServiceModel
 
         private void Initialize()
         {
-            transport = new MsmqTransportBindingElement();
+            _transport = new MsmqTransportBindingElement();
             _encoding = new BinaryMessageEncodingBindingElement();
         }
 
         public override BindingElementCollection CreateBindingElements()
         {
-            var bindingElements = new BindingElementCollection();
-            // Order matters: security (if any) -> encoding -> transport.
-            // Message security is not yet supported on the client port; see
-            // MessageSecurityOverMsmq for context.
+            // Order matters: encoding -> _transport.
+            //
+            // Message-level security (NetMsmqSecurityMode.Message / Both) needs a
+            // SecurityBindingElement and the WS-Security message-protection stack,
+            // which this client-side port does not carry. The mode is rejected in
+            // GetTransport rather than dropped: silently emitting an unprotected
+            // binding for a caller who asked for message security would put
+            // plaintext on the wire under a configuration that claims otherwise.
+            BindingElementCollection bindingElements = new BindingElementCollection();
             bindingElements.Add(_encoding);
             bindingElements.Add(GetTransport());
             return bindingElements.Clone();
@@ -135,8 +140,12 @@ namespace System.ServiceModel
 
         private MsmqBindingElementBase GetTransport()
         {
-            _security.ConfigureTransportSecurity(transport);
-            return transport;
+            if (_security.Mode == NetMsmqSecurityMode.Message || _security.Mode == NetMsmqSecurityMode.Both)
+            {
+                throw new NotSupportedException(SR.Format(SR.MsmqSecurityModeNotSupported, _security.Mode));
+            }
+            _security.ConfigureTransportSecurity(_transport);
+            return _transport;
         }
     }
 }

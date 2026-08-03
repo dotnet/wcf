@@ -34,8 +34,11 @@ namespace System.ServiceModel.Channels
         }
 
         // Sends a single message. txMode selects between non-transactional,
-        // MSMQ-single-message, and DTC-flowed.
-        internal void Send(NativeMsmqMessage message, MsmqTransactionMode txMode)
+        // MSMQ-single-message, and DTC-flowed. The ambient transaction is
+        // passed in rather than read from Transaction.Current because this
+        // method also runs on thread-pool threads for asynchronous sends,
+        // where the calling thread's ambient transaction is not visible.
+        internal void Send(NativeMsmqMessage message, MsmqTransactionMode txMode, Transaction ambientTransaction)
         {
             if (message == null)
             {
@@ -57,7 +60,7 @@ namespace System.ServiceModel.Channels
                     hr = UnsafeNativeMethods.MQSendMessage(_handle, propsPtr, UnsafeNativeMethods.MQ_SINGLE_MESSAGE);
                     break;
                 case MsmqTransactionMode.Automatic:
-                    IntPtr dtcPtr = DtcTransactionBridge.AcquireITransactionPointer(Transaction.Current);
+                    IntPtr dtcPtr = DtcTransactionBridge.AcquireITransactionPointer(ambientTransaction);
                     try
                     {
                         hr = UnsafeNativeMethods.MQSendMessage(_handle, propsPtr, dtcPtr);

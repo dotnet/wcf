@@ -63,13 +63,14 @@ public static class NativeMsmqMessageTest
     // ----- Layout invariants -----
 
     [WcfFact]
-    public static void PropVariantSize_Is_24Bytes()
+    public static void PropVariantSize_MatchesPointerWidth()
     {
-        // Treat the whole struct as a fixed 24-byte slot regardless of
-        // arch. The native union's largest member (DECIMAL / CAUB on x64)
-        // sets the upper bound, and the 24-byte assumption is what every
-        // slot writer in NativeMsmqMessage allocates against.
-        Assert.Equal(24, PropVarSize);
+        // MQPROPVARIANT mirrors OLE's PROPVARIANT: an 8-byte header followed by
+        // a union that is 8-byte aligned on x64 and 4-byte aligned on x86. That
+        // makes the struct 24 bytes on 64-bit and 16 on 32-bit. Hard-coding 24
+        // over-strides every slot on x86 and hands MSMQ a misaligned aPropVar
+        // array.
+        Assert.Equal(IntPtr.Size == 8 ? 24 : 16, PropVarSize);
     }
 
     [WcfFact]
@@ -93,7 +94,7 @@ public static class NativeMsmqMessageTest
         Assert.Equal(4u, GetPropId(msg, 0));
 
         byte[] slot = GetSlot(msg, 0);
-        Assert.Equal(24, slot.Length);
+        Assert.Equal(PropVarSize, slot.Length);
         Assert.Equal(17, slot[0]);  // VT_UI1 little-endian low byte
         Assert.Equal(0, slot[1]);   // VT_UI1 little-endian high byte
         Assert.Equal(5, slot[8]);   // value at union offset

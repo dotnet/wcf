@@ -15,7 +15,7 @@ namespace System.ServiceModel
 
     internal static class MsmqSecureHashAlgorithmHelper
     {
-        public static bool IsDefined(MsmqSecureHashAlgorithm algorithm)
+        internal static bool IsDefined(MsmqSecureHashAlgorithm algorithm)
         {
             return algorithm == MsmqSecureHashAlgorithm.MD5 ||
                 algorithm == MsmqSecureHashAlgorithm.Sha1 ||

@@ -13,6 +13,7 @@ using System.ServiceModel.MsmqIntegration;
 using Infrastructure.Common;
 using Xunit;
 
+[SupportedOSPlatform("windows")]
 public static class MsmqIntegrationBindingTest
 {
     [WcfFact]
@@ -121,13 +122,25 @@ public static class MsmqIntegrationBindingTest
         Assert.Throws<InvalidEnumArgumentException>(() => new MsmqIntegrationBinding((MsmqIntegrationSecurityMode)42));
     }
 
+    // The binding must contribute a message encoder. Without one the channel
+    // factory used to fall back to a SOAP 1.2 binary encoder while advertising
+    // MessageVersion.None, and every send threw on the version mismatch.
     [WcfFact]
-    public static void MsmqIntegrationBinding_CreateBindingElements_TransportOnly()
+    public static void MsmqIntegrationBinding_CreateBindingElements_TransportOnly_WithNoEncoder()
     {
         var b = new MsmqIntegrationBinding();
         var elements = b.CreateBindingElements();
         Assert.Single(elements);
         Assert.IsType<MsmqIntegrationBindingElement>(elements[0]);
+
+        // MsmqIntegrationBinding carries raw MSMQ payloads, so it deliberately
+        // has no encoder; the factory must therefore never acquire one and must
+        // keep reporting MessageVersion.None end to end.
+        Assert.Null(elements.Find<MessageEncodingBindingElement>());
+        var context = new BindingContext(new CustomBinding(b), new BindingParameterCollection());
+        IChannelFactory<IOutputChannel> factory =
+            ((MsmqIntegrationBindingElement)elements[0]).BuildChannelFactory<IOutputChannel>(context);
+        Assert.Same(MessageVersion.None, factory.GetProperty<MessageVersion>());
     }
 
     [WcfFact]

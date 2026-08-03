@@ -45,6 +45,10 @@ namespace System.ServiceModel.Channels
             {
                 throw new ArgumentNullException(nameof(formatName));
             }
+            if (!OperatingSystem.IsWindows())
+            {
+                throw new PlatformNotSupportedException(SR.PlatformNotSupported_Msmq);
+            }
             if (formatName.StartsWith("FormatName:", StringComparison.OrdinalIgnoreCase))
             {
                 formatName = formatName.Substring("FormatName:".Length);
@@ -54,7 +58,7 @@ namespace System.ServiceModel.Channels
                 formatName,
                 UnsafeNativeMethods.MQ_SEND_ACCESS,
                 UnsafeNativeMethods.MQ_DENY_NONE,
-                out IntPtr rawHandle);
+                out SafeMsmqQueueHandle handle);
 
             // FAILED(hr): same COM contract as MsmqQueue.Send — only
             // treat the high bit being set as a real failure. Warnings
@@ -63,12 +67,11 @@ namespace System.ServiceModel.Channels
             // throw because the queue handle was still produced.
             if (hr < 0)
             {
+                handle?.Dispose();
                 throw new MsmqException(SR.Format(SR.MsmqOpenQueueFailed, formatName), hr).Normalized;
             }
 
-            var safe = new SafeMsmqQueueHandle();
-            safe.SetHandle(rawHandle);
-            return safe;
+            return handle;
         }
     }
 }

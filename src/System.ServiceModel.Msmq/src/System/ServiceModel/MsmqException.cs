@@ -118,8 +118,29 @@ namespace System.ServiceModel
                     _faultSender = true; _faultReceiver = true; _outerExceptionType = typeof(CommunicationException); break;
                 case MsmqErrorCodes.TransactionUsage:
                     _faultSender = true; _faultReceiver = true; _outerExceptionType = typeof(InvalidOperationException); break;
+                case MsmqErrorCodes.TransactionSequence:
+                    _faultSender = true; _faultReceiver = true; _outerExceptionType = typeof(InvalidOperationException); break;
                 case MsmqErrorCodes.StaleHandle:
                     _faultSender = false; _faultReceiver = false; _outerExceptionType = typeof(InvalidOperationException); break;
+
+                // ----- Security and DTC errors -----
+                case MsmqErrorCodes.PrivilegeNotHeld:
+                    _faultSender = true; _faultReceiver = true; _outerExceptionType = typeof(AddressAccessDeniedException); break;
+                case MsmqErrorCodes.DtcConnect:
+                case MsmqErrorCodes.BadSecurityContext:
+                case MsmqErrorCodes.CouldNotGetUserSid:
+                case MsmqErrorCodes.InvalidCertificate:
+                case MsmqErrorCodes.NoInternalUserCertificate:
+                case MsmqErrorCodes.CertificateNotProvided:
+                case MsmqErrorCodes.CorruptedPersonalCertStore:
+                case MsmqErrorCodes.CannotCreateCertStore:
+                case MsmqErrorCodes.CannotHashDataEx:
+                case MsmqErrorCodes.CannotSignDataEx:
+                case MsmqErrorCodes.FailVerifySignatureEx:
+                    _faultSender = true; _faultReceiver = true; _outerExceptionType = typeof(CommunicationException); break;
+                case MsmqErrorCodes.IllegalMqQmProps:
+                case MsmqErrorCodes.InsufficientProperties:
+                    _faultSender = true; _faultReceiver = true; _outerExceptionType = typeof(InvalidOperationException); break;
 
                 default:
                     _faultSender = true; _faultReceiver = true; _outerExceptionType = null; break;
@@ -127,28 +148,45 @@ namespace System.ServiceModel
         }
     }
 
-    // MQ_ERROR_* native MSMQ error codes (a subset that's normalized by
-    // MsmqException). Values are exact matches for the native winerror
-    // codes used by mqrt.dll, and also for MSMQ.Messaging's
-    // MessageQueueErrorCode enum members of the same name.
+    // MQ_ERROR_* native MSMQ error codes normalized by MsmqException. Every
+    // value below was verified against MQ_ERROR_* in the Windows SDK Mq.h.
     internal static class MsmqErrorCodes
     {
-        internal const uint AccessDenied                  = 0xC00E0025;
-        internal const uint QueueNotFound                 = 0xC00E0003;
-        internal const uint QueueDeleted                  = 0xC00E005A;
-        internal const uint IllegalFormatName             = 0xC00E001E;
-        internal const uint IllegalQueuePathName          = 0xC00E0014;
+        internal const uint AccessDenied = 0xC00E0025;
+        internal const uint QueueNotFound = 0xC00E0003;
+        internal const uint QueueDeleted = 0xC00E005A;
+        internal const uint IllegalFormatName = 0xC00E001E;
+        internal const uint IllegalQueuePathName = 0xC00E0014;
         internal const uint UnsupportedFormatNameOperation = 0xC00E0020;
-        internal const uint SharingViolation              = 0xC00E0009;
-        internal const uint IOTimeout                     = 0xC00E001B;
-        internal const uint QueueNotAvailable             = 0xC00E0026;
-        internal const uint RemoteMachineNotAvailable     = 0xC00E000E;
-        internal const uint ServiceNotAvailable           = 0xC00E000B;
-        internal const uint InsufficientResources         = 0xC00E0027;
-        internal const uint MessageStorageFailed          = 0xC00E002A;
-        internal const uint TransactionEnlist             = 0xC00E0058;
-        internal const uint TransactionImport             = 0xC00E0051;
-        internal const uint TransactionUsage              = 0xC00E0050;
-        internal const uint StaleHandle                   = 0xC00E0006;
+        internal const uint SharingViolation = 0xC00E0009;
+        internal const uint IOTimeout = 0xC00E001B;
+        internal const uint QueueNotAvailable = 0xC00E004B;
+        internal const uint RemoteMachineNotAvailable = 0xC00E0069;
+        internal const uint ServiceNotAvailable = 0xC00E000B;
+        internal const uint InsufficientResources = 0xC00E0027;
+        internal const uint MessageStorageFailed = 0xC00E002A;
+        internal const uint TransactionEnlist = 0xC00E0058;
+        internal const uint TransactionImport = 0xC00E004E;
+        internal const uint TransactionUsage = 0xC00E0050;
+        internal const uint TransactionSequence = 0xC00E0051;
+        internal const uint StaleHandle = 0xC00E0056;
+
+        // Security and DTC failures. .NET Framework normalized all of these to
+        // CommunicationException; leaving them out meant caller retry logic
+        // built around CommunicationException saw a raw MsmqException instead.
+        internal const uint PrivilegeNotHeld = 0xC00E0026;
+        internal const uint InvalidCertificate = 0xC00E002C;
+        internal const uint NoInternalUserCertificate = 0xC00E002F;
+        internal const uint CorruptedPersonalCertStore = 0xC00E0031;
+        internal const uint BadSecurityContext = 0xC00E0035;
+        internal const uint CouldNotGetUserSid = 0xC00E0036;
+        internal const uint InsufficientProperties = 0xC00E003F;
+        internal const uint IllegalMqQmProps = 0xC00E0041;
+        internal const uint DtcConnect = 0xC00E004C;
+        internal const uint CertificateNotProvided = 0xC00E006D;
+        internal const uint CannotCreateCertStore = 0xC00E006F;
+        internal const uint CannotHashDataEx = 0xC00E007F;
+        internal const uint CannotSignDataEx = 0xC00E0080;
+        internal const uint FailVerifySignatureEx = 0xC00E0082;
     }
 }

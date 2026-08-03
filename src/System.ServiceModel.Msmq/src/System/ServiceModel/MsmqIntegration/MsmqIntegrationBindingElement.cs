@@ -30,11 +30,7 @@ namespace System.ServiceModel.MsmqIntegration
 
         public override string Scheme => "msmq.formatname";
 
-        internal override MsmqUri.IAddressTranslator AddressTranslator
-        {
-            // Filled in by the slice that ports MsmqUri.FormatNameAddressTranslator.
-            get { return null; }
-        }
+        internal override MsmqUri.IAddressTranslator AddressTranslator => MsmqUri.FormatNameAddressTranslator;
 
         public MsmqMessageSerializationFormat SerializationFormat
         {
@@ -84,7 +80,7 @@ namespace System.ServiceModel.MsmqIntegration
             }
             if (typeof(TChannel) != typeof(IOutputChannel))
             {
-                throw new ArgumentException(SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)), "TChannel");
+                throw new ArgumentException(SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)), nameof(TChannel));
             }
             return (IChannelFactory<TChannel>)(object)new MsmqIntegrationOutputChannelFactory(this, context);
         }

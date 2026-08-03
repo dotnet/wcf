@@ -19,4 +19,12 @@ namespace System.ServiceModel.MsmqIntegration
         VeryHigh = 6,
         Highest = 7,
     }
+
+    internal static class MessagePriorityHelper
+    {
+        internal static bool IsDefined(MessagePriority value)
+        {
+            return value >= MessagePriority.Lowest && value <= MessagePriority.Highest;
+        }
+    }
 }

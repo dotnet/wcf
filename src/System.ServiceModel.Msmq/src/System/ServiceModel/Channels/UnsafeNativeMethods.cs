@@ -39,45 +39,92 @@ namespace System.ServiceModel.Channels
 
         // -- MQOpenQueue dwAccess flags --
         internal const int MQ_RECEIVE_ACCESS = 0x00000001;
-        internal const int MQ_SEND_ACCESS    = 0x00000002;
-        internal const int MQ_PEEK_ACCESS    = 0x00000020;
+        internal const int MQ_SEND_ACCESS = 0x00000002;
+        internal const int MQ_PEEK_ACCESS = 0x00000020;
 
         // -- MQOpenQueue dwShareMode flags --
-        internal const int MQ_DENY_NONE             = 0x00000000;
-        internal const int MQ_DENY_RECEIVE_SHARE    = 0x00000001;
+        internal const int MQ_DENY_NONE = 0x00000000;
+        internal const int MQ_DENY_RECEIVE_SHARE = 0x00000001;
 
         // -- VARTYPE values used by MSMQ properties --
-        internal const ushort VT_NULL    = 1;
-        internal const ushort VT_I2      = 2;
-        internal const ushort VT_I4      = 3;
-        internal const ushort VT_UI1     = 17;
-        internal const ushort VT_UI2     = 18;
-        internal const ushort VT_UI4     = 19;
-        internal const ushort VT_LPWSTR  = 31;
-        internal const ushort VT_VECTOR  = 0x1000;
+        internal const ushort VT_NULL = 1;
+        internal const ushort VT_I2 = 2;
+        internal const ushort VT_I4 = 3;
+        internal const ushort VT_UI1 = 17;
+        internal const ushort VT_UI2 = 18;
+        internal const ushort VT_UI4 = 19;
+        internal const ushort VT_LPWSTR = 31;
+        internal const ushort VT_VECTOR = 0x1000;
 
-        // -- PROPID_M_* property identifiers (subset used on the send path) --
-        internal const uint PROPID_M_CLASS                = 1;
-        internal const uint PROPID_M_MSGID                = 2;
-        internal const uint PROPID_M_CORRELATIONID        = 3;
-        internal const uint PROPID_M_PRIORITY             = 4;
-        internal const uint PROPID_M_DELIVERY             = 5;
-        internal const uint PROPID_M_ACKNOWLEDGE          = 6;
-        internal const uint PROPID_M_JOURNAL              = 7;
-        internal const uint PROPID_M_APPSPECIFIC          = 8;
-        internal const uint PROPID_M_BODY                 = 9;
-        internal const uint PROPID_M_BODY_SIZE            = 10;
-        internal const uint PROPID_M_LABEL                = 11;
-        internal const uint PROPID_M_LABEL_LEN            = 12;
-        internal const uint PROPID_M_TIME_TO_REACH_QUEUE  = 13;
-        internal const uint PROPID_M_TIME_TO_BE_RECEIVED  = 14;
-        internal const uint PROPID_M_RESP_QUEUE           = 15;
-        internal const uint PROPID_M_RESP_QUEUE_LEN       = 16;
-        internal const uint PROPID_M_ADMIN_QUEUE          = 17;
-        internal const uint PROPID_M_ADMIN_QUEUE_LEN      = 18;
-        internal const uint PROPID_M_EXTENSION            = 24;
-        internal const uint PROPID_M_EXTENSION_LEN        = 25;
-        internal const uint PROPID_M_BODY_TYPE            = 36;
+        // -- PROPID_M_* property identifiers (subset used on the send path).
+        //    Values are PROPID_M_BASE + n, verified against the Windows SDK Mq.h. --
+        internal const uint PROPID_M_CLASS = 1;
+        internal const uint PROPID_M_MSGID = 2;
+        internal const uint PROPID_M_CORRELATIONID = 3;
+        internal const uint PROPID_M_PRIORITY = 4;
+        internal const uint PROPID_M_DELIVERY = 5;
+        internal const uint PROPID_M_ACKNOWLEDGE = 6;
+        internal const uint PROPID_M_JOURNAL = 7;
+        internal const uint PROPID_M_APPSPECIFIC = 8;
+        internal const uint PROPID_M_BODY = 9;
+        internal const uint PROPID_M_BODY_SIZE = 10;
+        internal const uint PROPID_M_LABEL = 11;
+        internal const uint PROPID_M_LABEL_LEN = 12;
+        internal const uint PROPID_M_TIME_TO_REACH_QUEUE = 13;
+        internal const uint PROPID_M_TIME_TO_BE_RECEIVED = 14;
+        internal const uint PROPID_M_RESP_QUEUE = 15;
+        internal const uint PROPID_M_RESP_QUEUE_LEN = 16;
+        internal const uint PROPID_M_ADMIN_QUEUE = 17;
+        internal const uint PROPID_M_ADMIN_QUEUE_LEN = 18;
+        internal const uint PROPID_M_PRIV_LEVEL = 23;
+        internal const uint PROPID_M_AUTH_LEVEL = 24;
+        internal const uint PROPID_M_HASH_ALG = 26;
+        internal const uint PROPID_M_ENCRYPTION_ALG = 27;
+        internal const uint PROPID_M_EXTENSION = 35;
+        internal const uint PROPID_M_EXTENSION_LEN = 36;
+        internal const uint PROPID_M_TRACE = 41;
+        internal const uint PROPID_M_BODY_TYPE = 42;
+        // MSMQ exposes two ways to name the response queue. PROPID_M_RESP_QUEUE
+        // is the legacy slot; PROPID_M_RESP_FORMAT_NAME is the one .NET
+        // Framework's MSMQ integration channel writes and the only one that
+        // accepts long format names. Mq.h notes the two are mutually
+        // exclusive on a single send.
+        internal const uint PROPID_M_RESP_FORMAT_NAME = 54;
+        internal const uint PROPID_M_RESP_FORMAT_NAME_LEN = 55;
+        internal const uint PROPID_M_DEADLETTER_QUEUE = 67;
+        internal const uint PROPID_M_DEADLETTER_QUEUE_LEN = 68;
+
+        // -- PROPID_M_DELIVERY values --
+        internal const byte MQMSG_DELIVERY_EXPRESS = 0;
+        internal const byte MQMSG_DELIVERY_RECOVERABLE = 1;
+
+        // -- PROPID_M_JOURNAL values (a bit field) --
+        internal const byte MQMSG_JOURNAL_NONE = 0;
+        internal const byte MQMSG_DEADLETTER = 1;
+        internal const byte MQMSG_JOURNAL = 2;
+
+        // -- PROPID_M_TRACE values --
+        internal const byte MQMSG_TRACE_NONE = 0;
+        internal const byte MQMSG_SEND_ROUTE_TO_REPORT_QUEUE = 1;
+
+        // -- PROPID_M_AUTH_LEVEL values --
+        internal const uint MQMSG_AUTH_LEVEL_NONE = 0;
+        internal const uint MQMSG_AUTH_LEVEL_ALWAYS = 1;
+
+        // -- PROPID_M_PRIV_LEVEL values --
+        internal const uint MQMSG_PRIV_LEVEL_NONE = 0;
+        internal const uint MQMSG_PRIV_LEVEL_BODY_BASE = 0x01;
+        internal const uint MQMSG_PRIV_LEVEL_BODY_ENHANCED = 0x03;
+        internal const uint MQMSG_PRIV_LEVEL_BODY_AES = 0x05;
+
+        // -- CALG_* algorithm identifiers from wincrypt.h, used by
+        //    PROPID_M_HASH_ALG and PROPID_M_ENCRYPTION_ALG --
+        internal const uint CALG_MD5 = 0x00008003;
+        internal const uint CALG_SHA1 = 0x00008004;
+        internal const uint CALG_SHA_256 = 0x0000800C;
+        internal const uint CALG_SHA_512 = 0x0000800E;
+        internal const uint CALG_RC4 = 0x00006801;
+        internal const uint CALG_AES = 0x00006611;
 
         // -- Transaction handle sentinels (passed in the pTransaction slot) --
         internal static readonly IntPtr MQ_NO_TRANSACTION = IntPtr.Zero;
@@ -91,6 +138,12 @@ namespace System.ServiceModel.Channels
         // the plain symbol is the right binding for the wide-string
         // overload that MSMQ provides.
         //
+        // phQueue is marshalled directly as a SafeMsmqQueueHandle so the
+        // runtime captures the raw handle inside its own critical region.
+        // Taking an `out IntPtr` and calling SetHandle afterwards leaves a
+        // window in which an asynchronous exception between the two would
+        // leak the queue handle.
+        //
         // Note on the lpwcsFormatName argument: this is the raw MSMQ
         // format name (e.g. "DIRECT=OS:.\\private$\\foo"), NOT the
         // "FormatName:..." prefix used by System.Messaging public APIs
@@ -102,7 +155,7 @@ namespace System.ServiceModel.Channels
             string lpwcsFormatName,
             int dwAccess,
             int dwShareMode,
-            out IntPtr phQueue);
+            out SafeMsmqQueueHandle phQueue);
 
         [DllImport(MqrtDll, EntryPoint = "MQCloseQueue", ExactSpelling = true, SetLastError = false)]
         internal static extern int MQCloseQueue(IntPtr hQueue);

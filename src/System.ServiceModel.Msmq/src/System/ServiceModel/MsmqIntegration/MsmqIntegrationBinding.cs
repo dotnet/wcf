@@ -35,15 +35,15 @@ namespace System.ServiceModel.MsmqIntegration
 
         internal Type[] TargetSerializationTypes
         {
-            get { return ((MsmqIntegrationBindingElement)transport).TargetSerializationTypes; }
-            set { ((MsmqIntegrationBindingElement)transport).TargetSerializationTypes = value; }
+            get { return ((MsmqIntegrationBindingElement)_transport).TargetSerializationTypes; }
+            set { ((MsmqIntegrationBindingElement)_transport).TargetSerializationTypes = value; }
         }
 
         [DefaultValue(MsmqDefaults.MsmqMessageSerializationFormat)]
         public MsmqMessageSerializationFormat SerializationFormat
         {
-            get { return ((MsmqIntegrationBindingElement)transport).SerializationFormat; }
-            set { ((MsmqIntegrationBindingElement)transport).SerializationFormat = value; }
+            get { return ((MsmqIntegrationBindingElement)_transport).SerializationFormat; }
+            set { ((MsmqIntegrationBindingElement)_transport).SerializationFormat = value; }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -65,14 +65,14 @@ namespace System.ServiceModel.MsmqIntegration
 
         private void Initialize()
         {
-            transport = new MsmqIntegrationBindingElement();
+            _transport = new MsmqIntegrationBindingElement();
         }
 
         public override BindingElementCollection CreateBindingElements()
         {
             var bindingElements = new BindingElementCollection();
-            _security.ConfigureTransportSecurity(transport);
-            bindingElements.Add(transport);
+            _security.ConfigureTransportSecurity(_transport);
+            bindingElements.Add(_transport);
             return bindingElements.Clone();
         }
     }

@@ -7,61 +7,53 @@ namespace System.ServiceModel.Channels
 {
     public abstract class MsmqBindingElementBase : TransportBindingElement
     {
-        private Uri _customDeadLetterQueue;
         private DeadLetterQueue _deadLetterQueue;
-        private bool _durable;
-        private bool _exactlyOnce;
         private int _maxRetryCycles;
         private ReceiveErrorHandling _receiveErrorHandling;
         private int _receiveRetryCount;
         private TimeSpan _retryCycleDelay;
         private TimeSpan _timeToLive;
-        private MsmqTransportSecurity _msmqTransportSecurity;
-        private bool _useMsmqTracing;
-        private bool _useSourceJournal;
-        private bool _receiveContextEnabled;
+        private TimeSpan _validityDuration;
 
         internal MsmqBindingElementBase()
         {
-            _customDeadLetterQueue = null;
+            CustomDeadLetterQueue = null;
             _deadLetterQueue = MsmqDefaults.DeadLetterQueue;
-            _durable = MsmqDefaults.Durable;
-            _exactlyOnce = MsmqDefaults.ExactlyOnce;
+            Durable = MsmqDefaults.Durable;
+            ExactlyOnce = MsmqDefaults.ExactlyOnce;
             _maxRetryCycles = MsmqDefaults.MaxRetryCycles;
-            _receiveContextEnabled = MsmqDefaults.ReceiveContextEnabled;
+            ReceiveContextEnabled = MsmqDefaults.ReceiveContextEnabled;
             _receiveErrorHandling = MsmqDefaults.ReceiveErrorHandling;
             _receiveRetryCount = MsmqDefaults.ReceiveRetryCount;
             _retryCycleDelay = MsmqDefaults.RetryCycleDelay;
             _timeToLive = MsmqDefaults.TimeToLive;
-            _msmqTransportSecurity = new MsmqTransportSecurity();
-            _useMsmqTracing = MsmqDefaults.UseMsmqTracing;
-            _useSourceJournal = MsmqDefaults.UseSourceJournal;
+            _validityDuration = MsmqDefaults.ValidityDuration;
+            MsmqTransportSecurity = new MsmqTransportSecurity();
+            UseMsmqTracing = MsmqDefaults.UseMsmqTracing;
+            UseSourceJournal = MsmqDefaults.UseSourceJournal;
         }
 
         internal MsmqBindingElementBase(MsmqBindingElementBase elementToBeCloned) : base(elementToBeCloned)
         {
-            _customDeadLetterQueue = elementToBeCloned._customDeadLetterQueue;
+            CustomDeadLetterQueue = elementToBeCloned.CustomDeadLetterQueue;
             _deadLetterQueue = elementToBeCloned._deadLetterQueue;
-            _durable = elementToBeCloned._durable;
-            _exactlyOnce = elementToBeCloned._exactlyOnce;
+            Durable = elementToBeCloned.Durable;
+            ExactlyOnce = elementToBeCloned.ExactlyOnce;
             _maxRetryCycles = elementToBeCloned._maxRetryCycles;
-            _msmqTransportSecurity = new MsmqTransportSecurity(elementToBeCloned.MsmqTransportSecurity);
-            _receiveContextEnabled = elementToBeCloned._receiveContextEnabled;
+            MsmqTransportSecurity = new MsmqTransportSecurity(elementToBeCloned.MsmqTransportSecurity);
+            ReceiveContextEnabled = elementToBeCloned.ReceiveContextEnabled;
             _receiveErrorHandling = elementToBeCloned._receiveErrorHandling;
             _receiveRetryCount = elementToBeCloned._receiveRetryCount;
             _retryCycleDelay = elementToBeCloned._retryCycleDelay;
             _timeToLive = elementToBeCloned._timeToLive;
-            _useMsmqTracing = elementToBeCloned._useMsmqTracing;
-            _useSourceJournal = elementToBeCloned._useSourceJournal;
+            _validityDuration = elementToBeCloned._validityDuration;
+            UseMsmqTracing = elementToBeCloned.UseMsmqTracing;
+            UseSourceJournal = elementToBeCloned.UseSourceJournal;
         }
 
         internal abstract MsmqUri.IAddressTranslator AddressTranslator { get; }
 
-        public Uri CustomDeadLetterQueue
-        {
-            get { return _customDeadLetterQueue; }
-            set { _customDeadLetterQueue = value; }
-        }
+        public Uri CustomDeadLetterQueue { get; set; }
 
         public DeadLetterQueue DeadLetterQueue
         {
@@ -76,22 +68,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public bool Durable
-        {
-            get { return _durable; }
-            set { _durable = value; }
-        }
+        public bool Durable { get; set; }
 
-        public bool TransactedReceiveEnabled
-        {
-            get { return _exactlyOnce; }
-        }
+        public bool TransactedReceiveEnabled => ExactlyOnce;
 
-        public bool ExactlyOnce
-        {
-            get { return _exactlyOnce; }
-            set { _exactlyOnce = value; }
-        }
+        public bool ExactlyOnce { get; set; }
 
         public int ReceiveRetryCount
         {
@@ -119,17 +100,9 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public MsmqTransportSecurity MsmqTransportSecurity
-        {
-            get { return _msmqTransportSecurity; }
-            internal set { _msmqTransportSecurity = value; }
-        }
+        public MsmqTransportSecurity MsmqTransportSecurity { get; internal set; }
 
-        public bool ReceiveContextEnabled
-        {
-            get { return _receiveContextEnabled; }
-            set { _receiveContextEnabled = value; }
-        }
+        public bool ReceiveContextEnabled { get; set; }
 
         public ReceiveErrorHandling ReceiveErrorHandling
         {
@@ -164,17 +137,22 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public bool UseMsmqTracing
+        // Receive-side setting, carried for .NET Framework surface parity: it
+        // bounds how long a poison-message record stays valid. The client-side
+        // send path does not consume it.
+        public TimeSpan ValidityDuration
         {
-            get { return _useMsmqTracing; }
-            set { _useMsmqTracing = value; }
+            get { return _validityDuration; }
+            set
+            {
+                ValidateTimeoutValue(value);
+                _validityDuration = value;
+            }
         }
 
-        public bool UseSourceJournal
-        {
-            get { return _useSourceJournal; }
-            set { _useSourceJournal = value; }
-        }
+        public bool UseMsmqTracing { get; set; }
+
+        public bool UseSourceJournal { get; set; }
 
         public override T GetProperty<T>(BindingContext context)
         {

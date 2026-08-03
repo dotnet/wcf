@@ -13,7 +13,7 @@ namespace System.ServiceModel
 
     internal static class MsmqEncryptionAlgorithmHelper
     {
-        public static bool IsDefined(MsmqEncryptionAlgorithm algorithm)
+        internal static bool IsDefined(MsmqEncryptionAlgorithm algorithm)
         {
             return algorithm == MsmqEncryptionAlgorithm.RC4Stream || algorithm == MsmqEncryptionAlgorithm.Aes;
         }

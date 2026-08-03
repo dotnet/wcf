@@ -25,6 +25,8 @@ namespace System.ServiceModel
         public AddressAccessDeniedException() { }
         public AddressAccessDeniedException(string message) : base(message) { }
         public AddressAccessDeniedException(string message, Exception innerException) : base(message, innerException) { }
+        // The formatter-based serialization ctor is obsolete but must stay for
+        // compatibility with the .NET Framework exception surface.
 #pragma warning disable SYSLIB0051
         protected AddressAccessDeniedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 #pragma warning restore SYSLIB0051

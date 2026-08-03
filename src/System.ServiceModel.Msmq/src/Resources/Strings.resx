@@ -76,12 +76,6 @@
   <data name="ChannelTypeNotSupported" xml:space="preserve">
     <value>The specified channel type {0} is not supported by this channel manager.</value>
   </data>
-  <data name="MsmqSendNotYetImplemented" xml:space="preserve">
-    <value>The MSMQ send channel is not yet implemented in this build of System.ServiceModel.Msmq.</value>
-  </data>
-  <data name="MsmqListenerNotSupported" xml:space="preserve">
-    <value>The MSMQ client package does not support building channel listeners. Use CoreWCF to host an MSMQ service.</value>
-  </data>
   <data name="MsmqInvalidScheme" xml:space="preserve">
     <value>The scheme of the URI is not valid for this MSMQ address translator.</value>
   </data>
@@ -93,9 +87,6 @@
   </data>
   <data name="MsmqWrongPrivateQueueSyntax" xml:space="preserve">
     <value>Private queues are addressed using '/private/&lt;name&gt;' in net.msmq URIs. The legacy '/private$' syntax is not supported.</value>
-  </data>
-  <data name="MsmqMessagingNotAvailable" xml:space="preserve">
-    <value>The MSMQ.Messaging assembly could not be loaded. Add a PackageReference to the MSMQ.Messaging NuGet package to your application so System.ServiceModel.Msmq can dispatch messages to the underlying queue.</value>
   </data>
   <data name="MsmqOpenQueueFailed" xml:space="preserve">
     <value>Failed to open the MSMQ queue at format name '{0}'. See InnerException for the native MQ_ERROR_* code.</value>
@@ -109,4 +100,34 @@
   <data name="MsmqInvalidMessageId" xml:space="preserve">
     <value>The MSMQ message id is not in the expected 'GUID\COUNTER' format.</value>
   </data>
-</root>
+      <data name="MsmqInvalidQueueNameCharacter" xml:space="preserve">
+        <value>The MSMQ queue name contains a character that is not allowed. Control characters, ',' and ';' cannot appear in a queue name because they are significant to the MSMQ format name grammar.</value>
+      </data>
+      <data name="MsmqActiveDirectoryNotSupported" xml:space="preserve">
+        <value>UseActiveDirectory is not supported. Active Directory queue path resolution is not available in System.ServiceModel.Msmq; address the queue with a direct net.msmq URI instead.</value>
+      </data>
+      <data name="MsmqSecurityModeNotSupported" xml:space="preserve">
+        <value>NetMsmqSecurityMode.{0} requires SOAP message security, which is not supported by System.ServiceModel.Msmq. Use NetMsmqSecurityMode.Transport or NetMsmqSecurityMode.None.</value>
+      </data>
+      <data name="MsmqSendTimedOut" xml:space="preserve">
+        <value>The MSMQ send operation did not complete within the allotted timeout of {0}.</value>
+      </data>
+      <data name="MsmqMessageDoesntHaveIntegrationProperty" xml:space="preserve">
+        <value>The message does not carry an MsmqIntegrationMessageProperty. Messages sent over MsmqIntegrationBinding must attach one to supply the MSMQ body and message properties.</value>
+      </data>
+      <data name="MsmqByteArrayBodyExpected" xml:space="preserve">
+        <value>The MsmqIntegrationMessageProperty body must be a byte array when SerializationFormat is ByteArray.</value>
+      </data>
+      <data name="MsmqStreamBodyExpected" xml:space="preserve">
+        <value>The MsmqIntegrationMessageProperty body must be a Stream when SerializationFormat is Stream.</value>
+      </data>
+      <data name="MsmqSerializationFormatNotSupported" xml:space="preserve">
+        <value>MsmqMessageSerializationFormat.{0} is not supported on this platform. The .NET Framework implementation relied on BinaryFormatter and the ActiveX type serializer, neither of which is available in modern .NET. Use Xml, ByteArray or Stream.</value>
+      </data>
+      <data name="MsmqUnsupportedSerializationFormat" xml:space="preserve">
+        <value>The serialization format '{0}' is not a recognized MsmqMessageSerializationFormat value.</value>
+      </data>
+      <data name="MsmqSerializationTableFull" xml:space="preserve">
+        <value>The MSMQ integration serializer cache reached its limit of {0} types. Reduce the number of distinct body types sent through this channel factory.</value>
+      </data>
+    </root>

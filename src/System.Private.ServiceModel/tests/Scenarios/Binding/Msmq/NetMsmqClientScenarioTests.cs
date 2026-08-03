@@ -45,7 +45,106 @@ namespace Binding.Msmq.IntegrationTests
                     MessageQueue.Delete(_machineQueuePath);
                 }
             }
-            catch { /* swallow on cleanup */ }
+            catch (MessageQueueException)
+            {
+                // Queue teardown is best effort: the queue may already be gone,
+                // or the worker may lack delete rights. Narrow the catch to MSMQ
+                // failures so an unrelated bug in cleanup is not buried.
+            }
+        }
+
+        // Durable=true must reach PROPID_M_DELIVERY as MQMSG_DELIVERY_RECOVERABLE.
+        // While it went unwritten MSMQ applied its EXPRESS default, and every
+        // message the caller believed was durable was lost on a queue manager
+        // restart.
+        [WcfFact]
+        [Condition(nameof(MsmqInstalled))]
+        public void Send_Durable_MessageIsRecoverable()
+        {
+            MessageQueue.Create(_machineQueuePath, transactional: false);
+
+            SendOne("durable-payload");
+
+            using var receiver = new MessageQueue("FormatName:DIRECT=OS:" + _machineQueuePath);
+            using MsmqRawMessage received = receiver.Receive(TimeSpan.FromSeconds(10));
+            Assert.True(received.Recoverable);
+        }
+
+        // The asynchronous send path used to dispatch through Task.Run and read
+        // the thread-static Transaction.Current on the worker thread, so an
+        // ambient transaction was never observed. This covers the APM overloads
+        // reaching the queue at all; the transactional behaviour itself is
+        // covered by NetMsmqTransactionalScenarioTests.
+        [WcfFact]
+        [Condition(nameof(MsmqInstalled))]
+        public void BeginSend_MessageArrivesInQueue()
+        {
+            MessageQueue.Create(_machineQueuePath, transactional: false);
+
+            var binding = new NetMsmqBinding(NetMsmqSecurityMode.None)
+            {
+                Durable = false,
+                ExactlyOnce = false,
+            };
+            IChannelFactory<IOutputChannel> factory = binding.BuildChannelFactory<IOutputChannel>();
+            try
+            {
+                factory.Open();
+                IOutputChannel channel = factory.CreateChannel(new EndpointAddress(_queueUri));
+                channel.Open();
+                try
+                {
+                    WcfMessage msg = WcfMessage.CreateMessage(MessageVersion.Soap12WSAddressing10, "urn:test/echo", "async");
+                    IAsyncResult result = channel.BeginSend(msg, null, null);
+                    channel.EndSend(result);
+                }
+                finally
+                {
+                    channel.Close();
+                }
+            }
+            finally
+            {
+                factory.Close();
+            }
+
+            using var receiver = new MessageQueue("FormatName:DIRECT=OS:" + _machineQueuePath);
+            using MsmqRawMessage received = receiver.Receive(TimeSpan.FromSeconds(10));
+            Assert.NotNull(received.BodyStream);
+        }
+
+        // The send timeout used to be discarded outright.
+        [WcfFact]
+        [Condition(nameof(MsmqInstalled))]
+        public void Send_WithExpiredTimeout_ThrowsTimeoutException()
+        {
+            MessageQueue.Create(_machineQueuePath, transactional: false);
+
+            var binding = new NetMsmqBinding(NetMsmqSecurityMode.None)
+            {
+                Durable = false,
+                ExactlyOnce = false,
+            };
+            IChannelFactory<IOutputChannel> factory = binding.BuildChannelFactory<IOutputChannel>();
+            try
+            {
+                factory.Open();
+                IOutputChannel channel = factory.CreateChannel(new EndpointAddress(_queueUri));
+                channel.Open();
+                try
+                {
+                    WcfMessage msg = WcfMessage.CreateMessage(MessageVersion.Soap12WSAddressing10, "urn:test/echo", "x");
+                    Assert.Throws<TimeoutException>(() => channel.Send(msg, TimeSpan.Zero));
+                }
+                finally
+                {
+                    channel.Abort();
+                }
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         [WcfFact]

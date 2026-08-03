@@ -21,10 +21,12 @@ namespace System.ServiceModel.Channels
     // the lifetime of the Send.
     //
     // Layout notes:
-    //   * MQPROPVARIANT is treated as a 24-byte slot on every arch.
-    //     The header is fixed (8 bytes: vt + 3 reserved words) and the
-    //     union spans the remaining 16 bytes, which is the upper bound
-    //     used by MSMQ's property surface (DECIMAL / CAUB / BLOB).
+    //   * MQPROPVARIANT mirrors OLE's PROPVARIANT: an 8-byte header
+    //     (vt + 3 reserved words) followed by the union. The union is
+    //     8-byte aligned on x64 and 4-byte aligned on x86, so the whole
+    //     structure is 24 bytes on 64-bit and 16 bytes on 32-bit. Using
+    //     a fixed 24 on x86 would over-stride every slot and hand MSMQ
+    //     a misaligned aPropVar array.
     //   * Vector members write { cElems @ 8, pElems @ VectorElementsOffset }.
     //     VectorElementsOffset is 12 on x86, 16 on x64, accounting for
     //     pointer-width alignment of the second field in CAUB.
@@ -34,14 +36,14 @@ namespace System.ServiceModel.Channels
     [SupportedOSPlatform("windows")]
     internal sealed class NativeMsmqMessage : IDisposable
     {
-        private const int PropVariantSize = 24;
+        private static int PropVariantSize => IntPtr.Size == 8 ? 24 : 16;
         private static int VectorElementsOffset => IntPtr.Size == 8 ? 16 : 12;
 
         // Per-slot state — populated as the caller adds properties.
         private readonly List<uint> _ids = new List<uint>(16);
-        // Each entry has its 24 bytes pre-written into a temp byte[]
-        // and then BLOB-copied into the unmanaged propVars buffer at
-        // Freeze time. This keeps the layout code in one place.
+        // Each entry has its PropVariantSize bytes pre-written into a
+        // temp byte[] and then BLOB-copied into the unmanaged propVars
+        // buffer at Freeze time. This keeps the layout code in one place.
         private readonly List<byte[]> _slotBytes = new List<byte[]>(16);
         private readonly List<GCHandle> _pinnedHandles = new List<GCHandle>();
         private readonly List<IntPtr> _hglobals = new List<IntPtr>();
@@ -58,7 +60,7 @@ namespace System.ServiceModel.Channels
 
         public void SetByte(uint propId, byte value)
         {
-            var slot = new byte[PropVariantSize];
+            byte[] slot = new byte[PropVariantSize];
             WriteUShort(slot, 0, UnsafeNativeMethods.VT_UI1);
             slot[8] = value;
             Append(propId, slot);
@@ -66,7 +68,7 @@ namespace System.ServiceModel.Channels
 
         public void SetUInt32(uint propId, uint value)
         {
-            var slot = new byte[PropVariantSize];
+            byte[] slot = new byte[PropVariantSize];
             WriteUShort(slot, 0, UnsafeNativeMethods.VT_UI4);
             WriteUInt32(slot, 8, value);
             Append(propId, slot);
@@ -86,7 +88,7 @@ namespace System.ServiceModel.Channels
             IntPtr stringPtr = Marshal.StringToHGlobalUni(value);
             _hglobals.Add(stringPtr);
 
-            var slot = new byte[PropVariantSize];
+            byte[] slot = new byte[PropVariantSize];
             WriteUShort(slot, 0, UnsafeNativeMethods.VT_LPWSTR);
             WriteIntPtr(slot, 8, stringPtr);
             Append(propId, slot);
@@ -111,7 +113,7 @@ namespace System.ServiceModel.Channels
             GCHandle pin = GCHandle.Alloc(value, GCHandleType.Pinned);
             _pinnedHandles.Add(pin);
 
-            var slot = new byte[PropVariantSize];
+            byte[] slot = new byte[PropVariantSize];
             WriteUShort(slot, 0, (ushort)(UnsafeNativeMethods.VT_VECTOR | UnsafeNativeMethods.VT_UI1));
             WriteUInt32(slot, 8, (uint)value.Length);
             WriteIntPtr(slot, VectorElementsOffset, pin.AddrOfPinnedObject());
@@ -148,7 +150,7 @@ namespace System.ServiceModel.Channels
             GCHandle pin = GCHandle.Alloc(slice, GCHandleType.Pinned);
             _pinnedHandles.Add(pin);
 
-            var bodySlot = new byte[PropVariantSize];
+            byte[] bodySlot = new byte[PropVariantSize];
             WriteUShort(bodySlot, 0, (ushort)(UnsafeNativeMethods.VT_VECTOR | UnsafeNativeMethods.VT_UI1));
             WriteUInt32(bodySlot, 8, (uint)slice.Length);
             WriteIntPtr(bodySlot, VectorElementsOffset, pin.AddrOfPinnedObject());
