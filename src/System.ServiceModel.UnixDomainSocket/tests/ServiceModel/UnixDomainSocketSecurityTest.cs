@@ -9,7 +9,7 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-public static class UnixDomainSocketSecurityTest
+public class UnixDomainSocketSecurityTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Ctor_Default_Initializes_Properties()

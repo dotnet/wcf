@@ -10,7 +10,7 @@ using System.Text;
 using Infrastructure.Common;
 using Xunit;
 
-public static class TextMessageEncodingBindingElementTest
+public class TextMessageEncodingBindingElementTest : ConditionalWcfTest
 {
     [WcfFact]
     // Create a TextMessageEncodingBindingElement and check it's default encoding is as expected.

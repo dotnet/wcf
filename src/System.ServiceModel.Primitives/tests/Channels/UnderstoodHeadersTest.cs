@@ -10,7 +10,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using Xunit;
 
-public static class UnderstoodHeadersTest
+public class UnderstoodHeadersTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void UnderstoodHeaders_Add_Contains_Remove_GetEnumerator()

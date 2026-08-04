@@ -10,7 +10,7 @@ using System.ServiceModel.Dispatcher;
 using Infrastructure.Common;
 using Xunit;
 
-public static class MessageTests
+public class MessageTests : ConditionalWcfTest
 {
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "Test Custom_Message_RoundTrips.";

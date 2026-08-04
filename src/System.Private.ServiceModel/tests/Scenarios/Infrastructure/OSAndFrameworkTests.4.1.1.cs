@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using Infrastructure.Common;
 using Xunit;
 
-public class OSAndFrameworkTests
+public class OSAndFrameworkTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

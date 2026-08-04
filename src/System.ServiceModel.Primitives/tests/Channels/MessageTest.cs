@@ -9,7 +9,7 @@ using System.ServiceModel.Tests.Common;
 using Infrastructure.Common;
 using Xunit;
 
-public static class MessageTest
+public class MessageTest : ConditionalWcfTest
 {
     private const string s_action = "http://tempuri.org/someserviceendpoint";
 

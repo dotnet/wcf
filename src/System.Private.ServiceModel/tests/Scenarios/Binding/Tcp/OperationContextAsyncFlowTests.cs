@@ -11,7 +11,7 @@ using Infrastructure.Common;
 using ScenarioTests.Common;
 using Xunit;
 
-public class OperationContextAsyncFlowTests
+public class OperationContextAsyncFlowTests : ConditionalWcfTest
 {
     [WcfFact]
     public static async Task OperationContextScopeAsyncFlow()

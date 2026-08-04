@@ -10,7 +10,7 @@ using Xunit;
 
 [assembly: FailFastAfter("00:01:00")]
 
-public static partial class ChannelBaseTests_4_0_0
+public partial class ChannelBaseTests_4_0_0 : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Xunit;
 
-public static class Binding_Http_BasicHttpBindingTests
+public class Binding_Http_BasicHttpBindingTests : ConditionalWcfTest
 {
     [WcfTheory]
     [InlineData(WSMessageEncoding.Text)]

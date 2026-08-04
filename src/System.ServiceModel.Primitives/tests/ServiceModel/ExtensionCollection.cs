@@ -9,7 +9,7 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-public class ExtensionCollectionTest
+public class ExtensionCollectionTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void ExtensionCollectionPublicMembersTest()
