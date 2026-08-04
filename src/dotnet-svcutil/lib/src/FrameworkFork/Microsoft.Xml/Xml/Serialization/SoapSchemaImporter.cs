@@ -11,6 +11,7 @@ namespace Microsoft.Xml.Serialization
     using System.Reflection;
     using System.Diagnostics;
     using Microsoft.CodeDom.Compiler;
+    using System.Linq;
     // using System.Security.Permissions;
 
     /// <include file='doc\SoapSchemaImporter.uex' path='docs/doc[@for="SoapSchemaImporter"]/*' />
@@ -226,7 +227,7 @@ namespace Microsoft.Xml.Serialization
         // [PermissionSet(SecurityAction.InheritanceDemand, Name="FullTrust")]
         internal override void ImportDerivedTypes(XmlQualifiedName baseName)
         {
-            foreach (XmlSchema schema in Schemas)
+            foreach (XmlSchema schema in Schemas.OrderBy(x => x.TargetNamespace).ThenBy(x => x.SourceUri))
             {
                 if (Schemas.IsReference(schema)) continue;
                 if (XmlSchemas.IsDataSet(schema)) continue;
