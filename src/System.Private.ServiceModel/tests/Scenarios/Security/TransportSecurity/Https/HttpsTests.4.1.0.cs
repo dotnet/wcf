@@ -567,4 +567,67 @@ public partial class HttpsTests : ConditionalWcfTest
         }
     }
 
+    // Regression test for https://github.com/dotnet/wcf/issues/5729
+    // Verifies that a custom RemoteCertificateValidationCallback (configured via
+    // ClientCredentials.ServiceCertificate.SslCertificateAuthentication) is invoked
+    // during the WebSocket handshake even when no client certificate is required.
+    // Prior to the fix, the callback was only wired when RequireClientCertificate
+    // was true, so this scenario silently fell back to default validation.
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+       nameof(SSL_Available),
+       nameof(Skip_CoreWCFService_FailedTest))]
+    [Issue(3572, OS = OSID.OSX)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
+    [OuterLoop]
+    public static void WebSocket_ServerCertificateValidation_NoClientCertificate()
+    {
+        EndpointAddress endpointAddress;
+        NetHttpsBinding binding = null;
+        ChannelFactory<IWSRequestReplyService> factory = null;
+        IWSRequestReplyService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpsBinding(BasicHttpsSecurityMode.Transport)
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.TransferMode = TransferMode.Buffered;
+            // Intentionally do NOT set Security.Transport.ClientCredentialType = Certificate;
+            // this is the scenario from issue #5729 where the custom validator was being ignored.
+            endpointAddress = new EndpointAddress(Endpoints.WebSocketHttpsRequestReplyBuffered_Address + Enum.GetName(typeof(NetHttpMessageEncoding), NetHttpMessageEncoding.Binary));
+
+            factory = new ChannelFactory<IWSRequestReplyService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
+            MyX509CertificateValidator myX509CertificateValidator = new MyX509CertificateValidator(ScenarioTestHelpers.CertificateIssuerName);
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication.CustomCertificateValidator = myX509CertificateValidator;
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            // Triggers the WebSocket handshake, which is where the SSL certificate validation callback must run.
+            string result = serviceProxy.DownloadData();
+
+            // *** VALIDATE *** \\
+            Assert.True(myX509CertificateValidator.validateMethodWasCalled,
+                "The custom X509CertificateValidator was NOT called during the WebSocket handshake. " +
+                "This indicates the SslCertificateAuthentication callback was not wired when RequireClientCertificate is false (regression of #5729).");
+            Assert.False(string.IsNullOrEmpty(result), "DownloadData returned an empty result.");
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
 }
