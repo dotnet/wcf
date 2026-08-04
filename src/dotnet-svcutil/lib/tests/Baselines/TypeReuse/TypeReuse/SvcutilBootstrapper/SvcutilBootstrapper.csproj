@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>N.N</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors />
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="dotnet-svcutil-lib">
+      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
+    </Reference>
+    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/DOTNET_VERSION/net8.0/**" Link="net8.0/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/DOTNET_VERSION/net462/**" Link="net462/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Reference Include="BinLib">
+      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/DOTNET_VERSION/BinLib.dll</HintPath>
+    </Reference>
+    <Reference Include="TypesLib">
+      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse/bin/Debug/DOTNET_VERSION/TypesLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="dotnet-svcutil-lib" Version="99.99.99" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="99.99.99" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="99.99.99" />
+    <PackageReference Include="Newtonsoft.Json" Version="99.99.99" />
+    <PackageReference Include="NuGet.Common" Version="99.99.99" />
+    <PackageReference Include="NuGet.Configuration" Version="99.99.99" />
+    <PackageReference Include="NuGet.DependencyResolver.Core" Version="99.99.99" />
+    <PackageReference Include="NuGet.Frameworks" Version="99.99.99" />
+    <PackageReference Include="NuGet.LibraryModel" Version="99.99.99" />
+    <PackageReference Include="NuGet.Packaging" Version="99.99.99" />
+    <PackageReference Include="NuGet.ProjectModel" Version="99.99.99" />
+    <PackageReference Include="NuGet.Protocol" Version="99.99.99" />
+    <PackageReference Include="NuGet.Versioning" Version="99.99.99" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="99.99.99" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="99.99.99" />
+  </ItemGroup>
+</Project>
