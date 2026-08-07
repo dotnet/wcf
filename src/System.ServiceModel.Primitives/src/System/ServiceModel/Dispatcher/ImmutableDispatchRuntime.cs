@@ -49,7 +49,7 @@ namespace System.ServiceModel.Dispatcher
             _terminate = TerminatingOperationBehavior.CreateIfNecessary(dispatch);
             _thread = new ThreadBehavior(dispatch);
             _sendAsynchronously = dispatch.ChannelDispatcher.SendAsynchronously;
-            CorrelationCount = dispatch.MaxParameterInspectors;
+            CorrelationCount = _messageInspectors.Length + dispatch.MaxParameterInspectors;
 
             DispatchOperationRuntime unhandled = new DispatchOperationRuntime(dispatch.UnhandledDispatchOperation, this);
 
@@ -89,6 +89,8 @@ namespace System.ServiceModel.Dispatcher
         internal bool ValidateMustUnderstand { get; }
 
         internal int MessageInspectorCorrelationOffset => 0;
+
+        internal int ParameterInspectorCorrelationOffset => _messageInspectors.Length;
 
         internal void AfterReceiveRequest(ref MessageRpc rpc)
         {
