@@ -82,7 +82,6 @@ extends:
             - HelixApiAccessToken: ''
             - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
             - ${{ if eq(variables._RunAsInternal, True) }}:
-              - group: Publish-Build-Assets
               - group: DotNet-HelixApi-Access
               - _PublishBlobFeedUrl: https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json
               - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName) /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed) /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory) /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
