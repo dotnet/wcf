@@ -129,10 +129,11 @@ namespace System.ServiceModel.Dispatcher
 
         private void InspectInputsCore(ref MessageRpc rpc)
         {
+            int offset = Parent.ParameterInspectorCorrelationOffset;
             for (int i = 0; i < ParameterInspectors.Length; i++)
             {
                 IParameterInspector inspector = ParameterInspectors[i];
-                rpc.Correlation[i] = inspector.BeforeCall(Name, rpc.InputParameters);
+                rpc.Correlation[offset + i] = inspector.BeforeCall(Name, rpc.InputParameters);
                 if (WcfEventSource.Instance.ParameterInspectorBeforeCallInvokedIsEnabled())
                 {
                     WcfEventSource.Instance.ParameterInspectorBeforeCallInvoked(rpc.EventTraceActivity, ParameterInspectors[i].GetType().FullName);
@@ -150,10 +151,11 @@ namespace System.ServiceModel.Dispatcher
 
         private void InspectOutputsCore(ref MessageRpc rpc)
         {
+            int offset = Parent.ParameterInspectorCorrelationOffset;
             for (int i = ParameterInspectors.Length - 1; i >= 0; i--)
             {
                 IParameterInspector inspector = ParameterInspectors[i];
-                inspector.AfterCall(Name, rpc.OutputParameters, rpc.ReturnParameter, rpc.Correlation[i]);
+                inspector.AfterCall(Name, rpc.OutputParameters, rpc.ReturnParameter, rpc.Correlation[offset + i]);
                 if (WcfEventSource.Instance.ParameterInspectorAfterCallInvokedIsEnabled())
                 {
                     WcfEventSource.Instance.ParameterInspectorAfterCallInvoked(rpc.EventTraceActivity, ParameterInspectors[i].GetType().FullName);
