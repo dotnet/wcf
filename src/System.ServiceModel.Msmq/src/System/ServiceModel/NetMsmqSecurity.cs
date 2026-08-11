@@ -40,7 +40,10 @@ namespace System.ServiceModel
         [DefaultValue(DefaultMode)]
         public NetMsmqSecurityMode Mode
         {
-            get { return _mode; }
+            get
+            {
+                return _mode;
+            }
             set
             {
                 if (!NetMsmqSecurityModeHelper.IsDefined(value))
@@ -57,7 +60,10 @@ namespace System.ServiceModel
             {
                 return _transportSecurity ??= new MsmqTransportSecurity();
             }
-            set { _transportSecurity = value; }
+            set
+            {
+                _transportSecurity = value;
+            }
         }
 
         public MessageSecurityOverMsmq Message
@@ -66,7 +72,10 @@ namespace System.ServiceModel
             {
                 return _messageSecurity ??= new MessageSecurityOverMsmq();
             }
-            set { _messageSecurity = value; }
+            set
+            {
+                _messageSecurity = value;
+            }
         }
 
         internal void ConfigureTransportSecurity(MsmqBindingElementBase msmq)

@@ -53,13 +53,7 @@ namespace System.ServiceModel
             }
         }
 
-        internal bool WasAlgorithmSuiteSet
-        {
-            get
-            {
-                return _wasAlgorithmSuiteSet;
-            }
-        }
+        internal bool WasAlgorithmSuiteSet => _wasAlgorithmSuiteSet;
 
         private static bool IsMessageCredentialTypeDefined(MessageCredentialType value)
         {

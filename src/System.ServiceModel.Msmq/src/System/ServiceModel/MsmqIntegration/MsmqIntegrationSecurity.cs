@@ -13,12 +13,10 @@ namespace System.ServiceModel.MsmqIntegration
         internal const MsmqIntegrationSecurityMode DefaultMode = MsmqIntegrationSecurityMode.Transport;
 
         private MsmqIntegrationSecurityMode _mode;
-        private MsmqTransportSecurity _transportSecurity;
-
         public MsmqIntegrationSecurity()
         {
             _mode = DefaultMode;
-            _transportSecurity = new MsmqTransportSecurity();
+            Transport = new MsmqTransportSecurity();
         }
 
         [DefaultValue(DefaultMode)]
@@ -37,8 +35,8 @@ namespace System.ServiceModel.MsmqIntegration
 
         public MsmqTransportSecurity Transport
         {
-            get { return _transportSecurity; }
-            set { _transportSecurity = value; }
+            get;
+            set;
         }
 
         internal void ConfigureTransportSecurity(MsmqBindingElementBase msmq)

@@ -19,12 +19,10 @@ namespace System.ServiceModel
         private const int DefaultMaxStringContentLength = 8192;
 
         private BinaryMessageEncodingBindingElement _encoding;
-        private NetMsmqSecurity _security;
-
         public NetMsmqBinding()
         {
             Initialize();
-            _security = new NetMsmqSecurity();
+            Security = new NetMsmqSecurity();
         }
 
         public NetMsmqBinding(NetMsmqSecurityMode securityMode)
@@ -34,7 +32,7 @@ namespace System.ServiceModel
                 throw new InvalidEnumArgumentException(nameof(securityMode), (int)securityMode, typeof(NetMsmqSecurityMode));
             }
             Initialize();
-            _security = new NetMsmqSecurity(securityMode);
+            Security = new NetMsmqSecurity(securityMode);
         }
 
         [DefaultValue(MsmqDefaults.QueueTransferProtocol)]
@@ -59,8 +57,8 @@ namespace System.ServiceModel
 
         public NetMsmqSecurity Security
         {
-            get { return _security; }
-            set { _security = value; }
+            get;
+            set;
         }
 
         public EnvelopeVersion EnvelopeVersion => EnvelopeVersion.Soap12;
@@ -97,19 +95,19 @@ namespace System.ServiceModel
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeSecurity()
         {
-            if (_security.Mode != NetMsmqSecurity.DefaultMode)
+            if (Security.Mode != NetMsmqSecurity.DefaultMode)
             {
                 return true;
             }
-            if (_security.Transport.MsmqAuthenticationMode != MsmqDefaults.MsmqAuthenticationMode
-                || _security.Transport.MsmqEncryptionAlgorithm != MsmqDefaults.MsmqEncryptionAlgorithm
-                || _security.Transport.MsmqSecureHashAlgorithm != MsmqDefaults.MsmqSecureHashAlgorithm
-                || _security.Transport.MsmqProtectionLevel != MsmqDefaults.MsmqProtectionLevel)
+            if (Security.Transport.MsmqAuthenticationMode != MsmqDefaults.MsmqAuthenticationMode
+                || Security.Transport.MsmqEncryptionAlgorithm != MsmqDefaults.MsmqEncryptionAlgorithm
+                || Security.Transport.MsmqSecureHashAlgorithm != MsmqDefaults.MsmqSecureHashAlgorithm
+                || Security.Transport.MsmqProtectionLevel != MsmqDefaults.MsmqProtectionLevel)
             {
                 return true;
             }
-            if (_security.Message.AlgorithmSuite != MsmqDefaults.MessageSecurityAlgorithmSuite
-                || _security.Message.ClientCredentialType != MsmqDefaults.DefaultClientCredentialType)
+            if (Security.Message.AlgorithmSuite != MsmqDefaults.MessageSecurityAlgorithmSuite
+                || Security.Message.ClientCredentialType != MsmqDefaults.DefaultClientCredentialType)
             {
                 return true;
             }
@@ -140,11 +138,11 @@ namespace System.ServiceModel
 
         private MsmqBindingElementBase GetTransport()
         {
-            if (_security.Mode == NetMsmqSecurityMode.Message || _security.Mode == NetMsmqSecurityMode.Both)
+            if (Security.Mode == NetMsmqSecurityMode.Message || Security.Mode == NetMsmqSecurityMode.Both)
             {
-                throw new NotSupportedException(SR.Format(SR.MsmqSecurityModeNotSupported, _security.Mode));
+                throw new NotSupportedException(SR.Format(SR.MsmqSecurityModeNotSupported, Security.Mode));
             }
-            _security.ConfigureTransportSecurity(_transport);
+            Security.ConfigureTransportSecurity(_transport);
             return _transport;
         }
     }

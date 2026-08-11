@@ -36,10 +36,7 @@ namespace System.ServiceModel
             _messageLookupId = messageLookupId;
         }
 
-        public long MessageLookupId
-        {
-            get { return _messageLookupId; }
-        }
+        public long MessageLookupId => _messageLookupId;
 
         protected MsmqPoisonMessageException(SerializationInfo info, StreamingContext context)
             : base(info, context)
