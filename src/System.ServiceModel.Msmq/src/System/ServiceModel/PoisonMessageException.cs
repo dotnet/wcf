@@ -10,9 +10,23 @@ namespace System.ServiceModel
     [Serializable]
     public class PoisonMessageException : CommunicationException
     {
-        public PoisonMessageException() { }
-        public PoisonMessageException(string message) : base(message) { }
-        public PoisonMessageException(string message, Exception innerException) : base(message, innerException) { }
-        protected PoisonMessageException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public PoisonMessageException()
+        {
+        }
+
+        public PoisonMessageException(string message)
+            : base(message)
+        {
+        }
+
+        public PoisonMessageException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        protected PoisonMessageException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

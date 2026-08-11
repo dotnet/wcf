@@ -21,12 +21,29 @@ namespace System.ServiceModel
         [NonSerialized] private bool? _faultReceiver;
         [NonSerialized] private Type _outerExceptionType;
 
-        public MsmqException() { }
-        public MsmqException(string message) : base(message) { }
-        public MsmqException(string message, int error) : base(message, error) { }
-        public MsmqException(string message, Exception inner) : base(message, inner) { }
+        public MsmqException()
+        {
+        }
+
+        public MsmqException(string message)
+            : base(message)
+        {
+        }
+
+        public MsmqException(string message, int error)
+            : base(message, error)
+        {
+        }
+
+        public MsmqException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
 #pragma warning disable SYSLIB0051 // legacy formatter-based serialization support
-        protected MsmqException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected MsmqException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
 #pragma warning restore SYSLIB0051
 
         internal bool FaultSender

@@ -26,7 +26,10 @@ namespace System.ServiceModel
         [DefaultValue(MsmqDefaults.DefaultClientCredentialType)]
         public MessageCredentialType ClientCredentialType
         {
-            get { return _clientCredentialType; }
+            get
+            {
+                return _clientCredentialType;
+            }
             set
             {
                 if (!IsMessageCredentialTypeDefined(value))
@@ -39,7 +42,10 @@ namespace System.ServiceModel
 
         public SecurityAlgorithmSuite AlgorithmSuite
         {
-            get { return _algorithmSuite; }
+            get
+            {
+                return _algorithmSuite;
+            }
             set
             {
                 _algorithmSuite = value ?? throw new ArgumentNullException(nameof(value));
@@ -49,7 +55,10 @@ namespace System.ServiceModel
 
         internal bool WasAlgorithmSuiteSet
         {
-            get { return _wasAlgorithmSuiteSet; }
+            get
+            {
+                return _wasAlgorithmSuiteSet;
+            }
         }
 
         private static bool IsMessageCredentialTypeDefined(MessageCredentialType value)

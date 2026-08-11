@@ -10,14 +10,10 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-// Pins the native MQ_ERROR_* → WCF-exception mapping after slice 9
-// dropped the MSMQ.Messaging dependency. The native send path now
+// Pins the native MQ_ERROR_* to WCF-exception mapping. The native send path now
 // passes the raw HRESULT from mqrt!MQSendMessage straight into
-// MsmqException's (string, int) ctor; previously the wrapper layer
-// went through MSMQ.Messaging.MessageQueueException whose .ErrorCode
-// is the generic HRESULT (0x80004005). Slice 6 had to undo that with
-// MessageQueueErrorCode; slice 9 eliminates the wrapper entirely so
-// we no longer have a substitute layer to test through.
+// MsmqException's (string, int) constructor, preserving the native error
+// code for normalization.
 //
 // These tests construct MsmqException directly (the public ctor) with
 // the native MQ_ERROR_* code and verify the normalization table fires
@@ -52,11 +48,11 @@ public static class MsmqMessagingInteropTest
     [InlineData(0xC00E0025u)] // MQ_ERROR_ACCESS_DENIED
     public static void MsmqException_PreservesNativeMQErrorCode(uint nativeCode)
     {
-        var ex = new MsmqException("native send failed", unchecked((int)nativeCode));
+        MsmqException ex = new MsmqException("native send failed", unchecked((int)nativeCode));
         Assert.Equal(unchecked((int)nativeCode), ex.ErrorCode);
     }
 
-    // End-to-end pin of the post-slice-9 send-error path: passing the
+    // End-to-end pin of the native send-error path: passing the
     // native MQ_ERROR_* code from mqrt!MQSendMessage's return value
     // into MsmqException, then asking MsmqException.NormalizedType,
     // yields the right WCF exception type.
@@ -76,7 +72,7 @@ public static class MsmqMessagingInteropTest
     [InlineData(0xC00E0056u, typeof(InvalidOperationException))] // StaleHandle
     public static void MsmqException_NormalizesToWcfException(uint nativeCode, Type expected)
     {
-        var ex = new MsmqException("native send failed", unchecked((int)nativeCode));
+        MsmqException ex = new MsmqException("native send failed", unchecked((int)nativeCode));
         Assert.Equal(expected, GetNormalizedType(ex));
     }
 
@@ -89,7 +85,7 @@ public static class MsmqMessagingInteropTest
     [InlineData(0xC00E000Eu)] // not a defined MQ_ERROR_* value
     public static void MsmqException_DoesNotClaimUnrelatedCodes(uint nativeCode)
     {
-        var ex = new MsmqException("native send failed", unchecked((int)nativeCode));
+        MsmqException ex = new MsmqException("native send failed", unchecked((int)nativeCode));
         Assert.Null(GetNormalizedType(ex));
     }
 }

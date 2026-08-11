@@ -9,7 +9,7 @@ using System.Runtime.Versioning;
 using Infrastructure.Common;
 using Xunit;
 
-// Regression tests for the slice-5c bug:
+// Regression tests for the implicit DTC test-environment contract:
 //   .NET 8+ disables implicit DTC promotion by default. Setting
 //   TransactionManager.ImplicitDistributedTransactions from inside the
 //   xunit-console test host is too late: the DTC proxy reads the flag

@@ -19,8 +19,14 @@ namespace System.ServiceModel
         [DefaultValue(null)]
         public Uri CustomDeadLetterQueue
         {
-            get { return _transport.CustomDeadLetterQueue; }
-            set { _transport.CustomDeadLetterQueue = value; }
+            get
+            {
+                return _transport.CustomDeadLetterQueue;
+            }
+            set
+            {
+                _transport.CustomDeadLetterQueue = value;
+            }
         }
 
         [DefaultValue(MsmqDefaults.DeadLetterQueue)]

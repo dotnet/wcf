@@ -12,10 +12,24 @@ namespace System.ServiceModel
     {
         private readonly long _messageLookupId;
 
-        public MsmqPoisonMessageException() { }
-        public MsmqPoisonMessageException(string message) : base(message) { }
-        public MsmqPoisonMessageException(string message, Exception innerException) : base(message, innerException) { }
-        public MsmqPoisonMessageException(long messageLookupId) : this(messageLookupId, null) { }
+        public MsmqPoisonMessageException()
+        {
+        }
+
+        public MsmqPoisonMessageException(string message)
+            : base(message)
+        {
+        }
+
+        public MsmqPoisonMessageException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        public MsmqPoisonMessageException(long messageLookupId)
+            : this(messageLookupId, null)
+        {
+        }
         public MsmqPoisonMessageException(long messageLookupId, Exception innerException)
             : base(SR.MsmqPoisonMessage, innerException)
         {
