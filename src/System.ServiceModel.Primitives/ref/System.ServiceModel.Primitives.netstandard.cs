@@ -382,6 +382,13 @@ namespace System.ServiceModel
         public CommunicationException(string message, System.Exception innerException) { }
         protected CommunicationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
+    public partial class AddressAccessDeniedException : System.ServiceModel.CommunicationException
+    {
+        public AddressAccessDeniedException() { }
+        public AddressAccessDeniedException(string message) { }
+        public AddressAccessDeniedException(string message, System.Exception innerException) { }
+        protected AddressAccessDeniedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
     public partial class CommunicationObjectAbortedException : System.ServiceModel.CommunicationException
     {
         public CommunicationObjectAbortedException() { }
