@@ -237,7 +237,14 @@ namespace WcfService
                                 if (!useWebSocket && (schema == ServiceSchema.WS || schema == ServiceSchema.WSS)) continue;
 
                                 string basePath = serviceTestHostOptionsDict[serviceHostTypeName].endpointBasePath[schema];
-                                string endpointAddress = string.Format("{0}/{1}", basePath, endpoint.Address);
+                                // When the endpoint Address is empty (e.g. for WebHttpBinding hosts
+                                // that anchor URI templates at the base path), avoid appending a
+                                // trailing slash. CoreWCF's WebHttp routing builds prefix matches
+                                // off the registered URI and a trailing slash causes everything
+                                // except the bare base address to 404.
+                                string endpointAddress = string.IsNullOrEmpty(endpoint.Address)
+                                    ? basePath
+                                    : string.Format("{0}/{1}", basePath, endpoint.Address);
                                 serviceBuilder.AddServiceEndpoint(serviceHost.ServiceType, endpoint.ContractType, endpoint.Binding, new Uri(endpointAddress, UriKind.RelativeOrAbsolute), null);
                             }
 
