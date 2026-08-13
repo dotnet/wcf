@@ -250,7 +250,7 @@
     <value>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</value>
   </data>
   <data name="HttpClientCredentialTypeInvalid" xml:space="preserve">
-    <value>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</value>
+    <value>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Certificate, Digest, Ntlm, Windows'.</value>
   </data>
   <data name="UnsupportedSecuritySetting" xml:space="preserve">
     <value>The value '{1}' is not supported in this context for the binding security property '{0}'.</value>

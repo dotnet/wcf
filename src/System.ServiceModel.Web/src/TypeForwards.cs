@@ -1,0 +1,46 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Json;
+using System.ServiceModel.Syndication;
+
+[assembly: TypeForwardedTo(typeof(DataContractJsonSerializer))]
+[assembly: TypeForwardedTo(typeof(IXmlJsonReaderInitializer))]
+[assembly: TypeForwardedTo(typeof(IXmlJsonWriterInitializer))]
+[assembly: TypeForwardedTo(typeof(JsonReaderWriterFactory))]
+[assembly: TypeForwardedTo(typeof(Atom10FeedFormatter))]
+[assembly: TypeForwardedTo(typeof(Atom10FeedFormatter<>))]
+[assembly: TypeForwardedTo(typeof(Atom10ItemFormatter))]
+[assembly: TypeForwardedTo(typeof(Atom10ItemFormatter<>))]
+[assembly: TypeForwardedTo(typeof(AtomPub10CategoriesDocumentFormatter))]
+[assembly: TypeForwardedTo(typeof(AtomPub10ServiceDocumentFormatter))]
+[assembly: TypeForwardedTo(typeof(AtomPub10ServiceDocumentFormatter<>))]
+[assembly: TypeForwardedTo(typeof(CategoriesDocument))]
+[assembly: TypeForwardedTo(typeof(CategoriesDocumentFormatter))]
+[assembly: TypeForwardedTo(typeof(InlineCategoriesDocument))]
+[assembly: TypeForwardedTo(typeof(ReferencedCategoriesDocument))]
+[assembly: TypeForwardedTo(typeof(ResourceCollectionInfo))]
+[assembly: TypeForwardedTo(typeof(Rss20FeedFormatter))]
+[assembly: TypeForwardedTo(typeof(Rss20FeedFormatter<>))]
+[assembly: TypeForwardedTo(typeof(Rss20ItemFormatter))]
+[assembly: TypeForwardedTo(typeof(Rss20ItemFormatter<>))]
+[assembly: TypeForwardedTo(typeof(ServiceDocument))]
+[assembly: TypeForwardedTo(typeof(ServiceDocumentFormatter))]
+[assembly: TypeForwardedTo(typeof(SyndicationCategory))]
+[assembly: TypeForwardedTo(typeof(SyndicationContent))]
+[assembly: TypeForwardedTo(typeof(SyndicationElementExtension))]
+[assembly: TypeForwardedTo(typeof(SyndicationElementExtensionCollection))]
+[assembly: TypeForwardedTo(typeof(SyndicationFeed))]
+[assembly: TypeForwardedTo(typeof(SyndicationFeedFormatter))]
+[assembly: TypeForwardedTo(typeof(SyndicationItem))]
+[assembly: TypeForwardedTo(typeof(SyndicationItemFormatter))]
+[assembly: TypeForwardedTo(typeof(SyndicationLink))]
+[assembly: TypeForwardedTo(typeof(SyndicationPerson))]
+[assembly: TypeForwardedTo(typeof(SyndicationVersions))]
+[assembly: TypeForwardedTo(typeof(TextSyndicationContent))]
+[assembly: TypeForwardedTo(typeof(TextSyndicationContentKind))]
+[assembly: TypeForwardedTo(typeof(UrlSyndicationContent))]
+[assembly: TypeForwardedTo(typeof(Workspace))]
+[assembly: TypeForwardedTo(typeof(XmlSyndicationContent))]
