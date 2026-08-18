@@ -32,6 +32,42 @@ $env:PATH = "$env:DOTNET_ROOT;$env:PATH"
 
 Then standard `dotnet build`, `dotnet test`, etc. will work against individual projects.
 
+## Mandatory C# Code Style Skill
+
+For every task that creates, modifies, reviews, formats, ports, or modernizes
+C# code or C# tests, automatically load and follow
+`.github/skills/wcf-csharp-style/SKILL.md` before editing and again before final
+validation.
+
+Non-negotiable formatting scope:
+
+- Apply style only to new or intentionally modified code.
+- Never run solution-wide or repository-wide formatting automatically.
+- `dotnet format` is file-scoped, not line-scoped. Verify all changed C# files,
+  but automatically apply whole-file formatting only to new files.
+- Format existing modified files in the touched hunks, then inspect the diff for
+  unrelated formatter churn.
+- Do not hand-format generated, reference-assembly, baseline, build-output, or
+  Arcade-managed files.
+- Preserve behavior, public API, serialization, threading, ordering, disposal,
+  resources, and exception behavior.
+
+Use the skill helpers from the repository root:
+
+```powershell
+# List eligible changed C# files
+pwsh .github/skills/wcf-csharp-style/scripts/Get-ChangedCSharpFiles.ps1
+
+# Verify formatting without writing files
+pwsh .github/skills/wcf-csharp-style/scripts/Invoke-ChangedCSharpFormat.ps1 -VerifyOnly
+
+# Apply whole-file formatting to new C# files only
+pwsh .github/skills/wcf-csharp-style/scripts/Invoke-ChangedCSharpFormat.ps1 -Apply
+```
+
+Do not use `-AllowModifiedFiles` unless the user explicitly authorizes
+whole-file formatting of existing modified files.
+
 ### Running tests
 
 **Unit tests** (no network required):
@@ -126,9 +162,15 @@ These attributes live in `src/System.Private.ServiceModel/tests/Common/Infrastru
 
 - Braces on new lines (Allman style) for all constructs
 - `using` directives outside namespace
-- Avoid `var` — use explicit types (even when type is apparent, it's only a suggestion)
+- Use `var` when the declaration names the exact type, such as
+  `var factory = new ChannelFactory()`; use an explicit type when a method call
+  or complex expression hides the result type
 - Avoid `this.` qualification
+- Prefer expression-bodied `=>` members for simple single-expression returns
 - Use language keywords over BCL type names (`int` not `Int32`)
+- Keep exactly one blank line after a C# license header
+- Keep one blank line after a completed control-flow block before the next
+  same-scope statement, except before `else`, `catch`, `finally`, or `}`
 - File header required: `Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license.`
 
 ### Multi-targeting
