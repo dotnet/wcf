@@ -742,6 +742,10 @@ namespace Microsoft.CodeDom.Compiler
             {
                 ValidateDefaultValueExpression((CodeDefaultValueExpression)e);
             }
+            else if (e is CodeAwaitExpression)
+            {
+                ValidateExpression(((CodeAwaitExpression)e).Expression);
+            }
             else if (e is CodeDelegateCreateExpression)
             {
                 ValidateDelegateCreateExpression((CodeDelegateCreateExpression)e);

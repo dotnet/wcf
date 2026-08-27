@@ -813,6 +813,10 @@ namespace Microsoft.CodeDom.Compiler
             {
                 GenerateDefaultValueExpression((CodeDefaultValueExpression)e);
             }
+            else if (e is CodeAwaitExpression)
+            {
+                GenerateAwaitExpression((CodeAwaitExpression)e);
+            }
             else
             {
                 if (e == null)
@@ -1830,6 +1834,10 @@ namespace Microsoft.CodeDom.Compiler
 
         // TODO: this should be abstract, but that will break language providers which don't support DefaultValueExpression.
         protected virtual void GenerateDefaultValueExpression(CodeDefaultValueExpression e)
+        {
+        }
+
+        protected virtual void GenerateAwaitExpression(CodeAwaitExpression e)
         {
         }
 

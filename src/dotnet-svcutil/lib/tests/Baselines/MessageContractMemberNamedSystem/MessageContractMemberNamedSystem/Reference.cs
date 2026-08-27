@@ -172,11 +172,12 @@ namespace MessageContractMemberNamedSystem_NS
             return base.Channel.ProcessAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MessageContractMemberNamedSystem_NS.Response> ProcessAsync(MessageContractMemberNamedSystem_NS.Component SystemMember)
+        public async System.Threading.Tasks.Task<string> ProcessAsync(MessageContractMemberNamedSystem_NS.Component SystemMember)
         {
             MessageContractMemberNamedSystem_NS.Request inValue = new MessageContractMemberNamedSystem_NS.Request();
             inValue.SystemMember = SystemMember;
-            return ((MessageContractMemberNamedSystem_NS.IMyService)(this)).ProcessAsync(inValue);
+            MessageContractMemberNamedSystem_NS.Response retVal = await ((MessageContractMemberNamedSystem_NS.IMyService)(this)).ProcessAsync(inValue).ConfigureAwait(false);
+            return retVal.Result;
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

@@ -1835,11 +1835,12 @@ namespace XmlSerializer_NS
             return base.Channel.EchoWithTimeoutAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(string message)
+        public async System.Threading.Tasks.Task<string> EchoWithTimeoutAsync(string message)
         {
             XmlSerializer_NS.EchoWithTimeoutRequest inValue = new XmlSerializer_NS.EchoWithTimeoutRequest();
             inValue.message = message;
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).EchoWithTimeoutAsync(inValue);
+            XmlSerializer_NS.EchoWithTimeoutResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).EchoWithTimeoutAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoWithTimeoutResult;
         }
         
         public System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request)
@@ -1853,11 +1854,12 @@ namespace XmlSerializer_NS
             return base.Channel.EchoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.EchoResponse> EchoAsync(string message)
+        public async System.Threading.Tasks.Task<string> EchoAsync(string message)
         {
             XmlSerializer_NS.EchoRequest inValue = new XmlSerializer_NS.EchoRequest();
             inValue.message = message;
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).EchoAsync(inValue);
+            XmlSerializer_NS.EchoResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).EchoAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1866,11 +1868,12 @@ namespace XmlSerializer_NS
             return base.Channel.EchoComplexAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.EchoComplexResponse> EchoComplexAsync(XmlSerializer_NS.ComplexCompositeType message)
+        public async System.Threading.Tasks.Task<XmlSerializer_NS.ComplexCompositeType> EchoComplexAsync(XmlSerializer_NS.ComplexCompositeType message)
         {
             XmlSerializer_NS.EchoComplexRequest inValue = new XmlSerializer_NS.EchoComplexRequest();
             inValue.message = message;
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).EchoComplexAsync(inValue);
+            XmlSerializer_NS.EchoComplexResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).EchoComplexAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoComplexResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1879,11 +1882,11 @@ namespace XmlSerializer_NS
             return base.Channel.TestFaultAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.TestFaultResponse> TestFaultAsync(string faultMsg)
+        public async System.Threading.Tasks.Task TestFaultAsync(string faultMsg)
         {
             XmlSerializer_NS.TestFaultRequest inValue = new XmlSerializer_NS.TestFaultRequest();
             inValue.faultMsg = faultMsg;
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).TestFaultAsync(inValue);
+            XmlSerializer_NS.TestFaultResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).TestFaultAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1892,11 +1895,11 @@ namespace XmlSerializer_NS
             return base.Channel.ThrowInvalidOperationExceptionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(string message)
+        public async System.Threading.Tasks.Task ThrowInvalidOperationExceptionAsync(string message)
         {
             XmlSerializer_NS.ThrowInvalidOperationExceptionRequest inValue = new XmlSerializer_NS.ThrowInvalidOperationExceptionRequest();
             inValue.message = message;
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
+            XmlSerializer_NS.ThrowInvalidOperationExceptionResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).ThrowInvalidOperationExceptionAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1905,11 +1908,12 @@ namespace XmlSerializer_NS
             return base.Channel.GetDataUsingDataContractAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(XmlSerializer_NS.CompositeType composite)
+        public async System.Threading.Tasks.Task<XmlSerializer_NS.CompositeType> GetDataUsingDataContractAsync(XmlSerializer_NS.CompositeType composite)
         {
             XmlSerializer_NS.GetDataUsingDataContractRequest inValue = new XmlSerializer_NS.GetDataUsingDataContractRequest();
             inValue.composite = composite;
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).GetDataUsingDataContractAsync(inValue);
+            XmlSerializer_NS.GetDataUsingDataContractResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).GetDataUsingDataContractAsync(inValue).ConfigureAwait(false);
+            return retVal.GetDataUsingDataContractResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1918,10 +1922,11 @@ namespace XmlSerializer_NS
             return base.Channel.ValidateMessagePropertyHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync()
+        public async System.Threading.Tasks.Task<XmlSerializer_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[]> ValidateMessagePropertyHeadersAsync()
         {
             XmlSerializer_NS.ValidateMessagePropertyHeadersRequest inValue = new XmlSerializer_NS.ValidateMessagePropertyHeadersRequest();
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
+            XmlSerializer_NS.ValidateMessagePropertyHeadersResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).ValidateMessagePropertyHeadersAsync(inValue).ConfigureAwait(false);
+            return retVal.ValidateMessagePropertyHeadersResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1930,11 +1935,12 @@ namespace XmlSerializer_NS
             return base.Channel.UserGetAuthTokenAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync(string liveId)
+        public async System.Threading.Tasks.Task<XmlSerializer_NS.ResultOfstring> UserGetAuthTokenAsync(string liveId)
         {
             XmlSerializer_NS.UserGetAuthTokenRequest inValue = new XmlSerializer_NS.UserGetAuthTokenRequest();
             inValue.liveId = liveId;
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).UserGetAuthTokenAsync(inValue);
+            XmlSerializer_NS.UserGetAuthTokenResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).UserGetAuthTokenAsync(inValue).ConfigureAwait(false);
+            return retVal.UserGetAuthTokenResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1943,12 +1949,13 @@ namespace XmlSerializer_NS
             return base.Channel.UserGamePlayGetListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.UserGamePlayGetListResponse> UserGamePlayGetListAsync(string gameKey, string keys)
+        public async System.Threading.Tasks.Task<XmlSerializer_NS.ResultOfArrayOfUserGamePlay> UserGamePlayGetListAsync(string gameKey, string keys)
         {
             XmlSerializer_NS.UserGamePlayGetListRequest inValue = new XmlSerializer_NS.UserGamePlayGetListRequest();
             inValue.gameKey = gameKey;
             inValue.keys = keys;
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).UserGamePlayGetListAsync(inValue);
+            XmlSerializer_NS.UserGamePlayGetListResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).UserGamePlayGetListAsync(inValue).ConfigureAwait(false);
+            return retVal.UserGamePlayGetListResult;
         }
         
         public System.Threading.Tasks.Task<XmlSerializer_NS.ReplyBankingData> MessageContractRequestReplyAsync(XmlSerializer_NS.RequestBankingData request)
@@ -1967,10 +1974,11 @@ namespace XmlSerializer_NS
             return base.Channel.EchoHttpRequestMessagePropertyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<XmlSerializer_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync()
+        public async System.Threading.Tasks.Task<XmlSerializer_NS.TestHttpRequestMessageProperty> EchoHttpRequestMessagePropertyAsync()
         {
             XmlSerializer_NS.EchoHttpRequestMessagePropertyRequest inValue = new XmlSerializer_NS.EchoHttpRequestMessagePropertyRequest();
-            return ((XmlSerializer_NS.IWcfProjectNService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
+            XmlSerializer_NS.EchoHttpRequestMessagePropertyResponse retVal = await ((XmlSerializer_NS.IWcfProjectNService)(this)).EchoHttpRequestMessagePropertyAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoHttpRequestMessagePropertyResult;
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

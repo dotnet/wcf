@@ -2365,11 +2365,12 @@ namespace wrapped_NS
             return base.Channel.EchoWithTimeoutAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.EchoWithTimeoutResponse1> EchoWithTimeoutAsync(wrapped_NS.EchoWithTimeout EchoWithTimeout)
+        public async System.Threading.Tasks.Task<wrapped_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(wrapped_NS.EchoWithTimeout EchoWithTimeout)
         {
             wrapped_NS.EchoWithTimeoutRequest inValue = new wrapped_NS.EchoWithTimeoutRequest();
             inValue.EchoWithTimeout = EchoWithTimeout;
-            return ((wrapped_NS.IWcfProjectNService)(this)).EchoWithTimeoutAsync(inValue);
+            wrapped_NS.EchoWithTimeoutResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).EchoWithTimeoutAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoWithTimeoutResponse;
         }
         
         public System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request)
@@ -2383,11 +2384,12 @@ namespace wrapped_NS
             return base.Channel.EchoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.EchoResponse1> EchoAsync(wrapped_NS.Echo Echo)
+        public async System.Threading.Tasks.Task<wrapped_NS.EchoResponse> EchoAsync(wrapped_NS.Echo Echo)
         {
             wrapped_NS.EchoRequest inValue = new wrapped_NS.EchoRequest();
             inValue.Echo = Echo;
-            return ((wrapped_NS.IWcfProjectNService)(this)).EchoAsync(inValue);
+            wrapped_NS.EchoResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).EchoAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2396,11 +2398,12 @@ namespace wrapped_NS
             return base.Channel.EchoComplexAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.EchoComplexResponse1> EchoComplexAsync(wrapped_NS.EchoComplex EchoComplex)
+        public async System.Threading.Tasks.Task<wrapped_NS.EchoComplexResponse> EchoComplexAsync(wrapped_NS.EchoComplex EchoComplex)
         {
             wrapped_NS.EchoComplexRequest inValue = new wrapped_NS.EchoComplexRequest();
             inValue.EchoComplex = EchoComplex;
-            return ((wrapped_NS.IWcfProjectNService)(this)).EchoComplexAsync(inValue);
+            wrapped_NS.EchoComplexResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).EchoComplexAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoComplexResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2409,11 +2412,12 @@ namespace wrapped_NS
             return base.Channel.TestFaultAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.TestFaultResponse1> TestFaultAsync(wrapped_NS.TestFault TestFault)
+        public async System.Threading.Tasks.Task<wrapped_NS.TestFaultResponse> TestFaultAsync(wrapped_NS.TestFault TestFault)
         {
             wrapped_NS.TestFaultRequest inValue = new wrapped_NS.TestFaultRequest();
             inValue.TestFault = TestFault;
-            return ((wrapped_NS.IWcfProjectNService)(this)).TestFaultAsync(inValue);
+            wrapped_NS.TestFaultResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).TestFaultAsync(inValue).ConfigureAwait(false);
+            return retVal.TestFaultResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2422,11 +2426,12 @@ namespace wrapped_NS
             return base.Channel.ThrowInvalidOperationExceptionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.ThrowInvalidOperationExceptionResponse1> ThrowInvalidOperationExceptionAsync(wrapped_NS.ThrowInvalidOperationException ThrowInvalidOperationException)
+        public async System.Threading.Tasks.Task<wrapped_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(wrapped_NS.ThrowInvalidOperationException ThrowInvalidOperationException)
         {
             wrapped_NS.ThrowInvalidOperationExceptionRequest inValue = new wrapped_NS.ThrowInvalidOperationExceptionRequest();
             inValue.ThrowInvalidOperationException = ThrowInvalidOperationException;
-            return ((wrapped_NS.IWcfProjectNService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
+            wrapped_NS.ThrowInvalidOperationExceptionResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).ThrowInvalidOperationExceptionAsync(inValue).ConfigureAwait(false);
+            return retVal.ThrowInvalidOperationExceptionResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2435,11 +2440,12 @@ namespace wrapped_NS
             return base.Channel.GetDataUsingDataContractAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.GetDataUsingDataContractResponse1> GetDataUsingDataContractAsync(wrapped_NS.GetDataUsingDataContract GetDataUsingDataContract)
+        public async System.Threading.Tasks.Task<wrapped_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(wrapped_NS.GetDataUsingDataContract GetDataUsingDataContract)
         {
             wrapped_NS.GetDataUsingDataContractRequest inValue = new wrapped_NS.GetDataUsingDataContractRequest();
             inValue.GetDataUsingDataContract = GetDataUsingDataContract;
-            return ((wrapped_NS.IWcfProjectNService)(this)).GetDataUsingDataContractAsync(inValue);
+            wrapped_NS.GetDataUsingDataContractResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).GetDataUsingDataContractAsync(inValue).ConfigureAwait(false);
+            return retVal.GetDataUsingDataContractResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2448,11 +2454,12 @@ namespace wrapped_NS
             return base.Channel.ValidateMessagePropertyHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.ValidateMessagePropertyHeadersResponse1> ValidateMessagePropertyHeadersAsync(wrapped_NS.ValidateMessagePropertyHeaders ValidateMessagePropertyHeaders)
+        public async System.Threading.Tasks.Task<wrapped_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync(wrapped_NS.ValidateMessagePropertyHeaders ValidateMessagePropertyHeaders)
         {
             wrapped_NS.ValidateMessagePropertyHeadersRequest inValue = new wrapped_NS.ValidateMessagePropertyHeadersRequest();
             inValue.ValidateMessagePropertyHeaders = ValidateMessagePropertyHeaders;
-            return ((wrapped_NS.IWcfProjectNService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
+            wrapped_NS.ValidateMessagePropertyHeadersResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).ValidateMessagePropertyHeadersAsync(inValue).ConfigureAwait(false);
+            return retVal.ValidateMessagePropertyHeadersResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2461,11 +2468,12 @@ namespace wrapped_NS
             return base.Channel.UserGetAuthTokenAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.UserGetAuthTokenResponse1> UserGetAuthTokenAsync(wrapped_NS.UserGetAuthToken UserGetAuthToken)
+        public async System.Threading.Tasks.Task<wrapped_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync(wrapped_NS.UserGetAuthToken UserGetAuthToken)
         {
             wrapped_NS.UserGetAuthTokenRequest inValue = new wrapped_NS.UserGetAuthTokenRequest();
             inValue.UserGetAuthToken = UserGetAuthToken;
-            return ((wrapped_NS.IWcfProjectNService)(this)).UserGetAuthTokenAsync(inValue);
+            wrapped_NS.UserGetAuthTokenResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).UserGetAuthTokenAsync(inValue).ConfigureAwait(false);
+            return retVal.UserGetAuthTokenResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2474,11 +2482,12 @@ namespace wrapped_NS
             return base.Channel.UserGamePlayGetListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.UserGamePlayGetListResponse1> UserGamePlayGetListAsync(wrapped_NS.UserGamePlayGetList UserGamePlayGetList)
+        public async System.Threading.Tasks.Task<wrapped_NS.UserGamePlayGetListResponse> UserGamePlayGetListAsync(wrapped_NS.UserGamePlayGetList UserGamePlayGetList)
         {
             wrapped_NS.UserGamePlayGetListRequest inValue = new wrapped_NS.UserGamePlayGetListRequest();
             inValue.UserGamePlayGetList = UserGamePlayGetList;
-            return ((wrapped_NS.IWcfProjectNService)(this)).UserGamePlayGetListAsync(inValue);
+            wrapped_NS.UserGamePlayGetListResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).UserGamePlayGetListAsync(inValue).ConfigureAwait(false);
+            return retVal.UserGamePlayGetListResponse;
         }
         
         public System.Threading.Tasks.Task<wrapped_NS.ReplyBankingData> MessageContractRequestReplyAsync(wrapped_NS.RequestBankingData request)
@@ -2497,11 +2506,12 @@ namespace wrapped_NS
             return base.Channel.EchoHttpRequestMessagePropertyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<wrapped_NS.EchoHttpRequestMessagePropertyResponse1> EchoHttpRequestMessagePropertyAsync(wrapped_NS.EchoHttpRequestMessageProperty EchoHttpRequestMessageProperty)
+        public async System.Threading.Tasks.Task<wrapped_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync(wrapped_NS.EchoHttpRequestMessageProperty EchoHttpRequestMessageProperty)
         {
             wrapped_NS.EchoHttpRequestMessagePropertyRequest inValue = new wrapped_NS.EchoHttpRequestMessagePropertyRequest();
             inValue.EchoHttpRequestMessageProperty = EchoHttpRequestMessageProperty;
-            return ((wrapped_NS.IWcfProjectNService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
+            wrapped_NS.EchoHttpRequestMessagePropertyResponse1 retVal = await ((wrapped_NS.IWcfProjectNService)(this)).EchoHttpRequestMessagePropertyAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoHttpRequestMessagePropertyResponse;
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
