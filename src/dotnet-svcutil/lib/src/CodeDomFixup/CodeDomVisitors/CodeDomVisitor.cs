@@ -184,6 +184,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 base.Visit(expr);
             }
 
+            protected override void Visit(CodeAwaitExpression expr)
+            {
+                Enumerate(expr.Expression);
+                base.Visit(expr);
+            }
+
             protected override void Visit(CodeDelegateCreateExpression expr)
             {
                 Enumerate(expr.DelegateType);
@@ -588,6 +594,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             if (expr is CodeArgumentReferenceExpression)
                 Visit((CodeArgumentReferenceExpression)expr);
+            else if (expr is CodeAwaitExpression)
+                Visit((CodeAwaitExpression)expr);
             else if (expr is CodeArrayCreateExpression)
                 Visit((CodeArrayCreateExpression)expr);
             else if (expr is CodeArrayIndexerExpression)
@@ -643,6 +651,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
         #region descendants of CodeExpression
         protected virtual void Visit(CodeArgumentReferenceExpression expr) { }
+        protected virtual void Visit(CodeAwaitExpression expr) { }
         protected virtual void Visit(CodeArrayCreateExpression expr) { }
         protected virtual void Visit(CodeArrayIndexerExpression expr) { }
         protected virtual void Visit(CodeBaseReferenceExpression expr) { }
