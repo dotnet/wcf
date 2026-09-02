@@ -1103,8 +1103,8 @@
         <note />
       </trans-unit>
       <trans-unit id="HttpClientCredentialTypeInvalid">
-        <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</source>
-        <target state="translated">ClientCredentialType“{0}”只能在服务器端使用，而不能在客户端使用。请改用以下值之一: None、Basic、Client、Digest、Ntlm、Windows。</target>
+        <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Certificate, Digest, Ntlm, Windows'.</source>
+        <target state="needs-review-translation">ClientCredentialType“{0}”只能在服务器端使用，而不能在客户端使用。请改用以下值之一: None、Basic、Client、Digest、Ntlm、Windows。</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentLengthIncorrect">
