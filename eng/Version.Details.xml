@@ -4,25 +4,25 @@
   <ProductDependencies>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="11.0.0-beta.26431.4">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="11.0.0-beta.26451.4">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>306225d7029934938d109e18df390f04e366a68d</Sha>
+      <Sha>888b1993681fd838d640059b079bc6a4aaa7135c</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.GenFacades" Version="11.0.0-beta.26431.4">
+    <Dependency Name="Microsoft.DotNet.GenFacades" Version="11.0.0-beta.26451.4">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>306225d7029934938d109e18df390f04e366a68d</Sha>
+      <Sha>888b1993681fd838d640059b079bc6a4aaa7135c</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="11.0.0-beta.26431.4">
+    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="11.0.0-beta.26451.4">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>306225d7029934938d109e18df390f04e366a68d</Sha>
+      <Sha>888b1993681fd838d640059b079bc6a4aaa7135c</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.GenAPI" Version="11.0.0-beta.26431.4">
+    <Dependency Name="Microsoft.DotNet.GenAPI" Version="11.0.0-beta.26451.4">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>306225d7029934938d109e18df390f04e366a68d</Sha>
+      <Sha>888b1993681fd838d640059b079bc6a4aaa7135c</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="11.0.0-beta.26431.4">
+    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="11.0.0-beta.26451.4">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>306225d7029934938d109e18df390f04e366a68d</Sha>
+      <Sha>888b1993681fd838d640059b079bc6a4aaa7135c</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
