@@ -103,6 +103,7 @@ steps:
       }
 
     displayName: Sync_PRService_Windows
+    continueOnError: true
     env:
       WCFPRSERVICEURI: ${{ parameters.wcfPRServiceUri }}
       WCFPRSERVICEID: ${{ parameters.wcfPRServiceId }}
@@ -119,6 +120,7 @@ steps:
       "$BUILD_SOURCESDIRECTORY/src/System.Private.ServiceModel/tools/scripts/sync-pr.sh" $WCFPRSERVICEID $OPERATION $WCFPRSERVICEURI $BRANCHNAMEORPRID
 
     displayName: Sync_PRService_Unix
+    continueOnError: true
     env:
       WCFPRSERVICEURI: ${{ parameters.wcfPRServiceUri }}
       WCFPRSERVICEID: ${{ parameters.wcfPRServiceId }}
