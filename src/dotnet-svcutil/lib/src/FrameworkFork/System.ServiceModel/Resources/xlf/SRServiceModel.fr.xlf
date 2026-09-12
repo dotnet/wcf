@@ -1103,8 +1103,8 @@
         <note />
       </trans-unit>
       <trans-unit id="HttpClientCredentialTypeInvalid">
-        <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</source>
-        <target state="translated">Le ClientCredentialType '{0}' peut uniquement être utilisé côté serveur, et non côté client. Utilisez une des valeurs suivantes à la place : 'None, Basic, Client, Digest, Ntlm, Windows'.</target>
+        <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Certificate, Digest, Ntlm, Windows'.</source>
+        <target state="needs-review-translation">Le ClientCredentialType '{0}' peut uniquement être utilisé côté serveur, et non côté client. Utilisez une des valeurs suivantes à la place : 'None, Basic, Client, Digest, Ntlm, Windows'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentLengthIncorrect">
