@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
+  <PropertyGroup>
+    <TargetFrameworks>$(ScenarioTestTargetFrameworks)</TargetFrameworks>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <LangVersion>9.0</LangVersion>
+    <!-- Same warning suppressions as the impl project: type-name collisions
+         (SR, BufferedMessage, etc.) between our new System.ServiceModel.Web
+         and Primitives/Http internals exposed via InternalsVisibleTo. -->
+    <NoWarn>$(NoWarn);CS0105;CS0108;CS0436;MSB3243</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Web\src\System.ServiceModel.Web.csproj" />
+    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+</Project>
