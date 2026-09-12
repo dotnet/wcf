@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PlatformNotSupported_Msmq" xml:space="preserve">
+    <value>MSMQ is not supported on this platform.</value>
+  </data>
+  <data name="MsmqPoisonMessage" xml:space="preserve">
+    <value>The transport channel detected an incoming message that cannot be processed and that exceeded the configured allowed retries. Refer to the inner exception for details of the failure, and the documentation for the MsmqPoisonMessageException class for further guidance.</value>
+  </data>
+  <data name="MsmqNonNegativeArgumentExpected" xml:space="preserve">
+    <value>The value of this argument must be non-negative.</value>
+  </data>
+  <data name="SFxTimeoutOutOfRange0" xml:space="preserve">
+    <value>Timeout must be greater than or equal to TimeSpan.Zero. To disable timeout, specify TimeSpan.MaxValue.</value>
+  </data>
+  <data name="SFxTimeoutOutOfRangeTooBig" xml:space="preserve">
+    <value>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</value>
+  </data>
+  <data name="ChannelTypeNotSupported" xml:space="preserve">
+    <value>The specified channel type {0} is not supported by this channel manager.</value>
+  </data>
+  <data name="MsmqInvalidScheme" xml:space="preserve">
+    <value>The scheme of the URI is not valid for this MSMQ address translator.</value>
+  </data>
+  <data name="MsmqWrongUri" xml:space="preserve">
+    <value>The MSMQ queue URI is missing the host segment.</value>
+  </data>
+  <data name="MsmqUnexpectedPort" xml:space="preserve">
+    <value>A port may not be specified on a net.msmq queue URI when using the native MSMQ transport protocol.</value>
+  </data>
+  <data name="MsmqWrongPrivateQueueSyntax" xml:space="preserve">
+    <value>Private queues are addressed using '/private/&lt;name&gt;' in net.msmq URIs. The legacy '/private$' syntax is not supported.</value>
+  </data>
+  <data name="MsmqOpenQueueFailed" xml:space="preserve">
+    <value>Failed to open the MSMQ queue at format name '{0}'. See InnerException for the native MQ_ERROR_* code.</value>
+  </data>
+  <data name="MsmqSendFailed" xml:space="preserve">
+    <value>The MSMQ send operation failed with native error 0x{0}. See InnerException for the underlying MQ_ERROR_* code.</value>
+  </data>
+  <data name="MsmqMessageAlreadyFrozen" xml:space="preserve">
+    <value>The native MSMQ message buffer has already been finalized and cannot accept additional properties.</value>
+  </data>
+  <data name="MsmqInvalidMessageId" xml:space="preserve">
+    <value>The MSMQ message id is not in the expected 'GUID\COUNTER' format.</value>
+  </data>
+      <data name="MsmqInvalidQueueNameCharacter" xml:space="preserve">
+        <value>The MSMQ queue name contains a character that is not allowed. Control characters, ',' and ';' cannot appear in a queue name because they are significant to the MSMQ format name grammar.</value>
+      </data>
+      <data name="MsmqActiveDirectoryNotSupported" xml:space="preserve">
+        <value>UseActiveDirectory is not supported. Active Directory queue path resolution is not available in System.ServiceModel.Msmq; address the queue with a direct net.msmq URI instead.</value>
+      </data>
+      <data name="MsmqSecurityModeNotSupported" xml:space="preserve">
+        <value>NetMsmqSecurityMode.{0} requires SOAP message security, which is not supported by System.ServiceModel.Msmq. Use NetMsmqSecurityMode.Transport or NetMsmqSecurityMode.None.</value>
+      </data>
+      <data name="MsmqSendTimedOut" xml:space="preserve">
+        <value>The MSMQ send operation did not complete within the allotted timeout of {0}.</value>
+      </data>
+      <data name="MsmqMessageDoesntHaveIntegrationProperty" xml:space="preserve">
+        <value>The message does not carry an MsmqIntegrationMessageProperty. Messages sent over MsmqIntegrationBinding must attach one to supply the MSMQ body and message properties.</value>
+      </data>
+      <data name="MsmqByteArrayBodyExpected" xml:space="preserve">
+        <value>The MsmqIntegrationMessageProperty body must be a byte array when SerializationFormat is ByteArray.</value>
+      </data>
+      <data name="MsmqStreamBodyExpected" xml:space="preserve">
+        <value>The MsmqIntegrationMessageProperty body must be a Stream when SerializationFormat is Stream.</value>
+      </data>
+      <data name="MsmqSerializationFormatNotSupported" xml:space="preserve">
+        <value>MsmqMessageSerializationFormat.{0} is not supported on this platform. The .NET Framework implementation relied on BinaryFormatter and the ActiveX type serializer, neither of which is available in modern .NET. Use Xml, ByteArray or Stream.</value>
+      </data>
+      <data name="MsmqUnsupportedSerializationFormat" xml:space="preserve">
+        <value>The serialization format '{0}' is not a recognized MsmqMessageSerializationFormat value.</value>
+      </data>
+      <data name="MsmqSerializationTableFull" xml:space="preserve">
+        <value>The MSMQ integration serializer cache reached its limit of {0} types. Reduce the number of distinct body types sent through this channel factory.</value>
+      </data>
+    </root>
