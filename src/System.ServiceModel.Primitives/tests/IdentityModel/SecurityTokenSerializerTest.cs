@@ -13,7 +13,7 @@ using System.Xml;
 using Infrastructure.Common;
 using Xunit;
 
-public class SecurityTokenSerializerTest
+public class SecurityTokenSerializerTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Methods_NonNullParam_InvokeAndReturn()

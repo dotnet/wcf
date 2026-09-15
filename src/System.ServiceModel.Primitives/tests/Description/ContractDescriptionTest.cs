@@ -12,7 +12,7 @@ using Infrastructure.Common;
 using TestTypes;
 using Xunit;
 
-public static class ContractDescriptionTest
+public class ContractDescriptionTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Manually_Generated_Service_Type()

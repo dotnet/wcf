@@ -8,7 +8,7 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-public static class MessageContractTest
+public class MessageContractTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Default_Ctor_Initializes_Properties()

@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens;
 using Infrastructure.Common;
 using Xunit;
 
-public static class SecurityKeyTest
+public class SecurityKeyTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Property_KeySize_Get()

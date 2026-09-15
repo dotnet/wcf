@@ -10,7 +10,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static class NetNamedPipeBindingTest
+public class NetNamedPipeBindingTest : ConditionalWcfTest
 {
     [WcfFact]
     [SupportedOSPlatform("windows")]
