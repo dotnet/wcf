@@ -13,10 +13,10 @@ namespace System.Web.Services.Description
     using System.Collections.Generic;
     using System;
     using System.Reflection;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom.Compiler;
     using System.Web.Services.Configuration;
     using Microsoft.Xml;
-    using Microsoft.CodeDom;
+    using System.CodeDom;
     using System.Globalization;
     using System.Runtime.InteropServices;
 

@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.CodeDom;
+using System.CodeDom;
 using Microsoft.Tools.ServiceModel.Svcutil.Metadata;
 using Microsoft.Xml;
 using Microsoft.Xml.Schema;
