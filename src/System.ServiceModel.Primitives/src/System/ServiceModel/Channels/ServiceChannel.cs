@@ -828,30 +828,18 @@ namespace System.ServiceModel.Channels
                 throw Fx.AssertAndThrowFatal("ServiceChannel.DecrementActivity: (updatedActivityCount >= 0)");
             }
 
-            if (updatedActivityCount == 0 && _autoClose)
+            if (updatedActivityCount != 0 || !_autoClose || State != CommunicationState.Opened)
+            {
+                return;
+            }
+
+            if (!IsClient)
             {
                 try
                 {
-                    if (State == CommunicationState.Opened)
-                    {
-                        if (IsClient)
-                        {
-                            ISessionChannel<IDuplexSession> duplexSessionChannel = InnerChannel as ISessionChannel<IDuplexSession>;
-                            if (duplexSessionChannel != null)
-                            {
-                                _hasChannelStartedAutoClosing = true;
-                                duplexSessionChannel.Session.CloseOutputSession(CloseTimeout);
-                            }
-                        }
-                        else
-                        {
-                            Close(CloseTimeout);
-                        }
-                    }
+                    Close(CloseTimeout);
                 }
-                catch (CommunicationException)
-                {
-                }
+                catch (CommunicationException) { }
                 catch (TimeoutException e)
                 {
                     if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
@@ -859,11 +847,89 @@ namespace System.ServiceModel.Channels
                         WcfEventSource.Instance.CloseTimeout(e.Message);
                     }
                 }
-                catch (ObjectDisposedException)
+                catch (ObjectDisposedException) { }
+                catch (InvalidOperationException) { }
+                return;
+            }
+
+            ISessionChannel<IDuplexSession> duplexSessionChannel = InnerChannel as ISessionChannel<IDuplexSession>;
+            if (duplexSessionChannel == null)
+            {
+                return;
+            }
+
+            // Send our EndRecord (half-close the output session). This is non-blocking with
+            // respect to the receive pump and tells the peer we won't send more application
+            // messages. The outer ServiceChannel must still be transitioned through
+            // Closing -> Closed for the Closed event to fire (dotnet/wcf#5803).
+            bool endRecordSent = false;
+            try
+            {
+                _hasChannelStartedAutoClosing = true;
+                duplexSessionChannel.Session.CloseOutputSession(CloseTimeout);
+                endRecordSent = true;
+            }
+            catch (CommunicationException) { }
+            catch (TimeoutException e)
+            {
+                if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                 {
+                    WcfEventSource.Instance.CloseTimeout(e.Message);
                 }
-                catch (InvalidOperationException)
+            }
+            catch (ObjectDisposedException)
+            {
+                // Channel has already been disposed; no further action needed.
+                return;
+            }
+            catch (InvalidOperationException) { }
+
+            if (endRecordSent)
+            {
+                // Dispatch the outer Close off the receive pump thread; closing inline can
+                // deadlock against the SynchronizedMessageSource semaphore which OnClose ->
+                // EnsureInputClosedAsync re-acquires.
+                ActionItem.Schedule(s_completeAutoCloseCallback, this);
+            }
+            else if (State == CommunicationState.Opened)
+            {
+                // Half-close failed; the session is unusable. Transition out of Opened so
+                // subscribers are notified and the next user call doesn't observe a stale state.
+                Abort();
+            }
+        }
+
+        private static readonly Action<object> s_completeAutoCloseCallback = state => ((ServiceChannel)state).CompleteAutoClose();
+
+        private void CompleteAutoClose()
+        {
+            try
+            {
+                if (State == CommunicationState.Opened)
                 {
+                    Close(CloseTimeout);
+                }
+            }
+            catch (CommunicationException)
+            {
+                Abort();
+            }
+            catch (TimeoutException e)
+            {
+                if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
+                {
+                    WcfEventSource.Instance.CloseTimeout(e.Message);
+                }
+                Abort();
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+            catch (InvalidOperationException)
+            {
+                if (State == CommunicationState.Opened)
+                {
+                    Abort();
                 }
             }
         }

@@ -645,6 +645,11 @@ public static partial class Endpoints
         get { return GetEndpointAddress("DuplexCallbackXmlComplexType.svc/tcp-nosecurity-callback", protocol: "net.tcp"); }
     }
 
+    public static string Tcp_NoSecurity_ServerInitiatedShutdown_Address
+    {
+        get { return GetEndpointAddress("ServerInitiatedShutdown.svc/tcp-nosecurity-server-shutdown", protocol: "net.tcp"); }
+    }
+
 
     public static string Tcp_CustomBinding_SslStreamSecurity_Address
     {
