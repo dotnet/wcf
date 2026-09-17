@@ -237,11 +237,10 @@
     Source: {0}
     Line: {1} Column: {2}
    Validation Error: {3}</source>
-        <target state="translated">
- のエクスポート中に生成されたスキーマで検証エラーが発生しました。
-   ソース: {0}
-   行: {1} 列: {2}
-  検証エラー: {3}</target>
+        <target state="translated">エクスポート中に生成されたスキーマで検証エラーが発生しました:
+    ソース: {0}
+    行: {1} 列: {2}
+   検証エラー: {3}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSingleUseSwitch">
