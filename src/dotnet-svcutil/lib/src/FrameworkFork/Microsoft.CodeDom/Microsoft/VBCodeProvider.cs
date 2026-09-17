@@ -773,6 +773,12 @@ namespace Microsoft.VisualBasic
             Output.Write("CType(Nothing, " + GetTypeOutput(e.Type) + ")");
         }
 
+        protected override void GenerateAwaitExpression(CodeAwaitExpression e)
+        {
+            Output.Write("Await ");
+            GenerateExpression(e.Expression);
+        }
+
         protected override void GenerateDirectionExpression(CodeDirectionExpression e)
         {
             // Visual Basic does not need to adorn the calling point with a direction, so just output the expression.
@@ -2076,6 +2082,11 @@ namespace Microsoft.VisualBasic
             {
                 // interface may still need "Shadows"
                 OutputVTableModifier(e.Attributes);
+            }
+            if (!IsCurrentInterface && e.PrivateImplementationType == null &&
+                GetUserData(e, CodeAwaitExpression.AsyncMethodUserDataKey, false))
+            {
+                Output.Write("Async ");
             }
             bool sub = false;
             if (e.ReturnType.BaseType.Length == 0 || string.Compare(e.ReturnType.BaseType, typeof(void).FullName, StringComparison.OrdinalIgnoreCase) == 0)
