@@ -618,8 +618,8 @@ namespace NetHttpWebSockets_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttpWebSockets_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(NetHttpWebSockets_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(NetHttpWebSockets_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<NetHttpWebSockets_NS.TestFaultsResponse> TestFaultsAsync(NetHttpWebSockets_NS.TestFaultsRequest request);
         
@@ -1347,145 +1347,145 @@ namespace NetHttpWebSockets_NS
     {
         
         /// <remarks/>
-        Continue,
+        Continue = 100,
         
         /// <remarks/>
-        SwitchingProtocols,
+        SwitchingProtocols = 101,
         
         /// <remarks/>
-        OK,
+        OK = 200,
         
         /// <remarks/>
-        Created,
+        Created = 201,
         
         /// <remarks/>
-        Accepted,
+        Accepted = 202,
         
         /// <remarks/>
-        NonAuthoritativeInformation,
+        NonAuthoritativeInformation = 203,
         
         /// <remarks/>
-        NoContent,
+        NoContent = 204,
         
         /// <remarks/>
-        ResetContent,
+        ResetContent = 205,
         
         /// <remarks/>
-        PartialContent,
+        PartialContent = 206,
         
         /// <remarks/>
-        MultipleChoices,
+        MultipleChoices = 300,
         
         /// <remarks/>
-        Ambiguous,
+        Ambiguous = 300,
         
         /// <remarks/>
-        MovedPermanently,
+        MovedPermanently = 301,
         
         /// <remarks/>
-        Moved,
+        Moved = 301,
         
         /// <remarks/>
-        Found,
+        Found = 302,
         
         /// <remarks/>
-        Redirect,
+        Redirect = 302,
         
         /// <remarks/>
-        SeeOther,
+        SeeOther = 303,
         
         /// <remarks/>
-        RedirectMethod,
+        RedirectMethod = 303,
         
         /// <remarks/>
-        NotModified,
+        NotModified = 304,
         
         /// <remarks/>
-        UseProxy,
+        UseProxy = 305,
         
         /// <remarks/>
-        Unused,
+        Unused = 306,
         
         /// <remarks/>
-        TemporaryRedirect,
+        TemporaryRedirect = 307,
         
         /// <remarks/>
-        RedirectKeepVerb,
+        RedirectKeepVerb = 307,
         
         /// <remarks/>
-        BadRequest,
+        BadRequest = 400,
         
         /// <remarks/>
-        Unauthorized,
+        Unauthorized = 401,
         
         /// <remarks/>
-        PaymentRequired,
+        PaymentRequired = 402,
         
         /// <remarks/>
-        Forbidden,
+        Forbidden = 403,
         
         /// <remarks/>
-        NotFound,
+        NotFound = 404,
         
         /// <remarks/>
-        MethodNotAllowed,
+        MethodNotAllowed = 405,
         
         /// <remarks/>
-        NotAcceptable,
+        NotAcceptable = 406,
         
         /// <remarks/>
-        ProxyAuthenticationRequired,
+        ProxyAuthenticationRequired = 407,
         
         /// <remarks/>
-        RequestTimeout,
+        RequestTimeout = 408,
         
         /// <remarks/>
-        Conflict,
+        Conflict = 409,
         
         /// <remarks/>
-        Gone,
+        Gone = 410,
         
         /// <remarks/>
-        LengthRequired,
+        LengthRequired = 411,
         
         /// <remarks/>
-        PreconditionFailed,
+        PreconditionFailed = 412,
         
         /// <remarks/>
-        RequestEntityTooLarge,
+        RequestEntityTooLarge = 413,
         
         /// <remarks/>
-        RequestUriTooLong,
+        RequestUriTooLong = 414,
         
         /// <remarks/>
-        UnsupportedMediaType,
+        UnsupportedMediaType = 415,
         
         /// <remarks/>
-        RequestedRangeNotSatisfiable,
+        RequestedRangeNotSatisfiable = 416,
         
         /// <remarks/>
-        ExpectationFailed,
+        ExpectationFailed = 417,
         
         /// <remarks/>
-        UpgradeRequired,
+        UpgradeRequired = 426,
         
         /// <remarks/>
-        InternalServerError,
+        InternalServerError = 500,
         
         /// <remarks/>
-        NotImplemented,
+        NotImplemented = 501,
         
         /// <remarks/>
-        BadGateway,
+        BadGateway = 502,
         
         /// <remarks/>
-        ServiceUnavailable,
+        ServiceUnavailable = 503,
         
         /// <remarks/>
-        GatewayTimeout,
+        GatewayTimeout = 504,
         
         /// <remarks/>
-        HttpVersionNotSupported,
+        HttpVersionNotSupported = 505,
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
