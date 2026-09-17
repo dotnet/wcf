@@ -40,7 +40,7 @@ namespace System.Runtime.Serialization
                 return false;
             }
 
-            XmlSchemaProviderAttribute provider = (XmlSchemaProviderAttribute)attrs[0];
+            System.Xml.Serialization.XmlSchemaProviderAttribute provider = (System.Xml.Serialization.XmlSchemaProviderAttribute)attrs[0];
             if (provider.IsAny)
             {
                 xsdType = CreateAnyElementType();
@@ -55,11 +55,11 @@ namespace System.Runtime.Serialization
             }
             else
             {
-                MethodInfo getMethod = clrType.GetMethod(methodName,  /*BindingFlags.DeclaredOnly |*/ BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public, new Type[] { typeof(XmlSchemaSet) });
+                MethodInfo getMethod = clrType.GetMethod(methodName,  /*BindingFlags.DeclaredOnly |*/ BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public, new Type[] { typeof(System.Xml.Schema.XmlSchemaSet) });
                 if (getMethod == null)
                     throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.MissingGetSchemaMethod, DataContract.GetClrTypeFullName(clrType), methodName)));
 
-                if (!(Globals.TypeOfXmlQualifiedName.IsAssignableFrom(getMethod.ReturnType)))
+                if (!typeof(System.Xml.XmlQualifiedName).IsAssignableFrom(getMethod.ReturnType))
                     throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.InvalidReturnTypeOnGetSchemaMethod, DataContract.GetClrTypeFullName(clrType), methodName, DataContract.GetClrTypeFullName(getMethod.ReturnType), DataContract.GetClrTypeFullName(Globals.TypeOfXmlQualifiedName))));
 
                 object typeInfo = getMethod.Invoke(null, new object[] { schemas });
@@ -78,7 +78,8 @@ namespace System.Runtime.Serialization
                 }
                 else
                 {
-                    stableName = (XmlQualifiedName)typeInfo;
+                    var systemName = (System.Xml.XmlQualifiedName)typeInfo;
+                    stableName = new XmlQualifiedName(systemName.Name, systemName.Namespace);
                 }
             }
             return true;
