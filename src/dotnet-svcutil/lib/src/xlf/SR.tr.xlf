@@ -652,6 +652,11 @@ Belge Tanımlayıcısı: '{0}'.</target>
         <target state="translated">-= KULLANIM =-</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpUseDefaultCredentialsFormat">
+        <source>Use default system credentials when downloading service metadata. Only use with trusted endpoints. (Short Form: -{0})</source>
+        <target state="new">Use default system credentials when downloading service metadata. Only use with trusted endpoints. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpVerbosityFormat">
         <source>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</source>
         <target state="translated">Araç tarafından görüntülenen bilgi miktarını belirler. Geçerli değerler: '{0}'. (Kısa Biçim: -{1})</target>
@@ -665,6 +670,11 @@ Belge Tanımlayıcısı: '{0}'.</target>
       <trans-unit id="HelpXmlSerializer">
         <source>Generate data types that use the XmlSerializer for serialization and deserialization</source>
         <target state="translated">Serileştirme ve seri durumdan çıkarma için XmlSerializer'ı kullanan veri türleri oluşturma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HintUseDefaultCredentials">
+        <source>Note: You can also use --useDefaultCredentials (-udc) to use system credentials instead of entering them manually.</source>
+        <target state="new">Note: You can also use --useDefaultCredentials (-udc) to use system credentials instead of entering them manually.</target>
         <note />
       </trans-unit>
       <trans-unit id="LogoFormat">

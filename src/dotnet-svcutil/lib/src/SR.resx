@@ -622,6 +622,12 @@ Your credentials will be sent to the server in clear text.</value>
   <data name="HelpAcceptCertificateFormat" xml:space="preserve">
     <value>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</value>
   </data>
+  <data name="HelpUseDefaultCredentialsFormat" xml:space="preserve">
+    <value>Use default system credentials when downloading service metadata. Only use with trusted endpoints. (Short Form: -{0})</value>
+  </data>
+  <data name="HintUseDefaultCredentials" xml:space="preserve">
+    <value>Note: You can also use --useDefaultCredentials (-udc) to use system credentials instead of entering them manually.</value>
+  </data>
   <data name="HelpServiceContractFormat" xml:space="preserve">
     <value>Generate code for Service Contracts. Client class will not be generated. (Short Form: -{0})</value>
   </data>
