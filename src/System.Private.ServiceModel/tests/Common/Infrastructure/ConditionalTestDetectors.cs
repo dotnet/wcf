@@ -253,5 +253,42 @@ namespace Infrastructure.Common
             return TestProperties.GetProperty(TestProperties.NegotiateTestSpn_PropertyName);
         }
 
+        // Detector used by [ConditionalFact(nameof(MsmqInstalled))].
+        // Returns true if the MSMQ feature is installed on the host (we
+        // check for mqrt.dll under System32). MSMQ scenario tests need
+        // a running queue manager; this gate keeps them skipped on hosts
+        // that don't have the Windows MSMQ feature enabled.
+        public static bool IsMsmqInstalled()
+        {
+            if (!IsWindows())
+            {
+                return false;
+            }
+            string system32 = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            return !string.IsNullOrEmpty(system32)
+                && System.IO.File.Exists(System.IO.Path.Combine(system32, "mqrt.dll"));
+        }
+
+        // Detector used by [ConditionalFact(nameof(ImplicitDtcEnabled))].
+        // .NET 8+ disables implicit DTC promotion by default. The
+        // AppContext switch has to be set via the consuming process's
+        // `runtimeconfig.json`:
+        //   "System.Transactions.EnableImplicitDistributedTransactions": "true"
+        // Setting the corresponding TransactionManager property from
+        // application code is not reliable from inside an xunit test
+        // host because the DTC proxy reads the value before our setter
+        // runs. We therefore gate tests on the env var
+        //   WCF_MSMQ_ENABLE_DTC_TESTS=true
+        // which the dev / CI explicitly sets when the runtime property
+        // is known to be in place.
+        public static bool IsImplicitDtcEnabled()
+        {
+            if (!IsWindows())
+            {
+                return false;
+            }
+            string env = Environment.GetEnvironmentVariable("WCF_MSMQ_ENABLE_DTC_TESTS");
+            return string.Equals(env, "true", StringComparison.OrdinalIgnoreCase);
+        }
     }
 }
