@@ -617,6 +617,11 @@ Identifikátor dokumentu: {0}</target>
         <target state="translated">Vygenerovat kód pro kontrakty služeb Třída klienta se nevygeneruje. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSeparateFiles">
+        <source>Creates separate files for each type in the specified output directory. (Short Form: -{0})</source>
+        <target state="new">Creates separate files for each type in the specified output directory. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Kromě asynchronních metod generovat pro operace i synchronní metody (krátký tvar: -{0})</target>
