@@ -8,11 +8,11 @@ namespace System.Runtime.Serialization
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.Runtime.CompilerServices;
     using System.Text;
     using System.Security;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
 
     public abstract class XmlObjectSerializer
     {
@@ -200,8 +200,8 @@ namespace System.Runtime.Serialization
                 return false;
             }
 
-            string contractNs = XmlDictionaryString.GetString(contract.Namespace);
-            if (string.IsNullOrEmpty(contractNs) || contractNs == XmlDictionaryString.GetString(ns))
+            string contractNs = contract.Namespace?.Value;
+            if (string.IsNullOrEmpty(contractNs) || contractNs == ns?.Value)
                 return false;
 
             return true;

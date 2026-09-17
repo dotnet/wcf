@@ -9,7 +9,7 @@ namespace System.ServiceModel.Security
     using System.IdentityModel.Tokens;
     using System.Runtime;
     using System.Runtime.CompilerServices;
-    using Microsoft.Xml;
+    using System.Xml;
     using DictionaryManager = System.IdentityModel.DictionaryManager;
     using ISecurityElement = System.IdentityModel.ISecurityElement;
 

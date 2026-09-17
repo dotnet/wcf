@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Dispatcher;
 using System.Threading;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {

@@ -12,8 +12,8 @@ namespace System.Runtime.Serialization
     using System.Globalization;
     using System.Reflection;
     using System.Threading;
-    using Microsoft.Xml;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
+    using System.Xml;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
     using System.Security;
     using System.Linq;
 

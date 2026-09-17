@@ -7,8 +7,8 @@ using System.Globalization;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.Text;
-using Microsoft.Xml;
-using Microsoft.Xml.Schema;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace System.ServiceModel.Dispatcher
 {
