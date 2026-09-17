@@ -12,6 +12,11 @@
         <target state="translated">No había ningún punto de conexión escuchando en {0} que pudiera aceptar el mensaje. La causa suele ser una dirección o una acción SOAP incorrecta. Consulte InnerException, si está presente, para obtener más información.</target>
         <note />
       </trans-unit>
+      <trans-unit id="PackageFullNameInvalid">
+        <source>The package full name '{0}' is invalid.</source>
+        <target state="new">The package full name '{0}' is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
         <source>The pipe cannot be written to or read from because it is already in the process of being closed.</source>
         <target state="translated">No se puede escribir ni leer en la canalización porque ya está en proceso de cerrarse.</target>
@@ -140,6 +145,11 @@
       <trans-unit id="SFxTimeoutOutOfRangeTooBig">
         <source>Timeouts larger than Int32.MaxValue TotalMilliseconds (approximately 24 days) cannot be honored. To disable timeout, specify TimeSpan.MaxValue.</source>
         <target state="translated">No se pueden aceptar valores de tiempo de espera mayores que Int32.MaxValue TotalMilliseconds (aproximadamente 24 días). Para deshabilitar el tiempo de espera, especifique TimeSpan.MaxValue.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SessionValueInvalid">
+        <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
+        <target state="new">The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
