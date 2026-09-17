@@ -189,7 +189,7 @@ namespace System.ServiceModel.Channels
             }
             catch (Exception ex)
             {
-                int error = PipeError.GetErrorFromHResult(ex.HResult);
+                int error = GetConnectError(ex);
 
                 if (error == UnsafeNativeMethods.ERROR_FILE_NOT_FOUND || error == UnsafeNativeMethods.ERROR_PIPE_BUSY)
                 {
@@ -239,6 +239,13 @@ namespace System.ServiceModel.Channels
             }
 
             return new PipeConnection(namedPipeClient, _bufferSize);
+        }
+
+        private static int GetConnectError(Exception exception)
+        {
+            return exception is TimeoutException
+                ? UnsafeNativeMethods.ERROR_PIPE_BUSY
+                : PipeError.GetErrorFromHResult(exception.HResult);
         }
     }
 
