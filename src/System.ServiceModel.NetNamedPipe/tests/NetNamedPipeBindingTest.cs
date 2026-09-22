@@ -25,6 +25,7 @@ public static class NetNamedPipeBindingTest
     }
 
     [WcfFact]
+    [Condition(nameof(Is_Windows))]
     [SupportedOSPlatform("windows")]
     public static void PipeSettings_InvalidSessionId_Throws()
     {
@@ -35,6 +36,7 @@ public static class NetNamedPipeBindingTest
     }
 
     [WcfFact]
+    [Condition(nameof(Is_Windows))]
     [SupportedOSPlatform("windows")]
     public static void Clone_CopiesPipeSettings()
     {
@@ -56,6 +58,7 @@ public static class NetNamedPipeBindingTest
     }
 
     [WcfFact]
+    [Condition(nameof(Is_Windows))]
     [SupportedOSPlatform("windows")]
     public static void GetProperty_ReturnsPipeSettings()
     {
@@ -68,6 +71,7 @@ public static class NetNamedPipeBindingTest
     }
 
     [WcfFact]
+    [Condition(nameof(Is_Windows))]
     [SupportedOSPlatform("windows")]
     public static void AppContextSwitch_useSha1InPipeConnectionGetHashAlgorithm()
     {
