@@ -14,6 +14,60 @@ public static class NetNamedPipeBindingTest
 {
     [WcfFact]
     [SupportedOSPlatform("windows")]
+    public static void PipeSettings_DefaultValues()
+    {
+        var bindingElement = new NamedPipeTransportBindingElement();
+        ApplicationContainerSettings settings = bindingElement.PipeSettings.ApplicationContainerSettings;
+
+        Assert.Null(settings.PackageFullName);
+        Assert.Equal(ApplicationContainerSettings.CurrentSession, settings.SessionId);
+    }
+
+    [WcfFact]
+    [SupportedOSPlatform("windows")]
+    public static void PipeSettings_InvalidSessionId_Throws()
+    {
+        var bindingElement = new NamedPipeTransportBindingElement();
+        ApplicationContainerSettings settings = bindingElement.PipeSettings.ApplicationContainerSettings;
+
+        Assert.ThrowsAny<ArgumentException>(() => settings.SessionId = ApplicationContainerSettings.CurrentSession - 1);
+    }
+
+    [WcfFact]
+    [SupportedOSPlatform("windows")]
+    public static void Clone_CopiesPipeSettings()
+    {
+        var bindingElement = new NamedPipeTransportBindingElement();
+        ApplicationContainerSettings settings = bindingElement.PipeSettings.ApplicationContainerSettings;
+        settings.PackageFullName = "TestPackage_1.0.0.0_neutral__publisher";
+        settings.SessionId = ApplicationContainerSettings.ServiceSession;
+
+        var clone = (NamedPipeTransportBindingElement)bindingElement.Clone();
+        ApplicationContainerSettings clonedSettings = clone.PipeSettings.ApplicationContainerSettings;
+
+        Assert.NotSame(bindingElement.PipeSettings, clone.PipeSettings);
+        Assert.NotSame(settings, clonedSettings);
+        Assert.Equal(settings.PackageFullName, clonedSettings.PackageFullName);
+        Assert.Equal(settings.SessionId, clonedSettings.SessionId);
+
+        clonedSettings.PackageFullName = "DifferentPackage_1.0.0.0_neutral__publisher";
+        Assert.NotEqual(settings.PackageFullName, clonedSettings.PackageFullName);
+    }
+
+    [WcfFact]
+    [SupportedOSPlatform("windows")]
+    public static void GetProperty_ReturnsPipeSettings()
+    {
+        var bindingElement = new NamedPipeTransportBindingElement();
+        var context = new BindingContext(new CustomBinding(), new BindingParameterCollection());
+
+        NamedPipeSettings settings = bindingElement.GetProperty<NamedPipeSettings>(context);
+
+        Assert.Same(bindingElement.PipeSettings, settings);
+    }
+
+    [WcfFact]
+    [SupportedOSPlatform("windows")]
     public static void AppContextSwitch_useSha1InPipeConnectionGetHashAlgorithm()
     {
         Type t = Assembly.GetAssembly(typeof(NamedPipeTransportBindingElement))
