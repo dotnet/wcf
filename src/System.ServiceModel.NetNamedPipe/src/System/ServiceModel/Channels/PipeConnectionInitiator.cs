@@ -85,6 +85,12 @@ namespace System.ServiceModel.Channels
             {
                 for (int iGlobal = 0; iGlobal < globalChoices.Length; iGlobal++)
                 {
+                    if (appInfo != null && globalChoices[iGlobal])
+                    {
+                        // AppContainer endpoints publish in their local named object path.
+                        continue;
+                    }
+
                     // walk up the path hierarchy, looking for match
                     string path = PipeUri.GetPath(uri);
 
@@ -333,6 +339,7 @@ namespace System.ServiceModel.Channels
                         if (contents.isInitialized)
                         {
                             Thread.MemoryBarrier();
+                            contents = view.SafeMemoryMappedViewHandle.Read<SharedMemoryContents>(0);
                             _pipeNameGuidPart = contents.pipeGuid.ToString();
                             _pipeName = BuildPipeName(_pipeNameGuidPart);
                         }

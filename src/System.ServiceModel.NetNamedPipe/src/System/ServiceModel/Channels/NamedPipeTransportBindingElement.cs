@@ -71,10 +71,30 @@ namespace System.ServiceModel.Channels
             {
                 return (T)(object)new BindingDeliveryCapabilitiesHelper();
             }
+            if (typeof(T) == typeof(NamedPipeSettings))
+            {
+                return (T)(object)PipeSettings;
+            }
             else
             {
                 return base.GetProperty<T>(context);
             }
+        }
+
+        internal override bool IsMatch(BindingElement b)
+        {
+            if (!base.IsMatch(b))
+            {
+                return false;
+            }
+
+            if (b is not NamedPipeTransportBindingElement namedPipe)
+            {
+                return false;
+            }
+
+            return ConnectionPoolSettings.IsMatch(namedPipe.ConnectionPoolSettings)
+                && PipeSettings.IsMatch(namedPipe.PipeSettings);
         }
 
         private class BindingDeliveryCapabilitiesHelper : IBindingDeliveryCapabilities
