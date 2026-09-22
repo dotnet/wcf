@@ -13,6 +13,7 @@ using Xunit;
 public static class NetNamedPipeBindingTest
 {
     [WcfFact]
+    [Condition(nameof(Is_Windows))]
     [SupportedOSPlatform("windows")]
     public static void PipeSettings_DefaultValues()
     {
