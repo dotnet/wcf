@@ -123,8 +123,7 @@ namespace System.ServiceModel.Channels
                                                                     out appContainerSid);
                 if (hresult != 0)
                 {
-                    errorCode = Marshal.GetLastWin32Error();
-                    throw FxTrace.Exception.AsError(new Win32Exception(errorCode));
+                    throw FxTrace.Exception.AsError(Marshal.GetExceptionForHR(hresult));
                 }
 
                 // AppContainerSID => NamedObjectPath
