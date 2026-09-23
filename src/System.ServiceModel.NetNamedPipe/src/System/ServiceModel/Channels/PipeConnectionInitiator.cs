@@ -199,7 +199,9 @@ namespace System.ServiceModel.Channels
             }
             catch (Exception ex)
             {
-                int error = GetConnectError(ex);
+                int error = ex is TimeoutException
+                    ? UnsafeNativeMethods.ERROR_PIPE_BUSY
+                    : PipeError.GetErrorFromHResult(ex.HResult);
 
                 if (error == UnsafeNativeMethods.ERROR_FILE_NOT_FOUND || error == UnsafeNativeMethods.ERROR_PIPE_BUSY)
                 {
@@ -251,13 +253,6 @@ namespace System.ServiceModel.Channels
             return new PipeConnection(namedPipeClient, _bufferSize);
         }
 
-        private static int GetConnectError(Exception exception)
-        {
-            return exception is TimeoutException
-                ? UnsafeNativeMethods.ERROR_PIPE_BUSY
-                : PipeError.GetErrorFromHResult(exception.HResult);
-        }
-
         private static AppContainerInfo GetAppContainerInfo(IPipeTransportFactorySettings transportFactorySettings)
         {
             if (transportFactorySettings != null &&
@@ -269,7 +264,7 @@ namespace System.ServiceModel.Channels
                     return AppContainerInfo.CreateAppContainerInfo(appSettings.PackageFullName, appSettings.SessionId);
                 }
             }
-            return null;
+
             return null;
         }
     }

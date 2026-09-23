@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.NetNamedPipe\src\System.ServiceModel.NetNamedPipe.csproj" />
     <ProjectReference Include="..\..\..\..\..\System.ServiceModel.NetTcp\src\System.ServiceModel.NetTcp.csproj" />
     <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
