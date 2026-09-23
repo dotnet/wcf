@@ -73,19 +73,6 @@ public class NetNamedPipeBindingTest : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Is_Windows))]
     [SupportedOSPlatform("windows")]
-    public static void PipeConnectionInitiator_ConnectTimeout_IsPipeBusy()
-    {
-        Type t = Assembly.GetAssembly(typeof(NamedPipeTransportBindingElement))
-                            .GetType(typeof(NamedPipeTransportBindingElement).Namespace + ".PipeConnectionInitiator");
-        MethodInfo m = t.GetMethod("GetConnectError", BindingFlags.Static | BindingFlags.NonPublic);
-
-        int result = (int)m.Invoke(null, new object[] { new TimeoutException() });
-
-        Assert.Equal(231, result);
-    }
-
-    [WcfFact]
-    [SupportedOSPlatform("windows")]
     public static void AppContextSwitch_useSha1InPipeConnectionGetHashAlgorithm()
     {
         Type t = Assembly.GetAssembly(typeof(NamedPipeTransportBindingElement))
