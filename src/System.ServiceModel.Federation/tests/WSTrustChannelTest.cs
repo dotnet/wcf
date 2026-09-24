@@ -7,7 +7,7 @@ using Xunit;
 
 namespace System.ServiceModel.Federation.Tests
 {
-    public static class WSTrustChannelTest
+    public class WSTrustChannelTest : ConditionalWcfTest
     {
         [WcfFact]
         public static void WSTrustChannelParameters()

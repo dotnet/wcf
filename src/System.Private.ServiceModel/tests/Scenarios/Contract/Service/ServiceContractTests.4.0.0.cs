@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class ServiceContractTests
+public partial class ServiceContractTests : ConditionalWcfTest
 {
     // End operation includes keyword "out" on an Int as an arg.
     [WcfFact]

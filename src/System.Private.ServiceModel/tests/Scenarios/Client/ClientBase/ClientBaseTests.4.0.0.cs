@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public partial class ClientBaseTests
+public partial class ClientBaseTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

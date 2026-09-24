@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class XmlSerializerFormatTests
+public partial class XmlSerializerFormatTests : ConditionalWcfTest
 {
     private static readonly string s_basicEndpointAddress = Endpoints.HttpBaseAddress_Basic_Text;
 
