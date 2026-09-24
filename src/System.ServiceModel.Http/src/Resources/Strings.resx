@@ -363,4 +363,19 @@
   <data name="WebSocketInvalidProtocolNotInClientList" xml:space="preserve">
     <value>The subprotocol '{0}' was not requested by the client. The client requested the following subprotocol(s): '{1}'.</value>
   </data>
+  <data name="net_WebSockets_AcceptUnsupportedProtocol" xml:space="preserve">
+    <value>The WebSocket client request requested '{0}' protocol(s), but server is only accepting '{1}' protocol(s).</value>
+  </data>
+  <data name="net_webstatus_ConnectFailure" xml:space="preserve">
+    <value>Unable to connect to the remote server</value>
+  </data>
+  <data name="net_WebSockets_ConnectStatusExpected" xml:space="preserve">
+    <value>The server returned status code '{0}' when status code '{1}' was expected.</value>
+  </data>
+  <data name="net_WebSockets_MissingResponseHeader" xml:space="preserve">
+    <value>The server's response was missing the required header '{0}'.</value>
+  </data>
+  <data name="net_WebSockets_InvalidResponseHeader" xml:space="preserve">
+    <value>The '{0}' header value '{1}' is invalid.</value>
+  </data>
 </root>
