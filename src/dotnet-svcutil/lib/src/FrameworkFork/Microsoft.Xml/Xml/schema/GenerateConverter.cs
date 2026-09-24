@@ -12,7 +12,7 @@ namespace MS.Internal.ValueConverter
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
-    using Microsoft.CodeDom.Compiler; // for IndentedTextWriter
+    using System.CodeDom.Compiler; // for IndentedTextWriter
     using System.Reflection;
 
     public class Generator
