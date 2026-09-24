@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using Microsoft.CodeDom;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
@@ -12,6 +11,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Text;
+using Microsoft.CodeDom;
 using Microsoft.Xml;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
@@ -1115,16 +1115,109 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         
         private static void AddTransportSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TransportSecurityBindingElement bindingElement)
         {
-            // Security binding validation is done in EndpointSelector.cs - Add UserNameOverTransportBindingElement
-            TransportSecurityBindingElement defaultBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
-            CodeVariableDeclarationStatement userNameOverTransportSecurityBindingElement = new CodeVariableDeclarationStatement(
+            TransportSecurityBindingElement defaultBindingElement;
+            string defaultBindingElementFactoryMethodName;
+            CodeExpression[] defaultBindingElementFactoryMethodExpressionParameters = Array.Empty<CodeExpression>();
+
+            // CertificateOverTransport
+            if (SecurityBindingElement.IsCertificateOverTransportBinding(bindingElement))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateCertificateOverTransportBindingElement();
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateCertificateOverTransportBindingElement);
+            }
+
+            // IssuedTokenOverTransport
+            else if (SecurityBindingElement.IsIssuedTokenOverTransportBinding(bindingElement,
+                out System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters issuedTokenOverTransportParameters))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement(issuedTokenOverTransportParameters);
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement);
+
+                statements.Add(new CodeVariableDeclarationStatement(
+                    issuedTokenOverTransportParameters.IssuerBinding.GetType(),
+                    "issuerBinding",
+                    new CodeObjectCreateExpression(issuedTokenOverTransportParameters.IssuerBinding.GetType())));
+
+                statements.Add(new CodeVariableDeclarationStatement(
+                    typeof(EndpointAddress),
+                    "issuerAddress",
+                    new CodeObjectCreateExpression(typeof(EndpointAddress),
+                        new CodeObjectCreateExpression(typeof(Uri),
+                        new CodePrimitiveExpression(issuedTokenOverTransportParameters.IssuerAddress.ToString())))));
+
+                statements.Add(new CodeVariableDeclarationStatement(
+                    typeof(System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters),
+                    "issuedTokenParameters",
+                    new CodeObjectCreateExpression(
+                        typeof(System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters),
+                        new CodeExpression[]
+                        {
+                            new CodePrimitiveExpression(issuedTokenOverTransportParameters.TokenType),
+                            new CodeVariableReferenceExpression("issuerAddress"),
+                            new CodeVariableReferenceExpression("issuerBinding")
+                        })));
+
+                statements.Add(new CodeAssignStatement(
+                    new CodePropertyReferenceExpression(new CodeVariableReferenceExpression("issuedTokenParameters"), "KeySize"),
+                    new CodePrimitiveExpression(issuedTokenOverTransportParameters.KeySize)));
+
+                statements.Add(new CodeAssignStatement(
+                    new CodePropertyReferenceExpression(new CodeVariableReferenceExpression("issuedTokenParameters"), "UseStrTransform"),
+                    new CodePrimitiveExpression(issuedTokenOverTransportParameters.UseStrTransform)));
+
+
+                defaultBindingElementFactoryMethodExpressionParameters = new CodeExpression[]
+                {
+                    new CodeVariableReferenceExpression("issuedTokenParameters")
+                };
+            }
+
+            // NOTE: KerberosOverTransport is not supported here because:
+            // 1. The released WCF Core client packages do not expose
+            //    CreateKerberosOverTransportBindingElement() or KerberosSecurityTokenParameters.
+            //    Generated client code using these APIs would not compile.
+            // 2. The EndpointSelector validation rejects non-default AlgorithmSuites, and
+            //    CreateKerberosOverTransportBindingElement() uses KerberosDefault (Basic128).
+            // Use SspiNegotiationOverTransport (SPNEGO) for equivalent functionality -- it
+            // negotiates Kerberos when available. Support can be added when the client packages
+            // ship the Kerberos-specific APIs and EndpointSelector is updated accordingly.
+
+            // SspiNegotiatedOverTransport
+            else if (SecurityBindingElement.IsSspiNegotiationOverTransportBinding(bindingElement, requireCancellation: true))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement();
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement);
+            }
+            else if (SecurityBindingElement.IsSspiNegotiationOverTransportBinding(bindingElement, requireCancellation: false))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement(false);
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement);
+                defaultBindingElementFactoryMethodExpressionParameters = new CodeExpression[]
+                {
+                    new CodePrimitiveExpression(false)
+                };
+            }
+
+            // UserNameOverTransport
+            else if (SecurityBindingElement.IsUserNameOverTransportBinding(bindingElement))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateUserNameOverTransportBindingElement);
+            }
+            else
+            {
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingElementNotSupportedFormat, bindingElement.GetType().FullName));
+            }
+
+            CodeVariableDeclarationStatement transportSecurityBindingElement = new CodeVariableDeclarationStatement(
                 typeof(TransportSecurityBindingElement),
-                "userNameOverTransportSecurityBindingElement",
+                "transportSecurityBindingElement",
                 new CodeMethodInvokeExpression(
                     new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
-                    "CreateUserNameOverTransportBindingElement"));
-            statements.Add(userNameOverTransportSecurityBindingElement);
-            CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(userNameOverTransportSecurityBindingElement.Name);
+                    defaultBindingElementFactoryMethodName,
+                    defaultBindingElementFactoryMethodExpressionParameters));
+            statements.Add(transportSecurityBindingElement);
+            CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(transportSecurityBindingElement.Name);
 
             if (defaultBindingElement.IncludeTimestamp != bindingElement.IncludeTimestamp)
             {
@@ -1385,6 +1478,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         bindingElementRef,
                         "MaxReceivedMessageSize"),
                     new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(int)), "MaxValue")));
+
+            if (isHttps)
+            {
+                var defaultHttpsBindingElement = defaultBindingElement as HttpsTransportBindingElement;
+                var httpsBindingElement = bindingElement as HttpsTransportBindingElement;
+                if (defaultHttpsBindingElement.RequireClientCertificate != httpsBindingElement.RequireClientCertificate)
+                {
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(bindingElementRef, "RequireClientCertificate"),
+                            new CodePrimitiveExpression(httpsBindingElement.RequireClientCertificate)));
+                }
+            }
 
             if (defaultBindingElement.TransferMode != bindingElement.TransferMode)
             {
