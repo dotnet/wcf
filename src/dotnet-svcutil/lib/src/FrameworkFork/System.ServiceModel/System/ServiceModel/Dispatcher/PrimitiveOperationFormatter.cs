@@ -5,7 +5,7 @@
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Runtime.Serialization;
-using Microsoft.Xml;
+using System.Xml;
 using System.ServiceModel.Diagnostics;
 using System.Runtime;
 

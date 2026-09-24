@@ -5,7 +5,7 @@
 using System.ServiceModel;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.IdentityModel.Selectors
 {

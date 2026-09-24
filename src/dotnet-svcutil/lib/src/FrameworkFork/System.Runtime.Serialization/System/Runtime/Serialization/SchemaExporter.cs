@@ -6,9 +6,9 @@ namespace System.Runtime.Serialization
 {
     using System;
     using System.Linq;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml.Serialization;
+    using System.Xml;
+    using System.Xml.Schema;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
     using System.Reflection;
     using System.Security;
 

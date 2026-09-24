@@ -3,11 +3,11 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using Microsoft.Xml.XPath;
+using System.Xml.XPath;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
 
     /// <summary>

@@ -5,7 +5,7 @@
 namespace System.Runtime.Serialization
 {
     using System.Collections.Generic;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public static class XmlSerializableServices
     {
