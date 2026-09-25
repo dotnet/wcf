@@ -390,5 +390,15 @@ namespace Infrastructure.Common
             return !GetConditionValue(nameof(Skip_CoreWCFService_FailedTest),
                                      ConditionalTestDetectors.IsRunWithCoreWCFService);
         }
+
+        // Returns 'true' only when the test infrastructure is hosting services via
+        // CoreWCF (self-hosted). Used to gate outer-loop scenario tests whose
+        // service endpoint is only registered by the CoreWCF self-host project
+        // and is not yet deployed to the shared IIS bridge.
+        public static bool Run_With_CoreWCFService()
+        {
+            return GetConditionValue(nameof(Run_With_CoreWCFService),
+                                     ConditionalTestDetectors.IsRunWithCoreWCFService);
+        }
     }
 }
