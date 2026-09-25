@@ -2355,12 +2355,13 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.EchoWithTimeoutAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
+        public async System.Threading.Tasks.Task<string> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
         {
             HttpsTransSecMessCredsUserName_NS.EchoWithTimeoutRequest inValue = new HttpsTransSecMessCredsUserName_NS.EchoWithTimeoutRequest();
             inValue.message = message;
             inValue.serviceOperationTimeout = serviceOperationTimeout;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.EchoWithTimeoutResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoWithTimeoutResult;
         }
         
         public System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request)
@@ -2374,11 +2375,12 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.EchoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.EchoResponse> EchoAsync(string message)
+        public async System.Threading.Tasks.Task<string> EchoAsync(string message)
         {
             HttpsTransSecMessCredsUserName_NS.EchoRequest inValue = new HttpsTransSecMessCredsUserName_NS.EchoRequest();
             inValue.message = message;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.EchoResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2387,11 +2389,12 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.EchoComplexAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.EchoComplexResponse> EchoComplexAsync(HttpsTransSecMessCredsUserName_NS.ComplexCompositeType message)
+        public async System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.ComplexCompositeType> EchoComplexAsync(HttpsTransSecMessCredsUserName_NS.ComplexCompositeType message)
         {
             HttpsTransSecMessCredsUserName_NS.EchoComplexRequest inValue = new HttpsTransSecMessCredsUserName_NS.EchoComplexRequest();
             inValue.message = message;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoComplexAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.EchoComplexResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoComplexAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoComplexResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2400,11 +2403,11 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.TestFaultAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.TestFaultResponse> TestFaultAsync(string faultMsg)
+        public async System.Threading.Tasks.Task TestFaultAsync(string faultMsg)
         {
             HttpsTransSecMessCredsUserName_NS.TestFaultRequest inValue = new HttpsTransSecMessCredsUserName_NS.TestFaultRequest();
             inValue.faultMsg = faultMsg;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).TestFaultAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.TestFaultResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).TestFaultAsync(inValue).ConfigureAwait(false);
         }
         
         public System.Threading.Tasks.Task TestFaultIntAsync(int faultCode)
@@ -2418,12 +2421,12 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.TestFaultsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.TestFaultsResponse> TestFaultsAsync(string faultMsg, bool throwFaultDetail)
+        public async System.Threading.Tasks.Task TestFaultsAsync(string faultMsg, bool throwFaultDetail)
         {
             HttpsTransSecMessCredsUserName_NS.TestFaultsRequest inValue = new HttpsTransSecMessCredsUserName_NS.TestFaultsRequest();
             inValue.faultMsg = faultMsg;
             inValue.throwFaultDetail = throwFaultDetail;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).TestFaultsAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.TestFaultsResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).TestFaultsAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2432,12 +2435,13 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.TestFaultWithKnownTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
+        public async System.Threading.Tasks.Task<object[]> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
         {
             HttpsTransSecMessCredsUserName_NS.TestFaultWithKnownTypeRequest inValue = new HttpsTransSecMessCredsUserName_NS.TestFaultWithKnownTypeRequest();
             inValue.faultMsg = faultMsg;
             inValue.objects = objects;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.TestFaultWithKnownTypeResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue).ConfigureAwait(false);
+            return retVal.TestFaultWithKnownTypeResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2446,11 +2450,11 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.ThrowInvalidOperationExceptionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(string message)
+        public async System.Threading.Tasks.Task ThrowInvalidOperationExceptionAsync(string message)
         {
             HttpsTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionRequest inValue = new HttpsTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionRequest();
             inValue.message = message;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.ThrowInvalidOperationExceptionResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2459,11 +2463,12 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.GetDataUsingDataContractAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(HttpsTransSecMessCredsUserName_NS.CompositeType composite)
+        public async System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.CompositeType> GetDataUsingDataContractAsync(HttpsTransSecMessCredsUserName_NS.CompositeType composite)
         {
             HttpsTransSecMessCredsUserName_NS.GetDataUsingDataContractRequest inValue = new HttpsTransSecMessCredsUserName_NS.GetDataUsingDataContractRequest();
             inValue.composite = composite;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.GetDataUsingDataContractResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue).ConfigureAwait(false);
+            return retVal.GetDataUsingDataContractResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2472,10 +2477,11 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.ValidateMessagePropertyHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync()
+        public async System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[]> ValidateMessagePropertyHeadersAsync()
         {
             HttpsTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersRequest inValue = new HttpsTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersRequest();
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.ValidateMessagePropertyHeadersResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue).ConfigureAwait(false);
+            return retVal.ValidateMessagePropertyHeadersResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2484,10 +2490,11 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.UserGetAuthTokenAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync()
+        public async System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.ResultOfstring> UserGetAuthTokenAsync()
         {
             HttpsTransSecMessCredsUserName_NS.UserGetAuthTokenRequest inValue = new HttpsTransSecMessCredsUserName_NS.UserGetAuthTokenRequest();
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.UserGetAuthTokenResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue).ConfigureAwait(false);
+            return retVal.UserGetAuthTokenResult;
         }
         
         public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.ReplyBankingData> MessageContractRequestReplyAsync(HttpsTransSecMessCredsUserName_NS.RequestBankingData request)
@@ -2516,10 +2523,11 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.EchoHttpRequestMessagePropertyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync()
+        public async System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.TestHttpRequestMessageProperty> EchoHttpRequestMessagePropertyAsync()
         {
             HttpsTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyRequest inValue = new HttpsTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyRequest();
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.EchoHttpRequestMessagePropertyResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoHttpRequestMessagePropertyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2528,10 +2536,11 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.GetRestartServiceEndpointAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync()
+        public async System.Threading.Tasks.Task<string> GetRestartServiceEndpointAsync()
         {
             HttpsTransSecMessCredsUserName_NS.GetRestartServiceEndpointRequest inValue = new HttpsTransSecMessCredsUserName_NS.GetRestartServiceEndpointRequest();
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.GetRestartServiceEndpointResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue).ConfigureAwait(false);
+            return retVal.GetRestartServiceEndpointResult;
         }
         
         public System.Threading.Tasks.Task<string> EchoXmlSerializerFormatAsync(string message)
@@ -2560,13 +2569,14 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.LoginAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.LoginResponse> LoginAsync(string clientId, string user, string pwd)
+        public async System.Threading.Tasks.Task<string> LoginAsync(string clientId, string user, string pwd)
         {
             HttpsTransSecMessCredsUserName_NS.LoginRequest inValue = new HttpsTransSecMessCredsUserName_NS.LoginRequest();
             inValue.clientId = clientId;
             inValue.user = user;
             inValue.pwd = pwd;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).LoginAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.LoginResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).LoginAsync(inValue).ConfigureAwait(false);
+            return retVal.@return;
         }
         
         public System.Threading.Tasks.Task<string> GetIncomingMessageHeadersMessageAsync(string customHeaderName, string customHeaderNS)
@@ -2580,11 +2590,12 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.GetStreamFromStringAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(string data)
+        public async System.Threading.Tasks.Task<System.IO.Stream> GetStreamFromStringAsync(string data)
         {
             HttpsTransSecMessCredsUserName_NS.GetStreamFromStringRequest inValue = new HttpsTransSecMessCredsUserName_NS.GetStreamFromStringRequest();
             inValue.data = data;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.GetStreamFromStringResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue).ConfigureAwait(false);
+            return retVal.GetStreamFromStringResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2593,11 +2604,12 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.GetStringFromStreamAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(System.IO.Stream stream)
+        public async System.Threading.Tasks.Task<string> GetStringFromStreamAsync(System.IO.Stream stream)
         {
             HttpsTransSecMessCredsUserName_NS.GetStringFromStreamRequest inValue = new HttpsTransSecMessCredsUserName_NS.GetStringFromStreamRequest();
             inValue.stream = stream;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.GetStringFromStreamResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue).ConfigureAwait(false);
+            return retVal.GetStringFromStreamResult;
         }
         
         public System.Threading.Tasks.Task<System.IO.Stream> EchoStreamAsync(System.IO.Stream stream)
@@ -2611,11 +2623,12 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.EchoMessageParameterAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(string name)
+        public async System.Threading.Tasks.Task<string> EchoMessageParameterAsync(string name)
         {
             HttpsTransSecMessCredsUserName_NS.EchoMessageParameterRequest inValue = new HttpsTransSecMessCredsUserName_NS.EchoMessageParameterRequest();
             inValue.name = name;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.EchoMessageParameterResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue).ConfigureAwait(false);
+            return retVal.result;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2624,11 +2637,12 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.EchoItemsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.EchoItemsResponse> EchoItemsAsync(object[] objects)
+        public async System.Threading.Tasks.Task<object[]> EchoItemsAsync(object[] objects)
         {
             HttpsTransSecMessCredsUserName_NS.EchoItemsRequest inValue = new HttpsTransSecMessCredsUserName_NS.EchoItemsRequest();
             inValue.objects = objects;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoItemsAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.EchoItemsResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).EchoItemsAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoItemsResult;
         }
         
         public System.Threading.Tasks.Task<object[]> EchoItems_XmlAsync(object[] objects)
@@ -2652,11 +2666,11 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.ReturnContentTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(string contentType)
+        public async System.Threading.Tasks.Task ReturnContentTypeAsync(string contentType)
         {
             HttpsTransSecMessCredsUserName_NS.ReturnContentTypeRequest inValue = new HttpsTransSecMessCredsUserName_NS.ReturnContentTypeRequest();
             inValue.contentType = contentType;
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.ReturnContentTypeResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2696,10 +2710,11 @@ namespace HttpsTransSecMessCredsUserName_NS
             return base.Channel.GetRequestHttpHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync()
+        public async System.Threading.Tasks.Task<HttpsTransSecMessCredsUserName_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[]> GetRequestHttpHeadersAsync()
         {
             HttpsTransSecMessCredsUserName_NS.GetRequestHttpHeadersRequest inValue = new HttpsTransSecMessCredsUserName_NS.GetRequestHttpHeadersRequest();
-            return ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue);
+            HttpsTransSecMessCredsUserName_NS.GetRequestHttpHeadersResponse retVal = await ((HttpsTransSecMessCredsUserName_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue).ConfigureAwait(false);
+            return retVal.GetRequestHttpHeadersResult;
         }
         
         public System.Threading.Tasks.Task EchoReturnTaskAsync()
