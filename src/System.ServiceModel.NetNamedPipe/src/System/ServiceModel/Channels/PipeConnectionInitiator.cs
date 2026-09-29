@@ -199,7 +199,9 @@ namespace System.ServiceModel.Channels
             }
             catch (Exception ex)
             {
-                int error = PipeError.GetErrorFromHResult(ex.HResult);
+                int error = ex is TimeoutException
+                    ? UnsafeNativeMethods.ERROR_PIPE_BUSY
+                    : PipeError.GetErrorFromHResult(ex.HResult);
 
                 if (error == UnsafeNativeMethods.ERROR_FILE_NOT_FOUND || error == UnsafeNativeMethods.ERROR_PIPE_BUSY)
                 {
