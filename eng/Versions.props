@@ -89,5 +89,6 @@
     <CoreWCFPrimitivesPackageVersion>1.8.0</CoreWCFPrimitivesPackageVersion>
     <CoreWCFUnixDomainSocketPackageVersion>1.8.0</CoreWCFUnixDomainSocketPackageVersion>
     <CoreWCFNetFramingBasePackageVersion>1.8.0</CoreWCFNetFramingBasePackageVersion>
+    <CoreWCFNetNamedPipePackageVersion>1.9.0</CoreWCFNetNamedPipePackageVersion>
   </PropertyGroup>
 </Project>
