@@ -86,12 +86,12 @@
     <SystemFormatsAsn1PackageVersion>$(DotNetRuntimeRcVersion)</SystemFormatsAsn1PackageVersion>
     <SystemTextJsonPackageVersion>$(DotNetRuntimeRcVersion)</SystemTextJsonPackageVersion>
     <SystemTextEncodingsWebPackageVersion>$(DotNetRuntimeRcVersion)</SystemTextEncodingsWebPackageVersion>
-    <CoreWCFHttpPackageVersion>1.9.0</CoreWCFHttpPackageVersion>
-    <CoreWCFPrimitivesPackageVersion>1.9.0</CoreWCFPrimitivesPackageVersion>
-    <CoreWCFUnixDomainSocketPackageVersion>1.9.0</CoreWCFUnixDomainSocketPackageVersion>
-    <CoreWCFNetFramingBasePackageVersion>1.9.0</CoreWCFNetFramingBasePackageVersion>
-    <CoreWCFNetNamedPipePackageVersion>1.9.0</CoreWCFNetNamedPipePackageVersion>
-    <CoreWCFNetTcpPackageVersion>1.9.0</CoreWCFNetTcpPackageVersion>
-    <CoreWCFWebHttpPackageVersion>1.9.0</CoreWCFWebHttpPackageVersion>
+    <CoreWCFHttpPackageVersion>1.9.1</CoreWCFHttpPackageVersion>
+    <CoreWCFPrimitivesPackageVersion>1.9.1</CoreWCFPrimitivesPackageVersion>
+    <CoreWCFUnixDomainSocketPackageVersion>1.9.1</CoreWCFUnixDomainSocketPackageVersion>
+    <CoreWCFNetFramingBasePackageVersion>1.9.1</CoreWCFNetFramingBasePackageVersion>
+    <CoreWCFNetNamedPipePackageVersion>1.9.1</CoreWCFNetNamedPipePackageVersion>
+    <CoreWCFNetTcpPackageVersion>1.9.1</CoreWCFNetTcpPackageVersion>
+    <CoreWCFWebHttpPackageVersion>1.9.1</CoreWCFWebHttpPackageVersion>
   </PropertyGroup>
 </Project>
