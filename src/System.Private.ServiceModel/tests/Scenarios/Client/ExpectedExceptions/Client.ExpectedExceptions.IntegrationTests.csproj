@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CoreWCF.NetNamedPipe" Version="$(CoreWCFNetNamedPipePackageVersion)" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
     <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
     <ProjectReference Include="..\..\..\..\..\System.ServiceModel.NetNamedPipe\src\System.ServiceModel.NetNamedPipe.csproj" />
