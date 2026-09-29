@@ -3,11 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Runtime.Versioning;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
+[SupportedOSPlatform("windows")]
 public class NamedPipeConnectionTests : ConditionalWcfTest
 {
     [WcfFact]
