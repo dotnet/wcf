@@ -86,9 +86,12 @@
     <SystemFormatsAsn1PackageVersion>$(DotNetRuntimeRcVersion)</SystemFormatsAsn1PackageVersion>
     <SystemTextJsonPackageVersion>$(DotNetRuntimeRcVersion)</SystemTextJsonPackageVersion>
     <SystemTextEncodingsWebPackageVersion>$(DotNetRuntimeRcVersion)</SystemTextEncodingsWebPackageVersion>
-    <CoreWCFPrimitivesPackageVersion>1.8.0</CoreWCFPrimitivesPackageVersion>
-    <CoreWCFUnixDomainSocketPackageVersion>1.8.0</CoreWCFUnixDomainSocketPackageVersion>
-    <CoreWCFNetFramingBasePackageVersion>1.8.0</CoreWCFNetFramingBasePackageVersion>
+    <CoreWCFHttpPackageVersion>1.9.0</CoreWCFHttpPackageVersion>
+    <CoreWCFPrimitivesPackageVersion>1.9.0</CoreWCFPrimitivesPackageVersion>
+    <CoreWCFUnixDomainSocketPackageVersion>1.9.0</CoreWCFUnixDomainSocketPackageVersion>
+    <CoreWCFNetFramingBasePackageVersion>1.9.0</CoreWCFNetFramingBasePackageVersion>
     <CoreWCFNetNamedPipePackageVersion>1.9.0</CoreWCFNetNamedPipePackageVersion>
+    <CoreWCFNetTcpPackageVersion>1.9.0</CoreWCFNetTcpPackageVersion>
+    <CoreWCFWebHttpPackageVersion>1.9.0</CoreWCFWebHttpPackageVersion>
   </PropertyGroup>
 </Project>
