@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreWCF.Configuration;
@@ -44,7 +43,12 @@ public class NamedPipeConnectionTests : ConditionalWcfTest
         using CancellationTokenSource startupTimeout = new CancellationTokenSource(timeout);
         await host.StartAsync(startupTimeout.Token);
 
-        ChannelFactory<IEchoService>[] factories = new ChannelFactory<IEchoService>[ConnectionCount];
+        var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None)
+        {
+            OpenTimeout = timeout,
+            SendTimeout = timeout
+        };
+        var factory = new ChannelFactory<IEchoService>(binding, new EndpointAddress(address));
         IEchoService[] proxies = new IEchoService[ConnectionCount];
         IClientChannel[] channels = new IClientChannel[ConnectionCount];
         Task[] opens = new Task[ConnectionCount];
@@ -53,17 +57,10 @@ public class NamedPipeConnectionTests : ConditionalWcfTest
 
         try
         {
+            factory.Open();
             for (int i = 0; i < ConnectionCount; i++)
             {
-                CustomBinding binding = new CustomBinding(new NetNamedPipeBinding(NetNamedPipeSecurityMode.None))
-                {
-                    OpenTimeout = timeout,
-                    SendTimeout = timeout
-                };
-                binding.Elements.Find<NamedPipeTransportBindingElement>().ConnectionPoolSettings.GroupName = Guid.NewGuid().ToString();
-                factories[i] = new ChannelFactory<IEchoService>(binding, new EndpointAddress(address));
-                factories[i].Open();
-                proxies[i] = factories[i].CreateChannel();
+                proxies[i] = factory.CreateChannel();
                 IClientChannel channel = (IClientChannel)proxies[i];
                 channels[i] = channel;
 
@@ -98,9 +95,10 @@ public class NamedPipeConnectionTests : ConditionalWcfTest
 
             for (int i = 0; i < ConnectionCount; i++)
             {
-                ScenarioTestHelpers.CloseCommunicationObjects(channels[i], factories[i]);
+                ScenarioTestHelpers.CloseCommunicationObjects(channels[i]);
             }
 
+            ScenarioTestHelpers.CloseCommunicationObjects(factory);
             await host.StopAsync(timeout);
         }
     }
