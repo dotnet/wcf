@@ -467,7 +467,7 @@ namespace SvcutilTest
 
             var fileLines1 = new List<string>();
             var fileLines2 = new List<string>();
-            var exceptLines = new List<string>() { "<ImplicitUsings>enable</ImplicitUsings>", "<Nullable>enable</Nullable>", "<Content CopyToOutputDirectory" };
+            var exceptLines = new List<string>() { "<ImplicitUsings>enable</ImplicitUsings>", "<Nullable>enable</Nullable>" };
 
             fileLines1.AddRange(File.ReadAllLines(baselineFile));
             fileLines2.AddRange(File.ReadAllLines(generatedFile));

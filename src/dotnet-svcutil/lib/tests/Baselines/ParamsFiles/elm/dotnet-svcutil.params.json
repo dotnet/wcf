@@ -6,7 +6,7 @@
       "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/Simple.wsdl"
     ],
     "namespaceMappings": [
-      "*, TFnet5_0_NS"
+      "*, elm_NS"
     ],
     "outputFile": "Reference.cs",
     "references": [
