@@ -31,26 +31,46 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             IHttpCredentialsProvider userCredentialsProvider,
             IClientCertificateProvider clientCertificateProvider,
             IServerCertificateValidationProvider serverCertificateValidationProvider)
+            : this(serviceUri, userCredentialsProvider, clientCertificateProvider, serverCertificateValidationProvider, useDefaultCredentials: false)
+        {
+        }
+
+        internal ServiceDescriptor(
+            string serviceUri,
+            IHttpCredentialsProvider userCredentialsProvider,
+            IClientCertificateProvider clientCertificateProvider,
+            IServerCertificateValidationProvider serverCertificateValidationProvider,
+            bool useDefaultCredentials)
         {
             if (string.IsNullOrWhiteSpace(serviceUri))
             {
                 throw new ArgumentException(nameof(serviceUri));
             }
 
-            this.metadataDocumentLoader = new MetadataDocumentLoader(serviceUri, userCredentialsProvider, clientCertificateProvider, serverCertificateValidationProvider);
+            this.metadataDocumentLoader = new MetadataDocumentLoader(serviceUri, userCredentialsProvider, clientCertificateProvider, serverCertificateValidationProvider, useDefaultCredentials);
         }
         internal ServiceDescriptor(
            List<string> metadataFiles,
            IHttpCredentialsProvider userCredentialsProvider,
            IClientCertificateProvider clientCertificateProvider,
            IServerCertificateValidationProvider serverCertificateValidationProvider)
+            : this(metadataFiles, userCredentialsProvider, clientCertificateProvider, serverCertificateValidationProvider, useDefaultCredentials: false)
+        {
+        }
+
+        internal ServiceDescriptor(
+           List<string> metadataFiles,
+           IHttpCredentialsProvider userCredentialsProvider,
+           IClientCertificateProvider clientCertificateProvider,
+           IServerCertificateValidationProvider serverCertificateValidationProvider,
+           bool useDefaultCredentials)
         {
             if (metadataFiles == null)
             {
                 throw new ArgumentException(nameof(metadataFiles));
             }
 
-            this.metadataDocumentLoader = new MetadataDocumentLoader(metadataFiles, false, userCredentialsProvider, clientCertificateProvider, serverCertificateValidationProvider);
+            this.metadataDocumentLoader = new MetadataDocumentLoader(metadataFiles, false, userCredentialsProvider, clientCertificateProvider, serverCertificateValidationProvider, useDefaultCredentials);
         }
 
         internal ServiceDescriptor(MetadataDocumentLoader metadataDocumentLoader)

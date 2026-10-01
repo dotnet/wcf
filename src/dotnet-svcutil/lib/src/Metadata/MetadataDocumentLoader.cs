@@ -39,6 +39,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         private readonly IHttpCredentialsProvider _httpCredentialsProvider;
         private readonly IClientCertificateProvider _clientCertificatesProvider;
         private readonly IServerCertificateValidationProvider _serverCertificateValidationProvider;
+        private readonly bool _useDefaultCredentials;
 
         private int? _hashCode;
         private readonly bool _resolveExternalDocs;
@@ -82,10 +83,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         /// <param name="clientCertificatesProvider"></param>
         /// <param name="serverCertificateValidationProvider"></param>
         public MetadataDocumentLoader(string uri, IHttpCredentialsProvider httpCredentialsProvider, IClientCertificateProvider clientCertificatesProvider, IServerCertificateValidationProvider serverCertificateValidationProvider)
+            : this(uri, httpCredentialsProvider, clientCertificatesProvider, serverCertificateValidationProvider, useDefaultCredentials: false)
+        {
+        }
+
+        public MetadataDocumentLoader(string uri, IHttpCredentialsProvider httpCredentialsProvider, IClientCertificateProvider clientCertificatesProvider, IServerCertificateValidationProvider serverCertificateValidationProvider, bool useDefaultCredentials)
         {
             _httpCredentialsProvider = httpCredentialsProvider;
             _clientCertificatesProvider = clientCertificatesProvider;
             _serverCertificateValidationProvider = serverCertificateValidationProvider;
+            _useDefaultCredentials = useDefaultCredentials;
 
             if (string.IsNullOrEmpty(uri))
             {
@@ -122,10 +129,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         /// <param name="clientCertificatesProvider"></param>
         /// <param name="serverCertificateValidationProvider"></param>
         public MetadataDocumentLoader(IEnumerable<string> metadataFiles, bool resolveExternalDocuments, IHttpCredentialsProvider httpCredentialsProvider, IClientCertificateProvider clientCertificatesProvider, IServerCertificateValidationProvider serverCertificateValidationProvider)
+            : this(metadataFiles, resolveExternalDocuments, httpCredentialsProvider, clientCertificatesProvider, serverCertificateValidationProvider, useDefaultCredentials: false)
+        {
+        }
+
+        public MetadataDocumentLoader(IEnumerable<string> metadataFiles, bool resolveExternalDocuments, IHttpCredentialsProvider httpCredentialsProvider, IClientCertificateProvider clientCertificatesProvider, IServerCertificateValidationProvider serverCertificateValidationProvider, bool useDefaultCredentials)
         {
             _httpCredentialsProvider = httpCredentialsProvider;
             _clientCertificatesProvider = clientCertificatesProvider;
             _serverCertificateValidationProvider = serverCertificateValidationProvider;
+            _useDefaultCredentials = useDefaultCredentials;
 
             if (metadataFiles == null)
             {
@@ -234,7 +247,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                             new EndpointAddress(serviceUri),
                             _httpCredentialsProvider?.Clone() as IHttpCredentialsProvider,
                             _clientCertificatesProvider?.Clone() as IClientCertificateProvider,
-                            _serverCertificateValidationProvider?.Clone() as IServerCertificateValidationProvider);
+                            _serverCertificateValidationProvider?.Clone() as IServerCertificateValidationProvider,
+                            _useDefaultCredentials);
 
                         var metadataSections = await metadataExchangeResolver.ResolveMetadataAsync(cancellationToken).ConfigureAwait(false);
                         _metadataSections.AddRange(metadataSections);
@@ -430,7 +444,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             {
                 EndpointAddress epr = await AsyncHelper.RunAsync(() => EndpointAddress.ReadFrom(dictionaryReader), cancellationToken).ConfigureAwait(false);
 
-                MetadataExchangeResolver resolver = MetadataExchangeResolver.Create(epr, null, null, null);
+                MetadataExchangeResolver resolver = MetadataExchangeResolver.Create(epr, null, null, null, _useDefaultCredentials);
                 IEnumerable<MetadataSection> resolvedMetadata = await resolver.ResolveMetadataAsync(cancellationToken).ConfigureAwait(false);
                 _metadataSections.AddRange(resolvedMetadata);
             }
@@ -566,7 +580,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                                 new EndpointAddress(schemaUri),
                                 _httpCredentialsProvider?.Clone() as IHttpCredentialsProvider,
                                 _clientCertificatesProvider?.Clone() as IClientCertificateProvider,
-                                _serverCertificateValidationProvider?.Clone() as IServerCertificateValidationProvider);
+                                _serverCertificateValidationProvider?.Clone() as IServerCertificateValidationProvider,
+                                _useDefaultCredentials);
 
             return await metadataExchangeResolver.DownloadMetadataFileAsync(cancellationToken).ConfigureAwait(false);
         }
