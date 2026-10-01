@@ -617,6 +617,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">產生服務合約的程式碼。將不會產生用戶端類別。(簡短形式: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSeparateFiles">
+        <source>Creates separate files for each type in the specified output directory. (Short Form: -{0})</source>
+        <target state="new">Creates separate files for each type in the specified output directory. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">除了非同步方法外，也會為作業產生同步方法。(簡短形式: -{0})</target>

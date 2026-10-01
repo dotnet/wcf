@@ -617,6 +617,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">서비스 계약에 대한 코드를 생성합니다. 클라이언트 클래스는 생성되지 않습니다. (약식: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSeparateFiles">
+        <source>Creates separate files for each type in the specified output directory. (Short Form: -{0})</source>
+        <target state="new">Creates separate files for each type in the specified output directory. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">비동기 외에 작업에 대한 동기 메서드를 생성합니다. (약식: -{0})</target>

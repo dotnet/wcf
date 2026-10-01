@@ -617,6 +617,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">为服务协定生成代码。将不会生成客户端类。(缩写: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSeparateFiles">
+        <source>Creates separate files for each type in the specified output directory. (Short Form: -{0})</source>
+        <target state="new">Creates separate files for each type in the specified output directory. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">为除异步以外的操作生成同步方法。(缩写: -{0})</target>
