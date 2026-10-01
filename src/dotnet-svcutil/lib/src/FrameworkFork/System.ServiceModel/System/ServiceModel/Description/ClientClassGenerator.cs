@@ -14,6 +14,7 @@ namespace System.ServiceModel.Description
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using System.Threading;
+    using System.Threading.Tasks;
 
     internal class ClientClassGenerator : IServiceContractGenerationExtension
     {
@@ -259,7 +260,7 @@ namespace System.ServiceModel.Description
             return browsableAttribute;
         }
 
-        private static CodeMemberMethod GenerateHelperMethod(CodeTypeReference ifaceType, CodeMemberMethod method)
+        internal static CodeMemberMethod GenerateHelperMethod(CodeTypeReference ifaceType, CodeMemberMethod method)
         {
             CodeMemberMethod helperMethod = new CodeMemberMethod();
             helperMethod.Name = method.Name;
@@ -287,16 +288,38 @@ namespace System.ServiceModel.Description
                 helperMethod.Statements.Add(invokeMethod);
             else
             {
-                CodeTypeDeclaration returnTypeDecl = ServiceContractGenerator.NamespaceHelper.GetCodeType(method.ReturnType);
-                if (returnTypeDecl != null)
+                CodeTypeReference returnType = method.ReturnType;
+                // A typed response inside Task<T> must be awaited before the existing message-wrapper flattening can inspect it.
+                bool isTask = returnType.BaseType == typeof(Task<>).FullName && returnType.TypeArguments.Count == 1;
+                CodeTypeReference resultType = isTask ? returnType.TypeArguments[0] : returnType;
+                CodeTypeDeclaration returnTypeDecl = ServiceContractGenerator.NamespaceHelper.GetCodeType(resultType);
+                // Async methods cannot expose ref or out parameters, so preserve the wrapper when flattening needs them.
+                bool canUnwrapTaskResult = !isTask || CanUnwrapTaskResult(returnTypeDecl, helperMethod.Parameters);
+                if (returnTypeDecl != null && canUnwrapTaskResult)
                 {
                     hasTypedMessage = true;
                     CodeVariableReferenceExpression outVar = new CodeVariableReferenceExpression("retVal");
+                    CodeExpression resultExpression = invokeMethod;
+                    if (isTask)
+                    {
+                        resultExpression = new CodeAwaitExpression(
+                            new CodeMethodInvokeExpression(
+                                new CodeMethodReferenceExpression(invokeMethod, "ConfigureAwait"),
+                                new CodePrimitiveExpression(false)));
+                    }
 
-                    helperMethod.Statements.Add(new CodeVariableDeclarationStatement(method.ReturnType, outVar.VariableName, invokeMethod));
+                    helperMethod.Statements.Add(new CodeVariableDeclarationStatement(resultType, outVar.VariableName, resultExpression));
                     CodeMethodReturnStatement returnStatement = GenerateParameters(helperMethod, returnTypeDecl, outVar, FieldDirection.Out);
                     if (returnStatement != null)
                         helperMethod.Statements.Add(returnStatement);
+
+                    if (isTask)
+                    {
+                        helperMethod.UserData[CodeAwaitExpression.AsyncMethodUserDataKey] = true;
+                        helperMethod.ReturnType = helperMethod.ReturnType.BaseType == s_voidTypeRef.BaseType
+                            ? new CodeTypeReference(typeof(Task))
+                            : new CodeTypeReference(typeof(Task<>).FullName, helperMethod.ReturnType);
+                    }
                 }
                 else
                 {
@@ -307,6 +330,44 @@ namespace System.ServiceModel.Description
             if (hasTypedMessage)
                 method.PrivateImplementationType = ifaceType;
             return hasTypedMessage ? helperMethod : null;
+        }
+
+        private static bool CanUnwrapTaskResult(CodeTypeDeclaration codeTypeDeclaration, CodeParameterDeclarationExpressionCollection inputParameters)
+        {
+            if (codeTypeDeclaration == null)
+                return false;
+
+            int outputValueCount = 0;
+            bool conflictsWithInput = false;
+            CountOutputValues(codeTypeDeclaration, inputParameters, ref outputValueCount, ref conflictsWithInput);
+            return outputValueCount <= 1 && !conflictsWithInput;
+        }
+
+        private static void CountOutputValues(CodeTypeDeclaration codeTypeDeclaration, CodeParameterDeclarationExpressionCollection inputParameters, ref int outputValueCount, ref bool conflictsWithInput)
+        {
+            foreach (CodeTypeMember member in codeTypeDeclaration.Members)
+            {
+                CodeMemberField field = member as CodeMemberField;
+                if (field == null)
+                    continue;
+
+                CodeTypeDeclaration nestedType = ServiceContractGenerator.NamespaceHelper.GetCodeType(field.Type);
+                if (nestedType != null)
+                {
+                    CountOutputValues(nestedType, inputParameters, ref outputValueCount, ref conflictsWithInput);
+                    continue;
+                }
+
+                outputValueCount++;
+                foreach (CodeParameterDeclarationExpression inputParameter in inputParameters)
+                {
+                    if (inputParameter.Name == field.Name && inputParameter.Type.BaseType == field.Type.BaseType)
+                    {
+                        conflictsWithInput = true;
+                        break;
+                    }
+                }
+            }
         }
 
         private static CodeMethodReturnStatement GenerateParameters(CodeMemberMethod helperMethod, CodeTypeDeclaration codeTypeDeclaration, CodeExpression target, FieldDirection dir)
