@@ -7,7 +7,7 @@ using System.ServiceModel;
 using Xunit;
 using Infrastructure.Common;
 
-public static class MessageSecurityOverTcpTest
+public class MessageSecurityOverTcpTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Ctor_Default_Properties()

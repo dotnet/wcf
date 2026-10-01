@@ -50,7 +50,7 @@ public class MyMessageInspector : IClientMessageInspector
     }
 }
 
-public static partial class XmlSerializerFormatTests
+public partial class XmlSerializerFormatTests : ConditionalWcfTest
 {
 #if SVCUTILTESTS
     private static readonly string s_serializationModeSetterName = "set_Mode";

@@ -8,7 +8,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static class TransportBindingElementTest
+public class TransportBindingElementTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void GetSet_MaxBufferPoolSize()

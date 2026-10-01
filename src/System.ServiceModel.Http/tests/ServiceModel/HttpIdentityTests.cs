@@ -6,7 +6,7 @@ using System.Threading.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static class HttpIdentityTests
+public class HttpIdentityTests : ConditionalWcfTest
 {
     [WcfFact]
     public static void SpnEndpointIdentity_NotSupportedThrows()

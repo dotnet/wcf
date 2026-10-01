@@ -8,7 +8,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static class HttpRequestMessagePropertyTest
+public class HttpRequestMessagePropertyTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Default_Ctor_Initializes_Properties()

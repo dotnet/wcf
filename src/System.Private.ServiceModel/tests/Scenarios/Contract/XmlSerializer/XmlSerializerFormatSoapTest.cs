@@ -9,7 +9,7 @@ using Infrastructure.Common;
 using Xunit;
 using System;
 
-public static partial class XmlSerializerFormatTests
+public partial class XmlSerializerFormatTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

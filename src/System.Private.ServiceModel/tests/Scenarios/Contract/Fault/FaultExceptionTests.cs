@@ -11,7 +11,7 @@ using System.ServiceModel.Dispatcher;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class FaultExceptionTests
+public partial class FaultExceptionTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

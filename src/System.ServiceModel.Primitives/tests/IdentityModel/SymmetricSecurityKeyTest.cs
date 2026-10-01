@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using Infrastructure.Common;
 using Xunit;
 
-public static class SymmetricSecurityKeyTest
+public class SymmetricSecurityKeyTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void method_GetSymmetricKey()

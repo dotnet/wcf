@@ -9,7 +9,7 @@ using System.Text;
 using Infrastructure.Common;
 using Xunit;
 
-public partial class DataContractTests
+public partial class DataContractTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

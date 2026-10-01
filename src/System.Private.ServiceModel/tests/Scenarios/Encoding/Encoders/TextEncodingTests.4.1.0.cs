@@ -9,7 +9,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class TextEncodingTests
+public partial class TextEncodingTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

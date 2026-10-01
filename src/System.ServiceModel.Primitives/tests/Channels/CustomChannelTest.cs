@@ -14,7 +14,7 @@ using Infrastructure.Common;
 using Xunit;
 using System.Threading.Tasks;
 
-public static class CustomChannelTest
+public class CustomChannelTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void CustomChannel_Sync_Open_Close_Methods_Called()
