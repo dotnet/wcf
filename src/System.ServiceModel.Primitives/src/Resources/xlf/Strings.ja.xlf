@@ -117,6 +117,21 @@
         <target state="translated">引数には空でない文字列を指定する必要があります。</target>
         <note />
       </trans-unit>
+      <trans-unit id="ArgumentNotInSetOfValidValues">
+        <source>Specified argument was not in the set of valid values.</source>
+        <target state="new">Specified argument was not in the set of valid values.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ArgumentOutOfMinRange">
+        <source>Specified argument was out of the range of valid values.  The value must be at least {0}.</source>
+        <target state="new">Specified argument was out of the range of valid values.  The value must be at least {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ArgumentPropertyShouldNotBeNullError">
+        <source>Argument property '{0}' should not be null.</source>
+        <target state="new">Argument property '{0}' should not be null.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="AsyncEndCalledOnWrongChannel">
         <source>Async End called on wrong channel.</source>
         <target state="translated">非同期 End が間違ったチャネルで呼び出されました。</target>
@@ -290,6 +305,26 @@
       <trans-unit id="BootstrapSecurityBindingElementNotSet">
         <source>The security binding element for bootstrap security was not specified on '{0}'.</source>
         <target state="translated">ブートストラップ セキュリティのセキュリティ バインド要素が '{0}' で指定されませんでした。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ByteStreamMessageEncoderMessageVersionNotSupported">
+        <source>The ByteStreamMessageEncoder does not support the MessageVersion '{0}'.</source>
+        <target state="new">The ByteStreamMessageEncoder does not support the MessageVersion '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ByteStreamMessageGetTypeNotSupported">
+        <source>The GetBody method for type '{0}' is not supported. Please call GetBody with a type 'Stream' or 'byte[]' instead.</source>
+        <target state="new">The GetBody method for type '{0}' is not supported. Please call GetBody with a type 'Stream' or 'byte[]' instead.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ByteStreamReaderNotInByteStream">
+        <source>The reader is not positioned within the byte stream. The reader must be positioned within the element '{0}'.</source>
+        <target state="new">The reader is not positioned within the byte stream. The reader must be positioned within the element '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ByteStreamWriteStartElementAlreadyCalled">
+        <source>WriteStartElement has already been called on this encoder.</source>
+        <target state="new">WriteStartElement has already been called on this encoder.</target>
         <note />
       </trans-unit>
       <trans-unit id="CSRefused">
@@ -1152,6 +1187,11 @@
         <target state="translated">ユーザー コールバックが例外をスローしました。例外スタックや内部例外を確認して、失敗したコールバックを特定してください。</target>
         <note />
       </trans-unit>
+      <trans-unit id="GetByteArrayFromStreamContentNotAllowed">
+        <source>The GetBody method for 'byte[]' is not supported because the message contains a Stream.</source>
+        <target state="new">The GetBody method for 'byte[]' is not supported because the message contains a Stream.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HeaderAlreadyNotUnderstood">
         <source>The message header with name '{0}' and namespace '{1}' is not present in the set of understood headers.</source>
         <target state="translated">名前が '{0}'、名前空間が '{1}' のメッセージ ヘッダーが、一連の解読されたヘッダーにありません。</target>
@@ -1203,8 +1243,8 @@
         <note />
       </trans-unit>
       <trans-unit id="HttpClientCredentialTypeInvalid">
-        <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</source>
-        <target state="translated">ClientCredentialType '{0}' を使用できるのはサーバー側のみで、クライアント側では使用できません。'None'、'Basic'、'Client'、'Digest'、'Ntlm'、'Windows' のいずれかの値を代わりに使用してください。</target>
+        <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Certificate, Digest, Ntlm, Windows'.</source>
+        <target state="needs-review-translation">ClientCredentialType '{0}' を使用できるのはサーバー側のみで、クライアント側では使用できません。'None'、'Basic'、'Client'、'Digest'、'Ntlm'、'Windows' のいずれかの値を代わりに使用してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentLengthIncorrect">
@@ -4862,9 +4902,29 @@
         <target state="translated">XML データの読み取り中に、最大文字列コンテンツ長のクォータ ({0}) を超えました。このクォータを増やすには、XML リーダーの作成時に使用される XmlDictionaryReaderQuotas オブジェクトの MaxStringContentLength プロパティを変更してください。</target>
         <note />
       </trans-unit>
+      <trans-unit id="XmlReaderClosed">
+        <source>The XmlReader is closed.</source>
+        <target state="new">The XmlReader is closed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlStartElementNameExpected">
+        <source>Start element '{0}' expected. Found '{1}'.</source>
+        <target state="new">Start element '{0}' expected. Found '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlUnexpectedEndElement">
+        <source>No matching start tag for end element.</source>
+        <target state="new">No matching start tag for end element.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="XmlWriterClosed">
         <source>The XmlWriter is closed.</source>
         <target state="translated">XmlWriter は閉じられています。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlWriterMustBeInElement">
+        <source>WriteState '{0}' not valid. Caller must write start element before serializing in contentOnly mode.</source>
+        <target state="new">WriteState '{0}' not valid. Caller must write start element before serializing in contentOnly mode.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_InvalidNodeType">
