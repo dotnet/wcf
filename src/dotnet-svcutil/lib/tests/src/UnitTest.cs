@@ -155,6 +155,32 @@ namespace SvcutilTest
         }
 
         [Trait("Category", "UnitTest")]
+        [Fact]
+        public async Task JaggedArrayXmlMetadata()
+        {
+            this_TestCaseName = "JaggedArrayXmlMetadata";
+            TestFixture();
+            InitializeUnitTest(this_TestCaseName);
+
+            string wsdlFile = Path.Combine(g_TestCasesDir, "wsdl", "JaggedArrayXmlMetadata.wsdl");
+            string options = AppendCommonOptions(wsdlFile);
+
+            using (var currentDirectorySetter = new CurrentDirectorySetter(this_TestCaseProject.DirectoryPath))
+            {
+                string[] args = options.Split(' ');
+                int exitCode = await Tool.MainAsync(args, this_TestCaseLogger, CancellationToken.None);
+                Assert.True(exitCode == 0 || exitCode == 6);
+            }
+
+            string referenceFile = Path.Combine(this_TestCaseOutputDir, "Reference.cs");
+            Assert.True(File.Exists(referenceFile), $"Generated reference file was not found: {referenceFile}");
+            string generatedCode = File.ReadAllText(referenceFile);
+
+            Assert.Contains("public string[][] tr", generatedCode);
+            Assert.Contains("XmlArrayItemAttribute(\"td\", typeof(string), IsNullable=false, NestingLevel=1)", generatedCode);
+        }
+
+        [Trait("Category", "UnitTest")]
         [Theory]
         [InlineData("badParam", "http://www.myhost.com/MyService.svc -badparam")]
         [InlineData("xd", "in.wsdl -xd")]
