@@ -4,7 +4,7 @@
 
 namespace System.ServiceModel.Channels
 {
-    using Microsoft.CodeDom;
+    using System.CodeDom;
     using Microsoft.Xml;
 
     internal static class SecurityAttributeGenerationHelper

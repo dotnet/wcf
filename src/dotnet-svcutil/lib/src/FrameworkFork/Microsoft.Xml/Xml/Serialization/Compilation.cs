@@ -15,7 +15,7 @@ namespace Microsoft.Xml.Serialization
     using System.Security;
 
     using System.Diagnostics;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom.Compiler;
     using System.Globalization;
     using System.Runtime.Versioning;
 

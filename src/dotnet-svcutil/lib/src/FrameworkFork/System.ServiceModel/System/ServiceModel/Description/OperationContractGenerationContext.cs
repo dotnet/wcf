@@ -6,8 +6,8 @@ namespace System.ServiceModel.Description
 {
     using System;
     using System.Collections.Generic;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     using System.ServiceModel;
 
     public class OperationContractGenerationContext

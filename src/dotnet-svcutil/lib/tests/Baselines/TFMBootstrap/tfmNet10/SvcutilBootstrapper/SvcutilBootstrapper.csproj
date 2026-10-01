@@ -10,10 +10,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="dotnet-svcutil-lib">
-      <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
+      <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmNet10/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
-    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/DOTNET_VERSION/net8.0/**" Link="net8.0/%(RecursiveDir)%(Filename)%(Extension)" />
-    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/DOTNET_VERSION/net462/**" Link="net462/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNet10/bin/Debug/DOTNET_VERSION/net8.0/**" Link="net8.0/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content CopyToOutputDirectory="always" Include="$resultPath$/TestResults/TFMBootstrap/tfmNet10/bin/Debug/DOTNET_VERSION/net462/**" Link="net462/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="*" />

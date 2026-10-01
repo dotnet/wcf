@@ -5,7 +5,7 @@
 namespace System.Runtime.Serialization
 {
     using System;
-    using Microsoft.CodeDom;
+    using System.CodeDom;
     using System.Collections.Generic;
 
     internal class ContractCodeDomInfo

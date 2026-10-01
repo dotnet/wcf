@@ -11,7 +11,7 @@ namespace System.IdentityModel.Tokens
     using Microsoft.Xml.Serialization;
     using Microsoft.Xml;
     using Microsoft.Xml.Schema;
-    using Microsoft.CodeDom;
+    using System.CodeDom;
     using System.Runtime.Serialization;
     using System.Globalization;
     using System.Threading;

@@ -6,8 +6,8 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using Microsoft.CodeDom;
-using Microsoft.CodeDom.Compiler;
+using System.CodeDom;
+using System.CodeDom.Compiler;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
