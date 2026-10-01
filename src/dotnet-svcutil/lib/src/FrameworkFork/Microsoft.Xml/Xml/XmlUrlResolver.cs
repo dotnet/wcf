@@ -8,7 +8,7 @@ using System.Net;
 //using System.Net.Cache;
 using System.Runtime.Versioning;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

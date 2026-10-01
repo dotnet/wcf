@@ -14,7 +14,7 @@ namespace System.ServiceModel
     // using System.ServiceModel.ComIntegration;
     using System.ServiceModel.Diagnostics;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public class UpnEndpointIdentity : EndpointIdentity
     {

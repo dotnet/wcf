@@ -2,12 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.Text;
     using System.IO;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System.Collections;
     using System.Collections.Specialized;
 
@@ -92,7 +93,7 @@ namespace Microsoft.Xml.Serialization
             }
             else if (o is XmlSchemaNotation)
             {
-                return ((XmlSchemaNotation)o).QualifiedName;
+                return new XmlQualifiedName(((XmlSchemaNotation)o).Name, Namespace(o));
             }
             else if (o is XmlSchemaSequence)
             {
@@ -117,7 +118,7 @@ namespace Microsoft.Xml.Serialization
             }
             else if (o is XmlSchemaAny)
             {
-                return new XmlQualifiedName("*", SchemaObjectWriter.ToString(((XmlSchemaAny)o).NamespaceList));
+                return new XmlQualifiedName("*", ((XmlSchemaAny)o).Namespace);
             }
             else if (o is XmlSchemaIdentityConstraint)
             {
@@ -495,7 +496,7 @@ namespace Microsoft.Xml.Serialization
 
             WriteAttribute(@"id", @"", ((System.String)o.@Id));
             WriteAttributes((XmlAttribute[])o.@UnhandledAttributes, o);
-            Microsoft.Xml.Schema.XmlSchemaObjectCollection a = (Microsoft.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+            System.Xml.Schema.XmlSchemaObjectCollection a = (System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
             if (a != null)
             {
                 for (int ia = 0; ia < a.Count; ia++)
@@ -776,7 +777,7 @@ namespace Microsoft.Xml.Serialization
             WriteStartElement("anyAttribute");
 
             WriteAttribute(@"id", @"", ((System.String)o.@Id));
-            WriteAttribute("namespace", "", ToString(o.NamespaceList));
+            WriteAttribute("namespace", "", o.Namespace);
             XmlSchemaContentProcessing process = o.@ProcessContents == XmlSchemaContentProcessing.@None ? XmlSchemaContentProcessing.Strict : o.@ProcessContents;
             WriteAttribute(@"processContents", @"", Write34_XmlSchemaContentProcessing(process));
             WriteAttributes((XmlAttribute[])o.@UnhandledAttributes, o);
@@ -1154,7 +1155,7 @@ namespace Microsoft.Xml.Serialization
             WriteAttribute(@"id", @"", o.@Id);
             WriteAttribute("minOccurs", "", XmlConvert.ToString(o.MinOccurs));
             WriteAttribute(@"maxOccurs", @"", o.MaxOccurs == decimal.MaxValue ? "unbounded" : XmlConvert.ToString(o.MaxOccurs));
-            WriteAttribute(@"namespace", @"", ToString(o.NamespaceList));
+            WriteAttribute(@"namespace", @"", o.Namespace);
             XmlSchemaContentProcessing process = o.@ProcessContents == XmlSchemaContentProcessing.@None ? XmlSchemaContentProcessing.Strict : o.@ProcessContents;
             WriteAttribute(@"processContents", @"", Write34_XmlSchemaContentProcessing(process));
             WriteAttributes((XmlAttribute[])o.@UnhandledAttributes, o);

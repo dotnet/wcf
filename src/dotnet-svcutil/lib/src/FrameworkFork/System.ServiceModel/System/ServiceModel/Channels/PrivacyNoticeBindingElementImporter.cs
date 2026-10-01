@@ -4,7 +4,7 @@
 
 namespace System.ServiceModel.Channels
 {
-    using Microsoft.Xml;
+    using System.Xml;
     using System.ServiceModel.Description;
 
     internal static class PrivacyNoticePolicyStrings

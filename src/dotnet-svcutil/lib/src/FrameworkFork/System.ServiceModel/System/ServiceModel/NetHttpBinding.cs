@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.Text;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel
 {

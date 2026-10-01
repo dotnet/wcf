@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System.Reflection;
     using System.Collections;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System;
     using System.Text;
     using System.ComponentModel;
-    using Microsoft.Xml;
+    using System.Xml;
     using Microsoft.CodeDom.Compiler;
 
     // These classes represent a mapping between classes and a particular XML format.
@@ -1404,7 +1404,7 @@ namespace Microsoft.Xml.Serialization
                             {
                                 throw new InvalidOperationException(string.Format(ResXml.XmlGetSchemaTypeMissing, _getSchemaMethod.DeclaringType.FullName, _getSchemaMethod.Name, _xsiType.Name, _xsiType.Namespace));
                             }
-                            _xsdType = _xsdType.Redefined != null ? _xsdType.Redefined : _xsdType;
+                            //_xsdType = _xsdType.Redefined != null ? _xsdType.Redefined : _xsdType;
                         }
                     }
                 }

@@ -9,7 +9,7 @@ namespace System.ServiceModel.Security
     using System.Runtime;
     using System.ServiceModel.Channels;
     using System.ServiceModel.Description;
-    using Microsoft.Xml;
+    using System.Xml;
 
     internal class WSSecurityPolicy11 : WSSecurityPolicy
     {

@@ -4,7 +4,7 @@
 
 using System.Net;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

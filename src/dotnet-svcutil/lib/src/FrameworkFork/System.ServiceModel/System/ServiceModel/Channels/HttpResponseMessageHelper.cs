@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Runtime;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {

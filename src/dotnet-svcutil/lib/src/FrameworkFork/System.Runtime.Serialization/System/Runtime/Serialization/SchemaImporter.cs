@@ -12,10 +12,10 @@ namespace System.Runtime.Serialization
     using System.IO;
     using System.Reflection;
     using System.Security;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
-    using SchemaObjectDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, SchemaObjectInfo>;
+    using System.Xml;
+    using System.Xml.Schema;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
+    using SchemaObjectDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, SchemaObjectInfo>;
 
     internal class SchemaImporter
     {

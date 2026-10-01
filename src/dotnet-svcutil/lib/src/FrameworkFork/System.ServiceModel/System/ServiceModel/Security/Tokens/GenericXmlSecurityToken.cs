@@ -12,7 +12,7 @@ namespace System.IdentityModel.Tokens
     using System.IdentityModel.Policy;
     using System.Security.Cryptography;
     using System.Security.Principal;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.Runtime.Serialization;
     using System.Collections.Generic;
 

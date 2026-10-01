@@ -27,7 +27,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public static class XmlSchema
         {
             public const string Prefix = "xsd";
-            public const string NamespaceUri = Microsoft.Xml.Schema.XmlSchema.Namespace;
+            public const string NamespaceUri = System.Xml.Schema.XmlSchema.Namespace;
             public static class Elements
             {
                 public const string Root = "schema";

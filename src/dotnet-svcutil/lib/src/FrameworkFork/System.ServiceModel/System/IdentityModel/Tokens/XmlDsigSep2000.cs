@@ -10,7 +10,7 @@ namespace System.IdentityModel.Tokens
     using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
     using System.ServiceModel.Security;
-    using Microsoft.Xml;
+    using System.Xml;
     using KeyIdentifierEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.KeyIdentifierEntry;
 
     internal class XmlDsigSep2000 : SecurityTokenSerializer.SerializerEntries

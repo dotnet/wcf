@@ -11,7 +11,7 @@ namespace System.ServiceModel.Configuration
     using System.Net.Security;
     using System.ServiceModel.Security;
     using System.ServiceModel.Security.Tokens;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.Collections.ObjectModel;
     using System.Collections.Generic;
     using System.IO;

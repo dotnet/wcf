@@ -2,7 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.Collections;
@@ -12,7 +13,7 @@ namespace Microsoft.Xml.Serialization
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Text;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
 
     internal class XmlSerializationWriterILGen : XmlSerializationILGen
     {
@@ -194,7 +195,7 @@ namespace Microsoft.Xml.Serialization
         private void WritePrimitive(string method, string name, string ns, object defaultValue, SourceInfo source, TypeMapping mapping, bool writeXsiType, bool isElement, bool isNullable)
         {
             TypeDesc typeDesc = mapping.TypeDesc;
-            bool hasDefault = defaultValue != null && defaultValue != DBNull.Value && mapping.TypeDesc.HasDefaultSupport;
+            bool hasDefault = defaultValue != null && defaultValue != DBNull.Value && mapping.TypeDesc.DefaultValue != null;
             if (hasDefault)
             {
                 if (mapping is EnumMapping)

@@ -11,11 +11,11 @@ namespace System.Runtime.Serialization
     using System.IO;
     using System.Reflection;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Runtime.CompilerServices;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
 
     public sealed class DataContractSerializer : XmlObjectSerializer
     {

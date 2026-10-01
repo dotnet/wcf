@@ -8,7 +8,7 @@ namespace System.ServiceModel.Configuration
     using System;
     using System.ServiceModel.Channels;
     using System.Globalization;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public abstract class BindingElementExtensionElement //TODO: ServiceModelExtensionElement
     {

@@ -7,7 +7,7 @@ namespace System.ServiceModel
     using System;
 
     using System.IdentityModel.Claims;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public class SpnEndpointIdentity : EndpointIdentity
     {

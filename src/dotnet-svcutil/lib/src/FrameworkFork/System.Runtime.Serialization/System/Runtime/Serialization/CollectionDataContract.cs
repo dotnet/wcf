@@ -11,9 +11,9 @@ namespace System.Runtime.Serialization
     using System.Collections.Generic;
     using System.Reflection;
     using System.Threading;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.Linq;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
     using System.Security;
 
     //Special Adapter class to serialize KeyValuePair as Dictionary needs it when polymorphism is involved

@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 using System.ServiceModel;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.IdentityModel
 {
