@@ -25,7 +25,6 @@ public class ServerInitiatedSessionShutdownTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Skip_CoreWCFService_FailedTest))]
     [OuterLoop]
     public static void ServerInitiatedShutdown_ClientChannelTransitionsToClosed()
     {

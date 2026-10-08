@@ -3,13 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 #if NET
+using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using CoreWCF;
 using CoreWCF.Channels;
 using CoreWCF.Description;
 using CoreWCF.Dispatcher;
-using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 #else
 using System;
 using System.Collections.ObjectModel;
