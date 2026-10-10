@@ -3,6 +3,8 @@ param (
     [string] $WcfServiceAccount
 )
 
+$ErrorActionPreference = 'Stop'
+
 try
 {
     $certStores = @('My','TrustedPeople')
@@ -15,26 +17,33 @@ try
         #Locate certificate based on provided thumbprint
         foreach ($cert in $certs)
         {
-	        #Create new CSP object based on existing certificate provider and key name
-	        $csp = New-Object System.Security.Cryptography.CspParameters($cert.PrivateKey.CspKeyContainerInfo.ProviderType, $cert.PrivateKey.CspKeyContainerInfo.ProviderName, $cert.PrivateKey.CspKeyContainerInfo.KeyContainerName)
+            # Call getters explicitly so PowerShell does not hide provider or privilege errors.
+            $privateKey = $cert.get_PrivateKey()
+            try
+            {
+                $keyInfo = $privateKey.CspKeyContainerInfo
+                $csp = New-Object System.Security.Cryptography.CspParameters($keyInfo.ProviderType, $keyInfo.ProviderName, $keyInfo.KeyContainerName)
 
-	        # Set flags and key security based on existing cert
-	        $csp.Flags = "UseExistingKey","UseMachineKeyStore"
-	        $csp.CryptoKeySecurity = $cert.PrivateKey.CspKeyContainerInfo.CryptoKeySecurity
-	        $csp.KeyNumber = $cert.PrivateKey.CspKeyContainerInfo.KeyNumber
+                $csp.Flags = "UseExistingKey","UseMachineKeyStore"
+                $csp.CryptoKeySecurity = $keyInfo.get_CryptoKeySecurity()
+                $csp.KeyNumber = $keyInfo.KeyNumber
 
-	        # Create new access rule for GenericRead
-	        $access = New-Object System.Security.AccessControl.CryptoKeyAccessRule($WcfServiceAccount, "GenericRead", "Allow")
-	        # Add access rule to CSP object
-	        $csp.CryptoKeySecurity.AddAccessRule($access)
+                $access = New-Object System.Security.AccessControl.CryptoKeyAccessRule($WcfServiceAccount, "GenericRead", "Allow")
+                $csp.CryptoKeySecurity.AddAccessRule($access)
 
-	        #Create new CryptoServiceProvider object which updates Key with CSP information created/modified above
-	        $rsa2 = New-Object System.Security.Cryptography.RSACryptoServiceProvider($csp)
+                $rsa2 = New-Object System.Security.Cryptography.RSACryptoServiceProvider($csp)
+                $rsa2.Dispose()
+            }
+            finally
+            {
+                $privateKey.Dispose()
+            }
         }
     }
     exit 0;
 }
 catch
 {
+    Write-Error "Failed to grant certificate private-key access to '$WcfServiceAccount': $_`n$($_.InvocationInfo.PositionMessage)" -ErrorAction Continue
     exit 1;
 }

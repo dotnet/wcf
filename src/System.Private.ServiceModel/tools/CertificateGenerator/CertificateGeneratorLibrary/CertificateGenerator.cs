@@ -308,7 +308,8 @@ namespace WcfTestCommon
 
             byte[] serialNum = ComputeSerialNumber(certificateCreationSettings);
 
-            RSA subjectKey = isAuthority ? (_authorityKey = RSA.Create(_keyLengthInBits)) : RSA.Create(_keyLengthInBits);
+            using RSA leafKey = isAuthority ? null : CreateRsaKey();
+            RSA subjectKey = isAuthority ? (_authorityKey = CreateRsaKey()) : leafKey;
 
             X500DistinguishedName subjectDn;
             CertificateRequest req;
@@ -448,10 +449,12 @@ namespace WcfTestCommon
             }
             else
             {
+                // Keep the CSP provider for .NET Framework WCF; the loader otherwise ignores it.
                 outputCert = X509CertificateLoader.LoadPkcs12(
                     pfxBytes,
                     _password,
-                    X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                    X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet,
+                    new Pkcs12LoaderLimits { PreserveStorageProvider = true });
             }
 
             // Set FriendlyName on Windows so lookups via CertificateFromFriendlyName succeed.
@@ -520,6 +523,23 @@ namespace WcfTestCommon
             Trace.WriteLine(string.Format("    {0} = {1}", "CertificateValidityType", certificateCreationSettings.ValidityType));
 
             return container;
+        }
+
+        private RSA CreateRsaKey()
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                // .NET Framework WCF requires a CSP key with AT_KEYEXCHANGE. A named container
+                // preserves the CSP metadata when CopyWithPrivateKey attaches the key.
+                var parameters = new CspParameters(24, "Microsoft Enhanced RSA and AES Cryptographic Provider", Guid.NewGuid().ToString())
+                {
+                    KeyNumber = (int)KeyNumber.Exchange
+                };
+
+                return new RSACryptoServiceProvider(_keyLengthInBits, parameters) { PersistKeyInCsp = false };
+            }
+
+            return RSA.Create(_keyLengthInBits);
         }
 
         private byte[] ComputeSerialNumber(CertificateCreationSettings settings)
