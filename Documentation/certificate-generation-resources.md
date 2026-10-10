@@ -37,6 +37,58 @@ Certificates expire in 90 days
 The CA certificates get installed into the machine trusted certificate store
 Machine certificates get installed into the machine My store 
 
+## IIS-hosted .NET Framework compatibility
+
+On Windows, the generator uses the Microsoft Enhanced RSA and AES Cryptographic
+Provider (CSP provider type 24) with an exchange key (`AT_KEYEXCHANGE`). The
+.NET Framework WCF test services use the legacy `X509Certificate2.PrivateKey`
+API and CSP key-container information. A CNG-backed certificate can fail in
+this path with `Invalid provider type specified`, even when its private-key
+permissions are correct. This is a compatibility requirement of these test
+services, not a general recommendation to replace CNG in modern applications.
+
+The generator uses a temporary named CSP container and preserves its storage
+provider metadata during the PFX import with
+`Pkcs12LoaderLimits.PreserveStorageProvider`. The other loader limits remain
+enabled. The final key is persisted in the machine key store so that a
+certificate-store lookup in another process can reopen it. Do not use
+`EphemeralKeySet` for certificates that IIS must retrieve from the store.
+Creating an RSA CSP key alone is insufficient if its provider metadata is lost
+when attaching or importing the key.
+
+Modern .NET can expose a CSP-backed certificate through `RSACng`; verify the
+persisted provider and key specification with .NET Framework or `certutil`
+rather than relying only on the managed RSA type.
+
+Run certificate installation and permission configuration from an elevated
+Windows PowerShell (`powershell.exe`) shell on the test server. Grant only
+private-key read access to the account actually running the application pool.
+For an ApplicationPoolIdentity pool named `wcfservice123`, use:
+
+```powershell
+.\src\System.Private.ServiceModel\tools\scripts\CertificatePrivateKeyPermissions.ps1 -WcfServiceAccount 'IIS AppPool\wcfservice123'
+```
+
+For a pool running as a custom account, supply that account instead. Granting
+`Everyone` full control neither fixes provider incompatibility nor follows
+least privilege. The permissions script is intentionally CSP-specific; it
+does not make existing CNG certificates compatible with .NET Framework WCF.
+After updating the generator, regenerate the test certificates, reapply
+permissions, and recycle affected application pools to discard cached
+certificates.
+
+The .NET generator reads `CertificateGenerator.dll.config`, not the apphost's
+`CertificateGenerator.exe.config`. IIS setup writes the service name, validity
+period, and CRL file location to the DLL configuration file. Verify that the
+CRL distribution URL includes the IIS application path and is accessible from
+the client machine.
+
+These are disposable test certificates, including intentionally invalid ones.
+Do not use their test CA, fixed PFX password, or exportable keys in production.
+For production certificates, use a trusted issuer, appropriate DNS SANs and
+EKUs, protected private-key storage, and only the export permissions actually
+required by the application.
+
 ## Certificate revocation list
 
 A certificate revocation list is generated every time certificates are generated; the CRL is valid for the duration of the CA certificate. 
