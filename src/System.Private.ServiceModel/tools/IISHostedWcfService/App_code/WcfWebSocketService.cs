@@ -18,10 +18,9 @@ namespace WcfService
 #endif
     public class WcfWebSocketService : IWcfDuplexService
     {
-        public static IWcfDuplexServiceCallback callback;
         public void Ping(Guid guid)
         {
-            callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexServiceCallback>();
+            IWcfDuplexServiceCallback callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexServiceCallback>();
             // Schedule the callback on another thread to avoid reentrancy.
             Task.Run(() => callback.OnPingCallback(guid));
         }
@@ -32,10 +31,9 @@ namespace WcfService
 #endif
     public class WcfWebSocketTransportUsageAlwaysService : IWcfDuplexService
     {
-        public static IWcfDuplexServiceCallback callback;
         public void Ping(Guid guid)
         {
-            callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexServiceCallback>();
+            IWcfDuplexServiceCallback callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexServiceCallback>();
             // Schedule the callback on another thread to avoid reentrancy.
             Task.Run(() => callback.OnPingCallback(guid));
         }
