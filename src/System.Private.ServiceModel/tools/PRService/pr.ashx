@@ -14,7 +14,7 @@
 //     [remote "origin"]
 //         url = https://github.com/dotnet/wcf
 //         fetch = +refs/heads/*:refs/remotes/origin/*
-//         fetch = +refs/pull/*/head:refs/remotes/origin/pr/*      <-- allows us to run git checkout pr/{id} 
+//   - PRs are fetched explicitly from refs/pull/{id}/merge into FETCH_HEAD and checked out detached
 //
 // We also support checking out branches, but we limit the the branches we can check out
 // NOTE: Not locking here, we assume we only have one request hitting each id= at the same time. We could introduce some
@@ -216,8 +216,9 @@ public class PullRequestHandler : IHttpHandler
     {
         string[] gitCommands = new string[]
         {
-            string.Format("fetch origin pull/{0}/head:pr/{0}", pr),
-            string.Format("checkout -f pr/{0}", pr)
+            string.Format("fetch --no-tags origin refs/pull/{0}/merge", pr),
+            "checkout --detach -f FETCH_HEAD",
+            "rev-parse HEAD"
         };
 
         return RunGitCommands(gitCommands, gitRepoPath, executionResult);
