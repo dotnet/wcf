@@ -173,7 +173,6 @@ public class RetryOnFailureTests
     [WcfTheory]
     [InlineData(nameof(RetrySubject.ExplicitSkip))]
     [InlineData(nameof(RetrySubject.ConditionSkip))]
-    [InlineData(nameof(RetrySubject.IssueSkip))]
     public static async Task Skipped_Tests_Are_Not_Invoked_Or_Retried(string methodName)
     {
         RetrySubject.Reset();
@@ -186,6 +185,28 @@ public class RetryOnFailureTests
         Assert.Equal(1, result.Summary.Skipped);
         Assert.Single(result.Messages.OfType<ITestSkipped>());
         Assert.Empty(result.Diagnostics);
+    }
+
+    [WcfFact]
+    public static async Task Tests_With_Issues_Respect_The_Effective_Inclusion_Policy()
+    {
+        RetrySubject.Reset();
+
+        ExecutionResult result = await ExecuteAsync(typeof(RetrySubject), nameof(RetrySubject.IssueSkip));
+        ITestMethod testMethod = Assert.Single(result.Messages.OfType<ITestStarting>()).Test.TestCase.TestMethod;
+        IssueAttribute issue = Assert.Single(testMethod.Method.ToRuntimeMethod().GetCustomAttributes<IssueAttribute>());
+        bool shouldSkip = issue.GetSkipReason(testMethod) != null;
+        int expectedAttempts = shouldSkip ? 0 : 3;
+
+        Assert.Equal(expectedAttempts, RetrySubject.Attempts);
+        Assert.Equal(expectedAttempts, RetrySubject.Created);
+        Assert.Equal(1, result.Summary.Total);
+        Assert.Equal(shouldSkip ? 1 : 0, result.Summary.Skipped);
+        Assert.Equal(shouldSkip ? 0 : 1, result.Summary.Failed);
+        Assert.Equal(shouldSkip ? 1 : 0, result.Messages.OfType<ITestSkipped>().Count());
+        Assert.Equal(shouldSkip ? 0 : 1, result.Messages.OfType<ITestFailed>().Count());
+        Assert.Empty(result.Messages.OfType<ITestPassed>());
+        Assert.Equal(shouldSkip ? 0 : 2, result.Diagnostics.OfType<IDiagnosticMessage>().Count());
     }
 
     [WcfFact]
