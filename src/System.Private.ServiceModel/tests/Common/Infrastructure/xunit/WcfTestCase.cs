@@ -21,9 +21,12 @@ namespace Infrastructure.Common
         private string _skippedReason;
         private bool _isTheory;
         private TimeSpan _failFastDuration;
-        private readonly IMessageSink _diagnosticMessageSink;
 
         static TestEventListener s_testListener = new TestEventListener(new List<string>() { "Microsoft-Windows-Application Server-Applications" }, EventLevel.Verbose);
+
+        internal int MaxAttempts { get; private set; } = 1;
+
+        internal int RetryDelayMilliseconds { get; private set; }
 
         [Obsolete("Called by the de-serializer; should only be called by deriving classes for de-serialization purposes")]
         public WcfTestCase()
@@ -35,13 +38,15 @@ namespace Infrastructure.Common
                              TimeSpan failFastDuration,
                              string skippedReason = null,
                              bool isTheory = false,
-                             IMessageSink diagnosticMessageSink = null)
+                             IMessageSink diagnosticMessageSink = null,
+                             RetryOnFailureAttribute retryOnFailure = null)
             : base(diagnosticMessageSink, defaultMethodDisplay, TestMethodDisplayOptions.None, testCase.TestMethod, testCase.TestMethodArguments)
         {
-            _skippedReason = skippedReason;
-            _isTheory = isTheory;
+            _skippedReason = skippedReason ?? testCase.SkipReason;
+            _isTheory = isTheory && testCase is XunitTheoryTestCase;
             _failFastDuration = failFastDuration;
-            _diagnosticMessageSink = diagnosticMessageSink;
+            MaxAttempts = retryOnFailure?.MaxAttempts ?? 1;
+            RetryDelayMilliseconds = retryOnFailure?.RetryDelayMilliseconds ?? 0;
         }
 
         public override async Task<RunSummary> RunAsync(
@@ -49,7 +54,7 @@ namespace Infrastructure.Common
             ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
         {
             ConcurrentQueue<EventWrittenEventArgs> events = new ConcurrentQueue<EventWrittenEventArgs>();
-	        s_testListener.EventWritten = events.Enqueue;
+            s_testListener.EventWritten = events.Enqueue;
             Timer timer = null;
             if (_failFastDuration != System.Threading.Timeout.InfiniteTimeSpan && !System.Diagnostics.Debugger.IsAttached)
             {
@@ -60,13 +65,19 @@ namespace Infrastructure.Common
             }
 
             RunSummary runsummary;
-            using (timer)
+            try
             {
-                runsummary = await (_isTheory ? new XunitTheoryTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, _diagnosticMessageSink, messageBus, aggregator, cancellationTokenSource).RunAsync()
-                                              : new XunitTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, TestMethodArguments, messageBus, aggregator, cancellationTokenSource).RunAsync());
+                using (timer)
+                {
+                    runsummary = await (_isTheory ? new WcfTheoryTestCaseRunner(this, _skippedReason, constructorArguments, diagnosticMessageSink, messageBus, aggregator, cancellationTokenSource).RunAsync()
+                                                  : new WcfTestCaseRunner(this, _skippedReason, constructorArguments, diagnosticMessageSink, messageBus, aggregator, cancellationTokenSource).RunAsync());
+                }
+            }
+            finally
+            {
+                s_testListener.EventWritten = null;
             }
 
-            s_testListener.EventWritten = null;
             if (runsummary.Failed > 0 && events.Count > 0)
             {
                 StringBuilder etwOutput = new StringBuilder();
@@ -109,12 +120,18 @@ namespace Infrastructure.Common
             data.AddValue("_isTheory", _isTheory);
             data.AddValue("_skippedReason", _skippedReason);
             data.AddValue("_failFastDuration", _failFastDuration.ToString());
+            data.AddValue("MaxAttempts", MaxAttempts);
+            data.AddValue("RetryDelayMilliseconds", RetryDelayMilliseconds);
         }
 
         public override void Deserialize(IXunitSerializationInfo data)
         {
             _isTheory = data.GetValue<bool>("_isTheory");
             _skippedReason = data.GetValue<string>("_skippedReason");
+            int maxAttempts = data.GetValue<int>("MaxAttempts");
+            // Cached test cases discovered before retry support have no attempt setting.
+            MaxAttempts = maxAttempts == 0 ? 1 : maxAttempts;
+            RetryDelayMilliseconds = data.GetValue<int>("RetryDelayMilliseconds");
             string failFastDurationStr = data.GetValue<string>("_failFastDuration");
             if (!string.IsNullOrEmpty(failFastDurationStr))
             {

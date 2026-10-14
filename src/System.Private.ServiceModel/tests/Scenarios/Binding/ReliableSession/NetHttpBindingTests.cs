@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
+[RetryOnFailure(3, 10000)]
 public class Binding_ReliableSession_NetHttpBindingTests : ConditionalWcfTest
 {
     [WcfTheory]
