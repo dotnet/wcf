@@ -90,7 +90,7 @@
     <CoreWCFPrimitivesPackageVersion>1.8.1</CoreWCFPrimitivesPackageVersion>
     <CoreWCFUnixDomainSocketPackageVersion>1.8.1</CoreWCFUnixDomainSocketPackageVersion>
     <CoreWCFNetFramingBasePackageVersion>1.8.1</CoreWCFNetFramingBasePackageVersion>
-    <CoreWCFNetNamedPipePackageVersion>1.8.1-preview.1</CoreWCFNetNamedPipePackageVersion>
+    <CoreWCFNetNamedPipePackageVersion>1.9.1</CoreWCFNetNamedPipePackageVersion>
     <CoreWCFNetTcpPackageVersion>1.8.1</CoreWCFNetTcpPackageVersion>
     <CoreWCFWebHttpPackageVersion>1.8.1</CoreWCFWebHttpPackageVersion>
   </PropertyGroup>
