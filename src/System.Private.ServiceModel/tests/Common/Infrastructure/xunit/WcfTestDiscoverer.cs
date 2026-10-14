@@ -104,15 +104,19 @@ namespace Infrastructure.Common
                 failFastDuration = failFastAttribute.FailTime;
             }
 
+            RetryOnFailureAttribute retryOnFailure = testMethodInfo.GetCustomAttribute<RetryOnFailureAttribute>(inherit: true)
+                ?? testMethod.TestClass.Class.ToRuntimeType().GetCustomAttribute<RetryOnFailureAttribute>(inherit: true);
+
             // If we get this far, we have decided to run the test.
             // Still wrap it in a WcfTestCase with a null skip message
             // so that other WcfTestCase customizations are used.
-            return testCases.Select(tc => new WcfTestCase(testCase: (XunitTestCase)tc,
+            return testCases.Select(tc => tc is ExecutionErrorTestCase ? tc : new WcfTestCase(testCase: (XunitTestCase)tc,
                                                           defaultMethodDisplay: discoveryOptions.MethodDisplayOrDefault(),
                                                           failFastDuration: failFastDuration,
                                                           skippedReason: null,
                                                           isTheory: isTheory,
-                                                          diagnosticMessageSink: diagnosticMessageSink));
+                                                          diagnosticMessageSink: diagnosticMessageSink,
+                                                          retryOnFailure: retryOnFailure));
         }
     }
 }

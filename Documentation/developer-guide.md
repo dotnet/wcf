@@ -156,4 +156,45 @@ This additional functionality includes:
 
 Based on the optional [Condition] or [Issue] attributes, the test may be executed or it may be skipped.  But whether it is skipped or executed, it will appear in the final test results.
 
+Retry timing-sensitive tests
+============
+Tests marked with `[WcfFact]` or `[WcfTheory]` can opt into bounded retries with
+`[RetryOnFailure(maxAttempts, retryDelayMilliseconds)]`. The maximum attempt count
+includes the first execution and must be at least 1. The delay is an integer
+number of milliseconds, must be non-negative, and defaults to 0 (retry immediately).
 
+The attribute can be applied to a method or a class. A class setting supplies the
+default for its WCF test methods, including inherited methods. Class settings are
+inherited by derived classes. A method setting takes precedence over the class
+setting; `[RetryOnFailure(1)]` disables retries for that method. Methods without an
+effective retry attribute execute once.
+
+```csharp
+[RetryOnFailure(3, 10000)]
+public class TimingSensitiveTests
+{
+    [WcfFact]
+    public void MayRetryTwice()
+    {
+        // At most three executions, waiting ten seconds between failed attempts.
+    }
+
+    [WcfFact]
+    [RetryOnFailure(1)]
+    public void RunsOnce()
+    {
+    }
+}
+```
+
+Only failing executions are retried. Successful or skipped tests are not retried,
+and theories retry only their failing data rows, whether the rows are discovered
+before execution or enumerated at runtime. Each attempt uses normal xUnit test
+class construction, initialization, and disposal; shared fixtures, static state,
+and theory arguments are not reset. Only the final outcome is reported as a test
+result, while diagnostic messages describe failed attempts and their exceptions.
+The reported execution time includes retries and delays.
+
+Cancellation interrupts retry delays and prevents further attempts. Existing
+`[FailFastAfter]` deadlines still cover the entire test case, including retries
+and delays; a process crash or fail-fast termination cannot be retried.
