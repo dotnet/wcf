@@ -45,6 +45,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 _authMessageShown = true;
 
                 Console.WriteLine();
+                if (!UseDefaultCredentials)
+                {
+                    Console.WriteLine(SR.HintUseDefaultCredentials);
+                }
                 Console.WriteLine(SR.WrnUserBasicCredentialsInClearText);
                 PromptEnterOrEscape(throwOnEscape: true);
             }
@@ -69,6 +73,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
 
         internal bool AcceptCert { get; set; }
+        internal bool UseDefaultCredentials { get; set; }
 
         public X509Certificate2Collection GetCertificates()
         {
@@ -237,7 +242,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public object Clone()
         {
-            return new CmdCredentialsProvider() { AcceptCert = AcceptCert };            
+            return new CmdCredentialsProvider() { AcceptCert = AcceptCert, UseDefaultCredentials = UseDefaultCredentials };            
         }
 
         #endregion

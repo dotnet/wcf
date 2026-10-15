@@ -180,6 +180,38 @@ namespace SvcutilTest
 
         [Trait("Category", "UnitTest")]
         [Theory]
+        [InlineData("--useDefaultCredentials")]
+        [InlineData("-udc")]
+        public async Task UseDefaultCredentialsOption(string option)
+        {
+            this_TestCaseName = "UseDefaultCredentialsOption";
+            TestFixture();
+            InitializeUnitTest(option.TrimStart('-'), createProject: false, sdkVersion: g_SdkVersion);
+
+            var cmdOptions = CommandParser.ParseCommand(new[] { "http://www.myhost.com/MyService.svc", option });
+            await cmdOptions.ProcessBasicOptionsAsync(this_TestCaseLogger, CancellationToken.None);
+
+            Assert.Empty(cmdOptions.Errors);
+            Assert.True(cmdOptions.UseDefaultCredentials);
+        }
+
+        [Trait("Category", "UnitTest")]
+        [Fact]
+        public async Task UseDefaultCredentialsOptionDefaultsToFalse()
+        {
+            this_TestCaseName = "UseDefaultCredentialsOptionDefaultsToFalse";
+            TestFixture();
+            InitializeUnitTest(this_TestCaseName, createProject: false, sdkVersion: g_SdkVersion);
+
+            var cmdOptions = CommandParser.ParseCommand(new[] { "http://www.myhost.com/MyService.svc" });
+            await cmdOptions.ProcessBasicOptionsAsync(this_TestCaseLogger, CancellationToken.None);
+
+            Assert.Empty(cmdOptions.Errors);
+            Assert.False(cmdOptions.UseDefaultCredentials);
+        }
+
+        [Trait("Category", "UnitTest")]
+        [Theory]
         [InlineData("basicOptions1", "$testCasesDir$/wsdl/Simple.wsdl -tc global")]
         [InlineData("basicOptions2", "$testCasesDir$/wsdl/Simple.wsdl -pf $projectPath$ -nb ")]
         [InlineData("basicOptions3", "$testCasesDir$/wsdl/Simple.wsdl -pf $projectPath$ -d OutputDir -o Reference.cs")]
