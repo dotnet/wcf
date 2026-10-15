@@ -117,6 +117,21 @@
         <target state="translated">参数必须为非空字符串。</target>
         <note />
       </trans-unit>
+      <trans-unit id="ArgumentNotInSetOfValidValues">
+        <source>Specified argument was not in the set of valid values.</source>
+        <target state="new">Specified argument was not in the set of valid values.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ArgumentOutOfMinRange">
+        <source>Specified argument was out of the range of valid values.  The value must be at least {0}.</source>
+        <target state="new">Specified argument was out of the range of valid values.  The value must be at least {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ArgumentPropertyShouldNotBeNullError">
+        <source>Argument property '{0}' should not be null.</source>
+        <target state="new">Argument property '{0}' should not be null.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="AsyncEndCalledOnWrongChannel">
         <source>Async End called on wrong channel.</source>
         <target state="translated">在错误的通道上调用了 Async End。</target>
@@ -290,6 +305,26 @@
       <trans-unit id="BootstrapSecurityBindingElementNotSet">
         <source>The security binding element for bootstrap security was not specified on '{0}'.</source>
         <target state="translated">“{0}”中未指定引导安全性的安全性绑定元素。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ByteStreamMessageEncoderMessageVersionNotSupported">
+        <source>The ByteStreamMessageEncoder does not support the MessageVersion '{0}'.</source>
+        <target state="new">The ByteStreamMessageEncoder does not support the MessageVersion '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ByteStreamMessageGetTypeNotSupported">
+        <source>The GetBody method for type '{0}' is not supported. Please call GetBody with a type 'Stream' or 'byte[]' instead.</source>
+        <target state="new">The GetBody method for type '{0}' is not supported. Please call GetBody with a type 'Stream' or 'byte[]' instead.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ByteStreamReaderNotInByteStream">
+        <source>The reader is not positioned within the byte stream. The reader must be positioned within the element '{0}'.</source>
+        <target state="new">The reader is not positioned within the byte stream. The reader must be positioned within the element '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ByteStreamWriteStartElementAlreadyCalled">
+        <source>WriteStartElement has already been called on this encoder.</source>
+        <target state="new">WriteStartElement has already been called on this encoder.</target>
         <note />
       </trans-unit>
       <trans-unit id="CSRefused">
@@ -1152,6 +1187,11 @@
         <target state="translated">用户回调引发异常。请检查异常堆栈和内部异常，以确定失败的回调。</target>
         <note />
       </trans-unit>
+      <trans-unit id="GetByteArrayFromStreamContentNotAllowed">
+        <source>The GetBody method for 'byte[]' is not supported because the message contains a Stream.</source>
+        <target state="new">The GetBody method for 'byte[]' is not supported because the message contains a Stream.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HeaderAlreadyNotUnderstood">
         <source>The message header with name '{0}' and namespace '{1}' is not present in the set of understood headers.</source>
         <target state="translated">具有名称“{0}”和命名空间“{1}”的消息标头未位于已识别的标头集中。</target>
@@ -1203,8 +1243,8 @@
         <note />
       </trans-unit>
       <trans-unit id="HttpClientCredentialTypeInvalid">
-        <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</source>
-        <target state="translated">ClientCredentialType“{0}”只能在服务器端使用，而不能在客户端使用。请改用以下值之一: None、Basic、Client、Digest、Ntlm、Windows。</target>
+        <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Certificate, Digest, Ntlm, Windows'.</source>
+        <target state="needs-review-translation">ClientCredentialType“{0}”只能在服务器端使用，而不能在客户端使用。请改用以下值之一: None、Basic、Client、Digest、Ntlm、Windows。</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentLengthIncorrect">
@@ -4862,9 +4902,29 @@
         <target state="translated">读取 XML 数据时超过了最大字符串内容长度配额({0})。通过更改在创建 XML 读取器时所使用的 XmlDictionaryReaderQuotas 对象的 MaxStringContentLength 属性，可增加此配额。</target>
         <note />
       </trans-unit>
+      <trans-unit id="XmlReaderClosed">
+        <source>The XmlReader is closed.</source>
+        <target state="new">The XmlReader is closed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlStartElementNameExpected">
+        <source>Start element '{0}' expected. Found '{1}'.</source>
+        <target state="new">Start element '{0}' expected. Found '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlUnexpectedEndElement">
+        <source>No matching start tag for end element.</source>
+        <target state="new">No matching start tag for end element.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="XmlWriterClosed">
         <source>The XmlWriter is closed.</source>
         <target state="translated">XmlWriter 已关闭。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlWriterMustBeInElement">
+        <source>WriteState '{0}' not valid. Caller must write start element before serializing in contentOnly mode.</source>
+        <target state="new">WriteState '{0}' not valid. Caller must write start element before serializing in contentOnly mode.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_InvalidNodeType">

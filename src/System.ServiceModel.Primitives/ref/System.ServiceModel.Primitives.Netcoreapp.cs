@@ -43,6 +43,24 @@ namespace System.ServiceModel
 }
 namespace System.ServiceModel.Channels
 {
+    public static partial class ByteStreamMessage
+    {
+        public static System.ServiceModel.Channels.Message CreateMessage(System.ArraySegment<byte> buffer) { return default; }
+        public static System.ServiceModel.Channels.Message CreateMessage(System.ArraySegment<byte> buffer, System.ServiceModel.Channels.BufferManager bufferManager) { return default; }
+        public static System.ServiceModel.Channels.Message CreateMessage(System.IO.Stream stream) { return default; }
+    }
+    public sealed partial class ByteStreamMessageEncodingBindingElement : System.ServiceModel.Channels.MessageEncodingBindingElement
+    {
+        public ByteStreamMessageEncodingBindingElement() { }
+        public ByteStreamMessageEncodingBindingElement(System.Xml.XmlDictionaryReaderQuotas quota) { }
+        public override System.ServiceModel.Channels.MessageVersion MessageVersion { get { return default; } set { } }
+        public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get { return default; } set { } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public override bool CanBuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public override System.ServiceModel.Channels.BindingElement Clone() { return default; }
+        public override System.ServiceModel.Channels.MessageEncoderFactory CreateMessageEncoderFactory() { return default; }
+        public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default; }
+    }
     public abstract partial class MessageEncoder
     {
         public virtual System.Threading.Tasks.ValueTask<Message> ReadMessageAsync(System.IO.Stream stream, int maxSizeOfHeaders, string contentType) => default;

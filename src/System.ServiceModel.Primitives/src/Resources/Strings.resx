@@ -910,7 +910,7 @@
     <value>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</value>
   </data>
   <data name="HttpClientCredentialTypeInvalid" xml:space="preserve">
-    <value>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</value>
+    <value>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Certificate, Digest, Ntlm, Windows'.</value>
   </data>
   <data name="TransportDoesNotSupportCompression" xml:space="preserve">
     <value>The transport configured on this binding does not appear to support the CompressionFormat specified ({0}) on the message encoder.  To resolve this issue, set the CompressionFormat on the {1} to '{2}' or use a different transport.</value>
@@ -3053,5 +3053,41 @@
   </data>
   <data name="UnableToResolveKeyInfoForUnwrappingToken" xml:space="preserve">
     <value>Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</value>
+  </data>
+  <data name="ArgumentNotInSetOfValidValues" xml:space="preserve">
+    <value>Specified argument was not in the set of valid values.</value>
+  </data>
+  <data name="ArgumentOutOfMinRange" xml:space="preserve">
+    <value>Specified argument was out of the range of valid values.  The value must be at least {0}.</value>
+  </data>
+  <data name="ArgumentPropertyShouldNotBeNullError" xml:space="preserve">
+    <value>Argument property '{0}' should not be null.</value>
+  </data>
+  <data name="ByteStreamMessageEncoderMessageVersionNotSupported" xml:space="preserve">
+    <value>The ByteStreamMessageEncoder does not support the MessageVersion '{0}'.</value>
+  </data>
+  <data name="ByteStreamMessageGetTypeNotSupported" xml:space="preserve">
+    <value>The GetBody method for type '{0}' is not supported. Please call GetBody with a type 'Stream' or 'byte[]' instead.</value>
+  </data>
+  <data name="ByteStreamReaderNotInByteStream" xml:space="preserve">
+    <value>The reader is not positioned within the byte stream. The reader must be positioned within the element '{0}'.</value>
+  </data>
+  <data name="ByteStreamWriteStartElementAlreadyCalled" xml:space="preserve">
+    <value>WriteStartElement has already been called on this encoder.</value>
+  </data>
+  <data name="GetByteArrayFromStreamContentNotAllowed" xml:space="preserve">
+    <value>The GetBody method for 'byte[]' is not supported because the message contains a Stream.</value>
+  </data>
+  <data name="XmlReaderClosed" xml:space="preserve">
+    <value>The XmlReader is closed.</value>
+  </data>
+  <data name="XmlStartElementNameExpected" xml:space="preserve">
+    <value>Start element '{0}' expected. Found '{1}'.</value>
+  </data>
+  <data name="XmlUnexpectedEndElement" xml:space="preserve">
+    <value>No matching start tag for end element.</value>
+  </data>
+  <data name="XmlWriterMustBeInElement" xml:space="preserve">
+    <value>WriteState '{0}' not valid. Caller must write start element before serializing in contentOnly mode.</value>
   </data>
 </root>

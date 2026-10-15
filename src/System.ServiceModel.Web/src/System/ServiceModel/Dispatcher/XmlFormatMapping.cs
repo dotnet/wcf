@@ -1,0 +1,46 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.Generic;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Web;
+using System.Text;
+
+namespace System.ServiceModel.Dispatcher
+{
+    internal class XmlFormatMapping : MultiplexingFormatMapping
+    {
+        public static readonly WebContentFormat WebContentFormat = WebContentFormat.Xml;
+
+        internal static readonly string s_defaultMediaType = "application/xml";
+        private static readonly Dictionary<Encoding, MessageEncoder> s_encoders = new Dictionary<Encoding, MessageEncoder>();
+        private static readonly object s_thisLock = new object();
+
+        public XmlFormatMapping(Encoding writeEncoding, WebContentTypeMapper contentTypeMapper)
+            : base(writeEncoding, contentTypeMapper)
+        { }
+
+        public override WebContentFormat ContentFormat => WebContentFormat;
+
+        public override WebMessageFormat MessageFormat => WebMessageFormat.Xml;
+
+        public override string DefaultMediaType => s_defaultMediaType;
+
+        protected override MessageEncoder Encoder
+        {
+            get
+            {
+                lock (s_thisLock)
+                {
+                    if (!s_encoders.ContainsKey(_writeEncoding))
+                    {
+                        s_encoders[_writeEncoding] = new TextMessageEncodingBindingElement(MessageVersion.None, _writeEncoding).CreateMessageEncoderFactory().Encoder;
+                    }
+                }
+
+                return s_encoders[_writeEncoding];
+            }
+        }
+    }
+}
