@@ -2,17 +2,16 @@
 <Project>
   <!-- Versioning specifications:  https://github.com/dotnet/arcade/blob/master/Documentation/CorePackages/Versioning.md -->
   <PropertyGroup>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>10.1.0</ProductVersion>
     <MajorVersion>10</MajorVersion>
-    <MinorVersion>0</MinorVersion>
+    <MinorVersion>1</MinorVersion>
     <PatchVersion>0</PatchVersion>
-    <WcfAssemblyVersion>10.0.0.0</WcfAssemblyVersion>
-    <!-- Switch to calculated logic after 10.0.0.0 is released -->
-    <PackageValidationBaselineVersion>8.1.2</PackageValidationBaselineVersion>
-    <!--<PackageValidationBaselineVersion>$(MajorVersion).$(MinorVersion).$([MSBuild]::Subtract($(PatchVersion), 1))</PackageValidationBaselineVersion>-->
+    <WcfAssemblyVersion>10.1.0.0</WcfAssemblyVersion>
+    <PackageValidationBaselineVersion>10.0.652802</PackageValidationBaselineVersion>
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
-    <PreReleaseVersionLabel>rc.2</PreReleaseVersionLabel>
+    <!-- Keep a label for fixed patch versions; official releases use DotNetFinalVersionKind=release. -->
+    <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
     <PreReleaseVersionIteration>
     </PreReleaseVersionIteration>
     <!-- Opt-in repo features -->
@@ -31,16 +30,16 @@
     <MicrosoftTargetingPackNETFrameworkv472PackageVersion>1.0.0</MicrosoftTargetingPackNETFrameworkv472PackageVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <DotNetRuntimeRcVersion>10.0.0-rc.2.25502.107</DotNetRuntimeRcVersion>
+    <DotNetRuntimeRcVersion>10.0.0</DotNetRuntimeRcVersion>
   </PropertyGroup>
   <PropertyGroup>
     <!-- Needed by Infrastructure.Common.csproj -->
     <MicrosoftDotNetPlatformAbstractionsPackageVersion>3.1.6</MicrosoftDotNetPlatformAbstractionsPackageVersion>
     <!-- Used by System.ServiceModel.* projects -->
     <SystemSecurityPrincipalWindowsPackageVersion>5.0.0</SystemSecurityPrincipalWindowsPackageVersion>
-    <MicrosoftExtensionsObjectPoolPackageVersion>$(DotNetRuntimeRcVersion)</MicrosoftExtensionsObjectPoolPackageVersion>
-    <SystemSecurityCryptographyXmlPackageVersion>$(DotNetRuntimeRcVersion)</SystemSecurityCryptographyXmlPackageVersion>
-    <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.8.0</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
+    <MicrosoftExtensionsObjectPoolPackageVersion>10.0.13</MicrosoftExtensionsObjectPoolPackageVersion>
+    <SystemSecurityCryptographyXmlPackageVersion>10.0.13</SystemSecurityCryptographyXmlPackageVersion>
+    <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>8.23.0</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
     <XunitStaFactPackageVersion>1.2.46-alpha</XunitStaFactPackageVersion>
     <BouncyCastleCryptodllPackageVersion>1.8.1</BouncyCastleCryptodllPackageVersion>
     <MicrosoftCrankEventSourcesPackageVersion>0.1.0-alpha.20501.1</MicrosoftCrankEventSourcesPackageVersion>
@@ -49,15 +48,9 @@
     <SystemReflectionDispatchProxyPackageVersion>4.7.1</SystemReflectionDispatchProxyPackageVersion>
     <!-- Used by System.ServiceModel.Shim to add the Syndication api's to the shim -->
     <SystemServiceModelSyndicationPackageVersion>$(DotNetRuntimeRcVersion)</SystemServiceModelSyndicationPackageVersion>
-    <!-- There hasn't been an update of Microsoft.IdentityModel.Protocols.WsTrust since 6.8.0
-     All the Microsoft.IdentityModel.* transitive dependencies are out of date. Adding them
-     so that WCF doesn't get flagged for vulnerabilities. We wouldn't normally do this,
-     but the WsTrust package isn't being actively maintained so out of an abundance of
-     caution, for this once case, we're elevating the transitive dependencies -->
-    <MicrosoftIdentityModelTokensSamlPackageVersion>8.14.0</MicrosoftIdentityModelTokensSamlPackageVersion>
-    <MicrosoftIdentityModelXmlPackageVersion>8.14.0</MicrosoftIdentityModelXmlPackageVersion>
-    <!-- From WsTrust -> System.Xml.XmlDocument -> System.Xml.ReaderWriter -> System.Text.RegularExpressions -->
-    <SystemTextRegularExpressionsPackageVersion>4.3.1</SystemTextRegularExpressionsPackageVersion>
+    <!-- Keep IdentityModel dependencies aligned with WsTrust. -->
+    <MicrosoftIdentityModelTokensSamlPackageVersion>8.23.0</MicrosoftIdentityModelTokensSamlPackageVersion>
+    <MicrosoftIdentityModelXmlPackageVersion>8.23.0</MicrosoftIdentityModelXmlPackageVersion>
   </PropertyGroup>
   <!-- dotnet-svcutil-lib packages -->
   <PropertyGroup>

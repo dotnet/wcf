@@ -8,6 +8,16 @@
 
 ## Version History
 
+### 10.1.0 (Unreleased)
+
+* Update the System.ServiceModel.Primitives and System.ServiceModel.Http dependencies to 10.1.0.
+* Update Microsoft.IdentityModel.Protocols.WsTrust and its IdentityModel dependencies to 8.23.0.
+
+### 10.0.0
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Federation/10.0.652802)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v10.0.0-rtm)
+
 ### 8.1.2
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Federation/8.1.2)
