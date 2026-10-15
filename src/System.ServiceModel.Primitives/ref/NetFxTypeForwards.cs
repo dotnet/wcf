@@ -35,6 +35,7 @@ using System.Runtime.CompilerServices;
 //[assembly: TypeForwardedTo(typeof(System.ServiceModel.ClientBase<>.EndOperationDelegate))]
 //[assembly: TypeForwardedTo(typeof(System.ServiceModel.ClientBase<>.InvokeAsyncCompletedEventArgs))]
 [assembly: TypeForwardedTo(typeof(System.ServiceModel.ClientCredentialsSecurityTokenManager))]
+[assembly: TypeForwardedTo(typeof(System.ServiceModel.AddressAccessDeniedException))]
 [assembly: TypeForwardedTo(typeof(System.ServiceModel.CommunicationException))]
 [assembly: TypeForwardedTo(typeof(System.ServiceModel.CommunicationObjectAbortedException))]
 [assembly: TypeForwardedTo(typeof(System.ServiceModel.CommunicationObjectFaultedException))]
