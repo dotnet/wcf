@@ -1419,7 +1419,7 @@
       </trans-unit>
       <trans-unit id="ResolveTypeReturnedFalse">
         <source>An object of type '{0}' which derives from DataContractResolver returned false from its TryResolveType method when attempting to resolve the name for an object of type '{1}', indicating that the resolution failed. Change the TryResolveType implementation to return true.</source>
-        <target state="translated">Ein aus DataContractResolver abgeleitetes Objekt vom Typ "{0}" hat bei dem Versuch, den Namen für ein Objekt vom Typ "{1}" aufzulösen, "false" für seine TryResolveType-Methode zurückgegeben. Dies gibt an, dass bei der Auflösung ein Fehler aufgetreten ist. Ändern Sie die TryResolveType-Implementierung, sodass "true" zurückgegeben wird.</target>
+        <target state="translated">Ein aus DataContractResolver abgeleitetes Objekt vom Typ '{0}' hat bei dem Versuch, den Namen für ein Objekt vom Typ '{1}' aufzulösen, 'false' für seine TryResolveType-Methode zurückgegeben. Das gibt an, dass bei der Auflösung ein Fehler aufgetreten ist. Ändern Sie die TryResolveType-Implementierung, sodass 'true' zurückgegeben wird.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResolveTypeReturnedNull">
