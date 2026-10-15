@@ -8,6 +8,15 @@
 
 ## Version History
 
+### 10.1.0 (Unreleased)
+
+* Update the System.ServiceModel.Primitives and System.ServiceModel.NetFramingBase dependencies to 10.1.0.
+
+### 10.0.0
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetNamedPipe/10.0.652802)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v10.0.0-rtm)
+
 ### 8.1.2
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetNamedPipe/8.1.2)
