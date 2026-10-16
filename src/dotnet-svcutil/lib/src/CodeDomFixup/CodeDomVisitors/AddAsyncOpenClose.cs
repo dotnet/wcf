@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using Microsoft.CodeDom;
+using System.CodeDom;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Linq;
@@ -68,10 +68,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             if (methodName.Equals("Close"))
             {
                 string condition = _isVisualBasic ? "Not NET6_0_OR_GREATER" : "!NET6_0_OR_GREATER";
-                CodeIfDirective ifStart = new CodeIfDirective(CodeIfMode.Start, condition);
-                CodeIfDirective ifEnd = new CodeIfDirective(CodeIfMode.End, "");
-                implMethod.StartDirectives.Add(ifStart);
-                implMethod.EndDirectives.Add(ifEnd);
+                // System.CodeDom doesn't provide a CodeIfDirectiveStatement; we use a region directive as a stable marker
+                // and post-process the generated text to convert it into the desired conditional compilation directives.
+                implMethod.StartDirectives.Add(new CodeRegionDirective(CodeRegionMode.Start, "SVCUTIL_CLOSEASYNC_WRAP:" + condition));
+                implMethod.EndDirectives.Add(new CodeRegionDirective(CodeRegionMode.End, string.Empty));
             }
 
             return implMethod;
