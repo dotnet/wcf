@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public class ChannelFactoryTest
+public class ChannelFactoryTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void CreateChannel_Of_IRequestChannel_Using_CustomBinding()

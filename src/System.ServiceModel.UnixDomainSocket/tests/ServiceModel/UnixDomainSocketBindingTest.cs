@@ -9,7 +9,7 @@ using System.Xml;
 using Infrastructure.Common;
 using Xunit;
 
-public static class UnixDomainSocketBindingTest
+public class UnixDomainSocketBindingTest : ConditionalWcfTest
 {
     [WcfTheory]
     [InlineData(UnixDomainSocketSecurityMode.None)]

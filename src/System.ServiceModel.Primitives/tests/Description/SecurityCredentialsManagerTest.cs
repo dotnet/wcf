@@ -9,7 +9,7 @@ using System.ServiceModel.Security;
 using Infrastructure.Common;
 using Xunit;
 
-public static class SecurityCredentialsManagerTest
+public class SecurityCredentialsManagerTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Derivable()

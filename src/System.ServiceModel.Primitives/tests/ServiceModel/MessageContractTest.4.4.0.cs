@@ -12,7 +12,7 @@ using System.Text;
 using Infrastructure.Common;
 using Xunit;
 
-public static class MessageContractTest_4_4_0
+public class MessageContractTest_4_4_0 : ConditionalWcfTest
 {
     [WcfTheory]
     [InlineData(true)]

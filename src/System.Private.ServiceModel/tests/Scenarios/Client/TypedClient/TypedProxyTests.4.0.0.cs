@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class TypedProxyTests
+public partial class TypedProxyTests : ConditionalWcfTest
 {
     // ServiceContract typed proxy tests create a ChannelFactory using a provided [ServiceContract] Interface which...
     //       returns a generated proxy based on that Interface.

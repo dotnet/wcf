@@ -9,7 +9,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-public static class MessageContractTests
+public class MessageContractTests : ConditionalWcfTest
 {
     public static MessageHeader customHeaderMustUnderstand_True = MessageHeader.CreateHeader("MustUnderstand_True", "http://tempuri.org/MustUnderstand_True_Namespace", "EmptyObject", true);
     public static MessageHeader customHeaderMustUnderstand_False = MessageHeader.CreateHeader("MustUnderstand_False", "http://tempuri.org/MustUnderstand_False_Namespace", "EmptyObject", false);
