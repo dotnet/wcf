@@ -16,7 +16,7 @@ namespace System.ServiceModel.Security
     using System.IO;
     using System.Text;
     using System.Threading;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.Runtime;
     using System.Security.Cryptography;
     using System.IdentityModel.Claims;

@@ -6,7 +6,7 @@ namespace System.ServiceModel.Security
 {
     using System.Security.Cryptography;
     using System.ServiceModel.Channels;
-    using Microsoft.Xml;
+    using System.Xml;
 
     internal class EncryptedData : EncryptedType
     {

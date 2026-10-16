@@ -3,8 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using Microsoft.Xml;
-using Microsoft.Xml.Schema;
+using System.Xml;
+using System.Xml.Schema;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Collections;

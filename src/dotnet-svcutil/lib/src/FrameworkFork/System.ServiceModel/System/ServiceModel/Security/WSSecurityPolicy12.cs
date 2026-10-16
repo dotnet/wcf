@@ -13,7 +13,7 @@ namespace System.ServiceModel.Security
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security.Tokens;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
 
     internal class WSSecurityPolicy12 : WSSecurityPolicy
     {

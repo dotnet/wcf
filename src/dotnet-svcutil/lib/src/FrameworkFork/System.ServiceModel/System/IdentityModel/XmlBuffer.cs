@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Runtime;
 using System.ServiceModel;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.IdentityModel
 {

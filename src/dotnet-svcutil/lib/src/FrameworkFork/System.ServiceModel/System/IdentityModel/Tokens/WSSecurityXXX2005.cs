@@ -8,7 +8,7 @@ namespace System.IdentityModel.Tokens
     using System.Collections.Generic;
     using System.ServiceModel.Security;
     using System.ServiceModel.Security.Tokens;
-    using Microsoft.Xml;
+    using System.Xml;
     using KeyIdentifierClauseEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.KeyIdentifierClauseEntry;
     using StrEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.StrEntry;
     using TokenEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.TokenEntry;

@@ -11,7 +11,7 @@ using System.IO;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.ServiceModel.Security.Tokens;
-using Microsoft.Xml;
+using System.Xml;
 using System.ServiceModel.Diagnostics;
 
 using ISignatureValueSecurityElement = System.IdentityModel.ISignatureValueSecurityElement;

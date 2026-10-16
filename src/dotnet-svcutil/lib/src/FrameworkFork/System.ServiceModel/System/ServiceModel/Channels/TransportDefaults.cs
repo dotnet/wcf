@@ -10,7 +10,7 @@ using System.Security.Authentication;
 using System.Security.Principal;
 using System.ServiceModel.Security;
 using System.Text;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {

@@ -4,7 +4,7 @@
 
 using System.IO;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     public interface IStreamProvider
     {

@@ -9,7 +9,7 @@ using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Dispatcher
 {

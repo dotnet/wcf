@@ -7,7 +7,7 @@ namespace System.ServiceModel.Security
     using System.Collections.Generic;
     using System.IdentityModel;
     using System.Runtime.CompilerServices;
-    using Microsoft.Xml;
+    using System.Xml;
     using DictionaryManager = System.IdentityModel.DictionaryManager;
     using ISecurityElement = System.IdentityModel.ISecurityElement;
 
