@@ -764,7 +764,9 @@ namespace Microsoft.Xml.Serialization
                             // be an array of bytes. Our default is primitive; specify [XmlArray] to get array behavior.
                             ExportArray(metadata, null, null, false, XmlSchemaForm.None, member.SequenceId);
                         }
-                        ExportArrayElements(metadata, array, element.Namespace, member.TypeDesc.ArrayElementTypeDesc, 0);
+                        // A repeated element whose mapping is already an array adds an outer array dimension.
+                        int nestingLevel = member.TypeDesc.ArrayElementTypeDesc == mapping.TypeDesc ? 1 : 0;
+                        ExportArrayElements(metadata, array, element.Namespace, member.TypeDesc.ArrayElementTypeDesc, nestingLevel);
                     }
                     else
                     {
