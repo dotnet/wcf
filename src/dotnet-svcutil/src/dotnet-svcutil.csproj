@@ -21,7 +21,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <!-- Keep one baseline tool asset and roll forward only when its runtime isn't installed. -->
+    <TargetFramework>net8.0</TargetFramework>
+    <RollForward>Major</RollForward>
     <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
 
     <PackAsTool>true</PackAsTool>
@@ -31,17 +33,8 @@
 
   <Target Name="PackAdditonalDlls" AfterTargets="build">
     <ItemGroup>
-      <TargetFrameworkItems Include="$(TargetFrameworks)" />
-    </ItemGroup>
-    <ItemGroup>
-      <TargetFrameworkItem Include="%(TargetFrameworkItems.Identity)">
-        <Tfx>%(TargetFrameworkItems.Identity)</Tfx>
-      </TargetFrameworkItem>
-    </ItemGroup>
-    <ItemGroup>      
-      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net6.0\*.dll" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\net6.0"/>
-      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net8.0\*.dll" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\net8.0"/>
-      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net462\*.dll" Pack="true" PackagePath="tools\%(TargetFrameworkItem.Tfx)\any\net462"/>
+      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net8.0\*.dll" Pack="true" PackagePath="tools\$(TargetFramework)\any\net8.0"/>
+      <None Include="$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)\'))\Microsoft.Svcutil.NamedPipeMetadataImporter\$(Configuration)\net462\*.dll" Pack="true" PackagePath="tools\$(TargetFramework)\any\net462"/>
     </ItemGroup>
   </Target>
   
