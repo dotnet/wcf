@@ -2355,12 +2355,13 @@ namespace BasicHttp_NS
             return base.Channel.EchoWithTimeoutAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
+        public async System.Threading.Tasks.Task<string> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
         {
             BasicHttp_NS.EchoWithTimeoutRequest inValue = new BasicHttp_NS.EchoWithTimeoutRequest();
             inValue.message = message;
             inValue.serviceOperationTimeout = serviceOperationTimeout;
-            return ((BasicHttp_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue);
+            BasicHttp_NS.EchoWithTimeoutResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoWithTimeoutResult;
         }
         
         public System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request)
@@ -2374,11 +2375,12 @@ namespace BasicHttp_NS
             return base.Channel.EchoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.EchoResponse> EchoAsync(string message)
+        public async System.Threading.Tasks.Task<string> EchoAsync(string message)
         {
             BasicHttp_NS.EchoRequest inValue = new BasicHttp_NS.EchoRequest();
             inValue.message = message;
-            return ((BasicHttp_NS.IWcfService)(this)).EchoAsync(inValue);
+            BasicHttp_NS.EchoResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).EchoAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2387,11 +2389,12 @@ namespace BasicHttp_NS
             return base.Channel.EchoComplexAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.EchoComplexResponse> EchoComplexAsync(BasicHttp_NS.ComplexCompositeType message)
+        public async System.Threading.Tasks.Task<BasicHttp_NS.ComplexCompositeType> EchoComplexAsync(BasicHttp_NS.ComplexCompositeType message)
         {
             BasicHttp_NS.EchoComplexRequest inValue = new BasicHttp_NS.EchoComplexRequest();
             inValue.message = message;
-            return ((BasicHttp_NS.IWcfService)(this)).EchoComplexAsync(inValue);
+            BasicHttp_NS.EchoComplexResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).EchoComplexAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoComplexResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2400,11 +2403,11 @@ namespace BasicHttp_NS
             return base.Channel.TestFaultAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.TestFaultResponse> TestFaultAsync(string faultMsg)
+        public async System.Threading.Tasks.Task TestFaultAsync(string faultMsg)
         {
             BasicHttp_NS.TestFaultRequest inValue = new BasicHttp_NS.TestFaultRequest();
             inValue.faultMsg = faultMsg;
-            return ((BasicHttp_NS.IWcfService)(this)).TestFaultAsync(inValue);
+            BasicHttp_NS.TestFaultResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).TestFaultAsync(inValue).ConfigureAwait(false);
         }
         
         public System.Threading.Tasks.Task TestFaultIntAsync(int faultCode)
@@ -2418,12 +2421,12 @@ namespace BasicHttp_NS
             return base.Channel.TestFaultsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.TestFaultsResponse> TestFaultsAsync(string faultMsg, bool throwFaultDetail)
+        public async System.Threading.Tasks.Task TestFaultsAsync(string faultMsg, bool throwFaultDetail)
         {
             BasicHttp_NS.TestFaultsRequest inValue = new BasicHttp_NS.TestFaultsRequest();
             inValue.faultMsg = faultMsg;
             inValue.throwFaultDetail = throwFaultDetail;
-            return ((BasicHttp_NS.IWcfService)(this)).TestFaultsAsync(inValue);
+            BasicHttp_NS.TestFaultsResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).TestFaultsAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2432,12 +2435,13 @@ namespace BasicHttp_NS
             return base.Channel.TestFaultWithKnownTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
+        public async System.Threading.Tasks.Task<object[]> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
         {
             BasicHttp_NS.TestFaultWithKnownTypeRequest inValue = new BasicHttp_NS.TestFaultWithKnownTypeRequest();
             inValue.faultMsg = faultMsg;
             inValue.objects = objects;
-            return ((BasicHttp_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue);
+            BasicHttp_NS.TestFaultWithKnownTypeResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue).ConfigureAwait(false);
+            return retVal.TestFaultWithKnownTypeResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2446,11 +2450,11 @@ namespace BasicHttp_NS
             return base.Channel.ThrowInvalidOperationExceptionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(string message)
+        public async System.Threading.Tasks.Task ThrowInvalidOperationExceptionAsync(string message)
         {
             BasicHttp_NS.ThrowInvalidOperationExceptionRequest inValue = new BasicHttp_NS.ThrowInvalidOperationExceptionRequest();
             inValue.message = message;
-            return ((BasicHttp_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
+            BasicHttp_NS.ThrowInvalidOperationExceptionResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2459,11 +2463,12 @@ namespace BasicHttp_NS
             return base.Channel.GetDataUsingDataContractAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(BasicHttp_NS.CompositeType composite)
+        public async System.Threading.Tasks.Task<BasicHttp_NS.CompositeType> GetDataUsingDataContractAsync(BasicHttp_NS.CompositeType composite)
         {
             BasicHttp_NS.GetDataUsingDataContractRequest inValue = new BasicHttp_NS.GetDataUsingDataContractRequest();
             inValue.composite = composite;
-            return ((BasicHttp_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue);
+            BasicHttp_NS.GetDataUsingDataContractResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue).ConfigureAwait(false);
+            return retVal.GetDataUsingDataContractResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2472,10 +2477,11 @@ namespace BasicHttp_NS
             return base.Channel.ValidateMessagePropertyHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync()
+        public async System.Threading.Tasks.Task<BasicHttp_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[]> ValidateMessagePropertyHeadersAsync()
         {
             BasicHttp_NS.ValidateMessagePropertyHeadersRequest inValue = new BasicHttp_NS.ValidateMessagePropertyHeadersRequest();
-            return ((BasicHttp_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
+            BasicHttp_NS.ValidateMessagePropertyHeadersResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue).ConfigureAwait(false);
+            return retVal.ValidateMessagePropertyHeadersResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2484,10 +2490,11 @@ namespace BasicHttp_NS
             return base.Channel.UserGetAuthTokenAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync()
+        public async System.Threading.Tasks.Task<BasicHttp_NS.ResultOfstring> UserGetAuthTokenAsync()
         {
             BasicHttp_NS.UserGetAuthTokenRequest inValue = new BasicHttp_NS.UserGetAuthTokenRequest();
-            return ((BasicHttp_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue);
+            BasicHttp_NS.UserGetAuthTokenResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue).ConfigureAwait(false);
+            return retVal.UserGetAuthTokenResult;
         }
         
         public System.Threading.Tasks.Task<BasicHttp_NS.ReplyBankingData> MessageContractRequestReplyAsync(BasicHttp_NS.RequestBankingData request)
@@ -2516,10 +2523,11 @@ namespace BasicHttp_NS
             return base.Channel.EchoHttpRequestMessagePropertyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync()
+        public async System.Threading.Tasks.Task<BasicHttp_NS.TestHttpRequestMessageProperty> EchoHttpRequestMessagePropertyAsync()
         {
             BasicHttp_NS.EchoHttpRequestMessagePropertyRequest inValue = new BasicHttp_NS.EchoHttpRequestMessagePropertyRequest();
-            return ((BasicHttp_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
+            BasicHttp_NS.EchoHttpRequestMessagePropertyResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoHttpRequestMessagePropertyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2528,10 +2536,11 @@ namespace BasicHttp_NS
             return base.Channel.GetRestartServiceEndpointAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync()
+        public async System.Threading.Tasks.Task<string> GetRestartServiceEndpointAsync()
         {
             BasicHttp_NS.GetRestartServiceEndpointRequest inValue = new BasicHttp_NS.GetRestartServiceEndpointRequest();
-            return ((BasicHttp_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue);
+            BasicHttp_NS.GetRestartServiceEndpointResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue).ConfigureAwait(false);
+            return retVal.GetRestartServiceEndpointResult;
         }
         
         public System.Threading.Tasks.Task<string> EchoXmlSerializerFormatAsync(string message)
@@ -2560,13 +2569,14 @@ namespace BasicHttp_NS
             return base.Channel.LoginAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.LoginResponse> LoginAsync(string clientId, string user, string pwd)
+        public async System.Threading.Tasks.Task<string> LoginAsync(string clientId, string user, string pwd)
         {
             BasicHttp_NS.LoginRequest inValue = new BasicHttp_NS.LoginRequest();
             inValue.clientId = clientId;
             inValue.user = user;
             inValue.pwd = pwd;
-            return ((BasicHttp_NS.IWcfService)(this)).LoginAsync(inValue);
+            BasicHttp_NS.LoginResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).LoginAsync(inValue).ConfigureAwait(false);
+            return retVal.@return;
         }
         
         public System.Threading.Tasks.Task<string> GetIncomingMessageHeadersMessageAsync(string customHeaderName, string customHeaderNS)
@@ -2580,11 +2590,12 @@ namespace BasicHttp_NS
             return base.Channel.GetStreamFromStringAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(string data)
+        public async System.Threading.Tasks.Task<System.IO.Stream> GetStreamFromStringAsync(string data)
         {
             BasicHttp_NS.GetStreamFromStringRequest inValue = new BasicHttp_NS.GetStreamFromStringRequest();
             inValue.data = data;
-            return ((BasicHttp_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue);
+            BasicHttp_NS.GetStreamFromStringResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue).ConfigureAwait(false);
+            return retVal.GetStreamFromStringResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2593,11 +2604,12 @@ namespace BasicHttp_NS
             return base.Channel.GetStringFromStreamAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(System.IO.Stream stream)
+        public async System.Threading.Tasks.Task<string> GetStringFromStreamAsync(System.IO.Stream stream)
         {
             BasicHttp_NS.GetStringFromStreamRequest inValue = new BasicHttp_NS.GetStringFromStreamRequest();
             inValue.stream = stream;
-            return ((BasicHttp_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue);
+            BasicHttp_NS.GetStringFromStreamResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue).ConfigureAwait(false);
+            return retVal.GetStringFromStreamResult;
         }
         
         public System.Threading.Tasks.Task<System.IO.Stream> EchoStreamAsync(System.IO.Stream stream)
@@ -2611,11 +2623,12 @@ namespace BasicHttp_NS
             return base.Channel.EchoMessageParameterAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(string name)
+        public async System.Threading.Tasks.Task<string> EchoMessageParameterAsync(string name)
         {
             BasicHttp_NS.EchoMessageParameterRequest inValue = new BasicHttp_NS.EchoMessageParameterRequest();
             inValue.name = name;
-            return ((BasicHttp_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue);
+            BasicHttp_NS.EchoMessageParameterResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue).ConfigureAwait(false);
+            return retVal.result;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2624,11 +2637,12 @@ namespace BasicHttp_NS
             return base.Channel.EchoItemsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.EchoItemsResponse> EchoItemsAsync(object[] objects)
+        public async System.Threading.Tasks.Task<object[]> EchoItemsAsync(object[] objects)
         {
             BasicHttp_NS.EchoItemsRequest inValue = new BasicHttp_NS.EchoItemsRequest();
             inValue.objects = objects;
-            return ((BasicHttp_NS.IWcfService)(this)).EchoItemsAsync(inValue);
+            BasicHttp_NS.EchoItemsResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).EchoItemsAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoItemsResult;
         }
         
         public System.Threading.Tasks.Task<object[]> EchoItems_XmlAsync(object[] objects)
@@ -2652,11 +2666,11 @@ namespace BasicHttp_NS
             return base.Channel.ReturnContentTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(string contentType)
+        public async System.Threading.Tasks.Task ReturnContentTypeAsync(string contentType)
         {
             BasicHttp_NS.ReturnContentTypeRequest inValue = new BasicHttp_NS.ReturnContentTypeRequest();
             inValue.contentType = contentType;
-            return ((BasicHttp_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue);
+            BasicHttp_NS.ReturnContentTypeResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2696,10 +2710,11 @@ namespace BasicHttp_NS
             return base.Channel.GetRequestHttpHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync()
+        public async System.Threading.Tasks.Task<BasicHttp_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[]> GetRequestHttpHeadersAsync()
         {
             BasicHttp_NS.GetRequestHttpHeadersRequest inValue = new BasicHttp_NS.GetRequestHttpHeadersRequest();
-            return ((BasicHttp_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue);
+            BasicHttp_NS.GetRequestHttpHeadersResponse retVal = await ((BasicHttp_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue).ConfigureAwait(false);
+            return retVal.GetRequestHttpHeadersResult;
         }
         
         public System.Threading.Tasks.Task EchoReturnTaskAsync()

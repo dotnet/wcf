@@ -2362,12 +2362,13 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.EchoWithTimeoutAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
+        public async System.Threading.Tasks.Task<string> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
         {
             NetHttpsWebSockets_NS.EchoWithTimeoutRequest inValue = new NetHttpsWebSockets_NS.EchoWithTimeoutRequest();
             inValue.message = message;
             inValue.serviceOperationTimeout = serviceOperationTimeout;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue);
+            NetHttpsWebSockets_NS.EchoWithTimeoutResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoWithTimeoutResult;
         }
         
         public System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request)
@@ -2381,11 +2382,12 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.EchoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.EchoResponse> EchoAsync(string message)
+        public async System.Threading.Tasks.Task<string> EchoAsync(string message)
         {
             NetHttpsWebSockets_NS.EchoRequest inValue = new NetHttpsWebSockets_NS.EchoRequest();
             inValue.message = message;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoAsync(inValue);
+            NetHttpsWebSockets_NS.EchoResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2394,11 +2396,12 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.EchoComplexAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.EchoComplexResponse> EchoComplexAsync(NetHttpsWebSockets_NS.ComplexCompositeType message)
+        public async System.Threading.Tasks.Task<NetHttpsWebSockets_NS.ComplexCompositeType> EchoComplexAsync(NetHttpsWebSockets_NS.ComplexCompositeType message)
         {
             NetHttpsWebSockets_NS.EchoComplexRequest inValue = new NetHttpsWebSockets_NS.EchoComplexRequest();
             inValue.message = message;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoComplexAsync(inValue);
+            NetHttpsWebSockets_NS.EchoComplexResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoComplexAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoComplexResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2407,11 +2410,11 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.TestFaultAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.TestFaultResponse> TestFaultAsync(string faultMsg)
+        public async System.Threading.Tasks.Task TestFaultAsync(string faultMsg)
         {
             NetHttpsWebSockets_NS.TestFaultRequest inValue = new NetHttpsWebSockets_NS.TestFaultRequest();
             inValue.faultMsg = faultMsg;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).TestFaultAsync(inValue);
+            NetHttpsWebSockets_NS.TestFaultResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).TestFaultAsync(inValue).ConfigureAwait(false);
         }
         
         public System.Threading.Tasks.Task TestFaultIntAsync(int faultCode)
@@ -2425,12 +2428,12 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.TestFaultsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.TestFaultsResponse> TestFaultsAsync(string faultMsg, bool throwFaultDetail)
+        public async System.Threading.Tasks.Task TestFaultsAsync(string faultMsg, bool throwFaultDetail)
         {
             NetHttpsWebSockets_NS.TestFaultsRequest inValue = new NetHttpsWebSockets_NS.TestFaultsRequest();
             inValue.faultMsg = faultMsg;
             inValue.throwFaultDetail = throwFaultDetail;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).TestFaultsAsync(inValue);
+            NetHttpsWebSockets_NS.TestFaultsResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).TestFaultsAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2439,12 +2442,13 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.TestFaultWithKnownTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
+        public async System.Threading.Tasks.Task<object[]> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
         {
             NetHttpsWebSockets_NS.TestFaultWithKnownTypeRequest inValue = new NetHttpsWebSockets_NS.TestFaultWithKnownTypeRequest();
             inValue.faultMsg = faultMsg;
             inValue.objects = objects;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue);
+            NetHttpsWebSockets_NS.TestFaultWithKnownTypeResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue).ConfigureAwait(false);
+            return retVal.TestFaultWithKnownTypeResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2453,11 +2457,11 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.ThrowInvalidOperationExceptionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(string message)
+        public async System.Threading.Tasks.Task ThrowInvalidOperationExceptionAsync(string message)
         {
             NetHttpsWebSockets_NS.ThrowInvalidOperationExceptionRequest inValue = new NetHttpsWebSockets_NS.ThrowInvalidOperationExceptionRequest();
             inValue.message = message;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
+            NetHttpsWebSockets_NS.ThrowInvalidOperationExceptionResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2466,11 +2470,12 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.GetDataUsingDataContractAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(NetHttpsWebSockets_NS.CompositeType composite)
+        public async System.Threading.Tasks.Task<NetHttpsWebSockets_NS.CompositeType> GetDataUsingDataContractAsync(NetHttpsWebSockets_NS.CompositeType composite)
         {
             NetHttpsWebSockets_NS.GetDataUsingDataContractRequest inValue = new NetHttpsWebSockets_NS.GetDataUsingDataContractRequest();
             inValue.composite = composite;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue);
+            NetHttpsWebSockets_NS.GetDataUsingDataContractResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue).ConfigureAwait(false);
+            return retVal.GetDataUsingDataContractResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2479,10 +2484,11 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.ValidateMessagePropertyHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync()
+        public async System.Threading.Tasks.Task<NetHttpsWebSockets_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[]> ValidateMessagePropertyHeadersAsync()
         {
             NetHttpsWebSockets_NS.ValidateMessagePropertyHeadersRequest inValue = new NetHttpsWebSockets_NS.ValidateMessagePropertyHeadersRequest();
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
+            NetHttpsWebSockets_NS.ValidateMessagePropertyHeadersResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue).ConfigureAwait(false);
+            return retVal.ValidateMessagePropertyHeadersResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2491,10 +2497,11 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.UserGetAuthTokenAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync()
+        public async System.Threading.Tasks.Task<NetHttpsWebSockets_NS.ResultOfstring> UserGetAuthTokenAsync()
         {
             NetHttpsWebSockets_NS.UserGetAuthTokenRequest inValue = new NetHttpsWebSockets_NS.UserGetAuthTokenRequest();
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue);
+            NetHttpsWebSockets_NS.UserGetAuthTokenResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue).ConfigureAwait(false);
+            return retVal.UserGetAuthTokenResult;
         }
         
         public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.ReplyBankingData> MessageContractRequestReplyAsync(NetHttpsWebSockets_NS.RequestBankingData request)
@@ -2523,10 +2530,11 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.EchoHttpRequestMessagePropertyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync()
+        public async System.Threading.Tasks.Task<NetHttpsWebSockets_NS.TestHttpRequestMessageProperty> EchoHttpRequestMessagePropertyAsync()
         {
             NetHttpsWebSockets_NS.EchoHttpRequestMessagePropertyRequest inValue = new NetHttpsWebSockets_NS.EchoHttpRequestMessagePropertyRequest();
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
+            NetHttpsWebSockets_NS.EchoHttpRequestMessagePropertyResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoHttpRequestMessagePropertyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2535,10 +2543,11 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.GetRestartServiceEndpointAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync()
+        public async System.Threading.Tasks.Task<string> GetRestartServiceEndpointAsync()
         {
             NetHttpsWebSockets_NS.GetRestartServiceEndpointRequest inValue = new NetHttpsWebSockets_NS.GetRestartServiceEndpointRequest();
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue);
+            NetHttpsWebSockets_NS.GetRestartServiceEndpointResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue).ConfigureAwait(false);
+            return retVal.GetRestartServiceEndpointResult;
         }
         
         public System.Threading.Tasks.Task<string> EchoXmlSerializerFormatAsync(string message)
@@ -2567,13 +2576,14 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.LoginAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.LoginResponse> LoginAsync(string clientId, string user, string pwd)
+        public async System.Threading.Tasks.Task<string> LoginAsync(string clientId, string user, string pwd)
         {
             NetHttpsWebSockets_NS.LoginRequest inValue = new NetHttpsWebSockets_NS.LoginRequest();
             inValue.clientId = clientId;
             inValue.user = user;
             inValue.pwd = pwd;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).LoginAsync(inValue);
+            NetHttpsWebSockets_NS.LoginResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).LoginAsync(inValue).ConfigureAwait(false);
+            return retVal.@return;
         }
         
         public System.Threading.Tasks.Task<string> GetIncomingMessageHeadersMessageAsync(string customHeaderName, string customHeaderNS)
@@ -2587,11 +2597,12 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.GetStreamFromStringAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(string data)
+        public async System.Threading.Tasks.Task<System.IO.Stream> GetStreamFromStringAsync(string data)
         {
             NetHttpsWebSockets_NS.GetStreamFromStringRequest inValue = new NetHttpsWebSockets_NS.GetStreamFromStringRequest();
             inValue.data = data;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue);
+            NetHttpsWebSockets_NS.GetStreamFromStringResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue).ConfigureAwait(false);
+            return retVal.GetStreamFromStringResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2600,11 +2611,12 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.GetStringFromStreamAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(System.IO.Stream stream)
+        public async System.Threading.Tasks.Task<string> GetStringFromStreamAsync(System.IO.Stream stream)
         {
             NetHttpsWebSockets_NS.GetStringFromStreamRequest inValue = new NetHttpsWebSockets_NS.GetStringFromStreamRequest();
             inValue.stream = stream;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue);
+            NetHttpsWebSockets_NS.GetStringFromStreamResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue).ConfigureAwait(false);
+            return retVal.GetStringFromStreamResult;
         }
         
         public System.Threading.Tasks.Task<System.IO.Stream> EchoStreamAsync(System.IO.Stream stream)
@@ -2618,11 +2630,12 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.EchoMessageParameterAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(string name)
+        public async System.Threading.Tasks.Task<string> EchoMessageParameterAsync(string name)
         {
             NetHttpsWebSockets_NS.EchoMessageParameterRequest inValue = new NetHttpsWebSockets_NS.EchoMessageParameterRequest();
             inValue.name = name;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue);
+            NetHttpsWebSockets_NS.EchoMessageParameterResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue).ConfigureAwait(false);
+            return retVal.result;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2631,11 +2644,12 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.EchoItemsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.EchoItemsResponse> EchoItemsAsync(object[] objects)
+        public async System.Threading.Tasks.Task<object[]> EchoItemsAsync(object[] objects)
         {
             NetHttpsWebSockets_NS.EchoItemsRequest inValue = new NetHttpsWebSockets_NS.EchoItemsRequest();
             inValue.objects = objects;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoItemsAsync(inValue);
+            NetHttpsWebSockets_NS.EchoItemsResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).EchoItemsAsync(inValue).ConfigureAwait(false);
+            return retVal.EchoItemsResult;
         }
         
         public System.Threading.Tasks.Task<object[]> EchoItems_XmlAsync(object[] objects)
@@ -2659,11 +2673,11 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.ReturnContentTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(string contentType)
+        public async System.Threading.Tasks.Task ReturnContentTypeAsync(string contentType)
         {
             NetHttpsWebSockets_NS.ReturnContentTypeRequest inValue = new NetHttpsWebSockets_NS.ReturnContentTypeRequest();
             inValue.contentType = contentType;
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue);
+            NetHttpsWebSockets_NS.ReturnContentTypeResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2703,10 +2717,11 @@ namespace NetHttpsWebSockets_NS
             return base.Channel.GetRequestHttpHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttpsWebSockets_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync()
+        public async System.Threading.Tasks.Task<NetHttpsWebSockets_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[]> GetRequestHttpHeadersAsync()
         {
             NetHttpsWebSockets_NS.GetRequestHttpHeadersRequest inValue = new NetHttpsWebSockets_NS.GetRequestHttpHeadersRequest();
-            return ((NetHttpsWebSockets_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue);
+            NetHttpsWebSockets_NS.GetRequestHttpHeadersResponse retVal = await ((NetHttpsWebSockets_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue).ConfigureAwait(false);
+            return retVal.GetRequestHttpHeadersResult;
         }
         
         public System.Threading.Tasks.Task EchoReturnTaskAsync()
