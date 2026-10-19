@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using Microsoft.CodeDom;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
@@ -12,6 +11,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Text;
+using Microsoft.CodeDom;
 using Microsoft.Xml;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
@@ -1049,10 +1049,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                 }
 
-                if(!handled)
+                if (!handled)
                 {
                     ReliableSessionBindingElement reliableSessionBE = bindingElement as ReliableSessionBindingElement;
-                    if(reliableSessionBE != null)
+                    if (reliableSessionBE != null)
                     {
                         AddReliableSessionBindingElement(statements, resultVar, reliableSessionBE);
                         handled = true;
@@ -1116,15 +1116,65 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private static void AddTransportSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TransportSecurityBindingElement bindingElement)
         {
             // Security binding validation is done in EndpointSelector.cs - Add UserNameOverTransportBindingElement
-            TransportSecurityBindingElement defaultBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
-            CodeVariableDeclarationStatement userNameOverTransportSecurityBindingElement = new CodeVariableDeclarationStatement(
+            TransportSecurityBindingElement defaultBindingElement;
+            string defaultBindingElementFactoryMethodName;
+            CodeExpression[] defaultBindingElementFactoryMethodExpressionParameters = Array.Empty<CodeExpression>();
+
+            // CertificateOverTransport
+            if (SecurityBindingElement.IsCertificateOverTransportBinding(bindingElement))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateCertificateOverTransportBindingElement();
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateCertificateOverTransportBindingElement);
+            }
+            // IssuedTokenOverTransport
+            else if (SecurityBindingElement.IsIssuedTokenOverTransportBinding(bindingElement,
+                out System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters issuedTokenOverTransportParameters))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement(issuedTokenOverTransportParameters);
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement);
+                defaultBindingElementFactoryMethodExpressionParameters = new CodeExpression[]
+                {
+                    // TODO: pass `issuedTokenOverTransportParameters` parameter
+                };
+            }
+            // KerberosOverTransport
+            else if (SecurityBindingElement.IsKerberosBinding(bindingElement))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateKerberosOverTransportBindingElement();
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateKerberosOverTransportBindingElement);
+            }
+            // SspiNegotiatedOverTransport
+            // TODO: make `requireCancellation` out parameter ??
+            else if (SecurityBindingElement.IsSspiNegotiationOverTransportBinding(bindingElement, requireCancellation: true))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement();
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateSspiNegotiationOverTransportBindingElement);
+                defaultBindingElementFactoryMethodExpressionParameters = new CodeExpression[]
+                {
+                    // TODO: add requireCancellation parameter
+                };
+            }
+            // UserNameOverTransport
+            else if (SecurityBindingElement.IsUserNameOverTransportBinding(bindingElement))
+            {
+                defaultBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
+                defaultBindingElementFactoryMethodName = nameof(SecurityBindingElement.CreateUserNameOverTransportBindingElement);
+            }
+            else
+            {
+                // TODO: throw or fallback to `CreateUserNameOverTransportBindingElement` ??
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingElementNotSupportedFormat, bindingElement.GetType()));
+            }
+
+            CodeVariableDeclarationStatement transportSecurityBindingElement = new CodeVariableDeclarationStatement(
                 typeof(TransportSecurityBindingElement),
-                "userNameOverTransportSecurityBindingElement",
+                "transportSecurityBindingElement",
                 new CodeMethodInvokeExpression(
                     new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
-                    "CreateUserNameOverTransportBindingElement"));
-            statements.Add(userNameOverTransportSecurityBindingElement);
-            CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(userNameOverTransportSecurityBindingElement.Name);
+                    defaultBindingElementFactoryMethodName,
+                    defaultBindingElementFactoryMethodExpressionParameters));
+            statements.Add(transportSecurityBindingElement);
+            CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(transportSecurityBindingElement.Name);
 
             if (defaultBindingElement.IncludeTimestamp != bindingElement.IncludeTimestamp)
             {
