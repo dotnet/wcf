@@ -6,8 +6,8 @@ namespace System.ServiceModel.Channels
 {
     using System.Collections.Generic;
     using System.ServiceModel.Description;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using System.Xml.Schema;
     using WsdlNS = System.Web.Services.Description;
 
     public class UdpTransportImporter : IPolicyImportExtension, IWsdlImportExtension

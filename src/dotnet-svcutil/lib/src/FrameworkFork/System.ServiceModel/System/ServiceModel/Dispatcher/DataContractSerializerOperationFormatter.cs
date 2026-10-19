@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using Microsoft.Xml;
+using System.Xml;
 using System.Linq;
 
 namespace System.ServiceModel.Dispatcher

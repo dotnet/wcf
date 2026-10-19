@@ -11,9 +11,9 @@ namespace System.ServiceModel.Description
     using System.Runtime;
     using System.ServiceModel;
     using System.ServiceModel.Channels;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml.Serialization;
+    using System.Xml;
+    using System.Xml.Schema;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
     using WsdlNS = System.Web.Services.Description;
 
     public class WsdlExporter : MetadataExporter
@@ -458,7 +458,7 @@ namespace System.ServiceModel.Description
             {
                 if (s_xmlDocument == null)
                 {
-                    Microsoft.Xml.NameTable nameTable = new Microsoft.Xml.NameTable();
+                    System.Xml.NameTable nameTable = new System.Xml.NameTable();
                     nameTable.Add(MetadataStrings.WSPolicy.Elements.Policy);
                     nameTable.Add(MetadataStrings.WSPolicy.Elements.All);
                     nameTable.Add(MetadataStrings.WSPolicy.Elements.ExactlyOne);

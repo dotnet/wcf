@@ -5,8 +5,8 @@
 using System;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
-using Microsoft.Xml;
-using Microsoft.Xml.Serialization;
+using System.Xml;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 
 namespace System.ServiceModel
 {

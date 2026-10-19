@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
 #if PRIVATE_RTLIB
-using XmlNS = Microsoft.Xml;
+using XmlNS = System.Xml;
 #else
 using System.Reflection;
 using System.Xml.Schema;

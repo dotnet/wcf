@@ -14,7 +14,7 @@ namespace System.ServiceModel.Security
     using System.Globalization;
     using System.ServiceModel.Diagnostics;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
 
     using CanonicalFormWriter = System.IdentityModel.CanonicalFormWriter;
     using SignatureResourcePool = System.IdentityModel.SignatureResourcePool;

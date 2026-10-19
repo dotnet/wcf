@@ -4,12 +4,12 @@
 
 using Microsoft.CodeDom;
 using Microsoft.CodeDom.Compiler;
-using Microsoft.Xml;
-using Microsoft.Xml.Schema;
-using Microsoft.Xml.Serialization;
-using Microsoft.Xml.Serialization.Advanced;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer.Advanced;
 
 using System;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {

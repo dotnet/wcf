@@ -5,7 +5,7 @@
 using System;
 using System.Diagnostics;
 #if PRIVATE_RTLIB
-using XmlNS = Microsoft.Xml;
+using XmlNS = System.Xml;
 #else
 using XmlNS = System.Xml;
 #endif

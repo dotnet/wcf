@@ -8,7 +8,7 @@ using System.Runtime;
 using System.Runtime.Serialization;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {

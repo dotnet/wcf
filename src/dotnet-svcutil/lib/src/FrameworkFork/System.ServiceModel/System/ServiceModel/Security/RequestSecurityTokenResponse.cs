@@ -10,7 +10,7 @@ using System.IdentityModel.Tokens;
 using System.IO;
 using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
-using Microsoft.Xml;
+using System.Xml;
 using System.ServiceModel.Dispatcher;
 
 namespace System.ServiceModel.Security

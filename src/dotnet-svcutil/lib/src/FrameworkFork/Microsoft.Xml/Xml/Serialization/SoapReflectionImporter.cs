@@ -2,9 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -683,7 +684,7 @@ namespace Microsoft.Xml.Serialization
             FieldModel model = new FieldModel(xmlReflectionMember.MemberName, xmlReflectionMember.MemberType, _typeScope.GetTypeDesc(xmlReflectionMember.MemberType), checkSpecified, false);
             member.CheckShouldPersist = model.CheckShouldPersist;
             member.CheckSpecified = model.CheckSpecified;
-            member.ReadOnly = model.ReadOnly; // || !model.FieldTypeDesc.HasDefaultConstructor;
+            member.ReadOnly = model.ReadOnly; // || !model.FieldTypeDesc.DefaultValue != nullConstructor;
             ImportAccessorMapping(member, model, a, ns, form, limiter);
             if (xmlReflectionMember.OverrideIsNullable)
                 member.Elements[0].IsNullable = false;
@@ -701,7 +702,7 @@ namespace Microsoft.Xml.Serialization
             member.MemberInfo = model.MemberInfo;
             member.CheckSpecifiedMemberInfo = model.CheckSpecifiedMemberInfo;
             member.CheckShouldPersistMethodInfo = model.CheckShouldPersistMethodInfo;
-            member.ReadOnly = model.ReadOnly; // || !model.FieldTypeDesc.HasDefaultConstructor;
+            member.ReadOnly = model.ReadOnly; // || !model.FieldTypeDesc.DefaultValue != nullConstructor;
             ImportAccessorMapping(member, model, a, ns, XmlSchemaForm.Unqualified, limiter);
             return member;
         }

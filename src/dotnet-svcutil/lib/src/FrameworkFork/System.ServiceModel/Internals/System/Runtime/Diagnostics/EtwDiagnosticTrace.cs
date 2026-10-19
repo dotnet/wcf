@@ -7,7 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Security;
 using System.Text;
-using Microsoft.Xml;
+using System.Xml;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
