@@ -8,6 +8,7 @@ namespace Microsoft.Xml.Serialization
     using Microsoft.Xml.Schema;
     using System.Collections;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Reflection;
     using System.Diagnostics;
     using Microsoft.CodeDom.Compiler;
@@ -638,6 +639,7 @@ namespace Microsoft.Xml.Serialization
                 throw new InvalidOperationException(string.Format(ResXml.XmlInvalidEnumContent, dataType.Content.GetType().Name, identifier));
 
             XmlSchemaSimpleTypeRestriction restriction = (XmlSchemaSimpleTypeRestriction)dataType.Content;
+            int enumIndex = 0;
 
             for (int i = 0; i < restriction.Facets.Count; i++)
             {
@@ -648,7 +650,9 @@ namespace Microsoft.Xml.Serialization
                 string constantName = CodeIdentifier.MakeValid(enumeration.Value);
                 constant.Name = constants.AddUnique(constantName, constant);
                 constant.XmlName = enumeration.Value;
-                constant.Value = i;
+                long defaultValue = isList ? (1L << enumIndex) : enumIndex;
+                constant.Value = TryGetDataContractEnumValue(enumeration.Annotation, out long enumValue) ? enumValue : defaultValue;
+                enumIndex++;
             }
             enumMapping.Constants = (ConstantMapping[])constants.ToArray(typeof(ConstantMapping));
             if (isList && enumMapping.Constants.Length > 63)
@@ -663,6 +667,39 @@ namespace Microsoft.Xml.Serialization
             ImportedMappings.Add(dataType, enumMapping);
             Scope.AddTypeMapping(enumMapping);
             return enumMapping;
+        }
+
+        private static bool TryGetDataContractEnumValue(XmlSchemaAnnotation annotation, out long value)
+        {
+            value = default;
+
+            if (annotation?.Items == null)
+            {
+                return false;
+            }
+
+            foreach (XmlSchemaObject annotationItem in annotation.Items)
+            {
+                XmlSchemaAppInfo appInfo = annotationItem as XmlSchemaAppInfo;
+                if (appInfo?.Markup == null)
+                {
+                    continue;
+                }
+
+                foreach (XmlNode node in appInfo.Markup)
+                {
+                    XmlElement element = node as XmlElement;
+                    if (element != null
+                        && element.LocalName == "EnumerationValue"
+                        && element.NamespaceURI == "http://schemas.microsoft.com/2003/10/Serialization/"
+                        && long.TryParse(element.InnerText, NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private PrimitiveMapping ImportPrimitiveDataType(XmlSchemaSimpleType dataType)
