@@ -88,6 +88,12 @@ namespace SvcutilTest
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+\\dotnet-svcutil-lib.dll", "DOTNET_VERSION\\dotnet-svcutil-lib.dll") { UseRegex = true }); //for windows
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+/any/dotnet-svcutil-lib.dll", "DOTNET_VERSION/any/dotnet-svcutil-lib.dll") { UseRegex = true }); //for linux
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+\\any\\dotnet-svcutil-lib.dll", "DOTNET_VERSION\\any\\dotnet-svcutil-lib.dll") { UseRegex = true }); //for windows
+            // Normalize the build-output TFM (e.g. net10.0) that precedes an inner asset TFM (net8.0/net462),
+            // preserving the original path separator so Windows and Linux baselines stay identical.
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+([/\\])net", "DOTNET_VERSION${1}net") { UseRegex = true });
+            // Normalize the build-output TFM preceding the TypeReuse BinLib/TypesLib assemblies for any
+            // separator style (/, //, \, \\), preserving the matched separator run.
+            _replacements.Add(new ReplaceInfo(@"net\d+\.\d+([/\\]+)(BinLib|TypesLib)\.dll", "DOTNET_VERSION${1}${2}.dll") { UseRegex = true });
             _replacements.Add(new ReplaceInfo(@"Release\Shipping", @"RelType/ShipType"));
             _replacements.Add(new ReplaceInfo(@"Release\NonShipping", @"RelType/ShipType"));
             _replacements.Add(new ReplaceInfo(@"Debug\Shipping", @"RelType/ShipType"));
