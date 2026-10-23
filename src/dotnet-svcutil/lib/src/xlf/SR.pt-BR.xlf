@@ -617,6 +617,11 @@ Identificador do Documento: '{0}'.</target>
         <target state="translated">Gerar código para Contratos de Serviço. A classe de cliente não será gerada. (Forma resumida: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSeparateFiles">
+        <source>Creates separate files for each type in the specified output directory. (Short Form: -{0})</source>
+        <target state="new">Creates separate files for each type in the specified output directory. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Gere métodos síncronos para operações, além de assíncronos. (Forma Abreviada: -{0})</target>
