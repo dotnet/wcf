@@ -11,7 +11,7 @@ namespace Microsoft.Xml.Serialization
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom.Compiler;
     using System.Threading;
     using System.Diagnostics;
 

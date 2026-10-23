@@ -6,8 +6,8 @@ namespace Microsoft.Xml.Serialization
 {
     using System.Reflection;
     using System;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
 
     /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping"]/*' />
     /// <internalonly/>

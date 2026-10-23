@@ -16,7 +16,7 @@ namespace Microsoft.Xml.Serialization
     // using System.Security.Policy;
     //using Microsoft.Xml.Serialization.Configuration;
     using System.Diagnostics;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom.Compiler;
 
 
     /// <include file='doc\XmlSerializerFactory.uex' path='docs/doc[@for="XmlSerializerFactory"]/*' />

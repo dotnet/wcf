@@ -11,8 +11,8 @@ namespace Microsoft.Xml.Serialization
     using System.ComponentModel;
     using System.Reflection;
     //using Microsoft.Xml.Serialization.Configuration;
-    using Microsoft.CodeDom;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
     using System.Collections.Specialized;
     using System.Globalization;
     // using System.Security.Permissions;
