@@ -8,7 +8,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static class TcpTransportBindingElementTest
+public class TcpTransportBindingElementTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Ctor_Default_Properties()

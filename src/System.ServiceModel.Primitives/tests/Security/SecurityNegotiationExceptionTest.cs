@@ -11,7 +11,7 @@ using Infrastructure.Common;
 using TestTypes;
 using Xunit;
 
-public static class SecurityNegotiationExceptionTest
+public class SecurityNegotiationExceptionTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void ValidateConstructors()

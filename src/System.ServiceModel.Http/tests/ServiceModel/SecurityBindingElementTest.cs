@@ -10,7 +10,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static class SecurityBindingElementTest
+public class SecurityBindingElementTest : ConditionalWcfTest
 {
     [WcfTheory]
     [InlineData(BasicHttpSecurityMode.TransportCredentialOnly)]
