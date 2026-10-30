@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="PackageFullNameInvalid">
         <source>The package full name '{0}' is invalid.</source>
-        <target state="new">The package full name '{0}' is invalid.</target>
+        <target state="translated">包的完整名称“{0}”无效。</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
@@ -149,7 +149,7 @@
       </trans-unit>
       <trans-unit id="SessionValueInvalid">
         <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
-        <target state="new">The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</target>
+        <target state="translated">Session 值“{0}”无效。请指定 "CurrentSession"、"ServiceSession" 或有效的非负 Windows 会话 ID。</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">

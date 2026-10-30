@@ -829,7 +829,7 @@ Se si stava provando a creare un client, il problema può dipendere dal fatto ch
       </trans-unit>
       <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
         <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
-        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
+        <target state="translated">--internal potrebbe essere applicato solo parzialmente quando si usa XmlSerializer; alcuni tipi wrapper dello schema vengono generati come pubblici per garantire la compatibilità del runtime.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">

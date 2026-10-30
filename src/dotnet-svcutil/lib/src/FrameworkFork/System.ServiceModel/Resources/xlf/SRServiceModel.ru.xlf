@@ -1104,7 +1104,7 @@
       </trans-unit>
       <trans-unit id="HttpClientCredentialTypeInvalid">
         <source>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Certificate, Digest, Ntlm, Windows'.</source>
-        <target state="new">ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Certificate, Digest, Ntlm, Windows'.</target>
+        <target state="translated">ClientCredentialType '{0}' можно использовать только на стороне сервера, но не на стороне клиента. Используйте одно из следующих значений: "None, Basic, Certificate, Digest, Ntlm, Windows".</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpContentLengthIncorrect">

@@ -829,7 +829,7 @@ If you were trying to generate a client, this could be because the metadata docu
       </trans-unit>
       <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
         <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
-        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
+        <target state="translated">使用 XmlSerializer 時，只能部分套用 --internal; 有些結構描述包裝函式類型會以公用形式產生，以達到執行階段相容性。l</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">

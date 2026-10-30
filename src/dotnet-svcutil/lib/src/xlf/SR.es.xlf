@@ -829,7 +829,7 @@ Si intentaba generar un cliente, es posible que se deba a que los documentos de 
       </trans-unit>
       <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
         <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
-        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
+        <target state="translated">--internal solo puede aplicarse parcialmente al usar XmlSerializer; algunos tipos de contenedores de esquema se generan como públicos para garantizar la compatibilidad en runtime.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">
