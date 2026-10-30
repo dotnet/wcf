@@ -149,12 +149,12 @@
       </trans-unit>
       <trans-unit id="AuthenticationOfClientFailed">
         <source>Authentication of the client by the service failed.</source>
-        <target state="new">Authentication of the client by the service failed.</target>
+        <target state="translated">服務進行的用戶端驗證失敗。</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthenticatorNotPresentInRSTRCollection">
         <source>The authenticator RSTR was not found in the RSTR collection.</source>
-        <target state="new">The authenticator RSTR was not found in the RSTR collection.</target>
+        <target state="translated">RSTR 集合中找不到驗證器 RSTR。</target>
         <note />
       </trans-unit>
       <trans-unit id="BadCloseTarget">
@@ -169,7 +169,7 @@
       </trans-unit>
       <trans-unit id="BadKeyEncryptionAlgorithm">
         <source>Invalid key encryption algorithm {0}.</source>
-        <target state="new">Invalid key encryption algorithm {0}.</target>
+        <target state="translated">金鑰加密演算法 {0} 無效。</target>
         <note />
       </trans-unit>
       <trans-unit id="BadSecurityNegotiationContext">
@@ -384,7 +384,7 @@
       </trans-unit>
       <trans-unit id="CannotAuthenticateServer">
         <source>The security negotiation could not be completed because mutual authentication was not achieved.</source>
-        <target state="new">The security negotiation could not be completed because mutual authentication was not achieved.</target>
+        <target state="translated">無法完成安全性交涉，因為未達成相互驗證。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotDetectAddressingVersion">
@@ -459,7 +459,7 @@
       </trans-unit>
       <trans-unit id="ChannelDemuxerBindingElementNotFound">
         <source>The binding does not contain a ChannelDemuxerBindingElement.</source>
-        <target state="new">The binding does not contain a ChannelDemuxerBindingElement.</target>
+        <target state="translated">繫結未包含 ChannelDemuxerBindingElement。</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryCannotBeUsedToCreateChannels">
@@ -609,7 +609,7 @@
       </trans-unit>
       <trans-unit id="ConfigInvalidTransactionFlowProtocolValue">
         <source>The transaction protocol value '{0}' is not valid.</source>
-        <target state="new">The transaction protocol value '{0}' is not valid.</target>
+        <target state="translated">交易通訊協定值 '{0}' 無效。</target>
         <note />
       </trans-unit>
       <trans-unit id="ConfigurationFilesNotSupported">
@@ -884,7 +884,7 @@
       </trans-unit>
       <trans-unit id="EncryptedKeyWasNotEncryptedWithTheRequiredEncryptingToken">
         <source>The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</source>
-        <target state="new">The EncryptedKey clause was not wrapped with the required encryption token '{0}'.</target>
+        <target state="translated">EncryptedKey 子句未以必要的加密權杖 '{0}' 包裝。</target>
         <note />
       </trans-unit>
       <trans-unit id="EndMethodsCannotBeDecoratedWithOperationContractAttribute">
@@ -1004,7 +1004,7 @@
       </trans-unit>
       <trans-unit id="FailedSspiNegotiation">
         <source>The SSPI negotiation failed with the server.</source>
-        <target state="new">The SSPI negotiation failed with the server.</target>
+        <target state="translated">與伺服器進行 SSPI 的交涉失敗。</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToCreateTypedProxy">
@@ -1359,7 +1359,7 @@
       </trans-unit>
       <trans-unit id="IncorrectSpnOrUpnSpecified">
         <source>SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</source>
-        <target state="new">SSPI negotiation failed because the target service principal name '{0}' is either incorrect or unknown.</target>
+        <target state="translated">SSPI 交涉失敗，因為目標服務主體名稱 '{0}' 不正確或未知。</target>
         <note />
       </trans-unit>
       <trans-unit id="InnerChannelFactoryWasNotSet">
@@ -1414,7 +1414,7 @@
       </trans-unit>
       <trans-unit id="InvalidClientCredentials">
         <source>The client credentials are not valid.</source>
-        <target state="new">The client credentials are not valid.</target>
+        <target state="translated">用戶端認證無效。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
@@ -1464,7 +1464,7 @@
       </trans-unit>
       <trans-unit id="InvalidPropagationToken">
         <source>The propagation token in the message is invalid.</source>
-        <target state="new">The propagation token in the message is invalid.</target>
+        <target state="translated">訊息中的傳播權杖無效。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidQName">
@@ -1499,7 +1499,7 @@
       </trans-unit>
       <trans-unit id="InvalidSspiNegotiation">
         <source>The SSPI negotiation failed.</source>
-        <target state="new">The SSPI negotiation failed.</target>
+        <target state="translated">SSPI 交涉失敗。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTokenProvided">
@@ -1554,7 +1554,7 @@
       </trans-unit>
       <trans-unit id="IssuedTokenFlowNotAllowed">
         <source>Issued token flow is not allowed by this binding.</source>
-        <target state="new">Issued token flow is not allowed by this binding.</target>
+        <target state="translated">此繫結不允許已發行的權杖流程。</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuerBindingNotPresentInTokenRequirement">
@@ -1914,7 +1914,7 @@
       </trans-unit>
       <trans-unit id="MissingKeyInfoInEncryptedKey">
         <source>The KeyInfo clause is missing or empty in EncryptedKey.</source>
-        <target state="new">The KeyInfo clause is missing or empty in EncryptedKey.</target>
+        <target state="translated">EncryptedKey 的 KeyInfo 子句遺失或空白。</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingMessageID">
@@ -2169,12 +2169,12 @@
       </trans-unit>
       <trans-unit id="NoBinaryNegoToReceive">
         <source>Security negotiation failed because no binary negotiation data was received from the other party.</source>
-        <target state="new">Security negotiation failed because no binary negotiation data was received from the other party.</target>
+        <target state="translated">安全性交涉失敗，因為未收到來自另一方的二進位交涉資料。</target>
         <note />
       </trans-unit>
       <trans-unit id="NoBinaryNegoToSend">
         <source>Security negotiation failed because no binary negotiation data is available to send.</source>
-        <target state="new">Security negotiation failed because no binary negotiation data is available to send.</target>
+        <target state="translated">安全性交涉失敗，因為沒有可傳送的二進位交涉資料。</target>
         <note />
       </trans-unit>
       <trans-unit id="NoChannelBuilderAvailable">
@@ -2199,7 +2199,7 @@
       </trans-unit>
       <trans-unit id="NoInputIsSetForCanonicalization">
         <source>No input is set for writing canonicalized output.</source>
-        <target state="new">No input is set for writing canonicalized output.</target>
+        <target state="translated">未設定任何輸入可寫入標準化輸出。</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyIdentifierClauseFound">
@@ -2249,7 +2249,7 @@
       </trans-unit>
       <trans-unit id="NoServiceTokenReceived">
         <source>No service token was received as part of the security negotiation.</source>
-        <target state="new">No service token was received as part of the security negotiation.</target>
+        <target state="translated">未收到任何服務權杖做為安全性交涉的一部分。</target>
         <note />
       </trans-unit>
       <trans-unit id="NoUserNameTokenProvided">
@@ -2299,7 +2299,7 @@
       </trans-unit>
       <trans-unit id="OleTxHeaderCorrupt">
         <source>The OleTx transaction header in the message is malformed.</source>
-        <target state="new">The OleTx transaction header in the message is malformed.</target>
+        <target state="translated">訊息中的 OleTx 交易標頭格式錯誤。</target>
         <note />
       </trans-unit>
       <trans-unit id="OneWayAndFaultsIncompatible2">
@@ -2409,7 +2409,7 @@
       </trans-unit>
       <trans-unit id="ProofTokenWasNotWrappedCorrectly">
         <source>The proof token was not wrapped with the correct algorithm.</source>
-        <target state="new">The proof token was not wrapped with the correct algorithm.</target>
+        <target state="translated">證明權杖未使用正確的演算法來包裝。</target>
         <note />
       </trans-unit>
       <trans-unit id="PropertySettingErrorOnProtocolFactory">
@@ -2469,17 +2469,17 @@
       </trans-unit>
       <trans-unit id="RSTRAuthenticatorHasBadContext">
         <source>The authenticator RSTR has a different Context value than the negotiation RSTR.</source>
-        <target state="new">The authenticator RSTR has a different Context value than the negotiation RSTR.</target>
+        <target state="translated">驗證器 RSTR 與交涉 RSTR 的內容值不同。</target>
         <note />
       </trans-unit>
       <trans-unit id="RSTRAuthenticatorIncorrect">
         <source>The authenticator in the server response was incorrect.</source>
-        <target state="new">The authenticator in the server response was incorrect.</target>
+        <target state="translated">伺服器回應中的驗證器不正確。</target>
         <note />
       </trans-unit>
       <trans-unit id="RSTRAuthenticatorNotPresent">
         <source>The authenticator was not present in the server response.</source>
-        <target state="new">The authenticator was not present in the server response.</target>
+        <target state="translated">伺服器回應中不存在驗證器。</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadNotSupportedOnStream">
@@ -2669,7 +2669,7 @@
       </trans-unit>
       <trans-unit id="SFxBadTransactionProtocols">
         <source>The specified transaction protocol is not valid.</source>
-        <target state="new">The specified transaction protocol is not valid.</target>
+        <target state="translated">指定的交易通訊協定無效。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBindingMustContainTransport2">
@@ -3514,22 +3514,22 @@
       </trans-unit>
       <trans-unit id="SFxTransactionDeserializationFailed">
         <source>Transaction deserialization failed: {0}.</source>
-        <target state="new">Transaction deserialization failed: {0}.</target>
+        <target state="translated">交易還原序列化失敗: {0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTransactionFlowRequired">
         <source>A transaction is required but was not flowed.</source>
-        <target state="new">A transaction is required but was not flowed.</target>
+        <target state="translated">交易為必要的，但未流動。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTransactionHeaderNotUnderstood">
         <source>The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</source>
-        <target state="new">The transaction header '{0}' within the namespace '{1}' was not understood by the service. The client and the service must be configured to use the same protocol and protocol version ('{2}').</target>
+        <target state="translated">服務無法辨識命名空間 '{1}' 內的交易標頭 '{0}'。必須將用戶端與伺服器設定為使用相同的通訊協定與通訊協定版本 ('{2}')。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTryAddMultipleTransactionsOnMessage">
         <source>Cannot add multiple transaction properties to a message.</source>
-        <target state="new">Cannot add multiple transaction properties to a message.</target>
+        <target state="translated">無法將多個交易屬性新增至訊息。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTypedMessageCannotBeNull">
@@ -3969,7 +3969,7 @@
       </trans-unit>
       <trans-unit id="SpnegoImpersonationLevelCannotBeSetToNone">
         <source>The impersonation level for SPNEGO negotiation cannot be set to None.</source>
-        <target state="new">The impersonation level for SPNEGO negotiation cannot be set to None.</target>
+        <target state="translated">SPNEGO 交涉的模擬等級不能設定為 None。</target>
         <note />
       </trans-unit>
       <trans-unit id="StandardsManagerCannotWriteObject">
@@ -4244,22 +4244,22 @@
       </trans-unit>
       <trans-unit id="TransactionFlowBadOption">
         <source>The specified TransactionFlowOption is not a valid value.</source>
-        <target state="new">The specified TransactionFlowOption is not a valid value.</target>
+        <target state="translated">指定的 TransactionFlowOption 不是有效的值。</target>
         <note />
       </trans-unit>
       <trans-unit id="TransactionFlowOnlySupportedOnWindows">
         <source>Transaction flow is only supported on Windows.</source>
-        <target state="new">Transaction flow is only supported on Windows.</target>
+        <target state="translated">只有 Windows 支援交易流程。</target>
         <note />
       </trans-unit>
       <trans-unit id="TransactionFlowRequiredIssuedTokens">
         <source>Transaction flow is required, but issued tokens are not allowed.</source>
-        <target state="new">Transaction flow is required, but issued tokens are not allowed.</target>
+        <target state="translated">需要交易流程，但不允許已發行的權杖。</target>
         <note />
       </trans-unit>
       <trans-unit id="TransactionsNotSupported">
         <source>Distributed transactions are not supported on this platform.</source>
-        <target state="new">Distributed transactions are not supported on this platform.</target>
+        <target state="translated">此平台不支援分散式交易。</target>
         <note />
       </trans-unit>
       <trans-unit id="TransferModeNotSupported">
@@ -4359,7 +4359,7 @@
       </trans-unit>
       <trans-unit id="UnableToResolveKeyInfoForUnwrappingToken">
         <source>Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</source>
-        <target state="new">Cannot resolve KeyInfo for unwrapping key: KeyInfo '{0}', available tokens '{1}'.</target>
+        <target state="translated">無法解析 KeyInfo 以解除金鑰包裝: KeyInfo '{0}'，可用的權杖 '{1}'。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyReference">
@@ -4504,7 +4504,7 @@
       </trans-unit>
       <trans-unit id="UnmarshalTransactionFaulted">
         <source>The transaction could not be unmarshaled.</source>
-        <target state="new">The transaction could not be unmarshaled.</target>
+        <target state="translated">無法將交易解封送處理。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnparsableCSResponse">
@@ -4744,7 +4744,7 @@
       </trans-unit>
       <trans-unit id="WsatHeaderCorrupt">
         <source>The WS-AtomicTransaction header in the message is malformed.</source>
-        <target state="new">The WS-AtomicTransaction header in the message is malformed.</target>
+        <target state="translated">訊息中的 WS-AtomicTransaction 交易標頭格式錯誤。</target>
         <note />
       </trans-unit>
       <trans-unit id="WsrmFaultReceived">
