@@ -829,7 +829,7 @@ Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případ�
       </trans-unit>
       <trans-unit id="WrnInternalOptionPartiallyAppliedWithXmlSerializer">
         <source>--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</source>
-        <target state="new">--internal may be only partially applied when using XmlSerializer; some schema wrapper types are generated as public for runtime compatibility.</target>
+        <target state="translated">Při použití XmlSerializer může být parametr --internal uplatněn jen částečně; některé typy obálek schématu se kvůli kompatibilitě s modulem runtime generují jako veřejné.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnOutOfSupportTargetFrameworkFormat">

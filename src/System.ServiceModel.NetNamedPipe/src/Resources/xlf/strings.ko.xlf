@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="PackageFullNameInvalid">
         <source>The package full name '{0}' is invalid.</source>
-        <target state="new">The package full name '{0}' is invalid.</target>
+        <target state="translated">패키지 전체 이름 '{0}'이(가) 잘못되었습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="PipeAlreadyClosing">
@@ -149,7 +149,7 @@
       </trans-unit>
       <trans-unit id="SessionValueInvalid">
         <source>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</source>
-        <target state="new">The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</target>
+        <target state="translated">세션 값 '{0}'이(가) 잘못되었습니다. 'CurrentSession', 'ServiceSession' 또는 음수가 아닌 유효한 Windows 세션 ID를 지정하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceCodeFailedPipeConnect">
