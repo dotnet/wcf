@@ -204,7 +204,10 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                await _messageEncoder.WriteMessageAsync(_message, new BufferedWriteStream(stream, _bufferManager));
+                using (var writeStream = new BufferedWriteStream(stream, _bufferManager, BufferedWriteStream.DefaultBufferSize, leaveOpen: true))
+                {
+                    await _messageEncoder.WriteMessageAsync(_message, writeStream);
+                }
             }
             finally
             {
