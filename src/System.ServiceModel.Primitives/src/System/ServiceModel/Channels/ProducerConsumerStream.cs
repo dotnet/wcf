@@ -5,6 +5,7 @@
 
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,7 +16,9 @@ namespace System.ServiceModel.Channels
         private TaskCompletionSource<WriteBufferWrapper> _buffer;
         private TaskCompletionSource<int> _dataAvail;
         private WriteBufferWrapper _currentBuffer;
-        private bool _disposed;
+        private volatile bool _disposed;
+        private volatile bool _completed;
+        private ExceptionDispatchInfo _writeException;
 
         public ProducerConsumerStream()
         {
@@ -28,13 +31,27 @@ namespace System.ServiceModel.Channels
 
         public override bool CanSeek { get { return false; } }
 
-        public override bool CanWrite { get { return !_disposed; } }
+        public override bool CanWrite { get { return !_disposed && !_completed; } }
 
         public override void Flush()
         {
             int bytesWrittenToBuffer = _currentBuffer.BytesWritten;
+            // An empty flush is not EOF while the producer is still writing.
+            if (bytesWrittenToBuffer == 0 && !_disposed && !_completed)
+            {
+                return;
+            }
+
             _currentBuffer = WriteBufferWrapper.EmptyContainer;
             _dataAvail.TrySetResult(bytesWrittenToBuffer);
+        }
+
+        internal void Complete(Exception exception)
+        {
+            _writeException = exception == null ? null : ExceptionDispatchInfo.Capture(exception);
+            _completed = true;
+            _buffer.TrySetCanceled();
+            Flush();
         }
 
         public override int Read(byte[] buffer, int offset, int count)
@@ -77,8 +94,9 @@ namespace System.ServiceModel.Channels
             // ReadAsync never completing.
             _dataAvail = new TaskCompletionSource<int>();
 
-            if (_disposed)
+            if (_disposed || _completed)
             {
+                _writeException?.Throw();
                 return 0;
             }
 
@@ -87,7 +105,13 @@ namespace System.ServiceModel.Channels
                 Contract.Assert(!_buffer.Task.IsCompleted, "Buffer task should not already be completed");
                 Contract.Assert(_currentBuffer == WriteBufferWrapper.EmptyContainer, "The current buffer should be the EmptyContainer");
                 _buffer.TrySetResult(new WriteBufferWrapper(buffer, offset, count));
-                return await _dataAvail.Task;
+                int bytesRead = await _dataAvail.Task;
+                if (bytesRead == 0)
+                {
+                    _writeException?.Throw();
+                }
+
+                return bytesRead;
             }
         }
         public override void Write(byte[] buffer, int offset, int count)
@@ -121,7 +145,7 @@ namespace System.ServiceModel.Channels
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (_disposed)
+            if (_disposed || _completed)
             {
                 throw new ObjectDisposedException("ProducerConsumerStream");
             }
@@ -173,6 +197,7 @@ namespace System.ServiceModel.Channels
             if (disposing && !_disposed)
             {
                 _disposed = true;
+                _buffer.TrySetCanceled();
                 Flush();
             }
 
