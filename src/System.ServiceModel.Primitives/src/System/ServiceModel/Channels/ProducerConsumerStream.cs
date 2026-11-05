@@ -62,7 +62,7 @@ namespace System.ServiceModel.Channels
             {
                 return ReadAsync(buffer, offset, count, CancellationToken.None).GetAwaiter().GetResult();
             }
-            catch (OperationCanceledException oce)
+            catch (OperationCanceledException oce) when (!ReferenceEquals(oce, _writeException?.SourceException))
             {
                 // If WriteAsync is canceled, an OperationCanceledException might get thrown on the Read path.
                 // The stream is no longer usable so converting to an ObjectDisposedException.
@@ -158,6 +158,10 @@ namespace System.ServiceModel.Channels
                     {
                         _currentBuffer = await _buffer.Task;
                         _buffer = new TaskCompletionSource<WriteBufferWrapper>();
+                        if (_disposed || _completed)
+                        {
+                            throw new ObjectDisposedException("ProducerConsumerStream");
+                        }
                     }
 
                     int bytesWritten = _currentBuffer.Write(buffer, offset, count);

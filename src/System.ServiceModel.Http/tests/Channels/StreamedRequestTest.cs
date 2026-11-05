@@ -44,13 +44,18 @@ public static class StreamedRequestTest
         Assert.Same(failure, exception);
     }
 
-    [WcfFact]
-    public static async Task ReadAsStreamAsync_WriterCanceled_DoesNotReturnReply()
+    [WcfTheory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public static async Task ReadAsStreamAsync_WriterCanceled_DoesNotReturnReply(bool partial, bool synchronous)
     {
-        using var handler = new ReaderHandler(true, false);
+        using var handler = new ReaderHandler(true, synchronous);
         var failure = new OperationCanceledException("Streamed request writer canceled");
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(
-            () => SendAsync(handler, new TestWriter(false, failure)));
+        OperationCanceledException exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            () => SendAsync(handler, new TestWriter(partial, failure)));
+        Assert.Same(failure, exception);
         Assert.False(handler.ReadToEnd);
     }
 
