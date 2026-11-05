@@ -38,13 +38,14 @@ namespace System.ServiceModel.Channels
         private BufferManager _bufferManager;
         private byte[] _buffer; // Write buffer.
         private readonly int _bufferSize; // Length of internal buffer (not counting the shadow buffer).
+        private readonly bool _leaveOpen;
         private int _writePos; // Write pointer within buffer.
         private readonly SemaphoreSlim _sem = new SemaphoreSlim(1, 1);
 
         public BufferedWriteStream(Stream stream) : this(stream, null, DefaultBufferSize) { }
 
         public BufferedWriteStream(Stream stream, BufferManager bufferManager) : this(stream, bufferManager, DefaultBufferSize) { }
-        public BufferedWriteStream(Stream stream, BufferManager bufferManager, int bufferSize)
+        public BufferedWriteStream(Stream stream, BufferManager bufferManager, int bufferSize, bool leaveOpen = false)
         {
             Contract.Assert(stream != Null, "stream != Stream.Null");
             Contract.Assert(stream != null, "stream != null");
@@ -53,6 +54,7 @@ namespace System.ServiceModel.Channels
             _stream = stream;
             _bufferManager = bufferManager;
             _bufferSize = bufferSize;
+            _leaveOpen = leaveOpen;
 
             EnsureBufferAllocated();
         }
@@ -139,7 +141,10 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    _stream?.Dispose();
+                    if (!_leaveOpen)
+                    {
+                        _stream?.Dispose();
+                    }
                 }
                 finally
                 {
