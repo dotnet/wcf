@@ -560,7 +560,7 @@ namespace System.Runtime.Serialization
                     throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.TypeMustBeIXmlSerializable, DataContract.GetClrTypeFullName(type), DataContract.GetClrTypeFullName(Globals.TypeOfIXmlSerializable), dataContract.StableName.Name, dataContract.StableName.Namespace)));
                 }
                 DataContract referencedContract = _dataContractSet.GetDataContract(type);
-                if (referencedContract.Equals(dataContract))
+                if (referencedContract.StableName.Equals(dataContract.StableName))
                 {
                     typeReference = GetCodeTypeReference(type);
                     typeReference.UserData.Add(s_codeUserDataActualTypeKey, type);
