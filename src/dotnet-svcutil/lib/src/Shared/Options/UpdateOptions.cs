@@ -29,6 +29,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public const string TypeReuseModeKey = "typeReuseMode";
         public const string WrappedKey = "wrapped";
         public const string LanguageKey = "language";
+        public const string SeparateFilesKey = "separateFiles";
         #endregion
 
         #region properties
@@ -49,6 +50,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public TypeReuseMode? TypeReuseMode { get { return GetValue<TypeReuseMode?>(TypeReuseModeKey); } set { SetValue(TypeReuseModeKey, value); } }
         public bool? Wrapped { get { return GetValue<bool?>(WrappedKey); } set { SetValue(WrappedKey, value); } }
         public string Language { get { return GetValue<string>(LanguageKey); } set { SetValue(LanguageKey, value); } }
+        public bool? SeparateFiles { get { return GetValue<bool?>(SeparateFilesKey); } set { SetValue(SeparateFilesKey, value); } }
         #endregion
 
         public UpdateOptions()
@@ -70,7 +72,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 new SingleValueOption<FrameworkInfo>(TargetFrameworkKey),
                 new SingleValueOption<TypeReuseMode>(TypeReuseModeKey),
                 new SingleValueOption<bool>(WrappedKey),
-                new SingleValueOption<string>(LanguageKey));
+                new SingleValueOption<string>(LanguageKey),
+                new SingleValueOption<bool>(SeparateFilesKey) { SerializationName = "separateFiles" });
         }
 
         public static UpdateOptions FromFile(string filePath, bool throwOnError = true)
