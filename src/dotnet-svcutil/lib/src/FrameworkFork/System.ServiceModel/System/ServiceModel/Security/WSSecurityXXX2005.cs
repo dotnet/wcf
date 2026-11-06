@@ -13,7 +13,7 @@ namespace System.ServiceModel.Security
     using System.IO;
     using System.Text;
     using System.Threading;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.IdentityModel.Claims;
     using System.IdentityModel.Policy;
     using System.IdentityModel.Tokens;

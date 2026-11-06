@@ -5,7 +5,7 @@
 using System.Text;
 using System.Diagnostics;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

@@ -3,10 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 
-namespace Microsoft.Xml.Serialization
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.ComponentModel;
 
     /// <include file='doc\CodeGenerationOptions.uex' path='docs/doc[@for="CodeGenerationOptions"]/*' />

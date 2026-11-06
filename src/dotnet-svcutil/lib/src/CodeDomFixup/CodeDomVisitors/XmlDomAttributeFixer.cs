@@ -10,7 +10,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     internal class XmlDomAttributeFixer : CodeDomVisitor
     {
         // removes members of the affected type
-        private static readonly Type[] s_filteredTypes = new Type[] { typeof(Microsoft.Xml.XmlAttribute), };
+        private static readonly Type[] s_filteredTypes = new Type[] { typeof(System.Xml.XmlAttribute), };
         protected override void Visit(CodeTypeDeclaration type)
         {
             base.Visit(type);

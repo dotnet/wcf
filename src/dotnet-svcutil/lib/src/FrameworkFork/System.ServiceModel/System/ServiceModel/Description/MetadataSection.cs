@@ -8,11 +8,11 @@ namespace System.ServiceModel.Description
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
     using WsdlNS = System.Web.Services.Description;
-    using XsdNS = Microsoft.Xml.Schema;
+    using XsdNS = System.Xml.Schema;
     using System.Reflection;
-    using Microsoft.Xml.Serialization;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 
     [XmlRoot(ElementName = MetadataStrings.MetadataExchangeStrings.MetadataSection, Namespace = MetadataStrings.MetadataExchangeStrings.Namespace)]
     public class MetadataSection
@@ -37,7 +37,7 @@ namespace System.ServiceModel.Description
         }
 
         static public string ServiceDescriptionDialect { get { return System.Web.Services.Description.ServiceDescription.Namespace; } }
-        static public string XmlSchemaDialect { get { return Microsoft.Xml.Schema.XmlSchema.Namespace; } }
+        static public string XmlSchemaDialect { get { return System.Xml.Schema.XmlSchema.Namespace; } }
         static public string PolicyDialect { get { return MetadataStrings.WSPolicy.NamespaceUri; } }
         static public string MetadataExchangeDialect { get { return MetadataStrings.MetadataExchangeStrings.Namespace; } }
 

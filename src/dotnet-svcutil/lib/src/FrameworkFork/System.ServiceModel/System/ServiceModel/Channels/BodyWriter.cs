@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Threading.Tasks;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {

@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 using System.ServiceModel.Channels;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Security
 {

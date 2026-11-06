@@ -13,7 +13,7 @@ using System.Runtime;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Description
 {
