@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
-using Microsoft.CodeDom;
+using System.CodeDom;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {

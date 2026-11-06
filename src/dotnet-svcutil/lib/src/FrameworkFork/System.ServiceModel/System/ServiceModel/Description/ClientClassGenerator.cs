@@ -5,7 +5,7 @@
 namespace System.ServiceModel.Description
 {
     using System;
-    using Microsoft.CodeDom;
+    using System.CodeDom;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Globalization;

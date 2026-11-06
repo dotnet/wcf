@@ -5,8 +5,8 @@
 namespace System.ServiceModel.Channels
 {
     using System;
-    using Microsoft.CodeDom.Compiler;
-    using Microsoft.CodeDom;
+    using System.CodeDom.Compiler;
+    using System.CodeDom;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

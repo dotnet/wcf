@@ -10,7 +10,7 @@ namespace Microsoft.Xml.Serialization
     using System.ComponentModel;
     using System.Reflection;
     using System.Diagnostics;
-    using Microsoft.CodeDom.Compiler;
+    using System.CodeDom.Compiler;
     // using System.Security.Permissions;
 
     /// <include file='doc\SoapSchemaImporter.uex' path='docs/doc[@for="SoapSchemaImporter"]/*' />
