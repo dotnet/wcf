@@ -250,11 +250,12 @@ namespace BasicHttp_4_4_0_NS
             return base.Channel.SendRequestWithXmlElementMessageHeaderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttp_4_4_0_NS.XmlElementMessageHeaderResponse> SendRequestWithXmlElementMessageHeaderAsync(BasicHttp_4_4_0_NS.XmlElementMessageHeader TestHeader)
+        public async System.Threading.Tasks.Task<string> SendRequestWithXmlElementMessageHeaderAsync(BasicHttp_4_4_0_NS.XmlElementMessageHeader TestHeader)
         {
             BasicHttp_4_4_0_NS.XmlElementMessageHeaderRequest inValue = new BasicHttp_4_4_0_NS.XmlElementMessageHeaderRequest();
             inValue.TestHeader = TestHeader;
-            return ((BasicHttp_4_4_0_NS.IWcfService_4_4_0)(this)).SendRequestWithXmlElementMessageHeaderAsync(inValue);
+            BasicHttp_4_4_0_NS.XmlElementMessageHeaderResponse retVal = await ((BasicHttp_4_4_0_NS.IWcfService_4_4_0)(this)).SendRequestWithXmlElementMessageHeaderAsync(inValue).ConfigureAwait(false);
+            return retVal.TestResult;
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

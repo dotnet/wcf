@@ -760,12 +760,13 @@ namespace BasicHttpDocLitSingleNs_NS
             return base.Channel.SumAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttpDocLitSingleNs_NS.SumResponse> SumAsync(BasicHttpDocLitSingleNs_NS.IntParams par)
+        public async System.Threading.Tasks.Task<int> SumAsync(BasicHttpDocLitSingleNs_NS.IntParams par)
         {
             BasicHttpDocLitSingleNs_NS.SumRequest inValue = new BasicHttpDocLitSingleNs_NS.SumRequest();
             inValue.Body = new BasicHttpDocLitSingleNs_NS.SumRequestBody();
             inValue.Body.par = par;
-            return ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).SumAsync(inValue);
+            BasicHttpDocLitSingleNs_NS.SumResponse retVal = await ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).SumAsync(inValue).ConfigureAwait(false);
+            return retVal.Body.SumResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -774,12 +775,13 @@ namespace BasicHttpDocLitSingleNs_NS
             return base.Channel.DivideAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttpDocLitSingleNs_NS.DivideResponse> DivideAsync(BasicHttpDocLitSingleNs_NS.FloatParams par)
+        public async System.Threading.Tasks.Task<float> DivideAsync(BasicHttpDocLitSingleNs_NS.FloatParams par)
         {
             BasicHttpDocLitSingleNs_NS.DivideRequest inValue = new BasicHttpDocLitSingleNs_NS.DivideRequest();
             inValue.Body = new BasicHttpDocLitSingleNs_NS.DivideRequestBody();
             inValue.Body.par = par;
-            return ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).DivideAsync(inValue);
+            BasicHttpDocLitSingleNs_NS.DivideResponse retVal = await ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).DivideAsync(inValue).ConfigureAwait(false);
+            return retVal.Body.DivideResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -788,12 +790,13 @@ namespace BasicHttpDocLitSingleNs_NS
             return base.Channel.ConcatenateAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttpDocLitSingleNs_NS.ConcatenateResponse> ConcatenateAsync(BasicHttpDocLitSingleNs_NS.IntParams par)
+        public async System.Threading.Tasks.Task<string> ConcatenateAsync(BasicHttpDocLitSingleNs_NS.IntParams par)
         {
             BasicHttpDocLitSingleNs_NS.ConcatenateRequest inValue = new BasicHttpDocLitSingleNs_NS.ConcatenateRequest();
             inValue.Body = new BasicHttpDocLitSingleNs_NS.ConcatenateRequestBody();
             inValue.Body.par = par;
-            return ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).ConcatenateAsync(inValue);
+            BasicHttpDocLitSingleNs_NS.ConcatenateResponse retVal = await ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).ConcatenateAsync(inValue).ConfigureAwait(false);
+            return retVal.Body.ConcatenateResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -802,13 +805,13 @@ namespace BasicHttpDocLitSingleNs_NS
             return base.Channel.AddIntParamsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttpDocLitSingleNs_NS.AddIntParamsResponse> AddIntParamsAsync(string guid, BasicHttpDocLitSingleNs_NS.IntParams par)
+        public async System.Threading.Tasks.Task AddIntParamsAsync(string guid, BasicHttpDocLitSingleNs_NS.IntParams par)
         {
             BasicHttpDocLitSingleNs_NS.AddIntParamsRequest inValue = new BasicHttpDocLitSingleNs_NS.AddIntParamsRequest();
             inValue.Body = new BasicHttpDocLitSingleNs_NS.AddIntParamsRequestBody();
             inValue.Body.guid = guid;
             inValue.Body.par = par;
-            return ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).AddIntParamsAsync(inValue);
+            BasicHttpDocLitSingleNs_NS.AddIntParamsResponse retVal = await ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).AddIntParamsAsync(inValue).ConfigureAwait(false);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -817,12 +820,13 @@ namespace BasicHttpDocLitSingleNs_NS
             return base.Channel.GetAndRemoveIntParamsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttpDocLitSingleNs_NS.GetAndRemoveIntParamsResponse> GetAndRemoveIntParamsAsync(string guid)
+        public async System.Threading.Tasks.Task<BasicHttpDocLitSingleNs_NS.IntParams> GetAndRemoveIntParamsAsync(string guid)
         {
             BasicHttpDocLitSingleNs_NS.GetAndRemoveIntParamsRequest inValue = new BasicHttpDocLitSingleNs_NS.GetAndRemoveIntParamsRequest();
             inValue.Body = new BasicHttpDocLitSingleNs_NS.GetAndRemoveIntParamsRequestBody();
             inValue.Body.guid = guid;
-            return ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).GetAndRemoveIntParamsAsync(inValue);
+            BasicHttpDocLitSingleNs_NS.GetAndRemoveIntParamsResponse retVal = await ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).GetAndRemoveIntParamsAsync(inValue).ConfigureAwait(false);
+            return retVal.Body.GetAndRemoveIntParamsResult;
         }
         
         public System.Threading.Tasks.Task<System.DateTime> ReturnInputDateTimeAsync(System.DateTime dt)
@@ -836,12 +840,13 @@ namespace BasicHttpDocLitSingleNs_NS
             return base.Channel.CreateSetAsync(request);
         }
         
-        public System.Threading.Tasks.Task<BasicHttpDocLitSingleNs_NS.CreateSetResponse> CreateSetAsync(BasicHttpDocLitSingleNs_NS.ByteParams par)
+        public async System.Threading.Tasks.Task<byte[]> CreateSetAsync(BasicHttpDocLitSingleNs_NS.ByteParams par)
         {
             BasicHttpDocLitSingleNs_NS.CreateSetRequest inValue = new BasicHttpDocLitSingleNs_NS.CreateSetRequest();
             inValue.Body = new BasicHttpDocLitSingleNs_NS.CreateSetRequestBody();
             inValue.Body.par = par;
-            return ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).CreateSetAsync(inValue);
+            BasicHttpDocLitSingleNs_NS.CreateSetResponse retVal = await ((BasicHttpDocLitSingleNs_NS.ICalculatorDocLit)(this)).CreateSetAsync(inValue).ConfigureAwait(false);
+            return retVal.Body.CreateSetResult;
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
