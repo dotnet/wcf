@@ -13,7 +13,7 @@ using ClientMessageInspector;
 using TestTypes;
 using Xunit;
 
-public static class MessageInspectorTests
+public class MessageInspectorTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

@@ -9,7 +9,7 @@ using Infrastructure.Common;
 using MessageContractCommon;
 using Xunit;
 
-public static class MessageContractTests_4_1_0
+public class MessageContractTests_4_1_0 : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

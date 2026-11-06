@@ -8,7 +8,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static partial class XmlSerializerFormatTests
+public partial class XmlSerializerFormatTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]
