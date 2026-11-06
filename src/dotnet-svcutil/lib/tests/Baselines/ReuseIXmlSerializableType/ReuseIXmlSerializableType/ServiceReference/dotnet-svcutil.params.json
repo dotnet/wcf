@@ -10,7 +10,7 @@
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "$testCasesPath$//TypeReuse//CommonTypes.dll"
+      "../../../../../../src/dotnet-svcutil/lib/tests/TestCases/TypeReuse/CommonTypes.dll"
     ],
     "targetFramework": "N.N",
     "typeReuseMode": "Specified"
