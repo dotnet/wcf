@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://tempuri.org/jagged-array"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    name="JaggedArrayService"
+    targetNamespace="http://tempuri.org/jagged-array">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/jagged-array">
+      <xs:element name="GetTable">
+        <xs:complexType />
+      </xs:element>
+      <xs:element name="GetTableResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="GetTableResult" type="tns:table" minOccurs="0" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="table">
+        <xs:sequence>
+          <xs:element name="hr">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="hd" type="xs:string" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="tr" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="td" type="xs:string" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GetTableRequest">
+    <wsdl:part name="parameters" element="tns:GetTable" />
+  </wsdl:message>
+  <wsdl:message name="GetTableResponse">
+    <wsdl:part name="parameters" element="tns:GetTableResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IJaggedArrayService">
+    <wsdl:operation name="GetTable">
+      <wsdl:input message="tns:GetTableRequest" />
+      <wsdl:output message="tns:GetTableResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IJaggedArrayService" type="tns:IJaggedArrayService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetTable">
+      <soap:operation soapAction="http://tempuri.org/jagged-array/GetTable" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="JaggedArrayService">
+    <wsdl:port name="BasicHttpBinding_IJaggedArrayService" binding="tns:BasicHttpBinding_IJaggedArrayService">
+      <soap:address location="http://localhost/JaggedArrayService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
