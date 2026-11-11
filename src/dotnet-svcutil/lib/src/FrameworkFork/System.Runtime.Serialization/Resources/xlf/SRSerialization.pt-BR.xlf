@@ -1064,7 +1064,7 @@
       </trans-unit>
       <trans-unit id="JsonUnexpectedAttributeLocalName">
         <source>Encountered unexpected attribute local name '{0}'. 'type' and '__type' are the only allowed local names for attributes. 'type' can be used to influence how data is written; its valid values are 'object', 'string', 'number', 'null', 'boolean', and 'array'. '__type' can be used to provide type hint information to the writer.</source>
-        <target state="translated">Encontrou um nome de local do atributo inesperado '{0}'. 'tipo' e '__tipo' são os únicos nomes de local permitidos para atributos. O 'tipo' pode ser usado para influenciar como os dados são gravados; seus valores válidos são 'objeto', 'cadeia de caracteres', 'número', 'nulo', 'booliano' e 'matriz'. '__tipo' pode ser usado para fornecer informação de dica de tipo para o gravador.</target>
+        <target state="translated">Encontrou um nome local do atributo inesperado '{0}'. 'type' e '__type' são os únicos nomes locais permitidos para atributos. O 'type' pode ser usado para influenciar como os dados são gravados; seus valores válidos são 'object', 'string', 'number', 'null', 'boolean' e 'array'. '__type' pode ser usado para fornecer informação de dica de tipo para o gravador.</target>
         <note />
       </trans-unit>
       <trans-unit id="JsonUnexpectedAttributeValue">
