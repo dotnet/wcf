@@ -889,6 +889,12 @@ namespace Microsoft.CSharp
             Output.Write(")");
         }
 
+        private void GenerateAwaitExpression(CodeAwaitExpression e)
+        {
+            Output.Write("await ");
+            GenerateExpression(e.Expression);
+        }
+
         /// <devdoc>
         ///    <para>
         ///       Generates code for the specified CodeDom based delegate creation
@@ -1958,6 +1964,10 @@ namespace Microsoft.CSharp
             {
                 GenerateDefaultValueExpression((CodeDefaultValueExpression)e);
             }
+            else if (e is CodeAwaitExpression)
+            {
+                GenerateAwaitExpression((CodeAwaitExpression)e);
+            }
             else
             {
                 if (e == null)
@@ -2120,6 +2130,10 @@ namespace Microsoft.CSharp
                     OutputMemberAccessModifier(e.Attributes);
                     OutputVTableModifier(e.Attributes);
                     OutputMemberScopeModifier(e.Attributes);
+                    if (GetUserData(e, CodeAwaitExpression.AsyncMethodUserDataKey, false))
+                    {
+                        Output.Write("async ");
+                    }
                 }
             }
             else
