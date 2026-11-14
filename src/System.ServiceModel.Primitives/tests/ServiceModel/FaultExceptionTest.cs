@@ -11,7 +11,7 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-public static class FaultExceptionTest
+public class FaultExceptionTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Ctor_TDetail_FaultReason()

@@ -13,7 +13,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Linq;
 
-public partial class DataContractTests
+public partial class DataContractTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public partial class RequestReplyChannelShapeTests
+public partial class RequestReplyChannelShapeTests : ConditionalWcfTest
 {
     // Creating a ChannelFactory using a binding's 'BuildChannelFactory' method and providing a channel shape...
     //       returns a concrete type determined by the channel shape requested and other binding related settings.

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Infrastructure.Common;
 using Xunit;
 
-public class SynchronizedCollectionTest
+public class SynchronizedCollectionTest : ConditionalWcfTest
 {
     [WcfFact]
     // This Unit test is based from full framework test

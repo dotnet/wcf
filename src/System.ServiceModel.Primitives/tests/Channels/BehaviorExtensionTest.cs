@@ -14,7 +14,7 @@ using Infrastructure.Common;
 using Xunit;
 using System.Threading.Tasks;
 
-public static class BehaviorExtensionTest
+public class BehaviorExtensionTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void BehaviorExtension_OperationBehaviorAttribute()
