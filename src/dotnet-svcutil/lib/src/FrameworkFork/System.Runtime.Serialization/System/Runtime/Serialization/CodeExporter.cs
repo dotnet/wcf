@@ -14,9 +14,9 @@ namespace System.Runtime.Serialization
     using System.Reflection;
     using System.Security;
     using System.Text;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
+    using System.Xml;
+    using System.Xml.Schema;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
 
     internal class CodeExporter
     {

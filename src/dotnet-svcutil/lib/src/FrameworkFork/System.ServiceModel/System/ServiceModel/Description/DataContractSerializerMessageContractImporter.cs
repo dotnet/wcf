@@ -11,11 +11,11 @@ namespace System.ServiceModel.Description
     using System.Text;
     using System.ServiceModel;
     using System.Runtime.Serialization;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using System.Xml.Schema;
     using Microsoft.CodeDom;
     using WsdlNS = System.Web.Services.Description;
-    using Microsoft.Xml.Serialization;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 
     public class DataContractSerializerMessageContractImporter : IWsdlImportExtension
     {

@@ -11,8 +11,8 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel.Description;
 using System.Text;
-using Microsoft.Xml;
-using Microsoft.Xml.Schema;
+using System.Xml;
+using System.Xml.Schema;
 using WsdlNS = System.Web.Services.Description;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil

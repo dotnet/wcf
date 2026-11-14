@@ -2,12 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System.Reflection;
     using System.Collections;
     using System.IO;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System;
 
     /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces"]/*' />
@@ -60,8 +61,8 @@ namespace Microsoft.Xml.Serialization
             if (prefix != null && prefix.Length > 0)
                 XmlConvert.VerifyNCName(prefix);
 
-            if (ns != null && ns.Length > 0)
-                XmlConvert.ToUri(ns);
+            //if (ns != null && ns.Length > 0)
+            //    XmlConvert.ToUri(ns);
             AddInternal(prefix, ns);
         }
 
@@ -132,6 +133,27 @@ namespace Microsoft.Xml.Serialization
             }
             return null;
         }
+
+        public static implicit operator System.Xml.Serialization.XmlSerializerNamespaces(XmlSerializerNamespaces ns)
+        {
+            if (ns == null) return null;
+            System.Xml.Serialization.XmlSerializerNamespaces sysNs = new System.Xml.Serialization.XmlSerializerNamespaces();
+            foreach (System.Xml.XmlQualifiedName qname in ns.ToArray())
+            {
+                sysNs.Add(qname.Name, qname.Namespace);
+            }
+            return sysNs;
+        }
+
+        public static implicit operator XmlSerializerNamespaces(System.Xml.Serialization.XmlSerializerNamespaces ns)
+        {
+            if (ns == null) return null;
+            XmlSerializerNamespaces localNs = new XmlSerializerNamespaces();
+            foreach (System.Xml.XmlQualifiedName qname in ns.ToArray())
+            {
+                localNs.Add(qname.Name, qname.Namespace);
+            }
+            return localNs;
+        }
     }
 }
-

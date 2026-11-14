@@ -2,10 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System.Collections;
     using System.ComponentModel;
     using System.Reflection;
@@ -25,6 +26,8 @@ namespace Microsoft.Xml.Serialization
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public SoapSchemaImporter(XmlSchemas schemas) : base(schemas, CodeGenerationOptions.GenerateProperties, null, new ImportContext()) { }
+        
+        private bool _isImportingDerivedTypesForUrType;
 
         /// <include file='doc\SoapSchemaImporter.uex' path='docs/doc[@for="SoapSchemaImporter.SoapSchemaImporter1"]/*' />
         /// <devdoc>
@@ -236,7 +239,43 @@ namespace Microsoft.Xml.Serialization
                     if (item is XmlSchemaType)
                     {
                         XmlSchemaType type = (XmlSchemaType)item;
-                        if (type.DerivedFrom == baseName)
+                        bool isDerived = type.BaseXmlSchemaType?.QualifiedName == baseName;
+                        
+                        // [Fix: RPC/Encoded Polymorphism Support]
+                        // In many RPC/Encoded WSDLs, types like 'AdditionalData' implicitly inherit from 'xsd:anyType' (Soap.UrType).
+                        // If the tool is asking "Who inherits from anyType?", we must return these implicit derivations, 
+                        // effectively treating them as derived types to ensure they are imported and generated.
+                        if (!isDerived && type is XmlSchemaComplexType && baseName.Name == Soap.UrType && baseName.Namespace == XmlSchema.Namespace)
+                        {
+                             if (((XmlSchemaComplexType)type).ContentModel == null && type.BaseXmlSchemaType == null)
+                                isDerived = true;
+                        }
+
+                        if (!isDerived && type is XmlSchemaComplexType) 
+                        {
+                            // [Fix: Robustness]
+                            // Fallback for missing BaseXmlSchemaType links (common in uncompiled/loosely linked schemas).
+                            // Manually check the ContentModel for Extension or Restriction elements declaring a base type.
+                            XmlSchemaComplexType complexType = (XmlSchemaComplexType)type;
+                            if (complexType.ContentModel?.Content is XmlSchemaComplexContentExtension extension)
+                            {
+                                isDerived = extension.BaseTypeName.Name == baseName.Name && (extension.BaseTypeName.Namespace == baseName.Namespace || string.IsNullOrEmpty(extension.BaseTypeName.Namespace));
+                            }
+                            else if (complexType.ContentModel?.Content is XmlSchemaComplexContentRestriction restriction)
+                            {
+                                isDerived = restriction.BaseTypeName.Name == baseName.Name && (restriction.BaseTypeName.Namespace == baseName.Namespace || string.IsNullOrEmpty(restriction.BaseTypeName.Namespace));
+                            }
+                            else if (complexType.ContentModel?.Content is XmlSchemaSimpleContentExtension simpleExtension)
+                            {
+                                isDerived = simpleExtension.BaseTypeName.Name == baseName.Name && (simpleExtension.BaseTypeName.Namespace == baseName.Namespace || string.IsNullOrEmpty(simpleExtension.BaseTypeName.Namespace));
+                            }
+                            else if (complexType.ContentModel?.Content is XmlSchemaSimpleContentRestriction simpleRestriction)
+                            {
+                                isDerived = simpleRestriction.BaseTypeName.Name == baseName.Name && (simpleRestriction.BaseTypeName.Namespace == baseName.Namespace || string.IsNullOrEmpty(simpleRestriction.BaseTypeName.Namespace));
+                            }
+                        }
+
+                        if (isDerived)
                         {
                             ImportType(type.QualifiedName, false);
                         }
@@ -248,7 +287,25 @@ namespace Microsoft.Xml.Serialization
         private TypeMapping ImportType(XmlQualifiedName name, bool excludeFromImport)
         {
             if (name.Name == Soap.UrType && name.Namespace == XmlSchema.Namespace)
+            {
+                // [Fix: StackOverflow Prevention]
+                // Prevent infinite recursion when importing derived types of 'anyType'.
+                // The cycle is: ImportType(anyType) -> ImportDerivedTypes(anyType) -> ImportStructType(Derived) -> ImportType(base=anyType) -> ...
+                // This guard ensures we only kick off the derived type discovery once for the root object.
+                if (!_isImportingDerivedTypesForUrType)
+                {
+                    _isImportingDerivedTypesForUrType = true;
+                    try
+                    {
+                        ImportDerivedTypes(name);
+                    }
+                    finally
+                    {
+                        _isImportingDerivedTypesForUrType = false;
+                    }
+                }
                 return ImportRootMapping();
+            }
             object type = FindType(name);
             TypeMapping mapping = (TypeMapping)ImportedMappings[type];
             if (mapping == null)
@@ -267,7 +324,7 @@ namespace Microsoft.Xml.Serialization
 
         private TypeMapping ImportType(XmlSchemaComplexType type, string typeNs, bool excludeFromImport)
         {
-            if (type.Redefined != null)
+            if (false /*type.Redefined != null*/)
             {
                 // we do not support redefine in the current version
                 throw new NotSupportedException(string.Format(ResXml.XmlUnsupportedRedefine, type.Name, typeNs));
@@ -304,14 +361,35 @@ namespace Microsoft.Xml.Serialization
             TypeDesc baseTypeDesc = null;
 
             Mapping baseMapping = null;
-            if (!type.DerivedFrom.IsEmpty)
+            if (type.BaseXmlSchemaType != null)
             {
-                baseMapping = ImportType(type.DerivedFrom, excludeFromImport);
+                baseMapping = ImportType(type.BaseXmlSchemaType.QualifiedName, excludeFromImport);
 
                 if (baseMapping is StructMapping)
                     baseTypeDesc = ((StructMapping)baseMapping).TypeDesc;
                 else
                     baseMapping = null;
+            }
+            else 
+            {
+                XmlQualifiedName baseName = null;
+                if (type.ContentModel?.Content is XmlSchemaComplexContentExtension extension)
+                {
+                    baseName = extension.BaseTypeName;
+                }
+                else if (type.ContentModel?.Content is XmlSchemaComplexContentRestriction restriction)
+                {
+                    baseName = restriction.BaseTypeName;
+                }
+
+                if (baseName != null && !baseName.IsEmpty)
+                {
+                    baseMapping = ImportType(baseName, excludeFromImport);
+                    if (baseMapping is StructMapping)
+                        baseTypeDesc = ((StructMapping)baseMapping).TypeDesc;
+                    else
+                        baseMapping = null;
+                }
             }
             if (baseMapping == null) baseMapping = GetRootMapping();
             Mapping previousMapping = (Mapping)ImportedMappings[type];
@@ -408,7 +486,7 @@ namespace Microsoft.Xml.Serialization
             else if (particle is XmlSchemaGroupBase)
             {
                 XmlSchemaGroupBase group = (XmlSchemaGroupBase)particle;
-                if (group.IsMultipleOccurrence)
+                if (group.MaxOccurs > 1)
                     throw new InvalidOperationException(string.Format(ResXml.XmlSoapUnsupportedGroupRepeat, parentType.Name, parentType.Namespace));
                 for (int i = 0; i < group.Items.Count; i++)
                 {
@@ -427,7 +505,7 @@ namespace Microsoft.Xml.Serialization
         private ElementAccessor ImportArray(XmlSchemaElement element, string ns)
         {
             if (element.SchemaType == null) return null;
-            if (!element.IsMultipleOccurrence) return null;
+            if (element.MaxOccurs <= 1) return null;
             XmlSchemaType type = element.SchemaType;
             ArrayMapping arrayMapping = ImportArrayMapping(type, ns);
             if (arrayMapping == null) return null;
@@ -462,7 +540,7 @@ namespace Microsoft.Xml.Serialization
                 arrayMapping.TypeName = "ArrayOf" + CodeIdentifier.MakePascal(itemAccessor.Mapping.TypeName);
                 return arrayMapping;
             }
-            if (!(type.DerivedFrom.Name == Soap.Array && type.DerivedFrom.Namespace == Soap.Encoding)) return null;
+            if (!(type.BaseXmlSchemaType.Name == Soap.Array && type.BaseXmlSchemaType.QualifiedName.Namespace == Soap.Encoding)) return null;
 
             // the type should be a XmlSchemaComplexType
             XmlSchemaContentModel model = ((XmlSchemaComplexType)type).ContentModel;
@@ -534,7 +612,7 @@ namespace Microsoft.Xml.Serialization
                 if (group.Items.Count != 1 || !(group.Items[0] is XmlSchemaElement))
                     return null;
                 XmlSchemaElement itemElement = (XmlSchemaElement)group.Items[0];
-                if (!itemElement.IsMultipleOccurrence) return null;
+                if (itemElement.MaxOccurs <= 1) return null;
                 ElementAccessor itemAccessor = ImportElement(itemElement, ns);
                 arrayMapping.Elements = new ElementAccessor[] { itemAccessor };
                 arrayMapping.TypeDesc = ((TypeMapping)itemAccessor.Mapping).TypeDesc.CreateArrayTypeDesc();
@@ -565,7 +643,7 @@ namespace Microsoft.Xml.Serialization
             }
             member.TypeDesc = ((TypeMapping)accessor.Mapping).TypeDesc;
             member.Elements = new ElementAccessor[] { accessor };
-            if (element.IsMultipleOccurrence)
+            if (element.MaxOccurs > 1)
                 member.TypeDesc = member.TypeDesc.CreateArrayTypeDesc();
 
             if (element.MinOccurs == 0 && member.TypeDesc.IsValueType && !member.TypeDesc.HasIsEmpty)
@@ -620,7 +698,7 @@ namespace Microsoft.Xml.Serialization
             if (mapping != null)
                 return mapping;
 
-            XmlSchemaSimpleType sourceDataType = FindDataType(dataType.DerivedFrom);
+            XmlSchemaSimpleType sourceDataType = FindDataType(dataType.BaseXmlSchemaType.QualifiedName);
             TypeDesc sourceTypeDesc = Scope.GetTypeDesc(sourceDataType);
             if (sourceTypeDesc != null && sourceTypeDesc != Scope.GetTypeDesc(typeof(string)))
                 return ImportPrimitiveDataType(dataType);
@@ -698,9 +776,9 @@ namespace Microsoft.Xml.Serialization
                 TypeDesc typeDesc = Scope.GetTypeDesc(dataType);
                 if (typeDesc != null) return typeDesc;
             }
-            if (!dataType.DerivedFrom.IsEmpty)
+            if (dataType.BaseXmlSchemaType != null)
             {
-                return GetDataTypeSource(FindDataType(dataType.DerivedFrom));
+                return GetDataTypeSource(FindDataType(dataType.BaseXmlSchemaType.QualifiedName));
             }
             return Scope.GetTypeDesc(typeof(string));
         }
@@ -731,10 +809,10 @@ namespace Microsoft.Xml.Serialization
                 if (type != null)
                 {
                     XmlSchemaType encType = (XmlSchemaType)type;
-                    XmlQualifiedName baseType = encType.DerivedFrom;
-                    if (!baseType.IsEmpty)
+                    XmlSchemaType baseType = encType.BaseXmlSchemaType;
+                    if (baseType != null)
                     {
-                        return FindType(baseType);
+                        return FindType(baseType.QualifiedName);
                     }
                     return encType;
                 }

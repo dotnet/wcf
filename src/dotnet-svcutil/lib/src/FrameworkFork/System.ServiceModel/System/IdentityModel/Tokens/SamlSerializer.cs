@@ -14,7 +14,7 @@ namespace System.IdentityModel.Tokens
     using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public class SamlSerializer
     {

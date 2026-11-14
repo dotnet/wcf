@@ -5,7 +5,7 @@
 // NOTE: this file was generated from 'xd.xml'
 
 using System.ServiceModel;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.IdentityModel
 {

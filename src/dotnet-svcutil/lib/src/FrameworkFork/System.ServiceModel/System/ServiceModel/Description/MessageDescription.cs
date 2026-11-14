@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.ServiceModel.Channels;
-using Microsoft.Xml;
+using System.Xml;
 using System.Diagnostics;
 using System.Net.Security;
 using System.ServiceModel.Security;

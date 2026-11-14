@@ -8,10 +8,10 @@ namespace System.Runtime.Serialization
     using System.Collections.Generic;
     using System.Reflection;
     using System.Threading;
-    using Microsoft.Xml;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
-    using Microsoft.Xml.Serialization;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
+    using System.Xml.Schema;
     using System.Security;
     using System.Linq;
 

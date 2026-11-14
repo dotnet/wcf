@@ -5,7 +5,7 @@
 using System;
 using System.Collections;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

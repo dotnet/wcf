@@ -9,7 +9,7 @@ namespace System.IdentityModel.Tokens
     //using System.IdentityModel.Security;
     using System.IdentityModel.Selectors;
     using System.Runtime;
-    using Microsoft.Xml;
+    using System.Xml;
     using System.Collections;
 
     /// <summary>

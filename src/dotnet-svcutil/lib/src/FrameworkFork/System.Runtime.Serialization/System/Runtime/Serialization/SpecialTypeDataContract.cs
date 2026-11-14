@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.Xml;
+using System.Xml;
 using System.Security;
 
 namespace System.Runtime.Serialization

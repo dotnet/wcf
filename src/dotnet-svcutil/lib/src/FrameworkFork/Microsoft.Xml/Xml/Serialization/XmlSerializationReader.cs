@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System.IO;
     using System;
@@ -10,15 +10,15 @@ namespace Microsoft.Xml.Serialization
     using System.Collections;
     using System.Reflection;
     using System.Text;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using System.Xml.Schema;
     using System.ComponentModel;
     using System.Globalization;
     using Microsoft.CodeDom.Compiler;
     using System.Diagnostics;
     using System.Threading;
     // using System.Configuration;
-    //using Microsoft.Xml.Serialization.Configuration;
+    //using System.Xml.Serialization.Configuration;
 
     /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader"]/*' />
     ///<internalonly/>
@@ -198,7 +198,7 @@ namespace Microsoft.Xml.Serialization
                 if (_d == null)
                 {
                     _d = new XmlDocument(_r.NameTable);
-                    _d.SetBaseURI(_r.BaseURI);
+                    //_d.SetBaseURI(_r.BaseURI);
                 }
                 return _d;
             }
@@ -2041,7 +2041,7 @@ namespace Microsoft.Xml.Serialization
                 Reader.MoveToContent();
                 int whileIterations = 0;
                 int readerCount = ReaderCount;
-                while (Reader.NodeType != Microsoft.Xml.XmlNodeType.EndElement)
+                while (Reader.NodeType != System.Xml.XmlNodeType.EndElement)
                 {
                     XmlNode xmlNode = Document.ReadNode(_r);
                     xmlNodeList.Add(xmlNode);

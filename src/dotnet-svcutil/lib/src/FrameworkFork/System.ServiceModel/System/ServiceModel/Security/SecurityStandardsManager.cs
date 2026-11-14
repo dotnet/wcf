@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
-using Microsoft.Xml;
+using System.Xml;
 using System.Runtime.CompilerServices;
 
 namespace System.ServiceModel.Security
