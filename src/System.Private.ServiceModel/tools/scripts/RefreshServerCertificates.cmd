@@ -14,11 +14,13 @@
 ::
 
 setlocal
+set _EXITCODE=0
 
 SET _GITREPO=C:\git\wcf
 SET _SCRIPTSDIR=%_GITREPO%\src\System.Private.ServiceModel\tools\scripts
 SET _LOGFILE=%~dp0\RefreshServerCertificates_ScriptLog.txt
 SET _RESTARTSCRIPT=%~dp0\ScheduledRestartWcfSelfHostedService.cmd
+SET _CERTCONFIG=C:\WCFTest\CertificateGenerator.dll.config
 
 echo [%~n0] %DATE% %TIME% Running script to regenerate certificates... >> %_LOGFILE%
 
@@ -31,26 +33,36 @@ if not exist %_RESTARTSCRIPT% (
     goto end
 )
 
-:: Kill WCF self-hosted service
-TASKKILL /F /IM SelfHostedWCFService.exe                                                >> %_LOGFILE%
-
-:: Regenerate certificates
-echo call %_SCRIPTSDIR%\BuildCertUtil.cmd                                               >> %_LOGFILE%
-call %_SCRIPTSDIR%\BuildCertUtil.cmd                                                    >> %_LOGFILE%
-
-echo [%~n0] cmd /c %_GITREPO%\artifacts\bin\CertificateGenerator\Release\net10.0\CertificateGenerator.exe       >> %_LOGFILE%
-cmd /c %_GITREPO%\artifacts\bin\CertificateGenerator\Release\net10.0\CertificateGenerator.exe                   >> %_LOGFILE% 2>&1
-
-if NOT "%ERRORLEVEL%"=="0" (
-    echo Warning: An error occurred when calling CertificateGenerator.exe.                               >> %_LOGFILE%
+:: Validate persisted IIS settings before a build can overwrite the output configuration.
+powershell -NoProfile -ExecutionPolicy Bypass -File "%_SCRIPTSDIR%\Copy-CertificateGeneratorConfiguration.ps1" -SourcePath "%_CERTCONFIG%" >> %_LOGFILE% 2>&1
+if errorlevel 1 (
     set _EXITCODE=1
     goto end
 )
 
-:: Grant IIS WCF Service Pool permission to access the new certs' private key
-for /f "tokens=*" %%P in ('powershell -command "Get-IISAppPool | Where-Object { $_.Name -like '*wcfservice*' } | Select-Object -ExpandProperty Name"') do (
-    echo [%~n0] powershell -NoProfile -ExecutionPolicy unrestricted %_SCRIPTSDIR%\CertificatePrivateKeyPermissions.ps1 'IIS APPPOOL\%%P' >> %_LOGFILE%
-    powershell -NoProfile -ExecutionPolicy unrestricted %_SCRIPTSDIR%\CertificatePrivateKeyPermissions.ps1 'IIS APPPOOL\%%P' >> %_LOGFILE% 2>&1
+:: Build before stopping services or replacing certificates
+echo call %_SCRIPTSDIR%\BuildCertUtil.cmd                                               >> %_LOGFILE%
+call %_SCRIPTSDIR%\BuildCertUtil.cmd                                                    >> %_LOGFILE%
+
+if errorlevel 1 (
+    echo Error: Certificate generator build failed. >> %_LOGFILE%
+    set _EXITCODE=1
+    goto end
+)
+
+powershell -NoProfile -ExecutionPolicy Bypass -File "%_SCRIPTSDIR%\Copy-CertificateGeneratorConfiguration.ps1" -SourcePath "%_CERTCONFIG%" -DestinationPath "%_GITREPO%\artifacts\bin\CertificateGenerator\Release\net10.0\CertificateGenerator.dll.config" >> %_LOGFILE% 2>&1
+if errorlevel 1 (
+    set _EXITCODE=1
+    goto end
+)
+
+:: Preserve certificates, CRL and host state until every private-key grant succeeds.
+:: HTTPS bindings remain untouched on failure; the helper restores their original certificates.
+powershell -NoProfile -ExecutionPolicy unrestricted -File "%_SCRIPTSDIR%\RefreshCertificatesWithRollback.ps1" -RepositoryPath "%_GITREPO%" >> %_LOGFILE% 2>&1
+if errorlevel 1 (
+    echo Error: Certificate refresh failed; see recovery details above. >> %_LOGFILE%
+    set _EXITCODE=1
+    goto end
 )
 
 :: Configure HTTPS ports to use new certificate
