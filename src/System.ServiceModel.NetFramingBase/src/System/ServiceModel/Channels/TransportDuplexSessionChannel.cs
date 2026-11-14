@@ -17,6 +17,7 @@ namespace System.ServiceModel.Channels
     {
         private bool _isInputSessionClosed;
         private bool _isOutputSessionClosed;
+        private bool _releasingConnection;
         private Uri _localVia;
         private ChannelBinding _channelBindingToken;
 
@@ -290,6 +291,11 @@ namespace System.ServiceModel.Channels
 
         protected override void OnAbort()
         {
+            if (_releasingConnection)
+            {
+                // We are releasing the connection to the pool.
+                return;
+            }
             ReturnConnectionIfNecessary(true, TimeSpan.Zero);
         }
 
@@ -567,6 +573,9 @@ namespace System.ServiceModel.Channels
 
             if (releaseConnection)
             {
+                // Call Abort() to ensure proper channel state before returning the connection to the pool.
+                _releasingConnection = true;
+                Abort();
                 ReturnConnectionIfNecessary(false, timeoutHelper.RemainingTime());
             }
         }
