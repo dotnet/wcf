@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
   </PropertyGroup>
@@ -52,6 +52,7 @@
       If the tool is used on a project with a reference to a lower version the bootstrapper will fail with a nuget package downgrade error. -->
     <PackageReference Include="Microsoft.ApplicationInsights" Version="$(MicrosoftApplicationInsightsPackageVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(MicrosoftExtensionsDependencyModelPackageVersion)" />
+    <PackageReference Include="System.CodeDom" Version="$(SystemCodeDomPackageVersion)" />
     <PackageReference Include="NuGet.ProjectModel" Version="$(NuGetProjectModelPackageVersion)" />
     <PackageReference Include="NuGet.Versioning" Version="$(NuGetVersioningPackageVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonPackageVersion)" />
@@ -97,11 +98,6 @@
       <GenerateSource>true</GenerateSource>
       <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
       <ClassName>Microsoft.Tools.ServiceModel.Svcutil.Metadata.MetadataResources</ClassName>
-    </EmbeddedResource>
-    <EmbeddedResource Update="FrameworkFork\Microsoft.CodeDom\SRCodeDom.resx">
-      <GenerateSource>true</GenerateSource>
-      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
-      <ClassName>SRCodeDom</ClassName>
     </EmbeddedResource>
     <EmbeddedResource Update="Shared\Resources.resx">
       <GenerateSource>true</GenerateSource>
