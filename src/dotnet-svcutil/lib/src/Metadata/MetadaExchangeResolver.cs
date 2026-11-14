@@ -49,6 +49,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
         public IServerCertificateValidationProvider ServerCertificateValidationProvider { get; private set; }
 
+        public bool UseDefaultCredentials { get; private set; }
+
         public bool HasServiceMetadata
         {
             get
@@ -64,6 +66,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             IClientCertificateProvider clientCertificatesProvider,
             IServerCertificateValidationProvider serverCertificateValidationProvider)
         {
+            return Create(endpointAddress, userCredentialsProvider, clientCertificatesProvider, serverCertificateValidationProvider, useDefaultCredentials: false);
+        }
+
+        public static MetadataExchangeResolver Create(
+            EndpointAddress endpointAddress,
+            IHttpCredentialsProvider userCredentialsProvider,
+            IClientCertificateProvider clientCertificatesProvider,
+            IServerCertificateValidationProvider serverCertificateValidationProvider,
+            bool useDefaultCredentials)
+        {
             if (endpointAddress == null)
             {
                 throw new ArgumentNullException(nameof(endpointAddress));
@@ -75,10 +87,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             resolver.HttpCredentialsProvider = userCredentialsProvider;
             resolver.ClientCertificatesProvider = clientCertificatesProvider;
             resolver.ServerCertificateValidationProvider = serverCertificateValidationProvider;
+            resolver.UseDefaultCredentials = useDefaultCredentials;
             resolver.OperationTimeout = TimeSpan.MaxValue;
             resolver.ResolveMetadataReferences = true;
             resolver.MaximumResolvedReferences = MaximumResolvedReferencesDefault;
-            resolver.HttpCredentials = System.Net.CredentialCache.DefaultCredentials;
+            if (useDefaultCredentials)
+            {
+                resolver.HttpCredentials = System.Net.CredentialCache.DefaultCredentials;
+            }
 
             return resolver;
         }
@@ -221,7 +237,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
         private async Task<bool> ResolveMetadataAsync(Stream stream, string baseUri, CancellationToken cancellationToken)
         {
-            var loader = new MetadataDocumentLoader(baseUri, this.HttpCredentialsProvider, this.ClientCertificatesProvider, this.ServerCertificateValidationProvider);
+            var loader = new MetadataDocumentLoader(baseUri, this.HttpCredentialsProvider, this.ClientCertificatesProvider, this.ServerCertificateValidationProvider, UseDefaultCredentials);
 
             try
             {
@@ -349,6 +365,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             if (_userCredentials != null)
             {
                 request.Credentials = _userCredentials;
+            }
+            else if (UseDefaultCredentials)
+            {
+                request.Credentials = CredentialCache.DefaultCredentials;
             }
 
 #if !NETCORE10
