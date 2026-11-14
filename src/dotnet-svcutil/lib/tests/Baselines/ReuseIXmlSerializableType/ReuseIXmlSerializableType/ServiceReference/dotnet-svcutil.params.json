@@ -3,14 +3,14 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "../../../../../../src/dotnet-svcutil/lib/tests/TestCases/TypeReuse/TypeReuseIXmlSerializable.wsdl"
+      "../../../../../../src/dotnet-svcutil/lib/tests/TestCases/ReuseIXmlSerializableType/TypeReuseIXmlSerializable.wsdl"
     ],
     "namespaceMappings": [
       "*, ReuseIXmlSerializableType_NS"
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "$testCasesPath$//TypeReuse//CommonTypes.dll"
+      "$testCasesPath$//ReuseIXmlSerializableType//CommonTypes//CommonTypes.csproj"
     ],
     "targetFramework": "N.N",
     "typeReuseMode": "Specified"
