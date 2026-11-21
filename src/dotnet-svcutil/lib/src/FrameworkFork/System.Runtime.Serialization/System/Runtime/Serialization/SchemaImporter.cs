@@ -28,6 +28,7 @@ namespace System.Runtime.Serialization
         private SchemaObjectDictionary _schemaObjects;
         private List<XmlSchemaRedefine> _redefineList;
         private bool _needToImportKnownTypesForObject;
+        private List<XmlQualifiedName> _deferredKnownTypesImport;
 
 
         // TODO: [Fx.Tag.SecurityNote(Critical = "Static field used to store serialization schema elements from future versions."
@@ -129,6 +130,17 @@ namespace System.Runtime.Serialization
                 }
             }
             ImportKnownTypesForObject();
+            
+            // Import known types for all deferred types after all main types have been imported
+            if (_deferredKnownTypesImport != null)
+            {
+                // Create a copy of the list to avoid collection modification during enumeration
+                var deferredTypesToProcess = new List<XmlQualifiedName>(_deferredKnownTypesImport);
+                foreach (XmlQualifiedName typeName in deferredTypesToProcess)
+                {
+                    ImportKnownTypes(typeName);
+                }
+            }
         }
 
         internal static void CompileSchemaSet(XmlSchemaSet schemaSet)
@@ -490,7 +502,11 @@ namespace System.Runtime.Serialization
                     ImportTopLevelElement(typeName);
                 ImportDataContractExtension(type, dataContract);
                 ImportGenericInfo(type, dataContract);
-                ImportKnownTypes(typeName);
+                
+                // Defer known types import - add to list for later processing
+                if (_deferredKnownTypesImport == null)
+                    _deferredKnownTypesImport = new List<XmlQualifiedName>();
+                _deferredKnownTypesImport.Add(typeName);
 
                 return dataContract;
             }
