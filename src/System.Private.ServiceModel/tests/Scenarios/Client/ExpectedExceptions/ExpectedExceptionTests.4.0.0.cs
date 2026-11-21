@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-public partial class ExpectedExceptionTests
+public partial class ExpectedExceptionTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]

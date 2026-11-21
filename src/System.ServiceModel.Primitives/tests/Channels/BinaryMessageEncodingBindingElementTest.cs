@@ -10,7 +10,7 @@ using System.Xml;
 using Infrastructure.Common;
 using Xunit;
 
-public static class BinaryMessageEncodingBindingElementTest
+public class BinaryMessageEncodingBindingElementTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void Default_Ctor_Initializes_Properties()

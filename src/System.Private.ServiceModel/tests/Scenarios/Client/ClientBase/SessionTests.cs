@@ -9,7 +9,7 @@ using Infrastructure.Common;
 using Xunit;
 using System.Threading;
 
-public static class SessionTests
+public class SessionTests : ConditionalWcfTest
 {
     // A basic test to verify that a session gets created and terminated
     [WcfFact]

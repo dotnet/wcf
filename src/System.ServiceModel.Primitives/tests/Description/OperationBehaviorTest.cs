@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public static class OperationBehaviorTest
+public class OperationBehaviorTest : ConditionalWcfTest
 {
     [WcfFact]
     public static void IOperationBehavior_Methods_AreCalled()

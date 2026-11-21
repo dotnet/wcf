@@ -8,7 +8,7 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 
-public static class ServiceKnownTypeTests
+public class ServiceKnownTypeTests : ConditionalWcfTest
 {
     public delegate object[] EchoItemsMethod(object[] items);
 

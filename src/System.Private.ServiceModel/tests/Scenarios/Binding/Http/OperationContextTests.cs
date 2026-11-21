@@ -11,7 +11,7 @@ using Infrastructure.Common;
 using ScenarioTests.Common;
 using Xunit;
 
-public static class OperationContextTests
+public class OperationContextTests : ConditionalWcfTest
 {
 #pragma warning disable xUnit1013 // Public method should be marked as test
     [ModuleInitializer]

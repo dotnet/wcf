@@ -9,7 +9,7 @@ using System.ServiceModel.Channels;
 using Infrastructure.Common;
 using Xunit;
 
-public static class CustomBindingTest
+public class CustomBindingTest : ConditionalWcfTest
 {
     [WcfFact]
     // Create the channel factory and open the channel for the request-reply message exchange pattern.
