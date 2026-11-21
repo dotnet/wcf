@@ -250,7 +250,10 @@ namespace Microsoft.Xml.Serialization
             CodeNamespace.Types.Add(codeClass);
             for (int i = 0; i < mapping.Constants.Length; i++)
             {
-                ExportConstant(codeClass, mapping.Constants[i], type, mapping.IsFlags, 1L << i);
+                ConstantMapping constant = mapping.Constants[i];
+                long defaultValue = mapping.IsFlags ? (1L << i) : i;
+                bool shouldEmitValue = mapping.IsFlags || constant.Value != defaultValue;
+                ExportConstant(codeClass, constant, type, shouldEmitValue, constant.Value);
             }
             if (mapping.IsFlags)
             {
