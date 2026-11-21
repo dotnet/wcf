@@ -16,7 +16,7 @@ namespace System.ServiceModel
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security;
 
-    using Microsoft.Xml;
+    using System.Xml;
 
     public class WS2007FederationHttpBinding : WSFederationHttpBinding
     {

@@ -16,7 +16,7 @@ namespace System.ServiceModel
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security;
 
-    using Microsoft.Xml;
+    using System.Xml;
     using System.ComponentModel;
 
     public class WSFederationHttpBinding : WSHttpBindingBase

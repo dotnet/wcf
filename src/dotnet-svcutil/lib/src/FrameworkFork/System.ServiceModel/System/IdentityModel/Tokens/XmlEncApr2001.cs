@@ -6,7 +6,7 @@ namespace System.IdentityModel.Tokens
 {
     using System.Collections.Generic;
     using System.IdentityModel.Selectors;
-    using Microsoft.Xml;
+    using System.Xml;
     using KeyIdentifierClauseEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.KeyIdentifierClauseEntry;
 
     internal class XmlEncApr2001 : SecurityTokenSerializer.SerializerEntries

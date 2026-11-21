@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.IO;
     using System.Reflection;
     using System.Collections;
     using System.Collections.Generic;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml;
+    using System.Xml.Schema;
+    using System.Xml;
     using System.Text;
     using System.ComponentModel;
     using Microsoft.CodeDom;
     using Microsoft.CodeDom.Compiler;
-    using Microsoft.Xml.Serialization.Advanced;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer.Advanced;
     using System.Globalization;
     //using System.Security.Cryptography;
     using System.Diagnostics;
@@ -88,6 +88,8 @@ namespace Microsoft.Xml.Serialization
         private MappedTypeDesc _extendedType;
         private int _weight;
         private Exception _exception;
+
+        internal object DefaultValue { get; set; }
 
         internal TypeDesc(string name, string fullName, XmlSchemaType dataType, TypeKind kind, TypeDesc baseTypeDesc, TypeFlags flags, string formatterName)
         {
@@ -1422,7 +1424,15 @@ namespace Microsoft.Xml.Serialization
             {
                 if (parent.Namespaces != null)
                 {
-                    string wsdlNs = (string)parent.Namespaces.Namespaces[ns];
+                    string wsdlNs = null;
+                    foreach (System.Xml.XmlQualifiedName q in parent.Namespaces.ToArray())
+                    {
+                        if (q.Name == ns)
+                        {
+                            wsdlNs = q.Namespace;
+                            break;
+                        }
+                    }
                     if (wsdlNs != null)
                     {
                         ns = wsdlNs;

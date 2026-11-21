@@ -4,9 +4,9 @@
 
 using System;
 using System.ComponentModel;
-using Microsoft.Xml;
-using Microsoft.Xml.Schema;
-using Microsoft.Xml.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
@@ -1098,7 +1098,7 @@ namespace System.Runtime.Serialization
         public const string SerPrefixForSchema = "ser";
         public const string ElementPrefix = "q";
         public const string DataContractXsdBaseNamespace = "http://schemas.datacontract.org/2004/07/";
-        public const string DataContractXmlNamespace = DataContractXsdBaseNamespace + "Microsoft.Xml";
+        public const string DataContractXmlNamespace = DataContractXsdBaseNamespace + "System.Xml";
         public const string SchemaInstanceNamespace = "http://www.w3.org/2001/XMLSchema-instance";
         public const string SchemaNamespace = "http://www.w3.org/2001/XMLSchema";
         public const string XsiNilLocalName = "nil";

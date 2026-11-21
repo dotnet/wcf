@@ -8,7 +8,7 @@ using System.Runtime.Serialization; // For SR
 using System.Text;
 
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     // This wrapper does not support seek.
     // Constructors consume/emit byte order mark.

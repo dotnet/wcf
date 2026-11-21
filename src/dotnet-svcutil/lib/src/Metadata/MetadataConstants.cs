@@ -4,7 +4,7 @@
 
 using System;
 #if PRIVATE_RTLIB
-using XmlNs = Microsoft.Xml;
+using XmlNs = System.Xml;
 #else
 using XmlNs = System.Xml;
 #endif

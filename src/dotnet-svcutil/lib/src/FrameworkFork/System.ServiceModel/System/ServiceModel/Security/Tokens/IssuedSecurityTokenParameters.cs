@@ -14,7 +14,7 @@ namespace System.ServiceModel.Security.Tokens
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security;
     using System.Text;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public class IssuedSecurityTokenParameters : SecurityTokenParameters
     {

@@ -59,6 +59,7 @@
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="$(SystemReflectionEmitLightweightPackageVersion)" />
     <PackageReference Include="System.Runtime.Loader" Version="$(SystemRuntimeLoaderPackageVersion)" />
     <PackageReference Include="System.Reflection.DispatchProxy" Version="$(SystemReflectionDispatchProxyPackageVersion)" />
+    <PackageReference Include="System.Web.Services.Description" Version="$(SystemWebServicesDescriptionPackageVersion)" />
   </ItemGroup>
   <Target Name="PackAdditonalDlls" AfterTargets="build">
     <ItemGroup>
@@ -82,6 +83,7 @@
       <GenerateSource>true</GenerateSource>
       <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
       <ClassName>ResXml</ClassName>
+      <LogicalName>Microsoft.Tools.ServiceModel.Svcutil.FrameworkFork.Microsoft.Xml.ResXml.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Update="FrameworkFork\System.ServiceModel\Resources\SRServiceModel.resx">
       <GenerateSource>true</GenerateSource>
@@ -112,11 +114,6 @@
       <GenerateSource>true</GenerateSource>
       <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
       <ClassName>Microsoft.Tools.ServiceModel.Svcutil.SR</ClassName>
-    </EmbeddedResource>
-    <EmbeddedResource Update="FrameworkFork\System.Web.Services\ResWebServices.resx">
-      <GenerateSource>true</GenerateSource>
-      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
-      <ClassName>System.Web.Services.ResWebServices</ClassName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

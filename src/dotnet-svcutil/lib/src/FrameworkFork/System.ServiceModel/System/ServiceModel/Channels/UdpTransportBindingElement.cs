@@ -11,7 +11,7 @@ namespace System.ServiceModel.Channels
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime;
     using System.ServiceModel.Description;
-    using Microsoft.Xml;
+    using System.Xml;
 
     // was UdpTransportBindingElement
     public class UdpTransportBindingElement

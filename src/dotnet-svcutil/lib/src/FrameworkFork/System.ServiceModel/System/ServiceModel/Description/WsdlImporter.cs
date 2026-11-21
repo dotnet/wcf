@@ -13,8 +13,8 @@ namespace System.ServiceModel.Description
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using System.Text;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using System.Xml.Schema;
     using WsdlNS = System.Web.Services.Description;
     using WsdlConfigNS = System.Web.Services.Configuration;
 

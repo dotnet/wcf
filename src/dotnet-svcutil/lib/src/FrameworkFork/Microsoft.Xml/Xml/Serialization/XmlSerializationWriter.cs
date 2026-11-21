@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml.Serialization
+using System.Xml;
+namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
 {
     using System;
     using System.IO;
     using System.Collections;
     using System.Reflection;
     using System.Reflection.Emit;
-    using Microsoft.Xml.Schema;
+    using System.Xml.Schema;
     using System.ComponentModel;
     using System.Diagnostics;
     using Microsoft.CodeDom.Compiler;
@@ -1655,7 +1656,7 @@ namespace Microsoft.Xml.Serialization
 
             if (IsSoap)
             {
-                Writer.Write(", new Microsoft.Xml.XmlQualifiedName(");
+                Writer.Write(", new System.Xml.XmlQualifiedName(");
                 WriteQuotedCSharpString(mapping.TypeName);
                 Writer.Write(", ");
                 WriteQuotedCSharpString(mapping.Namespace);
@@ -1717,7 +1718,7 @@ namespace Microsoft.Xml.Serialization
         private void WritePrimitive(string method, string name, string ns, object defaultValue, string source, TypeMapping mapping, bool writeXsiType, bool isElement, bool isNullable)
         {
             TypeDesc typeDesc = mapping.TypeDesc;
-            bool hasDefault = defaultValue != null && defaultValue != DBNull.Value && mapping.TypeDesc.HasDefaultSupport;
+            bool hasDefault = defaultValue != null && defaultValue != DBNull.Value && mapping.TypeDesc.DefaultValue != null;
             if (hasDefault)
             {
                 if (mapping is EnumMapping)
@@ -1781,7 +1782,7 @@ namespace Microsoft.Xml.Serialization
 
             if (writeXsiType)
             {
-                Writer.Write(", new Microsoft.Xml.XmlQualifiedName(");
+                Writer.Write(", new System.Xml.XmlQualifiedName(");
                 WriteQuotedCSharpString(mapping.TypeName);
                 Writer.Write(", ");
                 WriteQuotedCSharpString(mapping.Namespace);

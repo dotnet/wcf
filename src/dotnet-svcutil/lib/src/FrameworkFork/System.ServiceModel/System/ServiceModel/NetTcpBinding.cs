@@ -5,7 +5,7 @@
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.ServiceModel.Channels;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel
 {

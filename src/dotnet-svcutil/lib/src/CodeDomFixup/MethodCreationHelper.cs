@@ -12,7 +12,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Text;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {

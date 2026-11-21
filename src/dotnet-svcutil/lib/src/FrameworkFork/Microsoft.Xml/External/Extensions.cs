@@ -5,7 +5,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

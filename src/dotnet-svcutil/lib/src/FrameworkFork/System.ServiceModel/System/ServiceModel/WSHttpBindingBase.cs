@@ -16,7 +16,7 @@ namespace System.ServiceModel
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security;
     using System.ComponentModel;
-    using Microsoft.Xml;
+    using System.Xml;
 
     public abstract class WSHttpBindingBase : Binding, IBindingRuntimePreferences
     {

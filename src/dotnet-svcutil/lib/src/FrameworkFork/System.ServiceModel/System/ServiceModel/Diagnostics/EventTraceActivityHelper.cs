@@ -7,7 +7,7 @@ using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.Security;
 using System.ServiceModel.Channels;
-using Microsoft.Xml;
+using System.Xml;
 
 namespace System.ServiceModel.Diagnostics
 {

@@ -5,7 +5,7 @@
 namespace System.ServiceModel
 {
     using System.ComponentModel;
-    using Microsoft.Xml;
+    using System.Xml;
 
     //TODO: [TypeConverter(typeof(ReliableMessagingVersionConverter))]
     public abstract class ReliableMessagingVersion

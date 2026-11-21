@@ -134,13 +134,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             classToGen.IsPartial = true;
             classToGen.TypeAttributes = s_isInternal ? TypeAttributes.NotPublic : TypeAttributes.Public;
 
-            CodeAttributeDeclaration xmlSchemaProviderAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Xml.Serialization.XmlSchemaProviderAttribute)),
+            CodeAttributeDeclaration xmlSchemaProviderAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(System.Xml.Serialization.XmlSchemaProviderAttribute)),
                 new CodeAttributeArgument(new CodePrimitiveExpression(null)),
                 new CodeAttributeArgument("IsAny", new CodePrimitiveExpression(true)));
             classToGen.CustomAttributes.Add(xmlSchemaProviderAttribute);
 
             classToGen.BaseTypes.Add(new CodeTypeReference(typeof(Object)));
-            classToGen.BaseTypes.Add(new CodeTypeReference(typeof(Microsoft.Xml.Serialization.IXmlSerializable)));
+            classToGen.BaseTypes.Add(new CodeTypeReference(typeof(System.Xml.Serialization.IXmlSerializable)));
 
             CodeConstructor ctor = new CodeConstructor();
             ctor.Attributes = MemberAttributes.Public;
@@ -191,7 +191,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             getSchemaMethod.Attributes = MemberAttributes.Public;
             getSchemaMethod.Name = "GetSchema";
             getSchemaMethod.ImplementationTypes.Add(classToGen.BaseTypes[1]);
-            getSchemaMethod.ReturnType = new CodeTypeReference(typeof(Microsoft.Xml.Schema.XmlSchema));
+            getSchemaMethod.ReturnType = new CodeTypeReference(typeof(System.Xml.Schema.XmlSchema));
 
             CodeThrowExceptionStatement throwException = new CodeThrowExceptionStatement(
                 new CodeObjectCreateExpression(
@@ -209,7 +209,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             writeXml.Attributes = MemberAttributes.Public;
             writeXml.ImplementationTypes.Add(classToGen.BaseTypes[1]);
 
-            writeXml.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(Microsoft.Xml.XmlWriter)), "writer"));
+            writeXml.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(System.Xml.XmlWriter)), "writer"));
             CodeVariableDeclarationStatement enumeratorDec =
                 new CodeVariableDeclarationStatement(
                     CreateTypeReference("System.Collections.Generic.IEnumerator`1", xelementType), "e",
@@ -219,7 +219,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             CodeVariableReferenceExpression eRef = new CodeVariableReferenceExpression("e");
             CodePropertyReferenceExpression eCurrent = new CodePropertyReferenceExpression(eRef, "Current");
-            CodeCastExpression iXmlSerCast = new CodeCastExpression(new CodeTypeReference(typeof(Microsoft.Xml.Serialization.IXmlSerializable)), eCurrent);
+            CodeCastExpression iXmlSerCast = new CodeCastExpression(new CodeTypeReference(typeof(System.Xml.Serialization.IXmlSerializable)), eCurrent);
             CodeMethodInvokeExpression codeWrite = new CodeMethodInvokeExpression(iXmlSerCast, "WriteXml", new CodeVariableReferenceExpression("writer"));
 
             CodeIterationStatement codeFor = new CodeIterationStatement();
@@ -240,11 +240,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             readXml.Attributes = MemberAttributes.Public;
             readXml.ImplementationTypes.Add(classToGen.BaseTypes[1]);
 
-            readXml.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(Microsoft.Xml.XmlReader)), "reader"));
+            readXml.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(System.Xml.XmlReader)), "reader"));
 
             CodeVariableReferenceExpression reader = new CodeVariableReferenceExpression("reader");
             CodePropertyReferenceExpression readerNodeType = new CodePropertyReferenceExpression(reader, "NodeType");
-            CodeTypeReferenceExpression xmlNodeType = new CodeTypeReferenceExpression(typeof(Microsoft.Xml.XmlNodeType));
+            CodeTypeReferenceExpression xmlNodeType = new CodeTypeReferenceExpression(typeof(System.Xml.XmlNodeType));
             CodePropertyReferenceExpression xmlNodeTypeEndElement = new CodePropertyReferenceExpression(xmlNodeType, "EndElement");
             CodeBinaryOperatorExpression notEq = new CodeBinaryOperatorExpression(readerNodeType, CodeBinaryOperatorType.IdentityInequality, xmlNodeTypeEndElement);
 
@@ -261,7 +261,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     new CodeTypeReference(xelementType), "elem",
                     new CodeObjectCreateExpression(new CodeTypeReference(xelementType), new CodePrimitiveExpression("default")));
 
-            CodeCastExpression iXmlSerCast = new CodeCastExpression(new CodeTypeReference(typeof(Microsoft.Xml.Serialization.IXmlSerializable)), new CodeVariableReferenceExpression("elem"));
+            CodeCastExpression iXmlSerCast = new CodeCastExpression(new CodeTypeReference(typeof(System.Xml.Serialization.IXmlSerializable)), new CodeVariableReferenceExpression("elem"));
 
             CodeMethodInvokeExpression codeRead = new CodeMethodInvokeExpression(iXmlSerCast, "ReadXml", new CodeVariableReferenceExpression("reader"));
 

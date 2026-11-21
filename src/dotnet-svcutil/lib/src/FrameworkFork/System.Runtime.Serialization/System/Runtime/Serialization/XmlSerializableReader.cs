@@ -3,9 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System.IO;
-using Microsoft.Xml;
-using Microsoft.Xml.Schema;
-using Microsoft.Xml.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
 using System.Diagnostics;
 
 

@@ -7,7 +7,7 @@ namespace System.ServiceModel.Description
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using Microsoft.Xml;
+    using System.Xml;
     using WsdlNS = System.Web.Services.Description;
     using System.Globalization;
 

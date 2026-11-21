@@ -9,10 +9,10 @@ namespace System.Runtime.Serialization
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Text;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Serialization;
+    using System.Xml;
+    using Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer;
     using System.Security;
-    using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
+    using DataContractDictionary = System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, DataContract>;
 
 #if USE_REFEMIT || NET_NATIVE
     public class XmlObjectSerializerReadContext : XmlObjectSerializerContext

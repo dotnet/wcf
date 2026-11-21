@@ -13,8 +13,8 @@ namespace System.ServiceModel.Description
     using System.ServiceModel.Channels;
     using System.ServiceModel.Dispatcher;
     using System.Threading;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
+    using System.Xml;
+    using System.Xml.Schema;
     using WsdlNS = System.Web.Services.Description;
 
     // the description/metadata "mix-in"

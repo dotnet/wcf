@@ -8,7 +8,7 @@ namespace System.ServiceModel.Channels
     using System.ServiceModel.Description;
     using System.ServiceModel.Security;
     using System.Collections.Generic;
-    using Microsoft.Xml;
+    using System.Xml;
 
     internal static class TransactionPolicyStrings
     {
