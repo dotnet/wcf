@@ -98,6 +98,20 @@
     <HelixPreCommands>$(HelixPreCommands);security default-keychain -d user -s $HOME/Library/Keychains/login.keychain-db</HelixPreCommands>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TestJob)' == 'Windows'">
+    <!-- Start the MSMQ queue manager if the Windows feature happens to be
+         present on the worker image, so Binding.Msmq.IntegrationTests can
+         talk to a local queue. We deliberately do NOT run
+         Enable-WindowsOptionalFeature here: installing MSMQ-Server is a
+         DISM operation that can run for many minutes and leaves a
+         TrustedInstaller child process alive, which exhausts the work item
+         timeout. When MSMQ is absent the scenario tests skip cleanly via
+         [Condition(MsmqInstalled)] instead of failing the leg.
+         NOTE: this command must not contain a literal ';' — HelixPreCommands
+         is a ';'-delimited list and would be split mid-command. -->
+    <HelixPreCommands>$(HelixPreCommands);powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "Start-Service MSMQ -ErrorAction SilentlyContinue"</HelixPreCommands>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunWithCoreWCFService)' == 'true'">
     <HelixPreCommands>$(HelixPreCommands);set PATH=%HELIX_CORRELATION_PAYLOAD%\dotnet-cli%3B%PATH%</HelixPreCommands>
     <!-- %3B is an escaped ; -->
