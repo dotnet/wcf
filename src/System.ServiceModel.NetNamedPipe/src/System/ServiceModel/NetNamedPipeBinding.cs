@@ -13,6 +13,7 @@ namespace System.ServiceModel
     public class NetNamedPipeBinding : Binding
     {
         // private BindingElements
+        private TransactionFlowBindingElement _txFlow;
         private BinaryMessageEncodingBindingElement _encoding;
         private NamedPipeTransportBindingElement _namedPipe;
         private NetNamedPipeSecurity _security = new NetNamedPipeSecurity();
@@ -30,6 +31,19 @@ namespace System.ServiceModel
         public NetNamedPipeBinding(NetNamedPipeSecurityMode securityMode) : this()
         {
             _security.Mode = securityMode;
+        }
+
+        [DefaultValue(TransactionFlowDefaults.Transactions)]
+        public bool TransactionFlow
+        {
+            get { return _txFlow.Transactions; }
+            set { _txFlow.Transactions = value; }
+        }
+
+        public TransactionProtocol TransactionProtocol
+        {
+            get { return _txFlow.TransactionProtocol; }
+            set { _txFlow.TransactionProtocol = value; }
         }
 
         [DefaultValue(ConnectionOrientedTransportDefaults.TransferMode)]
@@ -94,6 +108,7 @@ namespace System.ServiceModel
 
         private void Initialize()
         {
+            _txFlow = new TransactionFlowBindingElement(TransactionFlowDefaults.Transactions);
             _namedPipe = new NamedPipeTransportBindingElement();
             _encoding = new BinaryMessageEncodingBindingElement();
         }
@@ -102,6 +117,8 @@ namespace System.ServiceModel
         {   // return collection of BindingElements
             BindingElementCollection bindingElements = new BindingElementCollection();
             // order of BindingElements is important
+            // add transaction flow
+            bindingElements.Add(_txFlow);
             // add encoding
             bindingElements.Add(_encoding);
             // add transport security

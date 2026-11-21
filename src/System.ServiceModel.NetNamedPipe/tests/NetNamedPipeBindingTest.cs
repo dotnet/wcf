@@ -6,12 +6,64 @@
 using System;
 using System.Reflection;
 using System.Runtime.Versioning;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 using Infrastructure.Common;
 using Xunit;
 
 public class NetNamedPipeBindingTest : ConditionalWcfTest
 {
+    [WcfFact]
+    [Condition(nameof(Is_Windows))]
+    [SupportedOSPlatform("windows")]
+    public static void TransactionFlow_Defaults()
+    {
+        var binding = new NetNamedPipeBinding();
+
+        Assert.False(binding.TransactionFlow);
+        Assert.Same(TransactionProtocol.OleTransactions, binding.TransactionProtocol);
+        var transactionFlow = Assert.IsType<TransactionFlowBindingElement>(binding.CreateBindingElements()[0]);
+        var context = new BindingContext(new CustomBinding(), new BindingParameterCollection());
+        Assert.Null(transactionFlow.GetProperty<ChannelProtectionRequirements>(context));
+    }
+
+    [WcfFact]
+    [Condition(nameof(Is_Windows))]
+    [SupportedOSPlatform("windows")]
+    public static void TransactionFlow_ConfiguresChannelStack()
+    {
+        var binding = new NetNamedPipeBinding
+        {
+            TransactionFlow = true,
+            TransactionProtocol = TransactionProtocol.WSAtomicTransaction11
+        };
+
+        var elements = binding.CreateBindingElements();
+        var transactionFlow = Assert.IsType<TransactionFlowBindingElement>(elements[0]);
+        Assert.Same(TransactionProtocol.WSAtomicTransaction11, transactionFlow.TransactionProtocol);
+        var context = new BindingContext(new CustomBinding(), new BindingParameterCollection());
+        Assert.NotNull(transactionFlow.GetProperty<ChannelProtectionRequirements>(context));
+
+        var factory = binding.BuildChannelFactory<IDuplexSessionChannel>(new BindingParameterCollection());
+        try
+        {
+            factory.Open();
+            factory.Close();
+        }
+        finally
+        {
+            factory.Abort();
+        }
+
+        transactionFlow.TransactionProtocol = TransactionProtocol.OleTransactions;
+        Assert.Same(TransactionProtocol.WSAtomicTransaction11, binding.TransactionProtocol);
+
+        binding.TransactionFlow = false;
+        var disabledTransactionFlow = binding.CreateBindingElements().Find<TransactionFlowBindingElement>();
+        Assert.Null(disabledTransactionFlow.GetProperty<ChannelProtectionRequirements>(context));
+    }
+
     [WcfFact]
     [Condition(nameof(Is_Windows))]
     [SupportedOSPlatform("windows")]
