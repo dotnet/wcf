@@ -13,7 +13,7 @@ namespace System.ServiceModel.Description
     using System.Runtime.Serialization;
     using Microsoft.Xml;
     using Microsoft.Xml.Schema;
-    using Microsoft.CodeDom;
+    using System.CodeDom;
     using WsdlNS = System.Web.Services.Description;
     using Microsoft.Xml.Serialization;
 

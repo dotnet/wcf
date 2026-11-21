@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.ServiceModel.Channels;
 using System.ServiceModel;
 using System.ServiceModel.Dispatcher;
-using Microsoft.CodeDom;
+using System.CodeDom;
 using System.Globalization;
 using System.Text;
 using Microsoft.Xml.Serialization;
-using Microsoft.CodeDom.Compiler;
+using System.CodeDom.Compiler;
 using System.Runtime.Serialization;
 using System.Reflection;
 

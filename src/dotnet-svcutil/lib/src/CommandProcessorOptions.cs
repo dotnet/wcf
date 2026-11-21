@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.CodeDom.Compiler;
+using System.CodeDom.Compiler;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
