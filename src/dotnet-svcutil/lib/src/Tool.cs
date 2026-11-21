@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.Tools.ServiceModel.Svcutil.Metadata;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -13,6 +13,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeDom;
+using Microsoft.Tools.ServiceModel.Svcutil.Metadata;
+using Newtonsoft.Json.Linq;
+using static System.ServiceModel.Channels.RequestReplyCorrelator;
 using DcNS = System.Runtime.Serialization;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
@@ -244,15 +248,73 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             using (await SafeLogger.WriteStartOperationAsync(options.Logger, "Processing Code DOM ...").ConfigureAwait(false))
             {
                 ToolConsole.WriteLine(SR.GeneratingFiles);
+                if (options.SeparateFiles == true)
+                {
+                    var originalOutputFile = options.OutputFile;
+                    try
+                    {
+                        var generatedOutputPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                        foreach (CodeNamespace @namespace in importModule.CodeCompileUnit.Namespaces)
+                        {
+                            foreach (CodeTypeDeclaration type in @namespace.Types)
+                            {
+                                var namespacePrefix = GetSafeNamespaceFilePrefix(@namespace.Name);
+                                var outputFileName = $"{namespacePrefix}.{type.Name}{CodeSerializer.GetOutputFileExtension(options)}";
+                                var outputPath = Path.Combine(options.OutputDir.FullName, outputFileName);
+                                if (!generatedOutputPaths.Add(outputPath))
+                                {
+                                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
+                                        "A generated output file collision was detected for type '{0}' in namespace '{1}'. The file path '{2}' is already assigned to another generated type.",
+                                        type.Name, @namespace.Name, outputPath));
+                                }
+                                options.OutputFile = new FileInfo(outputPath);
+                                CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
+                                CodeCompileUnit compileUnit = new CodeCompileUnit();
+                                CodeNamespace splitNamespace = new CodeNamespace(@namespace.Name);
 
-                CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
-                var filePath = codeSerializer.Save(importModule.CodeCompileUnit);
+                                // Transfer the assembly attributes, referenced assemblies, user data and directives to each split compile unit to ensure the generated code is correct.
+                                compileUnit.AssemblyCustomAttributes.AddRange(importModule.CodeCompileUnit.AssemblyCustomAttributes);
+                                compileUnit.StartDirectives.AddRange(importModule.CodeCompileUnit.StartDirectives);
+                                compileUnit.EndDirectives.AddRange(importModule.CodeCompileUnit.EndDirectives);
+                                compileUnit.ReferencedAssemblies.AddRange(importModule.CodeCompileUnit.ReferencedAssemblies.Cast<string>().ToArray());
+                                foreach (DictionaryEntry pair in importModule.CodeCompileUnit.UserData)
+                                {
+                                    compileUnit.UserData.Add(pair.Key, pair.Value);
+                                }
+                                
+                                compileUnit.Namespaces.Add(splitNamespace);
+                                splitNamespace.Types.Add(type);
+                                var filePath = codeSerializer.Save(compileUnit);
+                                ToolConsole.WriteLineIf(options.ToolContext != OperationalContext.Infrastructure, filePath, LogTag.Important);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        options.OutputFile = originalOutputFile;
+                    }
+                }
+                else
+                {
+                    CodeSerializer codeSerializer = new CodeSerializer(options, serviceDescriptor.MetadataDocuments);
+                    var filePath = codeSerializer.Save(importModule.CodeCompileUnit);
 
-                // When in Infrastructure mode (WCF CS) it is assumed the output file path have been provided so no need to display it.
-                ToolConsole.WriteLineIf(options.ToolContext != OperationalContext.Infrastructure, filePath, LogTag.Important);
+                    // When in Infrastructure mode (WCF CS) it is assumed the output file path have been provided so no need to display it.
+                    ToolConsole.WriteLineIf(options.ToolContext != OperationalContext.Infrastructure, filePath, LogTag.Important);
+                }
             }
 
             return ToolConsole.ExitCode;
+        }
+
+        private static string GetSafeNamespaceFilePrefix(string namespaceName)
+        {
+            var prefix = string.IsNullOrWhiteSpace(namespaceName) ? "Global" : namespaceName;
+            foreach (var invalidChar in Path.GetInvalidFileNameChars())
+            {
+                prefix = prefix.Replace(invalidChar, '_');
+            }
+            return prefix.Replace('.', '_');
         }
 
         private static bool IsSuccess(int result)

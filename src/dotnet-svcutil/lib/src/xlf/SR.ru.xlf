@@ -617,6 +617,11 @@ Document Identifier: '{0}'.</source>
         <target state="translated">Создание кода для контрактов на предоставление услуг. Класс клиента не будет создан. (Короткая форма: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSeparateFiles">
+        <source>Creates separate files for each type in the specified output directory. (Short Form: -{0})</source>
+        <target state="new">Creates separate files for each type in the specified output directory. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Создавать синхронные методы для операций в дополнение к асинхронным. (Краткая форма: -{0})</target>

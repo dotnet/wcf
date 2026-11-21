@@ -617,6 +617,11 @@ Dokumentbezeichner: "{0}".</target>
         <target state="translated">Generieren Sie Code für Dienstleistungsverträge. Die Clientklasse wird nicht generiert. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
+      <trans-unit id="HelpSeparateFiles">
+        <source>Creates separate files for each type in the specified output directory. (Short Form: -{0})</source>
+        <target state="new">Creates separate files for each type in the specified output directory. (Short Form: -{0})</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
         <target state="translated">Hiermit werden synchrone Methoden für Vorgänge generiert, die zusätzlich zu asynchronen Vorgängen ausgeführt werden. (Kurzform: -{0})</target>
