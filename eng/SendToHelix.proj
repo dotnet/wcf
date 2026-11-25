@@ -46,17 +46,17 @@
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
     <HelixTargetQueue Include="windows.11.amd64.client" />
-    <HelixTargetQueue Include="(Debian.12.Amd64)azurelinux.4.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-12-helix-amd64" />
+    <HelixTargetQueue Include="(Debian.13.Amd64)azurelinux.4.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-13-helix-amd64" />
     <HelixTargetQueue Include="(AzureLinux.3.0.Amd64)azurelinux.4.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-helix-amd64" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'Linux'" >
-    <HelixTargetQueue Include="(Fedora.41.Amd64.Open)azurelinux.4.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:fedora-41-helix" />
+    <HelixTargetQueue Include="(Fedora.45.Amd64.Open)azurelinux.4.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:fedora-45-helix-amd64" />
     <HelixTargetQueue Include="azurelinux.4.amd64.open" />
     <HelixTargetQueue Include="ubuntu.2604.amd64.open" />
-    <HelixTargetQueue Include="(Debian.12.Amd64.Open)azurelinux.4.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-12-helix-amd64" />
+    <HelixTargetQueue Include="(Debian.13.Amd64.Open)azurelinux.4.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-13-helix-amd64" />
     <HelixTargetQueue Include="(AzureLinux.3.0.Amd64.Open)azurelinux.4.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-helix-amd64" />
-    <HelixTargetQueue Include="(openSUSE.15.6.Amd64.Open)azurelinux.4.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:opensuse-15.6-helix-amd64" />
+    <HelixTargetQueue Include="(openSUSE.16.0.Amd64.Open)azurelinux.4.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:opensuse-16.0-helix-amd64" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'MacOS'" >

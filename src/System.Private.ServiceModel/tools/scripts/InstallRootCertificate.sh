@@ -78,7 +78,7 @@ install_root_cert()
 
             $__update_os_certbundle_exec
             ;;
-        "opensuse" | "sles")
+        "opensuse" | "opensuse-leap" | "sles")
             cp -f "${__cafile}" /etc/pki/trust/anchors
 
             if [ $? -ne 0 ]; then
@@ -182,7 +182,7 @@ case ${__os} in
     "centos" | "rhel" | "fedora" | "azurelinux" | "mariner")
         __update_os_certbundle_cmd="update-ca-trust"
         ;;
-    "ubuntu" | "debian" | "opensuse" | "sles")
+    "ubuntu" | "debian" | "opensuse" | "opensuse-leap" | "sles")
         __update_os_certbundle_cmd="update-ca-certificates"
         ;;
     *)
