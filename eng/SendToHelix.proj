@@ -46,9 +46,10 @@
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
     <HelixTargetQueue Include="windows.11.amd64.client" />
-    <HelixTargetQueue Include="(Centos.10.Amd64)azurelinux.4.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:centos-stream-10-helix-amd64" />
-    <HelixTargetQueue Include="(Debian.13.Amd64)azurelinux.4.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-13-helix-amd64" />
-    <HelixTargetQueue Include="(AzureLinux.3.0.Amd64)azurelinux.4.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-helix-amd64" />
+    <!-- Each Linux queue needs Linux initialization even when submitted from the Windows job. -->
+    <HelixTargetQueue Include="(Centos.10.Amd64)azurelinux.4.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:centos-stream-10-helix-amd64" AdditionalProperties="TestJob=Linux" />
+    <HelixTargetQueue Include="(Debian.13.Amd64)azurelinux.4.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-13-helix-amd64" AdditionalProperties="TestJob=Linux" />
+    <HelixTargetQueue Include="(AzureLinux.3.0.Amd64)azurelinux.4.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-helix-amd64" AdditionalProperties="TestJob=Linux" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'Linux'" >
@@ -74,6 +75,7 @@
   <PropertyGroup>
     <RunWithCoreWCFService Condition="'$(RunWithCoreWCFService)' == ''">false</RunWithCoreWCFService>
     <ServiceHttpPort Condition="'$(ServiceHttpPort)' == ''">8081</ServiceHttpPort>
+    <ServiceHost Condition="'$(RunAsInternal)' == 'true' AND '$(TestJob)' == 'Linux' AND '$(ServiceHost)' == ''">$(ServiceUri)</ServiceHost>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TestJob)' != 'Windows'" >
