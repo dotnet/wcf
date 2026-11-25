@@ -55,7 +55,7 @@ public partial class ClientBaseTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    // Flaky under CoreWCF on certain Linux distros (Fedora.41, Debian.12):
+    // Observed to be flaky under CoreWCF on Fedora 41 and Debian 12:
     // the second POST over a keep-alive connection sometimes triggers a
     // Kestrel pipe-writer race on the server side
     //   (System.InvalidOperationException: Writing is not allowed after writer
