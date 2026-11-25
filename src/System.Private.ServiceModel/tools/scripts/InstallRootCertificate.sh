@@ -69,7 +69,7 @@ install_root_cert()
             # previous "untrusted" verdict for the lifetime of the helix VM.
             killall -HUP trustd 2>/dev/null || true
             ;;
-        "centos" | "rhel" | "fedora" | "azurelinux" | "mariner")
+        "centos" | "rhel" | "fedora" | "azurelinux")
             cp -f "${__cafile}" /etc/pki/ca-trust/source/anchors
 
             if [ $? -ne 0 ]; then
@@ -179,7 +179,7 @@ case ${__os} in
     "darwin")
         __update_os_certbundle_cmd="security"
         ;;
-    "centos" | "rhel" | "fedora" | "azurelinux" | "mariner")
+    "centos" | "rhel" | "fedora" | "azurelinux")
         __update_os_certbundle_cmd="update-ca-trust"
         ;;
     "ubuntu" | "debian" | "opensuse" | "opensuse-leap" | "sles")
