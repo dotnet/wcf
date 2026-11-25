@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Infrastructure.Common;
 using Xunit;
@@ -28,6 +30,16 @@ public class OSAndFrameworkTests
                                RuntimeInformation.OSDescription,
                                Environment.NewLine,
                                OSHelper.GetRuntimeIdentifier()));
+    }
+
+    [WcfFact]
+    [Condition(nameof(IsCentosRuntime))]
+    [OuterLoop]
+    public static void Centos_Runtime_Is_Detected_As_Centos()
+    {
+        Assert.Equal(OSID.Centos, OSHelper.OSIDfromRuntimeEnvironment());
+        Assert.True(OSID.AnyUnix.MatchesCurrent());
+        Assert.False(OSID.RHEL.MatchesCurrent());
     }
 
     [WcfFact]
@@ -83,5 +95,12 @@ public class OSAndFrameworkTests
         {
             Assert.Fail($"Creating endpoint address with serviceUri {serviceUri} threw exeception \"{e.Message}\"");
         }
+    }
+
+    private static bool IsCentosRuntime()
+    {
+        return RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
+               File.Exists("/etc/os-release") &&
+               File.ReadLines("/etc/os-release").Any(line => line is "ID=centos" or "ID=\"centos\"");
     }
 }

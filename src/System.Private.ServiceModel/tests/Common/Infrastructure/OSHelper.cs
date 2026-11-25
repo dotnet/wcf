@@ -29,7 +29,7 @@ namespace Infrastructure.Common
         private static List<Tuple<string, OSID>> _runtimeToOSID = new List<Tuple<string, OSID>>
         {
             new Tuple<string, OSID>("azurelinux", OSID.AzureLinux),
-            new Tuple<string, OSID>("centos", OSID.RHEL),
+            new Tuple<string, OSID>("centos", OSID.Centos),
             new Tuple<string, OSID>("debian", OSID.Debian),
             new Tuple<string, OSID>("fedora", OSID.Fedora),
             new Tuple<string, OSID>("sles", OSID.SLES),

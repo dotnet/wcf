@@ -44,10 +44,11 @@ namespace Infrastructure.Common
         OSX =                    0x00010000,
         RHEL =                   0x00020000,
         Ubuntu =                 0x00040000,
+        Centos = 0x00080000,
 
         // 'Any' combinations must explicitly name only known flags so "G" formatting
         // can be used to show a comma separated list of the bitmask.
-        AnyUnix = AzureLinux | Debian | Fedora | OpenSUSE | OSX | RHEL | Ubuntu,
+        AnyUnix = AzureLinux | Centos | Debian | Fedora | OpenSUSE | OSX | RHEL | Ubuntu,
 
         Any = AnyUnix | AnyWindows
     }
