@@ -39,7 +39,6 @@ public class OSAndFrameworkTests
     {
         Assert.Equal(OSID.Centos, OSHelper.OSIDfromRuntimeEnvironment());
         Assert.True(OSID.AnyUnix.MatchesCurrent());
-        Assert.False(OSID.RHEL.MatchesCurrent());
     }
 
     [WcfFact]

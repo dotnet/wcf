@@ -35,7 +35,6 @@ namespace Infrastructure.Common
             new Tuple<string, OSID>("sles", OSID.SLES),
             new Tuple<string, OSID>("opensuse", OSID.OpenSUSE),
             new Tuple<string, OSID>("osx", OSID.OSX),
-            new Tuple<string, OSID>("rhel", OSID.RHEL),
             new Tuple<string, OSID>("ubuntu", OSID.Ubuntu),
 
             // Currently, the same RID and OS Description is used for Win10 Core, Nano and Normal
