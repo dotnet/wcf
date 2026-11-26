@@ -29,13 +29,14 @@ namespace Infrastructure.Common
         private static List<Tuple<string, OSID>> _runtimeToOSID = new List<Tuple<string, OSID>>
         {
             new Tuple<string, OSID>("azurelinux", OSID.AzureLinux),
-            new Tuple<string, OSID>("Mariner", OSID.AzureLinux),  // CBL-Mariner (legacy name for Azure Linux)
+            new Tuple<string, OSID>("centos", OSID.Centos),
             new Tuple<string, OSID>("debian", OSID.Debian),
             new Tuple<string, OSID>("fedora", OSID.Fedora),
             new Tuple<string, OSID>("sles", OSID.SLES),
             new Tuple<string, OSID>("opensuse", OSID.OpenSUSE),
             new Tuple<string, OSID>("osx", OSID.OSX),
-            new Tuple<string, OSID>("rhel", OSID.RHEL),
+            // Centos represents the RHEL family; WCF tests CentOS Stream rather than RHEL itself.
+            new Tuple<string, OSID>("rhel", OSID.Centos),
             new Tuple<string, OSID>("ubuntu", OSID.Ubuntu),
 
             // Currently, the same RID and OS Description is used for Win10 Core, Nano and Normal
