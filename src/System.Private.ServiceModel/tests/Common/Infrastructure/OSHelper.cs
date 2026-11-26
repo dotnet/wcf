@@ -35,6 +35,8 @@ namespace Infrastructure.Common
             new Tuple<string, OSID>("sles", OSID.SLES),
             new Tuple<string, OSID>("opensuse", OSID.OpenSUSE),
             new Tuple<string, OSID>("osx", OSID.OSX),
+            // Centos represents the RHEL family; WCF tests CentOS Stream rather than RHEL itself.
+            new Tuple<string, OSID>("rhel", OSID.Centos),
             new Tuple<string, OSID>("ubuntu", OSID.Ubuntu),
 
             // Currently, the same RID and OS Description is used for Win10 Core, Nano and Normal
