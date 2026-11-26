@@ -412,6 +412,31 @@
         <target state="translated">サーバーが接続要求を受け入れませんでした。クライアントの WebSocket プロトコルのバージョンが、サーバー ('{0}') のものと一致していない可能性があります。</target>
         <note />
       </trans-unit>
+      <trans-unit id="net_WebSockets_AcceptUnsupportedProtocol">
+        <source>The WebSocket client request requested '{0}' protocol(s), but server is only accepting '{1}' protocol(s).</source>
+        <target state="new">The WebSocket client request requested '{0}' protocol(s), but server is only accepting '{1}' protocol(s).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="net_WebSockets_ConnectStatusExpected">
+        <source>The server returned status code '{0}' when status code '{1}' was expected.</source>
+        <target state="new">The server returned status code '{0}' when status code '{1}' was expected.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="net_WebSockets_InvalidResponseHeader">
+        <source>The '{0}' header value '{1}' is invalid.</source>
+        <target state="new">The '{0}' header value '{1}' is invalid.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="net_WebSockets_MissingResponseHeader">
+        <source>The server's response was missing the required header '{0}'.</source>
+        <target state="new">The server's response was missing the required header '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="net_webstatus_ConnectFailure">
+        <source>Unable to connect to the remote server</source>
+        <target state="new">Unable to connect to the remote server</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
