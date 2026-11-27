@@ -37,14 +37,16 @@ namespace System.ServiceModel.Channels
         private Stream _stream; // Underlying stream.  Close sets _stream to null.
         private BufferManager _bufferManager;
         private byte[] _buffer; // Write buffer.
+        private byte[] _pooledBuffer; // The original rental may be replaced by a shadow buffer.
         private readonly int _bufferSize; // Length of internal buffer (not counting the shadow buffer).
+        private readonly bool _leaveOpen;
         private int _writePos; // Write pointer within buffer.
         private readonly SemaphoreSlim _sem = new SemaphoreSlim(1, 1);
 
         public BufferedWriteStream(Stream stream) : this(stream, null, DefaultBufferSize) { }
 
         public BufferedWriteStream(Stream stream, BufferManager bufferManager) : this(stream, bufferManager, DefaultBufferSize) { }
-        public BufferedWriteStream(Stream stream, BufferManager bufferManager, int bufferSize)
+        public BufferedWriteStream(Stream stream, BufferManager bufferManager, int bufferSize, bool leaveOpen = false)
         {
             Contract.Assert(stream != Null, "stream != Stream.Null");
             Contract.Assert(stream != null, "stream != null");
@@ -53,6 +55,7 @@ namespace System.ServiceModel.Channels
             _stream = stream;
             _bufferManager = bufferManager;
             _bufferSize = bufferSize;
+            _leaveOpen = leaveOpen;
 
             EnsureBufferAllocated();
         }
@@ -98,7 +101,8 @@ namespace System.ServiceModel.Channels
             {
                 if (_bufferManager != null)
                 {
-                    _buffer = _bufferManager.TakeBuffer(_bufferSize);
+                    _pooledBuffer = _bufferManager.TakeBuffer(_bufferSize);
+                    _buffer = _pooledBuffer;
                 }
                 else
                 {
@@ -139,13 +143,17 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    _stream?.Dispose();
+                    if (!_leaveOpen)
+                    {
+                        _stream?.Dispose();
+                    }
                 }
                 finally
                 {
                     _stream = null;
-                    var tempBuffer = _buffer;
+                    byte[] tempBuffer = _pooledBuffer;
                     _buffer = null;
+                    _pooledBuffer = null;
                     _bufferManager?.ReturnBuffer(tempBuffer);
                     _bufferManager = null;
                 }
