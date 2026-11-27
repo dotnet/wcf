@@ -182,20 +182,38 @@ namespace System.ServiceModel.Channels
             // will block on the write until the stream is being read from. The WriteMessageAsync method needs
             // to run on a different thread to prevent a deadlock.
             var resultStream = new ProducerConsumerStream();
-            _stream = new BufferedWriteStream(resultStream, _bufferManager);
-            Task.Factory.StartNew(async (content) =>
+            var writeStream = new BufferedWriteStream(resultStream, _bufferManager, BufferedWriteStream.DefaultBufferSize, leaveOpen: true);
+            // Content disposal unblocks the writer; only the writer may return its buffer.
+            _stream = resultStream;
+            Task.Run(async () =>
             {
-                var thisPtr = content as StreamedMessageContent;
+                Exception writeException = null;
                 try
                 {
-                    await _messageEncoder.WriteMessageAsync(thisPtr._message, thisPtr._stream);
+                    await _messageEncoder.WriteMessageAsync(_message, writeStream).ConfigureAwait(false);
+                }
+                catch (Exception exception)
+                {
+                    if (Fx.IsFatal(exception))
+                    {
+                        throw;
+                    }
+
+                    writeException = exception;
                 }
                 finally
                 {
-                    thisPtr._stream.Dispose();
-                    thisPtr._writeCompletedTcs.TrySetResult(true);
+                    try
+                    {
+                        writeStream.Dispose();
+                    }
+                    finally
+                    {
+                        resultStream.Complete(writeException);
+                        _writeCompletedTcs.TrySetResult(true);
+                    }
                 }
-            }, this, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            });
 
             return Task.FromResult<Stream>(resultStream);
         }
