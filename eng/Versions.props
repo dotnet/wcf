@@ -43,6 +43,7 @@
     <XunitStaFactPackageVersion>1.2.46-alpha</XunitStaFactPackageVersion>
     <BouncyCastleCryptodllPackageVersion>1.8.1</BouncyCastleCryptodllPackageVersion>
     <MicrosoftCrankEventSourcesPackageVersion>0.1.0-alpha.20501.1</MicrosoftCrankEventSourcesPackageVersion>
+    <BenchmarkDotNetPackageVersion>0.15.8</BenchmarkDotNetPackageVersion>
     <SystemRuntimeSerializationPrimitivesPackageVersion>4.3.0</SystemRuntimeSerializationPrimitivesPackageVersion>
     <NewtonsoftJsonPackageVersion>13.0.3</NewtonsoftJsonPackageVersion>
     <SystemReflectionDispatchProxyPackageVersion>4.7.1</SystemReflectionDispatchProxyPackageVersion>
