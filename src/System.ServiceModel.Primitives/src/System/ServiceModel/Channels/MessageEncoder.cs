@@ -64,32 +64,59 @@ namespace System.ServiceModel.Channels
             int offset = 0;
             int currentBufferSize = Math.Min(buffer.Length, maxBufferSize);
 
-            while (offset < currentBufferSize)
+            try
             {
-                int count = await stream.ReadAsync(buffer, offset, currentBufferSize - offset, cancellationToken);
-                if (count == 0)
+                while (currentBufferSize > 0)
                 {
-                    stream.Dispose();
-                    break;
+                    if (offset == currentBufferSize)
+                    {
+                        if (currentBufferSize >= maxBufferSize)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(MaxMessageSizeStream.CreateMaxReceivedMessageSizeExceededException(maxBufferSize));
+                        }
+
+                        // Probe for EOF before growing, reusing a byte of the exclusively owned buffer.
+                        byte firstByte = buffer[0];
+                        int count = await stream.ReadAsync(buffer, 0, 1, cancellationToken);
+                        byte nextByte = buffer[0];
+                        buffer[0] = firstByte;
+                        if (count == 0)
+                        {
+                            stream.Dispose();
+                            break;
+                        }
+
+                        currentBufferSize = (int)Math.Min((long)currentBufferSize * 2, maxBufferSize);
+                        byte[] temp = bufferManager.TakeBuffer(currentBufferSize);
+                        Buffer.BlockCopy(buffer, 0, temp, 0, offset);
+                        bufferManager.ReturnBuffer(buffer);
+                        buffer = temp;
+                        buffer[offset++] = nextByte;
+                    }
+                    else
+                    {
+                        int count = await stream.ReadAsync(buffer, offset, currentBufferSize - offset, cancellationToken);
+                        if (count == 0)
+                        {
+                            stream.Dispose();
+                            break;
+                        }
+
+                        offset += count;
+                    }
                 }
 
-                offset += count;
-                if (offset == currentBufferSize)
+                var result = new ArraySegment<byte>(buffer, 0, offset);
+                buffer = null;
+                return result;
+            }
+            finally
+            {
+                if (buffer != null)
                 {
-                    if (currentBufferSize >= maxBufferSize)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(MaxMessageSizeStream.CreateMaxReceivedMessageSizeExceededException(maxBufferSize));
-                    }
-
-                    currentBufferSize = Math.Min(currentBufferSize * 2, maxBufferSize);
-                    byte[] temp = bufferManager.TakeBuffer(currentBufferSize);
-                    Buffer.BlockCopy(buffer, 0, temp, 0, offset);
                     bufferManager.ReturnBuffer(buffer);
-                    buffer = temp;
                 }
             }
-
-            return new ArraySegment<byte>(buffer, 0, offset);
         }
 
         // used for buffered streaming
