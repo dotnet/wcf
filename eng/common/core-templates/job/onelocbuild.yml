@@ -21,6 +21,12 @@ parameters:
   UseLfLineEndings: true
   UseCheckedInLocProjectJson: false
   SkipLocProjectJsonGeneration: false
+  # Path to LocProject.json, relative to $(System.DefaultWorkingDirectory).
+  # Changing it requires SkipLocProjectJsonGeneration: true.
+  LocProjectPath: eng/Localize/LocProject.json
+  # Optional: steps to run before LocProject.json is generated and OneLocBuild runs,
+  # for example to create a custom LocProject.json.
+  preSteps: []
   LanguageSet: VS_Main_Languages
   LclSource: lclFilesInRepo
   LclPackageId: ''
@@ -74,6 +80,11 @@ jobs:
       - 'OneLocBuild is supported only in dnceng/internal and DevDiv/DevDiv.': error
     - ${{ if eq(parameters.CeapexServiceConnection, '') }}:
       - 'CeapexServiceConnection must identify a WIF service connection.': error
+    - ${{ if and(ne(parameters.LocProjectPath, 'eng/Localize/LocProject.json'), ne(parameters.SkipLocProjectJsonGeneration, 'true')) }}:
+      - 'A custom LocProjectPath requires SkipLocProjectJsonGeneration to be true.': error
+
+    - ${{ each step in parameters.preSteps }}:
+      - ${{ step }}
 
     - ${{ if ne(parameters.SkipLocProjectJsonGeneration, 'true') }}:
       - task: Powershell@2
@@ -111,7 +122,7 @@ jobs:
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       inputs:
-        locProj: eng/Localize/LocProject.json
+        locProj: ${{ parameters.LocProjectPath }}
         outDir: $(Build.ArtifactStagingDirectory)
         lclSource: ${{ parameters.LclSource }}
         lclPackageId: ${{ parameters.LclPackageId }}
@@ -138,8 +149,9 @@ jobs:
     - task: CopyFiles@2
       displayName: Copy LocProject.json
       inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)/eng/Localize/'
-        Contents: 'LocProject.json'
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: '${{ parameters.LocProjectPath }}'
+        flattenFolders: true
         TargetFolder: '$(Build.ArtifactStagingDirectory)/loc'
       condition: ${{ parameters.condition }}
 

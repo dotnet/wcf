@@ -78,7 +78,7 @@ __AlpinePackages+=" krb5-dev"
 __AlpinePackages+=" openssl-dev"
 __AlpinePackages+=" zlib-dev"
 
-__FreeBSDBase="14.4-RELEASE"
+__FreeBSDBase="14.5-RELEASE"
 __FreeBSDPkg="2.8.0"
 __FreeBSDABI="14"
 __FreeBSDPackages="libunwind"
@@ -611,11 +611,35 @@ elif [[ "$__CodeName" == "freebsd" ]]; then
 
     ensureDownloadTool
 
+    case "${__FreeBSDBase}/${__FreeBSDMachineArch}" in
+        14.5-RELEASE/amd64)
+            __FreeBSDBaseSHA256SUM="d16b68fe0e9e136ce67ab1084042c848bbffecd1eb295f206bd1c6785deb45a4"
+            ;;
+        14.5-RELEASE/aarch64)
+            __FreeBSDBaseSHA256SUM="4b7a61ed4ddbd598b5048d5800898ba0d43dcba4cdb12ba58302e0202eaa26aa"
+            ;;
+        15.1-RELEASE/amd64)
+            __FreeBSDBaseSHA256SUM="3768988b151c20f965679062b065c63a977d6bbb9f47fd83695ec2c40790c18f"
+            ;;
+        15.1-RELEASE/aarch64)
+            __FreeBSDBaseSHA256SUM="5b7a46a0abfbe23a1d4454b5600e2efcfce16b705bc7e9c851c37470c035ef98"
+            ;;
+        *)
+            >&2 echo "ERROR: No known checksum for FreeBSD ${__FreeBSDBase} ${__FreeBSDMachineArch} base.txz."
+            exit 1
+            ;;
+    esac
+
+    __FreeBSDBaseUrl="https://download.freebsd.org/ftp/releases/${__FreeBSDArch}/${__FreeBSDMachineArch}/${__FreeBSDBase}/base.txz"
+    __FreeBSDBasePackage="$__RootfsDir/base.txz"
     if [[ "$__hasWget" == 1 ]]; then
-        wget -O- "https://download.freebsd.org/ftp/releases/${__FreeBSDArch}/${__FreeBSDMachineArch}/${__FreeBSDBase}/base.txz" | tar -C "$__RootfsDir" -Jxf - ./lib ./usr/lib ./usr/libdata ./usr/include ./usr/share/keys ./etc ./bin/freebsd-version
+        wget -O "$__FreeBSDBasePackage" "$__FreeBSDBaseUrl"
     else
-        curl -SL "https://download.freebsd.org/ftp/releases/${__FreeBSDArch}/${__FreeBSDMachineArch}/${__FreeBSDBase}/base.txz" | tar -C "$__RootfsDir" -Jxf - ./lib ./usr/lib ./usr/libdata ./usr/include ./usr/share/keys ./etc ./bin/freebsd-version
+        curl -fSL -o "$__FreeBSDBasePackage" "$__FreeBSDBaseUrl"
     fi
+    echo "$__FreeBSDBaseSHA256SUM $__FreeBSDBasePackage" | sha256sum -c
+    tar -C "$__RootfsDir" -Jxf "$__FreeBSDBasePackage" ./lib ./usr/lib ./usr/libdata ./usr/include ./usr/share/keys ./etc ./bin/freebsd-version
+    rm "$__FreeBSDBasePackage"
     echo "ABI = \"FreeBSD:${__FreeBSDABI}:${__FreeBSDMachineArch}\"; FINGERPRINTS = \"${__RootfsDir}/usr/share/keys\"; REPOS_DIR = [\"${__RootfsDir}/etc/pkg\"]; REPO_AUTOUPDATE = NO; RUN_SCRIPTS = NO;" > "${__RootfsDir}"/usr/local/etc/pkg.conf
     echo "FreeBSD: { url: \"pkg+https://pkg.FreeBSD.org/\${ABI}/quarterly\", mirror_type: \"srv\", signature_type: \"fingerprints\", fingerprints: \"/usr/share/keys/pkg\", enabled: yes }" > "${__RootfsDir}"/etc/pkg/FreeBSD.conf
     mkdir -p "$__RootfsDir"/tmp
